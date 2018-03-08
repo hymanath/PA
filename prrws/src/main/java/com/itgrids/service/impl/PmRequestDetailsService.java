@@ -3282,47 +3282,76 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						petitionsIdsList = new HashSet<Long>(latestPetitionIdsList);
 				}*/
 				List<Object[]> objectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"",petitionsIdsList);
-				Map<Long,Map<String,Map<Long,Long>>> leadBudgentWiseWorksMap = new HashMap<Long,Map<String,Map<Long,Long>>>(0);
-				
+				Map<Long,Map<String,Map<Long,Set<Long>>>> leadBudgentWiseWorksMap = new HashMap<Long,Map<String,Map<Long,Set<Long>>>>(0);
+				Set<Long> withCostIdsSet = new HashSet<Long>(0);
+				Set<Long> noCostIdsSet = new HashSet<Long>(0);
 				if(commonMethodsUtilService.isListOrSetValid(objectList)){
 					
+					for (Object[] param : objectList) {
+						String estimatonCost = commonMethodsUtilService.getStringValueForObject(param[4]);
+						if(estimatonCost == null || estimatonCost.equalsIgnoreCase("") || estimatonCost.trim().length()==0)
+							estimatonCost="0.00";
+						Long petitinId =commonMethodsUtilService.getLongValueForObject(param[1]);
+						if(estimatonCost != null && estimatonCost.trim().equalsIgnoreCase("0.00")){
+							noCostIdsSet.add(petitinId);
+						}else{
+							withCostIdsSet.add(petitinId);
+						}
+					}
+
 					for (Object[] param : objectList) {
 						
 						/** srishailam start to calculate with Cost & without cost petitions details **/
 						
 						String estimatonCost = commonMethodsUtilService.getStringValueForObject(param[4]);
+						if(estimatonCost == null || estimatonCost.equalsIgnoreCase("") || estimatonCost.trim().length()==0)
+							estimatonCost="0.00";
 						Long petitinId =commonMethodsUtilService.getLongValueForObject(param[1]);
 						Long statusId =commonMethodsUtilService.getLongValueForObject(param[2]);
-						
-						Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(statusId);
-						if(budgentWiseWorksMap == null){
-							budgentWiseWorksMap = new HashMap<String,Map<Long,Long>>(0);
-							budgentWiseWorksMap.put("WITH_COST", new HashMap<Long,Long>(0));
-							budgentWiseWorksMap.put("WITHOUT_COST",  new HashMap<Long,Long>(0));
-							
-							Map<String,Map<Long,Long>> budgentWiseWorksMap1 = new HashMap<String,Map<Long,Long>>(0);
-							budgentWiseWorksMap1.put("WITH_COST", new HashMap<Long,Long>(0));
-							budgentWiseWorksMap1.put("WITHOUT_COST",  new HashMap<Long,Long>(0));
-							
-							leadBudgentWiseWorksMap.put(0L, budgentWiseWorksMap1);
+						Long workId =commonMethodsUtilService.getLongValueForObject(param[0]);
+						if(IConstants.PETITION_IN_PROGRESS_IDS.contains(statusId)){
+							statusId=2L;
 						}
-						Map<Long,Long> petitonsMap = null;
+						Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(statusId);
+						if(budgentWiseWorksMap == null){
+							budgentWiseWorksMap = new HashMap<String,Map<Long,Set<Long>>>(0);
+							budgentWiseWorksMap.put("WITH_COST", new HashMap<Long,Set<Long>>(0));
+							budgentWiseWorksMap.put("WITHOUT_COST",  new HashMap<Long,Set<Long>>(0));
+							
+							Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap1 = new HashMap<String,Map<Long,Set<Long>>>(0);
+							budgentWiseWorksMap1.put("WITH_COST", new HashMap<Long,Set<Long>>(0));
+							budgentWiseWorksMap1.put("WITHOUT_COST",  new HashMap<Long,Set<Long>>(0));
+							if(leadBudgentWiseWorksMap.get(0L) == null)
+								leadBudgentWiseWorksMap.put(0L, budgentWiseWorksMap1);
+						}
+						Map<Long,Set<Long>> petitonsMap = null;
 						String type="WITHOUT_COST";
-						Long count=0L;
-						if(estimatonCost != null && estimatonCost.trim().equalsIgnoreCase("0.00")){
+						Set<Long> countIdsSet=new HashSet<Long>(0);
+						boolean isEligibleToAdd=false;
+						if(estimatonCost != null && (estimatonCost.trim().equalsIgnoreCase("0.00"))){
 							petitonsMap = budgentWiseWorksMap.get(type);
+							if(!withCostIdsSet.contains(petitinId)){
+								isEligibleToAdd=true;
+							}else{
+								 //type="WITH_COST";
+								// petitonsMap = budgentWiseWorksMap.get(type);
+							}
 						}else{
 							type = "WITH_COST";
 							petitonsMap = budgentWiseWorksMap.get(type);
+							if(withCostIdsSet.contains(petitinId))
+								isEligibleToAdd=true;
 						}
 						if(petitonsMap != null){
 							if(petitonsMap.get(petitinId) != null){
-								count=petitonsMap.get(petitinId);
+								countIdsSet=petitonsMap.get(petitinId);
 							}
-							count = count+1L;
-							petitonsMap.put(petitinId, count);
-							budgentWiseWorksMap.put(type, petitonsMap);
-							leadBudgentWiseWorksMap.put(statusId,budgentWiseWorksMap);
+							//if(isEligibleToAdd){
+								countIdsSet.add(workId);
+								petitonsMap.put(petitinId, countIdsSet);
+								budgentWiseWorksMap.put(type, petitonsMap);
+								leadBudgentWiseWorksMap.put(statusId,budgentWiseWorksMap);
+							//}
 						}
 						
 						/** srishailam  end to calculate with Cost & without cost petitions details **/
@@ -3347,7 +3376,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						if(!statusVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[0]))
 								&& estimationCost != ""){
-							statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							//statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 							//BigDecimal decmial= new BigDecimal(returnVO.getEstimationCost());
 							BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
@@ -3356,30 +3385,33 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							statusVO.setEstimationCost(totalCost1.toString());
 							//returnVO.setEstimationCost(totalCost.toString());
 						}
+						statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
 					
 					if(commonMethodsUtilService.isMapValid(leadBudgentWiseWorksMap)){
 						for (Long statusId : leadBudgentWiseWorksMap.keySet()) {
-							Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(statusId);
+							Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(statusId);
 								for (String type : budgentWiseWorksMap.keySet()) {
-									Map<Long,Long> withoutCostMap =  budgentWiseWorksMap.get(type);
-									Long petitoinsCount =0L;
-									Long workssCount =0L;
+									Map<Long,Set<Long>> withoutCostMap =  budgentWiseWorksMap.get(type);
+									Set<Long> petitoinsCountIdsSet =new HashSet<Long>(0);
+									Set<Long> workssCountIdsSet =new HashSet<Long>(0);
 	
 									if(commonMethodsUtilService.isMapValid(withoutCostMap)){
 										for (Long peitionId : withoutCostMap.keySet()) {
-											Long count=withoutCostMap.get(peitionId);
-											petitoinsCount = petitoinsCount+1L;
-											if(count != null && count.longValue()>0L)
-												workssCount =workssCount+count;
+											Set<Long> countIdsSet=withoutCostMap.get(peitionId);
+											petitoinsCountIdsSet.add(peitionId);
+											workssCountIdsSet.addAll(countIdsSet);
 										}
 									}
+									Long petitoinsCount = Long.valueOf(String.valueOf(petitoinsCountIdsSet.size()));
+									Long workssCount = Long.valueOf(String.valueOf(workssCountIdsSet.size()));
+									
 									if(type != null && type.equalsIgnoreCase("WITH_COST")){
-										returnVO.setWithCostPetitionsCount(petitoinsCount);
-										returnVO.setWithCostWorksCount(workssCount);
+										returnVO.setWithCostPetitionsCount(returnVO.getWithCostPetitionsCount()+petitoinsCount);
+										returnVO.setWithCostWorksCount(returnVO.getWithCostWorksCount()+workssCount);
 									}else if(type != null && type.equalsIgnoreCase("WITHOUT_COST")){
-										returnVO.setNoCostPetitionsCount(petitoinsCount);
-										returnVO.setNoCostWorksCount(workssCount);
+										returnVO.setNoCostPetitionsCount(returnVO.getNoCostPetitionsCount()+petitoinsCount);
+										returnVO.setNoCostWorksCount(returnVO.getNoCostWorksCount()+workssCount);
 									}
 								}
 							}
@@ -3387,14 +3419,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				
 				//List<Object[]> referrerList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusReferral");
-				setObjectListToMap(objectList,statuMap, "statusReferral");
-				setObjectListForCompleteOverview(objectList,returnVO, "statusReferral");
+				setObjectListToMap(objectList,statuMap, "statusReferral",noCostIdsSet,withCostIdsSet);
+				setObjectListForCompleteOverview(objectList,returnVO, "statusReferral",noCostIdsSet,withCostIdsSet);
 				//List<Object[]> subjectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusSubject");
-				setObjectListToMap(objectList,statuMap, "statusSubject");
-				setObjectListForCompleteOverview(objectList,returnVO, "statusSubject");
+				setObjectListToMap(objectList,statuMap, "statusSubject",noCostIdsSet,withCostIdsSet);
+				setObjectListForCompleteOverview(objectList,returnVO, "statusSubject",noCostIdsSet,withCostIdsSet);
 				//List<Object[]> deptlist = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"statusDept");
-				setObjectListToMap(objectList,statuMap, "statusDept");
-				setObjectListForCompleteOverview(objectList,returnVO, "statusDept");
+				setObjectListToMap(objectList,statuMap, "statusDept",noCostIdsSet,withCostIdsSet);
+				setObjectListForCompleteOverview(objectList,returnVO, "statusDept",noCostIdsSet,withCostIdsSet);
 				
 				if(commonMethodsUtilService.isMapValid(statuMap)){
 					for (Map.Entry<Long, RepresenteeViewVO> entry : statuMap.entrySet()) {
@@ -3480,21 +3512,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 							}
 						}else if(entry.getKey().longValue() != 2l){
-							Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(entry.getKey());
+							Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(entry.getKey());
 							if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
 								for (String type : budgentWiseWorksMap.keySet()) {
-									Map<Long,Long> withoutCostMap =  budgentWiseWorksMap.get(type);
+									Map<Long,Set<Long>> withoutCostMap =  budgentWiseWorksMap.get(type);
 									Long petitoinsCount =0L;
 									Long workssCount =0L;
+									Set<Long> petitoinsCountIdsSet =new HashSet<Long>(0);
+									Set<Long> workssCountIdsSet =new HashSet<Long>(0);
 	
 									if(commonMethodsUtilService.isMapValid(withoutCostMap)){
 										for (Long peitionId : withoutCostMap.keySet()) {
-											Long count=withoutCostMap.get(peitionId);
-											petitoinsCount = petitoinsCount+1L;
-											if(count != null && count.longValue()>0L)
-												workssCount =workssCount+count;
+											Set<Long> countIdsSet=withoutCostMap.get(peitionId);
+											petitoinsCountIdsSet.add(peitionId);
+											workssCountIdsSet.addAll(countIdsSet);
 										}
 									}
+									petitoinsCount = Long.valueOf(String.valueOf(petitoinsCountIdsSet.size()));
+									workssCount = Long.valueOf(String.valueOf(workssCountIdsSet.size()));
+									
+									
 									if(type != null && type.equalsIgnoreCase("WITH_COST")){
 										entry.getValue().setWithCostPetitionsCount(petitoinsCount);
 										entry.getValue().setWithCostWorksCount(workssCount);
@@ -3508,6 +3545,38 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							//setOthersDataToLastIndexOfList(entry.getValue().getReferrerList());
 							//setOthersDataToLastIndexOfList(entry.getValue().getSubList());
 							//setOthersDataToLastIndexOfList(entry.getValue().getDeptList());
+						}else if(entry.getKey().longValue() == 2l){
+							Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(entry.getKey());
+							if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
+								for (String type : budgentWiseWorksMap.keySet()) {
+									Map<Long,Set<Long>> withoutCostMap =  budgentWiseWorksMap.get(type);
+									Long petitoinsCount =0L;
+									Long workssCount =0L;
+	
+									Set<Long> petitoinsCountIdsSet =new HashSet<Long>(0);
+									Set<Long> workssCountIdsSet =new HashSet<Long>(0);
+	
+									if(commonMethodsUtilService.isMapValid(withoutCostMap)){
+										for (Long peitionId : withoutCostMap.keySet()) {
+											Set<Long> countIdsSet=withoutCostMap.get(peitionId);
+											petitoinsCountIdsSet.add(peitionId);
+											workssCountIdsSet.addAll(countIdsSet);
+										}
+									}
+									petitoinsCount = Long.valueOf(String.valueOf(petitoinsCountIdsSet.size()));
+									workssCount = Long.valueOf(String.valueOf(workssCountIdsSet.size()));
+									
+									
+									if(type != null && type.equalsIgnoreCase("WITH_COST")){
+										entry.getValue().setWithCostPetitionsCount(petitoinsCount);
+										entry.getValue().setWithCostWorksCount(workssCount);
+									}else if(type != null && type.equalsIgnoreCase("WITHOUT_COST")){
+										entry.getValue().setNoCostPetitionsCount(petitoinsCount);
+										entry.getValue().setNoCostWorksCount(workssCount);
+									}
+								}
+							}
+							returnVO.getList().add(entry.getValue());
 						}
 					}
 				}
@@ -3551,15 +3620,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 		}
 		@SuppressWarnings("static-access")
-		public void setObjectListForCompleteOverview(List<Object[]> objectList,RepresenteeViewVO returnVO,String type){
+		public void setObjectListForCompleteOverview(List<Object[]> objectList,RepresenteeViewVO returnVO,String type,Set<Long> noCostIdsSet,Set<Long>  withCostIdsSet){
 			try {
-				Map<Long,Map<String,Map<Long,Long>>> leadBudgentWiseWorksMap = new HashMap<Long,Map<String,Map<Long,Long>>>(0);
+				Map<Long,Map<String,Map<Long,Set<Long>>>> leadBudgentWiseWorksMap = new HashMap<Long,Map<String,Map<Long,Set<Long>>>>(0);
 				if(commonMethodsUtilService.isListOrSetValid(objectList)){
 					for (Object[] param : objectList) {
 						RepresenteeViewVO VO  = null;
 						Long id= 0l;
 						String name = "";
 						Long preferrableId = 0l;
+						Long workId = commonMethodsUtilService.getLongValueForObject(param[0]);
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
 						  id = commonMethodsUtilService.getLongValueForObject(param[5]);
 						  name = commonMethodsUtilService.getStringValueForObject(param[6]);
@@ -3575,40 +3645,55 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						}
 						
 						/** srishailam start to calculate with Cost & without cost petitions details **/
-						
+						if(preferrableId == null || preferrableId.longValue() ==0L || id == null || id.longValue()==0L)
+							id=0L;
+							
 						String estimatonCost = commonMethodsUtilService.getStringValueForObject(param[4]);
 						Long petitinId =commonMethodsUtilService.getLongValueForObject(param[1]);
 						
-						Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(id);
+						Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(id);
 						if(budgentWiseWorksMap == null){
-							budgentWiseWorksMap = new HashMap<String,Map<Long,Long>>(0);
-							budgentWiseWorksMap.put("WITH_COST", new HashMap<Long,Long>(0));
-							budgentWiseWorksMap.put("WITHOUT_COST",  new HashMap<Long,Long>(0));
+							budgentWiseWorksMap = new HashMap<String,Map<Long,Set<Long>>>(0);
+							budgentWiseWorksMap.put("WITH_COST", new HashMap<Long,Set<Long>>(0));
+							budgentWiseWorksMap.put("WITHOUT_COST",  new HashMap<Long,Set<Long>>(0));
 							
-							Map<String,Map<Long,Long>> budgentWiseWorksMap1 = new HashMap<String,Map<Long,Long>>(0);
-							budgentWiseWorksMap1.put("WITH_COST", new HashMap<Long,Long>(0));
-							budgentWiseWorksMap1.put("WITHOUT_COST",  new HashMap<Long,Long>(0));
-							
-							leadBudgentWiseWorksMap.put(0L, budgentWiseWorksMap1);
+							Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap1 = new HashMap<String,Map<Long,Set<Long>>>(0);
+							budgentWiseWorksMap1.put("WITH_COST", new HashMap<Long,Set<Long>>(0));
+							budgentWiseWorksMap1.put("WITHOUT_COST",  new HashMap<Long,Set<Long>>(0));
+							if(leadBudgentWiseWorksMap.get(0L) == null)
+								leadBudgentWiseWorksMap.put(0L, budgentWiseWorksMap1);
 						}
 						
-						Map<Long,Long> petitonsMap = null;
+						Map<Long,Set<Long>> petitonsMap = null;
 						String types="WITHOUT_COST";
-						Long count=0L;
-						if(estimatonCost != null && estimatonCost.trim().equalsIgnoreCase("0.00")){
+						Set<Long> countIdsSet= new HashSet<Long>(0);
+						
+						boolean isEligibleToAdd=false;
+						if(estimatonCost != null && (estimatonCost.trim().equalsIgnoreCase("0.00"))){
 							petitonsMap = budgentWiseWorksMap.get(types);
+							if(!withCostIdsSet.contains(petitinId)){
+								isEligibleToAdd=true;
+							}else{
+								//types = "WITH_COST";
+								//petitonsMap = budgentWiseWorksMap.get(types);
+							}
 						}else{
 							types = "WITH_COST";
 							petitonsMap = budgentWiseWorksMap.get(types);
+							if(withCostIdsSet.contains(petitinId))
+								isEligibleToAdd=true;
 						}
+						
 						if(petitonsMap != null){
-							if(petitonsMap.get(petitinId) != null){
-								count=petitonsMap.get(petitinId);
-							}
-							count = count+1L;
-							petitonsMap.put(petitinId, count);
-							budgentWiseWorksMap.put(types, petitonsMap);
-							leadBudgentWiseWorksMap.put(id, budgentWiseWorksMap);
+							//if(isEligibleToAdd){
+								if(petitonsMap.get(petitinId) != null){
+									countIdsSet=petitonsMap.get(petitinId);
+								}
+								countIdsSet.add(workId);
+								petitonsMap.put(petitinId, countIdsSet);
+								budgentWiseWorksMap.put(types, petitonsMap);
+								leadBudgentWiseWorksMap.put(id, budgentWiseWorksMap);
+							//}
 						}
 						
 						/** srishailam  end to calculate with Cost & without cost petitions details **/
@@ -3673,30 +3758,36 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								BigDecimal decmial= new BigDecimal(VO.getEstimationCost());
 								BigDecimal decmial1= new BigDecimal(estimationCost);
 								BigDecimal totalCost = decmial.add(decmial1);
-								VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+								//VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 								VO.setEstimationCost(totalCost.toString());
 							}
+							VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
 					
 					if(type != null && type.equalsIgnoreCase("statusReferral")){
 						if(commonMethodsUtilService.isListOrSetValid(returnVO.getReferrerList())){
 							for (RepresenteeViewVO vo : returnVO.getReferrerList()) {
-								Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
+								Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
 								if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
 									
 									for (String type1 : budgentWiseWorksMap.keySet()) {
-										Map<Long,Long> withoutCostMap =  budgentWiseWorksMap.get(type1);
+										Map<Long,Set<Long>> withoutCostMap =  budgentWiseWorksMap.get(type1);
+										Set<Long> workssCountIds = new HashSet<Long>(0);
+										
 										Long petitoinsCount =0L;
 										Long workssCount =0L;
 
 										if(commonMethodsUtilService.isMapValid(withoutCostMap)){
 											for (Long peitionId : withoutCostMap.keySet()) {
-												Long count=withoutCostMap.get(peitionId);
+												if(withoutCostMap.get(peitionId) != null)
+													workssCountIds.addAll(withoutCostMap.get(peitionId));
 												petitoinsCount = petitoinsCount+1L;
-												if(count != null && count.longValue()>0L)
-													workssCount =workssCount+count;
 											}
 										}
+										if(commonMethodsUtilService.isListOrSetValid(workssCountIds)){
+											workssCount = Long.valueOf(String.valueOf(workssCountIds.size()));
+										}
+											
 										if(type1 != null && type1.equalsIgnoreCase("WITH_COST")){
 											vo.setWithCostPetitionsCount(petitoinsCount);
 											vo.setWithCostWorksCount(workssCount);
@@ -3711,22 +3802,27 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}else if(type != null && type.equalsIgnoreCase("statusDept")){
 						if(commonMethodsUtilService.isListOrSetValid(returnVO.getDeptList())){
 							for (RepresenteeViewVO vo : returnVO.getDeptList()) {
-								Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
+								Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
 								if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
 									
 									for (String type1 : budgentWiseWorksMap.keySet()) {
-										Map<Long,Long> withoutCostMap =  budgentWiseWorksMap.get(type1);
+										Map<Long,Set<Long>> withoutCostMap =  budgentWiseWorksMap.get(type1);
+										Set<Long> workssCountIds = new HashSet<Long>(0);
+										
 										Long petitoinsCount =0L;
 										Long workssCount =0L;
 
 										if(commonMethodsUtilService.isMapValid(withoutCostMap)){
 											for (Long peitionId : withoutCostMap.keySet()) {
-												Long count=withoutCostMap.get(peitionId);
+												if(withoutCostMap.get(peitionId) != null)
+													workssCountIds.addAll(withoutCostMap.get(peitionId));
 												petitoinsCount = petitoinsCount+1L;
-												if(count != null && count.longValue()>0L)
-													workssCount =workssCount+count;
 											}
 										}
+										if(commonMethodsUtilService.isListOrSetValid(workssCountIds)){
+											workssCount = Long.valueOf(String.valueOf(workssCountIds.size()));
+										}
+											
 										if(type1 != null && type1.equalsIgnoreCase("WITH_COST")){
 											vo.setWithCostPetitionsCount(petitoinsCount);
 											vo.setWithCostWorksCount(workssCount);
@@ -3741,22 +3837,27 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}else if(type != null && type.equalsIgnoreCase("statusSubject")){
 						if(commonMethodsUtilService.isListOrSetValid(returnVO.getSubList())){
 							for (RepresenteeViewVO vo : returnVO.getSubList()) {
-								Map<String,Map<Long,Long>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
+								Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
 								if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
 									
 									for (String type1 : budgentWiseWorksMap.keySet()) {
-										Map<Long,Long> withoutCostMap =  budgentWiseWorksMap.get(type1);
+										Map<Long,Set<Long>> withoutCostMap =  budgentWiseWorksMap.get(type1);
+										Set<Long> workssCountIds = new HashSet<Long>(0);
+										
 										Long petitoinsCount =0L;
 										Long workssCount =0L;
 
 										if(commonMethodsUtilService.isMapValid(withoutCostMap)){
 											for (Long peitionId : withoutCostMap.keySet()) {
-												Long count=withoutCostMap.get(peitionId);
+												if(withoutCostMap.get(peitionId) != null)
+													workssCountIds.addAll(withoutCostMap.get(peitionId));
 												petitoinsCount = petitoinsCount+1L;
-												if(count != null && count.longValue()>0L)
-													workssCount =workssCount+count;
 											}
 										}
+										if(commonMethodsUtilService.isListOrSetValid(workssCountIds)){
+											workssCount = Long.valueOf(String.valueOf(workssCountIds.size()));
+										}
+											
 										if(type1 != null && type1.equalsIgnoreCase("WITH_COST")){
 											vo.setWithCostPetitionsCount(petitoinsCount);
 											vo.setWithCostWorksCount(workssCount);
@@ -3776,11 +3877,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
 		}
 		@SuppressWarnings("static-access")
-		public void setObjectListToMap(List<Object[]> objectList,Map<Long,RepresenteeViewVO> statuMap,String type){
+		public void setObjectListToMap(List<Object[]> objectList,Map<Long,RepresenteeViewVO> statuMap,String type,Set<Long> noCostIdsSet,Set<Long> withCostIdsSet){
 			try {
 				
 				if(commonMethodsUtilService.isListOrSetValid(objectList) && commonMethodsUtilService.isMapValid(statuMap)){
 					//statuMap = new HashMap<Long,RepresenteeViewVO>();
+					Map<Long,Map<Long,Map<String,Map<Long,Set<Long>>>>> stausAndDataWiseBudgentWiseWorksMap = new HashMap<Long,Map<Long,Map<String,Map<Long,Set<Long>>>>>(0);
+
 					for (Object[] param : objectList) {
 						RepresenteeViewVO statusVO = statuMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 						if(statusVO == null){
@@ -3791,6 +3894,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						Long id= 0l;
 						String name = "";
 						Long preferrableId = 0l;
+						Long workId = commonMethodsUtilService.getLongValueForObject(param[0]);
+						Long statusId = commonMethodsUtilService.getLongValueForObject(param[2]);
+						
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
 						  id = commonMethodsUtilService.getLongValueForObject(param[5]);
 						  name = commonMethodsUtilService.getStringValueForObject(param[6]);
@@ -3804,6 +3910,71 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							 name = commonMethodsUtilService.getStringValueForObject(param[12]);
 							 preferrableId = commonMethodsUtilService.getLongValueForObject(param[13]);
 						}
+						
+						
+						/** srishailam start to calculate with Cost & without cost petitions details **/
+						
+						String estimatonCost = commonMethodsUtilService.getStringValueForObject(param[4]);
+						if(estimatonCost == null || estimatonCost.trim().length()==0 || estimatonCost.equalsIgnoreCase(""))
+							estimatonCost ="0.00";
+						
+						Long petitinId =commonMethodsUtilService.getLongValueForObject(param[1]);
+						if(id == null  || id == null || preferrableId.longValue() ==0L || id.longValue() ==0L ){
+							id=0L;
+						}
+						
+						Map<Long,Map<String,Map<Long,Set<Long>>>> leadBudgentWiseWorksMap = stausAndDataWiseBudgentWiseWorksMap.get(statusId);
+						if(leadBudgentWiseWorksMap == null)
+							leadBudgentWiseWorksMap = new HashMap<Long,Map<String,Map<Long,Set<Long>>>>(0);
+						
+						Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(id);
+						if(budgentWiseWorksMap == null){
+							budgentWiseWorksMap = new HashMap<String,Map<Long,Set<Long>>>(0);
+							budgentWiseWorksMap.put("WITH_COST", new HashMap<Long,Set<Long>>(0));
+							budgentWiseWorksMap.put("WITHOUT_COST",  new HashMap<Long,Set<Long>>(0));
+							
+							Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap1 = new HashMap<String,Map<Long,Set<Long>>>(0);
+							budgentWiseWorksMap1.put("WITH_COST", new HashMap<Long,Set<Long>>(0));
+							budgentWiseWorksMap1.put("WITHOUT_COST",  new HashMap<Long,Set<Long>>(0));
+							if(leadBudgentWiseWorksMap.get(0L) == null)
+								leadBudgentWiseWorksMap.put(0L, budgentWiseWorksMap1);
+						}
+						
+						Map<Long,Set<Long>> petitonsMap = null;
+						String types="WITHOUT_COST";
+						Set<Long> countIdsSet= new HashSet<Long>(0);
+						
+						boolean isEligibleToAdd=false;
+						if(estimatonCost != null && (estimatonCost.trim().equalsIgnoreCase("0.00"))){
+							petitonsMap = budgentWiseWorksMap.get(types);
+							if(!withCostIdsSet.contains(petitinId)){
+								isEligibleToAdd=true;
+							}else{
+								//types = "WITH_COST";
+							}
+						}else{
+							types = "WITH_COST";
+							petitonsMap = budgentWiseWorksMap.get(types);
+							if(withCostIdsSet.contains(petitinId)){
+								isEligibleToAdd=true;
+							}
+						}
+						
+						if(petitonsMap != null){
+							//if(isEligibleToAdd){
+								if(petitonsMap.get(petitinId) != null){
+									countIdsSet=petitonsMap.get(petitinId);
+								}
+								countIdsSet.add(workId);
+								petitonsMap.put(petitinId, countIdsSet);
+								budgentWiseWorksMap.put(types, petitonsMap);
+								leadBudgentWiseWorksMap.put(id, budgentWiseWorksMap);
+								stausAndDataWiseBudgentWiseWorksMap.put(statusId, leadBudgentWiseWorksMap);
+							//}
+						}
+						
+						/** srishailam  end to calculate with Cost & without cost petitions details **/
+						
 						if(type != null && type.equalsIgnoreCase("statusReferral")){
 							
 							//if(id.longValue() != 7l && id.longValue() != 4l && id.longValue() != 2l && id.longValue() != 1l ){
@@ -3866,10 +4037,128 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							BigDecimal decmial= new BigDecimal(VO.getEstimationCost());
 							BigDecimal decmial1= new BigDecimal(estimationCost);
 							BigDecimal totalCost = decmial.add(decmial1);
-							VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+							//VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 							VO.setEstimationCost(totalCost.toString());
 						}
+						VO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						
 					}
+					
+					if(commonMethodsUtilService.isMapValid(statuMap)){
+						for (Long stausId : statuMap.keySet()) {
+							RepresenteeViewVO statusVO = statuMap.get(stausId);
+							Map<Long,Map<String,Map<Long,Set<Long>>>> leadBudgentWiseWorksMap = stausAndDataWiseBudgentWiseWorksMap.get(stausId);
+							if(commonMethodsUtilService.isMapValid(leadBudgentWiseWorksMap)){
+									if(type != null && type.equalsIgnoreCase("statusReferral")){
+										if(commonMethodsUtilService.isListOrSetValid(statusVO.getReferrerList())){
+											for (RepresenteeViewVO vo : statusVO.getReferrerList()) {
+												Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
+												if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
+													
+													for (String type1 : budgentWiseWorksMap.keySet()) {
+														Map<Long,Set<Long>> CostMap =  budgentWiseWorksMap.get(type1);
+														Set<Long> workssCountIds = new HashSet<Long>(0);
+														
+														Long petitoinsCount =0L;
+														Long workssCount =0L;
+		
+														if(commonMethodsUtilService.isMapValid(CostMap)){
+															for (Long peitionId : CostMap.keySet()) {
+																if(CostMap.get(peitionId) != null)
+																	workssCountIds.addAll(CostMap.get(peitionId));
+																petitoinsCount = petitoinsCount+1L;
+															}
+														}
+														if(commonMethodsUtilService.isListOrSetValid(workssCountIds)){
+															workssCount = Long.valueOf(String.valueOf(workssCountIds.size()));
+														}
+															
+														if(type1 != null && type1.equalsIgnoreCase("WITH_COST")){
+															vo.setWithCostPetitionsCount(petitoinsCount);
+															vo.setWithCostWorksCount(workssCount);
+														}else if(type1 != null && type1.equalsIgnoreCase("WITHOUT_COST")){
+															vo.setNoCostPetitionsCount(petitoinsCount);
+															vo.setNoCostWorksCount(workssCount);
+														}
+													}
+												}
+											}
+										}
+									}else if(type != null && type.equalsIgnoreCase("statusDept")){
+										if(commonMethodsUtilService.isListOrSetValid(statusVO.getDeptList())){
+											for (RepresenteeViewVO vo : statusVO.getDeptList()) {
+												Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
+												if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
+													
+													for (String type1 : budgentWiseWorksMap.keySet()) {
+														Map<Long,Set<Long>> CostMap =  budgentWiseWorksMap.get(type1);
+														Set<Long> workssCountIds = new HashSet<Long>(0);
+														
+														Long petitoinsCount =0L;
+														Long workssCount =0L;
+		
+														if(commonMethodsUtilService.isMapValid(CostMap)){
+															for (Long peitionId : CostMap.keySet()) {
+																if(CostMap.get(peitionId) != null)
+																	workssCountIds.addAll(CostMap.get(peitionId));
+																petitoinsCount = petitoinsCount+1L;
+															}
+														}
+														if(commonMethodsUtilService.isListOrSetValid(workssCountIds)){
+															workssCount = Long.valueOf(String.valueOf(workssCountIds.size()));
+														}
+															
+														if(type1 != null && type1.equalsIgnoreCase("WITH_COST")){
+															vo.setWithCostPetitionsCount(petitoinsCount);
+															vo.setWithCostWorksCount(workssCount);
+														}else if(type1 != null && type1.equalsIgnoreCase("WITHOUT_COST")){
+															vo.setNoCostPetitionsCount(petitoinsCount);
+															vo.setNoCostWorksCount(workssCount);
+														}
+													}
+												}
+											}
+										}
+									}else if(type != null && type.equalsIgnoreCase("statusSubject")){
+										if(commonMethodsUtilService.isListOrSetValid(statusVO.getSubList())){
+											for (RepresenteeViewVO vo : statusVO.getSubList()) {
+												Map<String,Map<Long,Set<Long>>> budgentWiseWorksMap = leadBudgentWiseWorksMap.get(vo.getId());
+												if(commonMethodsUtilService.isMapValid(budgentWiseWorksMap)){
+													
+													for (String type1 : budgentWiseWorksMap.keySet()) {
+														Map<Long,Set<Long>> CostMap =  budgentWiseWorksMap.get(type1);
+														Set<Long> workssCountIds = new HashSet<Long>(0);
+														
+														Long petitoinsCount =0L;
+														Long workssCount =0L;
+		
+														if(commonMethodsUtilService.isMapValid(CostMap)){
+															for (Long peitionId : CostMap.keySet()) {
+																if(CostMap.get(peitionId) != null)
+																	workssCountIds.addAll(CostMap.get(peitionId));
+																petitoinsCount = petitoinsCount+1L;
+															}
+														}
+														if(commonMethodsUtilService.isListOrSetValid(workssCountIds)){
+															workssCount = Long.valueOf(String.valueOf(workssCountIds.size()));
+														}
+															
+														if(type1 != null && type1.equalsIgnoreCase("WITH_COST")){
+															vo.setWithCostPetitionsCount(petitoinsCount);
+															vo.setWithCostWorksCount(workssCount);
+														}else if(type1 != null && type1.equalsIgnoreCase("WITHOUT_COST")){
+															vo.setNoCostPetitionsCount(petitoinsCount);
+															vo.setNoCostWorksCount(workssCount);
+														}
+													}
+												}
+											}
+										}
+									}
+							}
+						}
+					}
+					
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -4204,32 +4493,38 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		
 		public String genarateEndorsementNo(String endrsementNo,String userType,String depts,Date date){
 			String outputStr="";
-			if(endrsementNo != null && endrsementNo.trim().length() >0 && userType !=null && userType.trim().length() >0 && depts != null  && date !=null ){
-				String yearStr="";
-				String dateStr="";
-				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-					Calendar cal =Calendar.getInstance();
-					cal.setTime(date);
-					Integer year=cal.get(Calendar.YEAR);
-					yearStr=year.toString();
-				 dateStr=	sdf.format(date);
-				 if(userType != null && (userType.equalsIgnoreCase("AP MINISTER") || userType.equalsIgnoreCase("MINISTER"))){
-					 userType = "M";
-				 }else if(userType != null && userType.contains("OSD")){
-					 userType = "OSD";
-				 }else{
-					 userType = "";
-				 }
-				 if(depts == null){
-					 depts = "";
-				 }
-				 
-				 String[] strArr = dateStr.split("-");
-				 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
-				//String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
-				outputStr=endrsementNo+"/"+userType+"("+depts+")/"+yearStr+", Dt: "+dateFormat;
+			try {
+				if(endrsementNo != null && endrsementNo.trim().length() >0 && userType !=null && userType.trim().length() >0 && depts != null  && date !=null ){
+					String yearStr="";
+					String dateStr="";
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+						Calendar cal =Calendar.getInstance();
+						cal.setTime(date);
+						Integer year=cal.get(Calendar.YEAR);
+						yearStr=year.toString();
+					 dateStr=	sdf.format(date);
+					 /*if(userType != null && (userType.equalsIgnoreCase("AP MINISTER") || userType.equalsIgnoreCase("MINISTER"))){
+						 userType = "M";
+					 }else if(userType != null && userType.contains("OSD")){
+						 //userType = "OSD";
+						 userType = "PS";
+					 }else{
+						 userType = "";
+					 }*/
+					 if(depts == null){
+						 depts = "";
+					 }
+					 
+					 String[] strArr = dateStr.split("-");
+					 String dateFormat = strArr[0]+"."+strArr[1]+"."+strArr[2];
+					//String deptStr = commonMethodsUtilService.convertStringFromListWithOutDuplicates(depts);
+					outputStr=endrsementNo+"/"+userType+"("+depts+")/"+yearStr+", Dt: "+dateFormat;
+					return "Endt NO. "+outputStr;
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised into PmRequestDetailsService of genarateEndorsementNo() ",e);
 			}
-			return "Endt NO. "+outputStr;
+			return "";
 		}
 		public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId){
 			return null;
@@ -4293,9 +4588,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				if(saveStatus != 0){
 					inputVO.setEndValue(saveTempEndorseNo.toString());
 				}*/
-				
+				String displayType = "";
+				if(commonMethodsUtilService.isListOrSetValid(coveringLetrImages)){
+					Object[] param = coveringLetrImages.get(0);
+					displayType = commonMethodsUtilService.getStringValueForObject(param[3]);
+				}
 				String str1 = pmRequiredFileFormatTextDAO.getCoverLetterMessage(inputVO.getDesignationIds());
-				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
+				//String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),inputVO.getDisplayType(),inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
+				String endorseStr = genarateEndorsementNo(inputVO.getEndValue(),displayType,inputVO.getDeptCode(),dateUtilService.getCurrentDateAndTime());
 				inputVO.setCategory(endorseStr);
 				PmRequestEditVO petitionDetailsVO =setPmRepresenteeDataToResultView(inputVO.getPageId(),inputVO.getpType(),inputVO.getBlockLevelId(),null);
 			//	List<Long> refCandIds =null;
@@ -4652,9 +4952,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												if(pmSubWorkDetails != null){
 													if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L) ){
 														if(pmSubWorkDetails.getWorkEndorsmentNo() == null || pmSubWorkDetails.getWorkEndorsmentNo().trim().isEmpty()){
-															if(inputVO.getLeadId() != null && inputVO.getLeadId().longValue()>0L)
-																pmSubWorkDetails.setPmBriefLeadId(inputVO.getLeadId());
-															if(inputVO.getGrantId() != null && inputVO.getGrantId().longValue()>0L)
+															if(inputVO.getLeadId() != null && inputVO.getLeadId().longValue()>0L){
+																PmBriefLead pmBriefLead = pmBriefLeadDAO.get(inputVO.getLeadId());
+																if(pmBriefLead != null && pmBriefLead.getParentBriefLeadId() != null && pmBriefLead.getParentBriefLeadId().longValue()>0L){
+																	pmSubWorkDetails.setPmBriefLeadId(pmBriefLead.getParentBriefLeadId());
+																}else{
+																	pmSubWorkDetails.setPmBriefLeadId(inputVO.getLeadId());
+																}
+															}if(inputVO.getGrantId() != null && inputVO.getGrantId().longValue()>0L)
 																pmSubWorkDetails.setPmGrantId(inputVO.getGrantId());
 															if(inputVO.getStatusId().longValue() == 6L){
 																	pmSubWorkDetails.setWorkEndorsmentNo(inputVO.getEndorsementNO());
