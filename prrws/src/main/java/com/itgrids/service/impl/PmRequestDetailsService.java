@@ -2019,6 +2019,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					subWorkVO.setSubjectName(commonMethodsUtilService.getStringValueForObject(param[18]));
 					subWorkVO.setSubSubjectname(commonMethodsUtilService.getStringValueForObject(param[19]));
 					subWorkVO.setLeadName(commonMethodsUtilService.getStringValueForObject(param[20]));
+					if(subWorkVO.getLeadName().trim().equalsIgnoreCase("OTHERS")){
+						subWorkVO.setLeadName(subWorkVO.getLeadName() +" ("+commonMethodsUtilService.getStringValueForObject(param[34])+")");
+						vo.setLeadName(vo.getLeadName() +" ("+commonMethodsUtilService.getStringValueForObject(param[34])+")");
+					}
 					subWorkVO.setDeptName(commonMethodsUtilService.getStringValueForObject(param[21]));
 					subWorkVO.setDataType(commonMethodsUtilService.getStringValueForObject(param[22]));
 					subWorkVO.setGrantName(commonMethodsUtilService.getStringValueForObject(param[23]));
