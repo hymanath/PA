@@ -48,8 +48,8 @@ public class SamlSignatureUtil {
 		PrivateKey privateKey = getPrivateKey(privateKeyStr);
 		CertificateFactory fact = CertificateFactory.getInstance("X.509");
 		
-	    //FileInputStream is = new FileInputStream (IConstants.STATIC_CONTENT_FOLDER_URL+"cert/tdpcert.pem");
-		FileInputStream is = new FileInputStream ("E://ZOHO/certificate/tdpcert.pem");
+	    FileInputStream is = new FileInputStream (IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/reference/tdpcert.pem");
+		//FileInputStream is = new FileInputStream ("E://ZOHO/certificate/tdpcert.pem");
 	    
 	    X509Certificate cert = (X509Certificate) fact.generateCertificate(is);
 		
