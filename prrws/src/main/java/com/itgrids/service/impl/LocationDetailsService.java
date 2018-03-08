@@ -491,7 +491,11 @@ public List<KeyValueVO>  getPmBriefLeadList(Long deptDesignationId){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
 		LOG.info("Entered into LocationDetailsService of getPmBriefLeadList ");
-		List<Object[]> petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList(deptDesignationId);
+		List<Object[]> petitionDetailsObjsList = null;
+		if(deptDesignationId == null || deptDesignationId.longValue()==0L)
+			petitionDetailsObjsList = pmBriefLeadDAO.getAllPmBriefLeadDetailsList();
+		else
+			petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList(deptDesignationId);
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();
