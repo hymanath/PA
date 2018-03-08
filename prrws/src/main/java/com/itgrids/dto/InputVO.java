@@ -12,6 +12,7 @@ public class InputVO implements Serializable {
 	private List<Long> deptIdsList;
 	private List<Long> sourceIdsList;
 	private List<Long> schemeIdsList;
+	private List<Long> briefLeadIdsList;
 	private Long deptId;
 	private Long sourceId;
 	private Long schemeId;
@@ -95,6 +96,7 @@ public class InputVO implements Serializable {
 	private String category;
 	private String sector;
 	private String callType;
+	private Long leadId;
 	private String leadName;
 	private Long constituencyId;
 	private String program;
@@ -768,5 +770,16 @@ public class InputVO implements Serializable {
 	public void setSubLocationId(Long subLocationId) {
 		this.subLocationId = subLocationId;
 	}
-	
+	public Long getLeadId() {
+		return leadId;
+	}
+	public void setLeadId(Long leadId) {
+		this.leadId = leadId;
+	}
+	public List<Long> getBriefLeadIdsList() {
+		return briefLeadIdsList;
+	}
+	public void setBriefLeadIdsList(List<Long> briefLeadIdsList) {
+		this.briefLeadIdsList = briefLeadIdsList;
+	}
 }
