@@ -16,6 +16,7 @@ public class PmBriefLead {
 	private String isDeleted;
 	private Long orderNo;
 	private Long preferrableOrderNO;
+	private Long parentBriefLeadId;
 	
 	@Column(name="preferable_order_no")
 	public Long getPreferrableOrderNO() {
@@ -54,4 +55,13 @@ public class PmBriefLead {
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
+	
+	@Column(name="parent_pm_brief_lead_id")
+	public Long getParentBriefLeadId() {
+		return parentBriefLeadId;
+	}
+	public void setParentBriefLeadId(Long parentBriefLeadId) {
+		this.parentBriefLeadId = parentBriefLeadId;
+	}
+	
 }
