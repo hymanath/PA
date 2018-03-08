@@ -477,9 +477,9 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        Transformer transformer = transformerFactory.newTransformer();
 	        DOMSource source = new DOMSource(doc);
 	        
-	       // StreamResult result = new StreamResult(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"input/saml.xml"));
+	        StreamResult result = new StreamResult(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/input/saml.xml"));
 	        
-	        StreamResult result = new StreamResult(new File("E://ZOHO/input/saml.xml"));
+	        //StreamResult result = new StreamResult(new File("E://ZOHO/input/saml.xml"));
 	        
 	        transformer.transform(source, result);
 	        
@@ -487,8 +487,8 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        StreamResult consoleResult = new StreamResult(System.out);
 	        transformer.transform(source, consoleResult);
 	        
-	      //file = new File(IConstants.STATIC_CONTENT_FOLDER_URL+"input/saml.xml");
-	        file = new File("E://ZOHO/input/saml.xml");
+	        file = new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/input/saml.xml");
+	        //file = new File("E://ZOHO/input/saml.xml");
 	      
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getSamlXmlFile() in ZohoAlertService class.",e);
@@ -529,8 +529,8 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 					Document doc2 = samlSignatureUtil.signFul(doc,IConstants.ZOHO_SAML_RESPONSE_UNIQUE_ID);
 					
 					DOMSource source = new DOMSource(doc2);
-				    //FileWriter writer = new FileWriter(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"/output/saml.xml"));
-					FileWriter writer = new FileWriter(new File("E://ZOHO/output/saml.xml"));
+				    FileWriter writer = new FileWriter(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/output/saml.xml"));
+					//FileWriter writer = new FileWriter(new File("E://ZOHO/output/saml.xml"));
 				    StreamResult result = new StreamResult(writer);
 
 				    TransformerFactory transformerFactory = TransformerFactory.newInstance();
@@ -539,7 +539,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 				    
 				    //String samlResponse = converter.convertImageFileToBase64String(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"/output/saml.xml"));
 					
-				    String samlResponse = converter.convertImageFileToBase64String(new File("E://ZOHO/output/saml.xml"));
+				    String samlResponse = converter.convertImageFileToBase64String(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/output/saml.xml"));
 				    
 				    
 				    
