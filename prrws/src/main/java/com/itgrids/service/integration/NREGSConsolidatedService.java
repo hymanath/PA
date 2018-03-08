@@ -24,13 +24,13 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.NregaConsolidatedDataVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregsProjectsVO;
+import com.itgrids.dto.WebserviceVO;
 import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
 import com.itgrids.service.integration.impl.INREGSConsolidatedService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.IConstants;
 import com.itgrids.utils.NREGSCumulativeThread;
-import com.sun.jersey.api.client.ClientResponse;
 
 @Service
 @Transactional
@@ -112,7 +112,7 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 					}
 				}
 				
-				List<ClientResponse> responseList = new ArrayList<ClientResponse>();
+				List<WebserviceVO> responseList = new ArrayList<WebserviceVO>(0);
 				if(urlsList != null && !urlsList.isEmpty()){
 					ExecutorService executor = Executors.newFixedThreadPool(100);
 					//Future<String> future = executor.submit(new Task());
@@ -141,11 +141,11 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 						String str = convertingInputVOToString(inputVO);
 						String faStr = convertingInputVOToStringForFA(inputVO);
 						if(urlvo.getId() != null && urlvo.getId().longValue() == 14l){
-							Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,faStr);
+							Runnable worker = new NREGSCumulativeThread(webserviceHandlerService,urlvo.getUrl(),responseList,faStr);
 							executor.execute(worker);
 						}
 						else{
-							Runnable worker = new NREGSCumulativeThread(urlvo.getUrl(),responseList,str);
+							Runnable worker = new NREGSCumulativeThread(webserviceHandlerService,urlvo.getUrl(),responseList,str);
 							executor.execute(worker);
 						}
 						System.out.println(urlvo.getId());
@@ -166,15 +166,14 @@ public class NREGSConsolidatedService implements INREGSConsolidatedService{
 				}
 				
 				if(responseList != null && !responseList.isEmpty()){
-					for (ClientResponse response : responseList) {
-						if(response == null || response.getStatus() != 200){
-							if(response != null){
-								System.out.println("Exception Occured in "+response.toString());
-								throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-							}
+					for (WebserviceVO response : responseList) {
+						if(response == null || response.getResponseData() == null || 
+								response.getResponseData().trim().length() == 0)
+						{
+								throw new RuntimeException("Failed ");
 						}else{
-							String output = response.getEntity(String.class);
-							String returnUrl = response.toString().split(" ")[1].toString().split("rest/")[1];
+							String output = response.getResponseData();
+							String returnUrl = response.getUrl().split("rest/")[1];
 							String componentName = null;
 							if(returnUrl != null && returnUrl.toString().trim().equalsIgnoreCase("LabourBudgetServiceNew/LabourBudgetDataNew"))
 								componentName = "Labour Budget";
