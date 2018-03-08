@@ -98,6 +98,7 @@ public class InputVO implements Serializable {
 	private String callType;
 	private Long leadId;
 	private String leadName;
+	private String otherLead;
 	private Long constituencyId;
 	private String program;
 	private String eoDBstatus;
@@ -781,5 +782,11 @@ public class InputVO implements Serializable {
 	}
 	public void setBriefLeadIdsList(List<Long> briefLeadIdsList) {
 		this.briefLeadIdsList = briefLeadIdsList;
+	}
+	public String getOtherLead() {
+		return otherLead;
+	}
+	public void setOtherLead(String otherLead) {
+		this.otherLead = otherLead;
 	}
 }
