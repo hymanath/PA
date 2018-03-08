@@ -165,9 +165,12 @@ public class ITextCoveringLetterGeneration  {
 								 //pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " Hon'ble Minister "));
 								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " "));
 								 str1 = str1.replace("#rdesig",","+pmRequestVO.getDesignation()+" ");
-							 }else if(pmRequestVO.getDesignation().toUpperCase().contains("GOVT.WHIP")){
+							 }else if(pmRequestVO.getDesignation().toUpperCase().contains("WHIP")){
 								 //pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("State Minister", " Hon'ble Minister "));
-								 pmRequestVO.setDesignation("Govt.Whip");
+								// pmRequestVO.setDesignation("Govt.Whip");
+								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace(", MLA Govt. Whip", ""));
+								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("MLA", ""));
+								 pmRequestVO.setDesignation(pmRequestVO.getDesignation().replace("Govt. Whip", ""));
 								 str1 = str1.replace("#rdesig",","+pmRequestVO.getDesignation()+" ");
 							 }else{
 								 str1 = str1.replace("#rdesig",", "+pmRequestVO.getDesignation()+" ");
@@ -175,7 +178,7 @@ public class ITextCoveringLetterGeneration  {
 						 }else{
 							 str1 = str1.replace("#rdesig","");
 						 }
-						 if(!pmRequestVO.getDesignation().toUpperCase().contains("MINISTER")){
+						 if(!pmRequestVO.getDesignation().toUpperCase().contains("MINISTER") && !pmRequestVO.getDesignation().toUpperCase().contains("WHIP")){
 							 
 							 if(!pmRequestVO.getDesignation().toUpperCase().contains("MLC")){
 								 if(pmRequestVO.getAddressVO().getAssemblyName() != null && !pmRequestVO.getAddressVO().getAssemblyName().equalsIgnoreCase("")){
@@ -322,6 +325,10 @@ public class ITextCoveringLetterGeneration  {
 							str.append("</table>");
 						str.append("</header><br><br>");
 						str.append("<table>");
+						str.append("<tr>");
+						str.append("<td>");
+						str.append("</td>");
+						str.append("</tr><br><br>");
 						str.append("<tr>");
 						str.append("<td>");
 						str.append("</td>");
