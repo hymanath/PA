@@ -219,6 +219,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(inputVO.getSourceIdsList() != null && inputVO.getSourceIdsList().size()>0){
 			sb.append(" and model1.pmSubject.pmSubjectId in (:dashBrdSubjIds) ");
 		}
+		if(inputVO.getBriefLeadIdsList() != null && inputVO.getBriefLeadIdsList().size()>0){
+			sb.append(" and model1.pmBriefLeadId in (:briefLeadIdsList) ");
+		}
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size()>0){
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:dashBrdRefDesigIds) ");
 		}
@@ -295,7 +298,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				query.setMaxResults(inputVO.getMaxResult());
 			}
 		}
-		
+		if(inputVO.getBriefLeadIdsList() != null && inputVO.getBriefLeadIdsList().size()>0)
+			query.setParameterList("briefLeadIdsList", inputVO.getBriefLeadIdsList());
 		return query.list();
 	}
 	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId){
