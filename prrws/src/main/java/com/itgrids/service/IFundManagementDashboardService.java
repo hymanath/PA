@@ -50,4 +50,5 @@ public interface IFundManagementDashboardService {
 	
 	public List<PageComponentVO> getPageWiseComponentDetails(InputVO inputVO);
 	public ResultVO savePageWiseComponents(IdNameVO inputVO);
+	public List<LocationFundDetailsVO> getAllConstituenciesByDistrictName(List<String> districtNames);
 }
