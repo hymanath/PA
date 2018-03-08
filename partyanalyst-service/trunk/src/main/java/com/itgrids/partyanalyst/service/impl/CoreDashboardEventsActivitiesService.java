@@ -20,6 +20,7 @@ import com.itgrids.partyanalyst.dao.IActivityDocumentDAO;
 import com.itgrids.partyanalyst.dao.IActivityLocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerDAO;
+import com.itgrids.partyanalyst.dao.IActivityQuestionAnswerInfoDAO;
 import com.itgrids.partyanalyst.dao.IActivityQuestionnaireDAO;
 import com.itgrids.partyanalyst.dao.IActivityScopeDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
@@ -68,7 +69,15 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	 private IActivityQuestionAnswerDAO activityQuestionAnswerDAO;
 	private IActivityQuestionnaireDAO activityQuestionnaireDAO;
 	private CoreDashboardService coreDashboardService;
+	private IActivityQuestionAnswerInfoDAO activityQuestionAnswerInfoDAO;
 	 
+	public IActivityQuestionAnswerInfoDAO getActivityQuestionAnswerInfoDAO() {
+		return activityQuestionAnswerInfoDAO;
+	}
+	public void setActivityQuestionAnswerInfoDAO(
+			IActivityQuestionAnswerInfoDAO activityQuestionAnswerInfoDAO) {
+		this.activityQuestionAnswerInfoDAO = activityQuestionAnswerInfoDAO;
+	}
 	public CoreDashboardService getCoreDashboardService() {
 		return coreDashboardService;
 	}
@@ -2347,12 +2356,15 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 			}
 		}
 		
-		List<Object[]> inchargeMLAUniqueCountList= activityLocationInfoDAO.getInchargeMLAAttendCount(activityScopeId,locationScopeId,startDate,endDate);
-	
-		for (Object[] objects : inchargeMLAUniqueCountList) {
-			EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
-			if(locationVo != null){
-				locationVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+		//inchargeAttendCount
+		if(locationScopeId ==4l){
+			List<Object[]> inchargeMLAUniqueCountList= activityQuestionAnswerInfoDAO.getInchargeMLAAttendCount(activityScopeId,locationScopeId,startDate,endDate);
+		
+			for (Object[] objects : inchargeMLAUniqueCountList) {
+				EventLocationVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[1]));
+				if(locationVo != null){
+					locationVo.setCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
 			}
 		}
 		
