@@ -10,36 +10,26 @@
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" rel="stylesheet" type="text/css"/>
+<link href="Assests/css/wordCloud.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="Assests/Plugins/Scroller/bootstrap-multiselect.css" type="text/css">
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
-<link href="Assests/css/wordCloud.css" rel="stylesheet" type="text/css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw=" crossorigin="anonymous"></script>
 <style>
-.panel-black .panel-heading {
-    background-color: #333;
-    border-radius: 0;
-    color: #fff;
-}
-.tooltip-inner {
-    max-width: 170px;
-    /* If max-width does not work, try using width instead */
-    width: 170px; 
-}
 </style>
 </head>
 <body>
-<header style="box-shadow: 0px 3px 1px 0px rgba(0, 0, 0, 0.3);">
+<header>
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj, RD & RWS,IT E&C</h4>
-					<p>News Articles</p>
+				<div class="col-sm-10 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayat Raj</h4>
+					<p>Tax - DashBoard</p>
 				</div>
-				<div class="col-sm-1 col-xs-12 pull-right">
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -87,6 +77,14 @@
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
 														<p>Water Tank chlorination</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#483D8B">
+													<a href="vehicleTrackingDashboard">
+														<h3>VT</h3>
+                           								 <p>Vehicle Tracking</p>
 													</a>
 												</div>
 											</div>
@@ -159,6 +157,22 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#FF1493">
+													<a href="panchayatTaxDashboard">
+														<h3>Taxes</h3>
+                           								 <p>Panchayat Raj Taxes</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#7B68EE">
+													<a href="eMeetingsDashboard">
+														<h3>E Meetings</h3>
+                           								 <p>Panchayat Raj eMeetings</p>
+													</a>
+												</div>
+											</div>
 											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#008000">
 													<a href="newsArticles?deptId=1699">
@@ -225,172 +239,176 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</nav>
+	
 </header>
-<main style="margin-top:5px;background-color:#fff;padding-bottom:20px;">
-	<div class="row m_top10" id="department">
-		<div class="col-sm-6">
-			<label> <h4 style="padding-left: 31px;">Department Name : <span id="wordCloudDepartmentName"/></h4></label>
-		
+<div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+	<div class="white-block" style="padding: 30px;">
+		<div class="row">
+			<h4 style="padding-left: 31px;">Department Name : <span id="wordCloudDepartmentName"/></h4>
 		</div>
-	</div>
-	<div class="container-fluid">
-		<div class="col-sm-12" style="border: 2px solid #d7dae0; border-radius: 5px; padding: 10px 0px 10px 25px;">
-			<div class="col-sm-12 responsive">
+		<div class="row">
+			<div class="col-sm-12">
 				<div id="chart">
 					<svg id="svg">
 					</svg>
 				</div>
-				<div class="row align-items-center" style="margin-left: 250px; margin-right: 0px;">
-					<div class="col-sm-2 offset-2 labels-row">
-						<label for="crit" class="label-padding">Critical</label>
-						<div id="crit" class="box-color critical"></div>
+			</div>
+		</div>
+		<div class="row align-items-center" style="margin-left: 250px; margin-right: 0px;">
+			<div class="col-sm-2 offset-2 labels-row">
+				<label for="crit" class="label-padding">Critical</label>
+				<div id="crit" class="box-color critical"></div>
+			</div>
+			<div class="col-sm-2 labels-row">
+				<label for="neg" class="label-padding">Negative</label>
+				<div id="neg" class="box-color negative"></div>
+			</div>
+			<div class="col-sm-2 labels-row">
+				<label for="pos" class="label-padding">Positive</label>
+				<div id="pos" class="box-color positive"></div>
+			</div>
+			<div class="col-sm-2 labels-row">
+				<label for="neu" class="label-padding">Neutral</label>
+				<div id="neu" class="box-color neutral"></div>
+			</div>
+		</div>
+		<div class="bg_color m_top10" style="border:1px solid #ddd;border-radius:5px">
+			<div class="row">
+			
+			<div class="col-sm-3">
+				<label for="startDate">Start Date</label>
+				<div class="input-group dateRangePickerCls" >
+					<input type="text" id="startDate" class="form-control" style="width: 230px;"/>
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+				</div>
+			</div>
+			<div class="col-sm-3">
+				<label for="endDate">End Date</label>
+					<div class="input-group dateRangePickerCls" >
+						<input type="text" id="endDate" class="form-control" style="width: 230px;"/>
+						<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
 					</div>
-					<div class="col-sm-2 labels-row">
-						<label for="neg" class="label-padding">Negative</label>
-						<div id="neg" class="box-color negative"></div>
-					</div>
-					<div class="col-sm-2 labels-row">
-						<label for="pos" class="label-padding">Positive</label>
-						<div id="pos" class="box-color positive"></div>
-					</div>
-					<div class="col-sm-2 labels-row">
-						<label for="neu" class="label-padding">Neutral</label>
-						<div id="neu" class="box-color neutral"></div>
+				</span>
+			</div>
+			<div class="col-sm-3">
+				<label for="wordCloudDistrict">District</label>
+				<select class="" multiple="multiple" id="wordCloudDistrict">
+					
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<label for="wordCloudConstituency">Constituency</label>
+				<select class="" multiple="multiple" id="wordCloudConstituency">
+					<option selected>Constituency</option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<label for="newspapers">News Paper</label>
+				<select class="" multiple="multiple" id="newspapers">
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<label>Edition Type</label>
+				<select class="" multiple="multiple" id="editionType">
+					<option selected> Main </option>
+					<option selected> District </option>
+					<option selected> Online </option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<label for="wordCloudDepartmentNames" >Department Name</label>
+				<select class="" multiple="multiple" id="wordCloudDepartmentNames" disabled>
+					<option selected>Department</option>
+				</select>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
+			</div>
+		</div>
+		</div>
+		<div class="row">
+			<div class="empty-alert">
+				<div class="alert alert-danger" role="alert">
+					Results are empty!
+				</div>
+			</div>
+			<div class="error-alert">
+				<div class="alert alert-danger" role="alert">
+					Error in server!
+				</div>
+			</div>
+			<div class="data-sent-alert">
+				<div class="alert alert-success" role="alert">
+					<div class="row">
+						<div class="col-10">
+							Request sent!
+						</div>
+						<div class="col-2">
+							<div class="loader-2"></div>
+						</div>
 					</div>
 				</div>
 			</div>
-			<div class="col-md-12 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
-				
-				<div class="row m_top10">	
-					<div class="col-sm-6 offset-1">
-						<label for="startDate">Start Date</label>
-						<span class="input-group dateRangePickerCls" >
-							<input type="text" id="startDate" class="form-control" style="width: 577px; height: 30px;" />
-							<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-						</span>
-					</div>
-					<div class="col-sm-6">
-						<label for="endDate">End Date</label>
-							<span class="input-group dateRangePickerCls" >
-								<input type="text" id="endDate" class="form-control" style="width: 577px; height: 30px;"/>
-								<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
-							</span>
-						</span>
-					</div>
-				</div>
-				<div class="row m_top10">
-					<div class="col-sm-6">
-						<label for="wordCloudDistrict">District</label>
-						
-						<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
-						</select>
-					</div>
-					<div class="col-sm-6">
-						<label for="wordCloudConstituency">Constituency</label>
-						<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
-						</select>
-					</div>
-				</div>
-				<div class="row m_top10">
-					<div class="col-sm-6">
-						<label for="newspapers">News Paper</label>
-					<select class="form-control chosen-select" multiple="multiple" id="newspapers">
-						</select>
-					</div>
-					<div class="col-sm-6">
-						<label>Edition Type</label>
-						<select class="form-control chosen-select" multiple="multiple" id="editionType">
-							<option value ="0" selected> ALL Editions </option>
-							<option> Main </option>
-							<option> District </option>
-							<option> Online </option>
-						</select>
-					</div>
-				</div>
-				<div class="row m_top10">
-					<div class="col-sm-6">
-						<label for="wordCloudDepartmentNames" >Department Name</label>
-					<select class="form-control chosen-select" multiple="multiple" id="wordCloudDepartmentNames" disabled>
-						</select>
-					</div>
-					<div class="col-sm-6">	
-						<div class="submit-button">
-							<div class="text-center">
-								<button class="btn btn-primary" style="margin-top: 22px;" onclick="fetchDataForWordCloud('fromPage')">Submit</button>
-							</div>
+			<div class="data-processing-alert">
+				<div class="alert alert-primary" role="alert">
+					<div class="row">
+						<div class="col-10">
+							Data received and processing word cloud!
+						</div>
+						<div class="col-2">
+							<div class="loader"></div>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<div class="row">
+			<div class="card headline-div">
+				<div class="card-header" style="background-color: blanchedalmond;">
+					<div class="row">
+						<div class="col-sm-11" style="padding-left: 33px;"> News Article Titles </div>
+						<div class="col-1 offset-4">
+							<i class="fa fa-times close-button" onclick="closeDiv()"></i>
+						</div>
+					</div>
+				</div>
+				<ul class="list-group list-group-flush headline-div-content">
+				</ul>
+			</div>
+		</div>
 	</div>
-	<div class="empty-alert">
-        <div class="alert alert-danger" role="alert">
-            Results are empty!
-        </div>
-    </div>
-    <div class="error-alert">
-        <div class="alert alert-danger" role="alert">
-            Error in server!
-        </div>
-    </div>
-    <div class="data-sent-alert">
-        <div class="alert alert-success" role="alert">
-            <div class="row">
-                <div class="col-10">
-                    Request sent!
-                </div>
-                <div class="col-2">
-                    <div class="loader-2"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="data-processing-alert">
-        <div class="alert alert-primary" role="alert">
-            <div class="row">
-                <div class="col-10">
-                    Data received and processing word cloud!
-                </div>
-                <div class="col-2">
-                    <div class="loader"></div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="card headline-div">
-        <div class="card-header" style="background-color: blanchedalmond;">
-            <div class="row">
-                <div class="col-sm-11" style="padding-left: 33px;"> News Article Titles </div>
-                <div class="col-1 offset-4">
-                    <i class="fa fa-times close-button" onclick="closeDiv()"></i>
-                </div>
-            </div>
-        </div>
-        <ul class="list-group list-group-flush headline-div-content">
-        </ul>
-    </div>
-</main>
-</body>
+</div>
+<div class="modal fade" id="myModalShowNews"></div> 
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
-<script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/bootstrap-multiselect.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec="
+        crossorigin="anonymous"></script>
+		
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3-cloud/1.2.4/d3.layout.cloud.min.js" integrity="sha256-+U6evHIlf3gdG4NC/P4v3g4JpbLdSdYHAu/z0w2nZ4I="
+	crossorigin="anonymous"></script>
+	
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js" integrity="sha256-8E6QUcFg1KTnpEU8TFGhpTGHw5fJqB9vCms3OhAYLqw="
+	crossorigin="anonymous"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="Assests/js/wordCloud.js"></script>
 <script type="text/javascript">
 var globalDeptId = "${param.deptId}";
 var globalfavName = "${param.name}";
-
 </script>
-<script type="text/javascript" src="Assests/js/wordCloud.js"></script>
 </body>
 </html>
