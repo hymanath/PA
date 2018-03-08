@@ -289,7 +289,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 				" model.petition.petitionId," +//1
 				"  model.pmStatus.pmStatusId," +//2
 				"model.pmStatus.status ");//3
-		sb.append(",round(model.costEstimation,2) " );//4
+		sb.append(",round(model.costEstimation,2) as sum " );//4
 		//sb.append(",round(sum(model.costEstimation),2) " );//4
 		
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
@@ -353,6 +353,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}else{
 			 //sb.append(" order by model.pmStatus.orderNo asc ");
 		}
+		sb.append(" order by model.costEstimation ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0){
 			query.setParameterList("deptIds", deptIds);

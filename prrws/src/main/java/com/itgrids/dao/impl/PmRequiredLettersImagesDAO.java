@@ -23,7 +23,7 @@ public class PmRequiredLettersImagesDAO extends GenericDaoHibernate<PmRequiredLe
 	
 	public List<Object[]> getDesignationWiseImages(List<Long> ofcrDesigIds,String letterType,Long officerId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.pmOfficerDesignation.pmOfficerDesignationId,model.imageType,model.filePath from PmRequiredLettersImages model  where model.isDeleted ='N' ");
+		sb.append(" select model.pmOfficerDesignation.pmOfficerDesignationId,model.imageType,model.filePath,model.coveringLetterTagName from PmRequiredLettersImages model  where model.isDeleted ='N' ");
 		
 		if(ofcrDesigIds != null && ofcrDesigIds.size() >0){
 			sb.append("  and model.pmOfficerDesignation.pmOfficerDesignationId in (:ofcrDesigIds) ");

@@ -28,7 +28,7 @@ public class PmBriefLeadDAO extends GenericDaoHibernate<PmBriefLead, Long> imple
 	
 	public List<Object[]> getAllPmBriefLeadDetailsList(){
 		Query qry = getSession().createQuery(" select distinct model.pmBriefLeadId,model.briefLead from PmBriefLead model " +
-				" where model.isDeleted='N' order by model.orderNo asc ");
+				" where model.isDeleted='N' and model.parentBriefLeadId is null order by model.orderNo asc ");
 		return qry.list();
 	}
 	
