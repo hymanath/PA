@@ -1609,6 +1609,27 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	  }
 	return constincyList;  
 	}
+ 	@Override
+	public List<LocationFundDetailsVO> getAllConstituenciesByDistrictName(List<String> districtNames){
+		  List<LocationFundDetailsVO> constincyList= null;
+		  try{
+		    List<Object[]> constiesObjs =constituencyDAO.getConstituenciesbyDistrictName(districtNames);
+		    if(constiesObjs != null && constiesObjs.size() > 0l){ 
+		      constincyList= new ArrayList<LocationFundDetailsVO>();
+		      LocationFundDetailsVO locationFundDetailsVO=null;
+		      for(Object[] obj : constiesObjs){
+		        locationFundDetailsVO =new LocationFundDetailsVO();
+		        locationFundDetailsVO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+		        locationFundDetailsVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+		        constincyList.add(locationFundDetailsVO);
+		      }
+		    }
+		  }catch(Exception e){
+		   // e.printStackTrace();
+		    LOG.error(" Exception raised in getConstituencies (); ");
+		  }
+		return constincyList;  
+		}
  	/*
  	 * Swadhin K Lenka
  	 * (non-Javadoc)
