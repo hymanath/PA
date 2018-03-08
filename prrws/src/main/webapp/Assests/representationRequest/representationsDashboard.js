@@ -574,7 +574,6 @@ $(document).on("change","#LeadersId",function(){
 	var desCapText;
 	if(designationId == 0){
 		desCapText ="OTHERS";
-		alert(desCapText);
 		$("#headingDetailsId").html(desCapText+" Refferal Wise OverView Details".toUpperCase());
 	}else if(designationId == 7){
 		desCapText ="STATE MINISTER";
