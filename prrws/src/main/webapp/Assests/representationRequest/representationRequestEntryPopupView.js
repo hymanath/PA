@@ -1978,7 +1978,7 @@ $(document).on("change","#statusChangeId",function(){
 		$("#buttonNameId").html("Forward")
 		//$("#uploadFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadEndorsementDocId" class="m_top10"/>');
 		//initializeSingleUploadDocument("uploadEndorsementDocId");
-		getPmBriefLeadList();
+		getPmBriefLeadList($("#hiddenDesignationId").val());
 		getPmGrantList();
 		
 		$("#assignToId").html('');
@@ -2376,6 +2376,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	
 	var endorsementId =$("#endorsmentNo").val();
 	var leadIdValue = $("#leadId").val();
+	var otherLeadName = $("#leadOtherId").val();
 	 //var grantIdValue = $("#grantId").val();
 	 var assignToIdValue = $("#assignToId").val();
 	var officerIdValue = $("#officerId").val();
@@ -2450,6 +2451,21 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			 }else{
 				 $('#remarkIdErr').html("");
 			 }
+			 
+			  if(leadIdValue != null && (parseInt(leadIdValue) == 37 || parseInt(leadIdValue)==38)){
+				 if(otherLeadName == 0 || otherLeadName == '' || otherLeadName == null || otherLeadName.trim().length == 0){
+						$('#leadOtherErr').html("<h5 style='color:red;'>Other Lead Name is required</h5>");
+						flag =true;
+					}
+					else if( otherLeadName.trim().length <5){
+						 $('#leadOtherErr').html("<h5 style='color:red;'>Please enter a valid Other Lead Name...( Min 5 charactors required)</h5>");
+						flag =true;
+					 }
+					else{
+					   $('#leadOtherErr') .html("");
+					}
+			 }
+			 
 		}
 	 }else if(statusId == 6){
 		  if(assignToIdValue == null || assignToIdValue==0){
@@ -2767,6 +2783,8 @@ function generateCoveringLetterForPetition(){
 	
 	var endorsementId =$("#endorsmentNo").val();
 	var leadIdValue = $("#leadId").val();
+	var otherLeadName = $("#leadOtherId").val();
+	
 	var grantIdValue = $("#grantId").val();
 	var statusId = $("#statusChangeId").val();
 	 var assignToIdValue = $("#assignToId").val();
@@ -2779,10 +2797,10 @@ function generateCoveringLetterForPetition(){
 		   $('#endorsementNoErr') .html("");
 		}
 	    if(leadIdValue == null || leadIdValue ==0){
-			;//$('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
-				//flag =true; 
+			$('#leadIdErr').html("<h5 style='color:red;'>Please select brief lead</h5>");
+				flag =true; 
 			}else{
-				;//$('#leadIdErr').html("");
+				$('#leadIdErr').html("");
 		}
 		/* if(grantIdValue == null || grantIdValue ==0){
 			$('#grantIdErr').html("<h5 style='color:red;'>Please select grant</h5>");
@@ -2803,6 +2821,20 @@ function generateCoveringLetterForPetition(){
 		 }else{
 			  $('#officerIdErr').html(""); 
 		 } 
+		 
+		 if(leadIdValue != null && (parseInt(leadIdValue) == 37 || parseInt(leadIdValue)==38)){
+			 if(otherLeadName == 0 || otherLeadName == '' || otherLeadName == null || otherLeadName.trim().length == 0){
+					$('#leadOtherErr').html("<h5 style='color:red;'>Other Lead Name is required</h5>");
+					flag =true;
+				}
+				else if( otherLeadName.trim().length <5){
+					 $('#leadOtherErr').html("<h5 style='color:red;'>Please enter a valid Other Lead Name...( Min 5 charactors required)</h5>");
+					flag =true;
+				 }
+				else{
+				   $('#leadOtherErr') .html("");
+				}
+		 }
 	}
 	
 
@@ -2828,6 +2860,9 @@ function generateCoveringLetterForPetition(){
 						petitionId = $('#'+id+'').val();
 					else */  if(name=="endorsementNO")
 						endorsementNO = $('#'+id+'').val();
+						if(name =="otherLead")
+							otherLead = $('#'+id+'').val();
+							
 				}else if(text=='radio'){
 					if($('#'+id+'').is(':checked')){
 						var name = $('#'+id+'').attr('name');
@@ -2870,7 +2905,8 @@ var json = {
 	pType:"viewPage",
 	type:"COVERING LETTER",
 	filterId:officerIdValue,
-	path :lableChcked
+	path :lableChcked,
+	otherLead : otherLead
   }           
  $.ajax({              
   type:'POST',    

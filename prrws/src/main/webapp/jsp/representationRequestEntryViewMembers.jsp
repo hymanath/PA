@@ -640,6 +640,10 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							<option value="1">SELECT LEAD</option>
 						</select>
 					</div>
+					<div class="col-sm-12" id="leadOtherDivId" style="display:none;">
+						<label> OTHER LEAD NAME <span style="color:red;">*</span> <span id="leadOtherErr" style="color:red;"></span></label>
+						<input type="text" class="form-control" id="leadOtherId" placeholder="Please enter lead details" name="otherLead"/>
+					</div>
 					<div class="col-sm-12" id="grantDivId" style="display:none;">
 						<label>GRANT UNDER<span  style="color:red;"></span><span id="grantIdErr"></span></label>
 						<select class="form-control chosen-select" id="grantId" name="grantId">

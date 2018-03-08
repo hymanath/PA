@@ -362,11 +362,14 @@ $(document).on("change","#locationSelId",function(){
 	    $("#mobileId").html('');
 	    $("#emailId").html('');
 	  $("#endorsmentNoId").html('');
-	  
+	  $('#leadOtherDivId').hide();
+	  $('#leadOtherId').val('');
+	  $('#leadOtherId').html('');
+	
 	  $("#selectLeadId").html('');
 	  $("#selectLeadId").html('<option value="0">Select Lead</option>');
 	 $("#selectLeadId").trigger('chosen:updated');
-	 $("#leadDivId").show();
+	 $("#selectLeadDivId").hide();
 		
    $('#advanceSearchBtnId').prop("checked",false); 
 	var searchType=$(this).val();
@@ -531,7 +534,7 @@ $(document).on("change","#locationSelId",function(){
    }else if(searchType == 'lead'){
 		$("#selectLeadId").html('<option value="0">Select Lead</option>');
 		$("#selectLeadId").trigger('chosen:updated');
-		$("#leadDivId").show();
+		$("#selectLeadDivId").show();
 		$("#endorsmentNoDivid").hide();
 		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
 		$("#constituencyCanId").trigger('chosen:updated');
@@ -547,10 +550,9 @@ $(document).on("change","#locationSelId",function(){
 	   $('#advanceSearchBtnId').prop("checked",false);
 	    $("#workId").prop("checked",false);
 			$("#petitionId").prop("checked",true);
-	  
 		getPmBriefLeadList(0);
 		$("#subjectDivId").hide();
-		$("#leadDivId").show();
+		$("#selectLeadDivId").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
 	
@@ -2017,19 +2019,20 @@ function updatePetitionStatusDetails(){
   }).done(function(result){
 	  if(result !=null && result.length>0){
 		  if(parseInt(id)>0){
+			  $("#leadDivId").show();
+			  $("#selectLeadDivId").hide();
 				$("#leadId").html('<option value="0">Select lead</option>');
 				for(var i in result){
-					if(parseInt(result[i].key)==12)
+					if(parseInt(result[i].key)==28 || parseInt(result[i].key)==2)
 						$("#leadId").append('<option value="'+result[i].key+'" selected>'+result[i].value+' </option>');
 					else
 						$("#leadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 				}
 		  }else{
+			   $("#leadDivId").hide();
+			   $("#selectLeadDivId").show();
 			  $("#selectLeadId").html('<option value="0">Select lead</option>');
 				for(var i in result){
-					if(parseInt(result[i].key)==12)
-						$("#selectLeadId").append('<option value="'+result[i].key+'" selected>'+result[i].value+' </option>');
-					else
 						$("#selectLeadId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 				}
 		  }
@@ -2039,7 +2042,7 @@ function updatePetitionStatusDetails(){
 		if(searchBy == 'lead' && briefleadId >0){
 			 if(typeof(briefleadId) != 'undefined' && briefleadId !=''){
 				$("#selectLeadId").val(briefleadId);
-				 $("#leadDivId").show();
+				 $("#selectLeadDivId").show();
 			}
 			$("#selectLeadId").trigger('chosen:updated');
 			$('#locationSelId').val('lead');
@@ -3383,3 +3386,14 @@ $(document).on("click","#updatStatusChangeId",function(){
 	
 	
 });	
+
+$(document).on("change","#leadId",function(){
+	var leadSelectedId = $(this).val();
+	$('#leadOtherDivId').hide();
+	$('#leadOtherId').val('');
+	$('#leadOtherId').html('');
+	//alert(leadSelectedId);
+	if(leadSelectedId != null && parseInt(leadSelectedId)>0 && (leadSelectedId == 37 || leadSelectedId == 38) ){
+		$('#leadOtherDivId').show();
+	}
+});
