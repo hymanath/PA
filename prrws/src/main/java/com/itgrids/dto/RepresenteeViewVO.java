@@ -79,6 +79,7 @@ public class RepresenteeViewVO {
 	
 	private Long withCostPetitionsCount=0L;
 	private Long withCostWorksCount=0L;
+	private String otherLead;
 	
 	public RepresenteeViewVO(){}
 	public RepresenteeViewVO(Long id, String name){
@@ -86,6 +87,12 @@ public class RepresenteeViewVO {
 		this.name=name;
 	}
 
+	public String getOtherLead() {
+		return otherLead;
+	}
+	public void setOtherLead(String otherLead) {
+		this.otherLead = otherLead;
+	}
 	public Long getNoCostPetitionsCount() {
 		return noCostPetitionsCount;
 	}

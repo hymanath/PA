@@ -18,7 +18,7 @@ public class PmBriefLeadDAO extends GenericDaoHibernate<PmBriefLead, Long> imple
 		super(PmBriefLead.class);
 	}
 	public List<Object[]> gePmBriefLeadDetailsList(Long deptDesignationId){
-		Query qry = getSession().createQuery(" select distinct model.pmBriefLead.pmBriefLeadId,model.pmBriefLead.briefLead from PmDepartmentDesignationBriefLeads model " +
+		Query qry = getSession().createQuery(" select distinct model.pmBriefLead.pmBriefLeadId,model.pmBriefLead.shortName from PmDepartmentDesignationBriefLeads model " +
 				" where model.pmBriefLead.isDeleted='N' and model.isDeleted ='N' and model.pmDepartmentDesignationId=:deptDesignationId " +
 				" order by model.pmBriefLead.orderNo asc ");
 		qry.setParameter("deptDesignationId", deptDesignationId);
@@ -27,7 +27,7 @@ public class PmBriefLeadDAO extends GenericDaoHibernate<PmBriefLead, Long> imple
 	
 	
 	public List<Object[]> getAllPmBriefLeadDetailsList(){
-		Query qry = getSession().createQuery(" select distinct model.pmBriefLeadId,model.briefLead from PmBriefLead model " +
+		Query qry = getSession().createQuery(" select distinct model.pmBriefLeadId,model.shortName from PmBriefLead model " +
 				" where model.isDeleted='N' and model.parentBriefLeadId is null order by model.orderNo asc ");
 		return qry.list();
 	}
