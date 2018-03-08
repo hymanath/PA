@@ -504,12 +504,12 @@ public List<KeyValueVO>  getPmBriefLeadList(Long deptDesignationId){
 				resultList.add(vo);
 			}
 		}
-		 Collections.sort(resultList,new Comparator<KeyValueVO>() {
+		/* Collections.sort(resultList,new Comparator<KeyValueVO>() {
 				public int compare(KeyValueVO o1,
 						KeyValueVO o2) {
 					return o1.getValue().compareTo(o2.getValue());
 				}
-			});
+			});*/
 	}catch(Exception e){
 		LOG.error("Exception occured at getPmBriefLeadList() in LocationDetailsService class ", e);
 	}

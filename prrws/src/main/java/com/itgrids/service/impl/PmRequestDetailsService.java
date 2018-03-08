@@ -40,6 +40,7 @@ import com.itgrids.dao.IPmDepartmentDesignationOfficerDAO;
 import com.itgrids.dao.IPmDeptDesignationPrePostStatusDetailsDAO;
 import com.itgrids.dao.IPmDocumentTypeDAO;
 import com.itgrids.dao.IPmGrantDAO;
+import com.itgrids.dao.IPmLeadDAO;
 import com.itgrids.dao.IPmOfficerUserDAO;
 import com.itgrids.dao.IPmPetitionAssignedOfficerDAO;
 import com.itgrids.dao.IPmPetitionDocumentDAO;
@@ -81,6 +82,7 @@ import com.itgrids.model.LocationAddress;
 import com.itgrids.model.Petition;
 import com.itgrids.model.PmBriefLead;
 import com.itgrids.model.PmGrant;
+import com.itgrids.model.PmLead;
 import com.itgrids.model.PmPetitionAssignedOfficer;
 import com.itgrids.model.PmPetitionDocument;
 import com.itgrids.model.PmRefCandidate;
@@ -194,6 +196,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	private IPmDeptDesignationPrePostStatusDetailsDAO pmDeptDesignationPrePostStatusDetailsDAO;
 	@Autowired
 	private IPmRefCandidateDepartmentDAO pmRefCandidateDepartmentDAO;
+	@Autowired
+	private IPmLeadDAO pmLeadDAO;
 	
 	/*@Autowired
 	private IPmDepartmentDesignationStatusDAO pmDepartmentDesignationStatusDAO;*/
@@ -4552,8 +4556,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						deptIds.add(deptId.toString());
 					}
 				}
-				if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
-					PmBriefLead briefLead = pmBriefLeadDAO.get(Long.valueOf(inputVO.getLeadName()));
+				Long briefLeadId = Long.valueOf(inputVO.getLeadName());
+				if(briefLeadId != null && (briefLeadId.longValue() == 37L || briefLeadId.longValue() ==38L)){
+					if(inputVO.getOtherLead() != null && !inputVO.getOtherLead().isEmpty())
+						inputVO.setLeadName(inputVO.getOtherLead());
+					else{
+						resultStatus.setExceptionMsg("Lead Details not entered.");
+						return resultStatus;
+					}
+						
+				}
+				else if(inputVO.getLeadName() != null && !inputVO.getLeadName().equalsIgnoreCase("0")){
+					PmBriefLead briefLead = pmBriefLeadDAO.get(briefLeadId);
 					inputVO.setLeadName(briefLead.getBriefLead());
 				}
 				
@@ -4938,6 +4952,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								Long deptDesigId = 0l;
 								Long deptDesigOfficerId = 0l;
 								Long assignedByPmDepartmentDesignationOfficerId=0L;
+								Long pmLeadId=0L;
+								PmBriefLead pmBriefLead = null;
 								for (Long subWorkId : workIds) {
 									pmSubWorkDetails = pmSubWorkDetailsDAO.get(subWorkId);
 									/*if(inputVO.getActionType() != null && inputVO.getActionType().equalsIgnoreCase("ASSIGNED")){
@@ -4952,8 +4968,19 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												if(pmSubWorkDetails != null){
 													if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L) ){
 														if(pmSubWorkDetails.getWorkEndorsmentNo() == null || pmSubWorkDetails.getWorkEndorsmentNo().trim().isEmpty()){
+															if(inputVO.getLeadId() != null && inputVO.getLeadId().longValue()>0L && (inputVO.getLeadId().longValue()==37L || inputVO.getLeadId().longValue() ==38L) &&	(pmLeadId == null || pmLeadId.longValue()==0L) && inputVO.getOtherLead() != null && inputVO.getOtherLead().trim().length() >0){
+																PmLead pmLead = new PmLead();
+																pmLead.setLeadName(inputVO.getOtherLead());
+																pmLead.setIsDeleted("N");
+																pmLead = pmLeadDAO.save(pmLead);
+																pmLeadId = pmLead.getPmLeadId();
+															}
+															if(pmLeadId != null && pmLeadId.longValue()>0L){
+																pmSubWorkDetails.setPmLeadId(pmLeadId);
+															}
 															if(inputVO.getLeadId() != null && inputVO.getLeadId().longValue()>0L){
-																PmBriefLead pmBriefLead = pmBriefLeadDAO.get(inputVO.getLeadId());
+																if(pmBriefLead == null)
+																	pmBriefLead = pmBriefLeadDAO.get(inputVO.getLeadId());
 																if(pmBriefLead != null && pmBriefLead.getParentBriefLeadId() != null && pmBriefLead.getParentBriefLeadId().longValue()>0L){
 																	pmSubWorkDetails.setPmBriefLeadId(pmBriefLead.getParentBriefLeadId());
 																}else{
