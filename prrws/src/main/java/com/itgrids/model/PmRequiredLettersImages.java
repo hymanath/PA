@@ -28,6 +28,7 @@ public class PmRequiredLettersImages {
 	private Long   insertedUserId;
 	private PmOfficerDesignation pmOfficerDesignation;
 	private PmOfficer pmOfficer;
+	private String coveringLetterTagName;
 	
 	@Id
 	@Column(name="pm_required_letters_images_id")
@@ -111,6 +112,14 @@ public class PmRequiredLettersImages {
 	}
 	public void setPmOfficer(PmOfficer pmOfficer) {
 		this.pmOfficer = pmOfficer;
+	}
+	
+	@Column(name="covering_letter_tag_name")
+	public String getCoveringLetterTagName() {
+		return coveringLetterTagName;
+	}
+	public void setCoveringLetterTagName(String coveringLetterTagName) {
+		this.coveringLetterTagName = coveringLetterTagName;
 	}
 	
 	
