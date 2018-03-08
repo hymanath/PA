@@ -374,4 +374,11 @@ public class FundManagementDashboardController {
 			ResultVO status = fundManagementDashboardService.savePageWiseComponents(inputVO);
 			return status;
 	    }
+		@RequestMapping(value="/getAllConstituenciesByDistrictName", method = RequestMethod.POST,
+        produces = MediaType.APPLICATION_JSON_VALUE,
+        consumes = MediaType.APPLICATION_JSON_VALUE)
+        public @ResponseBody List<LocationFundDetailsVO> getAllConstituenciesByDistrictName(@RequestBody InputVO inputVO){
+             List<LocationFundDetailsVO>  constisList=fundManagementDashboardService.getAllConstituenciesByDistrictName(inputVO.getDistrictNames());
+             return constisList;
+        }
 }

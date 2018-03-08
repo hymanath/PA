@@ -24,4 +24,9 @@ private static final Logger LOG = Logger.getLogger(NewsArticlesController.class)
 	public String electronicMediaBulletinsCD() {
 	   return "electronicMediaBulletinsCD";
 	}
+	
+	@RequestMapping(value="/wordCloud", method = RequestMethod.GET)
+	public String wordCloud(){
+		return "wordCloud";
+	}
 }
