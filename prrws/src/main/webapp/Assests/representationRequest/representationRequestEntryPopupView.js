@@ -339,14 +339,18 @@ function buildPetitionDetailsView(result){
 														}
 														
 													str+='</div>';
-													str+='<div class="col-sm-12 m_top15 ">';
-														str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ACTION:</span> '+result.historyList[h].subList1[j].subList1[k].subList1[0].actionName+'</h5>';
-													str+='</div>';
-													
-													str+='<div class="col-sm-12 m_top5">';
-														str+='<b>Remarks : </b>';
-														str+='<h5>'+result.historyList[h].subList1[j].subList1[k].subList1[0].remarks+'</h5>';
-													str+='</div>';
+													if(typeof(result.historyList[h].subList1[j].subList1[k].subList1) !='undefined' && result.historyList[h].subList1[j].subList1[k].subList1 != null && result.historyList[h].subList1[j].subList1[k].subList1.length>0){
+														str+='<div class="col-sm-12 m_top15 ">';
+														
+															str+='<h5 class="pull-left f_12 font_weight"><span style="color:#1283C8">ACTION:</span> '+result.historyList[h].subList1[j].subList1[k].subList1[0].actionName+'</h5>';
+														
+														str+='</div>';
+														
+														str+='<div class="col-sm-12 m_top5">';
+															str+='<b>Remarks : </b>';
+															str+='<h5>'+result.historyList[h].subList1[j].subList1[k].subList1[0].remarks+'</h5>';
+														str+='</div>';
+													}
 													str+='<div class="col-sm-12 m_top15 ">';
 															if(typeof(result.historyList[h].subList1[j].subList1[k].assignedToDesignation) !='undefined' && result.historyList[h].subList1[j].subList1[k].assignedToDesignation != null && result.historyList[h].subList1[j].subList1[k].assignedToDesignation.length>0){
 																	str+='<div class="col-sm-6">';
@@ -3351,10 +3355,12 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
+							
+							if(typeof(result.petitionHistoryList[i].subList1[j].subList1[m].subList1) != 'undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[m].subList1.length>0){
 								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION</span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].actionName+'</h5>';
 							
-							str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"> </h5> <p style="margin-left: 20px;" class="m_top5">'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].remarks+' </p>';
-							
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"> </h5> <p style="margin-left: 20px;" class="m_top5">'+result.petitionHistoryList[i].subList1[j].subList1[m].subList1[0].remarks+' </p>';
+							}
 							if(typeof(result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation) !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation.length>0)
 								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">FORWARDED TO </span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+'</h5>';
 							
@@ -3506,10 +3512,11 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																			str+='</div>';
 																		str+='</div>';
 																	str+='</div>';
+																	if(typeof(result.subList1[j].subList1[k].subList1[l].subList1[m].subList1) !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1 != null && result.subList1[j].subList1[k].subList1[l].subList1[m].subList1.length>0){
 																		str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">ACTION</span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].actionName+'</h5>';
 																	
-																	str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style=""> Remarks </span>: </h5> <p style="margin-left: 20px;" class="m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
-																	
+																		str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style=""> Remarks </span>: </h5> <p style="margin-left: 20px;" class="m_top5">'+result.subList1[j].subList1[k].subList1[l].subList1[m].subList1[0].remarks+' </p>';
+																	}
 																		if(typeof(result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation) !='undefined' && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation != null && result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation.length>0)
 																			str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">FORWARDED TO </span>: '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToOfficerName+' '+result.subList1[j].subList1[k].subList1[l].subList1[m].assignedToDesignation+'</h5>';
 																			str+='<div class="row">';
