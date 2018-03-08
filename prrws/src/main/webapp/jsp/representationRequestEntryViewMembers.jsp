@@ -276,7 +276,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 																
 																<li class="specialFieldCls">
 																<label class="checkbox-inline">
-																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome">PRESENTLY WITH </h5>	
+																	<h5 class="font_weight text-capital"><input type="checkbox" class="getColumnCls" value="WithWhome" checked>PRESENTLY WITH </h5>	
 																</label>
 																</li>
 																<li class="specialFieldCls">
@@ -336,6 +336,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 														<option value="representeeDesignation"> Representee Designation wise </option>
 														<option value="department">Department wise </option>
 														<option value="subject"> Subject wise</option>
+														<option value="lead"> Lead wise</option>
 														<option value="name"> Name</option>
 														<option value="mobile"> Mobile No</option>
 														<option value="email"> Email</option>
@@ -370,6 +371,13 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 														<!--<option value="0">Select Department</option>-->
 													</select>
 													<div class="error_colorCls" id="subJErrMsg"></div>
+												</div>	
+												<div class="col-sm-3" id="selectLeadDivId" style="display:none;">
+													<label> LEAD </label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT LEAD "  id="selectLeadId" multiple>
+														<!--<option value="0">Select Department</option>-->
+													</select>
+													<div class="error_colorCls" id="leadErrMsg"></div>
 												</div>													
 												<div class="col-sm-3" id="nameDivid" style="display:none;">
 												<label> NAME </label>
@@ -824,6 +832,7 @@ $(document).on("click",".closeSecondModal",function(){
   var deptId ='${param.deptId}';
  var subjId = '${param.subjId}';
  var refCanId ='${param.refCanId}';
+ var briefleadId ='${param.leadId}';
     if(deptId ==''){
 	deptId=0;
 	}
@@ -836,8 +845,12 @@ $(document).on("click",".closeSecondModal",function(){
 	if(statusId ==''){
 	statusId=0;
 	}
-	if(subjId ==''){
+	if(briefleadId ==''){
 	subjId=0;
+	}if(briefleadId ==''){
+		briefleadId=0;
+	}else{
+		getPmBriefLeadList(0);
 	}
   if(searchBy != ''){
 	  $("#petitionId").prop("checked",true);
