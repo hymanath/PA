@@ -136,33 +136,42 @@ function buildFavouriteComponentsResult(result) {
 							str+='</div>';
 						}else if(result[i].name == 'NEWS'){
 							str+='<div class="row" style="margin-top: -15px;">';
-								str+='<div id="printMediaCountId" style="font-weight:bold;"></div>';
-								//str+='<div id="ElectronicMediaCountId"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+								str+='<div class="col-sm-6">';
+										str+='<div>';
+											str+='<h3 id="printMediaCountId" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+										str+='</div>';
+										str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+									str+='</div>';
+									str+='<div class="col-sm-6">';
+										str+='<div>';
+											str+='<h3 id="printMediaCountIdYesterDay" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+										str+='</div>';
+										str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+									str+='</div>';
 							str+='</div>';
 						}else if(result[i].name == "PR NEWS"){
 							 	str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdPR" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdPR"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RD NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRD" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdRD"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RWS NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRWS" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdRWS"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "IT E& C NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdIT" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdIT"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
 								str+='</div>';
 						}
 						else{
@@ -427,8 +436,21 @@ function onloadCallToGetAllBlockAchievent () {
 	getEOfcOtherDepartWiseOverviewDetails();//PR eOffice
 	getLocationWiseWorksInformation();//ENC Works.
 	getStateWiseRoadsInformation();//ENC ROADS.
-	getNewsPapersInformation(0);
-	getDepartmentWiSeBlockDetails(0);	
+	getPrintAndElectronicmediaNegativeNewsCounts(0,"today");//fav(RD,PR,RWS,ITE&C)
+	getPrintAndElectronicmediaNegativeNewsCounts(0,"yesterday");//fav(RD,PR,RWS,ITE&C)
+	
+	getPrintAndElectronicmediaNegativeNewsCounts(2170,"today");//(RD)---2
+	getPrintAndElectronicmediaNegativeNewsCounts(2170,"yesterday");//fav(RD)
+	
+	getPrintAndElectronicmediaNegativeNewsCounts(2171,"today");//(RWS)---3
+	getPrintAndElectronicmediaNegativeNewsCounts(2171,"yesterday");//(RWS)
+	
+	getPrintAndElectronicmediaNegativeNewsCounts(1698,"today");//(ITE&C)---4
+	getPrintAndElectronicmediaNegativeNewsCounts(1698,"yesterday");//(ITE&C)
+	
+	getPrintAndElectronicmediaNegativeNewsCounts(1699,"today");//(PR)----1
+	getPrintAndElectronicmediaNegativeNewsCounts(1699,"yesterday");//(PR)
+	
 	getPRBioMetricDashboardOverViewDtls();//PR BioMetric
 	getNTRSujalaOverviewDetails();//NTR Sujala
 	getTaxesAndCategoryWiseOverViewDetails();//Taxes
@@ -2077,31 +2099,55 @@ function buildPageWiseComponents(result,pageId){
 								}else if(result[i].subList[j].name == "PR NEWS"){
 									 str+='<div  style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div id="printMediaCountId1" style="font-weight:bold;"></div>';
-											//str+='<div id="ElectronicMediaCountId1"></div>';
-											str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountId1" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountIdYesterDay1" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
 										str+='</div>';
+										
 								}else if(result[i].subList[j].name == "RD NEWS"){
-									str+='<div style="text-align: right">';
+									str+='<div  style="text-align: right">';	
 										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div id="printMediaCountId2" style="font-weight:bold;"></div>';
-											//str+='<div id="ElectronicMediaCountId2"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
-									str+='</div>';
-								}else if(result[i].subList[j].name == "RWS NEWS"){
-									str+='<div class="" style="text-align: right">';	
-										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div id="printMediaCountId3" style="font-weight:bold;"></div>';
-											//str+='<div id="ElectronicMediaCountId3"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';	
-									str+='</div>';
-								}else if(result[i].subList[j].name == "IT E& C NEWS"){
-										str+='<div class="" style="text-align: right">';	
-										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div id="printMediaCountId4" style="font-weight:bold;"></div>';
-											//str+='<div id="ElectronicMediaCountId4"></div>';
-										str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspMonth&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountId2" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountIdYesterDay2" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
 										str+='</div>';
+									
+								}else if(result[i].subList[j].name == "RWS NEWS"){
+									str+='<div  style="text-align: right">';	
+										str+='<div class="row" style="margin-top:-15px;">';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountId3" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountIdYesterDay3" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
+										str+='</div>';
+									
+								}else if(result[i].subList[j].name == "IT E& C NEWS"){
+									str+='<div  style="text-align: right">';	
+										str+='<div class="row" style="margin-top:-15px;">';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountId4" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
+											str+='<div class="col-sm-6">';
+												str+='<h3 id="printMediaCountIdYesterDay4" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
+												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='</div>';
+										str+='</div>';
+										
 								}else{
 									str+='<div class=" " style="text-align: right">';
 									str+='<h3 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px;font-weight:bold;"><span></span></h3>';
@@ -2477,228 +2523,111 @@ function getPRBioMetricDashboardOverViewDtls(){
 		
 	});	
 }
-
-var newsStartDate = moment().startOf('month').format("DD-MM-YYYY");
-var newsEndDate = moment().format("DD-MM-YYYY");
 var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
-var printCount =0,printCount1 =0,printCount2 =0,printCount3 =0,printCount4 =0;
-var totalCount=0,totalCount1=0,totalCount2=0,totalCount3=0,totalCount4 =0;
-var electCount=0,electCount1=0,electCount2=0,electCount3=0,electCount4=0;
-var mainNews=0.0,PRPerc=0.0,RDPerc=0.0,RWSPerc=0.0,ITPerc=0.0;
-function getNewsPapersInformation(deptId){
+function getPrintAndElectronicmediaNegativeNewsCounts(deptId,dateType){
 		 $("#printMediaCountId").html(spinner);
 		 $("#printMediaCountId1").html(spinner);
 		 $("#printMediaCountId2").html(spinner);
 		 $("#printMediaCountId3").html(spinner);
 		 $("#printMediaCountId4").html(spinner);
+		 /* 
 		 $("#printMediaCountIdIT").html(spinner);
 		 $("#printMediaCountIdRD").html(spinner);
 		 $("#printMediaCountIdRWS").html(spinner);
-		 $("#printMediaCountIdPR").html(spinner);
+		 $("#printMediaCountIdPR").html(spinner); */
+		 
+		  $("#printMediaCountIdYesterDay").html(spinner);
+		  $("#printMediaCountIdYesterDay1").html(spinner);
+		  $("#printMediaCountIdYesterDay2").html(spinner);
+		  $("#printMediaCountIdYesterDay3").html(spinner);
+		  $("#printMediaCountIdYesterDay4").html(spinner);
+		 
 		 
 		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintMediaCountsDetailsInfo/"+newsStartDate+"/"+newsEndDate+"/"+deptId
+			url: wurl+"/CommunityNewsPortal/webservice/getPrintAndElectronicmediaNegativeNewsCounts/"+deptId+"/"+dateType
+			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getPrintAndElectronicmediaNegativeNewsCounts/"+deptId+"/"+dateType
 		}).then(function(result){
-			if(result !=null && result.length>0){
-				if(deptId ==0){
-					for(var i in result){
-					printCount =printCount+result[i].negativCountMain+result[i].negativCountGrpMain;
-					totalCount =totalCount+result[i].count;
+			if(result !=null){
+				if(deptId == 0){
+					if(dateType == "today"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountId").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountId").html("0")
+						}
+					}else if(dateType == "yesterday"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountIdYesterDay").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountIdYesterDay").html("0")
+						}
+					}
+					
+					
+				}else if(deptId == 2170){
+					if(dateType == "today"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountId2").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountId2").html("0")
+						}
+					}else if(dateType == "yesterday"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountIdYesterDay2").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountIdYesterDay2").html("0")
+						}
+					}
+				}else if(deptId == 2171){
+					if(dateType == "today"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountId3").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountId3").html("0")
+						}
+					}else if(dateType == "yesterday"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountIdYesterDay3").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountIdYesterDay3").html("0")
+						}
+					}
+				}else if(deptId == 1698){
+					if(dateType == "today"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountId4").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountId4").html("0")
+						}
+					}else if(dateType == "yesterday"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountIdYesterDay4").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountIdYesterDay4").html("0")
+						}
+					}
+				}else if(deptId == 1699){
+					if(dateType == "today"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountId1").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountId1").html("0")
+						}
+					}else if(dateType == "yesterday"){
+						if(result.count !=null && result.count>0){
+							$("#printMediaCountIdYesterDay1").html(""+result.count+"<small style='position: relative; top: 0px; font-size: 12px ! important; color: red;'>("+result.negPercent+" %)</small>")
+						}else{
+							$("#printMediaCountIdYesterDay1").html("0")
+						}
 					}
 				}
 			}
-			if(deptId ==0){
-				getBulletinNewsPapersInformation(0);
-			}
+			
 		});	
 }
-function getBulletinNewsPapersInformation(deptId){
-		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartMentWiseAllNewsBulletinsAndPrograms/"+newsStartDate+"/"+newsEndDate+"/All"+"/"+deptId
-		}).then(function(result){
-			if(result !=null && result.length>0){
-				if(deptId ==0){
-					for(var i in result){
-						electCount =electCount+result[i].negativCountMain+result[i].negativCountGrpMain;
-						totalCount =totalCount+result[i].count;
-						
-					}
-					var count =printCount+electCount;
-					mainNews = (count/totalCount*100).toFixed(2);
-					var str='';
-					str+='<div class="col-sm-12 text-right">';
-						str+='<h3 class="" style="margin-top: 0px">'+count+'<small style="color:red;font-size:12px;">('+mainNews+'%)</small></h3>';
-					str+='</div>';
-					$("#printMediaCountId").html(str);
-				}
-			 }			 
-		});
-} 
-function getDepartmentWiSeBlockDetails(deptId){
-		 $("#printMediaCountId").html(spinner);
-		 $("#printMediaCountId1").html(spinner);
-		 $("#printMediaCountId2").html(spinner);
-		 $("#printMediaCountId3").html(spinner);
-		 $("#printMediaCountId4").html(spinner);
-		 $("#printMediaCountIdIT").html(spinner);
-		 $("#printMediaCountIdRD").html(spinner);
-		 $("#printMediaCountIdRWS").html(spinner);
-		 $("#printMediaCountIdPR").html(spinner); 
-		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+newsStartDate+"/"+newsEndDate+"/"+deptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetails/"+newsStartDate+"/"+newsEndDate+"/"+deptId
-		}).then(function(result){
-			if(result !=null && result.length>0){
-			 for(var i in result){
-				if(result[i].organizationId ==1699){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
-									printCount1 =printCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
-									totalCount1 =totalCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
-								}
-							}
-						 }
-					}
-				}else if(result[i].organizationId ==2170){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
-									printCount2 =printCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
-									totalCount2 =totalCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
-								}
-							}
-						 }
-					}
-				}else if(result[i].organizationId ==2171){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
-									printCount3 =printCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
-									totalCount3 =totalCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
-								}
-							}
-						 }
-					}
-				}else if(result[i].organizationId ==1698){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
-									printCount4 =printCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountGrpMain;
-									totalCount4 =totalCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].grpCount;
-								}
-							}
-						 }
-					}
-				}
-			  }
-		    }
-			if(deptId ==0){
-				getDepartmentWiSeBlockDetailsForEMN(0);
-			}
-		});	
-}
-function getDepartmentWiSeBlockDetailsForEMN(deptId){
-		$.ajax({
-			url: wurl+"/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+newsStartDate+"/"+newsEndDate+"/"+deptId
-			//url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentWiSeBlockDetailsForEMN/"+newsStartDate+"/"+newsEndDate+"/"+deptId
-		}).then(function(result){
-			if(result !=null && result.length>0){
-				for(var i in result){
-				 if(result[i].organizationId ==1699){
-					 if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){ 
-									electCount1 =electCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
-									totalCount1 =totalCount1+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
-								}
-							  }
-						    }
-						  }
-						var str='';
-						str+='<div class="col-sm-12 text-right">';
-						var count1 =printCount1+electCount1;
-					
-						PRPerc = (count1/totalCount1*100).toFixed(2);
-						
-							str+='<h3 class="" style="margin-top: 0px">'+count1+'<small style="color:red;font-size:12px;">('+PRPerc+'%)</small></h3>';
-						str+='</div>';
-						$("#printMediaCountId1").html(str);
-						$("#printMediaCountIdPR").html(str);
-				}else if(result[i].organizationId ==2170){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
-									electCount2 =electCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
-									totalCount2 =totalCount2+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
-								}
-							}
-						 }
-					  }
-					var str='';
-					str+='<div class="col-sm-12 text-right">';
-					var count2 =printCount2+electCount2;
-					
-					RDPerc = (count2/totalCount2*100).toFixed(2);
-						str+='<h3 class="" style="margin-top: 0px">'+count2+'<small style="color:red;font-size:12px;">('+RDPerc+'%)</small></h3>';
-					str+='</div>';
-					$("#printMediaCountId2").html(str);
-					$("#printMediaCountIdRD").html(str);
-				}else if(result[i].organizationId ==2171){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){	
-									electCount3 =electCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
-									totalCount3 =totalCount3+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
-								}
-							}
-						 }
-					}
-					var str='';
-					str+='<div class="col-sm-12 text-right">';
-					var count3 =printCount3+electCount3;
-					RWSPerc = (count3/totalCount3*100).toFixed(2);
-						str+='<h3 class="" style="margin-top: 0px">'+count3+'<small style="color:red;font-size:12px;">('+RWSPerc+'%)</small></h3>';
-					str+='</div>';
-					$("#printMediaCountId3").html(str);
-					$("#printMediaCountIdRWS").html(str);
-				}else if(result[i].organizationId ==1698){
-					if(result[i].coreDashBoardVOList !=null && result[i].coreDashBoardVOList.length >0){
-						 for( var j in result[i].coreDashBoardVOList){
-							if(result[i].coreDashBoardVOList[j].coreDashBoardVOList !=null && result[i].coreDashBoardVOList[j].coreDashBoardVOList.length >0){
-								for( var k in result[i].coreDashBoardVOList[j].coreDashBoardVOList){
-									electCount4 =electCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].negativCountMain;
-									totalCount4 =totalCount4+result[i].coreDashBoardVOList[j].coreDashBoardVOList[k].count;
-								}
-							}
-						 }
-					 }
-					var str='';
-					str+='<div class="col-sm-12 text-right">';
-					var count4 =printCount4+electCount4;
-					ITPerc = (count4/totalCount4*100).toFixed(2);
-						str+='<h3 class="" style="margin-top: 0px">'+count4+'<small style="color:red;font-size:12px;">('+ITPerc+'%)</small></h3>';
-					str+='</div>';
-					$("#printMediaCountId4").html(str);
-					$("#printMediaCountIdIT").html(str);
-					}
-				}
-		     }	
-		});
-} 
-
 function getNTRSujalaOverviewDetails(){
 	$(".NTRSujalaAllCls").html(spinner); 
 	var json = {};
