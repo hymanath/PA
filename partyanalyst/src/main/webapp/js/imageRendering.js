@@ -1,19 +1,42 @@
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var url = window.location.href;
 var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
   wurl = url.substr(0,(url.indexOf(".in")+3));
 var glStartDate = moment().format("YYYY-MM-DD");
 var glEndDate = moment().format("YYYY-MM-DD");
-onLoadCalls();
-function onLoadCalls(){
-	getAllLocations(2,'1','onload');
-	populateNewspapers('onload');
-}
+var isDepartment="N";
 var newsPaper=[];
 var editionType=[];
 var districts = [];
 var constituencies=[];
+var departments=[];
+var departmentNames=[];
+var newspaperNames=[];
+var editionTypes=[];
+var constituencyNames=[];
+var districtNames=[];
 $(".chosen-select").chosen();
+
+var width = 509
+var height = 449
+var expanded = false;
+var districts_selected = [];
+var globalNewsPapres=[];
+var globalDistricts=[];
+var globalEditionType=["District","Main","Online"];
+var globalDepartMentNames=[];
+document.getElementById("svg").setAttribute("width", width)
+document.getElementById("svg").setAttribute("height", height)
+
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+
 $("#startDate").daterangepicker({
 		startDate: glStartDate,
         singleDatePicker: true,
@@ -33,28 +56,62 @@ $("#endDate").daterangepicker({
 	
 $('#startDate').on('apply.daterangepicker', function(ev, picker) {
 	
-/* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
-	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
 	glStartDate = picker.endDate.format('YYYY-MM-DD');
-	//checkIsDataExist(selectDate);
 });
 $('#endDate').on('apply.daterangepicker', function(ev, picker) {
 	
-/* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
-	glEndDate = picker.endDate.format('DD-MM-YYYY'); */
 	glEndDate = picker.endDate.format('YYYY-MM-DD');
-	//checkIsDataExist(selectDate);
 });
-
-var width = 509
-var height = 449
-var expanded = false;
-var districts_selected = [];
-var globalNewsPapres=[];var globalDistricts=[];var globalEditionType=["District","Main","Online"];
-document.getElementById("svg").setAttribute("width", width)
-document.getElementById("svg").setAttribute("height", height)
-
-
+onLoadCalls();
+function onLoadCalls(){
+	populateNewspapers('onload');
+	getAllDepartments(isDepartment,'onload');
+	getAllLocations(2,'1','onload');
+	$('#editionType').multiselect("destroy");
+	$('#editionType').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Editions',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Editions selected'
+	});
+	$('#wordCloudConstituency').multiselect("destroy");
+	$('#wordCloudConstituency').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		//selectAllText: 'All',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All selected'
+	});
+	$('#newspapers').multiselect("destroy");
+	$('#newspapers').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All selected'
+	});
+	$('#wordCloudDepartmentNames').multiselect("destroy");
+	$('#wordCloudDepartmentNames').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All selected'
+	});
+}
 function drawWordCloud(data) {
 	// let word_count = {"కారుతో": 4};
 	let w_c = {}
@@ -143,6 +200,7 @@ function drawWordCloud(data) {
 
 function getArticleId(id) {
 	getOverAllDetailsOfAnArticle(id);
+	$("#myModalShowNews").modal('show');
 }   
 
 function closeDiv() {
@@ -150,18 +208,18 @@ function closeDiv() {
 }
 
 function fetchDataForWordCloud(type) {
-	var districtIdEmpty = $("#wordCloudDistrict").val();
-	var districtIdEmpty1 = $("#newspapers").val();
-	var districtIdEmpty2 = $("#editionType").val();
-	if(districtIdEmpty == 0){
+	if(districtNames.length == 0){
 		districtNames=globalDistricts;
 	}
-	if(districtIdEmpty1 == 0){
+	if(newspaperNames.length ==0){
 		newspaperNames=globalNewsPapres;
 	}	
-	if(districtIdEmpty2 == 0){
+	if(editionTypes.length == 0){
 		editionTypes=globalEditionType;
-	}		
+	}
+	if(departmentNames.length == 0){
+		departmentNames=[];
+	}	
 	$("#svg").html("");
 	   document.getElementsByClassName("btn-primary")[0].disabled = "true";
 		document.getElementsByClassName("headline-div")[0].style.display = "none";
@@ -169,14 +227,17 @@ function fetchDataForWordCloud(type) {
 
 	if(type =="fromPage"){
 		districts= $.unique(districts);
-		var requestObj = { "Constituency": constituencies, "News_Paper": newspaperNames, "Distrtict": districtNames,"Edition_Type":editionTypes, "start_date": glStartDate, "end_date": glEndDate };
+		var requestObj = { "Constituency": constituencies, "News_Paper": newspaperNames, "Distrtict": districtNames,"Edition_Type":editionTypes, "start_date": glStartDate, "end_date": glEndDate,
+		"is_department":isDepartment,"department_name":departmentNames};
 	}else{
-		var requestObj = { "Constituency": constituencies,"News_Paper": globalNewsPapres, "Distrtict": globalDistricts, "Edition_Type":globalEditionType,"start_date": glStartDate, "end_date": glEndDate };
+		var requestObj = { "Constituency": constituencies,"News_Paper": globalNewsPapres, "Distrtict": globalDistricts, "Edition_Type":globalEditionType,"start_date": glStartDate, "end_date": glEndDate,
+		"is_department":isDepartment,"department_name":departmentNames};
 
 	}
 		console.log(requestObj)
 		document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
-		const url = 'http://139.59.3.60:8000/wordcloud/'
+		//const url = 'http://139.59.3.60:8000/wordcloud/'
+		const url = 'http://139.59.3.60:9000/test/'
 		fetch(url, { method: 'post', body: JSON.stringify(requestObj) })
 			.then((res) => {
 				//console.log(res)
@@ -208,244 +269,11 @@ function fetchDataForWordCloud(type) {
 				}, 2000);
 			});
 }
-  
-function getAllLocations(levelId,levelValue,type){
-	if(levelId==2){
-			$('#wordCloudDistrict').html("ALL districts");
-			$('#wordCloudConstituency').html("ALL constituencies");
-		var jsObj={
-				"stateId":levelValue
-			}
-		$.ajax({
-			type : "GET",
-			url : "getAllDistrictsForLoationDashBoardAction.action",
-			dataType : 'json',
-			data : {task :JSON.stringify(jsObj)}
-		}).done(function(result){
-			return buildResultforWordCloud('wordCloudDistrict',result,type);
-		});
-		
-	}else if(levelId==3){
-		$('#wordCloudConstituency').html("ALL constituencies");
-		var jsObj={
-				"districtId":levelValue
-			}
-		$.ajax({
-			type : "GET",
-			url : "getConstituenciesByDistrictForWordCloudAction.action",
-			dataType : 'json',
-			data : {task :JSON.stringify(jsObj)}
-		}).done(function(result){
-			return buildResultforWordCloud('wordCloudConstituency',result);
-		});
-	}
-	
-}
-
-function buildResultforWordCloud(levelTypeId,result,type){
-	var optionStr='';
-	if(levelTypeId=="wordCloudDistrict"){
-		optionStr+='<option value="0" selected>ALL Districts</option>';
-	}else if(levelTypeId =="wordCloudConstituency"){
-		optionStr+='<option value="0" selected>ALL constituencies</option>';
-	}if(levelTypeId =="newspapers"){
-		optionStr+='<option value="0" selected>ALL NewsPapers(Excepted Sakshi)</option>';
-	}
-	if(levelTypeId =="newspapers"){
-		globalNewsPapres=[];
-		for(var i in result){
-			optionStr+='<option>'+result[i].paperName+'</option>';
-			if(result[i].paperId !=8){
-				globalNewsPapres.push(result[i].paperName);
-			}
-		}
-	}else {
-		globalDistricts=[];
-		for(var i in result){
-			optionStr+='<option>'+result[i].locationName+'</option>';
-			if(levelTypeId=="wordCloudDistrict"){
-				globalDistricts.push(result[i].locationName);
-			}
-		}
-	}
-	if(levelTypeId=="wordCloudDistrict"){
-		$('#'+levelTypeId).html(optionStr);
-		$("#wordCloudDistrict").chosen();
-		$("#wordCloudDistrict").trigger('chosen:updated');
-	}else{
-		$('#'+levelTypeId).html(optionStr);
-		$('#'+levelTypeId).chosen();
-		$('#'+levelTypeId).trigger('chosen:updated');
-	}
-	$('#'+levelTypeId).trigger("chosen:updated");
-	callfetchFunction(type);
-}
-function callfetchFunction(type){
-	if(type !='onchange' && type !==undefined && type !== 'undefined'){
-		$("#svg").html("");
-		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0){
-			fetchDataForWordCloud("") ;
-		}
-	}
-}
-function populateNewspapers(type){
-	$.ajax({
-		type : 'GET', 
-		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-      //url: "http://localhost:8446/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-    }).then(function(result){
-	return buildResultforWordCloud('newspapers',result,type);
-      
-    });    
-}
-
-$('#wordCloudConstituency').change(function() {
-	constituencies = $(this).val();
- });
- var districtNames=[];
- districts.push("0");
- newsPaper.push("0");editionType.push("0");
-$(document).on("change","#wordCloudDistrict",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+districts+" -- "+$.inArray(values[i], districts));
-			if($.inArray(values[i], districts) == -1){
-				if(values[i] == 0 ||values[i]==='0'){values=[];values.push("0");
-					$('#wordCloudDistrict').find($('option')).attr('selected',false)
-					$("#wordCloudDistrict").val(0);
-					$("#wordCloudDistrict").trigger('chosen:updated');
-					districts = [];
-					districts.push(0);
-				}else{
-					$('#wordCloudDistrict option:selected').each(function (index, option) { 
-						if($(this).val()==0 || $(this).val()==='0'){
-							$(option).attr('selected',false); 
-							$("#wordCloudDistrict").trigger('chosen:updated');
-						}
-						districts = [];
-						//console.log("sanju:"+districts);
-						districts.push($(this).val());
-					});
-				}
-			}
-			
-		}districtNames=[];
-		 
-		 if(values !=0){
-			districtNames =values;
-		}else{
-			districtNames=globalDistricts;
-		}
-		 getAllLocations(3,districtNames,"onChange");
-	}console.log(districts +" ---- "+ districtNames);
-});
-var newspaperNames=[];
-$(document).on("change","#newspapers",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
-			if($.inArray(values[i], newsPaper) == -1){
-				if(values[i] == 0){values=[];values.push("0");
-					$('#newspapers').find($('option')).attr('selected',false)
-					$("#newspapers").val(0);
-					$("#newspapers").trigger('chosen:updated');
-					newsPaper = [];
-					newsPaper.push(0);
-				}else{
-					$('#newspapers option:selected').each(function (index, option) { 
-						if($(this).val()==0){
-							$(option).attr('selected',false); 
-							$("#newspapers").trigger('chosen:updated');
-						}
-						newsPaper=[];
-						newsPaper.push($(this).val());
-					});
-				}
-			}
-			
-		}
-		newspaperNames=[];
-		if(values !=0){
-			newspaperNames =values;
-		}else{
-			newspaperNames=globalNewsPapres;
-		}
-		
-	}console.log(newsPaper +" ---- "+ newspaperNames);
-	
-});
-var editionTypes=[];
-$(document).on("change","#editionType",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
-			if($.inArray(values[i], editionType) == -1){
-				if(values[i] == 0){values=[];values.push("0");
-					$('#editionType').find($('option')).attr('selected',false)
-					$("#editionType").val(0);
-					$("#editionType").trigger('chosen:updated');
-					editionType = [];
-					editionType.push(0);
-				}else{
-					$('#editionType option:selected').each(function (index, option) { 
-						if($(this).val()==0){
-							$(option).attr('selected',false); 
-							$("#editionType").trigger('chosen:updated');
-						}
-						editionType=[];
-						editionType.push($(this).val());
-					});
-				}
-			}
-			
-		}editionTypes=[];
-		if(values !=0){
-			editionTypes=values;
-		}else{
-			editionTypes=globalEditionType;
-		}
-		
-	}
-});
-var constituencyNames=[];
-$(document).on("change","#wordCloudConstituency",function(){
-	var values = $(this).val();//debugger;
-	if(values != null && values.length > 0){
-		for(var i=0; i<values.length; i++) {
-		//console.log(values[i]+" -- "+financialArrGlob+" -- "+$.inArray(values[i], financialArrGlob));
-			if($.inArray(values[i], constituencies) == -1){
-				if(values[i] == 0){values=[];values.push("0");
-					$('#wordCloudConstituency').find($('option')).attr('selected',false)
-					$("#wordCloudConstituency").val(0);
-					$("#wordCloudConstituency").trigger('chosen:updated');
-					constituencies = [];
-					constituencies.push("0");
-				}else{
-					$('#wordCloudConstituency option:selected').each(function (index, option) { 
-						if($(this).val()==0){
-							$(option).attr('selected',false); 
-							$("#wordCloudConstituency").trigger('chosen:updated');
-						}
-						constituencies=[];
-						constituencies.push($(this).val());
-					});
-				}
-			}
-			
-		}constituencyNames=[];
-		constituencyNames=values;
-	}
-});
-
 function getOverAllDetailsOfAnArticle(articleId){
-	$("#myModalShowNews").modal('show');
-		$("#myModalShowNews").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
+	$("#myModalShowNews").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-		//url: "http://localhost:8446/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 		
 	}).then(function(results){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
@@ -488,7 +316,7 @@ function getOverAllDetailsOfAnArticle(articleId){
 									if( result.subList[i].fromList[j].organizationName != null && $.trim(result.subList[i].fromList[j].organizationName).length > 0 ){
 										str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
 									}
-									str+='<td><img class="img-circle" src="images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
+									str+='<td><img class="img-circle" src=""Assests/images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
 									str+='</tr>';
 									str+='<tr>';
 									str+='<td colspan="2">';
@@ -569,7 +397,7 @@ function getOverAllDetailsOfAnArticle(articleId){
 									}else{
 										str+='<td> - </td>';
 									}
-									str+='<td><img class="img-circle" src="images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
+									str+='<td><img class="img-circle" src="Assests/images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
 									str+='</tr>';
 									str+='<tr>';
 									str+='<td colspan="2">';
@@ -853,8 +681,191 @@ function getOverAllDetailsOfAnArticle(articleId){
 			
 	});
 }
-function refreshWordCloudfunction(){
+  
+function getAllLocations(levelId,levelValue,type){
+	if(levelId==2){
+			$('#wordCloudDistrict').html("ALL districts");
+			$('#wordCloudConstituency').html("ALL constituencies");
+		var jsObj={
+				"stateId":levelValue
+			}
+		$.ajax({
+			type : "GET",
+			url : "getAllDistrictsForLoationDashBoardAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResultforWordCloud('wordCloudDistrict',result,type);
+		});
+		
+	}else if(levelId==3){
+		$('#wordCloudConstituency').html("ALL constituencies");
+		var jsObj={
+				"districtId":levelValue
+			}
+		$.ajax({
+			type : "GET",
+			url : "getConstituenciesByDistrictForWordCloudAction.action",
+			dataType : 'json',
+			data : {task :JSON.stringify(jsObj)}
+		}).done(function(result){
+			return buildResultforWordCloud('wordCloudConstituency',result);
+		});
+	}
+	
+}
+
+function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
+	var optionStr='';
+		
+	if(levelTypeId =="newspapers"){
+		globalNewsPapres=[];
+		for(var i in result){
+			optionStr+='<option selected>'+result[i].paperName+'</option>';
+			if(result[i].paperId !=8){
+				globalNewsPapres.push(result[i].paperName);
+			}
+		}
+	}else if(levelTypeId =="wordCloudDepartmentNames"){
+		globalDepartMentNames=[];
+		document.getElementsByClassName("btn-primary")[0].disabled = "";
+		if(isDepartment == "N"){
+			$("#typeId").html("Party Names");
+			for(var i in result){		
+				optionStr+='<option selected>'+result[i].shortName+'</option>';
+				globalDepartMentNames.push(result[i].shortName);
+			}
+		}else{
+			$("#typeId").html("Department Names");
+			for(var i in result){		
+				optionStr+='<option selected>'+result[i].shortName+'</option>';
+				globalDepartMentNames.push(result[i].shortName);
+			}
+		}
+		
+	}else {
+		globalDistricts=[];
+		for(var i in result){
+			optionStr+='<option selected>'+result[i].locationName+'</option>';
+			if(levelTypeId=="wordCloudDistrict"){
+				globalDistricts.push(result[i].locationName);
+			}
+		}
+	}
+	if(levelTypeId=="wordCloudDistrict"){
+		$('#'+levelTypeId).html(optionStr);
+	}else{
+		$('#'+levelTypeId).html(optionStr);
+	}
+	$('#'+levelTypeId).multiselect("destroy");
+	if(levelTypeId == "wordCloudDistrict"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Districts',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Districts selected',
+		 onChange: function() {
+			console.log($('#wordCloudDistrict').val());
+			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
+		}
+	});
+	}else if(levelTypeId == "newspapers"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All News Paper',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All News Paper selected'
+	});
+	}else if(levelTypeId == "wordCloudConstituency"){
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All Constituencies',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All Constituencies selected'
+	});
+	}else if(levelTypeId == "wordCloudDepartmentNames"){
+		var name="";
+		if(isDepartment == "N"){
+			name="All Parties"
+		}else{
+			name="All Departments"
+		}
+		$('#'+levelTypeId).multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: name,
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: name+' selected'
+	});
+	}
+	
+	callfetchFunction(type);
+}
+function callfetchFunction(type){
+	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
+	if(type !='onchange' && type !==undefined && type !== 'undefined'){
+		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0 && globalDepartMentNames !=null && globalDepartMentNames.length>0){
+			fetchDataForWordCloud("") ;
+		}else{
+			document.getElementsByClassName("data-sent-alert")[0].style.display = "";
+		}
+	}
+}
+function populateNewspapers(type){
+	$.ajax({
+		type : 'GET', 
+		crossOrigin: true,
+		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+       //url: "http://mytdp.com/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+	  
+    }).then(function(result){
+	return buildResultforWordCloud('newspapers',result,type);
+      
+    });    
+}
+
+function getAllDepartments(isDepartment,type){
+	$.ajax({
+		type : 'GET', 
+		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+      //url: "http://mytdp.com/CommunityNewsPortal/webservice/getAllDepartMentNames/"+isDepartment
+    }).then(function(result){
+	return buildResultforWordCloud('wordCloudDepartmentNames',result,type,isDepartment);
+      
+    });    
+}
+
+ function refreshWordCloudfunction(){
+	$(".alertCategoryWiseCls li").removeClass("active");
+	$(".alertCategoryWiseCls li:nth-child(1)").addClass("active");
 	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
 	getAllLocations(2,'1','onchange');
-	populateNewspapers('onload');
+	populateNewspapers('onchange');
+	getAllDepartments("N",'onload');
 }
+
+ $(document).on("click",".alertCategoryWiseCls li",function(){
+		$(this).parent("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+		isDepartment = $(this).attr("attr_type");
+		$("#typeId").html('<div class="row"><div class="col-sm-12"><img src="D2D_Assests/images/spinner.gif" style="width:20px;height:20px;"/></div></div>');
+	$("#wordCloudDepartmentNames").html("");
+	getAllDepartments(isDepartment,'onchange');
+	document.getElementsByClassName("btn-primary")[0].disabled = "true";
+	document.getElementsByClassName("newsLettersRefresh")[0].disabled = "true";
+});
