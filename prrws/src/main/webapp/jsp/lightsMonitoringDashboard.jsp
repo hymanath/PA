@@ -355,6 +355,6 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
-<script src="Assests/lightMonitoringDashBoard/lightMonitoringDashBoard.js" type="text/javascript"></script>
+<script src="Assests/lightMonitoringDashBoard/lightMonitoringDashBoard1.js" type="text/javascript"></script>
 </body>
 </html>
