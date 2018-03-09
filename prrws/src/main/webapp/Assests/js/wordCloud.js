@@ -29,6 +29,14 @@ var globalDepartMentNames=[];
 document.getElementById("svg").setAttribute("width", width)
 document.getElementById("svg").setAttribute("height", height)
 
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+
 $("#startDate").daterangepicker({
 		startDate: glStartDate,
         singleDatePicker: true,
