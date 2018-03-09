@@ -298,4 +298,34 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		
 		return query.list();
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWorkZoneWorkStategsDetailsInfo(Date fromDate,Date toDate,Long workId,Long statusId){
+		StringBuilder sb = new StringBuilder();
+		//0-date,1-length
+		sb.append(" select date(model.updated_time),sum(model.work_length)" +
+				" from govt_work_progress_track model,govt_work GW " +
+				" where " +
+				" model.govt_work_id=GW.govt_work_id " +
+				" and model.govt_work_id =:workId ");
+		
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.updated_time) between :fromDate and :toDate ");
+		}
+		if(statusId !=null && statusId.longValue() >0){
+			sb.append(" and model.govt_work_status_id =:statusId ");
+		}
+		
+		sb.append(" group by date(model.updated_time) ");
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate",toDate);
+		}
+		if(statusId !=null && statusId.longValue() >0){
+			query.setParameter("statusId",statusId);
+		}
+		return query.list();
+	}
+	
 }

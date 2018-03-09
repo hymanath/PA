@@ -256,4 +256,13 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		
 		return (Object[]) query.uniqueResult();
 	}
+	public Object[] getWorkZoneMainOverview(Long govtWorkId){
+		//0-worklength,estimatedCost-1
+		Query query = getSession().createQuery("select model.workLength,model.govtMainWork.estimateCost "
+				+ " from GovtWork model" +
+				" where model.isDeleted ='N' and model.govtWorkId =:govtWorkId ");
+		
+		query.setParameter("govtWorkId",govtWorkId);
+		return (Object[]) query.uniqueResult();
+	}
 }

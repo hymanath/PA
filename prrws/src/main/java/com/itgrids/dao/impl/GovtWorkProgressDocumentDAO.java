@@ -91,4 +91,26 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 		return query.list();
 		
 	}
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWorkZoneDocumentDetailsInfo(Date startDate,Date endDate,Long workId){
+		//0-docId,1-path,2-date
+	StringBuilder sb = new StringBuilder();
+		sb.append(" select model.document.documentId,model.document.path,date(model.updatedTime) " +
+				" GovtWorkProgressDocument model " +
+				" where " +
+				" model.isDeleted ='N' and model.govtWorkProgress.govtWorkId =:workId ");
+		
+		if(startDate !=null && endDate !=null){
+			sb.append(" and date(model.updatedTime) between :startDate and :endDate ");
+		}
+		
+	Query query = getSession().createQuery(sb.toString());
+	if(startDate != null && endDate != null){
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+	}
+	query.setParameter("workId",workId);
+	return query.list();
+		
+	}
 }
