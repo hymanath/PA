@@ -295,4 +295,37 @@ public class UnderGroundDrainageController {
 	//get location level wise overview details - screen 3
 	
 	//web dashboard services -- end	
+	
+	public @ResponseBody GovtWorksVO getWorkZoneMainOverview(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-GovtWorkId
+			return underGroundDrainageService.getWorkZoneMainOverview(inputVO.getWorkId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getWorkZoneMainOverview ", e);
+		}
+		return null;
+	}
+	public @ResponseBody List<WorkStatusVO> getWorkZoneStatusDetailsInfo(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-GovtWorkId,worktypeId
+			return underGroundDrainageService.getWorkZoneStatusDetailsInfo(inputVO.getWorkId(),inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getWorkZoneStatusDetailsInfo ", e);
+		}
+		return null;
+	}	
+	public @ResponseBody List<DocumentVO> getWorkZoneDocumentDetailsInfo(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-GovtWorkId
+			return underGroundDrainageService.getWorkZoneDocumentDetailsInfo(inputVO.getWorkId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getWorkZoneDocumentDetailsInfo ", e);
+		}
+		return null;
+	}
+	public @ResponseBody List<GovtWorksVO> getWorkZoneWorkStategsDetailsInfo(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-dates,GovtWorkId,statusId
+			return underGroundDrainageService.getWorkZoneWorkStategsDetailsInfo(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getWorkId(),inputVO.getStatusId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getWorkZoneWorkStategsDetailsInfo ", e);
+		}
+		return null;
+	}
 }
