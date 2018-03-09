@@ -768,8 +768,8 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		dropDown: true,
 		selectAllName: true,
 		allSelectedText: 'All Districts selected',
-		 onChange: function() {
-			console.log($('#wordCloudDistrict').val());
+		onChange: function() {
+			districtNames = $('#wordCloudDistrict').val();
 			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
 		}
 	});
@@ -782,7 +782,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All News Paper selected'
+		allSelectedText: 'All News Paper selected',
+		onChange: function() {
+			newspaperNames=$('#newspapers').val();
+		}
 	});
 	}else if(levelTypeId == "wordCloudConstituency"){
 		$('#'+levelTypeId).multiselect({
@@ -793,7 +796,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Constituencies selected'
+		allSelectedText: 'All Constituencies selected',
+		onChange: function() {
+			constituencies=$('#wordCloudConstituency').val();
+			}
 	});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
 		var name="";
@@ -810,7 +816,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: name+' selected'
+		allSelectedText: name+' selected',
+		onChange: function() {
+			departmentNames=$('#wordCloudDepartmentNames').val();
+		}
 	});
 	}
 	
