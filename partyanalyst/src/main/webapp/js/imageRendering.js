@@ -76,7 +76,10 @@ function onLoadCalls(){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Editions selected'
+		allSelectedText: 'All Editions selected',
+		onChange: function() {
+			editionTypes = $('#editionType').val();
+		}
 	});
 	$('#wordCloudConstituency').multiselect("destroy");
 	$('#wordCloudConstituency').multiselect({
@@ -236,8 +239,8 @@ function fetchDataForWordCloud(type) {
 	}
 		console.log(requestObj)
 		document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
-		//const url = 'http://139.59.3.60:8000/wordcloud/'
-		const url = 'http://139.59.3.60:9000/test/'
+		const url = 'http://139.59.3.60:8000/wordcloud/'
+		//const url = 'http://139.59.3.60:9000/test/'
 		fetch(url, { method: 'post', body: JSON.stringify(requestObj) })
 			.then((res) => {
 				//console.log(res)
