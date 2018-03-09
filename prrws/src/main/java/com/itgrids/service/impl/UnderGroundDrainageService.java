@@ -2097,8 +2097,105 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		}
 		return voList;
 	}
-	
-	
-	
+	public GovtWorksVO getWorkZoneMainOverview(Long govtWorkId){
+		GovtWorksVO finalVo = new GovtWorksVO();
+		try {
+			Object[] objArr = govtWorkDAO.getWorkZoneMainOverview(govtWorkId);
+			Object completedKm = govtWorkProgressDAO.getWorkOverallWorkCompletedPercentage(govtWorkId);
+			
+			if(objArr !=null){
+				finalVo.setTarget((Long) objArr[0]);
+				finalVo.setSanctionAmt((Long)objArr[0]);
+			}
+			finalVo.setCompletedLength(completedKm !=null ?(Double) completedKm:0.00);
+		} catch (Exception e) {
+			LOG.error("exception occured at getWorkZoneMainOverview", e);
+		}
+		return finalVo;
+	}
+	public List<WorkStatusVO> getWorkZoneStatusDetailsInfo(Long govtWorkId,Long workTypeId){
+		List<WorkStatusVO> finalVOList = new ArrayList<WorkStatusVO>(0);
+		try {
+			List<Object[]> allStatusLsit = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);
+			finalVOList = getStatusVOList(allStatusLsit);
+			
+			//0-statusId,1-workLength,1-Perc,3-date
+			List<Object[]>  statusList = govtWorkProgressDAO.getWorkZoneStatusDetailsInfo(govtWorkId);
+			if(finalVOList !=null && finalVOList.size() >0){
+					if(statusList !=null && statusList.size() >0){
+						for (Object[] objects : statusList) {
+							WorkStatusVO vo = getMatchedWorkStatusVO(finalVOList,(Long)objects[0]);
+							if(vo !=null){
+								vo.setWorkLenght(objects[2] != null ? (Double)objects[2]:0l);
+								vo.setCurrentWorkLength(objects[3] != null ? (Double)objects[3]:0l);
+								vo.setDate(objects[4] != null ? objects[4].toString():"");
+								
+							}
+						}
+					}
+			 }
+		} catch (Exception e) {
+			LOG.error("exception occured at getWorkZoneStatusDetailsInfo", e);
+		}
+		return finalVOList;
+	}
+	public List<DocumentVO> getWorkZoneDocumentDetailsInfo(Long govtWorkId){
+		List<DocumentVO> finalVOList = new ArrayList<DocumentVO>(0);
+		try {
+			Date startDate = null,endDate = null;
+			startDate = dateUtilService.getDateBeforeNDays(15);
+			endDate = dateUtilService.getCurrentDateAndTime();
+			
+			//0-docId,1-path,2-date
+			List<Object[]>  documentList = govtWorkProgressDocumentDAO.getWorkZoneDocumentDetailsInfo(startDate,endDate,govtWorkId);
+		
+			if(documentList !=null &&documentList.size() >0){
+				for (Object[] obj : documentList) {
+					DocumentVO vo = new DocumentVO();
+					
+					vo.setDocumentId(obj[0] != null ? (Long)obj[0]:0l);
+					vo.setPath(obj[1] != null ? obj[1].toString():"");
+					vo.setInsertedTime(obj[2] != null ? obj[2].toString():"");
+					
+					finalVOList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured at getWorkZoneDocumentDetailsInfo", e);
+		}
+		return finalVOList;
+	}
+	public List<GovtWorksVO> getWorkZoneWorkStategsDetailsInfo(String startDateStr,String endDateStr,Long govtWorkId,Long statusId){
+		List<GovtWorksVO> finalVOList = new ArrayList<GovtWorksVO>(0);
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Date startDate = null,endDate = null;
+			
+			if(startDateStr != null && endDateStr != null){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
+			
+			//0-date,1-length
+		List<Object[]>  dateList = govtWorkProgressTrackDAO.getWorkZoneWorkStategsDetailsInfo(startDate,endDate,govtWorkId,statusId);
+			if(dateList !=null && dateList.size() >0){
+				for (Object[] obj : dateList){
+					GovtWorksVO vo = new GovtWorksVO();
+					
+					vo.setDate(obj[0] != null ? obj[0].toString():"");
+					vo.setWorkLenght(obj[0] != null ? Double.parseDouble(obj[0].toString()):0.00);
+					
+					finalVOList.add(vo);
+				}
+			}
+		
+		} catch (Exception e) {
+			LOG.error("exception occured at getWorkZoneWorkStategsDetailsInfo", e);
+		}
+		return finalVOList;
+	}
+	public void getStatusTemplate(List<GovtWorksVO> finalList,List<Object[]> objList){
+		
+	}
 	
 }
