@@ -14,4 +14,7 @@ public interface IGovtWorkProgressDAO extends GenericDao<GovtWorkProgress, Long>
 	public List<Object[]> getCompletedMianWorkPercentage(Long userId,Long workTypeId,Long locationScopeId,List<Long> locationValues);
 	public List<Object[]> getAllFininsedKmsOfWorks(List<Long> workIds);
 	public Object getWorkOverallWorkCompletedPercentage(Long govtWorkId);
+	public Object[] getWorkCompletedKms(Long workTypeId);
+	public List<Object[]> getStatusWiseAllWorksAndKms(Long workTypeId);
+	public List<Object[]> getLOCATIONWISEOVERVIEW(Long workTypeId,Long locationScopeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId,String workZone);
 }

@@ -122,13 +122,23 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 		
 	}
 	
-	public List<Object[]> getWorkZonesCountForDateType(){
+	public List<Object[]> getWorkZonesCountForDateType(Long workTypeId){
 		//0-workTypeId,1-worksCount
-		Query query = getSession().createQuery(" select model.govtMainWork.govtWorkTypeId,count(model.govtWorkId) "
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.govtMainWork.govtWorkTypeId,count(model.govtWorkId) "
 				+ " from GovtWork model "
-				+ " where model.isDeleted='N' "
-				+ " group by model.govtMainWork.govtWorkTypeId ");
+				+ " where model.isDeleted='N' ");
 		
+		if(workTypeId != null && workTypeId > 0l)
+			sb.append(" and model.govtMainWork.govtWorkTypeId = :workTypeId ");
+		else
+			sb.append("group by model.govtMainWork.govtWorkTypeId");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(workTypeId != null && workTypeId > 0l)
+			query.setParameter("workTypeId", workTypeId);
+			
 		return query.list();
 	}
 	
@@ -175,5 +185,75 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 				+ " group by gmw.govt_work_type_id ");
 		
 		return null;
+	}
+	
+	public Object[] getOverallWorksLengthOfWorkType(Long workTypeId){
+		Query query = getSession().createSQLQuery(" select count(gw.govt_work_id),sum(gw.work_length) "
+				+ " from govt_work gw,govt_main_work gmw "
+				+ " where gw.govt_main_id=gmw.govt_main_work_id and gw.is_deleted='N' and gmw.govt_work_type_id=:workTypeId ");
+		query.setParameter("workTypeId",workTypeId);
+		return (Object[])query.uniqueResult();
+	}
+	
+	public Object[] getAllworkZonesOfLocation(Long locationScopeId,Long locationValue,Long workTypeId){
+		StringBuilder sb = new StringBuilder();
+		//0-workcount,1-worklength
+		sb.append(" select count(distinct gw.govt_work_id),sum(gw.work_length) "
+				+ " from govt_work gw,govt_main_work gmw,location_address la "
+				+ " where gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' "
+				+ " and gmw.govt_work_type_id=:workTypeId ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id=:locationValue ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id=:locationValue ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id=:locationValue ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id=:locationValue ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id=:locationValue ");
+		} 
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(locationScopeId == 3l || locationScopeId == 12l || locationScopeId == 13l || locationScopeId == 5l || locationScopeId == 6l){
+			query.setParameter("locationValue", locationValue);
+		}
+		
+		return (Object[]) query.uniqueResult();
+	}
+	
+	public Object[] getCompletedWorksDetailsOfLocation(Long locationScopeId,Long locationValue,Long workTypeId){
+		StringBuilder sb = new StringBuilder();
+		//0-workcount,1-worklength
+		sb.append(" select count(distinct gw.govt_work_id),sum(gw.work_length) "
+				+ " from govt_work gw,govt_main_work gmw,location_address la "
+				+ " where gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' "
+				+ " and gmw.govt_work_type_id=:workTypeId and gw.completed_percentage >= 99.9 ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id=:locationValue ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id=:locationValue ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id=:locationValue ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id=:locationValue ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id=:locationValue ");
+		} 
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(locationScopeId == 3l || locationScopeId == 12l || locationScopeId == 13l || locationScopeId == 5l || locationScopeId == 6l){
+			query.setParameter("locationValue", locationValue);
+		}
+		
+		return (Object[]) query.uniqueResult();
 	}
 }

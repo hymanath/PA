@@ -13,6 +13,9 @@ public class DocumentVO {
 	private String insertedTime;
 	private Double kms=0.00;
 	private List<DocumentVO> list = new ArrayList<DocumentVO>(0);
+	private Double completedPercentage;
+	private Long panchayatId,mandalId;
+	private String panchayatName,mandalName;
 	
 	public Long getDocumentId() {
 		return documentId;
@@ -67,6 +70,36 @@ public class DocumentVO {
 	}
 	public void setList(List<DocumentVO> list) {
 		this.list = list;
+	}
+	public Double getCompletedPercentage() {
+		return completedPercentage;
+	}
+	public void setCompletedPercentage(Double completedPercentage) {
+		this.completedPercentage = completedPercentage;
+	}
+	public Long getMandalId() {
+		return mandalId;
+	}
+	public void setMandalId(Long mandalId) {
+		this.mandalId = mandalId;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public String getMandalName() {
+		return mandalName;
+	}
+	public void setMandalName(String mandalName) {
+		this.mandalName = mandalName;
 	}
 	
 	

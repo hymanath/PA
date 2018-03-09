@@ -24,6 +24,10 @@ public class GovtMainWork {
 	private Long locationScopeId;
 	private Long locationValue;
 	private Long locationAddressId;
+	private Double mgnregsFund;
+	private Double fcgpFund;
+	private Double cprFund;
+	private Double estimateCost;
 	
 	private GovtWorkType govtWorkType;
 	private RegionScopes locationScope;
@@ -114,4 +118,37 @@ public class GovtMainWork {
 	public void setLocationAddress(LocationAddress locationAddress) {
 		this.locationAddress = locationAddress;
 	}
+	
+	@Column(name="mgnregs_fund")
+	public Double getMgnregsFund() {
+		return mgnregsFund;
+	}
+	public void setMgnregsFund(Double mgnregsFund) {
+		this.mgnregsFund = mgnregsFund;
+	}
+	
+	@Column(name="fcgp_fund")
+	public Double getFcgpFund() {
+		return fcgpFund;
+	}
+	public void setFcgpFund(Double fcgpFund) {
+		this.fcgpFund = fcgpFund;
+	}
+	
+	@Column(name="cpr_fund")
+	public Double getCprFund() {
+		return cprFund;
+	}
+	public void setCprFund(Double cprFund) {
+		this.cprFund = cprFund;
+	}
+	
+	@Column(name="estimate_cost")
+	public Double getEstimateCost() {
+		return estimateCost;
+	}
+	public void setEstimateCost(Double estimateCost) {
+		this.estimateCost = estimateCost;
+	}
+	
 }
