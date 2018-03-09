@@ -14,7 +14,7 @@ import com.itgrids.partyanalyst.dto.LocationWiseBoothDetailsVO;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
-public class ImageRenderingAction extends ActionSupport implements	ServletRequestAware {
+public class GovtWordCloudAction extends ActionSupport implements	ServletRequestAware {
 
 	private HttpServletRequest request;
 	private JSONObject jObj;
