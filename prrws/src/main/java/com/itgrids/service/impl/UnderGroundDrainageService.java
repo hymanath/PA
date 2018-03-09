@@ -1994,13 +1994,109 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			//0-completedworkcount,1-completedworklength
 			Object[] completedObjArr = govtWorkDAO.getCompletedWorksDetailsOfLocation(locationScopeId,locationValue,workTypeId);
 			
+			if(objArr != null && objArr.length > 0){
+				finalVo.setWorksCount(Long.parseLong(objArr[0].toString()));
+				finalVo.setTotalKms(Double.parseDouble(objArr[1].toString()));
+			}
+			if(estimationCostObj != null)
+				finalVo.setEstimationCost(Double.parseDouble(estimationCostObj.toString()));
+			if(completedObjArr != null && completedObjArr.length > 0){
+				finalVo.setCompletedWorksCount(Long.parseLong(completedObjArr[0].toString()));
+				finalVo.setCompletedKms(Double.parseDouble(completedObjArr[1].toString()));
+			}
 		} catch (Exception e) {
 			LOG.error("exception occured at getLocationLevelWiseOverviewDetails", e);
 		}
 		return finalVo;
 	}
 	
+	public List<WorkStatusVO> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId){
+		List<WorkStatusVO> resultList = new ArrayList<WorkStatusVO>(0);
+		try {
+			//0-workcount,1-worklength
+			Object[] objArr = govtWorkDAO.getAllworkZonesOfLocation(locationScopeId,locationValue,workTypeId);
+			Double totalWorkLength = 0.00;
+			if(objArr != null && objArr.length > 0)
+				totalWorkLength = Double.parseDouble(objArr[1].toString());
+			
+			//0-statusId,1-length
+			List<Object[]> objList = govtWorkProgressDAO.getLocationLevelStatusWiseOverviewDetails(locationScopeId,locationValue,workTypeId);
+			Map<Long,Double> statusLengthMap = new HashMap<Long, Double>();
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					statusLengthMap.put(Long.parseLong(objects[0].toString()), Double.parseDouble(objects[1].toString()));
+				}
+			}
+			
+			//0-statusTypeId,1-statusType,2-govtWorkStatusId,3-govtWorkStatus
+			List<Object[]> allstatusObjList = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);
+			if(allstatusObjList != null && allstatusObjList.size() > 0){
+				for (Object[] objects : allstatusObjList) {
+					WorkStatusVO vo = new WorkStatusVO();
+					vo.setGovtWorkStatusId((Long)objects[2]);
+					vo.setGovtWorkStatus(objects[3].toString());
+					vo.setWorkLenght(statusLengthMap.get((Long)objects[2]));
+					vo.setTotalLenght(totalWorkLength);
+					
+					if(totalWorkLength>0 && statusLengthMap.get((Long)objects[2]) != null){
+						vo.setWorkCompletedPercentage((statusLengthMap.get((Long)objects[2])*100.00)/totalWorkLength);
+					}
+					resultList.add(vo);
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("exception occured at getLocationLevelStatusWiseOverviewDetails", e);
+		}
+		return resultList;
+	}
 	
+	public List<WorkStatusVO> getWorkZoneStatusWiseKms(Long locationScopeId,Long locationValue,Long workTypeId){
+		List<WorkStatusVO> resultList = new ArrayList<WorkStatusVO>(0);
+		try {
+			//0-workZoneId,1-zonename,2-statusId,3-length
+			List<Object[]> objList = govtWorkProgressDAO.getWorkZoneStatusWiseKms(locationScopeId,locationValue,workTypeId);
+			Map<Long,WorkStatusVO> workZonesMap = new HashMap<Long, WorkStatusVO>();
+			if(objList != null && objList.size() > 0){
+				//0-statusTypeId,1-statusType,2-govtWorkStatusId,3-govtWorkStatus
+				List<Object[]> allstatusObjList = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);
+				
+				for (Object[] objects : objList) {
+					WorkStatusVO vo = workZonesMap.get(Long.parseLong(objects[0].toString()));
+					if(vo == null){
+						vo = new WorkStatusVO();
+						vo.setGovtWorkStatusId(Long.parseLong(objects[0].toString()));//work zone id
+						vo.setWorkStatusVOList(getStatusVOList(allstatusObjList));//work zone name
+						
+						WorkStatusVO matchedStatusVO = getMatchedWorkStatusVO(vo.getWorkStatusVOList(), Long.parseLong(objects[2].toString()));
+						if(matchedStatusVO != null)
+							matchedStatusVO.setWorkLenght(Double.parseDouble(objects[3].toString()));
+						
+						workZonesMap.put(Long.parseLong(objects[0].toString()),vo);
+					}else{
+						
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("exception occured at getWorkZoneStatusWiseKms", e);
+		}
+		return resultList;
+	}
+	
+	public List<WorkStatusVO> getStatusVOList(List<Object[]> allstatusObjList){
+		List<WorkStatusVO> voList = new ArrayList<WorkStatusVO>(0);
+		if(allstatusObjList != null && allstatusObjList.size() >0){
+			for (Object[] objects : allstatusObjList) {
+				WorkStatusVO vo = new WorkStatusVO();
+				vo.setGovtWorkStatusId((Long)objects[2]);
+				vo.setGovtWorkStatus(objects[3].toString());
+				voList.add(vo);
+			}
+		}
+		return voList;
+	}
 	
 	
 	
