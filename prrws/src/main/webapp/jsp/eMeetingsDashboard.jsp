@@ -313,7 +313,7 @@
 						<h5 class="modal-title font_weight" id="conductedMeetingHeadingId" style="font-size: 16px;"></h5> 
 					</div>
 				</div>
-				<!--<div class="bg_mee_pop m_top10">
+				<div class="bg_mee_pop m_top10">
 					<div class="row">
 						<div class="col-sm-2 districtCls">
 							<label>District</label>
@@ -334,7 +334,7 @@
 							<button class="btn btn-primary btn-sm font_weight getDetailsCls" style="margin-top: 26px;">GET DETAILS</button>
 						</div>
 					</div>
-				</div>-->
+				</div>
 				<div id="conductedMeetingDivId"></div>
 			  </div>
 			  <div class="modal-footer">
@@ -378,6 +378,7 @@
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
+<script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/eMeetings/eMeetingsDashboard.js" type="text/javascript"></script>
 </body>
 </html>
