@@ -241,3 +241,10 @@ text:hover {
 .m_top10 {
     margin-top: 10px !important;
 }
+.multiselect-container{
+	max-width: 300px !important; 
+	overflow: auto !important; 
+}
+.multiselect-container > li > a{
+	white-space:normal !important;
+}
