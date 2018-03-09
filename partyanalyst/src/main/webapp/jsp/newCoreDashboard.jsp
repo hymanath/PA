@@ -24,6 +24,7 @@
 <link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link href="newCoreDashBoard/css/wordCloud.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="coreApi/css/bootstrap-multiselect.css" type="text/css">
 <style type="text/css">
 .eventsheader , #statewiseoverviewPanel,#locationsPopup
 {
@@ -975,6 +976,14 @@
 							</div>
 							
 							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="newsLetters">
+								<div class="row">
+									<div class="col-sm-12" style="padding-bottom: 8px;">
+										<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5">
+										<li class="active" attr_type="N" >Party</li>
+										<li attr_type="Y">Govt</li>
+										</ul>
+									</div>
+								</div>
 								<div class="row m_top10">	
 									<div class="col-sm-6 offset-1">
 										<label for="startDate">Start Date</label>
@@ -998,61 +1007,38 @@
 								<div class="row m_top10">
 									<div class="col-sm-6">
 										<label for="wordCloudDistrict">District</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes()">
-												<select id="district" class="form-control">
-													<option>Select a district</option>
-												</select>
-												<div class="overSelect" id="overSelect"></div>
-											</div>
-											<div id="checkboxes"></div>
-										</div>-->
-										<select class="form-control chosen-select" multiple="multiple" id="wordCloudDistrict">
+										
+										<select class="" multiple="multiple" id="wordCloudDistrict">
 										</select>
 									</div>
 									<div class="col-sm-6">
 										<label for="wordCloudConstituency">Constituency</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes1()">
-												<select id="constituency" class="form-control">
-													<option>Select a constituency</option>
-												</select>
-												<div class="overSelect"></div>
-											</div>
-											<div id="checkboxes1">
-											</div>
-										</div>-->
-										<select class="form-control chosen-select" multiple="multiple" id="wordCloudConstituency">
+										
+										<select class="" multiple="multiple" id="wordCloudConstituency">
 										</select>
 									</div>
 								</div>
 								<div class="row m_top10">
 									<div class="col-sm-6">
 										<label for="newspapers">Newspaper</label>
-										<!--<div class="multiselect">
-											<div class="selectBox" onclick="showCheckboxes2()">
-												<select id="newspapers" class="form-control">
-													<option>Select a Newspaper</option>
-												</select>
-												<div class="overSelect"></div>
-											</div>
-											<div id="checkboxes2"></div>
-										</div>-->
-										<label>News Paper</label>
-									<select class="form-control chosen-select" multiple="multiple" id="newspapers">
+									<select class="" multiple="multiple" id="newspapers">
 										</select>
 									</div>
 									<div class="col-sm-6">
 										<label>Edition Type</label>
-										<select class="form-control chosen-select" multiple="multiple" id="editionType">
-											<option value ="0" selected> ALL Editions </option>
-											<option> Main </option>
-											<option> District </option>
-											<option> Online </option>
+										<select class="" multiple="multiple" id="editionType">
+											<option selected> Main </option>
+											<option selected> District </option>
+											<option selected> Online </option>
 										</select>
 									</div>
 								</div>
 								<div class="row m_top10">
+									<div class="col-sm-6">
+										<label for="wordCloudDepartmentNames"><span id="typeId"/>Name</label>
+										<select class="" multiple="multiple" id="wordCloudDepartmentNames">
+										</select>
+									</div>
 									<div class="col-sm-6">	
 										<div class="submit-button">
 											<div class="text-center">
@@ -5926,6 +5912,7 @@
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<script type="text/javascript" src="coreApi/js/bootstrap-multiselect.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec="
         crossorigin="anonymous"></script>
