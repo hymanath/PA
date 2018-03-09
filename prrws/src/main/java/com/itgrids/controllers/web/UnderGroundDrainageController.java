@@ -292,6 +292,15 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	}
+	
+	public @ResponseBody List<DocumentVO> getLocationOverviewStatusDayWiseKms(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-fromdate,todate,locationScopeId,locationValue,workTypeId
+			return underGroundDrainageService.getLocationOverviewStatusDayWiseKms(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationOverviewStatusDayWiseKms ", e);
+		}
+		return null;
+	}
 	//get location level wise overview details - screen 3
 	
 	//web dashboard services -- end	

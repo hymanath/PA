@@ -2066,7 +2066,9 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					if(vo == null){
 						vo = new WorkStatusVO();
 						vo.setGovtWorkStatusId(Long.parseLong(objects[0].toString()));//work zone id
-						vo.setWorkStatusVOList(getStatusVOList(allstatusObjList));//work zone name
+						vo.setGovtWorkStatus(objects[1].toString());//work zone name
+						
+						vo.setWorkStatusVOList(getStatusVOList(allstatusObjList));
 						
 						WorkStatusVO matchedStatusVO = getMatchedWorkStatusVO(vo.getWorkStatusVOList(), Long.parseLong(objects[2].toString()));
 						if(matchedStatusVO != null)
@@ -2074,7 +2076,28 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						
 						workZonesMap.put(Long.parseLong(objects[0].toString()),vo);
 					}else{
-						
+						WorkStatusVO matchedStatusVO = getMatchedWorkStatusVO(vo.getWorkStatusVOList(), Long.parseLong(objects[2].toString()));
+						if(matchedStatusVO != null)
+							matchedStatusVO.setWorkLenght(Double.parseDouble(objects[3].toString()));
+					}
+				}
+				
+				//calculate totals & %'s
+				if(workZonesMap.size() > 0){
+					for (Entry<Long, WorkStatusVO> entry : workZonesMap.entrySet()) {
+						if(entry.getValue().getWorkStatusVOList() != null && entry.getValue().getWorkStatusVOList().size() > 0){
+							Double totalLength = 0.00;
+							for (WorkStatusVO inVO : entry.getValue().getWorkStatusVOList()) {
+								totalLength = totalLength+inVO.getWorkLenght();
+							}
+							
+							if(totalLength != null && totalLength > 0.00){
+								entry.getValue().setWorkLenght(totalLength);
+								for (WorkStatusVO inVO : entry.getValue().getWorkStatusVOList()) {
+									inVO.setWorkCompletedPercentage((inVO.getWorkLenght()*100.00)/totalLength);
+								}
+							}
+						}
 					}
 				}
 			}
@@ -2198,4 +2221,27 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		
 	}
 	
+	public List<DocumentVO> getLocationOverviewStatusDayWiseKms(String fromDate,String toDate,Long locationScopeId,Long locationValue,Long workTypeId){
+		List<DocumentVO> finalList = new ArrayList<DocumentVO>(0);
+		try {
+			Date startDate=null,endDate=null;
+			if(fromDate != null && toDate != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				startDate = sdf.parse(fromDate);
+				endDate = sdf.parse(toDate);		
+			}
+			List<Object[]> objList = govtWorkProgressTrackDAO.getLocationOverviewStatusDayWiseKms(startDate,endDate,locationScopeId,locationValue,workTypeId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					DocumentVO vo = new DocumentVO();
+					vo.setInsertedTime(objects[0].toString());
+					vo.setKms(Double.parseDouble(objects[1].toString()));
+					finalList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured at getLocationOverviewStatusDayWiseKms", e);
+		}
+		return finalList;
+	}	
 }
