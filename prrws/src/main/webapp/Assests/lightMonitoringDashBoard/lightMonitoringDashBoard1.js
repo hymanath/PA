@@ -2632,11 +2632,12 @@ function buildnewAddedLightsDetails(result){
 
 //getting latest inserted time
 function getLatestInsertedTime(){
+	var json={}
 	$.ajax({                
 		type:'GET',    
 		url: 'getLatestInsertedTime',
 		dataType: 'json',
-		data : JSON.stringify(),
+		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
