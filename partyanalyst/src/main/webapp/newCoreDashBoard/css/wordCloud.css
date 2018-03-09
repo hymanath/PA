@@ -191,9 +191,53 @@ text:hover {
     margin-top: 1vh;
 }
 
-     .green:hover,
-        .grey:hover,
-        .red:hover {
-            text-decoration: underline;
-            cursor: pointer;
-        }
+.green:hover,
+.grey:hover,
+.red:hover {
+	text-decoration: underline;
+	cursor: pointer;
+}
+.switch-btn {
+    background-color: #333;
+    border-radius: 14px;
+    display: inline-block;
+    padding: 3px;
+}
+.list-inline {
+    list-style: outside none none;
+    margin-left: -5px;
+    padding-left: 0;
+}
+
+.switch-btn {
+    background-color: #ddd;
+    border-radius: 14px;
+    display: inline-block;
+    padding: 2px;
+}
+.switch-btn li {
+    cursor: pointer;
+    display: inline-block;
+    list-style: outside none none;
+    padding: 4px 8px;
+}
+.switch-btn li.active {
+    background-color: rgb(76, 174, 76);
+    border-radius: 14px;
+    color: #fff;
+}
+
+.btn-success-white:hover, .btn-success-white:active, .btn-success-white:focus {
+    background-color: #fff !important;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    color: rgb(76, 174, 76);
+}
+
+.bg_color {
+    background-color: #f0f0f0;
+    padding: 15px;
+}
+
+.m_top10 {
+    margin-top: 10px !important;
+}
