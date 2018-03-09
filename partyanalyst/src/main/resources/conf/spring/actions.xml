@@ -1834,7 +1834,7 @@
 	<bean id="alertUpdationAPIAction" class="com.itgrids.partyanalyst.web.action.AlertUpdationAPIAction" singleton="false">
 		<!-- <property name="alertUpdationAPIService" ref="alertUpdationAPIService" /> -->
 	</bean>
-	<bean id="imageRenderingAction" class="com.itgrids.partyanalyst.web.action.ImageRenderingAction" singleton="false">
+	<bean id="govtWordCloudAction" class="com.itgrids.partyanalyst.web.action.GovtWordCloudAction" singleton="false">
 		 <property name="locationDashboardService" ref="locationDashboardService" /> 
 	</bean>
 	<bean id="dalithTejamDashBoardAction" class="com.itgrids.partyanalyst.web.action.DalithaTejamDashBoardAction" singleton="false">
