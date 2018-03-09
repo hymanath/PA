@@ -71,6 +71,7 @@ function onLoadCalls(){
 	$('#editionType').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All Editions',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -82,6 +83,7 @@ function onLoadCalls(){
 	$('#wordCloudConstituency').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		//selectAllText: 'All',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -93,6 +95,7 @@ function onLoadCalls(){
 	$('#newspapers').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -762,6 +765,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All Districts',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -777,6 +781,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All News Paper',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -791,6 +796,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All Constituencies',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -811,6 +817,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: name,
 		maxHeight: 300,
 		buttonWidth: '100%',
