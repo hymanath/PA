@@ -10,7 +10,6 @@ var newsPaper=[];
 var editionType=[];
 var districts = [];
 var constituencies=[];
-var departments=[];
 var departmentNames=[];
 var newspaperNames=[];
 var editionTypes=[];
@@ -74,6 +73,7 @@ function onLoadCalls(){
 	$('#editionType').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All Editions',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -85,6 +85,7 @@ function onLoadCalls(){
 	$('#wordCloudConstituency').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		//selectAllText: 'All',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -96,6 +97,7 @@ function onLoadCalls(){
 	$('#newspapers').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All',
 		maxHeight: 300,
 		buttonWidth: '100%',
@@ -211,7 +213,7 @@ function fetchDataForWordCloud(type) {
 		editionTypes=globalEditionType;
 	}
 	if(departmentNames.length == 0){
-		departmentNames=[];
+		departmentNames=globalDepartMentNames;
 	}	
 	$("#svg").html("");
 	document.getElementsByClassName("btn-primary")[0].disabled = "true";
@@ -229,8 +231,8 @@ function fetchDataForWordCloud(type) {
 	}
 		console.log(requestObj)
 		document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
-		//const url = 'http://139.59.3.60:8000/wordcloud/'
-		const url = 'http://139.59.3.60:9000/test/'
+		const url = 'http://139.59.3.60:8000/wordcloud/'
+		//const url = 'http://139.59.3.60:9000/test/'
 		fetch(url, { method: 'post', body: JSON.stringify(requestObj) })
 			.then((res) => {
 				//console.log(res)
@@ -677,8 +679,7 @@ function getOverAllDetailsOfAnArticle(articleId){
   
 function getAllLocations(levelId,levelValue,type){
 	if(levelId==2){
-			$('#wordCloudDistrict').html("ALL districts");
-			$('#wordCloudConstituency').html("ALL constituencies");
+			
 		var jsObj={
 				"stateId":levelValue
 			}
@@ -692,7 +693,7 @@ function getAllLocations(levelId,levelValue,type){
 		});
 		
 	}else if(levelId==3){
-		$('#wordCloudConstituency').html("ALL constituencies");
+		
 		var jsObj={
 				"districtId":levelValue
 			}
@@ -747,6 +748,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	if(levelTypeId == "wordCloudDistrict"){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
+		enableCaseInsensitiveFiltering: true,
 		includeSelectAllOption: true,
 		selectAllText: 'All Districts',
 		maxHeight: 300,
@@ -755,7 +757,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		selectAllName: true,
 		allSelectedText: 'All Districts selected',
 		 onChange: function() {
-			console.log($('#wordCloudDistrict').val());
+			districtNames = $('#wordCloudDistrict').val();
 			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
 		}
 	});
@@ -763,23 +765,31 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All News Paper',
 		maxHeight: 300,
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All News Paper selected'
+		allSelectedText: 'All News Paper selected',
+		onChange: function() {
+			newspaperNames=$('#newspapers').val();
+		}
 	});
 	}else if(levelTypeId == "wordCloudConstituency"){
 		$('#'+levelTypeId).multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
+		enableCaseInsensitiveFiltering: true,
 		selectAllText: 'All Constituency',
 		maxHeight: 300,
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Constituency selected'
+		allSelectedText: 'All Constituency selected',
+		onChange: function() {
+		constituencies=$('#wordCloudConstituency').val();
+		}
 	});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
 		$('#'+levelTypeId).multiselect({
@@ -787,11 +797,16 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		includeSelectAllOption: true,
 		selectAllText: 'All Department Constituency',
 		maxHeight: 300,
+		enableCaseInsensitiveFiltering: true,
 		buttonWidth: '100%',
+		overflowX: true,
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Department selected'
-	});
+		allSelectedText: 'All Department selected',
+		onChange: function() {
+			departmentNames=$('#wordCloudDepartmentNames').val();
+		}
+		});
 	}
 	
 	callfetchFunction(type);
