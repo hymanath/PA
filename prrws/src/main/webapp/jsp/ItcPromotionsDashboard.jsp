@@ -260,11 +260,11 @@ var searchParams = new URLSearchParams(window.location.search);
 <main class="m_top5">
 	<div class="container-fluid">
 		<section>
-			<div class="row m_top10">
+			<!-- <div class="row m_top10">
 				<div class="col-sm-12">
 					<div id="departmentWiseDivId"></div>
 				</div>
-			</div>
+			</div> -->
 			<div class="row m_top25">
 				<div class="col-sm-12">
 					<div id="departmentBlockWiseDetailsId"></div>
