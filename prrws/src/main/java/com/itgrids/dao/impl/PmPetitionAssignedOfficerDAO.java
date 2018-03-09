@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IPmPetitionAssignedOfficerDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.PmPetitionAssignedOfficer;
 import com.itgrids.utils.IConstants;
 
@@ -80,12 +81,40 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 					",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId " +//4,5,6
 					"from PmPetitionAssignedOfficer model where model.pmPetitionAssignedOfficerId  " +
 					"in (SELECT max(model2.pmPetitionAssignedOfficerId) from PmPetitionAssignedOfficer model2 " +
-					" where model2.petitionId in (:petitionIds) and model2.isDeleted='N' group by model2.petitionId)   " );
+					" where model2.petitionId in (:petitionIds) and model2.isDeleted='N' and model2.pmSubWorkDetails.pmSubWorkDetailsId is null group by model2.petitionId)   " );
 			Query query = getSession().createQuery(str.toString());
 			query.setParameterList("petitionIds", petitionIds);
 			return query.list();
 		}
 		return null;
+	}
+	
+	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId" +//0
+				",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
+				",model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId" +//2
+				",model.pmDepartmentDesignationOfficer.pmOfficer.name" +//3
+				",model.petition.petitionId" +//4
+				",model.pmSubWorkDetails.pmSubWorkDetailsId" +//5
+				",model.pmSubWorkDetails.pmStatus.pmStatusId" +//6
+				",model.pmSubWorkDetails.pmStatus.status" +//7
+				",model.pmStatus.pmStatusId "+//8
+				",model.pmSubWorkDetails.costEstimation "+//9
+				" from PmPetitionAssignedOfficer model ,PmRepresenteeRefDetails model1 " +
+				"where model.isDeleted='N' and model.petition.isDeleted='N' " +
+				"and model.pmSubWorkDetails.isDeleted='N' " +
+				" and model1.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N' " +
+				" and  model1.petition.petitionId=model.petition.petitionId ");
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:officerDesigids) ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+			query.setParameterList("officerDesigids", inputVO.getDesignationIds());
+		}
+		return query.list();
 	}
 	
 }

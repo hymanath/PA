@@ -70,6 +70,7 @@ import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PetitionsWorksVO;
+import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
@@ -6460,6 +6461,161 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in PmRequestDetailsService @ getRefCandidateDepartments() "+e.getMessage());
 			}
 			return refCandDeptMap;
+		}
+		
+		public List<PmOfficerVO> getPmOfficerWisePetitionDetails(InputVO inputVO){
+			List<PmOfficerVO> finalList = null;
+			try {
+				Map<Long,PmOfficerVO> officerMap = new HashMap<Long,PmOfficerVO>();
+				List<Object[]> desigStatusList = pmDeptDesignationPrePostStatusDetailsDAO.getDesignationWiseStatus(inputVO.getDesignationIds());
+				List<Object[]> officerList = pmPetitionAssignedOfficerDAO.getPmOfficerAssignedPetitionDetails(inputVO);
+				if(commonMethodsUtilService.isListOrSetValid(officerList)){
+					for (Object[] param : officerList) {
+						PmOfficerVO offVO = null;
+						if(inputVO.getDisplayType() != null && inputVO.getDisplayType().equalsIgnoreCase("OfficerDetails")){
+							 offVO = officerMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+						}else{
+							 offVO = officerMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+						}
+						if(offVO == null){
+							offVO = new PmOfficerVO();
+							/*PmOfficerVO statusVO  = new PmOfficerVO();
+							statusVO.setId(8l);
+							statusVO.setName("Completed");
+							offVO.setSubList(new ArrayList<PmOfficerVO>());
+							offVO.getSubList().add(statusVO);*/
+							
+							if(inputVO.getDisplayType() != null && inputVO.getDisplayType().equalsIgnoreCase("OfficerDetails")){
+								offVO.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+								offVO.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+								offVO.setOfficerDesigId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								offVO.setOfficerDesig(commonMethodsUtilService.getStringValueForObject(param[1]));
+								offVO.getSubList().addAll(setStatusListForOfficerDesig(desigStatusList,inputVO.getDesignationIds().get(0)));
+								officerMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), offVO);
+							}else{
+								offVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								offVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								offVO.getSubList().addAll(setStatusListForOfficerDesig(desigStatusList,commonMethodsUtilService.getLongValueForObject(param[0])));
+								officerMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), offVO);
+							}
+							
+						}
+						Long officerStatusId = commonMethodsUtilService.getLongValueForObject(param[6]);
+						Long currentStatusId = commonMethodsUtilService.getLongValueForObject(param[8]);
+						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[9]);
+						if(officerStatusId.longValue() == currentStatusId.longValue()){
+							PmOfficerVO statusVO = getMatchVOForOfficerStatus(offVO.getSubList(), officerStatusId);
+							if(statusVO != null){
+								/*statusVO = new PmOfficerVO();
+								statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
+								statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+								offVO.getSubList().add(statusVO);*/
+							
+								if(statusVO.getSubWorkIds() == null){
+									statusVO.setSubWorkIds(new HashSet<Long>());
+								}
+								if(!statusVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[5]))
+										&& estimationCost != ""){
+									
+									statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+									BigDecimal decmial= new BigDecimal(offVO.getEstimationCost());
+									BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
+									BigDecimal decmial1= new BigDecimal(estimationCost);
+									BigDecimal totalCost = decmial.add(decmial1);
+									BigDecimal totalCost1 = decmial2.add(decmial1);
+									statusVO.setEstimationCost(totalCost1.toString());
+									offVO.setEstimationCost(totalCost.toString());
+								}
+								if(statusVO.getPetitionIds() == null){
+									statusVO.setPetitionIds(new HashSet<Long>());
+								}
+								statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+							}
+						}else{
+							/*PmOfficerVO statusVO = getMatchVOForOfficerStatus(offVO.getSubList(), 8l);
+							if(statusVO != null){
+								if(statusVO.getSubWorkIds() == null){
+									statusVO.setSubWorkIds(new HashSet<Long>());
+								}*/
+							if(offVO.getSubWorkIds() == null){
+								offVO.setSubWorkIds(new HashSet<Long>());
+							}
+								if(!offVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[5]))
+										&& estimationCost != ""){
+									offVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+									BigDecimal decmial= new BigDecimal(offVO.getEstimationCost());
+									//BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
+									BigDecimal decmial1= new BigDecimal(estimationCost);
+									BigDecimal totalCost = decmial.add(decmial1);
+									//BigDecimal totalCost1 = decmial2.add(decmial1);
+									//statusVO.setEstimationCost(totalCost1.toString());
+									offVO.setEstimationCost(totalCost.toString());
+								}
+								/*if(statusVO.getPetitionIds() == null){
+									statusVO.setPetitionIds(new HashSet<Long>());
+								}
+								statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));*/
+							//}
+						}
+						if(offVO.getPetitionIds() == null){
+							offVO.setPetitionIds(new HashSet<Long>());
+						}
+						offVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
+						if(offVO.getSubWorkIds() == null){
+							offVO.setSubWorkIds(new HashSet<Long>());
+						}
+						offVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+					}
+				}
+				if(commonMethodsUtilService.isMapValid(officerMap)){
+					finalList = new ArrayList<PmOfficerVO>();
+					finalList.addAll(officerMap.values());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ getPmOfficerWisePetitionDetails() "+e.getMessage());
+			}
+			return finalList;
+		}
+		
+		public List<PmOfficerVO> setStatusListForOfficerDesig(List<Object[]> desigStatusList,Long desigId){
+			List<PmOfficerVO> returnList = null;
+			try {
+				if(commonMethodsUtilService.isListOrSetValid(desigStatusList)){
+					 returnList = new ArrayList<PmOfficerVO>();
+					for (Object[] param : desigStatusList) {
+						if(desigId.longValue() == commonMethodsUtilService.getLongValueForObject(param[2])){
+							PmOfficerVO statusVO = getMatchVOForOfficerStatus(returnList,commonMethodsUtilService.getLongValueForObject(param[0]));
+							if(statusVO== null){
+								statusVO = new PmOfficerVO();
+								statusVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+								statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+								returnList.add(statusVO);
+							}
+						}
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ setStatusListForOfficerDesig() "+e.getMessage());
+			}
+			return returnList;
+		}
+ 		private PmOfficerVO getMatchVOForOfficerStatus(List<PmOfficerVO> subList,Long id) {
+			 try {
+				  if (subList == null || subList.size() == 0) {
+					  return null;
+				  }
+				  for (PmOfficerVO VO : subList) {
+					if (VO.getId().longValue() == id.longValue()) {
+						return VO;
+					}
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				LOG.error("Exception Occured in PmRequestDetailsService @ getMatchVOForOfficerStatus() "+e.getMessage());
+			 }
+			 return null;
 		}
 		
 }

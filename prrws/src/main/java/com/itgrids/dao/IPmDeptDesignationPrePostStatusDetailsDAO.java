@@ -10,4 +10,5 @@ public interface IPmDeptDesignationPrePostStatusDetailsDAO extends GenericDao<Pm
 	public List<Long> getItSelfandPoststatusDetail(List<Long> statusIdsList,Long pmOfficerDesignationId);
 	public List<Long> getAssignedDesignationsForStatusIdsList(List<Long> pmOfficerDesignationIdsList);
 	public List<Object[]> getMyPreStatusDetail(List<Long>  pmOfficerDesignationIdsList);
+	public List<Object[]> getDesignationWiseStatus(List<Long>  pmOfficerDesignationIdsList);
 }

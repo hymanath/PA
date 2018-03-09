@@ -24,6 +24,7 @@ import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionTrackingVO;
+import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
@@ -517,5 +518,10 @@ public class PmRequestDetailsController {
 	     @RequestMapping(value ="/getPmActionTypeList",method = RequestMethod.POST)
 		 public @ResponseBody List<KeyValueVO> getPmActionTypeList(@RequestBody Map<String,String> inputMap ,HttpServletRequest request){
 		    	 return pmRequestDetailsService.getPmActionTypeList();
+		     }
+	     
+	     @RequestMapping(value ="/getPmOfficerWisePetitionDetails",method = RequestMethod.POST)
+		 public @ResponseBody List<PmOfficerVO> getPmOfficerWisePetitionDetails(@RequestBody InputVO inputVO ,HttpServletRequest request){
+		    	 return pmRequestDetailsService.getPmOfficerWisePetitionDetails(inputVO);
 		     }
 }

@@ -133,8 +133,38 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 						</div>
 					</div>
 				<!--</div>-->
+				<div style="display:none;" id="officerBlock">
+				<div class="col-sm-12 m_top20" >
+					<div class="white-block pad_5 bor_c2">
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="pad_10"><b>Status - Officer Wise</b></h4>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-sm-12" >			
+					<div class="white-block pad_5 bor_c2">
+						<div id="officerWiseBlockDetailsDivId"></div>
+					</div>
+				</div>
+				<div class="col-sm-12">
+					<div class="white-block pad_5 bor_c2">
+						<div class="row">
+							<div class="col-sm-12">
+								<h4 class="pad_10"><b>Offficer Status Wise Details</b></h4>
+							</div>
+						</div>	
+						<div class="row m_top10">
+							<div class="col-sm-12">
+								<div id="officerDesignationWiseTableDivId"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+				</div>
 				<div class="col-sm-12 m_top20" id="refWiseOverViewId" style="display:none;">
-				<div class="white-block petition_block bor_c2">
+				<div class="white-block pad_5 bor_c2">
 					<div class="row">
 						<div class="col-sm-3">
 							<img src="Assests/icons/group.PNG" style="float:left;"><h4 style="padding-top:18px;"><b>Referral wise Overview</b></h4>
@@ -149,7 +179,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 				</div>
 			</div>
 			<div class="col-sm-12" id="desigWiseCountDivId" style="display:none;">			
-				<div class="white-block petition_block bor_c2">
+				<div class="white-block pad_5 bor_c2">
 					<div class="row" id="desigWiseCountId">
 					</div>
 					<div class="row" id="">
@@ -162,7 +192,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 				</div>
 			</div>
 			<div class="col-sm-12" id="refWiseOverViewDivId" style="display:none;">
-				<div class="white-block petition_block bor_c2">
+				<div class="white-block pad_5 bor_c2">
 					<h4 id ="headingDetailsId" style="font-weight:bold; margin:10px;">MLA REFFERAL WISE OVERVIEW DETAILS</h4>
 					<div class="row" style="margin:-10px;">
 						<p style="border-top:2px solid #b9b6b6;" class="m_top10"></p>
