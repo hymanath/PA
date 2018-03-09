@@ -9,6 +9,7 @@ import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionTrackingVO;
+import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.dto.PmRequestEditVO;
 import com.itgrids.dto.PmRequestVO;
 import com.itgrids.dto.RepresentationRequestVO;
@@ -48,4 +49,5 @@ public interface IPmRequestDetailsService {
 	public Map<Long,List<Long>> getAssignedPetitionforPetitionDeptDesignationOfficer(Long userId,Long pmDeptDesignationOfficerId,InputVO inpuVO);
 	public ResultStatus uploadCoveringLetter(RepresenteeViewVO inputVO);
 	public Map<Long,String> getRefCandidateDepartments(List<Long> refCandIds);
+	public List<PmOfficerVO> getPmOfficerWisePetitionDetails(InputVO inputVO);
 }

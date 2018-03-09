@@ -7,19 +7,21 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 	$(".menu-data-cls").hide();
 });  */
 getDeptIdsListBYUserIdsLst();
+
 function onLoadCalls(){
 	//getDeptIdsListBYUserIdsLst();
 	getCompleteOrStatusOverviewDetails();
-	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
-		$("#leadWiseDivId").show();
-		getLeadWiseOverviewDetails();
-	}
+	
 	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
 		$("#refWiseOverViewId").show();
+		$("#leadWiseDivId").show();
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
+		//$("#officerBlock").show();
 		getReferralWiseOverviewDetails("");
 		getBriefLeads();
+		getLeadWiseOverviewDetails();
+		//getPmOfficerWisePetitionDetails("","",loginDesigId);
 	}
 }
 
@@ -902,4 +904,216 @@ $.ajax({
 		$("#briefLeadId").trigger('chosen:updated');
 		 
 }); 
+}
+
+function buildOfficerBlock(result,loginUsr){
+	//alert(2)
+	var str='';
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			for(var i in result){
+			if( loginUsr!= 23 || result[i].id != 2 ){
+				str+='<div class="col-sm-3">';
+					str+='<div class="panel panel-default officerWiseBlockCls" attr_desig_id='+result[i].id+'>';
+					if(i==0)
+					  str+='<div class="panel-heading panel_active">';
+					else
+					  str+='<div class="panel-heading">';
+						str+='<h3 class="panel-title" style="color:#000"><img src="Assests/icons/Green.png"> <span class="m_left">'+result[i].name+'</span></h3>';
+					  str+='</div>';
+					  if(i==0)
+						str+='<div class="panel-body desig_bg officer_bg_Css">';
+					  else
+						str+='<div class="panel-body officer_bg_Css">';	
+						str+='<div class="border_bottom_css">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-6">';
+									str+='<h5 class="font_weight text-center">Representations</h5>';
+									str+='<h4 class="font_weight m_top10 text-center">'+result[i].petitionIds.length+'</h4>';
+								str+='</div>';
+								str+='<div class="col-sm-6">';
+									str+='<h5 class="font_weight text-center">Works</h5>';
+									str+='<h4 class="font_weight m_top10 text-center">'+result[i].subWorkIds.length+'</h4>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						var pendingRep =0;
+						var pendingWorks=0;
+						for(var j in result[i].subList){
+							if(result[i].subList[j].id != 4 && result[i].subList[j].id != 5 ){
+								if(typeof(result[i].subList[j].petitionIds) != "undefined")
+									pendingRep=pendingRep+result[i].subList[j].petitionIds.length;
+								if(typeof(result[i].subList[j].subWorkIds) != "undefined")
+									pendingWorks =pendingWorks+result[i].subList[j].subWorkIds.length;
+							}
+						}
+						str+='<div class="desig_bg_white m_top10">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-4">';
+									str+='<h5 class="font_weight m_top5">Pending</h5>';
+								str+='</div>';
+								str+='<div class="col-sm-3">';
+									str+='<h5 class="font_weight m_top5">'+pendingRep+'</h5>';
+								str+='</div>';
+								str+='<div class="col-sm-5">';
+									str+='<div class="bg_yash_5">';
+										str+='<div class="row">';
+											str+='<div class="col-sm-6">';
+												str+='<h5 class="font_weight">Works</h5>';
+											str+='</div>';
+											str+='<div class="col-sm-6">';
+												str+='<h5 class="font_weight">'+pendingWorks+'</h5>';
+											str+='</div>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+						
+					  str+='</div>';
+					str+='</div>';
+				str+='</div>';
+			}
+	}
+			
+		if(result[0].id != null && result[0].id>0){
+		  getPmOfficerWisePetitionDetails(result[0].id,"OfficerDetails",loginDesigId);
+	  } 	
+			
+	  str+='</div>';			
+   str+='</div>';			
+	$("#officerWiseBlockDetailsDivId").html(str);
+}
+
+$(document).on("click",".officerWiseBlockCls",function(){
+	$(".officerWiseBlockCls").find('.panel-heading').removeClass("panel_active");
+	$(this).find('.panel-heading').addClass("panel_active");
+	
+	$(".officer_bg_Css").removeClass("desig_bg");
+	$(this).parent().find('.officer_bg_Css').addClass("desig_bg");
+	var desigId = $(this).attr("attr_desig_id");
+	getPmOfficerWisePetitionDetails(desigId,"OfficerDetails",loginDesigId)
+	//tableBuildOfficerBlock();
+});
+function getPmOfficerWisePetitionDetails(desiId,dataType,loginUsr){
+	var desigIds = [];
+	if(desiId != ""){
+		$("#officerDesignationWiseTableDivId").html(spinner);
+		desigIds.push(desiId);
+	}else{
+		$("#officerWiseBlockDetailsDivId").html(spinner);
+	}
+	var json = {
+		designationIds:desigIds,
+		displayType:dataType
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPmOfficerWisePetitionDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null ){
+			if(desiId == ""){
+				buildOfficerBlock(result,loginUsr);
+			}else{
+				tableBuildOfficerBlock(result);
+			}
+		}else{
+			
+		}
+	});	
+}
+function tableBuildOfficerBlock(result){
+	var str='';
+	var str='';
+			str+='<div class="col-md-12">';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table-bordered" id="officerTableid">';
+					str+='<thead>';
+						str+='<tr>';
+							str+='<th>Name</th>';
+							str+='<th>Total Representations</th>';
+							str+='<th>Works</th>';
+							str+='<th>Estimation Cost</th>';
+							for(var j in result[0].subList){
+								if(result[0].subList[j].id != 4 && result[0].subList[j].id != 5 ){
+								str+='<th>'+result[0].subList[j].name+'</th>';
+								str+='<th>Works</th>';
+								str+='<th>Estimation Cost</th>';
+							  }
+							}
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result){
+							str+='<tr style="text-align:center;">';
+								str+='<td><h5><b>'+result[i].name+'</b><h5>';
+								//str+='<p>'+result.referrerList[i].desigName+'</p>';
+								str+='</td>';
+								
+								if(result[i].petitionIds.length >0){
+									str+='<td>'+result[i].petitionIds.length+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								if(result[i].subWorkIds.length >0){
+									str+='<td>'+result[i].subWorkIds.length+'</td>';
+								}else{
+									str+='<td>-</td>';
+								}
+								if(typeof(result[i].estimationCost) != "undefined" && result[i].estimationCost != 0){
+										var convertToAmt = result[i].estimationCost*100000;
+										var crores = (convertToAmt/10000000).toFixed(2);
+										str+='<td><b>'+crores+'</b></td>';
+								}else{
+										str+='<td><b>-</b></td>';
+								}	
+								
+								for(var j in result[i].subList){
+										/* var statusIds= '';
+										if(result.referrerList[i].statusList[j].id == 1){
+											statusIds='1,3,6,7';
+										}else if(result.referrerList[i].statusList[j].id == 2){
+											statusIds='5';
+										}if(result.referrerList[i].statusList[j].id == 3){
+											statusIds='4,8';
+										}
+										 */
+									if(result[i].subList[j].id != 4 && result[i].subList[j].id != 5 ){
+										if(typeof(result[i].subList[j].petitionIds) != 'undefined' && result[i].subList[j].petitionIds.length >0){
+											str+='<td>'+result[i].subList[j].petitionIds.length+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+									
+										if(typeof(result[i].subList[j].subWorkIds) != 'undefined' && result[i].subList[j].subWorkIds.length>0){
+											str+='<td>'+result[i].subList[j].subWorkIds.length+'</td>';
+										}else{
+											str+='<td>-</td>';
+										}
+										if(typeof(result[i].subList[j].estimationCost) != "undefined" && result[i].subList[j].estimationCost != 0){
+											var convertToAmt = result[i].subList[j].estimationCost*100000;
+											var crores = (convertToAmt/10000000).toFixed(2);
+											str+='<td><b>'+crores+'</b></td>';
+										}else{
+											str+='<td><b>-</b></td>';
+										}
+									 }									
+								}
+									//for(var j in result.referrerList[i].statusList){
+									
+								//}	
+							str+='</tr>';
+						}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';	
+	
+	$("#officerDesignationWiseTableDivId").html(str);
 }

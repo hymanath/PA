@@ -3,7 +3,6 @@ package com.itgrids.dao.impl;
 import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
-import org.hibernate.Hibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
 import org.hibernate.type.StandardBasicTypes;
@@ -54,6 +53,22 @@ public class PmDeptDesignationPrePostStatusDetailsDAO extends GenericDaoHibernat
 				"  order by model2.order_no  ");
 		Query query = getSession().createSQLQuery(str.toString()).addScalar("pm_officer_designation_id", StandardBasicTypes.LONG);
 		query.setParameterList("statusIdsList", statusIdsList);
+		return query.list();
+	}
+	
+	public List<Object[]> getDesignationWiseStatus(List<Long>  pmOfficerDesignationIdsList){
+		StringBuilder str = new StringBuilder();
+		str.append("SELECT distinct model2.pm_status_id as statusId,model2.status as status,model.pm_officer_designation_id as officerDesigId from pm_dept_designation_pre_post_status_details model, pm_status model2 where " +
+				"  model.is_deleted='N' and model.pm_pre_status_id = model2.pm_status_id" );
+		if(pmOfficerDesignationIdsList != null && pmOfficerDesignationIdsList.size()>0){
+			str.append(" and model.pm_officer_designation_id in (:pmOfficerDesignationIdsList)  ");
+		}
+		str.append("  order by model2.order_no  ");
+		Query query = getSession().createSQLQuery(str.toString()).addScalar("statusId", StandardBasicTypes.LONG).addScalar("status", StandardBasicTypes.STRING)
+				.addScalar("officerDesigId", StandardBasicTypes.LONG);
+		if(pmOfficerDesignationIdsList != null && pmOfficerDesignationIdsList.size()>0){
+			query.setParameterList("pmOfficerDesignationIdsList", pmOfficerDesignationIdsList);
+		}
 		return query.list();
 	}
 	
