@@ -19,4 +19,5 @@ public interface IGovtWorkProgressDAO extends GenericDao<GovtWorkProgress, Long>
 	public List<Object[]> getLOCATIONWISEOVERVIEW(Long workTypeId,Long locationScopeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId,String workZone);
 	public List<Object[]> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationLevelId,Long workTypeId);
 	public List<Object[]> getWorkZoneStatusWiseKms(Long locationScopeId,Long locationValue,Long workTypeId);
+	public List<Object[]> getWorkZoneStatusDetailsInfo(Long workId);
 }

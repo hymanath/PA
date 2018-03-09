@@ -1,6 +1,5 @@
 package com.itgrids.dao;
 
-import java.util.Date;
 import java.util.List;
 
 import org.appfuse.dao.GenericDao;
@@ -20,4 +19,5 @@ public interface IGovtWorkDAO extends GenericDao<GovtWork, Long>{
 	public Object[] getOverallWorksLengthOfWorkType(Long workTypeId);
 	public Object[] getAllworkZonesOfLocation(Long locationScopeId,Long locationValue,Long workTypeId);
 	public Object[] getCompletedWorksDetailsOfLocation(Long locationScopeId,Long locationValue,Long workTypeId);
+	public Object[] getWorkZoneMainOverview(Long govtWorkId);
 }
