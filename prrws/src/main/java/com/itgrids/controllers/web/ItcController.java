@@ -44,6 +44,10 @@ public class ItcController {
 			return "ItcDashboard";
 	    }
 		
+		@RequestMapping(value ="/itcPromotionsDashboard",method = RequestMethod.GET)
+	    public String itcPromotionsDashboard(ModelMap model) {
+			return "ItcPromotionsDashboard";
+	    }
 		@RequestMapping(value ="/PReOfficeDashboard",method = RequestMethod.GET)
 	    public String prEOffice(ModelMap model) {
 			return "PReOffice";
