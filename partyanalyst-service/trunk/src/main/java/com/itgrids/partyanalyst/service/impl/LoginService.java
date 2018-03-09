@@ -409,6 +409,7 @@ public class LoginService implements ILoginService{
 				regVO.setParliaments(parliaments);
 				regVO.setPageTracking(user.getPageTracking());
 				regVO.setRequestTracking(user.getRequestTracking());
+				regVO.setMembershipId(user.getMembershipId() !=null && !user.getMembershipId().trim().isEmpty()  ? user.getMembershipId().trim():"");
 				
 				if(entitlements.contains(IConstants.ADMIN_PAGE))
 					regVO.setIsAdmin(IConstants.TRUE);	

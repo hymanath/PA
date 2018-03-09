@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
 
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.parsers.DocumentBuilder;
@@ -29,6 +28,7 @@ import org.w3c.dom.Element;
 
 import com.itgrids.partyanalyst.dao.IOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.OtpDetails;
 import com.itgrids.partyanalyst.saml.SamlSignatureUtil;
@@ -351,7 +351,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        doc.appendChild(rootElement);
 	        
 	        Element issuer = doc.createElement("saml:Issuer");
-	        issuer.appendChild(doc.createTextNode(memberShipId));
+	        issuer.appendChild(doc.createTextNode("https://mytdp.com"));
 	        rootElement.appendChild(issuer);
 	        
 	        Element status = doc.createElement("samlp:Status");
@@ -408,19 +408,19 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        
 	        
 	        Element authnContext = doc.createElement("saml:AuthnContext");
-	        Element authnContextClassRef = doc.createElement("AuthnContextClassRef"); 
+	        Element authnContextClassRef = doc.createElement("saml:AuthnContextClassRef"); 
 	        authnContextClassRef.appendChild(doc.createTextNode("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport"));
 	        authnContext.appendChild(authnContextClassRef);
 	        authnStatement.appendChild(authnContext);
 	        
 	        
-	        Element attributeStatement = doc.createElement("AttributeStatement");
+	        Element attributeStatement = doc.createElement("saml:AttributeStatement");
 	        Element attribute = doc.createElement("saml:Attribute");
 	        attribute.setAttribute("NameFormat","urn:oasis:names:tc:SAML:2.0:attrname-format:basic");
 	        attribute.setAttribute("Name","PersonImmutableID");
 	        
 	        Element attributeValue = doc.createElement("saml:AttributeValue");
-	        attributeValue.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema-instance");
 	        attributeValue.setAttribute("xsi:type","xs:string");
 	        attribute.appendChild(attributeValue);
 	        attributeStatement.appendChild(attribute);
@@ -431,7 +431,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        attribute1.setAttribute("Name","User.email");
 	        
 	        Element attributeValue1 = doc.createElement("saml:AttributeValue");
-	        attributeValue1.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue1.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema-instance");
 	        attributeValue1.setAttribute("xsi:type","xs:string");
 	        attributeValue1.appendChild(doc.createTextNode(memberShipId+"@mytdp.com"));
 	        attribute1.appendChild(attributeValue1);
@@ -443,7 +443,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        attribute2.setAttribute("Name","User.FirstName");
 	        
 	        Element attributeValue2 = doc.createElement("saml:AttributeValue");
-	        attributeValue2.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue2.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema-instance");
 	        attributeValue2.setAttribute("xsi:type","xs:string");
 	        attributeValue2.appendChild(doc.createTextNode(firstName));
 	        attribute2.appendChild(attributeValue2);
@@ -455,7 +455,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        attribute3.setAttribute("Name","memberOf");
 	        
 	        Element attributeValue3 = doc.createElement("saml:AttributeValue");
-	        attributeValue3.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue3.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema-instance");
 	        attributeValue3.setAttribute("xsi:type","xs:string");
 	        attribute3.appendChild(attributeValue3);
 	        attributeStatement.appendChild(attribute3);
@@ -465,7 +465,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        attribute4.setAttribute("Name","User.LastName");
 	        
 	        Element attributeValue4 = doc.createElement("saml:AttributeValue");
-	        attributeValue4.setAttribute("xmlns:xsi","http://www.w3.org/2001/XMLSchema-instance");
+	        attributeValue4.setAttribute("xmlns:xs","http://www.w3.org/2001/XMLSchema-instance");
 	        attributeValue4.setAttribute("xsi:type","xs:string");
 	        attributeValue4.appendChild(doc.createTextNode(lastName));
 	        attribute4.appendChild(attributeValue4);
@@ -484,8 +484,8 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        transformer.transform(source, result);
 	        
 	        // Output to console for testing
-	        StreamResult consoleResult = new StreamResult(System.out);
-	        transformer.transform(source, consoleResult);
+	      /*  StreamResult consoleResult = new StreamResult(System.out);
+	        transformer.transform(source, consoleResult);*/
 	        
 	        file = new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/input/saml.xml");
 	        //file = new File("E://ZOHO/input/saml.xml");
@@ -496,9 +496,10 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 		return file;
 	}
 	
-	public String sendSamlResponseToZoho(String membershipId)
+	public ResultStatus sendSamlResponseToZoho(String membershipId)
 	{ 	
-		String status = null;
+		
+		ResultStatus resultStatus = new ResultStatus();
 		SamlSignatureUtil samlSignatureUtil = new SamlSignatureUtil();
 		ImageAndStringConverter converter = new ImageAndStringConverter();
 		
@@ -539,24 +540,24 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 				    
 				    //String samlResponse = converter.convertImageFileToBase64String(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"/output/saml.xml"));
 					
-				    String samlResponse = converter.convertImageFileToBase64String(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/output/saml.xml"));
+				    String samlResponse = converter.convertXmlFileToBase64String(new File(IConstants.STATIC_CONTENT_FOLDER_URL+"security/SAML/ZOHO/output/saml.xml"));
 				    
-				    
-				    
-				    System.out.println(samlResponse);
-				    
-				  /*  if(samlResponse !=null)
-				    	sendSamlResponse(samlResponse);*/
-				    
-				    status ="success";
+				    if(samlResponse !=null){
+				    	//sendSamlResponse(samlResponse);
+				    	resultStatus.setMessage(samlResponse);
+				    	resultStatus.setExceptionMsg("success");
+				    }else{
+				    	resultStatus.setExceptionMsg("failure");
+				    }
+				    	
 				}
 			}
 			
 		} catch (Exception e) {
+			resultStatus.setExceptionMsg("failure");
 			LOG.error("Exception Occured in sendSamlResponseToZoho(Long) in ZohoAlertService class.",e);
-			status ="failure";
 		}
-		return status;
+		return resultStatus;
 		
 	}
 	public String sendSamlResponse(String samlResponse){
