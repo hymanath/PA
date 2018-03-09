@@ -30,7 +30,29 @@ public class GovtWorksVO {
 	private String govtMainWork;
 	private Long totalWorks,statusWorks;
 	private Double totalKms=0.00,statusKms;
+	private Long sanctionAmt=0l,target=0l;
+	private String date;
 	
+	
+	public String getDate() {
+		return date;
+	}
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Long getTarget() {
+		return target;
+	}
+	public void setTarget(Long target) {
+		this.target = target;
+	}
+	public Long getSanctionAmt() {
+		return sanctionAmt;
+	}
+	public void setSanctionAmt(Long sanctionAmt) {
+		this.sanctionAmt = sanctionAmt;
+	}
 	public Long getLocationScopeId() {
 		return locationScopeId;
 	}

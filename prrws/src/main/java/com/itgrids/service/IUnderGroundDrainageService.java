@@ -40,4 +40,9 @@ public interface IUnderGroundDrainageService {
 	public GovtMainWorkVO getLocationLevelWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId);
 	public List<WorkStatusVO> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId);
 	public List<WorkStatusVO> getWorkZoneStatusWiseKms(Long locationScopeId,Long locationValue,Long workTypeId);
+	
+	public GovtWorksVO getWorkZoneMainOverview(Long govtWorkId);
+	public List<WorkStatusVO> getWorkZoneStatusDetailsInfo(Long govtWorkId,Long worktypeid);
+	public List<DocumentVO> getWorkZoneDocumentDetailsInfo(Long govtWorkId);
+	public List<GovtWorksVO> getWorkZoneWorkStategsDetailsInfo(String startDateStr,String endDateStr,Long govtWorkId,Long statusId);
 }
