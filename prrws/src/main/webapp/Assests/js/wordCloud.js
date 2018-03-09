@@ -230,8 +230,8 @@ function fetchDataForWordCloud(type) {
 	}
 		console.log(requestObj)
 		document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
-		//const url = 'http://139.59.3.60:8000/wordcloud/'
-		const url = 'http://139.59.3.60:9000/test/'
+		const url = 'http://139.59.3.60:8000/wordcloud/'
+		//const url = 'http://139.59.3.60:9000/test/'
 		fetch(url, { method: 'post', body: JSON.stringify(requestObj) })
 			.then((res) => {
 				//console.log(res)
@@ -776,7 +776,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		selectAllName: true,
 		allSelectedText: 'All Districts selected',
 		 onChange: function() {
-			console.log($('#wordCloudDistrict').val());
+			districtNames = $('#wordCloudDistrict').val();
 			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
 		}
 	});
@@ -789,7 +789,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All News Paper selected'
+		allSelectedText: 'All News Paper selected',
+		onChange: function() {
+			newspaperNames=$('#newspapers').val();
+		}
 	});
 	}else if(levelTypeId == "wordCloudConstituency"){
 		$('#'+levelTypeId).multiselect({
@@ -800,7 +803,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Constituency selected'
+		allSelectedText: 'All Constituency selected',
+		onChange: function() {
+		constituencies=$('#wordCloudConstituency').val();
+		}
 	});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
 		$('#'+levelTypeId).multiselect({
@@ -811,7 +817,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Department selected'
+		allSelectedText: 'All Department selected',
+		onChange: function() {
+			departmentNames=$('#wordCloudDepartmentNames').val();
+		}
 	});
 	}
 	
@@ -832,7 +841,7 @@ function populateNewspapers(type){
 		type : 'GET', 
 		crossOrigin: true,
 		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-      // url: "http://mytdp.com/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+       //url: "http://mytdp.com/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
 	  
     }).then(function(result){
 	return buildResultforWordCloud('newspapers',result,type);
