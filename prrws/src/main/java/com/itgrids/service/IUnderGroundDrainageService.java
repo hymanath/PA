@@ -11,6 +11,7 @@ import com.itgrids.dto.MobileAppLoginVO;
 import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.SmallVO;
 import com.itgrids.dto.WorkStatusVO;
+import com.itgrids.model.GovtWorkStatus;
 
 public interface IUnderGroundDrainageService {
 	public MobileAppLoginVO checkLogin(MobileAppInputVO inputVO);
@@ -37,4 +38,6 @@ public interface IUnderGroundDrainageService {
 	public List<GovtWorksVO> getStatusWiseWorksAndKms(Long workTypeId);
 	public List<GovtWorksVO> getLOCATIONWISEOVERVIEW(MobileAppInputVO inputVO);
 	public GovtMainWorkVO getLocationLevelWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId);
+	public List<WorkStatusVO> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId);
+	public List<WorkStatusVO> getWorkZoneStatusWiseKms(Long locationScopeId,Long locationValue,Long workTypeId);
 }

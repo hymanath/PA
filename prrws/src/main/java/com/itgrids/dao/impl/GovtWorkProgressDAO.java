@@ -183,4 +183,69 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationLevelId,Long workTypeId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select gwp.govt_work_status_id,sum(gwp.work_length) "
+				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
+				+ " and gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
+				+ " gmw.govt_work_type_id=:workTypeId and gw.is_deleted='N' ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id=:locationLevelId ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id=:locationLevelId ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id=:locationLevelId ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id=:locationLevelId ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id=:locationLevelId ");
+		}
+		
+		sb.append(" group by gwp.govt_work_status_id ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(locationScopeId == 3l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
+			query.setParameter("locationLevelId", locationLevelId);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getWorkZoneStatusWiseKms(Long locationScopeId,Long locationLevelId,Long workTypeId){
+		//0-workZoneId,1-zonename,2-statusId,3-length
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select gw.govt_work_id,gw.work_zone_name,gwp.govt_work_status_id,gwp.work_length "
+				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
+				+ " and gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
+				+ " gmw.govt_work_type_id=:workTypeId and gw.is_deleted='N' ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id=:locationLevelId ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id=:locationLevelId ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id=:locationLevelId ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id=:locationLevelId ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id=:locationLevelId ");
+		}
+		
+		sb.append(" group by gw.govt_work_id,gwp.govt_work_status_id ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(locationScopeId == 3l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
+			query.setParameter("locationLevelId", locationLevelId);
+		}
+		
+		return query.list();
+	}
 }

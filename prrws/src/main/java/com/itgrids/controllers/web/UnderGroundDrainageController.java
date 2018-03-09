@@ -270,7 +270,25 @@ public class UnderGroundDrainageController {
 		try {//inputs-locationScopeId,locationValue,workTypeId
 			return underGroundDrainageService.getLocationLevelWiseOverviewDetails(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
 		} catch (Exception e) {
-			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
+			LOG.error("Exception raised at getStateLevelOverAllDetails ", e);
+		}
+		return null;
+	}
+	
+	public @ResponseBody List<WorkStatusVO> getLocationLevelStatusWiseOverviewDetails(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-locationScopeId,locationValue,workTypeId
+			return underGroundDrainageService.getLocationLevelStatusWiseOverviewDetails(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getLocationLevelStatusWiseOverviewDetails ", e);
+		}
+		return null;
+	}
+	
+	public @ResponseBody List<WorkStatusVO> getWorkZoneStatusWiseKms(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-locationScopeId,locationValue,workTypeId
+			return underGroundDrainageService.getWorkZoneStatusWiseKms(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getWorkZoneStatusWiseKms ", e);
 		}
 		return null;
 	}
