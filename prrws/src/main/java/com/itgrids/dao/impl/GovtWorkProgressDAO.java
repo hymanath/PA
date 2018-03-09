@@ -183,8 +183,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		
 		return query.list();
 	}
-	
-	public List<Object[]> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationLevelId,Long workTypeId){
+		public List<Object[]> getLocationLevelStatusWiseOverviewDetails(Long locationScopeId,Long locationLevelId,Long workTypeId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select gwp.govt_work_status_id,sum(gwp.work_length) "
 				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
@@ -246,6 +245,17 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 			query.setParameter("locationLevelId", locationLevelId);
 		}
 		
+		return query.list();
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWorkZoneStatusDetailsInfo(Long workId){
+		//0-statusId,1-workLength,2-Perc,3-date
+		Query query = getSession().createQuery(" select model.govtWorkStatusId,model.workLength,model.completedPercentage,date(updatedTime) "
+				+ " from GovtWorkProgress model "
+				+ " where model.govtWorkId=:workId ");
+		
+		query.setParameter("workId",workId);
 		return query.list();
 	}
 }
