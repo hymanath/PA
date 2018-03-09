@@ -860,7 +860,7 @@ function getAllDepartments(isDepartment,type){
 	$.ajax({
 		type : 'GET', 
 		crossOrigin: true,
-	   url: wurl+"/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/AP"
+	   url: wurl+"/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
       //url: "http://localhost:8085/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
 	
     }).then(function(result){
