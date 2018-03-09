@@ -102,8 +102,7 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 	private Long tdpCadreId;
 	private Long alertVerificationAssignedUserId;
 	private IAlertUpdationAPIService alertUpdationAPIService;
-	private IZohoAlertService zohoAlertService;
-	
+	private IZohoAlertService zohoAlertService;	
 	
 	public void setZohoAlertService(IZohoAlertService zohoAlertService) {
 		this.zohoAlertService = zohoAlertService;
@@ -3610,9 +3609,9 @@ public class CreateAlertAction extends ActionSupport implements ServletRequestAw
 		try {
 			
 			session = request.getSession();
-			jObj = new JSONObject(getTask());
+			RegistrationVO regVo = (RegistrationVO)session.getAttribute("USER");
 			
-			status = zohoAlertService.sendSamlResponseToZoho(jObj.getString("membershipId"));
+			resultStatus = zohoAlertService.sendSamlResponseToZoho(regVo.getMembershipId());
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured in sendSamlResponseToZoho() of CreateAlertAction",e);
