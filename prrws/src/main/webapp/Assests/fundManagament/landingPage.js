@@ -138,20 +138,20 @@ function buildFavouriteComponentsResult(result) {
 							str+='<p class="" style="margin-top:5px;font-size:12px;">RURAL CONSTITUENCIES</p>';
 							str+='</div>';
 						}else if(result[i].name == 'NEWS'){
-							str+='<div class="row" style="margin-top: -15px;">';
-								str+='<div class="col-sm-6">';
-										str+='<div>';
-											str+='<h3 id="printMediaCountId" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-										str+='</div>';
-										str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
-									str+='</div>';
-									str+='<div class="col-sm-6">';
-										str+='<div>';
-											str+='<h3 id="printMediaCountIdYesterDay" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-										str+='</div>';
-										str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
-									str+='</div>';
-							str+='</div>';
+							str+='<div class="row" >';
+								str+='<div class="col-sm-5 text-right">';
+									str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId"></h3>';
+									str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+								str+='</div>';
+								str+='<div class="col-sm-1 text-right">';
+									str+='<h3 style="font-size:30px;">/</h3>';
+								str+='</div>';
+								str+='<div class="col-sm-5 text-right">';
+									str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay"></h3>';
+									str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+								str+='</div>';
+							str+='</div>';	
+							
 						}else if(result[i].name == "PR NEWS"){
 							 	str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdPR" style="font-weight:bold;"></div>';
@@ -2104,55 +2104,71 @@ function buildPageWiseComponents(result,pageId){
 									str+='<h3 class="'+result[i].subList[j].name.replace(/\s+/g, '')+'AllCls" style="margin-top: 0px;font-weight:bold;"><span></span></h3>';
 								}else if(result[i].subList[j].name == "PR NEWS"){
 									 str+='<div  style="text-align: right">';	
-										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountId1" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+										str+='<div class="row" >';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId1"></h3>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountIdYesterDay1" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='<div class="col-sm-1 text-right">';
+												str+='<h3 style="font-size:30px;">/</h3>';
+											str+='</div>';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay1"></h3>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
 										str+='</div>';
 										
+										
 								}else if(result[i].subList[j].name == "RD NEWS"){
 									str+='<div  style="text-align: right">';	
-										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountId2" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+										str+='<div class="row" >';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId2"></h3>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountIdYesterDay2" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='<div class="col-sm-1 text-right">';
+												str+='<h3 style="font-size:30px;">/</h3>';
+											str+='</div>';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay2"></h3>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
 										str+='</div>';
+										
 									
 								}else if(result[i].subList[j].name == "RWS NEWS"){
 									str+='<div  style="text-align: right">';	
-										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountId3" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+										str+='<div class="row" >';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId3"></h3>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountIdYesterDay3" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='<div class="col-sm-1 text-right">';
+												str+='<h3 style="font-size:30px;">/</h3>';
+											str+='</div>';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay3"></h3>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
 										str+='</div>';
+										
 									
 								}else if(result[i].subList[j].name == "IT E& C NEWS"){
-									str+='<div  style="text-align: right">';	
-										str+='<div class="row" style="margin-top:-15px;">';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountId4" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+									str+='<div  style="text-align: right">';
+										str+='<div class="row" >';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId4"></h3>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
-											str+='<div class="col-sm-6">';
-												str+='<h3 id="printMediaCountIdYesterDay4" style="margin-top: 0px;font-weight:bold;text-align:center;"></h3>';
-												str+='<div class="row"><div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div></div>';
+											str+='<div class="col-sm-1 text-right">';
+												str+='<h3 style="font-size:30px;">/</h3>';
+											str+='</div>';
+											str+='<div class="col-sm-5 text-right">';
+												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay4"></h3>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
 											str+='</div>';
 										str+='</div>';
+										
 										
 								}else{
 									str+='<div class=" " style="text-align: right">';
