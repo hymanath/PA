@@ -1238,6 +1238,11 @@
 								</li>
 							   </c:if>
 							</c:if>	
+							<!--<c:if test="${sessionScope.USER.membershipId != ''}">
+								<li>
+									<a href="javascript:{sendSamlResponseToZoho();}"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;  Zoho Desk </span></a>
+								</li>
+							</c:if> -->
 													
 							<!--
 							<c:if test="${sessionScope.USER.isAdmin == 'true' &&fn:contains(sessionScope.USER.entitlements, 'VOTER_ANALYSIS' )}">
@@ -1317,6 +1322,48 @@ function openAddNewProblemWindow()
 	var browser_addNewProblem = window.open("addNewProblemAction.action","addNewProblem","scrollbars=yes","height=100","width=100","left=200","top=200");	
 	browser_addNewProblem.focus();
 }
+
+function sendSamlResponseToZoho(){
+	var jsObj ={
+			task:""
+		}
+	$.ajax({
+			type:'GET',
+			url: 'sendSamlResponseToZohoAction.action',
+			data: {task :JSON.stringify(jsObj)}
+	   }).done(function(result){
+		   if(result !=null && result.exceptionMsg =="success"){
+			  openWindow(result.message);
+		   }
+	   })
+}
+
+
+function openWindow(samlResponse){
+var form = document.createElement('FORM');
+form.method='POST';
+form.action = 'https://accounts.zoho.com/samlresponse/mytdp.com';
+form.target = '_blank'; // Specify the name of the window(second parameter to window.open method.)
+
+var params = { 'SAMLResponse' : samlResponse, 'RelayState':"aHR0cHM6Ly9kZXNrLnpvaG8uY29tX19JQU1fX1pvaG9TdXBwb3J0" };
+
+ for (var i in params)
+ {
+   if (params.hasOwnProperty(i))
+   {
+	var input = document.createElement("INPUT");
+	input.id=i;
+	input.type="hidden";
+	input.value=params[i];
+	form.appendChild(input);
+   }
+ }
+document.body.appendChild(form);
+//window.open("","_blank","location=yes,width=400,height=400");
+console.log(form);
+form.submit();
+}
+
 </script>
 </body>
 </html>
