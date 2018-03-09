@@ -41,8 +41,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 				if(output != null && !output.isEmpty()){
 					if(output != null && !output.isEmpty()){
 	    				JSONObject jObj = new JSONObject(output);
-	    				finalVO.setCount(jObj.getLong("count"));//callCenterCalls TotalCount
-	    				finalVO.setLocationCnt(jObj.getLong("locationCnt"));
+	    				finalVO.setCategoryCount(jObj.getLong("count"));//callCenterCalls TotalCount 
+	    				finalVO.setLocationCnt(jObj.getLong("locationCnt"));//Month Wise total Month Count 
 	    				
 		    				JSONArray categoriesArr = jObj.getJSONArray("subList1");
 	 	    				if(categoriesArr != null && categoriesArr.length() > 0){
@@ -51,7 +51,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 									JSONObject jobj = (JSONObject) categoriesArr.get(j);
 									categoryVO.setId(jobj.getLong("id"));
 									categoryVO.setName(jobj.getString("name"));
-									categoryVO.setAlertCnt(jobj.getLong("alertCnt"));
+									categoryVO.setAlertCnt(jobj.getLong("alertCnt")); //(categoryWise alert count)
 									
 									finalVO.getSubList1().add(categoryVO);
 								}
@@ -62,8 +62,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    					for (int j = 0; j < monthsArr.length(); j++) {
 	 	    						AlertVO monthVo = new AlertVO();
 									JSONObject jobj1 = (JSONObject) monthsArr.get(j);
-									monthVo.setSmTypeId(jobj1.getLong("smTypeId"));
-									monthVo.setSmType(jobj1.getString("smType"));
+									monthVo.setMonthId(jobj1.getLong("smTypeId"));
+									monthVo.setMonthName(jobj1.getString("smType"));
 									monthVo.setPercentage(jobj1.getDouble("percentage"));
 									
 									finalVO.getSubList2().add(monthVo);
@@ -96,8 +96,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 				String output1 = response1.getEntity(String.class);
 				if(output1 != null && !output1.isEmpty()){
 					JSONObject jObj = new JSONObject(output1);
-    				finalVO.setSatisfiedCount(jObj.getLong("count"));//print count
-    				finalVO.setUnSatisfiedCount(jObj.getLong("count1"));//EN count
+    				finalVO.setPrintCount(jObj.getLong("count"));//print count
+    				finalVO.setElectCount(jObj.getLong("count1"));//EN count
 				}
 	 	      }
 		} catch (Exception e) {
@@ -119,7 +119,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 				if(output != null && !output.isEmpty()){
 					if(output != null && !output.isEmpty()){
 	    				JSONObject jObj = new JSONObject(output);
-	    				finalVO.setCount(jObj.getLong("count"));//total call center alerts count
+	    				finalVO.setCategoryCount(jObj.getLong("count"));//total AlertsCount By serach category
 	    				finalVO.setLocationCnt(jObj.getLong("locationCnt"));
 	    				
 	 	    				JSONArray monthsArr = jObj.getJSONArray("subList2");
@@ -127,8 +127,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    					for (int j = 0; j < monthsArr.length(); j++) {
 	 	    						AlertVO monthVo = new AlertVO();
 									JSONObject jobj1 = (JSONObject) monthsArr.get(j);
-									monthVo.setSmTypeId(jobj1.getLong("smTypeId"));
-									monthVo.setSmType(jobj1.getString("smType"));
+									monthVo.setMonthId(jobj1.getLong("smTypeId"));
+									monthVo.setMonthName(jobj1.getString("smType"));
 									monthVo.setLocationCnt(jobj1.getLong("locationCnt"));
 									monthVo.setPercentage(jobj1.getDouble("percentage"));
 									
@@ -162,8 +162,9 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    						if(output1 != null && !output1.isEmpty()){
 	 	    							if(output1 != null && !output1.isEmpty()){
 	 	    								JSONObject newsJobJ = new JSONObject(output1);
-	 	    			    				finalVO.setSatisfiedCount(newsJobJ.getLong("posCount"));//positiveCount
-	 	    			    				finalVO.setUnSatisfiedCount(newsJobJ.getLong("negCount"));
+	 	    			    				finalVO.setPosCount(newsJobJ.getLong("posCount"));//positiveCount
+	 	    			    				finalVO.setNegCount(newsJobJ.getLong("negCount"));
+	 	    			    				finalVO.setTotalNewsCnt(newsJobJ.getLong("posCount")+newsJobJ.getLong("negCount"));
 	 	    								
 	 	    			    				JSONArray articleMonthArr = newsJobJ.getJSONArray("idNameVoList");
 	 	    		 	    				if(articleMonthArr != null && articleMonthArr.length() > 0){
@@ -172,8 +173,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    										JSONObject newsJson = (JSONObject) articleMonthArr.get(j);
 	 	    										monthVo.setId(newsJson.getLong("id"));
 	 	    										monthVo.setName(newsJson.getString("name"));
-	 	    										monthVo.setProposalAmount(newsJson.getLong("posCount"));
-	 	    										monthVo.setApprovedAmount(newsJson.getLong("negCount"));
+	 	    										monthVo.setPosCount(newsJson.getLong("posCount"));
+	 	    										monthVo.setNegCount(newsJson.getLong("negCount"));
 	 	    										
 	 	    										finalVO.getSubList1().add(monthVo);
 	 	    									}
@@ -189,7 +190,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 										JSONObject jobj = (JSONObject) ivrArr.get(j);
 										
 										ivrVo.setComment(jobj.getString("comment"));
-										ivrVo.setNotifiedCount(jobj.getLong("notifiedCount"));
+										ivrVo.setFeedbackCount(jobj.getLong("notifiedCount"));
 										
 										finalVO.getSubList1().add(ivrVo);
 									}
@@ -222,11 +223,11 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 		 	    				AlertVO vo = new AlertVO();
 		 	    				vo.setId(jObj.getLong("id"));
 		 	    				vo.setName(jObj.getString("name"));
-		 	    				vo.setSatisfiedCount(jObj.getLong("posCount"));
-		 	    				vo.setUnSatisfiedCount(jObj.getLong("negCount"));
-		 	    				vo.setCount(jObj.getLong("count"));
-		 	    				vo.setPercentage(jObj.getDouble("posPercent"));
-		 	    				vo.setStatusPercent(jObj.getDouble("negPercent"));
+		 	    				vo.setPosCount(jObj.getLong("posCount"));
+		 	    				vo.setNegCount(jObj.getLong("negCount"));
+		 	    				vo.setTotalNewsCnt(jObj.getLong("count"));
+		 	    				vo.setPosPerc(jObj.getDouble("posPercent"));
+		 	    				vo.setNegPerc(jObj.getDouble("negPercent"));
 		 	    				
 		 	    				returnList.add(vo);
 		 	    			}
@@ -248,9 +249,9 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
 	 	    				AlertVO vo = new AlertVO();
 	 	    				
-	 	    				vo.setId(jObj.getLong("smTypeId"));
-	 	    				vo.setName(jObj.getString("smType"));
-	 	    				vo.setSatisfiedCount(jObj.getLong("locationCnt"));
+	 	    				vo.setMonthId(jObj.getLong("smTypeId"));
+	 	    				vo.setMonthName(jObj.getString("smType"));
+	 	    				vo.setCount(jObj.getLong("locationCnt"));
 	 	    				vo.setPercentage(jObj.getDouble("statusPercent"));
 	 	    				
 	 	    				returnList.add(vo);
@@ -311,11 +312,11 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 																AlertVO newsVO = new AlertVO();
 							 	  		 	    				
 							 	  		 	    				newsVO.setAlertTypeName(jObj.getString("name"));
-						 	  		 	    					newsVO.setSatisfiedCount(jObj.getLong("posCount"));
-						 	  		 	    					newsVO.setUnSatisfiedCount(jObj.getLong("negCount"));
+						 	  		 	    					newsVO.setPosCount(jObj.getLong("posCount"));
+						 	  		 	    					newsVO.setNegCount(jObj.getLong("negCount"));
 						 	  		 	    					newsVO.setCount(jObj.getLong("count"));
-						 	  		 	    					newsVO.setPercentage(jObj.getDouble("posPercent"));
-						 	  		 	    					newsVO.setStatusPercent(jObj.getDouble("negPercent"));
+						 	  		 	    					newsVO.setPosPerc(jObj.getDouble("posPercent"));
+						 	  		 	    					newsVO.setNegPerc(jObj.getDouble("negPercent"));
 						 	  		 	    					
 						 	  		 	    				finalVo.getSubList1().add(newsVO);	
 															}
