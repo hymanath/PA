@@ -142,6 +142,7 @@ public class User extends BaseModel implements Serializable{
 	private RedirectUrl redirectUrl;
 	private String pageTracking;
 	private String requestTracking;
+	private String membershipId;
 	
 	public User(){}
 	 
@@ -1166,6 +1167,14 @@ public class User extends BaseModel implements Serializable{
 	public void setRequestTracking(String requestTracking) {
 		this.requestTracking = requestTracking;
 	}
+	@Column(name = "membership_id")
+	public String getMembershipId() {
+		return membershipId;
+	}
+
+	public void setMembershipId(String membershipId) {
+		this.membershipId = membershipId;
+	}
 
 	
 	
@@ -1178,5 +1187,6 @@ public class User extends BaseModel implements Serializable{
 	public void setInfoManager(String infoManager) {
 		this.infoManager = infoManager;
 	}*/
+	
 	
 }

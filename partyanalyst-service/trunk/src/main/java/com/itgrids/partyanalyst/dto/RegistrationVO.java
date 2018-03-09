@@ -89,6 +89,7 @@ public class RegistrationVO extends BaseDTO{
 	private List<Long> assignCadreIds = new ArrayList<Long>();
 	private String pageTracking;
 	private String requestTracking;
+	private String membershipId;
 	
 	
 	public String getPageTracking() {
@@ -649,4 +650,13 @@ public void setIpAddress(String ipAddress) {
 	public void setUserAccessType(String userAccessType) {
 		this.userAccessType = userAccessType;
 	}
+
+	public String getMembershipId() {
+		return membershipId;
+	}
+
+	public void setMembershipId(String membershipId) {
+		this.membershipId = membershipId;
+	}
+	
 }
