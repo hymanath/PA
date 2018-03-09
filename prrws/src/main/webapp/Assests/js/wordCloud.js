@@ -267,7 +267,7 @@ function getOverAllDetailsOfAnArticle(articleId){
 	$("#myModalShowNews").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 		$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-		// url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 		
 	}).then(function(results){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
@@ -830,8 +830,8 @@ function populateNewspapers(type){
 	$.ajax({
 		type : 'GET', 
 		crossOrigin: true,
-		//url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
-       url: "http://mytdp.com/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+		url: wurl+"/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
+      // url: "http://mytdp.com/CommunityNewsPortal/webservice/getAllNewsPapers/AP"
 	  
     }).then(function(result){
 	return buildResultforWordCloud('newspapers',result,type);
@@ -850,8 +850,8 @@ function getAllDepartments(isDepartment,type){
 	$.ajax({
 		type : 'GET', 
 		crossOrigin: true,
-	 // url: wurl+"/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
-      url: "http://mytdp.com/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
+	  url: wurl+"/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
+      //url: "http://mytdp.com/CommunityNewsPortal/webservice/getDepartmentBydepartmentId/"+departmentId
 	
     }).then(function(result){
 	return buildResultforWordCloud('wordCloudDepartmentNames',result,type,isDepartment);
