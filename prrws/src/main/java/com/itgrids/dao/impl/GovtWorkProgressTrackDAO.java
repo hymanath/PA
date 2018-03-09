@@ -170,4 +170,132 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationLevelStatusDayWiseKms(Date startDate,Date endDate,Long statusId,Long workTypeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId,Long locationLevelId){
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select date(gwpt.updated_time),sum(gwpt.work_length) ");
+		if(locationLevelId == 3l){
+			sb.append(",la.district_id ");
+		}else if(locationLevelId == 4l){
+			sb.append(",la.constituency_id ");
+		}else if(locationLevelId == 5l){
+			sb.append(",la.tehsil_id ");
+		}else if(locationLevelId == 6l){
+			sb.append(",la.panchayat_id ");
+		}else if(locationLevelId == 12l){
+			sb.append(",la.division_id ");
+		}else if(locationLevelId == 13l){
+			sb.append(",la.sub_division_id ");
+		} 
+		sb.append(" from govt_work_progress_track gwpt,govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
+				+ " where gwpt.govt_work_progress_id=gwp.govt_work_progress_id and gwp.govt_work_id = gw.govt_work_id "
+				+ " and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' "
+				+ " and gmw.govt_work_type_id=:workTypeId ");
+		
+		if(startDate != null && endDate != null){
+			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");
+		}
+		if(statusId != null && statusId > 0l){
+			sb.append(" and gwp.govt_work_status_id=:statusId ");
+		}
+		if(districtId != null && districtId > 0l){
+			sb.append(" and la.district_id=:districtId ");
+		}
+		if(divisonId != null && divisonId > 0l){
+			sb.append(" and la.divison_id=:divisonId ");
+		}
+		if(subDivisonId != null && subDivisonId > 0l){
+			sb.append(" and la.sub_division_id=:subDivisonId ");
+		}
+		if(mandalId != null && mandalId > 0l){
+			sb.append(" and la.tehsil_id=:mandalId ");
+		}
+		
+		sb.append(" group by date(gwpt.updated_time) ");
+		if(locationLevelId == 3l){
+			sb.append(",la.district_id");
+		}else if(locationLevelId == 4l){
+			sb.append(",la.constituency_id");
+		}else if(locationLevelId == 5l){
+			sb.append(",la.tehsil_id");
+		}else if(locationLevelId == 6l){
+			sb.append(",la.panchayat_id");
+		}else if(locationLevelId == 12l){
+			sb.append(",la.division_id");
+		}else if(locationLevelId == 13l){
+			sb.append(",la.sub_division_id");
+		} 
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		if(statusId != null && statusId > 0l){
+			query.setParameter("statusId", statusId);
+		}
+		if(districtId != null && districtId > 0l){
+			query.setParameter("districtId", districtId);
+		}
+		if(divisonId != null && divisonId > 0l){
+			query.setParameter("divisonId", divisonId);
+		}
+		if(subDivisonId != null && subDivisonId > 0l){
+			query.setParameter("subDivisonId", subDivisonId);
+		}
+		if(mandalId != null && mandalId > 0l){
+			query.setParameter("mandalId", mandalId);
+		}
+		
+		return query.list();
+	}
+	
+	public List<Object[]> getLocationLevelSubDayWiseKms(Date startDate,Date endDate,Long workTypeId,Long locationScopeId,Long locationLevelId){
+		StringBuilder sb = new StringBuilder();
+		//0-statusId,1-status,2-date,3-count
+		sb.append(" select gws.govt_work_status_id,gws.status_name,date(gwpt.updated_time),sum(gwpt.work_length) "
+				+ " from govt_work_progress_track gwpt,govt_work_status gws,govt_work gw,govt_main_work gmw,location_address la "
+				+ " where gwpt.govt_work_status_id=gws.govt_work_status_id and gws.govt_work_type_id=:workTypeId "
+				+ " and gwpt.govt_work_id=gw.govt_work_id and gw.govt_work_id=gmw.govt_work_id and gmw.govt_work_type_id=:workTypeId "
+				+ " and gw.location_address_id=la.location_address_id ");
+		
+		if(startDate != null && endDate != null){
+			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");
+		}
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id=:locationLevelId ");
+		}else if(locationScopeId == 4l){
+			sb.append(" and la.constituenct_id=:locationLevelId ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id=:locationLevelId ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id=:locationLevelId ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id=:locationLevelId ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id=:locationLevelId ");
+		}
+		
+		sb.append(" group by gws.govt_work_status_id,date(gwpt.updated_time) ");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setParameter("workTypeId", workTypeId);
+		
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		
+		if(locationScopeId == 3l || locationScopeId == 4l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
+			query.setParameter("locationLevelId", locationLevelId);
+		}
+		
+		return query.list();
+	}
 }

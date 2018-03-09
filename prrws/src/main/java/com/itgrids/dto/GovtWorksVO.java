@@ -14,12 +14,12 @@ public class GovtWorksVO {
 	private List<GovtWorksVO> locationsScopeList = new ArrayList<GovtWorksVO>(0);
 	private List<GovtWorksVO> locationsList = new ArrayList<GovtWorksVO>(0);
 	private List<GovtWorksVO> worksList = new ArrayList<GovtWorksVO>(0);
-	
+	private List<GovtWorksVO> statusList = new ArrayList<GovtWorksVO>(0);
 	private Long workId,count;
 	private String workName,workZoneName;
 	private Double workLenght;
 	private Double completedLength;
-	private Double completedPercentage;
+	private Double completedPercentage,completedKmsPercentage;
 	private Long statusId;
 	private String status;
 	private Double fundAllocated;
@@ -28,6 +28,8 @@ public class GovtWorksVO {
 	private List<String> imagesList = new ArrayList<String>(0);
 	private Long govtMainWorkId;
 	private String govtMainWork;
+	private Long totalWorks,statusWorks;
+	private Double totalKms=0.00,statusKms;
 	
 	public Long getLocationScopeId() {
 		return locationScopeId;
@@ -178,6 +180,42 @@ public class GovtWorksVO {
 	}
 	public void setCount(Long count) {
 		this.count = count;
+	}
+	public Long getTotalWorks() {
+		return totalWorks;
+	}
+	public void setTotalWorks(Long totalWorks) {
+		this.totalWorks = totalWorks;
+	}
+	public Long getStatusWorks() {
+		return statusWorks;
+	}
+	public void setStatusWorks(Long statusWorks) {
+		this.statusWorks = statusWorks;
+	}
+	public Double getTotalKms() {
+		return totalKms;
+	}
+	public void setTotalKms(Double totalKms) {
+		this.totalKms = totalKms;
+	}
+	public Double getStatusKms() {
+		return statusKms;
+	}
+	public void setStatusKms(Double statusKms) {
+		this.statusKms = statusKms;
+	}
+	public Double getCompletedKmsPercentage() {
+		return completedKmsPercentage;
+	}
+	public void setCompletedKmsPercentage(Double completedKmsPercentage) {
+		this.completedKmsPercentage = completedKmsPercentage;
+	}
+	public List<GovtWorksVO> getStatusList() {
+		return statusList;
+	}
+	public void setStatusList(List<GovtWorksVO> statusList) {
+		this.statusList = statusList;
 	}
 	
 	

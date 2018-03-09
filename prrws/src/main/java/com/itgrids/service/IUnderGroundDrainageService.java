@@ -31,4 +31,10 @@ public interface IUnderGroundDrainageService {
 	public List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails();	
 	public List<DocumentVO> getLocationStatusDayWiseKms(MobileAppInputVO inptuVO);
 	public List<DocumentVO> getLocationLevelStatusDayWiseKms(MobileAppInputVO inputVO);
+	public List<DocumentVO> getLocationLevelSubDayWiseKms(MobileAppInputVO inputVO);
+	public GovtMainWorkVO getStateLevelOverAllDetails(Long workTypeId);
+	public List<DocumentVO> getRecentWorkDocuments(Long workTypeId);
+	public List<GovtWorksVO> getStatusWiseWorksAndKms(Long workTypeId);
+	public List<GovtWorksVO> getLOCATIONWISEOVERVIEW(MobileAppInputVO inputVO);
+	public GovtMainWorkVO getLocationLevelWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId);
 }

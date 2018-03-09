@@ -189,6 +189,7 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	//TIME LINE vs LOCATION
 	@RequestMapping(value="/getLocationStatusDayWiseKms", method=RequestMethod.POST)
 	public @ResponseBody List<DocumentVO> getLocationStatusDayWiseKms(@RequestBody MobileAppInputVO inputVO){
 		try {
@@ -210,6 +211,70 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value="/getLocationLevelSubDayWiseKms", method=RequestMethod.POST)
+	public @ResponseBody List<DocumentVO> getLocationLevelSubDayWiseKms(@RequestBody MobileAppInputVO inputVO){
+		try {
+			//inputs - startDate,endDate,WorkTypeId,locationscopeId,locationLevelId
+			return underGroundDrainageService.getLocationLevelSubDayWiseKms(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting the getLocationStatusDayWise kilometers ", e);
+		}
+		return null;
+	}
+	//TIME LINE vs LOCATION
+	
+	//STATE LEVEL OVERVIEW
+	public @ResponseBody GovtMainWorkVO getStateLevelOverAllDetails(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getStateLevelOverAllDetails(inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
+		}
+		return null;
+	}
+	
+	public @ResponseBody List<DocumentVO> getRecentWorkDocuments(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getRecentWorkDocuments(inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
+		}
+		return null;
+	}
+	
+	public @ResponseBody List<GovtWorksVO> getStatusWiseWorksAndKms(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getStatusWiseWorksAndKms(inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
+		}
+		return null;
+	}
+	
+	//STATE LEVEL OVERVIEW
+	
+	//LOCATION WISE OVERVIEW
+	public @ResponseBody List<GovtWorksVO> getLOCATIONWISEOVERVIEW(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getLOCATIONWISEOVERVIEW(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
+		}
+		return null;
+	}
+	//LOCATION WISE OVERVIEW
+	
+	//get location level wise overview details - screen 3
+	public @ResponseBody GovtMainWorkVO getLocationLevelWiseOverviewDetails(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-locationScopeId,locationValue,workTypeId
+			return underGroundDrainageService.getLocationLevelWiseOverviewDetails(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
+		}
+		return null;
+	}
+	//get location level wise overview details - screen 3
 	
 	//web dashboard services -- end	
 }

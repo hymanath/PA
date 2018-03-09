@@ -1273,19 +1273,19 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				}
 				
 				//get praposal works count group by worktype
-				//0-workTypeId,1-count
-				List<Object[]> objList2 = govtMainWorkDAO.getPraposalWorksCount();
+				//0-workTypeId,1-count,2-kms
+				List<Object[]> objList2 = govtMainWorkDAO.getPraposalWorksCount(null);
 				if(objList2 != null && objList2.size() > 0){
 					for (Object[] objects : objList2) {
-						if(map.get((Long)objects[0]) != null){
-							map.get((Long)objects[0]).setWorkPraposedAreas(objects[1] != null ? (Long)objects[1]:null);
+						if(map.get(Long.parseLong(objects[0].toString())) != null){
+							map.get(Long.parseLong(objects[0].toString())).setWorkPraposedAreas(objects[1] != null ? Long.parseLong(objects[1].toString()):null);
 						}
 					}
 				}
 				
 				//get workZones for workType
 				//0-workTypeId,1-workZones
-				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType();
+				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType(null);
 				if(objList3 != null && objList3.size() > 0){
 					for (Object[] objects : objList3) {
 						if(map.get((Long)objects[0]) != null){
@@ -1504,27 +1504,501 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	}
 	
 	public List<DocumentVO> getLocationLevelStatusDayWiseKms(MobileAppInputVO inputVO){
+		List<DocumentVO> finalList = new ArrayList<DocumentVO>(0);
 		try {
+			Date startDate=null,endDate=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				startDate = sdf.parse(inputVO.getFromDate());
+				endDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			List<String> dateList = null;
+			Map<Long,DocumentVO> map = new HashMap<Long, DocumentVO>();//locationId,lovationVO
+			if(startDate != null && endDate != null){
+				dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
+			}
+			//0-date,1-sum,2-locationId
+			List<Object[]> objList =  govtWorkProgressTrackDAO.getLocationLevelStatusDayWiseKms(startDate,endDate,inputVO.getStatusId(),inputVO.getWorkTypeId(),inputVO.getDistrictId(),
+					inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),inputVO.getLocationLevelId());
+			
+			if(objList != null && objList.size() > 0){
+				List<Long> locationIds = new ArrayList<Long>(0);
+				for (Object[] objects : objList) {
+					if(map.get(Long.parseLong(objects[2].toString())) == null){
+						locationIds.add(Long.parseLong(objects[2].toString()));
+						DocumentVO vo = new DocumentVO();
+						vo.setDocumentId(Long.parseLong(objects[2].toString()));
+						
+						getDates(vo.getList(),dateList);
+						DocumentVO matchedDateVO = getMatchedDateVo(vo.getList(),objects[0].toString());
+						if(matchedDateVO != null)
+							matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
+						
+						map.put(Long.parseLong(objects[2].toString()),vo);
+					}else{
+						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[3].toString())).getList(),objects[0].toString());
+						if(matchedDateVO != null)
+							matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
+					}
+				}
+				
+				if(locationIds != null && locationIds.size() > 0){
+					List<Object[]> locationsObjList = null;
+					if(inputVO.getLocationLevelId() == 3l){
+						locationsObjList = districtDAO.getDistrictIdAndNameByDistrictIds(locationIds);
+					}else if(inputVO.getLocationLevelId() == 4l){
+						locationsObjList = constituencyDAO.getConstIdAndNameByConstIds(locationIds);
+					}else if(inputVO.getLocationLevelId() == 5l){
+						locationsObjList = tehsilDAO.getTehsilIdAndNameByIds(locationIds);
+					}else if(inputVO.getLocationLevelId() == 6l){
+						locationsObjList = panchayatDAO.getPanchayatIdAndNameByIds(locationIds);
+					}else if(inputVO.getLocationLevelId() == 12l){
+						locationsObjList = divisionDAO.getDivisionIdAndNameByIds(locationIds);
+					}else if(inputVO.getLocationLevelId() == 13l){
+						locationsObjList = subDivisionDAO.getSubDivisionIdAndNameByIds(locationIds);
+					} 
+					
+					if(locationsObjList != null && locationsObjList.size() > 0){
+						for (Object[] objects : locationsObjList) {
+							if(map.get((Long)objects[0]) != null)
+								map.get((Long)objects[0]).setDocumentName(objects[1].toString());
+						}
+					}
+				}
+				
+				//calculate totals and %'s
+				if(map != null && map.size() > 0){
+					for (Entry<Long, DocumentVO> entry : map.entrySet()) {
+						DocumentVO locationVO = entry.getValue();
+						if(locationVO != null && locationVO.getList() != null && locationVO.getList().size() > 0){
+							Double totalKms = 0.00;
+							//calculate total kms
+							for (DocumentVO inVO : locationVO.getList()) {
+								totalKms = totalKms+(inVO.getKms() != null ? inVO.getKms():0.00);
+							}
+							
+							locationVO.setKms(totalKms);
+							
+							//calculate %'s
+							if(totalKms > 0.00){
+								for (DocumentVO inVO : locationVO.getList()) {
+									inVO.setCompletedPercentage((inVO.getKms()*100.0)/totalKms);
+								}
+							}
+						}
+					}
+				}
+			}
+			
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured while fetching getLocationLevelStatusDayWiseKms ", e);
 		}
+		return finalList;
+	}
+	
+	public DocumentVO getMatchedDateVo(List<DocumentVO> volIst,String date){
+		if(volIst != null && volIst.size() > 0){
+			for (DocumentVO documentVO : volIst) {
+				if(documentVO.getInsertedTime().equals(date))
+					return documentVO;
+			}
+		}
 		return null;
 	}
 	
+	public void getDates(List<DocumentVO> voList,List<String> dateList){
+		if(dateList != null && dateList.size() > 0){
+			for (String string : dateList) {
+				DocumentVO vo = new DocumentVO();
+				vo.setInsertedTime(string);
+				voList.add(vo);
+			}
+		}
+	}
 	
+	//inputs - startDate,endDate,WorkTypeId,locationscopeId,locationLevelId
+	public List<DocumentVO> getLocationLevelSubDayWiseKms(MobileAppInputVO inputVO){
+		List<DocumentVO> voList = new ArrayList<DocumentVO>(0);
+		try {
+			Date startDate=null,endDate=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null){
+				SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				startDate = sdf.parse(inputVO.getFromDate());
+				endDate = sdf.parse(inputVO.getToDate());
+			}
+			
+			List<String> dateList = null;
+			Map<Long,DocumentVO> map = new HashMap<Long, DocumentVO>();//locationId,lovationVO
+			if(startDate != null && endDate != null){
+				dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
+			}
+			
+			//0-statusId,1-status,2-date,3-count
+			List<Object[]> objList =  govtWorkProgressTrackDAO.getLocationLevelSubDayWiseKms(startDate,endDate,inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getLocationLevelId());
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					if(map.get(Long.parseLong(objects[0].toString())) == null){
+						DocumentVO vo = new DocumentVO();
+						vo.setDocumentId(Long.parseLong(objects[0].toString()));
+						vo.setDocumentName(objects[1].toString());
+						
+						getDates(vo.getList(), dateList);
+						DocumentVO matchedDateVO = getMatchedDateVo(vo.getList(), objects[2].toString());
+						if(matchedDateVO != null){
+							matchedDateVO.setKms(Double.parseDouble(objects[3].toString()));
+						}
+						
+						map.put(Long.parseLong(objects[0].toString()),vo);
+					}else{
+						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[3].toString())).getList(),objects[0].toString());
+						if(matchedDateVO != null)
+							matchedDateVO.setKms(Double.parseDouble(objects[3].toString()));
+					}
+				}
+				
+				//calculating total & %'s
+				if(map != null && map.size() > 0){
+					for (Entry<Long, DocumentVO> entry : map.entrySet()) {
+						DocumentVO statusVO = entry.getValue();
+						if(statusVO != null && statusVO.getList() != null && statusVO.getList().size() > 0){
+							Double totalKms = 0.00;
+							//calculate total kms
+							for (DocumentVO inVO : statusVO.getList()) {
+								totalKms = totalKms+(inVO.getKms() != null ? inVO.getKms():0.00);
+							}
+							
+							statusVO.setKms(totalKms);
+							
+							//calculate %'s
+							if(totalKms > 0.00){
+								for (DocumentVO inVO : statusVO.getList()) {
+									inVO.setCompletedPercentage((inVO.getKms()*100.0)/totalKms);
+								}
+							}
+						}
+					}
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("exception raised at getLocationLevelSubDayWiseKms", e);
+		}
+		return voList;
+	}
 	
+	public GovtMainWorkVO getStateLevelOverAllDetails(Long workTypeId){
+		GovtMainWorkVO finalVO = new GovtMainWorkVO();
+		try {
+			//get praposal works count group by worktype
+			//0-workTypeId,1-count,2-kms,3-estimationCost
+			List<Object[]> objList = govtMainWorkDAO.getPraposalWorksCount(workTypeId);
+			if(objList != null && objList.size() > 0){
+				finalVO.setWorkPraposedAreas(Long.parseLong(objList.get(0)[1].toString()));
+				finalVO.setTotalKms(Double.parseDouble(objList.get(0)[2].toString()));
+				finalVO.setEstimationCost(Double.parseDouble(objList.get(0)[3].toString()));
+			}
+				
+			//get workZones for workType
+			//0-workTypeId,1-workZones
+			List<Object[]> objList1 = govtWorkDAO.getWorkZonesCountForDateType(workTypeId);
+			if(objList1 != null && objList1.size() > 0)
+				finalVO.setWorksCount((Long)objList1.get(0)[1]);
+			
+			//get work completed kms for workType
+			Object[] completedDetails = govtWorkProgressDAO.getWorkCompletedKms(workTypeId);
+			if(completedDetails != null && completedDetails.length > 0){
+				finalVO.setCompletedWorksCount(Long.parseLong(completedDetails[0].toString()));
+				finalVO.setCompletedKms(Double.parseDouble(completedDetails[1].toString()));
+			}
+			
+			if(finalVO.getWorksCount() != null && finalVO.getWorksCount() > 0l && finalVO.getCompletedWorksCount() != null && finalVO.getCompletedWorksCount() > 0){
+				finalVO.setCompletedPercentage((finalVO.getCompletedWorksCount()*100.00)/finalVO.getWorksCount());
+			}
+		} catch (Exception e) {
+			LOG.error("Excetion occured while getting the getStateLevelOverAllDetails",e);
+		}
+		return finalVO;
+	}
 	
+	public List<DocumentVO> getRecentWorkDocuments(Long workTypeId){
+		List<DocumentVO> voList = new ArrayList<DocumentVO>(0);
+		try {
+			//0-panchayatId,1-mandalId,2-docId,3-path,4-insertedDate
+			List<Object[]> objList = govtWorkProgressDocumentDAO.getRecentWorkDocuments(workTypeId);
+			List<Long> panchayatIds = new ArrayList<Long>(0);
+			List<Long> mandalIds = new ArrayList<Long>(0);
+			
+			if(objList != null && objList.size() > 0){
+				for (Object[] obj : objList) {
+					panchayatIds.add((Long)obj[0]);
+					mandalIds.add((Long)obj[1]);
+				}
+				
+				List<Object[]> panchObjList = panchayatDAO.getPanchayatIdAndNameByIds(panchayatIds);
+				List<Object[]> manObjList = tehsilDAO.getTehsilIdAndNameByIds(mandalIds);
+				Map<Long,String> panchNamesMap = new HashMap<Long, String>();
+				Map<Long,String> manNamesMap = new HashMap<Long, String>();
+				
+				if(panchObjList != null && panchObjList.size() > 0){
+					for (Object[] objects : panchObjList) {
+						panchNamesMap.put((Long)objects[0], objects[1].toString());
+					}
+				}
+				
+				if(manObjList != null && manObjList.size() > 0){
+					for (Object[] objects : manObjList) {
+						manNamesMap.put((Long)objects[0], objects[1].toString());
+					}
+				}
+				
+				for (Object[] obj : objList) {
+					DocumentVO vo = new DocumentVO();
+					if(obj[0] != null){
+						vo.setPanchayatId((Long)obj[0]);
+						vo.setPanchayatName(panchNamesMap.get((Long)obj[0]) != null ? panchNamesMap.get((Long)obj[0]):"");
+					}
+					if(obj[1] != null){
+						vo.setMandalId((Long)obj[1]);
+						vo.setMandalName(manNamesMap.get((Long)obj[1]) != null ? manNamesMap.get((Long)obj[1]):"");
+					}
+					
+					vo.setDocumentId((Long)obj[2]);
+					vo.setPath(obj[3].toString());
+					vo.setInsertedTime(obj[4].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured while fetching the recent docs", e);
+		}
+		return voList;
+	}
 	
+	public List<GovtWorksVO> getStatusWiseWorksAndKms(Long workTypeId){
+		List<GovtWorksVO> voList = new ArrayList<GovtWorksVO>(0);
+		try {
+			List<Object[]> allStatusObjList = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);
+			if(allStatusObjList != null && allStatusObjList.size() > 0){
+				Map<Long,GovtWorksVO> map = new HashMap<Long, GovtWorksVO>();
+				for (Object[] objects : allStatusObjList) {
+					if(map.get((Long)objects[3]) == null){
+						GovtWorksVO vo = new GovtWorksVO();
+						vo.setStatusId((Long)objects[3]);
+						vo.setStatus(objects[4].toString());
+						map.put((Long)objects[3],vo);
+					}
+				}
+				
+				//get all works and kms status wise
+				//0-statusId,1-works count,2-kms
+				List<Object[]> statusWiseDetailsObjList = govtWorkProgressDAO.getStatusWiseAllWorksAndKms(workTypeId);
+				Object[] overallWorksKmsObjList = govtWorkDAO.getOverallWorksLengthOfWorkType(workTypeId);
+				
+				if(statusWiseDetailsObjList != null && statusWiseDetailsObjList.size() > 0){
+					for (Object[] object : statusWiseDetailsObjList) {
+						if(map.get(Long.parseLong(object[0].toString())) != null){
+							map.get(Long.parseLong(object[0].toString())).setStatusWorks(Long.parseLong(object[1].toString()));
+							map.get(Long.parseLong(object[0].toString())).setStatusKms(Double.parseDouble(object[2].toString()));
+						}
+					}
+				}
+				
+				if(overallWorksKmsObjList != null && overallWorksKmsObjList.length > 0 && map.size() > 0){
+					for (Entry<Long, GovtWorksVO> entry : map.entrySet()) {
+						if(overallWorksKmsObjList[0] != null && Long.parseLong(overallWorksKmsObjList[0].toString()) > 0l){
+							entry.getValue().setTotalWorks(Long.parseLong(overallWorksKmsObjList[0].toString()));
+							entry.getValue().setCompletedPercentage((entry.getValue().getStatusWorks()*100.00)/entry.getValue().getTotalWorks());
+						}
+						
+						if(overallWorksKmsObjList[1] != null && Double.parseDouble(overallWorksKmsObjList[1].toString()) > 0.00){
+							entry.getValue().setTotalKms(Double.parseDouble(overallWorksKmsObjList[1].toString()));
+							entry.getValue().setCompletedKmsPercentage((entry.getValue().getStatusKms()*100.00)/entry.getValue().getTotalKms());
+						}
+					}
+				}
+				
+				voList.addAll(map.values());
+			}
+		} catch (Exception e) {
+			LOG.error("Exception occured while getting the status wise works and kilometers", e);
+		}
+		return voList;
+	}
 	
+	public List<GovtWorksVO> getLOCATIONWISEOVERVIEW(MobileAppInputVO inputVO){
+		List<GovtWorksVO> voList = new ArrayList<GovtWorksVO>(0);
+		try {
+			//0-statusId,1-statusName,2-kms,3-locationId(,4-workZoneId,5-workzonename)
+			List<Object[]> objList = govtWorkProgressDAO.getLOCATIONWISEOVERVIEW(inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getDistrictId(),inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),inputVO.getWorkZone());
+			
+			if(objList != null && objList.size() > 0){
+				//0-statusTypeId,1-statusType,2-govtWorkStatusId,3-govtWorkStatus
+				List<Object[]> allStatusObjList = govtWorkStatusDAO.getAllStatusOfWorkType(inputVO.getWorkTypeId());
+					
+				Map<Long,GovtWorksVO> finalMap = new HashMap<Long, GovtWorksVO>();
+				List<Long> locationIds = new ArrayList<Long>(0);//for location Names
+				
+				for (Object[] obj : objList) {
+					locationIds.add(Long.parseLong(obj[3].toString()));
+					
+					GovtWorksVO matchedLocationVo = finalMap.get(Long.parseLong(obj[3].toString()));
+					if(matchedLocationVo == null){
+						matchedLocationVo = new GovtWorksVO();
+						matchedLocationVo.setLocationValue(Long.parseLong(obj[3].toString()));
+						finalMap.put(Long.parseLong(obj[3].toString()),matchedLocationVo);
+						
+						matchedLocationVo = finalMap.get(Long.parseLong(obj[3].toString()));
+					}
+					
+					//0-statusId,1-statusName,2-kms,3-locationId(,4-workZoneId,5-workzonename)
+					if(inputVO.getWorkZone().equals("yes")){
+						GovtWorksVO matchedWorkVO = getmatchedWorkVO(matchedLocationVo.getWorksList(), Long.parseLong(obj[4].toString()));
+						if(matchedWorkVO == null){
+							matchedWorkVO = new GovtWorksVO();
+							matchedWorkVO.setWorkId(Long.parseLong(obj[4].toString()));
+							matchedWorkVO.setWorkName(obj[5].toString());
+							
+							if(allStatusObjList != null && allStatusObjList.size() > 0){
+								matchedWorkVO.setStatusList(setStatusList(allStatusObjList));
+							}
+							
+							matchedLocationVo.getWorksList().add(matchedWorkVO);
+							matchedWorkVO = getmatchedWorkVO(matchedLocationVo.getWorksList(), Long.parseLong(obj[4].toString()));
+						}
+						
+						//set status
+						GovtWorksVO matchedStatusVO = getMatchedWorkStatusVO1(matchedWorkVO.getStatusList(), Long.parseLong(obj[0].toString()));
+						if(matchedStatusVO != null){
+							matchedStatusVO.setTotalKms(Double.parseDouble(obj[2].toString()));
+						}
+					}else{
+						if(matchedLocationVo.getStatusList().size() == 0){
+							matchedLocationVo.setStatusList(setStatusList(allStatusObjList));
+						}
+						
+						GovtWorksVO matchedStatusVO = getMatchedWorkStatusVO1(matchedLocationVo.getStatusList(), Long.parseLong(obj[0].toString()));
+						if(matchedStatusVO != null){
+							matchedStatusVO.setTotalKms(Double.parseDouble(obj[2].toString()));
+						}
+					}
+				}
+				
+				if(finalMap != null && finalMap.size() > 0 && locationIds.size() > 0){
+					List<Object[]> locationNamesObjList = null;
+					if(inputVO.getLocationScopeId() == 3l){
+						locationNamesObjList = districtDAO.getDistrictIdAndNameByDistrictIds(locationIds);
+					}else if(inputVO.getLocationScopeId() == 12l){
+						locationNamesObjList = divisionDAO.getDivisionIdAndNameByIds(locationIds);
+					}else if(inputVO.getLocationScopeId() == 13l){
+						locationNamesObjList = subDivisionDAO.getSubDivisionIdAndNameByIds(locationIds);
+					}else if(inputVO.getLocationScopeId() == 5l){
+						locationNamesObjList = tehsilDAO.getTehsilIdAndNameByIds(locationIds);
+					}else if(inputVO.getLocationScopeId() == 6l){
+						locationNamesObjList = panchayatDAO.getPanchayatIdAndNameByIds(locationIds);
+					}
+					
+					Map<Long,String> locationNamesMap = new HashMap<Long, String>();
+					if(locationNamesObjList != null && locationNamesObjList.size() > 0){
+						for (Object[] objects : locationNamesObjList) {
+							locationNamesMap.put((Long)objects[0], objects[1].toString());
+						}
+					}
+					
+					for (Entry<Long, GovtWorksVO> entry : finalMap.entrySet()) {
+						entry.getValue().setLocation(locationNamesMap.get(entry.getKey()));
+						//calculation totals and %'s
+						if(inputVO.getWorkZone().equals("yes")){
+							if(entry.getValue().getWorksList() != null && entry.getValue().getWorksList().size() > 0){
+								for (GovtWorksVO worksVO : entry.getValue().getWorksList()) {
+									if(worksVO.getStatusList() != null && worksVO.getStatusList().size() > 0){
+										Double totalLength = 0.00;
+										for (GovtWorksVO statusVO : worksVO.getStatusList()) {
+											totalLength = totalLength+statusVO.getTotalKms();
+										}
+										
+										if(totalLength > 0.00){
+											worksVO.setTotalKms(totalLength);
+											for (GovtWorksVO statusVO : worksVO.getStatusList()) {
+												statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/totalLength);
+											}
+										}
+									}
+								}
+							}
+						}else{
+							if(entry.getValue().getStatusList() != null && entry.getValue().getStatusList().size() > 0){
+								Double totalLength = 0.00;
+								for (GovtWorksVO statusVO : entry.getValue().getStatusList()) {
+									totalLength = totalLength+statusVO.getTotalKms();
+								}
+								
+								if(totalLength > 0.00){
+									entry.getValue().setTotalKms(totalLength);
+									for (GovtWorksVO statusVO : entry.getValue().getStatusList()) {
+										statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/totalLength);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured at getLOCATIONWISEOVERVIEW", e);
+		}
+		return voList;
+	}
 	
+	public GovtWorksVO getMatchedWorkStatusVO1(List<GovtWorksVO> voList, Long statusId){
+		if(voList != null && voList.size() > 0){
+			for (GovtWorksVO govtWorksVO : voList) {
+				if(govtWorksVO.getStatusId().equals(statusId))
+					return govtWorksVO;
+			}
+		}
+		return null;
+	}
 	
+	public List<GovtWorksVO> setStatusList(List<Object[]> statusObjList){
+		List<GovtWorksVO> voList = new ArrayList<GovtWorksVO>(0);
+		if(statusObjList != null && statusObjList.size() > 0){
+			for (Object[] objects : statusObjList) {
+				GovtWorksVO vo = new GovtWorksVO();
+				vo.setStatusId((Long)objects[3]);
+				vo.setStatus(objects[4].toString());
+				voList.add(vo);
+			}
+		}
+		return voList;
+	}
 	
+	public GovtWorksVO getmatchedWorkVO(List<GovtWorksVO> voList,Long workId){
+		if(voList != null && voList.size() > 0){
+			for (GovtWorksVO govtWorksVO : voList) {
+				if(govtWorksVO.getWorkId().equals(workId))
+					return govtWorksVO;
+			}
+		}
+		return null;
+	}
 	
-	
-	
-	
-	
+	public GovtMainWorkVO getLocationLevelWiseOverviewDetails(Long locationScopeId,Long locationValue,Long workTypeId){
+		GovtMainWorkVO finalVo = new GovtMainWorkVO();
+		try {
+			//0-workcount,1-worklength
+			Object[] objArr = govtWorkDAO.getAllworkZonesOfLocation(locationScopeId,locationValue,workTypeId);
+			Object estimationCostObj = govtMainWorkDAO.getEstimationCosrOfLocationBasedMainWorks(locationScopeId,locationValue,workTypeId);
+			//0-completedworkcount,1-completedworklength
+			Object[] completedObjArr = govtWorkDAO.getCompletedWorksDetailsOfLocation(locationScopeId,locationValue,workTypeId);
+			
+		} catch (Exception e) {
+			LOG.error("exception occured at getLocationLevelWiseOverviewDetails", e);
+		}
+		return finalVo;
+	}
 	
 	
 	

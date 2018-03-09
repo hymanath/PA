@@ -26,6 +26,8 @@ public class MobileAppInputVO {
 	private Long statusId;
 	private Long districtId,divisonId,subDivisonId,mandalId;
 	private Long locationLevelId;
+	private String workZone;
+	private Long locationValue;
 	
 	
 	public String getUserName() {
@@ -177,6 +179,18 @@ public class MobileAppInputVO {
 	}
 	public void setLocationLevelId(Long locationLevelId) {
 		this.locationLevelId = locationLevelId;
+	}
+	public String getWorkZone() {
+		return workZone;
+	}
+	public void setWorkZone(String workZone) {
+		this.workZone = workZone;
+	}
+	public Long getLocationValue() {
+		return locationValue;
+	}
+	public void setLocationValue(Long locationValue) {
+		this.locationValue = locationValue;
 	}
 	
 }
