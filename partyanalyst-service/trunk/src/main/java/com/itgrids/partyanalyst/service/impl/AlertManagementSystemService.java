@@ -16828,6 +16828,23 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				//0-id,1-name,categoryCount-2,3-categoryId
 			dataObjList = alertDAO.getJalavanilocationOverview(startDate,endDate,inputVo.getSearchType(),inputVo.getType(),inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getAlertCategoryId());
 			setLocationOverviewData(dataObjList,finalVoList);
+		
+			if(finalVoList != null && finalVoList.size() >0){
+				for (AlertVO locationVo : finalVoList){
+					Long totalCount=locationVo.getSatisfiedCount()+locationVo.getUnSatisfiedCount()+locationVo.getCount();
+					locationVo.setCount1(totalCount);
+				}
+				for (AlertVO locationVo : finalVoList){
+					if(locationVo.getSatisfiedCount() ==2l){
+						locationVo.setPrintPerc(calculatePercantage(locationVo.getSatisfiedCount(),locationVo.getCount1()));
+					}else if(locationVo.getUnSatisfiedCount() == 3l){
+						locationVo.setElectPerc(calculatePercantage(locationVo.getUnSatisfiedCount(),locationVo.getCount1()));
+					}else if(locationVo.getCount() == 4l){
+						locationVo.setStatusPercent(calculatePercantage(locationVo.getCount(),locationVo.getCount1()));
+					}
+				}
+			}
+		
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
 		}
@@ -16836,21 +16853,32 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	public void setLocationOverviewData(List<Object[]> objList,List<AlertVO> finalList){
 		if(objList !=null && objList.size() >0){
 			for (Object[] obj : objList){
-				AlertVO vo = new AlertVO();
+				AlertVO matchedVO = getmatchedVo(finalList,(Long)obj[0]);
 				
-				vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
-				vo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
-				
-				if((Long)obj[3] == 2l){//Print
-					vo.setSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
-				}else if((Long)obj[3] == 3l){//Electronic
-					vo.setUnSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
-				}else if((Long)obj[3] == 4l){//call enter
-					vo.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				if(matchedVO == null){
+					matchedVO = new AlertVO();
+					matchedVO.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+					matchedVO.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+					matchedVO.setCategoryId(commonMethodsUtilService.getLongValueForObject(obj[3]));
+					
+					if((Long)obj[3] == 2l){//Print
+						matchedVO.setSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if((Long)obj[3] == 3l){//Electronic
+						matchedVO.setUnSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if((Long)obj[3] == 4l){//call enter
+						matchedVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}
+					finalList.add(matchedVO);
+					
+				}else{
+					if((Long)obj[3] == 2l){//Print
+						matchedVO.setSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if((Long)obj[3] == 3l){//Electronic
+						matchedVO.setUnSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if((Long)obj[3] == 4l){//call enter
+						matchedVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}
 				}
-				vo.setCount1(vo.getSatisfiedCount()+vo.getUnSatisfiedCount()+vo.getCount());
-				
-				finalList.add(vo);
 			}
 		}
 	}
