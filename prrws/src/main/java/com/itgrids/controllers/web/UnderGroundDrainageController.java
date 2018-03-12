@@ -303,8 +303,7 @@ public class UnderGroundDrainageController {
 	}
 	//get location level wise overview details - screen 3
 	
-	//web dashboard services -- end	
-	
+	//work zone click screen -5
 	public @ResponseBody GovtWorksVO getWorkZoneMainOverview(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-GovtWorkId
 			return underGroundDrainageService.getWorkZoneMainOverview(inputVO.getWorkId());
@@ -337,4 +336,7 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	}
+	//work zone click screen -5
+	
+	//web dashboard services -- end	
 }

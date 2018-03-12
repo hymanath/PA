@@ -9,10 +9,10 @@ public class GovtMainWorkVO implements Serializable{
 	private Long govtMainWorkId;
 	private String govtMainWork;
 	private Long worksCount;
-	private Long completedWorksCount;
+	private Long completedWorksCount=0l;
 	private Double totalKms;
 	private Double progressKms;
-	private Double completedKms;
+	private Double completedKms=0.00;
 	private Double completedPercentage;
 	private Long locationScopeId;
 	private Long locationValue;
