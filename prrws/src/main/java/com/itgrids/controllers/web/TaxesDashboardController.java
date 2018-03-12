@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
+import com.itgrids.dto.VehicleTrackingVO;
 import com.itgrids.dto.panchayatTaxInputVO;
 import com.itgrids.service.ITaxesDashBoardService;
 
@@ -62,5 +63,11 @@ public class TaxesDashboardController {
    @RequestMapping(value ="/vehicleTrackingDashboard",method = RequestMethod.GET)
    public String vehicleDashboard(ModelMap model) {
 		return "vehicleTrackingDashboard";
+   }
+   
+   @RequestMapping(value = "/getVehicletrackingDetails", method = RequestMethod.POST)
+   public @ResponseBody  VehicleTrackingVO  getVehicletrackingDetails() {
+	   VehicleTrackingVO  reusltVO = taxesDashBoardService.getVehicletrackingDetails();
+	   return reusltVO;
    }
 }
