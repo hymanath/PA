@@ -2721,5 +2721,10 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 	 return query.list();
 	  }
 
-
+	 public List<Long> getNominationPostCandidateIdNominatedPostApplicationIdsLsit(Long nominationPostCandidateId){
+			Query query = getSession().createQuery(" select distinct model.nominatedPostApplicationId from NominatedPostApplication model where " +
+					" model.nominationPostCandidateId = :nominationPostCandidateId  and model.isDeleted='N' and model.isExpired='N' ");
+			query.setParameter("nominationPostCandidateId", nominationPostCandidateId);
+			return query.list();
+		}
 	}

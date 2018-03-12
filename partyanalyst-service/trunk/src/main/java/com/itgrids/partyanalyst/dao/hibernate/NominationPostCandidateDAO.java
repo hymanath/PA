@@ -7,6 +7,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.model.NominationPostCandidate;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class NominationPostCandidateDAO extends GenericDaoHibernate<NominationPostCandidate, Long> implements INominationPostCandidateDAO{
 
@@ -186,4 +187,28 @@ public List<Long> getNominatedPostCondidates(Long tdpCadreId){
 	 return query.list();
 	 
  }
+ 			
+ public int deleteNominationPostCandidate(Long userId,List<Long> nominationPostCandidateIdsList,Long reasonId, String remark){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" update NominationPostCandidate model set model.updatedTime =:updatedTime,model.updatedBy=:userId, model.isDeleted ='Y', " +
+	 		" model.cadreDeletedReasonId =:reasonId, model.deletedRemarks =:remark  where model.isDeleted ='N' and " +
+	 		" model.nominationPostCandidateId  in (:nominationPostCandidateIdsList) ");
+	 Query query = getSession().createQuery(sb.toString());
+	 query.setParameter("userId", userId);
+	 query.setParameter("reasonId", reasonId);
+	 query.setParameter("remark", remark);
+	 query.setParameter("updatedTime", new DateUtilService().getCurrentDateAndTime());
+	 query.setParameterList("nominationPostCandidateIdsList", nominationPostCandidateIdsList);
+	 return query.executeUpdate();
+ }
+ 
+ public List<Long> getTdpCadreIdForNominationPostCandidateId(Long tdpCadreId){
+	 StringBuilder sb = new StringBuilder();
+	 sb.append(" select distinct model.nominationPostCandidateId from NominationPostCandidate model" +
+	 		" where model.isDeleted = 'N' and model.tdpCadreId=:tdpCadreId ");
+	 Query query = getSession().createQuery(sb.toString());
+	 query.setParameter("tdpCadreId", tdpCadreId);
+	 return query.list();
+ }
+ 
 }
