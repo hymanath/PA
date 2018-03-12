@@ -3353,4 +3353,12 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		 }
 		 return query.list();
 	 }
+	 
+	 public List<Long> getNominationPostCandidateIdNominatedPostIdsLsit(Long nominationPostCandidateId){
+			Query query = getSession().createQuery(" select distinct model.nominatedPostId from NominatedPost model where " +
+					" model.nominationPostCandidateId = :nominationPostCandidateId  and model.isDeleted='N' and model.isExpired='N' ");
+			query.setParameter("nominationPostCandidateId", nominationPostCandidateId);
+			return query.list();
+		}
+	 
 }
