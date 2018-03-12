@@ -8,6 +8,9 @@ var globalDepartmentId = 0 ;
 var globalDepartmentName;
 var globalBoardName;
 
+var attr_nomination_post_candidate_id=0;
+var attr_tdp_cadre_id=0;
+
 function getBoardLevelId(boardLevelId,stateId){
 	globalLocationLevelValueArr = [];
 	globalLocationLevelId = boardLevelId;
@@ -742,7 +745,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				}
 				str+='</td>';
 				
-				str+='<td style="position:relative" class="text-center">';
+				str+='<td style="position:relative;width:20px;" class="text-center">';
 					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount >0){
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
 						/*str+='<div class="appliedPostPopup">';
@@ -755,7 +758,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 					}
 				str+='</td>';
 				//srujana
-				str+='<td style="position:relative" class="text-center">';
+				str+='<td style="position:relative;width:20px;" class="text-center">';
 					if(result.subList[i].shortListedCount != null && result.subList[i].shortListedCount > 0){
 						str+='<span class="appliedCount" attr_cand_id="'+result.subList[i].nominatedPostCandidateId+'" attr_divId="shortyListedTableId'+i+'" attr_type="shortlisted" style="font-weight:bold;color:green;">'+result.subList[i].shortListedCount+'</span>';
 						str+='<div class="appliedPostPopup">';
@@ -797,6 +800,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 
 					//str+='<img src="dist/nominatedImages/Icon4.png" style="height:28px;"/> ';
 					str+='<button class="btn btn-success updateBtnDrop statusUpdateBntCls" attr_nominatedPostApplicationId="'+result.subList[i].nominatedPostApplicationId+'" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
+					//str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 					str+='<div class="updateDropDown" style="width:1100px;">';
 						if(gblStatus!="finaliZed"){
 							str+='<div class="updateDropDownArrow">';
@@ -1903,6 +1907,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	str+='</table>';
 	str+='<div class="row">';
 		str+='<div class="col-md-12 col-xs-12 col-sm-12">';
+		//str+='<i  style="cusor:pointer;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 		if(gblStatus=="finaliZed"){
 			str+='<button class="btn btn-success btnUpdateAll m_top20" attr_department_id="'+departmentId+'" attr_doard_id="'+boardId+'" attr_position_id="'+positionId+'">UPDATE</button>';
 		}

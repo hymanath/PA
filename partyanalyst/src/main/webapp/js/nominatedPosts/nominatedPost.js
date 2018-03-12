@@ -3445,3 +3445,21 @@ function getApplicationDocuments(cadreId,candiId,applicationId,statusId,applicat
 	  
 	}  
    });
+   
+   function checkIsEligibleToaddOrNotAction(){
+			var jsObj={
+					deptId :departmentId,
+					boardId:boardId
+					
+			}
+			$.ajax({
+				type:"POST",
+				url :"checkIsEligibleToaddOrNotAction.action",
+				dataType: 'json',
+				data: {task:JSON.stringify(jsObj)}
+			}).done(function(result){
+			   //if(result !=null && result.length > 0){
+				  buildUploadedDocuments(result,statusId,applicationType);
+			   //}   
+	   });	
+	  }

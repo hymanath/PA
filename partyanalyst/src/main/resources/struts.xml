@@ -18958,5 +18958,10 @@
 			<param name="root">resultStatus</param>
 		</result>
 	</action>
+	<action name="checkIsEligibleToaddOrNotAction" class="nominatedPostProfileAction" method="checkIsEligibleToaddOrNot">
+			<result type="json" name="success">
+				<param name="root">status</param>
+			</result>
+	</action>
  </package>
 </struts>

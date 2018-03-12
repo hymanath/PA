@@ -2470,5 +2470,18 @@ public String execute()
 		return Action.SUCCESS;
 	}
 	
+	public String checkIsEligibleToaddOrNot(Long deptId,Long boardId){
+		try{
+			
+			LOG.info("Entered into nominatedPostProfileAction of checkIsEligibleToaddOrNot() ");
+			jObj = new JSONObject(getTask());
+			Long departmentId = jObj.getLong("deptId") ;
+			Long boardIds = jObj.getLong("boardId");
+			status = nominatedPostProfileService.isEligibleToAdd(departmentId,boardIds);
+		}catch(Exception e){
+			LOG.error("Exception raised into nominatedPostProfileAction of checkIsEligibleToaddOrNot() ",e);
+		}
+		return Action.SUCCESS;
+	}
 	
 }
