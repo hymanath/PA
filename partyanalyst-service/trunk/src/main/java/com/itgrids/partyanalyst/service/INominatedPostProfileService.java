@@ -94,6 +94,5 @@ public interface INominatedPostProfileService {
 	 public List<CadrePerformanceVO> getCampDetails(List<Long> tdpCadreIdsList);
 	 public List<EventDetailsVO> getMahanaduEventDetilsByCadreIdDetils(Long parentEventId,Long tdpCadreId);
 	 public ResultStatus saveNominatedPostProfileDtls(final NominatedPostDetailsVO nominatedPostDtlsVO,final Long userId,final Map<File,String> mapfiles);
-		 
-	 
+	 public String UpdateExpiredAppicationsForCandidate(final Long userId,Long nominationPostCandidateId, Long tdpCadreId,String remarks, Long reasonId);
 }
