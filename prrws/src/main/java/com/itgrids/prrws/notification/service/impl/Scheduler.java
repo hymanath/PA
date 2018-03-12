@@ -1,6 +1,7 @@
 package com.itgrids.prrws.notification.service.impl;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -14,6 +15,7 @@ import com.itgrids.service.IConstituencyWiseWorkStatusService;
 import com.itgrids.service.IItcDashboardService;
 import com.itgrids.service.ILightMonitoring;
 import com.itgrids.service.ISolidWasteManagementService;
+import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.impl.INREGSTCSService;
 import com.itgrids.tpi.rws.service.IRWSNICService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
@@ -39,6 +41,12 @@ public class Scheduler {
     private INREGSTCSService nregstcsService;
     @Autowired
     private ISolidWasteManagementService  solidWasteManagementService;
+    
+    @Autowired
+    private IWebserviceHandlerService webserviceHandlerService;
+    
+    @Autowired
+    private DateUtilService dateUtilService;
     
 
 	//@Scheduled(cron = "0 30 2,14 * * * ")
@@ -222,6 +230,22 @@ public class Scheduler {
 			LOG.error("Cron Job For Field Man Days Started");
 			nregstcsService.savingFieldManDaysService();
 			LOG.error("Cron Job For Field Man Days Completed");
+		}
+		else 
+			return;
+	}
+	
+	@Scheduled(cron ="0 0/30 * * * ?")
+	public void webserviceDataSaveJob()
+	{
+		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+		{	
+			Date startTime = dateUtilService.getCurrentDateAndTime();
+			LOG.fatal("Cron Job For webserviceDataSaveJob Started @ - "+startTime);
+			webserviceHandlerService.webserviceDataSaveJob();
+			Date endTime = dateUtilService.getCurrentDateAndTime();
+			LOG.fatal("Cron Job For webserviceDataSaveJob Completed @ - "+endTime);
+			LOG.fatal("Toal Time Taken for Cron Job For webserviceDataSaveJob - "+((endTime.getTime()-startTime.getTime())/1000)+" Seconds");
 		}
 		else 
 			return;
