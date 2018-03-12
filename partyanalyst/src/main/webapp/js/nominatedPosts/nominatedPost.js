@@ -1099,6 +1099,7 @@ function getNominatedPostApplication(startIndex)
 							str+='<li class="yes" style="width: 49px;margin :0px;">2010<span></span></li>&nbsp;';
 						else
 							str+='<li class="no" style="width: 49px;margin :0px;">2010<span></span></li>&nbsp;';
+						    //str+='<i style ="margin-left:28px;;cursor:pointer;color:red;" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 					}
 					else
 					{
