@@ -406,7 +406,7 @@ function deleteFavouriteComponent(blockName,blockId){
 	});		
 }
 
-var gblEndDate =  moment().format('DD-MM-YYYY');
+var gblEndDate = moment().format("YYYY-MM")+'-31';// moment().format('DD-MM-YYYY');
 var overViewArr = ['Labour Budget','Farm Ponds','IHHL','Vermi Compost','SMC Trench','Imp to CD','MPT_PT','GC Works','CD_CW','GH','Check Dam','Rock fill dams','Solid Waste Management','Burial Ground','Play fields','Agriculture Activities','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','CC Roads1','Anganwadi','GP Buildings1','Mandal buildings1','NTR 90 Days','Production of Bricks','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','Nurseries','Payments','FAperformance','OPGK-Perinnials','OPGK-Annuals','UGDrainage'];
 function onloadCallToGetAllBlockAchievent () {
 	getPrisOverAllAchievd(); // Pris
@@ -462,7 +462,7 @@ function onloadCallToGetAllBlockAchievent () {
 	getTaxesAndCategoryWiseOverViewDetails();//Taxes
 	getEMeetingsOverViewDetails();//eMeetings
 	getVehicletrackingDetails();//Vehicle Tracking
-	for(var i in globalComponentNameArr)
+	for(var i in globalComponentNameArr) 
 	{
 		if(globalComponentNameArr[i] == 'NTR 90 Days' || globalComponentNameArr[i] == 'Production of Bricks' || globalComponentNameArr[i] == 'Cattle Drinking Water Troughs' || globalComponentNameArr[i] == 'Raising of Perinnial Fodders' || globalComponentNameArr[i] == 'Fish Ponds' || globalComponentNameArr[i] == 'Fish Drying Platforms' || globalComponentNameArr[i] == 'NTR Rural House' || globalComponentNameArr[i] == 'OPGK-Perinnials' || globalComponentNameArr[i] == 'OPGK-Annuals')
 		{
@@ -617,8 +617,8 @@ function getBasicLedOverviewDetails(){
 	var locationType="";
 	var locationValue=0;
 	var json = {
-		fromDate:gblEndDate, // for led start date and end date is smae
-		toDate:gblEndDate,
+		fromDate:moment().format('DD-MM-YYYY'), // for led start date and end date is smae
+		toDate:moment().format('DD-MM-YYYY'),
 		locationType:locationType,
 		locationValue:locationValue
 	}
@@ -810,13 +810,13 @@ function getMeesevaKPIOverViewDetails(){
 	});	
 }
  
-var nregsDate = moment().format('YYYY-MM-DD');
+var nregsDate = moment().format("YYYY-MM")+'-31';//moment().format('YYYY-MM-DD');
 function getNregsLabourBudgetOverAllAchievent()
 {
 	$(".MGNREGSAllCls").html(spinner);
 	var json = {
 		year : "2017",
-		fromDate : "2016-04-31",
+		fromDate : "2017-04-31",
 		toDate : nregsDate,
 		locationType: "state",
 		divType : "Labour Budget",
@@ -1111,11 +1111,11 @@ function getNREGSAbstractDataByType(type)
 	}else{
 		var json = {
 			year : "2017",
-			fromDate : '2017-04-01',
-			toDate : moment().format("YYYY-MM-DD"),
+			fromDate : '2017-04-31',
+			toDate : moment().format("YYYY-MM")+'-31',//moment().format("YYYY-MM-DD"),
 			type : type,
 			locationType: "state",
-			locationId : "-1"
+			locationId : "0"
 		}
 	}
 	
