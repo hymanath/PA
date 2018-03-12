@@ -3694,4 +3694,7 @@
 		<bean id="paymentTransactionInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.PaymentTransactionInfoDAO">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
+		<bean id="nominatedPostAccessMultiplePositionsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessMultiplePositionsDetailsDAO">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
 </beans>
