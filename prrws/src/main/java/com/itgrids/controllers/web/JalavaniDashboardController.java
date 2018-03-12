@@ -78,4 +78,14 @@ public class JalavaniDashboardController {
 		}
 		return returnList;
 	}
+	@PostMapping("/getJalavanilocationOverview")
+	public @ResponseBody List<AlertVO> getJalavanilocationOverview(@RequestBody JalavaniAlertsInputVO inputVO) {
+		List<AlertVO> returnList = new ArrayList<AlertVO>(0);
+		try {
+			returnList = jalavaniDashboardService.getJalavanilocationOverview(inputVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised at getJalavanilocationOverview - JalavaniDashboardController controller",e);
+		}
+		return returnList;
+	}
 }

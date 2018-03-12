@@ -364,4 +364,41 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
    	 }
    	 return returnList;
    }
+   public  List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVO){
+    	List<AlertVO> returnList = new ArrayList<AlertVO>();
+   	 try {
+   		  //WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationOverview");
+		   
+   			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/PartyAnalyst/WebService/getJalavanilocationOverview");
+			
+   			ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
+		        if (response.getStatus() != 200) {
+		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	     } else {
+		 	    	String output = response.getEntity(String.class);
+		 	    	if(output != null && !output.isEmpty()){
+		 	    		JSONArray finalArray = new JSONArray(output);
+		 	    		if(finalArray!=null && finalArray.length()>0){
+		 	    			for(int i=0;i<finalArray.length();i++){
+		 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+		 	    				AlertVO vo = new AlertVO();
+		 	    				
+		 	    				vo.setId(jObj.getLong("id"));
+		 	    				vo.setName(jObj.getString("name"));
+		 	    				
+		 	    				vo.setPrintCount(jObj.getLong("satisfiedCount"));
+		 	    				vo.setElectCount(jObj.getLong("unSatisfiedCount"));
+		 	    				vo.setFeedbackCount(jObj.getLong("count"));//feedback is nothing but call enters count
+		 	    				vo.setTotalNewsCnt(jObj.getLong("count1"));
+		 	    				
+		 	    				returnList.add(vo);
+		 	    			}
+		 	    		}
+		 	    	}
+		 	   } 
+   	 }catch (Exception e ){
+   		LOG.error(" Exception occured at getJalavanilocationOverview() in JalavaniDashboardService class ", e);
+   	 }
+   	 return returnList;
+   }
 }
