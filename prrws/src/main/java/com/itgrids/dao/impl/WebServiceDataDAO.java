@@ -59,6 +59,15 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 		return query.list();
 	}
 
-	
-	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getWebserviceDataDetails()
+	{
+		Query query = getSession().createQuery("SELECT model.webservice.webserviceId,model.webservice.url,model.webservice.methodType," +
+				" model.inputData,COUNT(model.webServiceDataId) AS CNT FROM WebServiceData model " +
+				" WHERE model.webservice.webserviceCallType IS NOT NULL AND model.webservice.url IS NOT NULL AND model.webservice.methodType IS NOT NULL " +
+				" GROUP BY model.webservice.webserviceId,model.inputData " +
+				" ORDER BY CNT DESC ");
+		
+		return query.list();
+	}
 }
