@@ -309,4 +309,5 @@ public interface IWebServiceHandlerService {
     public List<AlertVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputvo);
     public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo);
     public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId);
+    public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputvo);
 }

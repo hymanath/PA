@@ -5835,4 +5835,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return null;
 	}
+	public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputvo){
+		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavanilocationOverview(inputvo);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavanilocationOverview  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
 }
