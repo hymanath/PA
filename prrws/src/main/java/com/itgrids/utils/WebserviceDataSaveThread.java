@@ -17,8 +17,9 @@ public class WebserviceDataSaveThread implements Runnable{
 	private String requestMethod;
 	private Long webserviceId;
 	private String inputData;
+	private String insertSource;
 	
-	public WebserviceDataSaveThread(String url,Object input,String requestMethod,Long webserviceId,String inputData,
+	public WebserviceDataSaveThread(String url,Object input,String requestMethod,Long webserviceId,String inputData,String insertSource,
 			IWebserviceHandlerService webserviceHandlerService,WebServiceUtilService webServiceUtilService)
 	{
 		this.url = url;
@@ -26,6 +27,7 @@ public class WebserviceDataSaveThread implements Runnable{
 		this.requestMethod = requestMethod;
 		this.webserviceId = webserviceId;
 		this.inputData = inputData;
+		this.insertSource = insertSource;
 		this.webserviceHandlerService = webserviceHandlerService;
 		this.webServiceUtilService = webServiceUtilService;
 	}
@@ -40,6 +42,7 @@ public class WebserviceDataSaveThread implements Runnable{
 				WebserviceVO webserviceVO = new WebserviceVO();
 				webserviceVO.setWebserviceId(webserviceId);
 				webserviceVO.setInputData(inputData);
+				webserviceVO.setInsertSource(insertSource);
 				String resStr = clientResponse.getEntity(String.class);
 				webserviceVO.setResponseData(resStr != null ? resStr.trim() : null);
 				
