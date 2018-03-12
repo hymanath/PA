@@ -113,8 +113,22 @@ public class AlertVO {
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	private Long count1 = 0l;
 	private Long issueCategoryId;
+	private Double printPerc = 0.0d;
+	private Double electPerc = 0.0d;
 	
 	
+	public Double getPrintPerc() {
+		return printPerc;
+	}
+	public void setPrintPerc(Double printPerc) {
+		this.printPerc = printPerc;
+	}
+	public Double getElectPerc() {
+		return electPerc;
+	}
+	public void setElectPerc(Double electPerc) {
+		this.electPerc = electPerc;
+	}
 	public Long getCount1() {
 		return count1;
 	}
