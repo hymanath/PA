@@ -86,4 +86,5 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	 public List<Object[]> getDepartMentAndBoardWisePositinsStatusCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,List<Long> statusIdsList);
 	 public List<Object[]> getDepartMentWiseBoards(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,Long statusId,Long departMentId);
 	 public List<Object[]> getBoardWisePositions(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,Long statusId,Long boardId);
+	 public List<Long> getNominationPostCandidateIdNominatedPostIdsLsit(Long nominationPostCandidateId);
 }

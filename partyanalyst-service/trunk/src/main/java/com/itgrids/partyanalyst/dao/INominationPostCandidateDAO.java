@@ -18,4 +18,6 @@ public interface INominationPostCandidateDAO extends GenericDao<NominationPostCa
 	public List<Object[]>  updateCadresearch(String searchType,String searchValue);
 	public List<Long> getNominatedPostCondidates(Long tdpCadreId);
 	public List<Long> getNominatedPstCandidateIds(List<Long> tdpCadreIds);
+	public int deleteNominationPostCandidate(Long userId,List<Long> nominationPostCandidateIdsList,Long reasonId, String remark);
+	public List<Long> getTdpCadreIdForNominationPostCandidateId(Long tdpCadreId);
 }
