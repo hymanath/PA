@@ -3,6 +3,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import javax.transaction.Transactional;
 
@@ -172,9 +173,12 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 	public void saveWebserviceDataUsingThread(String url,Object input,String requestMethod,Long webserviceId,String inputData)
 	{
 		try{
-			executor.execute(new WebserviceDataSaveThread(url,input,requestMethod,webserviceId,inputData,
-					applicationContext.getBean("webserviceHandlerService",IWebserviceHandlerService.class),
-					applicationContext.getBean("webServiceUtilService",WebServiceUtilService.class)));
+			if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
+			{
+				executor.execute(new WebserviceDataSaveThread(url,input,requestMethod,webserviceId,inputData,IConstants.INSERT_SOURCE_LIVE,
+						applicationContext.getBean("webserviceHandlerService",IWebserviceHandlerService.class),
+						applicationContext.getBean("webServiceUtilService",WebServiceUtilService.class)));
+			}
 		}catch(Exception e)
 		{
 			LOG.error(e);
@@ -211,6 +215,7 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 				webServiceData.setResponceData(webserviceVO.getResponseData());
 				webServiceData.setDataDate(dateUtilService.getCurrentDateAndTime());
 				webServiceData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+				webServiceData.setInsertSource(webserviceVO.getInsertSource());
 				webServiceData.setIsDeleted("N");
 				
 				webServiceDataDAO.save(webServiceData);
@@ -239,4 +244,59 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 		return webserviceVO;
 	}
 	
+	public void webserviceDataSaveJob()
+	{
+		try{
+			List<Object[]> list = webServiceDataDAO.getWebserviceDataDetails();
+			
+			if(list != null && list.size() > 0)
+			{
+				LOG.fatal("Total Webservices - "+list.size());
+				
+				ExecutorService jobExecutor = Executors.newFixedThreadPool(100);
+				for(Object[] params : list)
+				{
+					try{
+						Long webserviceId = (Long) params[0];
+						String url =  params[1].toString();
+						String methodType =  params[2].toString();
+						String input =  params[3] != null ? params[3].toString() : "";
+						
+						if(input.startsWith("\""))
+							input = input.substring(1);
+						
+						if(input.endsWith("\""))
+							input = input.substring(0,input.length()-1);
+						
+						String inputData =  input;
+						
+						if(methodType.equalsIgnoreCase(IConstants.REQUEST_METHOD_GET))
+						{
+							url = url+"?"+input;
+							input = null;
+						}
+						
+						jobExecutor.execute(new WebserviceDataSaveThread(url,input,methodType,webserviceId,inputData,IConstants.INSERT_SOURCE_JOB,
+								applicationContext.getBean("webserviceHandlerService",IWebserviceHandlerService.class),
+								applicationContext.getBean("webServiceUtilService",WebServiceUtilService.class)));
+					}catch(Exception e)
+					{
+						LOG.error(e);
+					}
+				}
+				jobExecutor.shutdown();
+				
+				try {
+				    if (!jobExecutor.awaitTermination(60*9, TimeUnit.SECONDS)) {
+				    	jobExecutor.shutdownNow();
+				    } 
+				} catch (InterruptedException e) {
+					jobExecutor.shutdownNow();
+				}
+			}
+		}catch(Exception e)
+		{
+			LOG.error("Exception Occured in webserviceDataSaveJob() Method - ",e);
+		}
+	}
 }
