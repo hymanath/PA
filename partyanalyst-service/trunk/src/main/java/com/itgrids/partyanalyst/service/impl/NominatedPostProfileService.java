@@ -9144,6 +9144,60 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 			}
 			return statusVO;
 	}
+	  
+
+		public String UpdateExpiredAppicationsForCandidate(final Long userId,final Long nominationPostCandidateId, final  Long tdpCadreId,final String remark,final Long reasonId){
+			try {
+				Long deletedCandidatesCount = (Long) transactionTemplate.execute(new TransactionCallback() {
+					public Object doInTransaction(TransactionStatus arg0) {
+						int deletedCandsCount =0;
+						int expiredApplnCount =0;
+						int expiredGOsCount =0;
+						int expiredNPPostsCount =0;
+						List<Long> nominationPostCandidateIdsList =null;
+						if(nominationPostCandidateId == null || nominationPostCandidateId.longValue()==0L)
+							nominationPostCandidateIdsList = nominationPostCandidateDAO.getTdpCadreIdForNominationPostCandidateId(tdpCadreId);
+						
+						Date currentDate = dateUtilService.getCurrentDateAndTime();
+						List<Long> nominatedPostIdsLsist = nominatedPostDAO.getNominationPostCandidateIdNominatedPostIdsLsit(nominationPostCandidateId);
+						List<Long> applciationIdsList = nominatedPostApplicationDAO.getNominationPostCandidateIdNominatedPostApplicationIdsLsit(nominationPostCandidateId);
+						
+						if(commonMethodsUtilService.isListOrSetValid(applciationIdsList)){
+							nominatedPostFinalDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,userId,currentDate);
+							expiredApplnCount = nominatedPostApplicationDAO.updateApplicationExpiredByApplns(applciationIdsList,userId,currentDate);
+						}
+						
+						if(commonMethodsUtilService.isListOrSetValid(nominatedPostIdsLsist))
+						{
+							expiredGOsCount = nominatedPostGovtOrderDAO.updateApplicationExpiredByPostIds(nominatedPostIdsLsist,currentDate,userId);
+							expiredNPPostsCount = nominatedPostDAO.updatePoststoOpenByPostIds(nominatedPostIdsLsist,currentDate,userId);
+						}
+						
+						if(!commonMethodsUtilService.isListOrSetValid(nominationPostCandidateIdsList))
+							nominationPostCandidateIdsList= new ArrayList<Long>(0);
+						nominationPostCandidateIdsList.add(nominationPostCandidateId);
+						
+						deletedCandsCount = nominationPostCandidateDAO.deleteNominationPostCandidate(userId,nominationPostCandidateIdsList,reasonId,remark);
+						if(tdpCadreId != null && tdpCadreId.longValue()>0L){
+							ResultStatus status = cadreCommitteeService.saveRemovingCadreDetailsAction(tdpCadreId,reasonId,remark,userId);
+						}
+						
+						if(deletedCandsCount >0)
+							return Long.valueOf(String.valueOf(deletedCandsCount));
+						else
+							return 0;
+					}
+				});
+				
+				if(deletedCandidatesCount != null && deletedCandidatesCount.longValue()>0L)
+					return "success";
+			} catch (Exception e) {
+				LOG.error("Exception Occured in UpdateExpiredAppicationsForCandidate() method, Exception - ",e);
+				return "failure";
+			}
+			return "success";
+		}
+		
  }
 
 
