@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
+import com.itgrids.dto.VehicleTrackingVO;
 import com.itgrids.dto.panchayatTaxInputVO;
 import com.itgrids.service.ITaxesDashBoardService;
 import com.itgrids.service.IWebserviceHandlerService;
@@ -914,5 +915,72 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			LOG.error("Exception raised at getTaxTypeNameById  in TaxesDashBoardService service", e);
 		}
 		return name;
+	}
+	
+	/*
+	 * Author : Nandhini.k,
+	 * Description : To get Vehicle Tracking Details,
+	 * Date : 12/03/2018
+	 */
+	public VehicleTrackingVO getVehicletrackingDetails(){
+		VehicleTrackingVO returnVO = new VehicleTrackingVO();
+		try {
+			JSONObject dataObj = null;
+			JSONObject finalObj = null;
+			String url = null;
+			String output = null;
+			
+			//Off Field Vehicles
+			url = "http://rwstracking.com/dashboard/API/getvehicles.php";
+			output = webserviceHandlerService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
+			if(output == null){
+	 	    	throw new RuntimeException("Webservice Data Not Found."+url);
+	 	    }else{
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject outObj = new JSONObject(output);
+	 	    		String dataStr = outObj.has("data") ? outObj.get("data").toString():null;
+	 	    		if(dataStr != null){
+	 	    			dataObj = new JSONObject(dataStr);
+	 	    		}
+	 	    		String vehicleStr = dataObj.has("vehicles") ? dataObj.get("vehicles").toString():null;
+	 	    		if(vehicleStr != null){
+	 	    			finalObj = new JSONObject(vehicleStr);
+	 	    		}
+	 	    		if(finalObj != null){
+	 	    			returnVO.setOffFieldVehicles(finalObj.has("offfield_vehicles") ?  (Long.valueOf(!(finalObj.get("offfield_vehicles").toString().equalsIgnoreCase("null") || finalObj.get("offfield_vehicles").toString().equalsIgnoreCase("NA") || finalObj.get("offfield_vehicles").toString().isEmpty()) ? finalObj.get("offfield_vehicles").toString():"0")):0);
+	 	    		}
+	 	    	}
+	 	    		
+	 	   }
+			
+			//Pending Trips
+			url = "http://rwstracking.com/dashboard/API/gettrips.php";
+			output = webserviceHandlerService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
+			if(output == null){
+	 	    	throw new RuntimeException("Webservice Data Not Found."+url);
+	 	    }else{
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONObject outObj = new JSONObject(output);
+	 	    		String dataStr = outObj.has("data") ? outObj.get("data").toString():null;
+	 	    		if(dataStr != null){
+	 	    			dataObj = new JSONObject(dataStr);
+	 	    		}
+	 	    		String tripsStr = dataObj.has("trips") ? dataObj.get("trips").toString():null;
+	 	    		if(tripsStr != null){
+	 	    			finalObj = new JSONObject(tripsStr);
+	 	    		}
+	 	    		if(finalObj != null){
+	 	    			returnVO.setTargetTrips(finalObj.has("target_trips") ?  (Long.valueOf(!(finalObj.get("target_trips").toString().equalsIgnoreCase("null") || finalObj.get("target_trips").toString().equalsIgnoreCase("NA") || finalObj.get("target_trips").toString().isEmpty()) ? finalObj.get("target_trips").toString():"0")):0);
+	 	    			returnVO.setCompltedTrips(finalObj.has("completed_trips") ?  (Long.valueOf(!(finalObj.get("completed_trips").toString().equalsIgnoreCase("null") || finalObj.get("completed_trips").toString().equalsIgnoreCase("NA") || finalObj.get("completed_trips").toString().isEmpty()) ? finalObj.get("completed_trips").toString():"0")):0);
+	 	    			returnVO.setPendingTrips(returnVO.getTargetTrips()-returnVO.getCompltedTrips());
+	 	    			returnVO.setInProgressTrips(finalObj.has("inprogress_trips") ?  (Long.valueOf(!(finalObj.get("inprogress_trips").toString().equalsIgnoreCase("null") || finalObj.get("inprogress_trips").toString().equalsIgnoreCase("NA") || finalObj.get("inprogress_trips").toString().isEmpty()) ? finalObj.get("inprogress_trips").toString():"0")):0);
+	 	    		}
+	 	    	}	
+	 	   }
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getVehicletrackingDetails  in TaxesDashBoardService service", e);
+		}
+		return returnVO;
 	}
 }
