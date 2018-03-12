@@ -197,6 +197,45 @@
 		</div>
 	</div>
 </div>
+<!-- Modal for Remove cadre -->
+			<div class="modal fade" id="removeModalDivId">
+			  <div class="modal-dialog modal-sm">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="removeModalTitleId" style="color:red;">Removing Cadre</h4>
+				  </div>
+				  <div class="modal-body" id="ramoveModalBodyDivId">
+					<div id="errorDivId" style="color:red"></div>
+					<div id="successDivId"></div>
+					<div class="row">
+						<div class="col-md-12">
+							<div><b>Cadre Name :</b> <span id="cadreName"></span></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Reason <span style="color:red">*</span>:</b>
+								<select id="reasonSelectId" class="form-control">
+									<option value="0">Select Reason</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
+						</div>
+					</div>
+					</div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-primary btn-sm" id="saveRemovingCadreDetailsId">Remove</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+				  </div>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
@@ -205,6 +244,7 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/nominatedPosts/deleteCandidateNominatedPost.js"></script>
 <script type="text/javascript">
 
 var windowUrl = window.location.href;
@@ -492,9 +532,10 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='<td> - </td>';
 				
 				str+='<td>'+result.subList[i].status+'</td>';
-				str+='<td style="position:relative;">';
+				str+='<td style="position:relative; width:20%;" >';
 				if(type == "this"){
 					str+='<button class="btn btn-success btnPopup updateButtonCls" attr_selected_status_id="updatedStatusSelectId'+i+'" arrt_num="'+i+'">UPDATE</button>';
+					//str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId++'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 					str+='<div class="updateDropDown" id="updateDropDownId'+i+'">';
 						str+='<div class="updateDropDownArrow">';						
 						//str+='<div class="statusUpdateDivCls" id="statusUpdateDivId'+i+'"></div>';
@@ -517,7 +558,8 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					if(globalPositionId>0 && globalDeptId >0 && globalBoardId>0)
 						str+='<button class="btn btn-success btnPopupThisAny updateButtonThisAnyCls" attr_count="'+i+'">UPDATE</button>';
 					
-					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'" attr_applctnId="'+result.subList[i].nominatePostApplicationId+'">UPDATE</button>';
+					str+='<button class="btn btn-success btnPopupAny updateButtonAnyCls m_top10" attr_count="'+i+'" attr_applctnId="'+result.subList[i].nominatePostApplicationId+'" style="margin-right:20px;">UPDATE</button>';
+					//str+='<i attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 					str+='<div class="updateDropDownThisAny" id="updateDropDownThisAny'+i+'">';
 						str+='<div class="updateDropDownArrow">';
 						str+='<div class="text-success" id="successDivThisAnyId'+i+'"></div>';

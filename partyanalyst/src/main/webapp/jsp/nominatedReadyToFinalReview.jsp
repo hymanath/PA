@@ -315,12 +315,52 @@
 		</div>
 	</div>
 </div>
+<!-- Modal for Remove cadre -->
+			<div class="modal fade" id="removeModalDivId">
+			  <div class="modal-dialog modal-sm">
+				<div class="modal-content">
+				  <div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="removeModalTitleId" style="color:red;">Removing Cadre</h4>
+				  </div>
+				  <div class="modal-body" id="ramoveModalBodyDivId">
+					<div id="errorDivId" style="color:red"></div>
+					<div id="successDivId"></div>
+					<div class="row">
+						<div class="col-md-12">
+							<div><b>Cadre Name :</b> <span id="cadreName"></span></div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Reason <span style="color:red">*</span>:</b>
+								<select id="reasonSelectId" class="form-control">
+									<option value="0">Select Reason</option>
+								</select>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-12 m_top10">
+							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
+						</div>
+					</div>
+					</div>
+				  <div class="modal-footer">
+					<button type="button" class="btn btn-primary btn-sm" id="saveRemovingCadreDetailsId">Remove</button>
+					<button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Close</button>
+				  </div>
+				</div><!-- /.modal-content -->
+			  </div><!-- /.modal-dialog -->
+			</div><!-- /.modal -->
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mCustomScrollbar.js" type="text/javascript"></script>
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="js/nominatedPosts/nominatedReadyToFinalReview.js" type="text/javascript"></script>
+<script type="text/javascript" src="js/nominatedPosts/deleteCandidateNominatedPost.js"></script>
 <script src="newCoreDashBoard/Plugins/Date/moment.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script type="text/javascript" src="dragAndDropPhoto/js/customNominated.jquery.filter.min.js?v=1.0.5"></script>
