@@ -1,5 +1,10 @@
+
+var attr_nomination_post_candidate_id=0;
+var attr_tdp_cadre_id=0;
 $(document).on('click','.removeIconCls',function(){
-	
+	   attr_nomination_post_candidate_id = $(this).attr('attr_nomination_post_candidate_id');
+	   attr_tdp_cadre_id = $(this).attr('attr_tdp_cadre_id');
+	   
 	   $("#removeModalDivId").modal("show");
 	      getAllCadreDeleteReasons();
    })
@@ -16,7 +21,7 @@ $(document).on('click','.removeIconCls',function(){
 	  var reasonId = $("#reasonSelectId option:selected").val();
 	  var reason = $("#reasonSelectId option:selected").text();
 	  var remarkTxt = $("#remarkTextAreaId").val();
-	  
+	  var nominationPostCandidateId = 0;
 	  if(reasonId != null && (reasonId == 0 || reasonId == undefined)){
 		  $("#errorDivId").html("Please Select Reason");
 		  errorExist=true;
@@ -29,23 +34,27 @@ $(document).on('click','.removeIconCls',function(){
 		 return;
 	 }
 	 
-	 if(!confirmDelete("Are you sure you want to delete cadre ?")){
+	 if(!confirm("Are you sure you want to delete candidate ?")){
 		 return;
 	 }
 	
 	  var jsObj = {
-		  cadreId : cadreId,
+		  tdpCadreId : attr_tdp_cadre_id,
 		  reasonId : reasonId,
-		  remarkTxt : remarkTxt
+		  remark : remarkTxt,
+		  nominationPostCandidateId:attr_nomination_post_candidate_id
 	  }
+	  
+	  return;
 	   $.ajax({
           type:'GET',
-          url: 'saveRemovingCadreDetailsAction.action',
+          //url: 'UpdateExpiredAppicationsForCandidate.action',
+		  url:"",
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){ 
 			if(result.resultCode == 0){
-				$("#successDivId").html("<span style='color:green;'>Cadre Removed Successfully.</span>");
+				$("#successDivId").html("<span style='color:green;'>Candidate Removed Successfully.</span>");
 				setTimeout(function(){
 				  $("#removeModalDivId").modal("hide");
 				}, 1000);
@@ -57,7 +66,7 @@ $(document).on('click','.removeIconCls',function(){
 				
 			}
 			else{
-				$("#errorDivId").html("Cadre Not Removed Successfully.");
+				$("#errorDivId").html("Candidate Not Removed Successfully.");
 				setTimeout(function(){
 				  $("#removeModalDivId").modal("hide");
 				}, 1000);

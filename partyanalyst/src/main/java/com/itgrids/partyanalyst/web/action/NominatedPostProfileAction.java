@@ -2450,4 +2450,25 @@ public String execute()
 		return Action.SUCCESS;
 	}
 	
+	public String UpdateExpredAppicationsForCandidate(){
+		try {
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId = null;
+			if(regVO !=null){
+				userId = regVO.getRegistrationID();
+			}
+			jObj = new JSONObject(getTask());
+			Long nominationPostCandidateId = jObj.getLong("nominationPostCandidateId") ;
+			Long tdpCadreId = jObj.getLong("tdpCadreId");
+			String remark = jObj.getString("remark");
+			Long reasonId = jObj.getLong("reasonId");
+			
+			status = nominatedPostProfileService.UpdateExpiredAppicationsForCandidate(userId,nominationPostCandidateId,tdpCadreId,remark,reasonId);
+		} catch (Exception e) {
+			LOG.error("Exception Occured in UpdateExpiredAppicationsForCandidate() in NominatedPostProfileAction ",e);
+		}
+		return Action.SUCCESS;
+	}
+	
+	
 }
