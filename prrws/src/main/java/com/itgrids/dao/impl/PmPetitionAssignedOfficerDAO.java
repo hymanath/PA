@@ -81,7 +81,7 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 					",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId " +//4,5,6
 					"from PmPetitionAssignedOfficer model where model.pmPetitionAssignedOfficerId  " +
 					"in (SELECT max(model2.pmPetitionAssignedOfficerId) from PmPetitionAssignedOfficer model2 " +
-					" where model2.petitionId in (:petitionIds) and model2.isDeleted='N' and model2.pmSubWorkDetails.pmSubWorkDetailsId is null group by model2.petitionId)   " );
+					" where model2.petitionId in (:petitionIds) and model2.isDeleted='N' group by model2.petitionId)   " );
 			Query query = getSession().createQuery(str.toString());
 			query.setParameterList("petitionIds", petitionIds);
 			return query.list();
