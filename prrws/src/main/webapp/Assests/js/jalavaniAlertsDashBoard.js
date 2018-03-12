@@ -937,31 +937,30 @@ function levelWiseJalavaniDetails(divId,changeType)
 			getJalavanilocationOverview(locationArr[i]);
 		}else if(changeType == "change"){
 			if(sourceType =='All' && alertType == "All" && viewType=="Status"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],0,viewType);
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],0,viewType,sourceType);
 			}else if(sourceType =='news' && alertType == "print" && viewType=="Alert"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia");
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia",sourceType);
 			}else if(sourceType =='news' && alertType == "electronic" && viewType=="Alert"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia");
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia",sourceType);
 			}else if(sourceType =='news' && alertType == "callcenter" && viewType=="Alert"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"");
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"",sourceType);
 			}else if(sourceType =='alert' && alertType == "callcenter" && viewType=="Alert"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"");
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"",sourceType);
 			}else if(sourceType =='alert' && alertType == "print" && viewType=="Alert"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia");
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia",sourceType);
 			}else if(sourceType =='alert' && alertType == "electronic" && viewType=="Alert"){
-				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia");
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia",sourceType);
 			}
 		}else if(changeType == "callCenterTabClick"){
-			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],4,"");
+			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],4,"",sourceType);
 		}else if(changeType == "printTabClick"){
-			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],2,"PrintMedia");
+			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],2,"PrintMedia",sourceType);
 		}else if(changeType == "electronicTabClick"){
-			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],3,"ElectronicMedia");
+			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],3,"ElectronicMedia",sourceType);
 		}
 	}
 }
 function buildJalavanilocationOverview(result,locationType){
-	
 	var str='';
 	str+='<div class="row">';
 		str+='<div class="col-sm-12">';
@@ -1030,7 +1029,7 @@ function getArticlesMonthlyOverviewInfoBySearchType(searchType,alertcategoryId,n
 }
 
 
-function getJalavanilocationAndStatusDetailsInfo(searchType,locationType,alertCategoryId,newsType){
+function getJalavanilocationAndStatusDetailsInfo(searchType,locationType,alertCategoryId,newsType,sourceType){
 	/* dates
 getSearchType- Alert or Status
 type -district or constituency or mandal */
@@ -1054,47 +1053,119 @@ type -district or constituency or mandal */
 	}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildJalavanilocationNewsTypeOverview(result,locationType);
+			buildJalavanilocationNewsTypeOverview(result,locationType,newsType,sourceType);
 		}
 	});
 }
-function buildJalavanilocationNewsTypeOverview(result,locationType){
+function buildJalavanilocationNewsTypeOverview(result,locationType,newsType,sourceType){
 	var str='';
 		str+='<div class="row">';
 			str+='<div class="col-sm-12">';
 			str+='<div class="table-responsive">';
 			str+='<table class="table table_custom_jalavani" id="">';
 				str+='<thead>';
+				if(newsType == "Status"){
 					str+='<tr>';
-					str+='<th class="">Location</th>';	
-					str+='<th class="total_alerts_color total_alerts">TOTAL <br/>ALERTS</th>';
-					str+='<th class="total_CallCenter_color total_CallCenter">CALL CENTER <br/>ALERTS</th>';
-					str+='<th class="total_Print_color total_Print">PRINT MEDIA <br/>ALERTS</th>';
-					str+='<th class="total_Electronic_color total_Electronic">ELECTRONIC MEDIA <br/>ALERTS</th>';
+						str+='<th class="" style="background-color:#F3F3F3;">Location</th>';	
+						str+='<th class="total_alerts_color total_alerts">TOTAL ALERTS</th>';
+						for(var i in result[0].subList1){
+							str+='<th class="" style="background-color:'+result[0].subList1[i].color+'">'+result[0].subList1[i].status+'</th>';
+						}
 					str+='</tr>';
+				}else if(newsType == "PrintMedia"){
+					str+='<tr>';
+						str+='<th class="" rowspan="2" style="background-color:#F3F3F3;">Location</th>';	
+						if(sourceType == "news"){
+							str+='<th class="total_alerts_color total_alerts" rowspan="2">TOTAL NEWS</th>';
+							str+='<th class="total_Print_color total_Print" colspan="2">PRINT MEDIA NEWS</th>';
+						}else{
+							str+='<th class="total_alerts_color total_alerts" rowspan="2">TOTAL ALERTS</th>';
+							str+='<th class="total_Print_color total_Print" colspan="2">PRINT MEDIA ALERTS</th>';
+						}
+					str+='</tr>';
+					str+='<tr>';
+						if(sourceType == "news"){
+							str+='<th class="total_Print_color total_Print" style="border-right:1px solid #ddd !important;">+Ve</th>';
+							str+='<th class="total_Print_color total_Print">-Ve</th>';
+						}else{
+							str+='<th class="total_Print_color total_Print" style="border-right:1px solid #ddd !important;">+Ve</th>';
+							str+='<th class="total_Print_color total_Print">-Ve</th>';
+						}
+					str+='</tr>';
+				}else if(newsType == "ElectronicMedia"){
+						str+='<tr>';
+							str+='<th class="" rowspan="2" style="background-color:#F3F3F3;">Location</th>';	
+							if(sourceType == "news"){
+								str+='<th class="total_alerts_color total_alerts" rowspan="2">TOTAL NEWS</th>';
+								str+='<th class="total_Electronic_color total_Electronic" colspan="2">ELECTRONIC MEDIA NEWS</th>';
+							}else{
+								str+='<th class="total_alerts_color total_alerts" rowspan="2">TOTAL <br/>ALERTS</th>';
+								str+='<th class="total_Electronic_color total_Electronic" colspan="2">ELECTRONIC MEDIA ALERTS</th>';
+							}
+						
+						str+='</tr>';
+						str+='<tr>';
+						if(sourceType == "news"){
+							str+='<th class="total_Electronic_color total_Electronic" style="border-right:1px solid #ddd !important;">+Ve</th>';
+							str+='<th class="total_Electronic_color total_Electronic">-Ve</th>';
+						}else{
+							str+='<th class="total_Electronic_color total_Electronic" style="border-right:1px solid #ddd !important;">+Ve</th>';
+							str+='<th class="total_Electronic_color total_Electronic">-Ve</th>';
+						}
+					str+='</tr>';
+				}else if(newsType == ""){
+						str+='<tr>';
+							str+='<th class="" style="background-color:#F3F3F3;">Location</th>';	
+							str+='<th class="total_CallCenter_color total_CallCenter">CALL CENTER ALERTS</th>';
+						str+='</tr>'
+				}
+					
 				str+='</thead>';
 				str+='<tbody>';
-					str+='<tr>';
-						str+='<td class="">dddddd</td>';
-						str+='<td class="total_alerts_color total_alerts">20</td>';
-						str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
-						str+='<td class="total_Print_color total_Print">20</td>';
-						str+='<td class="total_Electronic_color total_Electronic">20</td>';
-					str+='</tr>';
-					str+='<tr>';
-						str+='<td class="">dddddd</td>';
-						str+='<td class="total_alerts_color total_alerts">20</td>';
-						str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
-						str+='<td class="total_Print_color total_Print">20</td>';
-						str+='<td class="total_Electronic_color total_Electronic">20</td>';
-					str+='</tr>';
-					str+='<tr>';
-						str+='<td class="">dddddd</td>';
-						str+='<td class="total_alerts_color total_alerts">20</td>';
-						str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
-						str+='<td class="total_Print_color total_Print">20</td>';
-						str+='<td class="total_Electronic_color total_Electronic">20</td>';
-					str+='</tr>';
+				if(newsType == "Status"){
+					var totalStatusCount=0;
+					for(var i in result){
+						str+='<tr>';
+							str+='<td class="">'+result[i].locationName+'</td>';
+							str+='<td class="">'+totalStatusCount+'</td>';
+							for(var j in result[i].subList1){
+								totalStatusCount = totalStatusCount+result[i].subList1[j].alertCnt;
+								str+='<td class="" style="background-color:'+result[i].subList1[j].color+'">'+result[i].subList1[j].alertCnt+'</td>';
+							}
+						str+='</tr>';
+					}
+					
+				}else if(newsType == "PrintMedia"){
+					for(var i in result){
+						str+='<tr>';
+							str+='<td class="">'+result[i].locationName+'</td>';
+							str+='<td class="total_alerts_color total_alerts">'+result[i].count+' <small style="color:green;margin-left:15px;">'+result[i].percentage+' %</small></td>';
+							for(var j in result[i].subList1){
+								str+='<td class="total_Print_body" style="border-right:1px solid #BFBFBF !important;border-bottom:1px solid #BFBFBF !important;">'+result[i].subList1[j].posCount+' <small style="color:green;margin-left:15px;">'+result[i].subList1[j].posPerc+' %</small></td>';
+								str+='<td class="total_Print_body" style="border-bottom:1px solid #BFBFBF !important;">'+result[i].subList1[j].negCount+' <small style="color:green;margin-left:15px;">'+result[i].subList1[j].negPerc+' %</small></td>';
+							}
+						str+='</tr>';
+					}
+				}else if(newsType == "ElectronicMedia"){
+					for(var i in result){
+						str+='<tr>';
+							str+='<td class="">'+result[i].locationName+'</td>';
+							str+='<td class="total_alerts_color total_alerts">'+result[i].count+' <small style="color:green;margin-left:15px;">'+result[i].percentage+' %</small></td>';
+							for(var j in result[i].subList1){
+								str+='<td class="total_Electronic" style="">'+result[i].subList1[j].posCount+' <small style="color:green;margin-left:15px;">'+result[i].subList1[j].posPerc+' %</small></td>';
+								str+='<td class="total_Electronic" style="">'+result[i].subList1[j].negCount+' <small style="color:green;margin-left:15px;">'+result[i].subList1[j].negPerc+' %</small></td>';
+							}
+						str+='</tr>';
+					}
+				}else if(newsType == ""){
+					for(var i in result){
+						str+='<tr>';
+							str+='<td class="">'+result[i].locationName+'</td>';
+							str+='<td class="total_CallCenter">'+result[i].count+' <small style="color:green;margin-left:15px;">'+result[i].percentage+' %</small></td>';
+						str+='</tr>';
+					}
+				}
+					
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
