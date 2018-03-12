@@ -3,9 +3,8 @@ var globalStatusObj={"SATISFIED":"#0FBE08","NOT SATISFIED":"#FF0909","PAR SATISF
 $(".chosen-select").chosen();
 getJalavaniDashBoardOverview();
 var locationArr=['district','constituency','mandal'];
-for(var i in locationArr){
-	getJalavanilocationOverview(locationArr[i]);
-}
+levelWiseJalavaniDetails('jalavani',"onload");
+
 $(document).on("change","#sourceTypeId",function(){
 	var sourceType = $("#sourceTypeId").val();
 	if(sourceType =='All'){
@@ -53,28 +52,7 @@ $(document).on("change","#alertTypeId",function(){
 	
 });		
 $(document).on("click",".getResultsCls",function(){
-	var sourceType = $("#sourceTypeId").val();
-	var alertType = $("#alertTypeId").val();
-	var viewType = $("#viewTypeId").val();
-	
-	if(sourceType =='All' && alertType == "All" && viewType=="Status"){
-		for(var i in locationArr){
-			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],0,viewType);
-		}
-	}else if(sourceType =='news' && alertType == "print" && viewType=="Alert"){
-		for(var i in locationArr){
-			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia");
-		}
-	}else if(sourceType =='news' && alertType == "electronic" && viewType=="Alert"){
-		for(var i in locationArr){
-			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia");
-		}
-	}else if(sourceType =='alert' && alertType == "callcenter" && viewType=="Alert"){
-		for(var i in locationArr){
-			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"");
-		}
-	}
-	
+	levelWiseJalavaniDetails('jalavani',"change");
 });	
 $(document).on("click",".tab_bordered li",function(){
 	$(this).closest("ul").find("li").removeClass("active_li");
@@ -85,11 +63,23 @@ $(document).on("click",".tab_bordered li",function(){
 	if($(this).hasClass('active_li')){
 		if(blockType == "All"){
 			getJalavaniDashBoardOverview();
-			$("#viewTypeId").val('Alert');
+			$("#viewTypeId").html('');
+			$("#viewTypeId").append('<option value="0">Select View Type</option>');
+			$("#viewTypeId").append('<option value="Alert" selected>Alert</option>');
+			$("#viewTypeId").append('<option value="Status">Status</option>');
 			$("#viewTypeId").trigger("chosen:updated");
-			for(var i in locationArr){
-				getJalavanilocationOverview(locationArr[i]);
-			}
+			
+			$("#sourceTypeId").val('All');
+			$("#sourceTypeId").trigger("chosen:updated");
+			
+			$("#alertTypeId").html('');
+			$("#alertTypeId").append('<option value="All">All</option>');
+			$("#alertTypeId").append('<option value="print">Print Media</option>');
+			$("#alertTypeId").append('<option value="electronic">Electronic Media</option>');
+			$("#alertTypeId").append('<option value="callcenter">Call Center</option>');
+			$("#alertTypeId").trigger("chosen:updated");
+			levelWiseJalavaniDetails('jalavani',"onload");
+			
 		}else{
 			$("#viewTypeId").html('');
 			$("#viewTypeId").append('<option value="Alert">Alert</option>');
@@ -98,27 +88,39 @@ $(document).on("click",".tab_bordered li",function(){
 			if(blockType == "callcenter"){
 				$("#sourceTypeId").val('alert');
 				$("#sourceTypeId").trigger("chosen:updated");
-				$("#alertTypeId").val('callcenter');
+				
+				$("#alertTypeId").html('');
+				$("#alertTypeId").append('<option value="0">Select Alert Type</option>');
+				$("#alertTypeId").append('<option value="print">Print Media</option>');
+				$("#alertTypeId").append('<option value="electronic">Electronic Media</option>');
+				$("#alertTypeId").append('<option value="callcenter" selected>Call Center</option>');
 				$("#alertTypeId").trigger("chosen:updated");
-				for(var i in locationArr){
-					getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],4,"");
-				}
+				
+				levelWiseJalavaniDetails('jalavani',"callCenterTabClick");
 			}else if(blockType == "print"){
 				$("#sourceTypeId").val('news');
 				$("#sourceTypeId").trigger("chosen:updated");
-				$("#alertTypeId").val('print');
+				
+				$("#alertTypeId").html('');
+				$("#alertTypeId").append('<option value="0">Select Alert Type</option>');
+				$("#alertTypeId").append('<option value="print" selected>Print Media</option>');
+				$("#alertTypeId").append('<option value="electronic">Electronic Media</option>');
+				$("#alertTypeId").append('<option value="callcenter">Call Center</option>');
 				$("#alertTypeId").trigger("chosen:updated");
-				for(var i in locationArr){
-					getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],2,"PrintMedia");
-				}
+				
+				levelWiseJalavaniDetails('jalavani',"printTabClick");
 			}else if(blockType == "electronic"){
 				$("#sourceTypeId").val('news');
 				$("#sourceTypeId").trigger("chosen:updated");
-				$("#alertTypeId").val('electronic');
+				
+				$("#alertTypeId").html('');
+				$("#alertTypeId").append('<option value="0">Select Alert Type</option>');
+				$("#alertTypeId").append('<option value="print">Print Media</option>');
+				$("#alertTypeId").append('<option value="electronic" selected>Electronic Media</option>');
+				$("#alertTypeId").append('<option value="callcenter">Call Center</option>');
 				$("#alertTypeId").trigger("chosen:updated");
-				for(var i in locationArr){
-					getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],3,"ElectronicMedia");
-				}
+				
+				levelWiseJalavaniDetails('jalavani',"electronicTabClick");
 			}
 			
 		}
@@ -885,8 +887,124 @@ function getJalavanilocationOverview(locationType){//All Table Build
 		xhr.setRequestHeader("Content-Type", "application/json");
 	}
 	}).done(function(result){
-		
+		if(result !=null && result.length>0){
+			buildJalavanilocationOverview(result,locationType);
+		}
 	});
+}
+function levelWiseJalavaniDetails(divId,changeType)
+{
+	var collapse='';
+	collapse+='<div class="col-sm-12">';
+	for(var i in locationArr)
+	{
+		collapse+='<div class="panel-group" id="accordion'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" role="tablist" aria-multiselectable="true">';
+			collapse+='<div class="panel panel-default panel-black">';
+				collapse+='<div class="panel-heading" role="tab" id="heading'+divId+''+locationArr[i]+'">';
+					if(i == 0)
+					{
+						collapse+='<a role="button" class="panelCollapseIcon '+divId.replace(/\s+/g, '')+''+locationArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+locationArr[i]+'">';
+					}else{
+						collapse+='<a role="button" class="panelCollapseIcon collapsed '+divId.replace(/\s+/g, '')+''+locationArr[i]+'"  data-toggle="collapse" data-parent="#accordion'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" href="#collapse'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" aria-expanded="true" aria-controls="collapse'+divId.replace(/\s+/g, '')+''+locationArr[i]+'">';
+					}
+					collapse+='<h4 class="panel-title text-capital">'+locationArr[i]+' level overview</h4>';
+						
+					collapse+='</a>';
+				collapse+='</div>';
+				if(i == 0)
+				{
+					collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+locationArr[i]+'">';
+				}else{
+					collapse+='<div id="collapse'+divId.replace(/\s+/g, '')+''+locationArr[i]+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+divId.replace(/\s+/g, '')+''+locationArr[i]+'">';
+				}
+				
+					collapse+='<div class="panel-body">';
+						collapse+='<div id="'+divId.replace(/\s+/g, '')+''+locationArr[i]+'"></div>';
+					collapse+='</div>';
+				collapse+='</div>';
+			collapse+='</div>';
+		collapse+='</div>';
+	}
+	collapse+='</div>';
+	$("#jalavaniTableViewDetailsDivId").html(collapse);
+	var sourceType = $("#sourceTypeId").val();
+	var alertType = $("#alertTypeId").val();
+	var viewType = $("#viewTypeId").val();
+	
+	
+	for(var i in locationArr){
+		if(changeType == "onload"){
+			getJalavanilocationOverview(locationArr[i]);
+		}else if(changeType == "change"){
+			if(sourceType =='All' && alertType == "All" && viewType=="Status"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],0,viewType);
+			}else if(sourceType =='news' && alertType == "print" && viewType=="Alert"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia");
+			}else if(sourceType =='news' && alertType == "electronic" && viewType=="Alert"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia");
+			}else if(sourceType =='news' && alertType == "callcenter" && viewType=="Alert"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"");
+			}else if(sourceType =='alert' && alertType == "callcenter" && viewType=="Alert"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"");
+			}else if(sourceType =='alert' && alertType == "print" && viewType=="Alert"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia");
+			}else if(sourceType =='alert' && alertType == "electronic" && viewType=="Alert"){
+				getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia");
+			}
+		}else if(changeType == "callCenterTabClick"){
+			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],4,"");
+		}else if(changeType == "printTabClick"){
+			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],2,"PrintMedia");
+		}else if(changeType == "electronicTabClick"){
+			getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],3,"ElectronicMedia");
+		}
+	}
+}
+function buildJalavanilocationOverview(result,locationType){
+	
+	var str='';
+	str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+		str+='<div class="table-responsive">';
+		str+='<table class="table table_custom_jalavani" id="">';
+			str+='<thead>';
+				str+='<tr>';
+				str+='<th class="">Location</th>';	
+				str+='<th class="total_alerts_color total_alerts">TOTAL <br/>ALERTS</th>';
+				str+='<th class="total_CallCenter_color total_CallCenter">CALL CENTER <br/>ALERTS</th>';
+				str+='<th class="total_Print_color total_Print">PRINT MEDIA <br/>ALERTS</th>';
+				str+='<th class="total_Electronic_color total_Electronic">ELECTRONIC MEDIA <br/>ALERTS</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				str+='<tr>';
+					str+='<td class="">dddddd</td>';
+					str+='<td class="total_alerts_color total_alerts">20</td>';
+					str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
+					str+='<td class="total_Print_color total_Print">20</td>';
+					str+='<td class="total_Electronic_color total_Electronic">20</td>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td class="">dddddd</td>';
+					str+='<td class="total_alerts_color total_alerts">20</td>';
+					str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
+					str+='<td class="total_Print_color total_Print">20</td>';
+					str+='<td class="total_Electronic_color total_Electronic">20</td>';
+				str+='</tr>';
+				str+='<tr>';
+					str+='<td class="">dddddd</td>';
+					str+='<td class="total_alerts_color total_alerts">20</td>';
+					str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
+					str+='<td class="total_Print_color total_Print">20</td>';
+					str+='<td class="total_Electronic_color total_Electronic">20</td>';
+				str+='</tr>';
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	str+='</div>';
+	str+='</div>';
+	
+	$("#jalavani"+locationType).html(str);
 }
 
 getArticlesMonthlyOverviewInfoBySearchType("alerts",2,"print");//print media Graph onchange
@@ -935,6 +1053,53 @@ type -district or constituency or mandal */
 		xhr.setRequestHeader("Content-Type", "application/json");
 	}
 	}).done(function(result){
-		
+		if(result !=null && result.length>0){
+			buildJalavanilocationNewsTypeOverview(result,locationType);
+		}
 	});
+}
+function buildJalavanilocationNewsTypeOverview(result,locationType){
+	var str='';
+		str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+			str+='<div class="table-responsive">';
+			str+='<table class="table table_custom_jalavani" id="">';
+				str+='<thead>';
+					str+='<tr>';
+					str+='<th class="">Location</th>';	
+					str+='<th class="total_alerts_color total_alerts">TOTAL <br/>ALERTS</th>';
+					str+='<th class="total_CallCenter_color total_CallCenter">CALL CENTER <br/>ALERTS</th>';
+					str+='<th class="total_Print_color total_Print">PRINT MEDIA <br/>ALERTS</th>';
+					str+='<th class="total_Electronic_color total_Electronic">ELECTRONIC MEDIA <br/>ALERTS</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					str+='<tr>';
+						str+='<td class="">dddddd</td>';
+						str+='<td class="total_alerts_color total_alerts">20</td>';
+						str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
+						str+='<td class="total_Print_color total_Print">20</td>';
+						str+='<td class="total_Electronic_color total_Electronic">20</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td class="">dddddd</td>';
+						str+='<td class="total_alerts_color total_alerts">20</td>';
+						str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
+						str+='<td class="total_Print_color total_Print">20</td>';
+						str+='<td class="total_Electronic_color total_Electronic">20</td>';
+					str+='</tr>';
+					str+='<tr>';
+						str+='<td class="">dddddd</td>';
+						str+='<td class="total_alerts_color total_alerts">20</td>';
+						str+='<td class="total_CallCenter_color total_CallCenter">20</td>';
+						str+='<td class="total_Print_color total_Print">20</td>';
+						str+='<td class="total_Electronic_color total_Electronic">20</td>';
+					str+='</tr>';
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		
+		$("#jalavani"+locationType).html(str);
 }

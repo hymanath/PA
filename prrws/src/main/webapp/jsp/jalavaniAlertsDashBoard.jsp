@@ -308,6 +308,9 @@
 						</div>
 					</div>
 				</div>
+				<div class="row">
+					<div id="jalavaniTableViewDetailsDivId" class="m_top10"></div>
+				</div>
 			</div>	
 		</div>
 	</div>
