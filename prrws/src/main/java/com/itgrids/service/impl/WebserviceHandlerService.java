@@ -185,7 +185,7 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 	{
 		WebserviceVO webserviceVO = null;
 		try{
-			 List<Object[]> list = webServiceDataDAO.getWebserviceResponseData(webserviceId,input);
+			 List<Object[]> list = webServiceDataDAO.getWebserviceResponseData(webserviceId,input.trim());
 			 
 			 if(list != null && list.size() > 0)
 			 {
@@ -207,7 +207,7 @@ public class WebserviceHandlerService implements IWebserviceHandlerService{
 			{
 				WebServiceData webServiceData = new WebServiceData();
 				webServiceData.setWebserviceId(webserviceVO.getWebserviceId());
-				webServiceData.setInputData(webserviceVO.getInputData());
+				webServiceData.setInputData(webserviceVO.getInputData().trim());
 				webServiceData.setResponceData(webserviceVO.getResponseData());
 				webServiceData.setDataDate(dateUtilService.getCurrentDateAndTime());
 				webServiceData.setInsertedTime(dateUtilService.getCurrentDateAndTime());
