@@ -14,4 +14,6 @@ public interface IWebServiceDataDAO extends GenericDao<WebServiceData, Long>{
 	public String getRfidTrackingOverAllTargetsData(Date fromDate);
 	
 	public List<Object[]> getWebserviceResponseData(Long webserviceId,String input);
+	
+	public List<Object[]> getWebserviceDataDetails();
 }
