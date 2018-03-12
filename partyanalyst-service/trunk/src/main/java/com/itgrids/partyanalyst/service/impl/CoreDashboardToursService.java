@@ -158,8 +158,8 @@ public class CoreDashboardToursService implements ICoreDashboardToursService {
 			ISelfAppraisalToursMonthDAO selfAppraisalToursMonthDAO) {
 		this.selfAppraisalToursMonthDAO = selfAppraisalToursMonthDAO;
 	}
-	/*presently these service are not used .It has written based on old requirement .Now requirement has completely changed so below service
-	 * are being used for that */
+	/*Presently these service are not used .It has written based on old requirement .
+      requirement has completely changed so below service are being used for that */
 	public ToursBasicVO getToursBasicOverviewCountDetails(Long stateId,String fromDateStr,String toDateStr,Long activityMemberId,Long userTypeId){
 		
 		ToursBasicVO resultVO = new ToursBasicVO();
