@@ -18765,6 +18765,11 @@
 				<param name="root">nominatedPostDetailsVOList</param>
 		</result>
 	</action>
+	<action name="UpdateExpiredAppicationsForCandidate" class="nominatedPostProfileAction" method="UpdateExpredAppicationsForCandidate">
+		<result type="json" name="success">
+   			<param name="root">status</param>
+   		</result>
+	</action>
 	<action name="getBoardWisePositionsAction" class="coreDashboardAction" method="getBoardWisePositions">
 		<result type="json" name="success">
 				<param name="root">nominatedPostDetailsVOList</param>
