@@ -103,36 +103,6 @@
 							</div>
 						</div>
 					</div>
-					<!--<div class="panel-body">
-						<div class="table-responsive">
-							<table class="table tableTours">
-								<thead>
-									<th></th>
-									<th>total leaders</th>
-									<th>submited leaders</th>
-									<th>not submited leaders</th>
-									<th>compliance</th>
-									<th>non compliance</th>
-								</thead>
-								<tr>
-									<td>minister <i class="glyphicon glyphicon-info-sign"></i></td>
-									<td>17</td>
-									<td>17</td>
-									<td>17</td>
-									<td>17</td>
-									<td>17</td>
-								</tr>
-								<tr>
-									<td>minister <i class="glyphicon glyphicon-info-sign"></i></td>
-									<td>10</td>
-									<td>10</td>
-									<td>10</td>
-									<td>10</td>
-									<td>10</td>
-								</tr>
-							</table>
-						</div>
-					</div>-->
 				<div class="panel-body pad_0 border_0">
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -163,35 +133,20 @@
 									<option value="0">SELECT NAME</option>
 								</select>
 								</div>
-							
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<!--<h4 class="panel-title text-capital" style="display:none" id="selectProfileId" >selected profile</h4>-->
 										<ul class="list-inline ">
 											<li>
-													<!--<div class="pad_10">
-														<img src="Assests/img/profile.png" style="height: 30px;width: 30px;"/>
-														<p>Kollu Ravindra</p>
-														<p>IXR9816267</p>
-														<p>+91 9988998899</p>
-													</div>-->
 												<div class="row m_top20 hideProfileDivCls">
 													<div class="col-md-12 col-xs-12 col-sm-12">
 														<div class="block">
 															<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="profileProcessingImgId"></center></div>
-															
-															<!--<h4 class="panel-title text-capital" style="display:none" id="selectedProfileId">selected profile</h4>-->
 															<div id="selectedMemberDtslDivId"></div>
 													   </div>
 												   </div>
 												</div>
-										   <!--<div class="pad_10 borderGreen">
-														<label class="checkbox-inline">
-															<input type="checkbox"/>Select Profile</label>
-												</div>-->
 											</li>
 										</ul>
 								</div>
-								
 								<div id="overallDivId" style="display:none;">
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 										<div  id="toursId">
@@ -217,16 +172,11 @@
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="commentsUlId"></div>
-												<!--<h4 style="margin-top:20px !important">Program Wise Info</h4>-->
 												<div id="toursCandidateProgramDetails" style="margin-top:10px;"></div>
-												<!-- <div id="remarkId6" style="display:none">
-													<label>Comment: </label>
-													<textarea id="remarkId7" class="form-control" style="resize: none;"></textarea>
-												</div> -->	
 												<div id="attachementsId"></div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-												<div style="display:none;" id="dateWiseBlockId"><!--san-->
+												<div style="display:show;" id="dateWiseBlockId"><!--san-->
 													<div class="panel panel-default">
 														<div id="addNewTourBlock"></div>
 														<div class="panel-footer borderGreen text-right">
@@ -258,7 +208,6 @@
 												</div> 
 											</div>
 										 <!--</form>=-->
-											
 										</div>
 									</div>
 									
