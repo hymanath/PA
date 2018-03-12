@@ -16814,4 +16814,44 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalVOList;
 	}
+	public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVo){
+		List<AlertVO> finalVoList = new ArrayList<AlertVO>(0);
+		try {
+			Date startDate = null;Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVo.getFromDateStr() != null && inputVo.getToDateStr() != null){
+				startDate = sdf.parse(inputVo.getFromDateStr());
+				endDate = sdf.parse(inputVo.getToDateStr());
+			}
+			List<Object[]> dataObjList =null;
+			
+				//0-id,1-name,categoryCount-2,3-categoryId
+			dataObjList = alertDAO.getJalavanilocationOverview(startDate,endDate,inputVo.getSearchType(),inputVo.getType(),inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getAlertCategoryId());
+			setLocationOverviewData(dataObjList,finalVoList);
+		}catch (Exception e){
+			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
+		}
+		return finalVoList;
+	}
+	public void setLocationOverviewData(List<Object[]> objList,List<AlertVO> finalList){
+		if(objList !=null && objList.size() >0){
+			for (Object[] obj : objList){
+				AlertVO vo = new AlertVO();
+				
+				vo.setId(commonMethodsUtilService.getLongValueForObject(obj[0]));
+				vo.setName(commonMethodsUtilService.getStringValueForObject(obj[1]));
+				
+				if((Long)obj[3] == 2l){//Print
+					vo.setSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				}else if((Long)obj[3] == 3l){//Electronic
+					vo.setUnSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				}else if((Long)obj[3] == 4l){//call enter
+					vo.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+				}
+				vo.setCount1(vo.getSatisfiedCount()+vo.getUnSatisfiedCount()+vo.getCount());
+				
+				finalList.add(vo);
+			}
+		}
+	}
 }
