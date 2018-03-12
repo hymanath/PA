@@ -50,6 +50,7 @@ import com.itgrids.partyanalyst.dao.IEventInviteeDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDAO;
 import com.itgrids.partyanalyst.dao.IGovtOrderDocumentsDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostAccessMultiplePositionsDetailsDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostAgeRangeDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostApplicationHistoryDAO;
@@ -181,7 +182,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	private ISchedulersInfoDAO schedulersInfoDAO;
 	private ITrainingCampCadreFeedbackDetailsDAO trainingCampCadreFeedbackDetailsDAO;   
 	private IEventDAO eventDAO;
-	    
+	private INominatedPostAccessMultiplePositionsDetailsDAO nominatedPostAccessMultiplePositionsDetailsDAO;
 	public void setSchedulersInfoDAO(ISchedulersInfoDAO schedulersInfoDAO) {
 		this.schedulersInfoDAO = schedulersInfoDAO;
 	}
@@ -610,6 +611,15 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 	}
 	public void setEventDAO(IEventDAO eventDAO) {
 		this.eventDAO = eventDAO;
+	}
+
+	public INominatedPostAccessMultiplePositionsDetailsDAO getNominatedPostAccessMultiplePositionsDetailsDAO() {
+		return nominatedPostAccessMultiplePositionsDetailsDAO;
+	}
+
+	public void setNominatedPostAccessMultiplePositionsDetailsDAO(
+			INominatedPostAccessMultiplePositionsDetailsDAO nominatedPostAccessMultiplePositionsDetailsDAO) {
+		this.nominatedPostAccessMultiplePositionsDetailsDAO = nominatedPostAccessMultiplePositionsDetailsDAO;
 	}
 
 	/**
@@ -9196,6 +9206,50 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 				return "failure";
 			}
 			return "success";
+		}
+		public Map<Long,List<Long>> getDeptIdsBYBoardIdsList(){
+			 Map<Long,List<Long>> deptsByBoardsMap = new HashMap<Long,List<Long>>();
+			try {
+				LOG.info("entered into nominatedPostProfileService of getDeptIdsBYBoardIdsList");
+				List<Object[]> deptIdsObjsList = nominatedPostAccessMultiplePositionsDetailsDAO.getDepartMentIdsByBoardIdsList();
+				if(deptIdsObjsList != null && deptIdsObjsList.size() >0){
+					for(Object[] objs : deptIdsObjsList){
+						List<Long> boardIdList = deptsByBoardsMap.get(commonMethodsUtilService.getLongValueForObject(objs[0]));
+						  if(boardIdList == null){
+							  boardIdList = new ArrayList<Long>();
+							  deptsByBoardsMap.put(commonMethodsUtilService.getLongValueForObject(objs[0]), boardIdList);
+						  }
+						  boardIdList.add(commonMethodsUtilService.getLongValueForObject(objs[1]));
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised into nominatedPostProfileService of getDeptIdsBYBoardIdsList",e);
+			}
+			return deptsByBoardsMap;
+			
+		}
+		
+		public String isEligibleToAdd(Long deptId,Long boardId){
+			String isEligible = "false";
+			try {
+				LOG.info("entered into NominatedPostProfileService of isEligibleToAdd() method ");
+				Map<Long,List<Long>> departmentIdsMap = getDeptIdsBYBoardIdsList();
+				if(departmentIdsMap == null || departmentIdsMap.size() == 0){
+					isEligible = "true";
+				}else{
+					List<Long> boardIdsList = departmentIdsMap.get(deptId);
+					if(commonMethodsUtilService.isListOrSetValid(boardIdsList) && boardIdsList.contains(boardId)){
+						isEligible = "true";
+					}else{
+						isEligible = "";
+					}
+				}
+					
+			} catch (Exception e) {
+				LOG.error("exception raised into NominatedPostProfileService of isEligibleToAdd() method",e);
+			}
+			return isEligible;
+			
 		}
 		
  }
