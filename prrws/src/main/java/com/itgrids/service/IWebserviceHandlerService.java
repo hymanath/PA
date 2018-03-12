@@ -10,4 +10,6 @@ public interface IWebserviceHandlerService {
 	public void saveWebserviceResponseData(WebserviceVO webserviceVO);
 	
 	public WebserviceVO callWebServiceForThread(String url,Object input,String requestMethod);
+	
+	public void webserviceDataSaveJob();
 }
