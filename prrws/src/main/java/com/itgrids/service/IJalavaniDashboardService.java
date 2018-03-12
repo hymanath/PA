@@ -11,4 +11,5 @@ public interface IJalavaniDashboardService {
 	public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputVO);
 	public  List<AlertVO> getArticlesMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputVO);
 	public  List<AlertVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVO);
+	public  List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVO);
 }
