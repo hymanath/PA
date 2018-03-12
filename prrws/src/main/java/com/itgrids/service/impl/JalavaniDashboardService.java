@@ -389,6 +389,9 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 		 	    				vo.setPrintCount(jObj.getLong("satisfiedCount"));
 		 	    				vo.setElectCount(jObj.getLong("unSatisfiedCount"));
 		 	    				vo.setFeedbackCount(jObj.getLong("count"));//feedback is nothing but call enters count
+		 	    				vo.setPosPerc(jObj.getDouble("printPerc"));
+		 	    				vo.setNegPerc(jObj.getDouble("electPerc"));
+		 	    				vo.setPercentage(jObj.getDouble("statusPercent"));//call center perc
 		 	    				vo.setTotalNewsCnt(jObj.getLong("count1"));
 		 	    				
 		 	    				returnList.add(vo);
