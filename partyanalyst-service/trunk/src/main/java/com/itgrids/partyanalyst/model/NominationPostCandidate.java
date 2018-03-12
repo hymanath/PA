@@ -52,6 +52,9 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	private Voter voter;
 	private CasteState casteState;
 	private NominatedPostAgeRange nominatedPostAgeRange;
+	private String deletedRemarks;
+	private Long cadreDeletedReasonId;
+	private CadreDeleteReason cadreDeleteReason;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -263,4 +266,33 @@ public class NominationPostCandidate extends BaseModel implements Serializable{
 	public void setNominatedPostAgeRange(NominatedPostAgeRange nominatedPostAgeRange) {
 		this.nominatedPostAgeRange = nominatedPostAgeRange;
 	}
+	
+	@Column(name = "deleted_remarks")
+	public String getDeletedRemarks() {
+		return deletedRemarks;
+	}
+	public void setDeletedRemarks(String deletedRemarks) {
+		this.deletedRemarks = deletedRemarks;
+	}
+	
+	@Column(name = "cadre_delete_reason_id")
+	public Long getCadreDeletedReasonId() {
+		return cadreDeletedReasonId;
+	}
+	public void setCadreDeletedReasonId(Long cadreDeletedReasonId) {
+		this.cadreDeletedReasonId = cadreDeletedReasonId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_delete_reason_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)  
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreDeleteReason getCadreDeleteReason() {
+		return cadreDeleteReason;
+	}
+	public void setCadreDeleteReason(CadreDeleteReason cadreDeleteReason) {
+		this.cadreDeleteReason = cadreDeleteReason;
+	}
+	
+	
 }
