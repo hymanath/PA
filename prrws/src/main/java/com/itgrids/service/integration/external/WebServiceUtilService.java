@@ -196,6 +196,13 @@ public class WebServiceUtilService {
 			jsonStr = jsonStr.replaceAll("\n","");
 			jsonStr = jsonStr.replace("\\\"","\"");
 			jsonStr = jsonStr.replace(" : ",":");
+			
+			if(jsonStr.startsWith("\""))
+				jsonStr = jsonStr.substring(1);
+			
+			if(jsonStr.endsWith("\""))
+				jsonStr = jsonStr.substring(0,jsonStr.length()-1);
+			
 		}catch(Exception e)
 		{
 			LOG.error(e);
