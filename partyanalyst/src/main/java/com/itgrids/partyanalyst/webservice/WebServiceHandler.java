@@ -3780,6 +3780,7 @@ public class WebServiceHandler {
 		return  webServiceHandlerService.getAlertsMonthlyOverviewInfoBySearchType(inputVo);
     }
 	
+	
 	@GET
     @Path("/updateAlertIssueCategory/{categoryId}/{categoryTypeId}/{issueCategoryId}")
     @Produces(MediaType.APPLICATION_JSON)
@@ -3788,4 +3789,11 @@ public class WebServiceHandler {
 		return  webServiceHandlerService.updateAlertIssueCategory(categoryId,categoryTypeId,issueCategoryId);
     }
 	
+	@POST
+    @Path("/getJalavanilocationOverview")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getJalavanilocationOverview(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getJalavanilocationOverview(inputVo);
+    }
 }
