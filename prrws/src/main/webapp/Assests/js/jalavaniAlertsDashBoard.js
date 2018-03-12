@@ -1,283 +1,357 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalDistrictLatLagArr=[];
-var globalOverviewResult;
-
-$("header").on("click",".menu-cls",function(e){
-	e.stopPropagation();
-	$(".menu-data-cls").toggle();
-});
-$(document).on("click",function(){
-	$(".menu-data-cls").hide();
-});
-$("#dateRangePicker").daterangepicker({
-	opens:'left',
-	startDate: moment().subtract(1,"month"),
-	endDate: moment(),
-	locale: {
-        format: "DD-MM-YYYY",
-	},
-	ranges: {
-	   'Today': [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-	   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-	   'This Month': [moment().startOf('month'), moment().endOf('month')],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+var globalStatusObj={"SATISFIED":"#0FBE08","NOT SATISFIED":"#FF0909","PAR SATISFIED":"#FFBA00"}
+$(".chosen-select").chosen();
+getJalavaniDashBoardOverview();
+var locationArr=['district','constituency','mandal'];
+for(var i in locationArr){
+	getJalavanilocationOverview(locationArr[i]);
+}
+$(document).on("change","#sourceTypeId",function(){
+	var sourceType = $("#sourceTypeId").val();
+	if(sourceType =='All'){
+		$("#viewTypeId").html('');
+		$("#viewTypeId").append('<option value="0">Select View Type</option>');
+		$("#viewTypeId").append('<option value="Alert">Alert</option>');
+		$("#viewTypeId").append('<option value="Status">Status</option>');
+		$("#viewTypeId").trigger("chosen:updated");
+	}else{
+		$("#viewTypeId").html('');
+		$("#viewTypeId").append('<option value="0">Select View Type</option>');
+		$("#viewTypeId").append('<option value="Alert">Alert</option>');
+		$("#viewTypeId").trigger("chosen:updated");
 	}
-});
-$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
-	startDate = picker.startDate.format("DD-MM-YYYY");
-	endDate = picker.endDate.format("DD-MM-YYYY");
-	onLoadCalls();
-});
-onLoadCalls();
-function onLoadCalls(){
-  
-  
- responsiveTabs();
- getJalavaniDashBoardOverview();	
-}
-function responsiveTabs()
-{
-  var $windowWidth = $(window).width();
-  if($windowWidth < 768)
-  {
-    $('[role="tabListMobile"]').show();
-    $('[role="tablist"]').hide();
-  }else{
-    $('[role="tabListMobile"]').hide();
-    $('[role="tablist"]').show();
-  }
- 
-  $(document).on("change","[role='tabListMobile']",function(){
-    var id = $('option:selected', this).attr('tab_id');
-    $("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
-    $("#"+id).addClass("active");
-  });
-  
-}
-  
-
-
-$(window,document).on('resize', function(){
-  responsiveTabs();
-  
+	if(sourceType !='All'){
+		$("#alertTypeId").html('');
+		$("#alertTypeId").append('<option value="0">Select Alert Type</option>');
+		$("#alertTypeId").append('<option value="print">Print Media</option>');
+		$("#alertTypeId").append('<option value="electronic">Electronic Media</option>');
+		$("#alertTypeId").append('<option value="callcenter">Call Center</option>');
+		$("#alertTypeId").trigger("chosen:updated");
+	}else{
+		$("#alertTypeId").html('');
+		$("#alertTypeId").append('<option value="All">All</option>');
+		$("#alertTypeId").append('<option value="print">Print Media</option>');
+		$("#alertTypeId").append('<option value="electronic">Electronic Media</option>');
+		$("#alertTypeId").append('<option value="callcenter">Call Center</option>');
+		$("#alertTypeId").trigger("chosen:updated");
+	}
+});	
+$(document).on("change","#alertTypeId",function(){
+	var sourceType = $("#alertTypeId").val();
+	if(sourceType =='All'){
+		$("#viewTypeId").html('');
+		$("#viewTypeId").append('<option value="0">Select View Type</option>');
+		$("#viewTypeId").append('<option value="Alert">Alert</option>');
+		$("#viewTypeId").append('<option value="Status">Status</option>');
+		$("#viewTypeId").trigger("chosen:updated");
+	}else{
+		$("#viewTypeId").html('');
+		$("#viewTypeId").append('<option value="0">Select View Type</option>');
+		$("#viewTypeId").append('<option value="Alert">Alert</option>');
+		$("#viewTypeId").trigger("chosen:updated");
+	}
+	
+});		
+$(document).on("click",".getResultsCls",function(){
+	var sourceType = $("#sourceTypeId").val();
+	var alertType = $("#alertTypeId").val();
+	var viewType = $("#viewTypeId").val();
+	
+	if(sourceType =='All' && alertType == "All" && viewType=="Status"){
+		for(var i in locationArr){
+			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],0,viewType);
+		}
+	}else if(sourceType =='news' && alertType == "print" && viewType=="Alert"){
+		for(var i in locationArr){
+			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],2,"PrintMedia");
+		}
+	}else if(sourceType =='news' && alertType == "electronic" && viewType=="Alert"){
+		for(var i in locationArr){
+			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],3,"ElectronicMedia");
+		}
+	}else if(sourceType =='alert' && alertType == "callcenter" && viewType=="Alert"){
+		for(var i in locationArr){
+			getJalavanilocationAndStatusDetailsInfo(viewType,locationArr[i],4,"");
+		}
+	}
+	
+});	
+$(document).on("click",".tab_bordered li",function(){
+	$(this).closest("ul").find("li").removeClass("active_li");
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active_li");
+	var blockType = $(this).attr("attr_type");
+	var blockCount = $(this).attr("attr_block_count");
+	if($(this).hasClass('active_li')){
+		if(blockType == "All"){
+			getJalavaniDashBoardOverview();
+			$("#viewTypeId").val('Alert');
+			$("#viewTypeId").trigger("chosen:updated");
+			for(var i in locationArr){
+				getJalavanilocationOverview(locationArr[i]);
+			}
+		}else{
+			$("#viewTypeId").html('');
+			$("#viewTypeId").append('<option value="Alert">Alert</option>');
+			$("#viewTypeId").trigger("chosen:updated");
+			getJalavaniCategoryWiseDetailsInfo(blockType,blockCount);
+			if(blockType == "callcenter"){
+				$("#sourceTypeId").val('alert');
+				$("#sourceTypeId").trigger("chosen:updated");
+				$("#alertTypeId").val('callcenter');
+				$("#alertTypeId").trigger("chosen:updated");
+				for(var i in locationArr){
+					getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],4,"");
+				}
+			}else if(blockType == "print"){
+				$("#sourceTypeId").val('news');
+				$("#sourceTypeId").trigger("chosen:updated");
+				$("#alertTypeId").val('print');
+				$("#alertTypeId").trigger("chosen:updated");
+				for(var i in locationArr){
+					getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],2,"PrintMedia");
+				}
+			}else if(blockType == "electronic"){
+				$("#sourceTypeId").val('news');
+				$("#sourceTypeId").trigger("chosen:updated");
+				$("#alertTypeId").val('electronic');
+				$("#alertTypeId").trigger("chosen:updated");
+				for(var i in locationArr){
+					getJalavanilocationAndStatusDetailsInfo('Alert',locationArr[i],3,"ElectronicMedia");
+				}
+			}
+			
+		}
+	}
+	
 });
 
 function getJalavaniDashBoardOverview(){
+	$("#jalavaniTabOverVewDivId").html(spinner);
 	var json={
 		fromDateStr:"01-01-2017",
 		toDateStr:"31-01-2018"
 	}
 	$.ajax({                
-   type:'POST',    
-   url: 'getJalavaniDashBoardOverview',
-   dataType: 'json',
-   data : JSON.stringify(json),
-   beforeSend :   function(xhr){
-     xhr.setRequestHeader("Accept", "application/json");
-     xhr.setRequestHeader("Content-Type", "application/json");
-   }
- }).done(function(result){
-	 buildJalavaniDashBoardOverview(result);
-	 buildJalavaniDashBoardAlertsOverview(result);
-	 buildJalavaniAlertsOverview(result);
-});
-}
-function buildJalavaniDashBoardAlertsOverview(result)
-{
-	var str='';
-	var totalCnt=0;
-	var tabsData=[{"id":"print_media_Id","name":"print_media_icon"},{"id":"electronic_media_Id","name":"electronic_media_icon"},{"id":"call_center_Id","name":"call_center_icon"}];
-	str+='<ul class="nav nav-tabs tabs-left Active_State" role="tablist" >';
-		str+='<li class="active border_Block">';
-			str+='<a href="#all_Sources_Id" data-toggle="tab">';
-				str+='<div class="row">';
-					str+='<div class="col-sm-9">';
-						str+='<div class="media">';
-							str+='<div class="media-left">';
-							  str+='<img src="Assests/images/icon_all.PNG" class="media-object" style="width:45px">';
-							str+='</div>';
-							str+='<div class="media-body" style="color:#393938;">';
-								str+='<h5 class="media-heading"><b>ALL SOURCES</b></h5>';
-								str+='<h3 id="allSourcesCnt"></h3>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-sm-3">';
-						str+='<i class="fas fa-angle-right fa-3x ARI"></i>';
-					str+='</div>';
-				str+='</div>';		
-			str+='</a>';
-	str+='</li>';
-	for(var i in result.subList1){
-		str+='<li class="border_Block">';
-			str+='<a href="#'+tabsData[i].id+'" data-toggle="tab">';
-				str+='<div class="row">';
-					str+='<div class="col-sm-9">';
-						str+='<div class="media">';
-							str+='<div class="media-left">';
-							 str+=' <img src="Assests/images/'+tabsData[i].name+'.PNG" class="media-object" style="width:45px">';
-							str+='</div>';
-							str+='<div class="media-body" style="color:#393938;">';
-								str+='<h5 class="media-heading"><b>'+result.subList1[i].name+'</b></h5>';
-								 if(result.subList1[i].name=="Print Media")
-								{
-								str+='<h3>'+result.satisfiedCount+'</h3>';
-								}
-								else if(result.subList1[i].name=="Electronic Media") {
-									str+='<h3>'+result.unSatisfiedCount+'</h3>';
-								}
-								else if(result.subList1[i].name=="Call Center") {
-									str+='<h3>'+result.count+'</h3>';
-								}								
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="col-sm-3">';
-						str+='<i class="fas fa-angle-right fa-3x ARI" style="display:none;"></i>';
-					str+='</div>';
-				str+='</div>';
-			str+='</a>';
-		str+='</li>';
-		totalCnt=totalCnt+result.subList1[i].count;
+	type:'POST',    
+	url: 'getJalavaniDashBoardOverview',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
 	}
-	str+='</ul>';
-	$("#JalavaniDashBoardOverviewTabsId").html(str);
-	$("#allSourcesCnt").html(totalCnt);
-}	
-function buildJalavaniAlertsOverview(result)
-{
+	}).done(function(result){
+		if(result !=null){
+			buildJalavaniDashBoardOverview(result);
+		}
+	});
+}
+function buildJalavaniDashBoardOverview(result){
 	var str='';
-	var total=0;
-	var colors=["575858","F26532","E952A0"];
-	str+='<div class="col-sm-2">';
-		str+='<div class="pad_10 m_top_bottom_5 box_shad over" style="border: 1px solid #4C9DD6;">';
-			str+='<h6 style="color:#4C9DD6;"><b>TOTAL<p>ALERTS</p></b></h6>';
-			str+='<h3 class="m_top10" id="alertsCount"></h3>';
-		str+='</div>';	
-	str+='</div>';
-	for(var i in result.subList1){
-		str+='<div class="col-sm-2">';
-			str+='<div class="pad_10 m_top_bottom_5 box_shad over" style="border: 1px solid #'+colors[i]+';">';
-				str+='<h6 style="color:#'+colors[i]+';"><b>'+result.subList1[i].name+'<p>ALERTS</p></b></h6>';
-				str+='<h3 class="m_top10">'+result.subList1[i].alertCnt+'</h3>';
-			str+='</div>';	
+	var allSourceCount=result.categoryCount+result.printCount+result.electCount;
+	 str+='<div class="">';
+		str+='<div class="col-sm-3">';
+			str+='<ul class="nav nav-tabs tab_bordered">';
+				str+='<li role="presentation" class="active_li" attr_type="All">';
+					str+='<a href="#all_Sources_Id" data-toggle="tab" class="">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-10">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+									 str+='<img src="Assests/images/icon_all.PNG" class="media-object" style="width:45px">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="media-heading color_black m_top5"><b>ALL SOURCES</b></h5>';
+										str+='<h4 class="color_black">'+allSourceCount+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-2">';
+								str+='<i class="fa fa-angle-right color_black f_30"></i>';
+							str+='</div>';
+						str+='</div>';	
+					str+='</a>';
+				str+='</li>';
+				str+='<li role="presentation" class="" attr_type="callcenter" attr_block_count="'+result.categoryCount+'">';
+					str+='<a href="#callcenter" data-toggle="tab">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-10">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+									  str+='<img src="Assests/images/call_center_icon.PNG" class="media-object" style="width:45px">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="media-heading color_black m_top5"><b>CALL CENTER</b></h5>';
+										str+='<h4 class="color_black">'+result.categoryCount+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-2">';
+								str+='<i class="fa fa-angle-right color_black f_30"></i>';
+							str+='</div>';
+						str+='</div>';		
+					str+='</a>';
+				str+='</li>';
+				str+='<li role="presentation" class="" attr_type="print" attr_block_count="'+result.printCount+'">';
+					str+='<a href="#print" data-toggle="tab">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-10">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+									  str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:45px">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="media-heading color_black m_top5"><b>PRINT MEDIA</b></h5>';
+										str+='<h4 class="color_black">'+result.printCount+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-2">';
+								str+='<i class="fa fa-angle-right color_black f_30"></i>';
+							str+='</div>';
+						str+='</div>';		
+					str+='</a>';
+				str+='</li>';
+				str+='<li role="presentation" class="" attr_type="electronic" attr_block_count="'+result.electCount+'">';
+					str+='<a href="#electronic" data-toggle="tab">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-10">';
+								str+='<div class="media">';
+									str+='<div class="media-left">';
+									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
+									str+='</div>';
+									str+='<div class="media-body">';
+										str+='<h5 class="media-heading color_black m_top5"><b>ELECTRONIC MEDIA</b></h5>';
+										str+='<h4 class="color_black">'+result.electCount+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="col-sm-2">';
+								str+='<i class="fa fa-angle-right color_black f_30"></i>';
+							str+='</div>';
+						str+='</div>';		
+					str+='</a>';
+				str+='</li>';
+			str+='</ul>';
 		str+='</div>';
-		total=total+result.subList1[i].alertCnt;
+		str+='<div class="col-sm-9 border_tab_content">';
+			str+='<div class="">';
+				str+='<div class="tab-content pad_10">';
+					str+='<div class="tab-pane active" id="all_Sources_Id">';
+						str+='<div class="row m_top10">';
+							var totalAlertCount=0;
+							for(var i in result.subList1){
+								totalAlertCount = totalAlertCount+result.subList1[i].alertCnt;
+							}
+							str+='<div class="col-sm-3">';
+								str+='<div class="brdR_3 pad_10" style="border: 1px solid #4C9DD6;">';
+									str+='<h5 class="font_weight" style="color:#4C9DD6">TOTAL <br/>ALERTS</h5>';
+									str+='<h4 class="m_top10">'+totalAlertCount+'</h4>';
+								str+='</div>';
+							str+='</div>';	
+							var colorObj={'Print Media':'#575858','Electronic Media':'#F26532','Call Center':'#E952A0'}
+							for(var i in result.subList1){
+								str+='<div class="col-sm-3">';
+									str+='<div class="brdR_3 pad_10" style="border: 1px solid '+colorObj[result.subList1[i].name]+';">';
+										if(result.subList1[i].name == "Electronic Media"){
+											str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">Electronic&nbsp;Media <br/>Alerts</h5>';
+										}else{
+											str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">'+result.subList1[i].name+' <br/>Alerts</h5>';
+										}
+										
+										str+='<h4 class="m_top10">'+result.subList1[i].alertCnt+'</h4>';
+									str+='</div>';
+								str+='</div>';
+							}
+						str+='</div>';
+						str+='<div class="bg_yash_color_10 m_top10">';
+							str+='<h5 class="font_weight">ALERTS - MONTHLY OVERVIEW</h5>';
+							str+='<div class="row">';
+								str+='<div style="padding:15px;">';
+									str+='<div id="areasplineChartId" style="height:300px;"></div>';
+								str+='</div>';
+							str+='</div>';
+							var alertStatusTotalCount=0;
+							for(var i in result.list){
+								alertStatusTotalCount=alertStatusTotalCount+result.list[i].statusCount
+							}
+							str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';
+							str+='<div class="row">';
+								str+='<div style="padding:15px;">';
+									str+='<div id="alertStatusChartId" style="height:300px;"></div>';
+								str+='</div>';
+							str+='</div>';
+							
+						str+='</div>';
+							
+					str+='</div>';
+					str+='<div class="tab-pane active" id="callcenter">';
+						str+='<div id="callcenterDetailsDivId"></div>';
+					str+='</div>';
+					str+='<div class="tab-pane active" id="print">';
+						str+='<div id="printDetailsDivId"></div>';
+					str+='</div>';
+					str+='<div class="tab-pane active" id="electronic">';
+						str+='<div id="electronicDetailsDivId"></div>';
+					str+='</div>';
+					
+					//tab close
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#jalavaniTabOverVewDivId").html(str);
+	var mainArr=[];
+	var monthNameArr=[];
+	var statusNameArr=[];
+	var dataArr=[];
+	
+	
+	for(var i in result.subList2){
+		monthNameArr.push(result.subList2[i].monthName)
+		mainArr.push(result.subList2[i].percentage)
 	}
-	$("#AllSourcesId").html(str);
-	$("#alertsCount").html(total);
-}
-  
-
-function buildJalavaniDashBoardOverview(result)
-{
-	$("#areasplineChartId").html(spinner);
-  $("#stackedColumnChartId").html(spinner);
-  var categories=[];
-  var percentage=[];
-  var status=[];
-  var notifiedCnt=[];
-  var proposolCnt=[];
-  var actionInProgressCnt=[];
-  var closed=[];
-  var colors=[];
-  for(var i in result.subList2)
-  {
-    categories.push(result.subList2[i].smType.toUpperCase());
-    percentage.push(result.subList2[i].percentage);
-    //percentage.push(result.subList2[i].percentage);
-  }
-  for(var i in result.list)
-  {
-    if(result.list[i].status=="Action In Progress" ||  result.list[i].status=="Notified" ||  result.list[i].status=="Proposal" || result.list[i].status=="Closed")
-    {
-    status.push(result.list[i].status);
-    colors.push(result.list[i].color);
-    }
-    if(result.list[i].status=="Action In Progress")
-    {
-      actionInProgressCnt=[0,result.list[i].statusCount,0,0];
-    }
-    else if(result.list[i].status=="Notified")
-    {
-      notifiedCnt=[result.list[i].statusCount,0,0,0];
-    }
-    else if(result.list[i].status=="Proposal")
-    {
-      proposolCnt=[0,0,0,result.list[i].statusCount];
-    }
-    else if(result.list[i].status=="Closed")
-    {
-      closed=[0,0,result.list[i].statusCount,0];
-    }
-  	
-		//percentage.push(result.subList2[i].percentage);
-  }
-	buildAreaSplineChart("areasplineChartId",categories,percentage);
-	buildstackedColumnChart("stackedColumnChartId",status,notifiedCnt,proposolCnt,actionInProgressCnt,closed);
-}	
-
-
-/* buildAreaSplineChart("areasplineChartId");
-buildAreaSplineChart("areasplineChartId2");
-buildAreaSplineChart("areasplineChartId3");
- */
-function buildAreaSplineChart(areasplineChartId,categories,percentage)
-{
-	$('#'+areasplineChartId).highcharts({
-		colors:['#d9edc9'],
+	for(var i in result.list){
+		statusNameArr.push(result.list[i].status);
+		var tempArr = [];
+		tempArr.push(result.list[i].statusCount);
+		dataArr.push(tempArr);
+		
+	}
+	$('#areasplineChartId').highcharts({
+		colors:['#D9E8CE'],
 	  chart: {
 			type: 'areaspline'
 		},
 		title: {
-			text: 'ALERTS - MONTHLY OVERVIEW',
-			align: 'left'
+			text: '',
 		},
 		legend: {
-			layout: 'vertical',
-			align: 'left',
-			verticalAlign: 'top',
-			x: 150,
-			y: 100,
-			floating: true,
-		enabled: false,
-			borderWidth: 1,
-			
+			enabled: false,
 		},
 		xAxis: {
-			categories: categories,
-			plotBands: [{ // visualize the weekend
-				
-				color: 'rgba(68, 170, 213, .2)'
-			}],
-		labels: {
-			style: {
-				color: '#333',
-				fontSize:'14px',
-				fontWeight:'bold',
-			}
-		},
-		plotLines: [{
-			color: '#BCBCBC', // Color value
-			//dashStyle: 'longdashdot', // Style of the plot line. Default to solid
-			value: 4, // Value of where the line will appear
-			width: 1.5 // Width of the line    
-	  }]
+			
+			categories: monthNameArr,
+			labels: {
+				style: {
+					color: '#333',
+					fontSize:'14px',
+					fontWeight:'bold',
+				}
+			},
+			
 		},
 		yAxis: {
+			min: 0,
 			title: {
 				text: '',
 			},
-		min: 0, 
-		max: 100,
-		tickInterval: 10,
 		},
 		tooltip: {
-			
 			formatter: function () {
-				return '<div style="box-shadow:0px 0px 1px rgba(0,0,0,4);color:#fff;>"<h6><b>'+this.x+'</b></h6><br><h4 style="color:#62CAA1;">'+this.y+'%</h4></div>';
+				return '<b>' + this.x + '</b> - ' +
+					this.y+" %"
 			}
 		},
 		credits: {
@@ -287,6 +361,13 @@ function buildAreaSplineChart(areasplineChartId,categories,percentage)
 				areaspline: {
 				fillOpacity: 0.5,
 				lineColor: '#25CAA1',
+				 dataLabels: {
+						enabled: true,
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
+						formatter: function() {
+							return (this.y)+"%";
+						},
+					},
 			},
 		series: {
 				marker: {
@@ -298,615 +379,562 @@ function buildAreaSplineChart(areasplineChartId,categories,percentage)
 		},
 		series: [{
 			name: '',
-			data: percentage
+			data: mainArr,
+			
+			
 		}]
 	});
-}
-
-/* buildstackedColumnChart("stackedColumnChartId");
-buildstackedColumnChart("stackedColumnChartId2");
-buildstackedColumnChart("stackedColumnChartId3");
- */	
-function buildstackedColumnChart(stackedColumnChartId,status,notifiedCnt,proposolCnt,actionInProgressCnt,closed)
-{
-	$('#'+stackedColumnChartId).highcharts({
-	  colors:['#DFDFDF','#CC3399','#FFBA00','#009964','#00D2BC'],
-		chart: {
-			type: 'column'
+	
+	$('#alertStatusChartId').highcharts({
+		colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
+		 chart: {
+			type: 'column',
 		},
 		title: {
-			text: '2175 - ALERTS STATUS',
-			align: 'left'
+			text: '',
 		},
-	  credits:{
-		enabled:false,
-	  },
-		xAxis: {
-			categories: status,
-		labels: {
-			style: {
-				color: '#333',
-				fontSize:'12px',
-				fontWeight:'bold',
-			 }
-		},
-		  plotBands: [{ // visualize the weekend
-				from: 'Notified',
-				to: 'Proposal',
-		  color:'red',
-				
-			}],
+	  xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: statusNameArr,
+			labels: {
+				style: {
+					color: '#333',
+					fontSize:'10px',
+					fontWeight:'bold',
+				 }
+			},
 		},
 		yAxis: {
 			min: 0,
-		
-		tickInterval: 1000,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
 			title: {
 				text: ''
 			},
-		labels: {
-		  enabled:true
-		},
-			stackLabels: {
-				
-		  labels: {
-			  enabled:false
-			},
-		
-				style: {
-					fontWeight: 'bold',
-					color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
-				}
-			}
 		},
 		legend: {
-			align: 'right',
-			x: -30,
-			verticalAlign: 'top',
-			y: 25,
-		enabled:false,
-			floating: true,
-			backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-			borderColor: '#CCC',
-			borderWidth: 1,
-			shadow: false
+		  enabled:false,
 		},
 		tooltip: {
 			formatter: function () {
-				console.log(this.series.name);
-				return '<div style="box-shadow:0px 0px 1px rgba(0,0,0,4);"><h4>'+this.x+'</h4><br>'+this.series.name+': '+this.y+'</div>';
+				return '<b>' + this.x + '</b> - ' +
+					this.y+""
 			}
 		},
-		
 		plotOptions: {
-			series: {
-					pointWidth: 50,
-			  
-				},
 				column: {
-					stacking: 'normal',
+					colorByPoint: true,
+					pointWidth: 30,
+					gridLineWidth: 15
 					
 				},
-
 			},
-			series: [{
-				name: 'Remained',
-				data: [10500-notifiedCnt[0], 10500-actionInProgressCnt[1],10500-closed[2],10500-proposolCnt[3]],
-				color:'#DFDFDF',
-			  },
-			  {
-				name: 'Notified',
-				data: notifiedCnt,
-				color:'#CC3399',
-				
-			  },
-			  {
-				name: 'Action In Progress',
-				data: actionInProgressCnt,
-				color:'#009964',
-			  },
-			  {
-				name: 'Completed & Closed',
-				data: closed,
-				color:'#00D2BC',
-			  },
-			  {
-				name: 'Proposal',
-				data: proposolCnt,
-				color:'#FFBA00',
-			  },
-			  ],
-	});
-}
-
-buildStackColumnChart("StackColumnChartId");
-
-function buildStackColumnChart(StackColumnChartId)
-{
-	$('#'+StackColumnChartId).highcharts({
-   
-		chart: {
-			type: 'column'
-		},
-		title: {
-			text: 'Jalavani Call Center IVR feedback',
-			align: 'left'
-		},
-	  credits:{
-		enabled:false,
-	  },
-		xAxis: {
-			categories: ['SATISFIED', 'AVG', 'NOT SATISFIED'],
-		labels: {
-			enabled:false
-		},
-		  plotBands: [{ // visualize the weekend
-				from: 'Notified',
-				to: 'Proposal',
-		  color:'red',
-				
-			}],
-		},
-		yAxis: {
-			min: 0,
-		max: 250,
-		tickInterval: 50,
-			title: {
-				text: ''
-			},
-		labels: {
-		  enabled:true
-		},
-			stackLabels: {
-				
-		  labels: {
-			  enabled:false
-			},
-		
-				style: {
-					fontWeight: 'bold',
-					color: (Highcharts.theme && Highcharts.theme.textColor) || 'gray'
+		series:[{
+				name: '',
+				data: dataArr,
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					formatter: function() {
+						return '<span>'+this.y+'</span>';
+					}
 				}
-			}
-		},
-		legend: {
-			align: 'center',
-			
-			verticalAlign: 'bottom',
-			
-			enabled:true,
-		
-			backgroundColor: (Highcharts.theme && Highcharts.theme.background2) || 'white',
-			borderColor: '#CCC',
-			borderWidth: 1,
-			shadow: false
-		},
-		tooltip: {
-			headerFormat: '<b>{point.x}</b><br/>',
-			pointFormat: '{series.name}: {point.y}<br/>Total: {point.stackTotal}'
-		},
-		
-		plotOptions: {
-			series: {
-					pointWidth: 50,
-			  
-				},
-				column: {
-					stacking: 'normal',
-					
-				},
-
-			},
-			series: [{
-				name: 'Remaining',
-				data: [50, 50,120],
-				color:'#DFDFDF',
-			  },
-			  {
-				name: 'SATISFIED',
-				data: [233, 0,0],
-				color:'#30B349',
-				
-			  },
-			  {
-				name: 'AVG',
-				data: [0,247,0],
-				color:'#FDBB11',
-			  },
-			  {
-				name: 'NOT SATISFIED',
-				data: [0,0,173],
-				color:'#EE2125',
-			  },
-			 
-			  
-			  ],
+			}],
 	});
-}	
-
-buildFeedback("FeedbackId");
-
-{
-	
-	for(var i=0;i<2;i++)
-	{
-		buildFeedback("FeedbackId"+i);
-	}
-}
-	
-function buildFeedback(FeedbackId)
-{
-	var daysCount=[30,60,90];
-	var perCount=[12.5,1.5,0.2];
-
-	var str='';
-	for(var i=0; i<=2; i++){
-		str+='<div class="col-sm-4">';
-			str+='<div class="row">';
-				str+='<div class="pad3">';
-					str+='<div class="white-block padding_15">';
-						str+='<h5>LAST '+daysCount[i]+' DAYS</h5>';
-						if(i==0){
-							str+='<h4 style="color:red;" class="m_top10">12.5%<span style="margin-left:15px;"><i class="fas fa-arrow-up fa-lg" style="color:red;"></i></span></h4>';
-						}else{
-							str+='<h4 style="color:#4BB647;" class="m_top10">12.5%<span style="margin-left:15px;"><i class="fas fa-arrow-down fa-lg" style="color:#4BB647;"></i></span></h4>';
-						}
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	}
-	
-	$("#"+FeedbackId).html(str);
 }
 
 
 
-$(document).on("click","#showModalId",function()
-  {
-      var str='<div class="row">';
-        str+='<div class="col-sm-12 m_top10" expand-main="false">';
-          str+='<table style="background-color:#fff;" id="dataTable" class="table table-bordered ">';
-            str+='<thead>';
-			 str+='<tr>';
-              str+='<th class="white-block"></th>';
-              str+='<th class="white-block">Id</th>';
-              str+='<th class="white-block">Title</th>';
-              str+='<th class="white-block"><span class="channel-name">Source</span></th>';
-              str+='<th class="white-block"><span class="location-name">Location</span></th>';
-              str+='<th class="white-block"><span class="channel-name">Status</span></th>';
-              str+='<th class="white-block"><span class="channel-name">Ofcr Name</span></th>';
-              str+='<th class="white-block"><span class="channel-name">Ofcr Designation</span></th>';
-              str+='<th class="white-block"></th>';
-			 str+='</tr>'; 
-            str+='</thead>';
-            str+='<tbody>';
-              str+='<tr>';
-                str+='<td>';
-                  str+='<i class="glyphicon glyphicon-cog text-danger" style="color:#EFA5B6;margin-right:3px;"></i>';
-                str+='</td>';
-                str+='<td>'; 
-                  str+='53316';
-                str+='</td>';
-                str+='<td>';
-                  str+='<span class="alert-title" data-toggle="tooltip" data-placement="top" title="Water not reaching">Water not reaching</span>';
-                str+='</td>';
-                str+='<td>';
-                  str+='<span data-toggle="tooltip" class="channel-name" data-placement="top" title="Call Center">Call Center</span>';
-                str+='</td>';
-                str+='<td>';
-                  str+='<span data-toggle="tooltip" class="location-name" data-placement="top" title="KASPAPENTAPADU">KASPAPENTAPADU</span>';
-                str+='</td>';
-                str+='<td class="text-center">';
-                  str+='<span class="channel-name" data-toggle="tooltip" data-placement="top" title="Notified">Notified</span>';
-                str+='</td>';
-                str+='<td class="text-center">';
-                  str+='<span class="channel-name" data-toggle="tooltip" data-placement="top" title="Assistant Executive Engineer">Assistant Executive Engineer</span>';
-                str+='</td>';
-                str+='<td class="text-center">';
-                  str+='<span class="channel-name" data-toggle="tooltip" data-placement="top" title="Pentapadu">Pentapadu</span>';
-                str+='</td>';
-                str+='<td>';
-                  str+='<span class="arrow-icon pull-right alertIdCls text-primary" attr_statusid="2" attr_alertid="53316"'; 
-                  str+='expand-icon="block1"><i class="glyphicon glyphicon-menu-right"></i></span>';
-                str+='</td>';
-              str+='</tr>';
-            str+='</tbody>';
-          str+='</table>';
-        str+='</div>';
-		str+='<div id="rightSideExpandView"></div>';
-      str+='</div>';    
-      $("#jalavaniMinisterPopupBody").html(str);
-	  $("#dataTable").dataTable();
-	  rightSideExpandView();
-      $("#jalavaniMinisterPopup").modal('show');
-  });
 
-$(document).on("click","[expand-icon]",function(){
-        var expandBlockName = $(this).attr("expand-icon");
-    var alertId = $(this).attr("attr_alertId");
-    //var statusId = $(this).attr("attr_statusId");
-    $("[expand-icon]").closest("li").removeClass("active");
-    $("[expand-icon]").removeClass("text-primary");
-    $(this).addClass("text-primary");
-    $(this).closest("li").addClass("active");
-    //rightSideExpandView(alertId);
-    //glStr = '';
-    setTimeout(function(){
-      $("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
-    },750);
-    setTimeout(function(){
-      $("#alertManagementPopup").scrollTop(0);
-    },780);
-    if($("[expand-main]").attr("expand-main") === 'false')
-    {  
-      $("[expand-main]").attr("expand-main","true");
-      $("[expanded-channel]").attr("expanded-channel","true");
-      $("[expand-main]").addClass("col-sm-4").removeClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
-      $("#demo").show();
-    }
-  });
-  
-$(document).on("click","[expanded-close]",function(){
-    var expandBlockName = $(this).attr("expanded-close");
-    if($("[expand-main]").attr("expand-main") === 'true')
-    {
-      $("[expand-main]").attr("expand-main","false");
-    }else{
-      $("[expand-main]").attr("expand-main","true");
-    }
-    $("[expanded-block="+expandBlockName+"]").hide();
-    $("[expand-main]").removeClass("col-sm-4").addClass("col-sm-12").css("transition"," ease-in-out, width 0.7s ease-in-out");
-  });
- 
-function rightSideExpandView()
-  {
-    var str='';
-        var str='';
-            str+='<div class="col-sm-8 pad_left0" expanded-block="block1" style="display:none;">';
-              str+='<div class="panel-right">';
-                str+='<div style="box-shadow:0px 0px 2px 2px rgba(0,0,0,0.2)">';
-                  str+='<i class="glyphicon glyphicon-remove pull-right" expanded-close="block1" style="cursor:pointer;"></i>';
-                    str+='<div class="panel panel-default">';
-                      str+='<div class="panel-heading" id="mainBlockStates">';
-                        str+='<div class="row">';
-                          str+='<div class="col-sm-4">';
-                            str+='<div id="assignedUser">';
-                              str+='<div class="media">';
-                                str+='<div class="media-body">'
-                                  str+='<p> ASSIGN TO: <i class="fas fa-level-down-alt"></i></p>';
-                                  str+='<p>Superintending Engineer <br> <i class="glyphicon glyphicon-phone"></i> : 9100122100</p>';
-                                  str+='<p>Location :  Anantapur</p>';
-                                  str+='<p>Dept : RURAL WATER SUPPLY</p>';
-                                  str+='<p></p>';
-                                str+='</div>';
-                              str+='</div>';
-                            str+='</div>';
-                          str+='</div>';
-                          str+='<div class="col-sm-8 pull-right" style="">';
-                            str+='<ul class="list-icons list-inline pull-right" status-icon="block1">';
-                              str+='<li status-icon-block="alertStatus" attr_alert_id="16214" subalertid="" data-toggle="tooltip" data-placement="top" title="" id="displayStatusId" style="" data-original-title="alert status">';
-                                str+='<span class="status-icon arrow-icon" id="statusIdColor" style="background-color: rgb(201, 172, 130);"></span>';
-                                str+='<span id="statusId">Reopen</span>';
-                              str+='</li>';
-                              str+='<li data-toggle="tooltip" data-placement="top" title="" id="proposalId" style="display:none;" data-original-title="Present Proposal Status">';
-                                str+='<span class="status-icon arrow-icon"></span>';
-                                str+='<span id="presntPrposalstatusId"></span>';
-                              str+='</li>';
-                            str+='</ul>';
-                          str+='</div>';
-                        str+='</div>';
-                      str+='</div>';
-                      str+='<div class="panel-body">';
-                        str+='<p>';
-                          str+='<i class="fa fa-fire"></i>';
-                            str+='Impact Level :';
-                              str+='<span id="impactLevel">MANDAL</span>';
-                              str+='<span class="text-danger pull-right">';
-                                str+='<i class="glyphicon glyphicon-cog"></i>';
-                                  str+='Priority:';
-                                    str+='<span id="priorityBodyId">High</span>';
-                              str+='</span>';
-                        str+='</p>';
-						str+='<div class="row m_top20">';
-							str+='<div class="col-sm-1 text-center body-icons">';
-								str+='<i class="fas fa-phone-volume fa-2x"></i>';
-							str+='</div>';
-							str+='<div class="col-sm-11">';
-								str+='<h3>Caller Details </h3>';
-								str+='<ul class="list-inline slickSlider">';
-									str+='<li style="padding:0px 8px;margin:0px 5px;border:1px solid #ddd;">';
-										str+='<table class="table table-condensed">';
-											str+='<tbody>';
-												str+='<tr>';
-													str+='<td>Name</td>';
-													str+='<td>: Ismail</td>';
-												str+='</tr>';
-												str+='<tr>';
-													str+='<td>Mobile No</td>';
-													str+='<td>: 8317609005</td>';
-												str+='</tr>';
-												str+='<tr>';
-													str+='<td>Caller</td>';
-													str+='<td>: CITIZEN</td>';
-												str+='</tr>';
-											str+='</tbody>';
-										str+='</table>';
-									str+='</li>';
-								str+='</ul>';
-							str+='</div>';
-						str+='</div>';
-                        str+='<div class="row m_top20">';
-                          str+='<div class="col-sm-1 text-center body-icons">';
-                            str+='<i class="fa fa-check fa-2x"></i>';
-                          str+='</div>';
-                          str+='<div class="col-sm-11">';
-                            str+='<h3>Water not reaching </h3>';
-                            str+='<p class="m_top10">Citizen Name:-Ismail Citizen Mobile No:-8317609005 Citizen Address:-Santhajutur Problem:-Citizen informing that they are not getting water supply from last few days,, they don\'t have any alternate source, so they are suffering a lot with water deficiency. Resolution:-Citizen requesting us to solve their problem as soon as possible and provide water supply regularly and sufficiently</p>';
-							str+='<p class="m_top10"><small> <i class="fa fa-map-marker"></i> Andhra Pradesh(S),Anantapur(D),MADAKASIRA(C),Amarapuram(M),(P),(H)</small></p>';
-                            str+='<p class="m_top10"><small> <i class="fa fa-calendar"></i> Created : 2017-04-21</small></p>';
-                          str+='</div>';
-                        str+='</div>';
-                        str+='<div class="row m_top20">';
-                          str+='<div class="col-sm-1 text-center body-icons">';
-                            str+='<i class="fa fa-paperclip fa-2x"></i>';
-                          str+='</div>';
-                          str+='<div class="col-sm-4">';
-                            str+='<h4 class="text-muted text-capital">article attachment</h4>';
-                            str+='<img class="articleDetailsCls img-responsive m_top20" attr_articleid="685354" src="" style="width: 150px; height: 150px;cursor:pointer">';
-                          str+='</div>';
-                        str+='</div>';
-                        str+='<div class="row m_top20">';
-							str+='<div class="col-sm-1 text-center body-icons">';
-								str+='<i class="fa fa-tags fa-2x"></i>';
-							str+='</div>';
-							str+='<div class="col-sm-11">';
-								str+='<h4 class="text-muted text-capital">category</h4>';
-								str+='<p class="m_top20"><span class="label label-default label-category">DRINKING WATER PROBLEM IN VILLAGES</span></p>';
-							str+='</div>';
-                        str+='</div>';
-                        str+='<div class="row m_top20">';
-							str+='<div class="col-sm-1 text-center body-icons">';
-								str+='<i class="fa fa-road fa-2x"></i>';
-							str+='</div>';
-							str+='<div class="col-sm-11">';
-								str+='<h4 class="text-muted text-capital">complete alert history</h4>';
-									str+='<ul class="pad_left0 m_top10" style="list-style:outside none none">';
-										str+='<li>';
-											str+='<span class="alert-history-date" style="background-color: lightpink;padding: 3px;border-radius: 5px;">2017-07-10</span>';
-											str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;">';
-												str+='<span class="status-icon">Action : Status Change</span>';
-												str+='<span class="pull-right">';
-													str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px">';
-													str+='Time </span> :';
-													str+='<span style="font-size:10px">  12:06:02 AM </span>';
-												str+='</span>';
-											str+='</p>';
-											str+='<p class="m_top20 text-capital myfontStyle">';
-												str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px">';
-												str+='Status </span> :Reopen';
-											str+='</p>';
-											str+='<p class="alert-history-body m_top5 text-capital myfontStyle">';
-												str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>:';
-												str+='Please enter action taken report immediately.';
-											str+='</p>';
-											str+='<p class=" alert-history-user m_top20 text-capital ">';
-												str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px">UPDATED BY:</span>';   
-												str+='<span style="font-size:10px">  RWS_CE4_AP  </span>';
-											str+='</p>';
-										str+='</li>';
-									str+='</ul>';
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-						
-						str+='<div class="panel-footer white-block">';
-									str+='<div class="row">';
-										str+='<div class="col-sm-1 text-center">';
-											str+='<span class="icon-name icon-primary">Ra</span>';
-										str+='</div>';
-										str+='<div class="col-sm-11">';
-											str+='<div class="panel panel-default panel-border-white">';
-												str+='<div class="panel-heading" style="display: none;">';
-													str+='<label class="radio-inline" style="margin-bottom: 5px;">';
-													str+='<input value="te" name="language1" class="lang" id="telugu1" checked="true" onclick="languageChangeHandler1();" type="radio">Telugu</label>';
-													str+='<label class="radio-inline" style="margin-bottom: 5px;">';
-													str+='<input value="en" name="language1" class="lang" id="eng1" onclick="languageChangeHandler1();" type="radio">English</label>';
-												str+='</div>';
-												str+='<div class="panel-body">';
-													str+='<div class="comment-area">Comment Here</div>';
-														str+='<textarea class="form-control comment-area" id="alertCommentId1" placeholder="Comment here..." style="line-height: 1.5em; font-family: Arial, Helvetica, sans-serif; font-size: 14px; display: none;"></textarea>';
-													str+='</div>';
-													str+='<div class="panel-footer text-right" style="display: none;">';
-														str+='<button class="btn btn-primary comment-btn commentChangeCls" attr_alert_id="16442" subalertid="" id="commentChangeId">Save</button>';
-														str+='<span id="commentPostingSpinner" style="height:50px;width:50px"></span>';
-													str+='</div>';
-												str+='</div>';
-											str+='</div>';
-										str+='</div>';
-								str+='</div>';	
-						
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-				
-                    
-      $("#rightSideExpandView").html(str);
-  }
-  $(document).on("click","[role='tablist']",function(){
-    $(this).find('li .ARI').hide();
-    $(this).find('li.active .ARI').show();
-    
-  });
-  
- 
-// Fileter calls keys setting 
-  
-	//getJalavanilocationAndStatusDetailsInfo("Alert","district",0);//completed
-	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",0);
-	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",0);
-
-	  //getJalavanilocationAndStatusDetailsInfo("Status","district",0);//completed
-	//getJalavanilocationAndStatusDetailsInfo("Status","constituency",0);
-	//getJalavanilocationAndStatusDetailsInfo("Status","mandal",0);
-	  
-	//getJalavanilocationAndStatusDetailsInfo("Alert","district",4);//completed
-	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",4);
-	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",4);
-
-	//getJalavanilocationAndStatusDetailsInfo("Status","district",4);//completed
-	//getJalavanilocationAndStatusDetailsInfo("Status","constituency",4);
-	//getJalavanilocationAndStatusDetailsInfo("Status","mandal",4);
-
-	getJalavanilocationAndStatusDetailsInfo("Alert","district",2,"PrintMedia");//
-	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",2,PrintMedia);
-	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",2,PrintMedia);
-
-	getJalavanilocationAndStatusDetailsInfo("Alert","district",3,"ElectronicMedia");//
-	//getJalavanilocationAndStatusDetailsInfo("Alert","constituency",3,ElectronicMedia);
-	//getJalavanilocationAndStatusDetailsInfo("Alert","mandal",3,ElectronicMedia);
-
-
-function getJalavanilocationAndStatusDetailsInfo(searchType,type,alertcategoryId,newsType){
+function getJalavaniCategoryWiseDetailsInfo(searchType,blockCount){
+	$("#"+searchType+"DetailsDivId").html(spinner);
 	var json={
 		fromDateStr:"01-01-2017",
 		toDateStr:"31-01-2018",
-		searchType:searchType,
-		type:type,
-		alertCategoryId:alertcategoryId,
-		newsType:newsType
+		searchType:searchType//print or electronic or callcenter
+		
 	}
 	$.ajax({                
-   type:'POST',    
-   url: 'getJalavanilocationAndStatusDetailsInfo',
-   dataType: 'json',
-   data : JSON.stringify(json),
-   beforeSend :   function(xhr){
-     xhr.setRequestHeader("Accept", "application/json");
-     xhr.setRequestHeader("Content-Type", "application/json");
-   }
- }).done(function(result){
-});
+	type:'POST',    
+	url: 'getJalavaniCategoryWiseDetailsInfo',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+	}).done(function(result){
+		if(result !=null){
+			buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount);
+		}else{
+			$("#"+searchType+"DetailsDivId").html("No Data Available");
+		}
+	});
 }
-//getArticlesMonthlyOverviewInfoBySearchType("news",2,"print");
-getArticlesMonthlyOverviewInfoBySearchType("alerts",2,"print");
+
+function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
+	var str='';
+	if(searchType == "callcenter"){
+		str+='<div class="row">';
+			str+='<div class="col-sm-3">';
+				str+='<div class="" style="border: 1px solid #447BB3;">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+							  str+='<img src="Assests/images/call_center_calls_icon.PNG" class="media-object" style="width:60px">';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="media-heading"><b>CALL CENTER CALLS</b></h5>';
+								str+='<h3>'+blockCount+'</h3>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';	
+				str+='</div>';
+			str+='</div>';	
+			str+='<div class="col-sm-3">';
+				str+='<div class="" style="border: 1px solid #3C3B3B; background-color:#F6A323;">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+							 str+='<i class="fa fa-bell-o fa-4x"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="media-heading"><b>CALL CENTER ALERTS</b></h5>';
+								str+='<h3 class="m_top10">'+result.categoryCount+'</h3>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';	
+				str+='</div>';
+			str+='</div>';	
+		str+='</div>';
+	}else{
+		str+='<div class="row">';
+			str+='<div class="col-sm-3">';
+				str+='<div class="" style="border: 1px solid #595959;">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+							if(searchType == "print"){
+								str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:50px">';
+							}else{
+								str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:50px">';
+							}	
+							
+							str+='</div>';
+							str+='<div class="media-body">';
+								if(searchType == "print"){
+									str+='<h5 class="media-heading"><b>PRINT MEDIA NEWS</b></h5>';
+								}else{
+									str+='<h5 class="media-heading"><b>ELECTRONIC MEDIA NEWS</b></h5>';
+								}
+								
+								str+='<h3>'+result.totalNewsCnt+'</h3>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';	
+					
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+				str+='<div class="" style="border: 1px solid #67BD47;">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+							 str+='<i class="fa fa-smile-o fa-4x" style="color:#67BD47"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="media-heading" style="color:#67BD47"><b>POSITIVE <br/>NEWS</b></h5>';
+								str+='<h3 class="">'+result.posCount+'</h3>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';	
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+				str+='<div class="" style="border: 1px solid #EE4E5B;">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+							 str+='<i class="fa fa-frown-o fa-4x" style="color:#EE4E5B"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 class="media-heading " style="color:#EE4E5B"><b>NEGATIVE <br/>NEWS</b></h5>';
+								str+='<h3 class="">'+result.negCount+'</h3>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';	
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-3">';
+					str+='<div class="" style="border: 1px solid #3C3B3B; background-color:#F6A323;">';
+					str+='<div class="panel-heading">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+							 str+='<i class="fa fa-bell-o fa-4x"></i>';
+							str+='</div>';
+							str+='<div class="media-body">';
+							if(searchType == "print"){
+								str+='<h5 class="media-heading"><b>PRINT MEDIA ALERTS</b></h5>';
+							}else{
+								str+='<h5 class="media-heading"><b>ELECTRONIC MEDIA ALERTS</b></h5>';
+							}
+								
+								str+='<h3>'+result.categoryCount+'</h3>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';	
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		if(result.subList1 !=null && result.subList1.length>0){
+			str+='<div class="bg_yash_color_10 m_top10">';
+				str+='<h5 class="font_weight">IMPACT LEVEL</h5>';
+				str+='<ul class="list-inline impactLevelCss m_top10">';
+					for(var i in result.subList1){
+						var totalCount=result.subList1[i].posCount+result.subList1[i].negCount
+						str+='<li>';
+							str+='<h6>'+result.subList1[i].name+' LEVEL</h6>';
+								str+='<div class="row">';
+									str+='<div class="col-sm-4 m_top5">';
+										str+='<h3 class="m_top15" style="font-size: 20px;">'+totalCount+'</h3>';
+									str+='</div>';
+									str+='<div class="col-sm-8 m_top5">';
+										str+='<div style="background-color:#fff;border:1px solid #ddd;padding:5px;">';
+											str+='<h4><i class="fa fa-smile-o fa-1x" style="color:#67BD47;font-size: 24px;font-weight: bold;"></i>&nbsp;<span class="pull-right">'+result.subList1[i].posCount+'</span></h4>';
+											str+='<hr class="m_bottom5"/>';	
+											str+='<h4><i class="fa fa-frown-o fa-1x" style="color:#EE4E5B;font-size: 24px;font-weight: bold;"></i>&nbsp;<span class="pull-right">'+result.subList1[i].negCount+'</span></h4>';
+										str+='</div>';
+									str+='</div>';
+								str+='</div>';
+							str+='</li>';
+					}
+					
+				str+='</ul>';
+			str+='</div>';
+		}
+	}
+	
+	
+	str+='<div class="bg_yash_color_10 m_top10">';
+		str+='<h5 class="font_weight">ALERTS - MONTHLY OVERVIEW</h5>';
+		str+='<div class="row">';
+			str+='<div style="padding:15px;">';
+				str+='<div id="areaspline'+searchType+'ChartId" style="height:300px;"></div>';
+			str+='</div>';
+		str+='</div>';
+		var alertStatusTotalCount=0;
+		for(var i in result.list){
+			alertStatusTotalCount=alertStatusTotalCount+result.list[i].statusCount
+		}
+		
+		str+='<div class="row">';
+			str+='<div style="padding:15px;">';
+				if(searchType == "callcenter"){
+					str+='<div class="row">';
+						str+='<div class="col-sm-8">';
+							str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';
+							str+='<div id="alertStatus'+searchType+'ChartId" style="height:300px;" class="m_top10"></div>';
+						str+='</div>';
+						str+='<div class="col-sm-4">';
+							str+='<h5 class="font_weight">Jalavani Call Center IVR feedback</h5>';
+							str+='<div id="callcenterIVRFeedBackId" style="height:300px;" class="m_top10"></div>';
+						str+='</div>';
+					str+='</div>';
+					
+				}else{
+					str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';	
+					str+='<div id="alertStatus'+searchType+'ChartId" style="height:300px;" class="m_top10"></div>';
+				}
+				
+			str+='</div>';
+		str+='</div>';
+		
+	str+='</div>';
+	
+	$("#"+searchType+"DetailsDivId").html(str);
+	var mainArr=[];
+	var monthNameArr=[];
+	var statusNameArr=[];
+	var dataArr=[];
+	
+	
+	for(var i in result.subList2){
+		monthNameArr.push(result.subList2[i].monthName)
+		mainArr.push(result.subList2[i].percentage)
+	}
+	for(var i in result.list){
+		statusNameArr.push(result.list[i].status);
+		var tempArr = [];
+		tempArr.push(result.list[i].statusCount);
+		dataArr.push(tempArr);
+		
+	}
+	var dataIVRArr=[];
+	var AverageIVr=0;
+	for(var i in result.subList1){
+		AverageIVr=(AverageIVr+result.subList1[i].feedbackCount)/2;
+		dataIVRArr.push(result.subList1[i].feedbackCount)
+	}
+	dataIVRArr.push(AverageIVr);
+	$('#areaspline'+searchType+'ChartId').highcharts({
+		colors:['#D9E8CE'],
+	  chart: {
+			type: 'areaspline'
+		},
+		title: {
+			text: '',
+		},
+		legend: {
+			enabled: false,
+		},
+		xAxis: {
+			
+			categories: monthNameArr,
+			labels: {
+				style: {
+					color: '#333',
+					fontSize:'14px',
+					fontWeight:'bold',
+				}
+			},
+			
+		},
+		yAxis: {
+			min: 0,
+			title: {
+				text: '',
+			},
+		},
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.x + '</b> - ' +
+					this.y+" %"
+			}
+		},
+		credits: {
+			enabled: false
+		},
+		plotOptions: {
+				areaspline: {
+				fillOpacity: 0.5,
+				lineColor: '#25CAA1',
+				 dataLabels: {
+						enabled: true,
+						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
+						formatter: function() {
+							return (this.y)+"%";
+						},
+					},
+			},
+		series: {
+				marker: {
+					fillColor: '#FFFFFF',
+					lineColor: '#25CAA1',
+					lineWidth: 1,  // inherit from series
+				}
+			}
+		},
+		series: [{
+			name: '',
+			data: mainArr,
+			
+			
+		}]
+	});
+	
+	$('#alertStatus'+searchType+'ChartId').highcharts({
+		colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
+		 chart: {
+			type: 'column',
+		},
+		title: {
+			text: '',
+		},
+	  xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: statusNameArr,
+			labels: {
+				style: {
+					color: '#333',
+					fontSize:'10px',
+					fontWeight:'bold',
+				 }
+			},
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: ''
+			},
+		},
+		legend: {
+		  enabled:false,
+		},
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.x + '</b> - ' +
+					this.y+""
+			}
+		},
+		plotOptions: {
+				column: {
+					colorByPoint: true,
+					pointWidth: 30,
+					gridLineWidth: 15
+					
+				},
+			},
+		series:[{
+				name: '',
+				data: dataArr,
+				dataLabels: {
+					enabled: true,
+					color: '#000',
+					align: 'center',
+					formatter: function() {
+						return '<span>'+this.y+'</span>';
+					}
+				}
+			}],
+	});
+	
+	$('#callcenterIVRFeedBackId').highcharts({
+		colors:["#0FBE08","#FF0909","#FFBA00"],
+		 chart: {
+			type: 'column',
+		},
+		title: {
+			text: '',
+		},
+	  xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories: ['SATISFIED','NOT SATISFIED','PAR SATISFIED'],
+			labels: {
+				useHTML:true,
+				formatter: function() {
+					return '<p style="font-size:9px;"><span class="roundClr" style="background-color:'+globalStatusObj[this.value]+'"></span>&nbsp;&nbsp;&nbsp;'+this.value+'</p>';
+					
+				},
+				
+			},
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: ''
+			},
+		},
+		legend: {
+		  enabled:false,
+		},
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.x + '</b> - ' +
+					this.y+""
+			}
+		},
+		plotOptions: {
+				column: {
+					colorByPoint: true,
+					pointWidth: 30,
+					gridLineWidth: 15
+					
+				},
+			},
+		series:[{
+				name: '',
+				data: dataIVRArr,
+				dataLabels: {
+					enabled: true,
+					color: '#fff',
+					align: 'center',
+					formatter: function() {
+						return '<span>'+this.y+'</span>';
+					}
+				}
+			}],
+	});
+}
+function getJalavanilocationOverview(locationType){//All Table Build
+	var json={
+		fromDateStr:"01-01-2017",
+		toDateStr:"31-01-2018",
+		"searchType":"",
+		"type":locationType,//constituency,mandal
+		"alertCategoryId":0
+
+	}
+	$.ajax({                
+	type:'POST',    
+	url: 'getJalavanilocationOverview',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+	}).done(function(result){
+		
+	});
+}
+
+getArticlesMonthlyOverviewInfoBySearchType("alerts",2,"print");//print media Graph onchange
 function getArticlesMonthlyOverviewInfoBySearchType(searchType,alertcategoryId,newsType){
 	var json={
 		fromDateStr:"01-01-2017",
 		toDateStr:"31-01-2018",
-		searchType:searchType,
-		alertCategoryId:alertcategoryId,
-		newsType:newsType
+		searchType:searchType,//news or alerts
+		alertCategoryId:alertcategoryId,//Print-2,Electronic-3//0-All
+		newsType:newsType //""-alert,news-Print,Electronic-electronic
 	}
 	$.ajax({                
-   type:'POST',    
-   url: 'getArticlesMonthlyOverviewInfoBySearchType',
-   dataType: 'json',
-   data : JSON.stringify(json),
-   beforeSend :   function(xhr){
-     xhr.setRequestHeader("Accept", "application/json");
-     xhr.setRequestHeader("Content-Type", "application/json");
-   }
- }).done(function(result){
-});
+	type:'POST',    
+	url: 'getArticlesMonthlyOverviewInfoBySearchType',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+	}).done(function(result){
+	});
+}
+
+
+function getJalavanilocationAndStatusDetailsInfo(searchType,locationType,alertCategoryId,newsType){
+	/* dates
+getSearchType- Alert or Status
+type -district or constituency or mandal */
+	var json={
+		fromDateStr:"01-01-2017",
+		toDateStr:"31-01-2018",
+		searchType:searchType,//Alert or Status
+		type:locationType,//district or constituency or mandal
+		alertCategoryId:alertCategoryId,//print or electronic or callcenter // print -2,electronic-3/call cneter -4
+		newsType:newsType//call center=""/print -PrintMedia/electrronic -ElectronicMedia
+		
+	}
+	$.ajax({                
+	type:'POST',    
+	url: 'getJalavanilocationAndStatusDetailsInfo',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+	}).done(function(result){
+		
+	});
 }
