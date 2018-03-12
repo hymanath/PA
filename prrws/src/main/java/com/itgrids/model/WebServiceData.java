@@ -23,6 +23,7 @@ public class WebServiceData {
 	private String     responceData;
 	private Date       dataDate;
 	private Date       insertedTime;
+	private String 	   insertSource;
 	private String     isDeleted;
 	private Webservice webservice;
 	
@@ -84,5 +85,13 @@ public class WebServiceData {
 	}
 	public void setWebservice(Webservice webservice) {
 		this.webservice = webservice;
+	}
+	
+	@Column(name="insert_source")
+	public String getInsertSource() {
+		return insertSource;
+	}
+	public void setInsertSource(String insertSource) {
+		this.insertSource = insertSource;
 	}
 }
