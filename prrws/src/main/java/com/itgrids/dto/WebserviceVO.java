@@ -16,6 +16,7 @@ public class WebserviceVO implements Serializable{
 	private String inputData;
 	private Long webserviceId;
 	private String responseData;
+	private String insertSource;
 
 	public String getResponseData() {
 		return responseData;
@@ -87,6 +88,14 @@ public class WebserviceVO implements Serializable{
 
 	public void setInputData(String inputData) {
 		this.inputData = inputData;
+	}
+
+	public String getInsertSource() {
+		return insertSource;
+	}
+
+	public void setInsertSource(String insertSource) {
+		this.insertSource = insertSource;
 	}
 	
 }
