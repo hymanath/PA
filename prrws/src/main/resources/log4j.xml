@@ -21,7 +21,7 @@
 	<appender name="fatalFile"
          class="org.apache.log4j.RollingFileAppender">
         <param name="Threshold" value="FATAL"/>
-        <param name="file" value="${catalina.home}/logs/prrws.log" />        	
+        <param name="file" value="${catalina.home}/logs/prrws_fatal.log" />
         <param name="MaxFileSize" value="10MB" />
         <param name="MaxBackupIndex" value="50" />
         <layout class="org.apache.log4j.PatternLayout">
