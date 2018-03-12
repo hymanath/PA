@@ -1294,7 +1294,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					}
 				}
 				
-				finalList.get(0).setTotalCount(Long.parseLong(workTypeList.size()+""));
+				finalList.addAll(map.values());
+				//finalList.get(0).setTotalCount(Long.parseLong(workTypeList.size()+""));
 			}
 			
 			
@@ -1491,8 +1492,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId());
 			if(objList != null && objList.size() > 0){
 				for (Object[] objects : objList) {
-					if(map.get(Long.parseLong(objects[0].toString())) != null){
-						map.get(Long.parseLong(objects[0].toString())).setKms(Double.parseDouble(objects[2].toString()));
+					if(map.get(objects[0].toString()) != null){
+						map.get(objects[0].toString()).setKms(Double.parseDouble(objects[2].toString()));
 					}
 				}
 				voList.addAll(map.values());
@@ -2230,14 +2231,27 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				startDate = sdf.parse(fromDate);
 				endDate = sdf.parse(toDate);		
 			}
+			
+			Map<String,DocumentVO> map = new HashMap<String, DocumentVO>();
+			if(startDate != null && endDate != null){
+				List<String> dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
+				if(dateList != null && dateList.size() > 0){
+					for (String string : dateList) {
+						DocumentVO vo = new DocumentVO();
+						vo.setInsertedTime(string);
+						map.put(string, vo);
+					}
+				}
+			}
+			
+			
 			List<Object[]> objList = govtWorkProgressTrackDAO.getLocationOverviewStatusDayWiseKms(startDate,endDate,locationScopeId,locationValue,workTypeId);
 			if(objList != null && objList.size() > 0){
 				for (Object[] objects : objList) {
-					DocumentVO vo = new DocumentVO();
-					vo.setInsertedTime(objects[0].toString());
-					vo.setKms(Double.parseDouble(objects[1].toString()));
-					finalList.add(vo);
+					if(map.get(objects[0].toString()) != null)
+						map.get(objects[0].toString()).setKms(Double.parseDouble(objects[1].toString()));
 				}
+				finalList.addAll(map.values());
 			}
 		} catch (Exception e) {
 			LOG.error("exception occured at getLocationOverviewStatusDayWiseKms", e);
