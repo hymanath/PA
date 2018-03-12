@@ -133,8 +133,8 @@
 		color-adjust:exact;
 	}
 	.details-overview-tour thead tr th{
-		font-size:12px !important;
-		padding:5px 5px !important;
+		font-size:10px !important;
+		padding:3px 3px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
 		border-bottom:1px solid #d1ab66 !important;
@@ -143,8 +143,8 @@
 		color-adjust:exact;
 	}
 	.details-overview-tour tbody tr td{
-		font-size:12px !important;
-		padding:5px 5px !important;
+		font-size:10px !important;
+		padding:3px 3px !important;
 		border-top:none !important;
 		font-weight:bold !important;
 		-webkit-print-color-adjust:exact;
