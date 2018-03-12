@@ -108,24 +108,72 @@ function buildOverAllAlertsDetails(result){
 								str+='<th>Total&nbsp;Alerts</th>';
 								for(var i in result[0].subList){
 									if(result[0].subList[i].count >0){
-									str+='<th>'+result[0].subList[i].name+'</th>';
+										if(result[0].subList[i].name == "Action required"){
+											str+='<th style="border-left:1px solid #d1ab66;border-right:1px solid #d1ab66">'+result[0].subList[i].name+'</th>';
+										}else{
+											str+='<th>'+result[0].subList[i].name+'</th>';
+										}
+										
 									}
 								}
 							str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
 							//for(var i in result){
-								str+='<tr>';
+								str+='<tr style="text-align:center;">';
 									if(result[0].name == "Total Alerts"){
 										str+='<td>Total&nbsp;Alerts</td>';
 									}
 									str+='<td>'+result[0].totalAlert+'</td>';
+									var compPerc=0;
+									var ActionInProgressPerc=0;
+									var completedCount=0;
+									var ActionInProgressCount=0;
+									var ActionReguiredCount=0;
+									
 									for(var j in result[0].subList){
 										if(result[0].subList[j].count >0){
-										str+='<td>'+result[0].subList[j].count+'';
-										if(result[0].subList[j].id >0)
-										str+='<h6>('+result[0].subList[j].countPerc+'%)</h6>';
-										str+='</td>';
+											
+											if(result[0].subList[j].name == "Completed"){
+												completedCount = result[0].subList[j].count;
+												
+											}else if(result[0].subList[j].name == "Action In Progress"){
+												ActionInProgressCount = result[0].subList[j].count;
+											}else if(result[0].subList[j].name == "Action required"){
+												ActionReguiredCount = result[0].subList[j].count;
+											}
+											compPerc = (completedCount/ActionReguiredCount*100).toFixed(2);
+											ActionInProgressPerc = (ActionInProgressCount/ActionReguiredCount*100).toFixed(2);
+											if(result[0].subList[j].name == "Action required"){
+												str+='<td style="border-left:1px solid #d1ab66;border-right:1px solid #d1ab66">'+result[0].subList[j].count+'';
+													if(result[0].subList[j].id >0){
+															if(result[0].subList[j].name == "Completed"){
+																str+='<h6>('+compPerc+'%)</h6>';
+															}else if(result[0].subList[j].name == "Action In Progress"){
+																str+='<h6>('+ActionInProgressPerc+'%)</h6>';
+															}else{
+																str+='<h6>('+result[0].subList[j].countPerc+'%)</h6>';
+															}
+														
+													}
+													
+													str+='</td>';
+											}else{
+												str+='<td>'+result[0].subList[j].count+'';
+													if(result[0].subList[j].id >0){
+															if(result[0].subList[j].name == "Completed"){
+																str+='<h6>('+compPerc+'%)</h6>';
+															}else if(result[0].subList[j].name == "Action In Progress"){
+																str+='<h6>('+ActionInProgressPerc+'%)</h6>';
+															}else{
+																str+='<h6>('+result[0].subList[j].countPerc+'%)</h6>';
+															}
+														
+													}
+													
+													str+='</td>';
+											}
+											
 										}
 									}
 								str+='</tr>';
@@ -146,24 +194,70 @@ function buildOverAllAlertsDetails(result){
 								str+='<th>Total&nbsp;Alerts</th>';
 								for(var i in result[1].subList){
 									if(result[1].subList[i].count >0){
-									str+='<th>'+result[1].subList[i].name+'</th>';
+										if(result[1].subList[i].name == "Action required"){
+											str+='<th style="border-left:1px solid #d1ab66;border-right:1px solid #d1ab66">'+result[1].subList[i].name+'</th>';
+										}else{
+											str+='<th>'+result[1].subList[i].name+'</th>';
+										}
 									}
 								}
 							str+='</tr>';
 						str+='</thead>';
 						str+='<tbody>';
 							//for(var i in result){
-								str+='<tr>';
+								str+='<tr style="text-align:center;">';
 									if(result[1].name == "Last Month Alerts"){
 										str+='<td>Last&nbsp;Month&nbsp;Alerts</td>';
 									}
 									str+='<td>'+result[1].totalAlert+'</td>';
+									var compPerc=0;
+									var ActionInProgressPerc=0;
+									var completedCount=0;
+									var ActionInProgressCount=0;
+									var ActionReguiredCount=0;
 									for(var j in result[1].subList){
 										if(result[1].subList[j].count >0){
-										str+='<td>'+result[1].subList[j].count+'';
-										if(result[1].subList[j].id>0)
-										str+='<h6>('+result[1].subList[j].countPerc+'%)</h6>';
-										str+='</td>';
+											
+											if(result[1].subList[j].name == "Completed"){
+												completedCount = result[1].subList[j].count;
+												
+											}else if(result[1].subList[j].name == "Action In Progress"){
+												ActionInProgressCount = result[1].subList[j].count;
+											}else if(result[1].subList[j].name == "Action required"){
+												ActionReguiredCount = result[1].subList[j].count;
+											}
+											compPerc = (completedCount/ActionReguiredCount*100).toFixed(2);
+											ActionInProgressPerc = (ActionInProgressCount/ActionReguiredCount*100).toFixed(2);
+											if(result[1].subList[j].name == "Action required"){
+												str+='<td style="border-left:1px solid #d1ab66;border-right:1px solid #d1ab66">'+result[1].subList[j].count+'';
+													if(result[1].subList[j].id >0){
+															if(result[1].subList[j].name == "Completed"){
+																str+='<h6>('+compPerc+'%)</h6>';
+															}else if(result[1].subList[j].name == "Action In Progress"){
+																str+='<h6>('+ActionInProgressPerc+'%)</h6>';
+															}else{
+																str+='<h6>('+result[1].subList[j].countPerc+'%)</h6>';
+															}
+														
+													}
+													
+													str+='</td>';
+											}else{
+												str+='<td>'+result[1].subList[j].count+'';
+													if(result[1].subList[j].id >0){
+															if(result[1].subList[j].name == "Completed"){
+																str+='<h6>('+compPerc+'%)</h6>';
+															}else if(result[1].subList[j].name == "Action In Progress"){
+																str+='<h6>('+ActionInProgressPerc+'%)</h6>';
+															}else{
+																str+='<h6>('+result[1].subList[j].countPerc+'%)</h6>';
+															}
+														
+													}
+													
+													str+='</td>';
+											}
+											
 										}
 									}
 								str+='</tr>';
