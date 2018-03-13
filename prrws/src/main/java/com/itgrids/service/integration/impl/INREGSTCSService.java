@@ -94,4 +94,6 @@ public interface INREGSTCSService {
 	public IdNameVO  saveFAVacanciesPanchayatData();
 	
 	public void savingFieldManDaysService();
+	public NregaPaymentsVO getNregaPaymentsDepartmentWiseOverview(InputVO inputVO);
+	public List<NregaPaymentsVO> getNregaPaymentsDeptDtlsLocationWise(InputVO inputVO);
 }

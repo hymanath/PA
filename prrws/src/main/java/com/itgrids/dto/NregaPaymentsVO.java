@@ -104,6 +104,7 @@ public class NregaPaymentsVO implements Serializable{
     private String reprocessPendingMaterialAmount="0";
     private String totalReprocessPendingAmount="0";
     private List<NregaPaymentsVO> subList = new ArrayList<NregaPaymentsVO>(0);
+    private String departMentName;
     
     
 	public List<NregaPaymentsVO> getSubList() {
@@ -641,6 +642,12 @@ public class NregaPaymentsVO implements Serializable{
 	}
 	public void setTotalReprocessPendingAmount(String totalReprocessPendingAmount) {
 		this.totalReprocessPendingAmount = totalReprocessPendingAmount;
+	}
+	public String getDepartMentName() {
+		return departMentName;
+	}
+	public void setDepartMentName(String departMentName) {
+		this.departMentName = departMentName;
 	}
 	
   	

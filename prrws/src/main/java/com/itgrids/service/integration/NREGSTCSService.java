@@ -8538,4 +8538,408 @@ public class NREGSTCSService implements INREGSTCSService{
 			LOG.error("Exception raised at savingFieldManDaysService - NREGSTCSService service", e);
 		}
 	}
+	 /**
+	  * @param  InputVO inputVO which contain InputVO inputVO which contain fromDate,toDate,locationType,Year,locationId and SubLocation
+	  * @return NregaPaymentsVO
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get payments Department Wise overview details.
+	  * @since 12-MARCH-2018
+	  */
+	public NregaPaymentsVO getNregaPaymentsDepartmentWiseOverview(InputVO inputVO) {
+		NregaPaymentsVO paymentDtlsVO = new NregaPaymentsVO();
+		try {
+			if (inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l) {
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			}
+				
+			String  webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APPaymentsServicenew/APPaymentsServicenew";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+	        
+	        if (output == null) {
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl + str);
+	 	      } else {
+	 	    	 //String output = response.getEntity(String.class);
+	 	    	 if (output != null && output.length() > 0) {
+	 	    		 JSONArray paymentOverviewDataArr = new JSONArray(output);	 
+	 	    		 if (paymentOverviewDataArr != null && paymentOverviewDataArr.length() > 0) {
+	 	    			  for (int i = 0 ;i < paymentOverviewDataArr.length() ;i++) {
+	 	    				 JSONObject jsonObj = (JSONObject) paymentOverviewDataArr.get(i);
+	 	    				 String department = jsonObj.getString("DEPARTMENT");
+	 	    				if(inputVO.getDeptType() != null && department != null && inputVO.getDeptType().trim().equalsIgnoreCase(department)){
+	 	    					paymentDtlsVO.setId(jsonObj.getString("UNIQUEID"));
+		 	    				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
+		 	    				paymentDtlsVO.setTotalWage(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_WAGE_AMT")));
+		 	    				paymentDtlsVO.setTotalMaterial(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setGeneratedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_WAGES_AMT")));
+		 	    				paymentDtlsVO.setGeneratedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("GENERATED_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalGeneratesAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("GENERATED_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_WAGES_AMT")));
+		 	    				paymentDtlsVO.setNotGeneratedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalNotGeneratedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setUploadedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_WAGES_AMT")));
+		 	    				paymentDtlsVO.setUploadedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("UPLOADED_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalUploadsAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("UPLOADED_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_WAGES_AMT")));
+		 	    				paymentDtlsVO.setNotUploadedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalNotUploadedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_WAGES_AMT")));
+		 	    				paymentDtlsVO.setSentBankMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("SENTPFMS_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalSentBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("SENTPFMS_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setNotSentBankWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT")));
+		 	    				paymentDtlsVO.setNotSentBankMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalNotSentBankAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setCompletedWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_WAGES_AMT")));
+		 	    				paymentDtlsVO.setCompletedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("COMPLETED_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalCompletedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("COMPLETED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("COMPLETED_MATERIAL_AMT")))));
+		 	    				  
+		 	    				paymentDtlsVO.setRejectedWagesAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_WAGES_AMT")));
+		 	    				paymentDtlsVO.setRejectedMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REJECT_MATERIAL_AMT")));
+		 	    				  
+		 	    				paymentDtlsVO.setTotalRejectedAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setReleasePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")));
+		 	    				paymentDtlsVO.setReleasePendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")));
+		 	    				 
+		 	    				paymentDtlsVO.setTotalReleasePendingAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
+		 	    				 
+		 	    				paymentDtlsVO.setResponsePendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT")));
+		 	    				paymentDtlsVO.setResponsePendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")));
+		 	    				
+		 	    				paymentDtlsVO.setTotalResponsePendingAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_WAGES_AMT")));
+		 	    				paymentDtlsVO.setReprocessPendingMaterialAmount(cnvrtRupeesIntoCrores(jsonObj.getString("REPROCESS_PENDING_MATERIAL_AMT")));
+		 	    				
+		 	    				paymentDtlsVO.setTotalReprocessPendingAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("REPROCESS_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REPROCESS_PENDING_MATERIAL_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setTotalPendinAmount(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT"))+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+		 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT"))-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
+		 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT"))+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setPendingWage(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_WAGES_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_WAGES_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_WAGES_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("REJECT_WAGES_AMT")))));
+		 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_WAGES_AMT")))));
+		 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_WAGES_AMT")))));
+		 	    				
+		 	    				paymentDtlsVO.setPendingMaterial(cnvrtRupeesIntoCrores(String.valueOf(Double.valueOf(jsonObj.getString("NOT_GENERATED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_UPLOADED_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_MATERIAL_AMT"))
+		 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
+		 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
+		 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
+	 	    				}
+	 	    				 
+	 	    			 }
+	 	    		 }
+	 	    	}
+	 	    	 
+	 	     }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsDepartmentWiseOverview - NREGSTCSService service", e);
+		}
+		return paymentDtlsVO;
+	}
+	
+	/**
+	  * @param  InputVO inputVO which contain fromDate,toDate,locationType,Year,Type,locationId and SubLocation
+	  * @return List<NregaPaymentsVO>
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get payment Dept details For location wise.
+	  * @since 12-MARCH-2018
+	  */
+	public List<NregaPaymentsVO> getNregaPaymentsDeptDtlsLocationWise(InputVO inputVO) {
+		List<NregaPaymentsVO> resultList = new ArrayList<NregaPaymentsVO>(0);
+		try {
+			if (inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l) {
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			}
+			String deptName = null;
+			String subLocation = null;
+			Map<String,NregaPaymentsVO> deptMap = new LinkedHashMap<String,NregaPaymentsVO>(0);
+			String  webServiceUrl = "http://dbtrd.ap.gov.in/NregaDashBoardService/rest/APPaymentsServicenew/APPaymentsData";
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			String output = webserviceHandlerService.callWebService(webServiceUrl.toString(), str,IConstants.REQUEST_METHOD_POST);
+	        
+	        if(output == null) {
+	 	    	  throw new RuntimeException("Webservice Data Not Found. : "+ webServiceUrl+str);
+	 	    }else {
+	 	    	 if (output != null && !output.isEmpty()) {
+	 	    		 JSONArray paymentDataArr = new JSONArray(output);	 
+	 	    		 if (paymentDataArr != null && paymentDataArr.length() > 0) {
+	 	    			  for (int i = 0 ;i < paymentDataArr.length() ;i++) {
+	 	    				 JSONObject jsonObj = (JSONObject) paymentDataArr.get(i);
+	 	    				 String locationId = jsonObj.getString("UNIQUEID");
+	 	    				 String type = jsonObj.getString("TYPE");
+	 	    				 subLocation = inputVO.getSublocaType().trim();
+	 	    				 if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("state") && inputVO.getSublocationType().trim().equalsIgnoreCase("state"))){
+	 	    					 deptName = jsonObj.getString("NVL(T.DEPARTMENT,'_TOTAL')");
+	 	    				 }else{
+	 	    					deptName = jsonObj.getString("DEPARTMENT");
+	 	    				 }
+    					     NregaPaymentsVO locationVO = new NregaPaymentsVO();
+ 	    					    setBaseLocationByLocationType(jsonObj,locationVO,subLocation);
+	 	    					locationVO.setId(locationId);
+	 	    					locationVO.setType(type);
+	 	    					locationVO.setDepartMentName(deptName);
+	 	    					locationVO.setTotalAmount(jsonObj.getString("TOTAL_AMOUNT"));
+	 	    					locationVO.setGeneratedWageAmount(jsonObj.getString("GENERATED_AMT"));
+	 	    					locationVO.setNotGeneratedWagesAmount(jsonObj.getString("NOT_GENERATED_AMT"));
+	 	    					locationVO.setUploadedWageAmount(jsonObj.getString("UPLOADED_AMT"));
+	 	    					locationVO.setNotUploadedWagesAmount(jsonObj.getString("NOT_UPLOADED_AMT"));
+	 	    					locationVO.setSentBankWageAmount(jsonObj.getString("SENTPFMS_AMT"));
+	 	    					locationVO.setNotSentBankWageAmount(jsonObj.getString("NOT_SENTPFMS_AMT"));
+	 	    					locationVO.setCompletedWageAmount(jsonObj.getString("COMPLETED_AMT"));
+	 	    					locationVO.setRejectedWagesAmount(jsonObj.getString("REJECT_AMT"));
+	 	    					locationVO.setReleasePendingWageAmount(jsonObj.getString("RELEASE_PENDING_AMT"));
+	 	    					locationVO.setResponsePendingWageAmount(jsonObj.getString("RESPONSE_PENDING_AMT"));
+	 	    					locationVO.setReprocessPendingWageAmount(jsonObj.getString("REPROCESS_PENDING_AMT"));
+	 	    					locationVO.setTotalPendinAmount(new BigDecimal(Double.valueOf(jsonObj.getString("NOT_GENERATED_AMT"))
+	 	    							+Double.valueOf(jsonObj.getString("NOT_UPLOADED_AMT"))+Double.valueOf(jsonObj.getString("NOT_SENTPFMS_AMT"))
+	 	    							+Double.valueOf(jsonObj.getString("REJECT_AMT"))).setScale(0, BigDecimal.ROUND_HALF_UP).toString());
+	 	    							
+	 	    					locationVO.setPendingAtBankAmount(String.valueOf(Long.valueOf(jsonObj.getString("RELEASE_PENDING_AMT")) + Long.valueOf(jsonObj.getString("RESPONSE_PENDING_AMT"))));
+ 	    					 
+ 	    					resultList.add(locationVO);
+	 	    			  }
+	 	    		 } 	
+	 	    	 }
+	 	      }
+	        if(resultList != null && !resultList.isEmpty()){
+	        	Map<String,NregaPaymentsVO> resultMap = getPaymentsDetailsByType(resultList,deptMap,subLocation,inputVO);
+	        	if(resultMap != null && !resultMap.isEmpty()){
+	        		resultList = new ArrayList<NregaPaymentsVO>(resultMap.values());
+	        	}
+	        }
+	        
+	        if(resultList != null && !resultList.isEmpty()){
+	        	for (NregaPaymentsVO finalVO : resultList) {
+	        		for (NregaPaymentsVO subVO : finalVO.getSubList()) {
+	        			subVO.setTotalAmount(cnvrtRupeesIntoCroresNew(subVO.getTotalAmount()));
+	        			subVO.setGeneratedWageAmount(cnvrtRupeesIntoCroresNew(subVO.getGeneratedWageAmount()));
+	        			subVO.setNotGeneratedWagesAmount(cnvrtRupeesIntoCroresNew(subVO.getNotGeneratedWagesAmount()));
+	        			subVO.setUploadedWageAmount(cnvrtRupeesIntoCroresNew(subVO.getUploadedWageAmount()));
+	        			subVO.setNotUploadedWagesAmount(cnvrtRupeesIntoCroresNew(subVO.getNotUploadedWagesAmount()));
+	        			subVO.setSentBankWageAmount(cnvrtRupeesIntoCroresNew(subVO.getSentBankWageAmount()));
+	        			subVO.setNotSentBankWageAmount(cnvrtRupeesIntoCroresNew(subVO.getNotSentBankWageAmount()));
+						 subVO.setCompletedWageAmount(cnvrtRupeesIntoCroresNew(subVO.getCompletedWageAmount()));
+						 subVO.setRejectedWagesAmount(cnvrtRupeesIntoCroresNew(subVO.getRejectedWagesAmount()));
+						 subVO.setReleasePendingWageAmount(cnvrtRupeesIntoCroresNew(subVO.getReleasePendingWageAmount()));
+						 subVO.setResponsePendingWageAmount(cnvrtRupeesIntoCroresNew(subVO.getResponsePendingWageAmount()));
+						 subVO.setReprocessPendingWageAmount(cnvrtRupeesIntoCroresNew(subVO.getReprocessPendingWageAmount()));
+						 subVO.setTotalPendinAmount(cnvrtRupeesIntoCroresNew(subVO.getTotalPendinAmount()));
+						 subVO.setPendingAtBankAmount(cnvrtRupeesIntoCroresNew(subVO.getPendingAtBankAmount()));
+					}
+				}
+	        }
+		} catch (Exception e){
+			LOG.error("Exception raised at getNregaPaymentsDeptDtlsLocationWise - NREGSTCSService service", e);
+		}
+		return resultList;
+	}
+	
+	public Map<String,NregaPaymentsVO> getPaymentsDetailsByType(List<NregaPaymentsVO> list,Map<String,NregaPaymentsVO> deptMap,String subLocationType,InputVO inputVO){
+		  try {
+			 if(list != null && !list.isEmpty()){
+				 for (NregaPaymentsVO nregaPaymentsVO : list) {
+					String locationId = nregaPaymentsVO.getId();
+					String deptName = nregaPaymentsVO.getDepartMentName();
+					String type = nregaPaymentsVO.getType();
+					if (inputVO != null && deptName != null && (inputVO.getType().equalsIgnoreCase(type) ||  inputVO.getType().equalsIgnoreCase("T")) && inputVO.getDeptType().trim().equalsIgnoreCase(deptName)){
+					NregaPaymentsVO deptVO = deptMap.get(locationId);
+					if(deptVO == null){
+						deptVO = new NregaPaymentsVO();
+						deptVO.setId(locationId);
+						setLocationByLocationType(nregaPaymentsVO,deptVO,subLocationType);
+						deptVO.setType(type);
+						NregaPaymentsVO subVO = new NregaPaymentsVO();
+							subVO.setDepartMentName(deptName);
+							subVO.setTotalAmount(nregaPaymentsVO.getTotalAmount());
+							subVO.setGeneratedWageAmount(nregaPaymentsVO.getGeneratedWageAmount());
+							subVO.setNotGeneratedWagesAmount(nregaPaymentsVO.getNotGeneratedWagesAmount());
+							subVO.setUploadedWageAmount(nregaPaymentsVO.getUploadedWageAmount());
+							subVO.setNotUploadedWagesAmount(nregaPaymentsVO.getNotUploadedWagesAmount());
+							subVO.setSentBankWageAmount(nregaPaymentsVO.getSentBankWageAmount());
+							subVO.setNotSentBankWageAmount(nregaPaymentsVO.getNotSentBankWageAmount());
+							subVO.setCompletedWageAmount(nregaPaymentsVO.getCompletedWageAmount());
+							subVO.setRejectedWagesAmount(nregaPaymentsVO.getRejectedWagesAmount());
+							subVO.setReleasePendingWageAmount(nregaPaymentsVO.getReleasePendingWageAmount());
+							subVO.setResponsePendingWageAmount(nregaPaymentsVO.getResponsePendingWageAmount());
+							subVO.setReprocessPendingWageAmount(nregaPaymentsVO.getReprocessPendingWageAmount());
+							subVO.setTotalPendinAmount(nregaPaymentsVO.getTotalPendinAmount());
+							subVO.setPendingAtBankAmount(nregaPaymentsVO.getPendingAtBankAmount());
+							deptVO.getSubList().add(subVO);
+						deptMap.put(locationId, deptVO);
+					}else{
+						NregaPaymentsVO matchedVO = getMatchedVOForDept(deptVO.getSubList(),deptName);
+						if(matchedVO == null){
+							matchedVO = new NregaPaymentsVO();
+							matchedVO.setDepartMentName(deptName);
+							matchedVO.setTotalAmount(nregaPaymentsVO.getTotalAmount());
+							matchedVO.setGeneratedWageAmount(nregaPaymentsVO.getGeneratedWageAmount());
+							matchedVO.setNotGeneratedWagesAmount(nregaPaymentsVO.getNotGeneratedWagesAmount());
+							matchedVO.setUploadedWageAmount(nregaPaymentsVO.getUploadedWageAmount());
+							matchedVO.setNotUploadedWagesAmount(nregaPaymentsVO.getNotUploadedWagesAmount());
+							matchedVO.setSentBankWageAmount(nregaPaymentsVO.getSentBankWageAmount());
+							matchedVO.setNotSentBankWageAmount(nregaPaymentsVO.getNotSentBankWageAmount());
+							matchedVO.setCompletedWageAmount(nregaPaymentsVO.getCompletedWageAmount());
+							matchedVO.setRejectedWagesAmount(nregaPaymentsVO.getRejectedWagesAmount());
+							matchedVO.setReleasePendingWageAmount(nregaPaymentsVO.getReleasePendingWageAmount());
+							matchedVO.setResponsePendingWageAmount(nregaPaymentsVO.getResponsePendingWageAmount());
+							matchedVO.setReprocessPendingWageAmount(nregaPaymentsVO.getReprocessPendingWageAmount());
+							matchedVO.setTotalPendinAmount(nregaPaymentsVO.getTotalPendinAmount());
+							matchedVO.setPendingAtBankAmount(nregaPaymentsVO.getPendingAtBankAmount());
+							deptVO.getSubList().add(matchedVO);
+						}else{
+							matchedVO.setTotalAmount(String.valueOf(Long.valueOf(matchedVO.getTotalAmount())+Long.valueOf(nregaPaymentsVO.getTotalAmount())));
+							matchedVO.setGeneratedWageAmount(String.valueOf(Long.valueOf(matchedVO.getGeneratedWageAmount())+Long.valueOf(nregaPaymentsVO.getGeneratedWageAmount())));
+							matchedVO.setNotGeneratedWagesAmount(String.valueOf(Long.valueOf(matchedVO.getNotGeneratedWagesAmount())+Long.valueOf(nregaPaymentsVO.getNotGeneratedWagesAmount())));
+							matchedVO.setUploadedWageAmount(String.valueOf(Long.valueOf(matchedVO.getUploadedWageAmount())+Long.valueOf(nregaPaymentsVO.getUploadedWageAmount())));
+							matchedVO.setNotUploadedWagesAmount(String.valueOf(Long.valueOf(matchedVO.getNotUploadedWagesAmount())+Long.valueOf(nregaPaymentsVO.getNotUploadedWagesAmount())));
+							matchedVO.setSentBankWageAmount(String.valueOf(Long.valueOf(matchedVO.getSentBankWageAmount())+Long.valueOf(nregaPaymentsVO.getSentBankWageAmount())));
+							matchedVO.setNotSentBankWageAmount(String.valueOf(Long.valueOf(matchedVO.getNotSentBankWageAmount())+Long.valueOf(nregaPaymentsVO.getNotSentBankWageAmount())));
+							matchedVO.setCompletedWageAmount(String.valueOf(Long.valueOf(matchedVO.getCompletedWageAmount())+Long.valueOf(nregaPaymentsVO.getCompletedWageAmount())));
+							matchedVO.setRejectedWagesAmount(String.valueOf(Long.valueOf(matchedVO.getRejectedWagesAmount())+Long.valueOf(nregaPaymentsVO.getRejectedWagesAmount())));
+							matchedVO.setReleasePendingWageAmount(String.valueOf(Long.valueOf(matchedVO.getReleasePendingWageAmount())+Long.valueOf(nregaPaymentsVO.getReleasePendingWageAmount())));
+							matchedVO.setResponsePendingWageAmount(String.valueOf(Long.valueOf(matchedVO.getResponsePendingWageAmount())+Long.valueOf(nregaPaymentsVO.getResponsePendingWageAmount())));
+							matchedVO.setReprocessPendingWageAmount(String.valueOf(Long.valueOf(matchedVO.getReprocessPendingWageAmount())+Long.valueOf(nregaPaymentsVO.getReprocessPendingWageAmount())));
+							matchedVO.setTotalPendinAmount(String.valueOf(Long.valueOf(matchedVO.getTotalPendinAmount())+Long.valueOf(nregaPaymentsVO.getTotalPendinAmount())));
+							matchedVO.setPendingAtBankAmount(String.valueOf(Long.valueOf(matchedVO.getPendingAtBankAmount())+Long.valueOf(nregaPaymentsVO.getPendingAtBankAmount())));
+						}
+					 }
+				  }
+				if (inputVO != null && (inputVO.getType().equalsIgnoreCase(type) || inputVO.getType().equalsIgnoreCase("T"))  && inputVO.getDeptType().equalsIgnoreCase("All")){
+					NregaPaymentsVO deptVO = deptMap.get(locationId);
+						if(deptVO == null){
+							deptVO = new NregaPaymentsVO();
+							deptVO.setId(locationId);
+							setLocationByLocationType(nregaPaymentsVO,deptVO,subLocationType);
+							deptVO.setType(type);
+							NregaPaymentsVO subVO = new NregaPaymentsVO();
+								subVO.setDepartMentName(deptName);
+								subVO.setTotalAmount(nregaPaymentsVO.getTotalAmount());
+								subVO.setGeneratedWageAmount(nregaPaymentsVO.getGeneratedWageAmount());
+								subVO.setNotGeneratedWagesAmount(nregaPaymentsVO.getNotGeneratedWagesAmount());
+								subVO.setUploadedWageAmount(nregaPaymentsVO.getUploadedWageAmount());
+								subVO.setNotUploadedWagesAmount(nregaPaymentsVO.getNotUploadedWagesAmount());
+								subVO.setSentBankWageAmount(nregaPaymentsVO.getSentBankWageAmount());
+								subVO.setNotSentBankWageAmount(nregaPaymentsVO.getNotSentBankWageAmount());
+								subVO.setCompletedWageAmount(nregaPaymentsVO.getCompletedWageAmount());
+								subVO.setRejectedWagesAmount(nregaPaymentsVO.getRejectedWagesAmount());
+								subVO.setReleasePendingWageAmount(nregaPaymentsVO.getReleasePendingWageAmount());
+								subVO.setResponsePendingWageAmount(nregaPaymentsVO.getResponsePendingWageAmount());
+								subVO.setReprocessPendingWageAmount(nregaPaymentsVO.getReprocessPendingWageAmount());
+								subVO.setTotalPendinAmount(nregaPaymentsVO.getTotalPendinAmount());
+								subVO.setPendingAtBankAmount(nregaPaymentsVO.getPendingAtBankAmount());
+								deptVO.getSubList().add(subVO);
+							deptMap.put(locationId, deptVO);
+						}else{
+							NregaPaymentsVO matchedVO = getMatchedVOForDept(deptVO.getSubList(),deptName);
+							if(matchedVO == null){
+								matchedVO = new NregaPaymentsVO();
+								matchedVO.setDepartMentName(deptName);
+								matchedVO.setTotalAmount(nregaPaymentsVO.getTotalAmount());
+								matchedVO.setGeneratedWageAmount(nregaPaymentsVO.getGeneratedWageAmount());
+								matchedVO.setNotGeneratedWagesAmount(nregaPaymentsVO.getNotGeneratedWagesAmount());
+								matchedVO.setUploadedWageAmount(nregaPaymentsVO.getUploadedWageAmount());
+								matchedVO.setNotUploadedWagesAmount(nregaPaymentsVO.getNotUploadedWagesAmount());
+								matchedVO.setSentBankWageAmount(nregaPaymentsVO.getSentBankWageAmount());
+								matchedVO.setNotSentBankWageAmount(nregaPaymentsVO.getNotSentBankWageAmount());
+								matchedVO.setCompletedWageAmount(nregaPaymentsVO.getCompletedWageAmount());
+								matchedVO.setRejectedWagesAmount(nregaPaymentsVO.getRejectedWagesAmount());
+								matchedVO.setReleasePendingWageAmount(nregaPaymentsVO.getReleasePendingWageAmount());
+								matchedVO.setResponsePendingWageAmount(nregaPaymentsVO.getResponsePendingWageAmount());
+								matchedVO.setReprocessPendingWageAmount(nregaPaymentsVO.getReprocessPendingWageAmount());
+								matchedVO.setTotalPendinAmount(nregaPaymentsVO.getTotalPendinAmount());
+								matchedVO.setPendingAtBankAmount(nregaPaymentsVO.getPendingAtBankAmount());
+								deptVO.getSubList().add(matchedVO);
+							}else{
+								matchedVO.setTotalAmount(String.valueOf(Long.valueOf(matchedVO.getTotalAmount())+Long.valueOf(nregaPaymentsVO.getTotalAmount())));
+								matchedVO.setGeneratedWageAmount(String.valueOf(Long.valueOf(matchedVO.getGeneratedWageAmount())+Long.valueOf(nregaPaymentsVO.getGeneratedWageAmount())));
+								matchedVO.setNotGeneratedWagesAmount(String.valueOf(Long.valueOf(matchedVO.getNotGeneratedWagesAmount())+Long.valueOf(nregaPaymentsVO.getNotGeneratedWagesAmount())));
+								matchedVO.setUploadedWageAmount(String.valueOf(Long.valueOf(matchedVO.getUploadedWageAmount())+Long.valueOf(nregaPaymentsVO.getUploadedWageAmount())));
+								matchedVO.setNotUploadedWagesAmount(String.valueOf(Long.valueOf(matchedVO.getNotUploadedWagesAmount())+Long.valueOf(nregaPaymentsVO.getNotUploadedWagesAmount())));
+								matchedVO.setSentBankWageAmount(String.valueOf(Long.valueOf(matchedVO.getSentBankWageAmount())+Long.valueOf(nregaPaymentsVO.getSentBankWageAmount())));
+								matchedVO.setNotSentBankWageAmount(String.valueOf(Long.valueOf(matchedVO.getNotSentBankWageAmount())+Long.valueOf(nregaPaymentsVO.getNotSentBankWageAmount())));
+								matchedVO.setCompletedWageAmount(String.valueOf(Long.valueOf(matchedVO.getCompletedWageAmount())+Long.valueOf(nregaPaymentsVO.getCompletedWageAmount())));
+								matchedVO.setRejectedWagesAmount(String.valueOf(Long.valueOf(matchedVO.getRejectedWagesAmount())+Long.valueOf(nregaPaymentsVO.getRejectedWagesAmount())));
+								matchedVO.setReleasePendingWageAmount(String.valueOf(Long.valueOf(matchedVO.getReleasePendingWageAmount())+Long.valueOf(nregaPaymentsVO.getReleasePendingWageAmount())));
+								matchedVO.setResponsePendingWageAmount(String.valueOf(Long.valueOf(matchedVO.getResponsePendingWageAmount())+Long.valueOf(nregaPaymentsVO.getResponsePendingWageAmount())));
+								matchedVO.setReprocessPendingWageAmount(String.valueOf(Long.valueOf(matchedVO.getReprocessPendingWageAmount())+Long.valueOf(nregaPaymentsVO.getReprocessPendingWageAmount())));
+								matchedVO.setTotalPendinAmount(String.valueOf(Long.valueOf(matchedVO.getTotalPendinAmount())+Long.valueOf(nregaPaymentsVO.getTotalPendinAmount())));
+								matchedVO.setPendingAtBankAmount(String.valueOf(Long.valueOf(matchedVO.getPendingAtBankAmount())+Long.valueOf(nregaPaymentsVO.getPendingAtBankAmount())));
+							}
+						}
+				  	}
+				
+				 }
+			 }
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPaymentsDetailsByType - NREGSTCSService service", e);
+		}
+		 return deptMap;
+	}
+	
+	public void setLocationByLocationType(NregaPaymentsVO locatioVO,NregaPaymentsVO deptVO,String subLocation){
+		try {
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("district") || subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
+					deptVO.setDistrictName(locatioVO.getDistrictName());
+				}
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("constituency") || subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
+					deptVO.setConstName(locatioVO.getConstName());
+				}
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("mandal") || subLocation.trim().equalsIgnoreCase("panchayat")){
+					deptVO.setMandalName(locatioVO.getMandalName());
+				}
+				if (subLocation != null && subLocation.trim().equalsIgnoreCase("panchayat")){
+					deptVO.setPanchayatName(locatioVO.getPanchayatName());
+				}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsDtlsLocationWise - NREGSTCSService service", e);
+		}
+	}
+	/*
+	 * Date : 13/03/2018
+	 * Author :Nandhini
+	 * @description : getMatchedVOForDept
+	 */
+	public NregaPaymentsVO getMatchedVOForDept(List<NregaPaymentsVO> list,String deptName){
+		try{
+			if(commonMethodsUtilService.isListOrSetValid(list)){
+				for (NregaPaymentsVO nregaPaymentsVO : list) {
+					if(nregaPaymentsVO.getDepartMentName().trim().equalsIgnoreCase(deptName)){
+						return nregaPaymentsVO;
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getMatchedVOForDept - NREGSTCSService service", e);
+		}
+		return null;
+	}
 }
