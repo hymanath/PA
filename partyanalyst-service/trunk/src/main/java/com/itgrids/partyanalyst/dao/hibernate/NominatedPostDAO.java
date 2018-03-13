@@ -2295,7 +2295,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 		   		" tehsil.tehsilName," +//13
 		   		" localElectionBody.name," +//14
 		   		" panchayat.panchayatName," +//15
-		   		" ward.name" +//16
+		   		" ward.name," +//16
+		   		" model.nominatedPostMember.nominatedPostPosition.departmentId," +//17
+		   		" model.nominatedPostMember.nominatedPostPosition.boardId" +//18
 		   		" from NominatedPost model" +
 		   		" left join model.nominatedPostMember.address.state state " +
 		   		" left join model.nominatedPostMember.address.district district" +
