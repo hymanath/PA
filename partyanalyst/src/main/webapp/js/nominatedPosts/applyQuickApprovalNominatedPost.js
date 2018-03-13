@@ -96,6 +96,15 @@ function searchResultBlock(myresult){
 	var uniqueId = ''+levelId+''+boardId+''+position+'';
 	var block='';
 	
+	var isEligibleToDelete=false;
+	if(entitlementsArr != null && entitlementsArr.length>0){
+		for(var i in entitlementsArr){
+			if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENT'){
+				isEligibleToDelete=true;
+			}
+		}
+	}
+	console.log("isEligibleToDelete :"+isEligibleToDelete);
 	block+='<h5 style="font-weight:600">SEARCH RESULTS  <span style="font-size:12px;font-weight:normal">   -Found '+result.length+' Results</span></h5>';
 	block+='<ul class="nav navbar-nav col-sm-12"  style="margin-top:15px !important">';
 	for(var i in result){
@@ -103,13 +112,25 @@ function searchResultBlock(myresult){
 		enrollmentYears = enrollmentYears.filter(function(val) {
 		  return array.indexOf(val) == -1;
 		});
+		
+		var nominationPostCandidateId=0;
+		if(myresult.previousElections != null && myresult.previousElections.length>0 ){
+				for(var s in myresult.previousElections){
+					nominationPostCandidateId= myresult.previousElections[s].tdpCadreId;
+				}
+		}
 	block+='<li class="">';
         block+='<div class="panel panel-default">';
             block+='<div class="panel-heading">';
 				/*block+='<div class="deleteMember"><i class="fa fa-times" aria-hidden="true" style="padding: 0px 6px 5px;"></i></div>';*/
-                block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;border-radius:50%;"></p></div>';
+                block+='<div class="text-center"><p class="iconBlock memberDetails"><img src="http://www.mytdp.com/images/cadre_images/'+result[i].imageURL+'" style="width: 50px; height: 50px; margin-left: -2px; margin-top: -6px;border-radius:50%;"></p>';
+				if(isEligibleToDelete){
+					block+='<i style ="float:right;;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+nominationPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+				}
+				block+='</div>';
             block+='</div>';
             block+='<div class="panel-body">';
+			
 				block+='<p class="memberDetails cadreName" value="5" data-toggle="tooltip" data-placement="top" title="Cadre Name"><span>N</span>'+result[i].cadreName+'</p>';
 				
                 block+='<p class="memberDetails" data-toggle="tooltip" data-placement="top" title="Voter Id"><span style="padding:4px 8px">V</span>'+result[i].voterCardNo+'</p>';
@@ -132,13 +153,19 @@ function searchResultBlock(myresult){
 				block+='</p>';
 			block+='</div>';
             block+='<div class="panel-footer">';
-			
-			if(myresult.previousElections != null && myresult.previousElections.length>0){
+			//myresult.previousElections[0].isEligile =='true'
+			if(myresult.previousElections != null && myresult.previousElections.length>0 && myresult.previousElections[0].isEligile != null && myresult.previousElections[0].isEligile =='false'){
 				for(var s in myresult.previousElections){
-					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label> <br> ';
+					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label>  <br> ';
 				}
+			}else if(myresult.previousElections != null && myresult.previousElections.length>0 && myresult.previousElections[0].isEligile != null && myresult.previousElections[0].isEligile =='true'){
+				for(var s in myresult.previousElections){
+					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label>  <br> ';
+				}
+				 block+='<label class="checkbox-inline" > <input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
+				 
 			}else{
-				 block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
+				 block+='<label class="checkbox-inline" > <input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
 			}
                
 				
