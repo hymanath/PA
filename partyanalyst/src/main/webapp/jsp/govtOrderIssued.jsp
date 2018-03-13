@@ -1,6 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="s" uri="/struts-tags"%>
+<%@taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <html>
 <head>
@@ -47,6 +51,13 @@
 	top:10px;
 }
 </style>
+<script>
+	var entitlementsArr =[];
+		<c:forEach items="${sessionScope.USER.entitlements}" var="value">
+		entitlementsArr.push('${value}');
+		//console.log('${item}');
+	</c:forEach>
+</script>
 </head>
 <body>
 <div class="container">
@@ -362,6 +373,15 @@ if(globalLocationLevelId == 2){
 					fromDate= result[0].uiFromDateStr;
 					expireDate= result[0].uiToDateStr;
 			}
+			
+			var isEligibleToDelete=false;
+		if(entitlementsArr != null && entitlementsArr.length>0){
+			for(var i in entitlementsArr){
+				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENT'){
+					isEligibleToDelete=true;
+				}
+			}
+		}
 		if(result != null && result.length>0){
 			str+='<div class="col-md-12 col-xs-12 col-sm-12 m_top20" >'; 
 			str+='<h4 class="panel-title" style="background-color:#F5F5F5;padding:10px;"> BETWEEN <b><u>'+fromDate+'</u></b> and <b> <u>'+expireDate+'</u></b> NOMINATED POST MEMBER DETAILS </h4></div>';
@@ -382,7 +402,9 @@ if(globalLocationLevelId == 2){
 									}
 								str+='</div>';
 								str+='<div class="media-body">';
+								if(isEligibleToDelete){
 								str+='<i style ="margin-left:240px;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+									}
 								if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
 									str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';
 									str+='<p>'+result[i].name+'</p></a>';
