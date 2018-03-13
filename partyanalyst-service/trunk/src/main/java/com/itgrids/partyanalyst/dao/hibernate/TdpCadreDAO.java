@@ -3619,7 +3619,8 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 					" model.enrollmentYearId," +
 					"model.enrollmentYear.year ," +
 					" model.tdpCadre.voterId," +
-					"model.tdpCadre.familyVoterId");//36
+					"model.tdpCadre.familyVoterId, " +
+					" model.tdpCadre.isDeleted");//37
 			
 			queryStr.append(" from TdpCadreEnrollmentYear model left join model.tdpCadre.userAddress.panchayat panc ");
 			queryStr.append(" left join model.tdpCadre.userAddress.tehsil tehsil ");

@@ -74,7 +74,14 @@ public class TdpCadreVO implements java.io.Serializable
 	private String enrollmentYears;
 	private String enrollmentYearIdStr;
 	private List<String> enrollmentYearList = new ArrayList<String>();
+	private String isDeleted;
 	
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	public String getState() {
 		return state;
 	}
