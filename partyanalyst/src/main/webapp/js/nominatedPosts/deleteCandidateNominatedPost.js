@@ -45,7 +45,6 @@ $(document).on('click','.removeIconCls',function(){
 		  nominationPostCandidateId:attr_nomination_post_candidate_id
 	  }
 	  
-	  return;
 	   $.ajax({
           type:'GET',
           url: 'UpdateExpiredAppicationsForCandidate.action',
