@@ -1740,7 +1740,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	var isEligibleToDelete=false;
 		if(entitlementsArr != null && entitlementsArr.length>0){
 			for(var i in entitlementsArr){
-				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENTS'){
+				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENT'){
 					isEligibleToDelete=true;
 				}
 			}
