@@ -66,13 +66,19 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			Long balCurrentUnits = 0L;
 			Map<Long,TaxesVO> taxTypeMap = new LinkedHashMap<Long,TaxesVO>(0);
 			Map<Long,TaxesVO> feesMap = new LinkedHashMap<Long,TaxesVO>(0);
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"");
-	        ClientResponse response = webResource.get(ClientResponse.class);
+			
+			String url = "http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"";
+			String output = webserviceHandlerService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"");
+	       // ClientResponse response = webResource.get(ClientResponse.class);
 				
-	        	if(response.getStatus() != 200){
-		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
-		 	      }else{
-		 	    	 String output = response.getEntity(String.class);
+	        	//if(response.getStatus() != 200){
+		 	    	 // throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
+		 	     // }else{
+		 	    	 if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found."+url);
+			 	      }else{
+		 	    	 //String output = response.getEntity(String.class);
 		 	    	 
 		 	    	if(output != null && !output.isEmpty()){
 		 	    		JSONArray districtArray = new JSONArray(output);
