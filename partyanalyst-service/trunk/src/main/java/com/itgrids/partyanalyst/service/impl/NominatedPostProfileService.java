@@ -9188,9 +9188,9 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 						nominationPostCandidateIdsList.add(nominationPostCandidateId);
 						
 						deletedCandsCount = nominationPostCandidateDAO.deleteNominationPostCandidate(userId,nominationPostCandidateIdsList,reasonId,remark);
-						if(tdpCadreId != null && tdpCadreId.longValue()>0L){
-							ResultStatus status = cadreCommitteeService.saveRemovingCadreDetailsAction(tdpCadreId,reasonId,remark,userId);
-						}
+						//if(tdpCadreId != null && tdpCadreId.longValue()>0L){
+							//ResultStatus status = cadreCommitteeService.saveRemovingCadreDetailsAction(tdpCadreId,reasonId,remark,userId);
+						//}
 						
 						if(deletedCandsCount >0)
 							return Long.valueOf(String.valueOf(deletedCandsCount));
