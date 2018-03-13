@@ -1492,7 +1492,7 @@ function buildingPmTable1(result,divId){
 					for(var i in result.mandalVoList){
 						k=k+1;
 							str1+='<tr>';
-								str1+='<td>'+i+'</td>';
+								str1+='<td>'+k+'</td>';
 								str1+='<td>'+result.mandalVoList[i].districtName+'</td>';
 								str1+='<td>'+result.mandalVoList[i].constituencyName+'</td>';
 								str1+='<td>'+result.mandalVoList[i].mandalName+'</td>';
@@ -1527,7 +1527,7 @@ function buildingPmTable1(result,divId){
 					for(var i in result.panchayatVoList){
 						k=k+1;
 							str1+='<tr>';
-								str1+='<td>'+i+'</td>';
+								str1+='<td>'+k+'</td>';
 								str1+='<td>'+result.panchayatVoList[i].districtName+'</td>';
 								str1+='<td>'+result.panchayatVoList[i].constituencyName+'</td>';
 								str1+='<td>'+result.panchayatVoList[i].mandalName+'</td>';
