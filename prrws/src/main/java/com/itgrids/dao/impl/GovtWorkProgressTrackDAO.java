@@ -260,8 +260,8 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		sb.append(" select gws.govt_work_status_id,gws.status_name,date(gwpt.updated_time),sum(gwpt.work_length) "
 				+ " from govt_work_progress_track gwpt,govt_work_status gws,govt_work gw,govt_main_work gmw,location_address la "
 				+ " where gwpt.govt_work_status_id=gws.govt_work_status_id and gws.govt_work_type_id=:workTypeId "
-				+ " and gwpt.govt_work_id=gw.govt_work_id and gw.govt_work_id=gmw.govt_work_id and gmw.govt_work_type_id=:workTypeId "
-				+ " and gw.location_address_id=la.location_address_id ");
+				+ " and gwpt.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.govt_work_type_id=:workTypeId "
+				+ " and gmw.location_address_id=la.location_address_id ");
 		
 		if(startDate != null && endDate != null){
 			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");

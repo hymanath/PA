@@ -213,7 +213,7 @@ public class UnderGroundDrainageController {
 			//startDate,endDate,StatusId,WorkTypeId,DistrictId,DivisonId,SubDivisonId,MandalId,locationLevelId
 			return underGroundDrainageService.getLocationLevelStatusDayWiseKms(inputVO);
 		} catch (Exception e) {
-			LOG.error("Exception raised while getting the getLocationStatusDayWise kilometers ", e);
+			LOG.error("Exception raised at getLocationLevelStatusDayWiseKms ", e);
 		}
 		return null;
 	}
