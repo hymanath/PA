@@ -125,6 +125,7 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
+import com.sun.jersey.api.spring.Autowire;
 @Component
 @Path("/")
 public class WebServiceHandler {
@@ -169,6 +170,7 @@ public class WebServiceHandler {
 	
 	@Autowired
 	private IBiometricAttendanceService biometricAttendanceService;  
+	
 	
 	public List<AlertVO> getAlertVoList() {
 		return alertVoList;
@@ -3790,10 +3792,80 @@ public class WebServiceHandler {
     }
 	
 	@POST
-    @Path("/getJalavanilocationOverview")
+    @Path("/getJalavanilocationOverview")//Teja
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Object getJalavanilocationOverview(JalavaniAlertsInputVO inputVo){
 		return  webServiceHandlerService.getJalavanilocationOverview(inputVo);
+    }
+	@POST
+    @Path("/getAssignedOfficersDetails")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getAssignedOfficersDetails(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getAssignedOfficersDetails(inputVo);
+    }
+	@POST
+    @Path("/getDepartmentsByAlert")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getDepartmentsByAlert(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getDepartmentsByAlert(inputVo);
+    }
+	@POST
+    @Path("/getAlertsData")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getAlertsData(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getAlertsData(inputVo);
+    }
+	@POST
+    @Path("/getStatusCompletionInfo")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getStatusCompletionInfo(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getStatusCompletionInfo(inputVo);
+    }
+	@POST
+    @Path("/getGovtAllDepartmentDetails")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getGovtAllDepartmentDetails(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getGovtAllDepartmentDetails(inputVo);
+    }
+	@POST
+    @Path("/viewAlertHistory")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object viewAlertHistory(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.viewAlertHistory(inputVo);
+    }
+	@POST
+    @Path("/alertDeptmentExistInLogin")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object alertDeptmentExistInLogin(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.alertDeptmentExistInLogin(inputVo);
+    }
+	@POST
+    @Path("/getAlertCategoryByAlert")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getAlertCategoryByAlert(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getAlertCategoryByAlert(inputVo);
+    }
+	@POST
+    @Path("/getSubTaskInfoForAlert")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getSubTaskInfoForAlert(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getSubTaskInfoForAlert(inputVo);
+    }
+	@POST
+    @Path("/getDocumentsForAlerts")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getDocumentsForAlerts(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getDocumentsForAlerts(inputVo);
     }
 }
