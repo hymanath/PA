@@ -3132,6 +3132,7 @@
    			<property name="boothInchargeCommitteeDAO" ref="boothInchargeCommitteeDAO" />
    			<property name="nominatedPostDAO" ref="nominatedPostDAO"/>
    			<property name="boothInchargeConditionDAO" ref="boothInchargeConditionDAO"/>  
+   			<property name="nominatedPostProfileService" ref="nominatedPostProfileService"/> 
     </bean>
 	
 	<bean name="dynamicReportService"  class="com.itgrids.partyanalyst.service.impl.DynamicReportService">
@@ -3788,6 +3789,7 @@
 		<property name="schedulersInfoDAO" ref="schedulersInfoDAO"/>
 		<property name="trainingCampCadreFeedbackDetailsDAO" ref="trainingCampCadreFeedbackDetailsDAO"></property>
 		<property name="eventDAO" ref="eventDAO"/>
+		<property name="nominatedPostAccessMultiplePositionsDetailsDAO" ref="nominatedPostAccessMultiplePositionsDetailsDAO"/>
 	</bean>
 	<bean id="coreDashboardService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardService">
 	  <property name="dashboardUserAccessLevelDAO" ref="dashboardUserAccessLevelDAO"></property>
