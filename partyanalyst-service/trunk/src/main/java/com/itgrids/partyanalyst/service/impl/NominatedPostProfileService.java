@@ -5556,7 +5556,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
     		return null;
     	}
     	for(IdNameVO VO:resultList){
-    		if(VO.getId().equals(id)){
+    		if(id != null && id.longValue()>0L && VO != null && VO.getId() != null && VO.getId().equals(id)){
     			return VO;
     		}
     	}

@@ -72,7 +72,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private List<CadreCommitteeVO> subList = new ArrayList<CadreCommitteeVO>(0);
 	private Long finalizedCount = 0l;
 	private Long remainingCount = 0l;
+	private String isDeleted;
 	
+	public String getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(String isDeleted) {
+		this.isDeleted = isDeleted;
+	}
 	public Long getConvenerAddedCount() {
 		return convenerAddedCount;
 	}

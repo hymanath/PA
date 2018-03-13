@@ -2352,6 +2352,7 @@ public class CadreCommitteeService implements ICadreCommitteeService
 						committeeVO.setYear(tdpCadre.getYear());
 						committeeVO.setEnrollmentYears(tdpCadre.getEnrollmentYears());
 						committeeVO.setCadreVoterId(tdpCadre.getVoterId());
+						committeeVO.setIsDeleted(tdpCadre.getIsDeleted());
 						cadreCommitteeList.add(committeeVO);
 					}
 					if(maxIndex != 0)
@@ -17601,7 +17602,6 @@ public List<GenericVO> getPanchayatDetailsByMandalIdAddingParam(Long tehsilId){
 				cadreData.setUpdatedTime(dt.getCurrentDateAndTime());
 				cadreData.setUpdatedWebUserId(userId);
 				tdpCadreDAO.save(cadreData);
-				
 				finalRs.setResultCode(0);
 			}
 			return finalRs;

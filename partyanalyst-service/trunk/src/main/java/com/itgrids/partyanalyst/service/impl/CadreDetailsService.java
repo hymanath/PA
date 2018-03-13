@@ -1386,7 +1386,7 @@ public class CadreDetailsService implements ICadreDetailsService{
 						cadreVO.setDistrictId(cadre[26] != null ? Long.valueOf(cadre[26].toString().trim()):0L);		
 						cadreVO.setAadharNo(cadre[28] != null ? cadre[28].toString().trim():"");
 						cadreVO.setDataSourceType(cadre[29] != null ? cadre[29].toString().trim():"");
-						
+						cadreVO.setIsDeleted(commonMethodsUtilService.getStringValueForObject(cadre[37]));// N/Y/MD
 						if(cadre[30] !=null){
 							cadreVO.setDeletedStatus(cadre[30].toString());
 							
