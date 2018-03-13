@@ -9,8 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.PathParam;
-
 import org.apache.log4j.Logger;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.ObjectWriter;
@@ -73,6 +71,7 @@ import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
@@ -5872,64 +5871,64 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public List<AlertDataVO> getStatusCompletionInfo(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public List<IdNameVO> getStatusCompletionInfo(JalavaniAlertsInputVO inputvo){
+		List<IdNameVO> alertVoList = new ArrayList<IdNameVO>(0);
 		try{
-			alertVoList = cccDashboardService.getStatusCompletionInfo(inputvo.getAlertId());
+			alertVoList = alertManagementSystemService.getStatusCompletionInfoNew(inputvo.getAlertId(),inputvo.getLevelValue(),inputvo.getDesignationId(),inputvo.getLevelId(),inputvo.getUserId(),inputvo.getEntitlements());
     	}catch(Exception e){
     		log.error("Exception raised in getStatusCompletionInfo  method in WebServiceHandlerService1",e);
     	}
     	return alertVoList;
 	}
-	public List<AlertDataVO> getGovtAllDepartmentDetails(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public List<IdNameVO> getGovtAllDepartmentDetails(JalavaniAlertsInputVO inputvo){
+		List<IdNameVO> alertVoList = new ArrayList<IdNameVO>(0);
 		try{
-			alertVoList = cccDashboardService.getGovtAllDepartmentDetails(inputvo.getAlertId());
+			alertVoList = alertManagementSystemService.getGovtAllDepartmentDetails();
     	}catch(Exception e){
     		log.error("Exception raised in getGovtAllDepartmentDetails  method in WebServiceHandlerService1",e);
     	}
     	return alertVoList;
 	}
-	public List<AlertDataVO> viewAlertHistory(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public List<AlertTrackingVO> viewAlertHistory(JalavaniAlertsInputVO inputvo){
+		List<AlertTrackingVO> alertVoList = new ArrayList<AlertTrackingVO>(0);
 		try{
-			alertVoList =  cccDashboardService.viewAlertHistory(inputvo.getAlertId());
+			alertVoList =  alertManagementSystemService.viewAlertHistory(inputvo.getAlertId());
     	}catch(Exception e){
     		log.error("Exception raised in viewAlertHistory  method in WebServiceHandlerService1",e);
     	}
     	return alertVoList;
 	}
-	public List<AlertDataVO> alertDeptmentExistInLogin(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public String alertDeptmentExistInLogin(JalavaniAlertsInputVO inputvo){
+		String returnString = new String();
 		try{
-			alertVoList = cccDashboardService.alertDeptmentExistInLogin(inputvo.getAlertId());
+			returnString = alertManagementSystemService.alertDeptmentExistInLogin(inputvo.getAlertId(),inputvo.getUserId());
     	}catch(Exception e){
     		log.error("Exception raised in alertDeptmentExistInLogin  method in WebServiceHandlerService1",e);
     	}
-    	return alertVoList;
+    	return returnString;
 	}
-	public List<AlertDataVO> getAlertCategoryByAlert(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public String getAlertCategoryByAlert(JalavaniAlertsInputVO inputvo){
+		String returnString = new String();
 		try{
-			alertVoList = alertManagementSystemService.getAlertCategoryByAlert(inputvo.getAlertId());
+			returnString = cccDashboardService.getAlertCategoryByAlert(inputvo.getAlertId());
     	}catch(Exception e){
     		log.error("Exception raised in getAlertCategoryByAlert  method in WebServiceHandlerService1",e);
     	}
-    	return alertVoList;
+    	return returnString;
 	}
-	public List<AlertDataVO> getSubTaskInfoForAlert(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public List<AlertTrackingVO> getSubTaskInfoForAlert(JalavaniAlertsInputVO inputvo){
+		List<AlertTrackingVO> alertVoList = new ArrayList<AlertTrackingVO>(0);
 		try{
-			alertVoList = cccDashboardService.getSubTaskInfoForAlert(inputvo.getAlertId());
+			alertVoList = alertManagementSystemService.getSubTaskInfoForAlert(inputvo.getAlertId(),inputvo.getUserId());
     	}catch(Exception e){
     		log.error("Exception raised in getSubTaskInfoForAlert  method in WebServiceHandlerService1",e);
     	}
     	return alertVoList;
 	}
-	public List<AlertDataVO> getDocumentsForAlerts(JalavaniAlertsInputVO inputvo){
-		List<AlertDataVO> alertVoList = new ArrayList<AlertDataVO>(0);
+	public List<KeyValueVO> getDocumentsForAlerts(JalavaniAlertsInputVO inputvo){
+		List<KeyValueVO> alertVoList = new ArrayList<KeyValueVO>(0);
 		try{
-			alertVoList = cccDashboardService.getDocumentsForAlerts(inputvo.getAlertId());
+			alertVoList = alertManagementSystemService.getDocumentsForAlert(inputvo.getAlertId());
     	}catch(Exception e){
     		log.error("Exception raised in getDocumentsForAlerts  method in WebServiceHandlerService1",e);
     	}

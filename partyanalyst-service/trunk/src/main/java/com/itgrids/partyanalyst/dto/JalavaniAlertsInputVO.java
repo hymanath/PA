@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class JalavaniAlertsInputVO implements Serializable {
 	private Long id;
@@ -13,7 +14,50 @@ public class JalavaniAlertsInputVO implements Serializable {
 	private Long subLocationId;
 	private Long alertCategoryId;
 	private String newsType;
-
+	private Long alertId;
+	private Long levelValue;
+	private Long designationId;
+	private Long levelId;
+	private Long userId;
+	private List<String> entitlements;
+	
+	
+	public Long getLevelValue() {
+		return levelValue;
+	}
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
+	}
+	public Long getLevelId() {
+		return levelId;
+	}
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public List<String> getEntitlements() {
+		return entitlements;
+	}
+	public void setEntitlements(List<String> entitlements) {
+		this.entitlements = entitlements;
+	}
+	public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
 	public String getNewsType() {
 		return newsType;
 	}
