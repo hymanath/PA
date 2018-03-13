@@ -458,12 +458,15 @@ function savingApplication(){
 
 function showSubmitStatus(myResult){
 	
+	//console.log(myResult);
 	var result = (String)(myResult);
 		   var resultAray = result.split(',');
-		   var statusCode = resultAray[6].split(":");
-		   statusCode=statusCode[1];
-		  
-	if(statusCode== 1 && statusCode !=null){	
+		   var temp =resultAray[7].replace("\"","");
+		   var tempArr = resultAray[7].split(":");
+		  // alert(tempArr[0]+" : "+tempArr[1]);
+		   var statusCode = tempArr[1];
+		 // console.log(statusCode);
+	if(statusCode !=null && statusCode== 1 ){	
 		alert("Application  Submitted Successfully");
 		location.reload(); 
 	}else{
