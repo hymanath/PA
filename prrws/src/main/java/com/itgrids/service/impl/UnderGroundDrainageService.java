@@ -1608,7 +1608,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					}
 				}
 			}
-			
+			finalList.addAll(map.values());
 			
 		} catch (Exception e) {
 			LOG.error("Exception occured while fetching getLocationLevelStatusDayWiseKms ", e);
@@ -1698,6 +1698,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							}
 						}
 					}
+					voList.addAll(map.values());
 				}
 			}
 			
