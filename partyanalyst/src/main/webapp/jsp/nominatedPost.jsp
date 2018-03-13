@@ -157,6 +157,13 @@
 		top: 1px;
 	}
 </style>
+<script>
+	var entitlementsArr =[];
+		<c:forEach items="${sessionScope.USER.entitlements}" var="value">
+		entitlementsArr.push('${value}');
+		//console.log('${item}');
+	</c:forEach>
+</script>
 </head>
 <body class="bodycolr">
 <div class="container">

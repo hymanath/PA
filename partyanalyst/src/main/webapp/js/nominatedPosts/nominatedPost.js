@@ -1013,6 +1013,14 @@ function getNominatedPostApplication(startIndex)
 		var str='';
 		var str1='';
 		
+		var isEligibleToDelete=false;
+		if(entitlementsArr != null && entitlementsArr.length>0){
+			for(var i in entitlementsArr){
+				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENT'){
+					isEligibleToDelete=true;
+				}
+			}
+		}
 
 		
 		str1+='<h4 class="m_0 text-success">APPLICANT PROFILE DETAILS : </h4>';
@@ -1026,9 +1034,9 @@ function getNominatedPostApplication(startIndex)
 		for(var i in result)
 			{	
 				if(result[i].nominatedPostCandidateId != null && result[i].nominatedPostCandidateId >0 )
-					str +='<li  style="background:lightgrey;height: 233px;">';
+					str +='<li  style="background:lightgrey;height: 250px;">';
 				else
-					str +='<li style="height: 213px;">';
+					str +='<li style="height: 250px;">';
 				
 				str +='<div class="img-center">';
 				
@@ -1108,7 +1116,11 @@ function getNominatedPostApplication(startIndex)
 						str+='<li class="no" style="width: 49px;margin :0px;">2012<span></span></li>&nbsp;';
 						str+='<li class="no" style="width: 49px;margin :0px;">2010<span></span></li>&nbsp;';
 					}
-					str+='<i style ="margin-left:28px;;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+					
+					
+					if(isEligibleToDelete){
+						str+='<i style ="margin-left:28px;;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+					}
 		   			str+='</ul>	';
 			}
 					str +='</li>';
