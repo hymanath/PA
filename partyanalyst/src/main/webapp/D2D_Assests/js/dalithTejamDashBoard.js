@@ -397,7 +397,7 @@ function DalithaTejamnews(){
 	$("#dalithaTejamOnNewsDivId").html("<div class='spinner'><div class='dot1'></div><div class='dot2'></div></div>");
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
+		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getEditionTypeWisePartiesAnalysis/"+glStartDate+"/"+glEndDate+"/1156"
 	}).then(function(result){
 		if(result !=null){
 			buildNewsModule(result);
@@ -512,7 +512,7 @@ function buildNewsModule(result){
 					globalPartyIds.push(result.coreDashBoardVOList1[i].organizationId);
 					totalmainOtherParty = totalmainOtherParty+result.coreDashBoardVOList1[i].count;
 					totalmainOtherPartyPosCount = totalmainOtherPartyPosCount+result.coreDashBoardVOList1[i].positiveCountMain;
-					totalmainOtherPartyNegCount = totalmainOtherPartyNegCount+result.coreDashBoardVOList1[i].positiveCountMain;
+					totalmainOtherPartyNegCount = totalmainOtherPartyNegCount+result.coreDashBoardVOList1[i].negativCountMain;
 					
 					
 					totalDistOtherPartyCount = totalDistOtherPartyCount+result.coreDashBoardVOList1[i].totalCount;
@@ -577,7 +577,7 @@ function buildNewsModule(result){
 							str+='<div class="dark_yash_box">';
 								str+='<h5 class="font_weight">POSITIVE</h5>';
 								if(totalDistOtherPartyPosCount !=null && totalDistOtherPartyPosCount>0){
-									str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_type="other" attr_benefitid ="0" attr_partyids="'+globalPartyIds+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+totalDistOtherPartyPosCount+'</a></span>';
+									str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_type="other" attr_benefitid ="1" attr_partyids="'+globalPartyIds+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+totalDistOtherPartyPosCount+'</a></span>';
 									str+='<small class="text-danger" id=""> '+otherMediaDistrictPostivePercentage+' %</small>';
 								}else{
 									str+='<span> - </span>';
@@ -588,8 +588,8 @@ function buildNewsModule(result){
 						str+='<div class="col-sm-4">';
 							str+='<div class="dark_yash_box">';
 								str+='<h5 class="font_weight">NEGATIVE</h5>';
-								if(totalDistOtherPartyPosCount !=null && totalDistOtherPartyPosCount>0){
-									str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_type="other" attr_benefitid ="2" attr_partyids="'+globalPartyIds+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+totalDistOtherPartyPosCount+'</a></span>';
+								if(totalDistOtherPartyNegCount !=null && totalDistOtherPartyNegCount>0){
+									str+='<span><a class="partyMainEditionCls" attr_editiontype="2"  attr_type="other" attr_benefitid ="2" attr_partyids="'+globalPartyIds+'" attr_categoryId="'+globalcategoryId+'" style="cursor:pointer;">'+totalDistOtherPartyNegCount+'</a></span>';
 									str+='<small class="text-danger" id=""> '+otherMediaDistrictNegativePercentage+' %</small>';
 									
 								}else{
@@ -1263,7 +1263,7 @@ function buildActivityEventdata1(result,locationId,divId){
 
 $(document).on("click",".partyMainEditionCls",function(){
 	$('#prajaSankalpaYatraModalId').modal('show');
-	$("#prajaSankalpaHeadingId").html("Location Wise Articles");
+	var bentfitName="";var edition="";var party="";
 	
 	var editionType="Main";
 	var attrPartyids =[];
@@ -1271,11 +1271,26 @@ $(document).on("click",".partyMainEditionCls",function(){
 	var attrBenifitId=$(this).attr('attr_benefitid');
 	var attrEditionType=$(this).attr('attr_editiontype');
 	if(type.toString()=='tdp'){
+		party="tdp Party"
 		attrPartyids.push($(this).attr('attr_partyids'));
 	}else{
 		attrPartyids=globalPartyIds
+		party="Other Parties"
 	}
 	var attrCategoryid=$(this).attr('attr_categoryid');
+	if(attrEditionType == 1){
+		edition="Main Edition";
+	}else{
+		edition="district Edition";
+	}
+	if(attrBenifitId == 1){
+		bentfitName="positive";
+	}else if(attrBenifitId == 2){
+		bentfitName="negative";
+	}else{
+		bentfitName="";
+	}
+	$("#prajaSankalpaHeadingId").html(party+" Location Based "+edition+" wise "+bentfitName+" Articles");
 	
 	globalPartyId = attrPartyids;
 	globalBenefitId = attrBenifitId;
@@ -1344,7 +1359,7 @@ $("#"+divId+"panchayat").html('<div class="spinner"><div class="dot1"></div><div
 $("#"+divId+"state").html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 	$.ajax({	
       url: wurl+"/CommunityNewsPortal/webservice/getDalithaTejamLocationWiseNewsArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDalithaTejamLocationWiseNewsArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
+	//url: "http://mytdp.com/CommunityNewsPortal/webservice/getDalithaTejamLocationWiseNewsArticles/"+glStartDate+"/"+glEndDate+"/"+attrCategoryid+"/"+attrPartyids+"/"+attrBenifitId+"/"+attrEditionType
 	}).then(function(result){
 		$("#popImgDiv").html("");
 		if(result !=null){
@@ -1548,7 +1563,7 @@ $(document).on("click",".articleWisePrintMediaCls",function(){
 	$.ajax({
 		url: wurl+"/CommunityNewsPortal/webservice/getDalithaTejamNewsArticleForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 		
-		//url: "http://localhost:8080/CommunityNewsPortal/webservice/getDalithaTejamNewsArticleForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
+		//url: "http://mytdp.com/CommunityNewsPortal/webservice/getDalithaTejamNewsArticleForClick/"+glStartDate+"/"+glEndDate+"/"+globalcategoryId+"/"+globalstartIndex+"/"+globalEndIndex+"/"+globalPartyId+"/"+globalBenefitId+"/"+globalChannelId+"/"+scopeId+"/"+scopeValue
 	}).then(function(result){
 		buildArticlesByDateRangeWise(result,globalPartyId,globalBenefitId,globalChannelId,scopeId,scopeValue
 		,globalcategoryId,globalEndIndex,globalstartIndex);
@@ -3006,7 +3021,7 @@ $(document).on("click",".newsImagemodal",function(){
 			$("#myModalShowNew").html('<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>');
 			$.ajax({
 			url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+			//url: "http://mytdp.com/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 			
 		}).then(function(results){
 			var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
