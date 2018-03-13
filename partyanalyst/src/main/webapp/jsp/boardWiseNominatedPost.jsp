@@ -53,6 +53,13 @@
 }
 
 </style>
+<script>
+	var entitlementsArr =[];
+		<c:forEach items="${sessionScope.USER.entitlements}" var="value">
+		entitlementsArr.push('${value}');
+		//console.log('${item}');
+	</c:forEach>
+</script>
 </head>
 <body>
 <div class="container">
@@ -399,7 +406,14 @@ function getBoardWiseNominatedPostMemberDetails(){
 var globalCadreIds = [];
 function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positionId){
 	var str='';
-	
+	var isEligibleToDelete=false;
+		if(entitlementsArr != null && entitlementsArr.length>0){
+			for(var i in entitlementsArr){
+				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENT'){
+					isEligibleToDelete=true;
+				}
+			}
+		}
 	if(result.subList != null && result.subList.length > 0){
 		str+='<div class="pull-right"> <button class="btn btn-xs btn-mini btn-success"  onclick="getCadreDetailsReport()"> Detailed Report </button></div>'
 		str+='<table class="table table-bordered table-condensed tableShort">';
@@ -619,7 +633,9 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 				}	
 				str+='</td>';
 				str+='<td>';
+				if(isEligibleToDelete){
 				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+				}
 				str+='</td>';
 			str+='</tr>';
 			/*str+='<tr>';

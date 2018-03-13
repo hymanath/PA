@@ -610,6 +610,16 @@ var globalCadreIds = [];
 function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,boardId,positionId){
 	var str='';
 	totalWishListCount = 0;
+	
+	var isEligibleToDelete=false;
+		if(entitlementsArr != null && entitlementsArr.length>0){
+			for(var i in entitlementsArr){
+				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENT'){
+					isEligibleToDelete=true;
+				}
+			}
+		}
+		
 	str+='<div class="pull-right"> <button class="btn btn-xs btn-mini btn-success"  onclick="getCadreDetailsReport()"> Detailed Report </button></div>'
 	str+='<table class="table table-bordered table-condensed tableShort">';
 		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
@@ -635,7 +645,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 			}
 			str+='<th class="text-center">DELETE</th>';
 		str+='</thead>';
-	if(result.subList != null && result.subList.length > 0){		
+	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
 			str+='<tr class="text-center">';
 			 if(gblStatus=="finaliZed" && result.subList.length != 1){
@@ -821,8 +831,10 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 						}
 					str+='</div>';
 				str+='</td>';
+				if(isEligibleToDelete){
 				str+='<td>';
 				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+					}
 				str+='</td>';
 			str+='</tr>';
 		}
@@ -1725,6 +1737,14 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 	var str='';
 	totalWishListCount = 0;
 	
+	var isEligibleToDelete=false;
+		if(entitlementsArr != null && entitlementsArr.length>0){
+			for(var i in entitlementsArr){
+				if(entitlementsArr[i].trim() =='CADRE_DELETE_ENTITLEMENTS'){
+					isEligibleToDelete=true;
+				}
+			}
+		}
 	str+='<table class="table table-bordered table-condensed tableShort">'; 
 		str+='<thead class="text-capitalize" style="background-color:#f2f2f2">';
 		if(gblStatus=="finaliZed"){
@@ -1905,8 +1925,10 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 						}
 					str+='</div>';
 				str+='</td>';
+				if(isEligibleToDelete){
 				str+='<td>';
 				str+='<i  style="cusor:pointer;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+				}
 				str+='</td>';
 			str+='</tr>';
 		}
