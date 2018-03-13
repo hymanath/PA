@@ -9195,7 +9195,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 						if(deletedCandsCount >0)
 							return Long.valueOf(String.valueOf(deletedCandsCount));
 						else
-							return 0;
+							return 0L;
 					}
 				});
 				
