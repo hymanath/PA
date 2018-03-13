@@ -9241,10 +9241,9 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 					if(commonMethodsUtilService.isListOrSetValid(boardIdsList) && boardIdsList.contains(boardId)){
 						isEligible = "true";
 					}else{
-						isEligible = "";
+						isEligible = "false";
 					}
 				}
-					
 			} catch (Exception e) {
 				LOG.error("exception raised into NominatedPostProfileService of isEligibleToAdd() method",e);
 			}

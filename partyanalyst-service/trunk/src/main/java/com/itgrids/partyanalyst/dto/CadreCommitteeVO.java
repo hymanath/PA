@@ -73,7 +73,14 @@ public class CadreCommitteeVO implements java.io.Serializable{
 	private Long finalizedCount = 0l;
 	private Long remainingCount = 0l;
 	private String isDeleted;
+	private String isEligile; // is eligible to add member to other nominated post ,even he has other nominated post (like janmabhoomi committee )
 	
+	public String getIsEligile() {
+		return isEligile;
+	}
+	public void setIsEligile(String isEligile) {
+		this.isEligile = isEligile;
+	}
 	public String getIsDeleted() {
 		return isDeleted;
 	}

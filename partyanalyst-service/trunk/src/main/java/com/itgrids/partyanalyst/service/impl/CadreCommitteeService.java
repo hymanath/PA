@@ -205,6 +205,7 @@ import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.model.VoterAgeRange;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.INominatedPostProfileService;
 import com.itgrids.partyanalyst.service.IRegionServiceData;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -311,8 +312,17 @@ public class CadreCommitteeService implements ICadreCommitteeService
 	private IBoothInchargeCommitteeDAO boothInchargeCommitteeDAO;
 	private INominatedPostDAO nominatedPostDAO;
 	private IBoothInchargeConditionDAO boothInchargeConditionDAO;
+	private INominatedPostProfileService nominatedPostProfileService;
 	
-	
+	public INominatedPostProfileService getNominatedPostProfileService() {
+		return nominatedPostProfileService;
+	}
+
+	public void setNominatedPostProfileService(
+			INominatedPostProfileService nominatedPostProfileService) {
+		this.nominatedPostProfileService = nominatedPostProfileService;
+	}
+
 	public IBoothInchargeConditionDAO getBoothInchargeConditionDAO() {
 		return boothInchargeConditionDAO;
 	}
@@ -23066,6 +23076,7 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 		 }
 		 if(commonMethodsUtilService.isListOrSetValid(npCandIds)){
 			 List<Object[]> memberDetails = nominatedPostDAO.getMemberStatusDetails(npCandIds);
+			 Map<Long,String> isEligibleMap = new HashMap<Long, String>(0);
 			 if(commonMethodsUtilService.isListOrSetValid(memberDetails)){
 				 for (Object[] param : memberDetails) {
 					CadreCommitteeVO vo = new CadreCommitteeVO();
@@ -23102,8 +23113,25 @@ public String updateCommitteeMemberDesignationByCadreId(final Long tdpCadreId,fi
 					if(vo.getRelativeName() != null && vo.getRelativeName().length()>0)
 						vo.setRoleName(vo.getRelativeName());
 					
+					String isEligible = nominatedPostProfileService.isEligibleToAdd(commonMethodsUtilService.getLongValueForObject(param[17]),commonMethodsUtilService.getLongValueForObject(param[18]));
+					vo.setIsEligile(isEligible);
+					// if iteration entered into this map loop , if there multiple positions for candidate. in this scenario no access to add more than two posts.
+					if(isEligibleMap.get(vo.getTdpCadreId()) != null){
+							vo.setIsEligile("false");// so we are disbling to add new position
+					}
+					isEligibleMap.put(vo.getTdpCadreId(), vo.getIsEligile());
+					
 					finalList.add(vo);
 				}
+				 
+				 if(commonMethodsUtilService.isListOrSetValid(finalList)){
+					 if(commonMethodsUtilService.isMapValid(isEligibleMap)){
+						 for (CadreCommitteeVO vo : finalList) {
+							vo.setIsEligile(isEligibleMap.get(vo.getTdpCadreId()));//final is eligible details
+						}
+					 }
+				 }
+				 
 			 }
 		 }
 		 
