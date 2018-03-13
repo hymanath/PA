@@ -897,4 +897,26 @@ public class NregsDashboardController {
 		}
 		return "Success";
 	}
+	@PostMapping("/getNregaPaymentsDepartmentWiseOverview")
+	public @ResponseBody NregaPaymentsVO getNregaPaymentsDepartmentWiseOverview(@RequestBody InputVO vo){
+		NregaPaymentsVO returnVO = null;
+		try {
+			returnVO = nregsTcsService.getNregaPaymentsDepartmentWiseOverview(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsDepartmentWiseOverview - NREGSController controller", e);
+		}
+		return returnVO;
+	}
+	@PostMapping("/getNregaPaymentsDeptDtlsLocationWise")
+	public @ResponseBody List<NregaPaymentsVO> getNregaPaymentsDeptDtlsLocationWise(@RequestBody InputVO vo){
+		List<NregaPaymentsVO> returnList = null;
+		try {
+			returnList = nregsTcsService.getNregaPaymentsDeptDtlsLocationWise(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNregaPaymentsDeptDtlsLocationWise - NREGSController controller", e);
+		}
+		return returnList;
+	}
 }

@@ -121,6 +121,7 @@ public class InputVO implements Serializable {
 	private int firstIndex;
 	private int maxResult;
 	private String radioSelection;
+	private String deptType;
 	
 	private Long subLocationId;
 	private List<String> districtNames = new ArrayList<String>();
@@ -795,6 +796,12 @@ public class InputVO implements Serializable {
 	}
 	public void setDistrictNames(List<String> districtNames) {
 		this.districtNames = districtNames;
+	}
+	public String getDeptType() {
+		return deptType;
+	}
+	public void setDeptType(String deptType) {
+		this.deptType = deptType;
 	}
 	
 	
