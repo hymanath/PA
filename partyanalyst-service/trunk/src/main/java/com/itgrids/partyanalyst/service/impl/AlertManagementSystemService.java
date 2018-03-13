@@ -16835,11 +16835,11 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					locationVo.setCount1(totalCount);
 				}
 				for (AlertVO locationVo : finalVoList){
-					if(locationVo.getSatisfiedCount() ==2l){
+					if(locationVo.getCategoryId() ==2l){
 						locationVo.setPrintPerc(calculatePercantage(locationVo.getSatisfiedCount(),locationVo.getCount1()));
-					}else if(locationVo.getUnSatisfiedCount() == 3l){
+					}else if(locationVo.getCategoryId() == 3l){
 						locationVo.setElectPerc(calculatePercantage(locationVo.getUnSatisfiedCount(),locationVo.getCount1()));
-					}else if(locationVo.getCount() == 4l){
+					}else if(locationVo.getCategoryId() == 4l){
 						locationVo.setStatusPercent(calculatePercantage(locationVo.getCount(),locationVo.getCount1()));
 					}
 				}

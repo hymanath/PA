@@ -15,6 +15,7 @@ import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
@@ -312,4 +313,13 @@ public interface IWebServiceHandlerService {
     public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId);
     public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputvo);
     public List<GovtDepartmentVO> getAssignedOfficersDetails(JalavaniAlertsInputVO inputvo);
+    public List<GovtDepartmentVO> getDepartmentsByAlert(JalavaniAlertsInputVO inputvo);
+    public List<AlertDataVO> getAlertsData(JalavaniAlertsInputVO inputvo);
+    public List<IdNameVO> getStatusCompletionInfo(JalavaniAlertsInputVO inputvo);
+    public List<IdNameVO> getGovtAllDepartmentDetails(JalavaniAlertsInputVO inputvo);
+    public List<AlertTrackingVO> viewAlertHistory(JalavaniAlertsInputVO inputvo);
+    public String alertDeptmentExistInLogin(JalavaniAlertsInputVO inputvo);
+    public String getAlertCategoryByAlert(JalavaniAlertsInputVO inputvo);
+    public List<AlertTrackingVO> getSubTaskInfoForAlert(JalavaniAlertsInputVO inputvo);
+    public List<KeyValueVO> getDocumentsForAlerts(JalavaniAlertsInputVO inputvo);
 }
