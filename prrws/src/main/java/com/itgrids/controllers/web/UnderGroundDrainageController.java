@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -179,6 +180,11 @@ public class UnderGroundDrainageController {
 	}
 	
 	//web dashboard services -- start
+	@RequestMapping(value ="/wmsDashBoard", method = RequestMethod.GET)
+    public String wmsDashBoardPage(ModelMap model) {
+		return "wmsDashBoard";
+    }
+	
 	@RequestMapping(value="/getWorkTypeWiseCompletedDetails", method=RequestMethod.POST)
 	public @ResponseBody List<GovtMainWorkVO> getWorkTypeWiseCompletedDetails(@RequestBody MobileAppInputVO inputVO){
 		try {
@@ -337,6 +343,56 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	//work zone click screen -5
+	
+	@RequestMapping(value="/getAllStatusOfWorkType", method=RequestMethod.POST)
+	public @ResponseBody List<SmallVO> getAllStatusOfWorkType(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getAllStatusOfWorkType(inputVO.getWorkTypeId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllStatusOfWorkType ", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getAllDistrictsOfAp", method=RequestMethod.POST)
+	public @ResponseBody List<SmallVO> getAllDistrictsOfAp(@RequestBody MobileAppInputVO inputVO){
+		try {
+			return underGroundDrainageService.getAllDistrictsOfAp();
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllDistrictsOfAp ", e);
+		}
+		return null;
+	}
+
+	@RequestMapping(value="/getDivisionsOfDistrict", method=RequestMethod.POST)
+	public @ResponseBody List<SmallVO> getDivisionsOfDistrict(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-districtId
+			return underGroundDrainageService.getDivisionsOfDistrict(inputVO.getDistrictId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDivisionsOfDistrict ", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getSubDivisionsOfDivision", method=RequestMethod.POST)
+	public @ResponseBody List<SmallVO> getSubDivisionsOfDivision(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-districtId
+			return underGroundDrainageService.getSubDivisionsOfDivision(inputVO.getDivisonId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSubDivisionsOfDivision ", e);
+		}
+		return null;
+	}
+	
+	@RequestMapping(value="/getTehsilsOfSubDivision", method=RequestMethod.POST)
+	public @ResponseBody List<SmallVO> getTehsilsOfSubDivision(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-districtId
+			return underGroundDrainageService.getTehsilsOfSubDivision(inputVO.getSubDivisonId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilsOfSubDivision ", e);
+		}
+		return null;
+	}
 	
 	//web dashboard services -- end	
 }

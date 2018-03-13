@@ -60,4 +60,13 @@ public class MobileAppUserLocationDAO extends GenericDaoHibernate<MobileAppUserL
 		query.setParameter("workTypeId", workTypeId);
 		return query.list();
 	}
+	
+	public List<Object[]> getAllEngineers(Long mobileAppUserTypeId){
+		//0-locationValue,1-userId
+		Query query = getSession().createQuery(" select model.locationValue,model.mobileAppUserId "
+				+ " from MobileAppUserLocation model "
+				+ " where model.mobileAppUser.mobileAppUserTypeId=:mobileAppUserTypeId ");
+		query.setParameter("mobileAppUserTypeId", mobileAppUserTypeId);
+		return query.list();
+	}
 }

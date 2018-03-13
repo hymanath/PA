@@ -188,8 +188,8 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		}else if(locationLevelId == 13l){
 			sb.append(",la.sub_division_id ");
 		} 
-		sb.append(" from govt_work_progress_track gwpt,govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
-				+ " where gwpt.govt_work_progress_id=gwp.govt_work_progress_id and gwp.govt_work_id = gw.govt_work_id "
+		sb.append(" from govt_work_progress_track gwpt,govt_work gw,govt_main_work gmw,location_address la "
+				+ " where gwpt.govt_work_id=gw.govt_work_id  "
 				+ " and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' "
 				+ " and gmw.govt_work_type_id=:workTypeId ");
 		
@@ -197,7 +197,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");
 		}
 		if(statusId != null && statusId > 0l){
-			sb.append(" and gwp.govt_work_status_id=:statusId ");
+			sb.append(" and gwpt.govt_work_status_id=:statusId ");
 		}
 		if(districtId != null && districtId > 0l){
 			sb.append(" and la.district_id=:districtId ");

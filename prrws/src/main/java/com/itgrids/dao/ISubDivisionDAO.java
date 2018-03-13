@@ -8,4 +8,5 @@ import com.itgrids.model.SubDivision;
 
 public interface ISubDivisionDAO extends GenericDao<SubDivision,Long>{
 	public List<Object[]> getSubDivisionIdAndNameByIds(List<Long> subDivisionIds); 
+	public List<Object[]> getSubDivisionsOfDivision(Long divisionId);
 }
