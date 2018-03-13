@@ -633,6 +633,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 			}else{
 			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';	
 			}
+			str+='<th class="text-center">DELETE</th>';
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){		
 		for(var i in result.subList){
@@ -819,6 +820,9 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 							str+='</div>';
 						}
 					str+='</div>';
+				str+='</td>';
+				str+='<td>';
+				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 				str+='</td>';
 			str+='</tr>';
 		}
@@ -1739,6 +1743,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 			str+='<th class="text-center">Reference</th>';
 			str+='<th class="text-center">Current Status</th>';
 			str+='<th class="text-center">Comments/ Update Status/ Wishlist</th>';
+			str+='<th class="text-center">DELETE</th>';
 		str+='</thead>';
 	if(result.subList != null && result.subList.length > 0){
 		for(var i in result.subList){
@@ -1899,6 +1904,9 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 							str+='</div>';
 						}
 					str+='</div>';
+				str+='</td>';
+				str+='<td>';
+				str+='<i  style="cusor:pointer;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 				str+='</td>';
 			str+='</tr>';
 		}

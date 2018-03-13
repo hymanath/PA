@@ -814,7 +814,20 @@ public class CadreCommitteeAction   extends ActionSupport implements ServletRequ
 			
 			cadreCommitteeVO = cadreCommitteeService.searchTdpCadreDetailsBySearchCriteriaForCadreCommitte(locationLevel,locationValue, searchName,memberShipCardNo, 
 							voterCardNo, trNumber, mobileNo,casteStateId,casteCategory,fromAge,toAge,houseNo,gender,startIndex,maxIndex,isRemoved,enrollmentId,null);
-			
+			if(jObj.getString("task").equalsIgnoreCase("NominatedPostSearch"))
+			{
+				if(cadreCommitteeVO != null && cadreCommitteeVO.getPreviousRoles() != null && cadreCommitteeVO.getPreviousRoles().size()>0){
+					List<CadreCommitteeVO> finalList = new ArrayList<CadreCommitteeVO>(0);
+					for (CadreCommitteeVO vo : cadreCommitteeVO.getPreviousRoles()) {
+						if(vo.getIsDeleted() != null && vo.getIsDeleted().equalsIgnoreCase("N"))
+							finalList.add(vo);
+					}
+					cadreCommitteeVO.getPreviousRoles().clear();
+					if(finalList != null && finalList.size()>0){
+						cadreCommitteeVO.getPreviousRoles().addAll(finalList);
+					}
+				}
+			}
 		} catch (Exception e) {
 			LOG.error("Exception occured in getSearchDetails() At CadreCommitteeAction ",e);
 		}

@@ -382,7 +382,7 @@ if(globalLocationLevelId == 2){
 									}
 								str+='</div>';
 								str+='<div class="media-body">';
-								//str+='<i style ="margin-left:240px;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+								str+='<i style ="margin-left:240px;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 								if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
 									str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';
 									str+='<p>'+result[i].name+'</p></a>';

@@ -417,6 +417,7 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 			str+='<th>Reference</th>';
 			str+='<th>Current Status</th>';
 			str+='<th>Update Status</th>';
+			str+='<th> DELETE </th>';
 		str+='</thead>';
 		
 		for(var i in result.subList){
@@ -616,6 +617,9 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 						str+='</div>';
 					str+='</div>';
 				}	
+				str+='</td>';
+				str+='<td>';
+				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 				str+='</td>';
 			str+='</tr>';
 			/*str+='<tr>';

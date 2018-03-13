@@ -48,8 +48,8 @@ $(document).on('click','.removeIconCls',function(){
 	  return;
 	   $.ajax({
           type:'GET',
-          //url: 'UpdateExpiredAppicationsForCandidate.action',
-		  url:"",
+          url: 'UpdateExpiredAppicationsForCandidate.action',
+		  //url:"",
           dataType: 'json',
 		  data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){ 
