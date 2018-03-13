@@ -56,12 +56,11 @@ $(document).on('click','.removeIconCls',function(){
 				$("#successDivId").html("<span style='color:green;'>Candidate Removed Successfully.</span>");
 				setTimeout(function(){
 				  $("#removeModalDivId").modal("hide");
+				  location.reload();
 				}, 1000);
-				$('#rc'+cadreId).remove();
-				
-				$("#main"+cadreId).css({"background":"rgba(255, 0, 0, 0.1)","padding":"5px","border-bottom":"1px solid rgb(51, 51, 51)"});
-				
-				$("#delete"+cadreId).append('<b style="color:red;">Deleted Reason</b> : '+reason);
+			//	$('#rc'+cadreId).remove();
+			//	$("#main"+cadreId).css({"background":"rgba(255, 0, 0, 0.1)","padding":"5px","border-bottom":"1px solid rgb(51, 51, 51)"});
+			//	$("#delete"+cadreId).append('<b style="color:red;">Deleted Reason</b> : '+reason);
 				
 			}
 			else{
