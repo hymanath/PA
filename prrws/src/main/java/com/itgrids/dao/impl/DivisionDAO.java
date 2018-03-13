@@ -29,4 +29,11 @@ public class DivisionDAO extends GenericDaoHibernate<Division, Long> implements 
 		return query.list();
 	}
 	
+	public List<Object[]> getDivisionsOfDistrict(Long districtId){
+		Query query = getSession().createQuery(" select model.divisionId,model.divisionName "
+				+ " from Division model "
+				+ " where model.districtId=:districtId ");
+		query.setParameter("districtId", districtId);
+		return query.list();
+	}
 }

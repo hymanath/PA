@@ -29,4 +29,12 @@ public class SubDivisionDAO extends GenericDaoHibernate<SubDivision, Long> imple
 		query.setParameterList("subDivisionIds", subDivisionIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getSubDivisionsOfDivision(Long divisionId){
+		Query query = getSession().createQuery(" select model.subDivisionId,model.subDivisionName "
+				+ " from SubDivision model "
+				+ " where model.divisionId=:divisionId ");
+		query.setParameter("divisionId", divisionId);
+		return query.list();
+	}
 }

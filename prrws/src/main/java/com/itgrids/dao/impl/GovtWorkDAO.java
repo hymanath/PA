@@ -184,7 +184,7 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 				+ " and gw.completed_percentage >= 99.9 "
 				+ " group by gmw.govt_work_type_id ");
 		
-		return null;
+		return query.list();
 	}
 	
 	public Object[] getOverallWorksLengthOfWorkType(Long workTypeId){

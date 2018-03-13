@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -38,6 +39,7 @@ import com.itgrids.dao.IMobileAppUserWorkTypeDAO;
 import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.ISubDivisionDAO;
+import com.itgrids.dao.ISubDivisionTehsilDAO;
 import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dao.ITehsilDAO;
 import com.itgrids.dto.DocumentVO;
@@ -49,6 +51,7 @@ import com.itgrids.dto.MobileAppLoginVO;
 import com.itgrids.dto.ResultStatus;
 import com.itgrids.dto.SmallVO;
 import com.itgrids.dto.WorkStatusVO;
+import com.itgrids.model.District;
 import com.itgrids.model.GovtWork;
 import com.itgrids.model.GovtWorkDocument;
 import com.itgrids.model.GovtWorkProgress;
@@ -119,6 +122,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	private IDivisionDAO divisionDAO;
 	@Autowired
 	private ISubDivisionDAO subDivisionDAO;
+	@Autowired
+	private ISubDivisionTehsilDAO subDivisionTehsilDAO;
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
@@ -771,17 +776,17 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				govtWorkProgressObj.setIsCompleted(workStatusVO.getIsCompleted() != null ? workStatusVO.getIsCompleted():"N");
 				govtWorkProgressDAO.save(govtWorkProgressObj).getGovtWorkProgressId();
 				
-				Object completedPercentage = govtWorkProgressDAO.getWorkOverallWorkCompletedPercentage(workStatusVOList.get(0).getWorkId());
-				if(completedPercentage != null){
-					GovtWork govtWork = govtWorkDAO.get(workStatusVOList.get(0).getWorkId());
-					govtWork.setCompletedPercentage(Double.parseDouble(completedPercentage.toString()));
-					govtWork.setUpdatedBy(workStatusVOList.get(0).getUserId());
-					govtWork.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
-					govtWorkDAO.save(govtWork);
-				}
-				
 				//save in track
 				saveWorkStatusDetailsInTracking(workStatusVO,uniqueUpdateId);
+			}
+			
+			Object completedPercentage = govtWorkProgressDAO.getWorkOverallWorkCompletedPercentage(workStatusVOList.get(0).getWorkId());
+			if(completedPercentage != null){
+				GovtWork govtWork = govtWorkDAO.get(workStatusVOList.get(0).getWorkId());
+				govtWork.setCompletedPercentage(Double.parseDouble(completedPercentage.toString()));
+				govtWork.setUpdatedBy(workStatusVOList.get(0).getUserId());
+				govtWork.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				govtWorkDAO.save(govtWork);
 			}
 			rs.setMessage("success");
 		} catch (Exception e) {
@@ -1266,8 +1271,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				if(objList1 != null && objList1.size() > 0){
 					for (Object[] objects : objList1) {
 						if(map.get(Long.parseLong(objects[0].toString())) != null){
-							map.get((Long)objects[0]).setCompletedWorksCount(Long.parseLong(objects[1].toString()));
-							map.get((Long)objects[0]).setCompletedKms(Double.parseDouble(objects[2].toString()));
+							map.get(Long.parseLong(objects[0].toString())).setCompletedWorksCount(Long.parseLong(objects[1].toString()));
+							map.get(Long.parseLong(objects[0].toString())).setCompletedKms(Double.parseDouble(objects[2].toString()));
 						}
 					}
 				}
@@ -1283,7 +1288,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					}
 				}
 				
-				//get workZones for workType
+				/*//get workZones for workType
 				//0-workTypeId,1-workZones
 				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType(null);
 				if(objList3 != null && objList3.size() > 0){
@@ -1292,7 +1297,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							map.get((Long)objects[0]).setWorkZonesCount(objects[1] != null ? (Long)objects[1]:null);
 						}
 					}
-				}
+				}*/
 				
 				finalList.addAll(map.values());
 				//finalList.get(0).setTotalCount(Long.parseLong(workTypeList.size()+""));
@@ -1475,7 +1480,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				endDate = sdf.parse(inputVO.getToDate());
 			}
 			
-			Map<String,DocumentVO> map = new HashMap<String, DocumentVO>();
+			Map<String,DocumentVO> map = new LinkedHashMap<String, DocumentVO>();
 			if(startDate != null && endDate != null){
 				List<String> dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
 				if(dateList != null && dateList.size() > 0){
@@ -1493,7 +1498,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(objList != null && objList.size() > 0){
 				for (Object[] objects : objList) {
 					if(map.get(objects[0].toString()) != null){
-						map.get(objects[0].toString()).setKms(Double.parseDouble(objects[2].toString()));
+						map.get(objects[0].toString()).setKms(Double.parseDouble(objects[1].toString()));
 					}
 				}
 				voList.addAll(map.values());
@@ -1570,8 +1575,20 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				
 				//calculate totals and %'s
 				if(map != null && map.size() > 0){
+					Map<Long,Long> usersMap = new HashMap<Long, Long>();//locationId,userId
+					if(inputVO.getLocationLevelId() == 3l){//distLevel
+						//0-locationValue,1-userId
+						List<Object[]> objList12 = mobileAppUserLocationDAO.getAllEngineers(4l);
+						if(objList12 != null && objList12.size() > 0){
+							for (Object[] obj : objList12) {
+								usersMap.put((Long)obj[0], (Long)obj[1]);
+							}
+						}
+					}
+					
 					for (Entry<Long, DocumentVO> entry : map.entrySet()) {
 						DocumentVO locationVO = entry.getValue();
+						locationVO.setUserId(usersMap.get(entry.getKey()));
 						if(locationVO != null && locationVO.getList() != null && locationVO.getList().size() > 0){
 							Double totalKms = 0.00;
 							//calculate total kms
@@ -2258,4 +2275,94 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		}
 		return finalList;
 	}	
+	
+	public List<SmallVO> getAllDistrictsOfAp(){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			List<District> objList = districtDAO.getAll();
+			if(objList != null && objList.size() > 0){
+				for (District district : objList) {
+					SmallVO vo = new SmallVO();
+					vo.setKey(district.getDistrictId());
+					vo.setValue(district.getDistrictName());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllDistrictsOfAp", e);
+		}
+		return voList;
+	}
+	
+	public List<SmallVO> getDivisionsOfDistrict(Long districtId){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			List<Object[]> objList = divisionDAO.getDivisionsOfDistrict(districtId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					SmallVO vo = new SmallVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getDivisionsOfDistrict", e);
+		}
+		return voList;
+	}
+	
+	public List<SmallVO> getSubDivisionsOfDivision(Long divisionId){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			List<Object[]> objList = subDivisionDAO.getSubDivisionsOfDivision(divisionId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					SmallVO vo = new SmallVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSubDivisionsOfDivision", e);
+		}
+		return voList;
+	}
+	
+	public List<SmallVO> getTehsilsOfSubDivision(Long subDivisonId){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			List<Object[]> objList = subDivisionTehsilDAO.getTehsilsOfSubDivision(subDivisonId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					SmallVO vo = new SmallVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilsOfSubDivision", e);
+		}
+		return voList;
+	}
+	
+	public List<SmallVO> getAllStatusOfWorkType(Long workTypeId){
+		List<SmallVO> voList = new ArrayList<SmallVO>(0);
+		try {
+			List<Object[]> objList = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);
+			if(objList != null && objList.size() > 0){
+				for (Object[] objects : objList) {
+					SmallVO vo = new SmallVO();
+					vo.setKey((Long)objects[2]);
+					vo.setValue(objects[3].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllStatusOfWorkType", e);
+		}
+		return voList;
+	}
 }

@@ -8,7 +8,7 @@ public class GovtMainWorkVO implements Serializable{
 	
 	private Long govtMainWorkId;
 	private String govtMainWork;
-	private Long worksCount;
+	private Long worksCount=0l;
 	private Long completedWorksCount=0l;
 	private Double totalKms;
 	private Double progressKms;
@@ -18,7 +18,7 @@ public class GovtMainWorkVO implements Serializable{
 	private Long locationValue;
 	private Long locationAddressId;
 	private Long totalCount;
-	private Long workPraposedAreas;
+	private Long workPraposedAreas=0l;
 	private Long workZonesCount;
 	private Long totalWorks;
 	private Double estimationCost;

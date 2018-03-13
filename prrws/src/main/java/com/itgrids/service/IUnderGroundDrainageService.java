@@ -46,4 +46,10 @@ public interface IUnderGroundDrainageService {
 	public List<WorkStatusVO> getWorkZoneStatusDetailsInfo(Long govtWorkId,Long worktypeid);
 	public List<DocumentVO> getWorkZoneDocumentDetailsInfo(Long govtWorkId);
 	public List<GovtWorksVO> getWorkZoneWorkStategsDetailsInfo(String startDateStr,String endDateStr,Long govtWorkId,Long statusId);
+	
+	public List<SmallVO> getAllStatusOfWorkType(Long workTypeId);
+	public List<SmallVO> getAllDistrictsOfAp();
+	public List<SmallVO> getDivisionsOfDistrict(Long districtId);
+	public List<SmallVO> getSubDivisionsOfDivision(Long divisionId);
+	public List<SmallVO> getTehsilsOfSubDivision(Long subDivisonId);
 }
