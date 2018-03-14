@@ -82,8 +82,10 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 	
 	public List<Object[]> getRecentWorkDocuments(Long workTypeId){
 		//0-panchayatId,1-mandalId,2-docId,3-path,4-insertedDate
-		Query query = getSession().createQuery(" select model.govtWorkProgress.govtWork.govtMainWork.locationAddress.panchayatId,model.govtWorkProgress.govtWork.govtMainWork.locationAddress.tehsilId,model.document.documentId,model.document.path,date(model.updatedTime) "
-				+ " GovtWorkProgressDocument model "
+		Query query = getSession().createQuery(" select panchayat.panchayatId,tehsil.tehsilId,model.document.documentId,model.document.path,date(model.updatedTime) "
+				+ " from GovtWorkProgressDocument model "
+				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.panchayat panchayat "
+				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.tehsil tehsil "
 				+ " where model.govtWorkProgress.govtWork.govtMainWork.govtWorkTypeId=:workTypeId "
 				+ " order by date(model.updatedTime) desc ");
 		query.setParameter("workTypeId", workTypeId);

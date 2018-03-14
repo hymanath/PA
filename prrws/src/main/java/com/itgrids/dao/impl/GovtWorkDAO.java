@@ -190,7 +190,7 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 	public Object[] getOverallWorksLengthOfWorkType(Long workTypeId){
 		Query query = getSession().createSQLQuery(" select count(gw.govt_work_id),sum(gw.work_length) "
 				+ " from govt_work gw,govt_main_work gmw "
-				+ " where gw.govt_main_id=gmw.govt_main_work_id and gw.is_deleted='N' and gmw.govt_work_type_id=:workTypeId ");
+				+ " where gw.govt_main_work_id=gmw.govt_main_work_id and gw.is_deleted='N' and gmw.govt_work_type_id=:workTypeId ");
 		query.setParameter("workTypeId",workTypeId);
 		return (Object[])query.uniqueResult();
 	}

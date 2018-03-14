@@ -90,8 +90,8 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 	public Object[] getWorkCompletedKms(Long workTypeId){
 		
 		Query query = getSession().createSQLQuery(" select count(gw.govt_work_id),sum(gw.work_length) "
-				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw "
-				+ " where gwp.govt_work_id=gw.govt_work_id and gw.is_deleted='N' "
+				+ " from govt_work gw,govt_main_work gmw "
+				+ " where gw.is_deleted='N' "
 				+ " and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.govt_work_type_id=:workTypeId "
 				+ " and gw.completed_percentage >= 99.9 ");
 		
@@ -109,7 +109,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		return query.list();
 	}
 	
-	public List<Object[]> getLOCATIONWISEOVERVIEW(Long workTypeId,Long locationScopeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId,String workZone){
+	public List<Object[]> getLocationWiseOverview(Long workTypeId,Long locationScopeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId,String workZone){
 		//0-statusId,1-statusName,2-kms,3-locationId(,4-workZoneId,5-workzonename)
 		
 		StringBuilder sb = new StringBuilder();
@@ -126,7 +126,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		}else if(locationScopeId == 6l){
 			sb.append(" ,la.panchayat_id ");
 		}
-		if(workZone.equalsIgnoreCase("yes")){
+		if(workZone != null && workZone.equalsIgnoreCase("Y")){
 			sb.append(",gw.govt_work_id,gw.work_zone_name");
 		}
 		sb.append(" from govt_work_progress gwp,govt_work gw, govt_main_work gmw,location_address la,govt_work_status gws "
@@ -160,7 +160,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 			sb.append(" ,la.panchayat_id ");
 		}
 		
-		if(workZone.equalsIgnoreCase("yes")){
+		if(workZone != null && workZone.equalsIgnoreCase("Y")){
 			sb.append(",gw.govt_work_id");
 		}
 		
@@ -187,8 +187,8 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select gwp.govt_work_status_id,sum(gwp.work_length) "
 				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
-				+ " and gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
-				+ " gmw.govt_work_type_id=:workTypeId and gw.is_deleted='N' ");
+				+ " where gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
+				+ " and gmw.govt_work_type_id=:workTypeId and gw.is_deleted='N' ");
 		
 		if(locationScopeId == 3l){
 			sb.append(" and la.district_id=:locationLevelId ");
@@ -220,8 +220,8 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select gw.govt_work_id,gw.work_zone_name,gwp.govt_work_status_id,gwp.work_length "
 				+ " from govt_work_progress gwp,govt_work gw,govt_main_work gmw,location_address la "
-				+ " and gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
-				+ " gmw.govt_work_type_id=:workTypeId and gw.is_deleted='N' ");
+				+ " where gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id "
+				+ " and gmw.govt_work_type_id=:workTypeId and gw.is_deleted='N' ");
 		
 		if(locationScopeId == 3l){
 			sb.append(" and la.district_id=:locationLevelId ");

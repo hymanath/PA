@@ -231,6 +231,7 @@ public class UnderGroundDrainageController {
 	//TIME LINE vs LOCATION
 	
 	//STATE LEVEL OVERVIEW
+	@RequestMapping(value="/getStateLevelOverAllDetails", method=RequestMethod.POST)
 	public @ResponseBody GovtMainWorkVO getStateLevelOverAllDetails(@RequestBody MobileAppInputVO inputVO){
 		try {
 			return underGroundDrainageService.getStateLevelOverAllDetails(inputVO.getWorkTypeId());
@@ -240,6 +241,7 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getRecentWorkDocuments", method=RequestMethod.POST)
 	public @ResponseBody List<DocumentVO> getRecentWorkDocuments(@RequestBody MobileAppInputVO inputVO){
 		try {
 			return underGroundDrainageService.getRecentWorkDocuments(inputVO.getWorkTypeId());
@@ -249,6 +251,7 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getStatusWiseWorksAndKms", method=RequestMethod.POST)
 	public @ResponseBody List<GovtWorksVO> getStatusWiseWorksAndKms(@RequestBody MobileAppInputVO inputVO){
 		try {
 			return underGroundDrainageService.getStatusWiseWorksAndKms(inputVO.getWorkTypeId());
@@ -261,9 +264,10 @@ public class UnderGroundDrainageController {
 	//STATE LEVEL OVERVIEW
 	
 	//LOCATION WISE OVERVIEW
-	public @ResponseBody List<GovtWorksVO> getLOCATIONWISEOVERVIEW(@RequestBody MobileAppInputVO inputVO){
+	@RequestMapping(value="/getLocationWiseOverview", method=RequestMethod.POST)
+	public @ResponseBody List<GovtWorksVO> getLocationWiseOverview(@RequestBody MobileAppInputVO inputVO){
 		try {
-			return underGroundDrainageService.getLOCATIONWISEOVERVIEW(inputVO);
+			return underGroundDrainageService.getLocationWiseOverview(inputVO);
 		} catch (Exception e) {
 			LOG.error("Exception raised while getting getStateLevelOverAllDetails ", e);
 		}
@@ -272,6 +276,7 @@ public class UnderGroundDrainageController {
 	//LOCATION WISE OVERVIEW
 	
 	//get location level wise overview details - screen 3
+	@RequestMapping(value="/getLocationLevelWiseOverviewDetails", method=RequestMethod.POST)
 	public @ResponseBody GovtMainWorkVO getLocationLevelWiseOverviewDetails(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-locationScopeId,locationValue,workTypeId
 			return underGroundDrainageService.getLocationLevelWiseOverviewDetails(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
@@ -281,6 +286,7 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getLocationLevelStatusWiseOverviewDetails", method=RequestMethod.POST)
 	public @ResponseBody List<WorkStatusVO> getLocationLevelStatusWiseOverviewDetails(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-locationScopeId,locationValue,workTypeId
 			return underGroundDrainageService.getLocationLevelStatusWiseOverviewDetails(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
@@ -290,6 +296,7 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getWorkZoneStatusWiseKms", method=RequestMethod.POST)
 	public @ResponseBody List<WorkStatusVO> getWorkZoneStatusWiseKms(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-locationScopeId,locationValue,workTypeId
 			return underGroundDrainageService.getWorkZoneStatusWiseKms(inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
@@ -299,6 +306,7 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getLocationOverviewStatusDayWiseKms", method=RequestMethod.POST)
 	public @ResponseBody List<DocumentVO> getLocationOverviewStatusDayWiseKms(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-fromdate,todate,locationScopeId,locationValue,workTypeId
 			return underGroundDrainageService.getLocationOverviewStatusDayWiseKms(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
