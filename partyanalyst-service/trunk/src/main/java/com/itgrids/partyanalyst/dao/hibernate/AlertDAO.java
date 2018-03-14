@@ -11289,7 +11289,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
  	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
- 	 					" and T.district_id=D.district_id and D.district_id=C.district_id ");
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
  			}
  		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
  			if(type !=null && type.equalsIgnoreCase("district")){
@@ -11315,7 +11315,8 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 					" from alert A,user_address UA,alert_category AC,tehsil T,alert_status ARS,constituency C,district D ");
  	 			
  	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id and T.district_id=D.district_id and D.district_id=C.district_id ") ;
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id " +
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ") ;
  			}
  		}
  		
