@@ -1373,7 +1373,8 @@ public interface IConstants {
 	public static final String ZOHO_IOS_STATIC_MOBILE_NO="9676696760";
 	public static final String DALITHA_TEJAM_IMG_FOLDER = "dalitha_tejam";
 	public static final Long DALITHA_TEJAM_PUBLICATION_ID=24l;
-	public static final List<Long> CATEGORY_IDS=Arrays.asList(4l,2l,3l);
+	public static final List<Long> CATEGORY_IDS=Arrays.asList(4l,2l,3l,5l);
+	public static final List<String> CATEGORY_NAMES=Arrays.asList("Call Center","Print Media","Electronic Media","Social Media");
 	public static final List<Long> MONTH_IDS=Arrays.asList(1l,2l,3l,4l,5l,6l,7l,8l,9l,10l,11l,12l);
 	public static final String COMMUNITY_NEWS_PORTAL_PATH="http://www.mytdp.com/CommunityNewsPortal/";
 	

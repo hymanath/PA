@@ -11271,47 +11271,51 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  		StringBuilder str = new StringBuilder();
  		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
  			if(type !=null && type.equalsIgnoreCase("district")){
- 				//0-distId,1-distname,,categoryCount-2
- 				str.append(" select D.district_id as id,D.district_name as name,count(distinct A.alert_id) as count" +
+ 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+ 				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
+ 						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,district D " +
- 	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 				str.append(" select C.constituency_id as id,C.name as name,count(distinct A.alert_id) as count" +
- 	 					" from alert A,user_address UA,alert_category AC,constituency C " +
+ 				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,0 as mandalId,'' as mandalName, " +
+ 						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
+ 	 					" from alert A,user_address UA,alert_category AC,constituency C,district D " +
  	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and UA.constituency_id =C.constituency_id and C.district_id between 11 and 23 ");
+ 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 ");
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 				str.append(" select T.tehsil_id as id ,T.tehsil_name as name,count(distinct A.alert_id) as count" +
- 	 					" from alert A,user_address UA,alert_category AC,tehsil T " +
- 	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id  ");
+ 				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,T.tehsil_id as mandalId ,T.tehsil_name as mandalName, " +
+ 						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
+ 	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
+ 	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
+ 	 					" and T.district_id=D.district_id and D.district_id=C.district_id ");
  			}
  		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
  			if(type !=null && type.equalsIgnoreCase("district")){
- 				//0-mandal,1-mandalname,statusId-2,statusName-3,statusColor-4,categoryId-5,category-6,categoryCount-7
- 				str.append(" select D.district_id as id,D.district_name as name,ARS.alert_status_id as statusId,ARS.alert_status as status," +
- 						" ARS.alert_color as color,count(distinct A.alert_id) as count" +
+ 				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
+ 						" ARS.alert_status_id as propertyTypeId,ARS.alert_status as property,ARS.alert_color as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,district D,alert_status ARS ");
  	 			
  	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
  	 					" and A.alert_status_id =ARS.alert_status_id and UA.district_id =D.district_id ") ;
  				
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 				str.append(" select C.constituency_id as id,C.name as name,ARS.alert_status_id as statusId,ARS.alert_status as status," +
- 						" ARS.alert_color as color,count(distinct A.alert_id) as count" +
- 	 					" from alert A,user_address UA,alert_category AC,constituency C,alert_status ARS ");
+ 				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,0 as mandalId,'' as mandalName, " +
+ 						" ARS.alert_status_id as propertyTypeId,ARS.alert_status as property,ARS.alert_color as color,count(distinct A.alert_id) as count " +
+ 	 					" from alert A,user_address UA,alert_category AC,constituency C,alert_status ARS,district D ");
  	 			
  	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.constituency_id =C.constituency_id and C.district_id between 11 and 23 ") ;
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.constituency_id =C.constituency_id and D.district_id= C.district_id " +
+ 	 					" and C.district_id between 11 and 23 ") ;
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 				str.append(" select T.tehsil_id as id,T.tehsil_name as name,ARS.alert_status_id as statusId,ARS.alert_status as status," +
- 						" ARS.alert_color as color,count(distinct A.alert_id) as count" +
- 	 					" from alert A,user_address UA,alert_category AC,tehsil T,alert_status ARS ");
+ 				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,T.tehsil_id as mandalId,T.tehsil_name as mandalName, " +
+ 						" ARS.alert_status_id as propertyTypeId,ARS.alert_status as property,ARS.alert_color as color,count(distinct A.alert_id) as count" +
+ 	 					" from alert A,user_address UA,alert_category AC,tehsil T,alert_status ARS,constituency C,district D ");
  	 			
  	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id ") ;
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id and T.district_id=D.district_id and D.district_id=C.district_id ") ;
  			}
  		}
  		
@@ -11340,21 +11344,27 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  			}
 		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
 			if(type !=null && type.equalsIgnoreCase("district")){
- 				str.append(" group by AC.alert_category_id,ARS.alert_status_id,D.district_id ");
+ 				str.append(" group by ARS.alert_status_id,D.district_id ");
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 				str.append(" group by AC.alert_category_id,ARS.alert_status_id,C.constituency_id");
+ 				str.append(" group by ARS.alert_status_id,C.constituency_id");
  			}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 				str.append(" group by AC.alert_category_id,ARS.alert_status_id,T.tehsil_id");
+ 				str.append(" group by ARS.alert_status_id,T.tehsil_id");
  			}
 		}
  		Query query =null;
- 		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
- 			
+ 		//if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
  			query = getSession().createSQLQuery(str.toString())
- 				   .addScalar("id",Hibernate.LONG)
- 				   .addScalar("name", Hibernate.STRING)
+ 				   .addScalar("distId",Hibernate.LONG)
+ 				   .addScalar("distName", Hibernate.STRING)
+ 				   .addScalar("constId", Hibernate.LONG)
+ 				   .addScalar("constName", Hibernate.STRING)
+ 				   .addScalar("mandalId", Hibernate.LONG)
+ 				   .addScalar("mandalName", Hibernate.STRING)
+ 				   .addScalar("propertyTypeId", Hibernate.LONG)
+ 				   .addScalar("property", Hibernate.STRING)
+ 				   .addScalar("color", Hibernate.STRING)
  				   .addScalar("count", Hibernate.LONG);
- 		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
+ 		/*}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
  			query = getSession().createSQLQuery(str.toString())
   				   .addScalar("id",Hibernate.LONG)
   				   .addScalar("name", Hibernate.STRING)
@@ -11362,7 +11372,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
   				   .addScalar("status", Hibernate.STRING)
   				   .addScalar("color", Hibernate.STRING)
   				   .addScalar("count", Hibernate.LONG);
- 		}
+ 		}*/
  		query.setParameter("govtDeptId",49l);
 		 	if(locationTypeId !=null && locationTypeId.longValue()>0){
 	 			query.setParameter("locationTypeId",locationTypeId);
