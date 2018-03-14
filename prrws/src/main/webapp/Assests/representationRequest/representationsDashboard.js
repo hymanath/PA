@@ -558,9 +558,9 @@ function buildLeadWiseOverviewDetails(result){
 	//str+='<div class="row">';
 	for(var i in result){
 		count++;
-		str+='<div class="col-sm-3">';
+		str+='<div class="col-sm-3 m_top10">';
 			str+='<div class="panel panel-default">';
-				str+='<div class="panel-heading" style="background-color:#D6E8F2">';
+				str+='<div class="panel-heading" style="background-color:#D6E8F2; color:#333;">';
 					if(result[i].name.length > 28)
 					{
 						str+='<h5><span class="count_cls">'+count+'</span><b class="tooltipCls" title="'+result[i].name+'">'+result[i].name.substring(0,26)+'..</b></h5>';
@@ -754,7 +754,7 @@ function getReferralWiseOverviewDetails(desigId){
 	var str2='';
 	  for(var i in result.subList){
 		
-	   str+='<div class="col-sm-3" id="column2">';
+	   str+='<div class="col-sm-3 m_top10" id="column2">';
 	   if(i==0)
 	   {
 	   str+='<div class="panel panel-default desigClsDivId activeCls"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'" attr_desg_name="'+result.subList[i].desigName+'">';
@@ -763,7 +763,7 @@ function getReferralWiseOverviewDetails(desigId){
 		{
 	   str+='<div class="panel panel-default desigClsDivId"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'" attr_desg_name="'+result.subList[i].desigName+'">';
 		}
-		str+='<div class="panel-heading" style="background-color:#D2DEF1;"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
+		str+='<div class="panel-heading" style="background-color:#D2DEF1; color:#333;"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
 			str+='<div class="panel-body" style="background-color:#E7EDF8;">';
 				
 				   str+='<div class="row">';			
