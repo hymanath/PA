@@ -312,7 +312,15 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 												 <select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT STATUS "  id="statusId"  multiple >
 														<!--<option value="0">Select Status</option>-->
 												</select>
+											</div>
+											
+											<div class="col-sm-3 pull-right" id="deptsDiv">
+												 <select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT DEPARTMENT "  id="departmntId"  multiple >
+														<!--<option value="0">Select Status</option>-->
+												</select>
 											</div>	
+											
+												
 											<!--<div class="col-sm-2 pull-right" id="advancedSearchButtonDivId">
 											  <label class="text-capitalize">
 											  <span class="btn btn-success btn-md"><input type="checkbox"  id="advanceSearchBtnId">Advanced Search</input></span>
@@ -334,7 +342,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 														<option value="referral"> Referral Location wise</option>
 														<option value="referrelDesignation"> Referral Designation wise </option>
 														<option value="representeeDesignation"> Representee Designation wise </option>
-														<option value="department">Department wise </option>
+														<!--<option value="department">Department wise </option>-->
 														<option value="subject"> Subject wise</option>
 														<option value="lead"> Lead wise</option>
 														<option value="name"> Name</option>
@@ -867,6 +875,7 @@ $(document).on("click",".closeSecondModal",function(){
 	getStatusList(statusId);
 }else{ */
 	getStatusList(0);
+	getDepartmntsDetails();
 //}
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
@@ -897,6 +906,46 @@ var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryVie
 			return 'Current value: ' + value;
 		}
 	}); */
+	
+	
+function getDepartmntsDetails(){
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+ var json = {
+		 reportType :"department",
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 departmentId:0,
+		 statusId:statusIds
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getDepartmentsBySearchType',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#departmntId").empty();
+		$("#departmntId").append("<option value='0' selected> ALL </option>");
+		if(result !=null && result.length >0){
+			for(var i in result)
+				$("#departmntId").append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+		}
+		$("#departmntId").trigger('chosen:updated');
+	});	
+}
+
 </script>
 </body>
 </html>

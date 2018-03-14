@@ -104,6 +104,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				",pmSubject.pmSubjectId,pmSubSubject.pmSubjectId,pmLead.leadName,pmBriefLead.pmBriefLeadId " ); // 32,33,34,35
 		}
 		
+		
 		sb.append("  from PmRepresenteeRefDetails as model "+//, PmPetitionAssignedOfficer assignedOfficer " +
 				//"left outer join model.pmRefCandidateDesignation model2" +
 				//" left outer join model.pmRefCandidate pmRefCandidate" +
@@ -230,6 +231,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidateDesignationId in (:dashBrdRefCanId) ");
 		}
 		
+		if(inputVO != null && inputVO.getSearchDeptIdsList() != null && inputVO.getSearchDeptIdsList().size()>0)
+			sb.append(" and model1.pmDepartmentId in (:pmDepartmentIdsList) ");
+				
 		if(inputVO.getRadioSelection() != null && inputVO.getRadioSelection().trim().equalsIgnoreCase("petition"))
 			sb.append("  group by model.petitionId ");
 		else
@@ -301,6 +305,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		if(inputVO.getBriefLeadIdsList() != null && inputVO.getBriefLeadIdsList().size()>0)
 			query.setParameterList("briefLeadIdsList", inputVO.getBriefLeadIdsList());
+		if(inputVO != null && inputVO.getSearchDeptIdsList() != null && inputVO.getSearchDeptIdsList().size()>0)
+			query.setParameterList("pmDepartmentIdsList", inputVO.getSearchDeptIdsList());
 		return query.list();
 	}
 	public List<Long> getPmRepresenteeRefDetailsIds(Long petitionId){

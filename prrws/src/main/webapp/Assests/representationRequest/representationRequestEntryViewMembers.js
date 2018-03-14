@@ -1301,6 +1301,18 @@ var selStatusId = $("#statusId").val();
 			statusIds.push(statusList[i]);
 		}
 	} */
+var deptIds =  $("#departmntId").val();
+var deptIdsList = [];
+	if(deptIds != null && deptIds.length >0){
+		deptIdsList=deptIds;
+	}
+if(deptIdsList != null && deptIdsList.length>0){
+	for(var i in deptIdsList){
+		if(parseInt(deptIdsList[i])==0){
+			deptIdsList=[];
+		}
+	}
+}
 var briefLeadIdsArr=[];
 var briefLeadId = $("#selectLeadId").val();
 	if(briefLeadId != null && briefLeadId.length >0){
@@ -1319,6 +1331,7 @@ var json = {
     //maxVal:4,
     //startValue:0,
     //endValue:0,
+	searchDeptIdsList:deptIdsList,
 	statusIds:statusIds,
 	govtSchmeIdsList:[],
 	sourceIdsList:[],
@@ -3405,3 +3418,4 @@ $(document).on("change","#leadId",function(){
 		$('#leadOtherDivId').show();
 	}
 });
+
