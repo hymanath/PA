@@ -11690,4 +11690,69 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 	 	return  query.list();
  	}
+	public List<Object[]> getJalavaniAlertDetailsInformation(Date fromDate,Date toDate,Long locationTypeId,Long locationId,
+			Long statusId,Long sourceId){
+ 		StringBuilder str = new StringBuilder();
+ 		Query query =null;
+ 		str.append(" A.alert_id as alertId,A.title as title,ARS.source as source,GDDN.designation_name as designationName," +
+ 				" AStatus.alert_status as alertStatus ,GDDON.govt_department_scope_id as deptScopeId,GDDON.level_value as levelValue" +
+ 				" FROM alert A,alert_source ARS,alert_assigned_officer_new AAON," +
+ 				" govt_department_designation_officer_new GDDON,govt_department_designation_new GDDN," +
+ 				" user_address UA,alert_status AStatus ");
+ 				
+ 		str.append(" ARS.alert_source_id=A.alert_source_id and A.alert_id=AAON.alert_id " +
+ 				" and AAON.govt_department_designation_officer_id=GDDON.govt_department_designation_officer_id" +
+ 				" and GDDON.govt_department_designation_id=GDDN.govt_department_designation_id " +
+ 				" and A.address_id=UA.user_address_id ");
+
+ 		if(locationTypeId !=null && locationTypeId.longValue() >0 && locationTypeId == 5l){
+ 			if(locationId !=null && locationId.longValue() >0){
+ 				str.append("AND UA.district_id=:locationId ");
+ 			}
+ 		}else if(locationTypeId == 8l){
+ 			if(locationId !=null && locationId.longValue() >0){
+ 				str.append("AND UA.tehsil_id=:locationId ");
+ 			}
+ 		}
+ 		if(fromDate !=null && toDate !=null){
+ 			str.append(" AND date(A.created_time) between :fromDate and :toDate  ");
+ 		}
+ 		if(statusId !=null && statusId.longValue()>0){
+ 			str.append("AND AStatus.alert_status_id =:statusId ");
+ 		}
+ 		if(sourceId !=null && sourceId.longValue()>0){
+ 			str.append("and ARS.alert_source_id =:sourceId ");
+ 		}
+ 		str.append(" and A.is_deleted = 'N' and A.govt_department_id=:govtDeptId ");
+ 		
+ 		str.append(" group by A.alert_id ");
+ 		
+ 		query = getSession().createSQLQuery(str.toString())
+ 				 .addScalar("alertId",Hibernate.LONG)
+ 		         .addScalar("title",Hibernate.STRING)
+ 		         .addScalar("source",Hibernate.STRING)
+ 		         .addScalar("alertStatus",Hibernate.STRING)
+ 		         .addScalar("designationName",Hibernate.STRING)
+ 		         .addScalar("deptScopeId",Hibernate.LONG)
+ 		         .addScalar("levelValue",Hibernate.LONG);
+ 		
+ 		query.setParameter("govtDeptId",49l);
+ 		if(fromDate !=null && toDate !=null){
+ 			query.setParameter("fromDate",fromDate);
+ 			query.setParameter("toDate",toDate);
+ 		}
+ 		if(locationId !=null && locationId.longValue() >0){
+ 			query.setParameter("locationId",locationId);
+ 		}
+ 		if(statusId !=null && statusId.longValue()>0){
+ 			query.setParameter("statusId",statusId);
+ 		}
+ 		if(sourceId !=null && sourceId.longValue()>0){
+ 			query.setParameter("sourceId",sourceId);
+ 		}
+ 		if(locationTypeId !=null && locationTypeId.longValue() >0){ 
+ 			query.setParameter("locationTypeId",locationTypeId);
+ 		}
+ 		return  query.list();
+  }
 }

@@ -9,8 +9,56 @@ public class JalavaniAlertResultVO {
 	public String districtName,constiruenctName,mandalName,status,color;
 	public List<JalavaniAlertResultVO> voList = new ArrayList<JalavaniAlertResultVO>(0);
 	public Double percentage;
-	
-	
+	public Long alertId;
+	public String title;
+	public String source;
+	public String designationName;
+	public String alertStatus;
+	public Long deptScopeId;
+    public Long levelvalue;
+    
+    public Long getAlertId() {
+		return alertId;
+	}
+	public void setAlertId(Long alertId) {
+		this.alertId = alertId;
+	}
+	public String getTitle() {
+		return title;
+	}
+	public void setTitle(String title) {
+		this.title = title;
+	}
+	public String getSource() {
+		return source;
+	}
+	public void setSource(String source) {
+		this.source = source;
+	}
+	public String getDesignationName() {
+		return designationName;
+	}
+	public void setDesignationName(String designationName) {
+		this.designationName = designationName;
+	}
+	public String getAlertStatus() {
+		return alertStatus;
+	}
+	public void setAlertStatus(String alertStatus) {
+		this.alertStatus = alertStatus;
+	}
+	public Long getDeptScopeId() {
+		return deptScopeId;
+	}
+	public void setDeptScopeId(Long deptScopeId) {
+		this.deptScopeId = deptScopeId;
+	}
+	public Long getLevelvalue() {
+		return levelvalue;
+	}
+	public void setLevelvalue(Long levelvalue) {
+		this.levelvalue = levelvalue;
+	}
 	public Long getDistrictId() {
 		return districtId;
 	}
