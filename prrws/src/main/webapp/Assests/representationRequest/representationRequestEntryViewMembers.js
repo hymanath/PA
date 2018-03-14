@@ -328,6 +328,7 @@ $(document).on("change","#locationSelId",function(){
 	$('.clearCls').val('');
 	$("#departMentsDiv").hide();
 	$("#subjectDivId").hide();
+	$("#pmOfficerDivId").hide();
 	$("#designationDiv").hide()//inputSearchDivid
 	$("#referralNameDiv").hide()//inputSearchDivid
 	$("#nameDivid").hide();
@@ -353,6 +354,7 @@ $(document).on("change","#locationSelId",function(){
 	  $("#designationErrDiv").html('');
 	  $("#departMentsErrDiv").html('');
 	  $("#subJErrMsg").html('');
+	  $("#officerErrMsg").html('');
 	   $("#nameErrDivId").html('');
 	   $("#mobileErrDivId").html('');
 	   $("#emailErrDivId").html('');
@@ -375,7 +377,6 @@ $(document).on("change","#locationSelId",function(){
 	var searchType=$(this).val();
 	var dateRangeStr =$("#dateRangePicker").val();
 	//getStatusList(statusId);
-	
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 	if(searchType == 'all'){
 		//$('#parametersList').hide();
@@ -518,6 +519,38 @@ $(document).on("change","#locationSelId",function(){
 	  
 	getSubjectsBySearchType(searchType,"subjectId",0,statusId);
 		$("#subjectDivId").show();
+		$("#districtConsMandDivId").hide();
+		$("#advancedSearchButtonDivId").show();
+	
+		$("#advanceSearchBtnId").prop({disabled: false});
+	$('#advanceSearchBtnId').click(function(){
+           if($(this).prop("checked") == true){
+		   $("#districtConsMandDivId").show()
+	    }else if($(this).prop("checked") == false){
+			 $("#districtConsMandDivId").hide();
+		} 
+			 
+		 });
+	
+   }else if(searchType == 'pmOfficer'){
+		$("#districtCandId").html('<option value="0">Select District</option>');
+		$("#districtCandId").trigger('chosen:updated');
+		$("#endorsmentNoDivid").hide();
+		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+		$("#constituencyCanId").trigger('chosen:updated');
+		
+		$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+		$("#mandalCanId").trigger('chosen:updated');
+		$("#nameId").val(' ');
+		$("#mobileId").val(' ');
+		$("#emailId").val(' ');
+		$("#endorsmentNoId").val(' ');       
+	          $('#petitionSubWorkRadioDivId').hide();
+	   $('#advanceSearchBtnId').prop("checked",false);
+	    $("#workId").prop("checked",false);
+			$("#petitionId").prop("checked",true);
+	  getChildOfficersByParentOfficerId(searchType,"officerId",0,statusId);
+		$("#pmOfficerDivId").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
 	
@@ -1261,6 +1294,11 @@ function getRepresentativeSearchDetails1(value,globalStIndex){
 	    filterValue=$("#emailId").val();
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
+   }else if(filterType == 'pmOfficer'){
+	    var pmOfficers=$("#officerId").val();
+		for(var i in pmOfficers){
+			filterValue = filterValue+pmOfficers[i]+",";
+		}
    }else if(filterType == 'all'){
 	  // startDate = "";
 		//endDate = "";
@@ -1413,7 +1451,7 @@ function buildSummeryDetails(result){
 	str+='</div>';
 	$("#summaryId").html(str);
 }
-
+var globalStatusIds = [];
 function getStatusList(onLoadstatusId){
 	
 	var selStatusId = $("#statusId").val();
@@ -1448,7 +1486,13 @@ function getStatusList(onLoadstatusId){
 				}else{
 					$("#statusId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 				}
-				
+				globalStatusIds.push(result[i].id);
+			}
+			if(searchBy == 'officer' && statusName !=''){
+				var idx = $.inArray(statusId, globalStatusIds);
+				if (idx == -1) {
+				  $("#statusId").append("<option value='"+statusId+"' selected>"+statusName+"</option>");
+				} 
 			}
 		}
 		$("#statusId").trigger('chosen:updated');
@@ -1457,6 +1501,7 @@ function getStatusList(onLoadstatusId){
 		}
   }); 
 }
+
 //getPetitionDetails(1778,'');
 function getPetitionDetailsDummy(petitionId,endorsNo){
 	$("#representeeViewId").html(spinner);
@@ -2312,10 +2357,7 @@ function onLoadClickDataDetails(){
 	}
 	$("#actionTypId").trigger('chosen:updated');
 	
-	if(searchBy == 'lead' || searchBy == 'lead'){
-		$("#locationSelId").val('lead').trigger('chosen:updated');
-		$("#selectLeadId").val(briefleadId);
-	}
+	
 	if(searchBy == 'referral' || searchBy == 'referralCan'){
 		//$("#locationSelId").html('');
 		$("#locationSelId").val('referrelDesignation').trigger('chosen:updated');
@@ -2337,6 +2379,12 @@ function onLoadClickDataDetails(){
 		$("#locationSelId").html('<option value="subject">Subject wise </option>');
 		$("#locationSelId").trigger('chosen:updated');
 		$( "#locationSelId" ).trigger( "change" ); */
+	}else if(searchBy == 'lead'){
+		$("#locationSelId").val('lead').trigger('chosen:updated');
+		$("#selectLeadId").val(briefleadId);
+	}else if(searchBy == 'officer'){
+		$("#locationSelId").val('pmOfficer').trigger('chosen:updated');
+		$( "#locationSelId" ).trigger( "change" );
 	}
 	
 }
@@ -3419,3 +3467,54 @@ $(document).on("change","#leadId",function(){
 	}
 });
 
+function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusId){
+	var selStatusId = $("#statusId").val();
+	//alert(statusId)
+	 var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}else if(statusId >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+	var selOffcrId = $("#officerId").val();
+	if(selOffcrId != null && selOffcrId.length >0){
+		officerId =selOffcrId;
+	} 
+ var json = {
+		 reportType :searchType,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 statusIds:statusIds,
+		 assetType:officerId
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getChildOfficersByParentOfficerId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		 $("#"+selBoxId).empty();
+		if(result !=null && result.length >0){
+			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
+			//$("#subjectDivId").show();
+			for(var i in result){
+				if(gblOfficerId != null && gblOfficerId==result[i].key){
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+				}else{
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+				}
+			}
+		}
+		$("#"+selBoxId).trigger('chosen:updated');
+		if(searchBy == 'officer' && gblOfficerId >0){
+			getRepresentativeSearchDetails1("petition",0);
+		}  
+	});	
+}

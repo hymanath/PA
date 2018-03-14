@@ -29,7 +29,8 @@ public class PmDepartmentDesignationHierarchyDAO extends GenericDaoHibernate<PmD
 					  + " model.subPmDepartmentDesignation.pmOfficerDesignation.designation, model.subPmDepartmentDesignation.pmDepartment.department" +
 					"  from PmDepartmentDesignationHierarchy model " );*/
 			str.append(" select distinct model.subPmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId,"
-					  + " model.subPmDepartmentDesignation.pmOfficerDesignation.designation " +
+					  + " model.subPmDepartmentDesignation.pmOfficerDesignation.designation" +
+					  ",model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId " +
 					"  from PmDepartmentDesignationHierarchy model where model.isActive='Y' " );
 			
 			if(deptDesignationIdsList != null && deptDesignationIdsList.size() >0){

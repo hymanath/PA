@@ -14,6 +14,8 @@ public class PmOfficerDesignation {
 	private Long pmOfficerDesignationId;
 	private String designation;
 	private String shortName;
+	private Long orderNO;
+	
 	
 	@Id
 	@Column(name="pm_officer_designation_id")
@@ -38,6 +40,14 @@ public class PmOfficerDesignation {
 	}
 	public void setShortName(String shortName) {
 		this.shortName = shortName;
+	}
+	
+	@Column(name="order_no")
+	public Long getOrderNO() {
+		return orderNO;
+	}
+	public void setOrderNO(Long orderNO) {
+		this.orderNO = orderNO;
 	}
 	
 	

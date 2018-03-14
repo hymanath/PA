@@ -14,7 +14,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "pm_petition_assigned_officer")
+@Table(name = "pm_petition_assigned_officer_backup")
 public class PmPetitionAssignedOfficer {
 	
 	private Long  pmPetitionAssignedOfficerId;

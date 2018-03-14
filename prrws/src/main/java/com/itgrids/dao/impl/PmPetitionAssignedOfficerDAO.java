@@ -101,24 +101,36 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 				",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
 				",model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId" +//2
 				",model.pmDepartmentDesignationOfficer.pmOfficer.name" +//3
-				",model.petition.petitionId" +//4
-				",model.pmSubWorkDetails.pmSubWorkDetailsId" +//5
+				//",model.petition.petitionId" +//4
+				//",model.pmSubWorkDetails.pmSubWorkDetailsId" +//5
+				",count(distinct model.petition.petitionId)" +//4
+				",count(distinct model.pmSubWorkDetails.pmSubWorkDetailsId)" +//5
 				",model.pmSubWorkDetails.pmStatus.pmStatusId" +//6
 				",model.pmSubWorkDetails.pmStatus.status" +//7
 				",model.pmStatus.pmStatusId "+//8
-				",model.pmSubWorkDetails.costEstimation "+//9
-				" from PmPetitionAssignedOfficer model ,PmRepresenteeRefDetails model1 " +
+				",sum(model.pmSubWorkDetails.costEstimation) "+//9
+				" from PmPetitionAssignedOfficer model " +
+				",PmRepresenteeRefDetails model1 " +
 				"where model.isDeleted='N' and model.petition.isDeleted='N' " +
 				"and model.pmSubWorkDetails.isDeleted='N' " +
 				" and model1.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N' " +
-				" and  model1.petition.petitionId=model.petition.petitionId ");
+				" and  model1.petition.petitionId=model.petition.petitionId" +
+				" and model.pmDepartmentDesignationOfficer.pmOfficer.isActive='Y' ");
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
 			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:officerDesigids) ");
 		}
-		
+		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		sb.append(" group by model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId," +
+				"model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId,model.pmStatus.pmStatusId,model.pmSubWorkDetails.pmStatus.pmStatusId  " +
+				"order by model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.orderNO asc ");
 		Query query = getSession().createQuery(sb.toString());
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
 			query.setParameterList("officerDesigids", inputVO.getDesignationIds());
+		}
+		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+			query.setParameterList("deptIds", inputVO.getDeptIdsList());
 		}
 		return query.list();
 	}
