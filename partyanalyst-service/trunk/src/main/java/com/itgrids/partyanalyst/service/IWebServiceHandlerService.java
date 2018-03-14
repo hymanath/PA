@@ -313,15 +313,15 @@ public interface IWebServiceHandlerService {
     public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo);
     public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId);
     public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputvo);
-    public List<AlertVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo);
-    public List<GovtDepartmentVO> getAssignedOfficersDetails(JalavaniAlertsInputVO inputvo);
-    public List<GovtDepartmentVO> getDepartmentsByAlert(JalavaniAlertsInputVO inputvo);
-    public List<AlertDataVO> getAlertsData(JalavaniAlertsInputVO inputvo);
-    public List<IdNameVO> getStatusCompletionInfo(JalavaniAlertsInputVO inputvo);
-    public List<IdNameVO> getGovtAllDepartmentDetails(JalavaniAlertsInputVO inputvo);
-    public List<AlertTrackingVO> viewAlertHistory(JalavaniAlertsInputVO inputvo);
-    public String alertDeptmentExistInLogin(JalavaniAlertsInputVO inputvo);
-    public String getAlertCategoryByAlert(JalavaniAlertsInputVO inputvo);
-    public List<AlertTrackingVO> getSubTaskInfoForAlert(JalavaniAlertsInputVO inputvo);
-    public List<KeyValueVO> getDocumentsForAlerts(JalavaniAlertsInputVO inputvo);
+    public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo);
+    public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
+    public List<GovtDepartmentVO> getDepartmentsByAlert(Long alertId);
+    public List<AlertDataVO> getAlertsDataByAlertId(Long alertId);
+    public List<IdNameVO> getStatusCompletionInfo(Long alertId,Long levelValue, Long designationId, Long levelId ,Long userId,List<String> entitlements );
+    public List<IdNameVO> getGovtAllDepartmentDetails();
+	public List<AlertTrackingVO> viewAlertHistory(Long alertdId);
+	public String getAlertCategoryByAlert(Long alertId);
+    public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId,Long userId);
+	public List<KeyValueVO> getDocumentsForAlerts(Long alertId);
+	public String alertDeptmentExistInLogin(Long alertId,Long userId);
 }
