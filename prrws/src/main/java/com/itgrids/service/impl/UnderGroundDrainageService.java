@@ -1543,7 +1543,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						
 						map.put(Long.parseLong(objects[2].toString()),vo);
 					}else{
-						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[3].toString())).getList(),objects[0].toString());
+						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[2].toString())).getList(),objects[0].toString());
 						if(matchedDateVO != null)
 							matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
 					}
@@ -1752,12 +1752,20 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			
 			if(objList != null && objList.size() > 0){
 				for (Object[] obj : objList) {
-					panchayatIds.add((Long)obj[0]);
-					mandalIds.add((Long)obj[1]);
+					if(obj[0] != null)
+						panchayatIds.add((Long)obj[0]);
+					if(obj[1] != null)
+						mandalIds.add((Long)obj[1]);
 				}
 				
-				List<Object[]> panchObjList = panchayatDAO.getPanchayatIdAndNameByIds(panchayatIds);
-				List<Object[]> manObjList = tehsilDAO.getTehsilIdAndNameByIds(mandalIds);
+				List<Object[]> panchObjList = null;
+				if(panchayatIds.size() > 0)
+					panchObjList = panchayatDAO.getPanchayatIdAndNameByIds(panchayatIds);
+				
+				List<Object[]> manObjList = null;
+				if(mandalIds.size() > 0)
+					manObjList = tehsilDAO.getTehsilIdAndNameByIds(mandalIds);
+				
 				Map<Long,String> panchNamesMap = new HashMap<Long, String>();
 				Map<Long,String> manNamesMap = new HashMap<Long, String>();
 				
@@ -1803,11 +1811,11 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(allStatusObjList != null && allStatusObjList.size() > 0){
 				Map<Long,GovtWorksVO> map = new HashMap<Long, GovtWorksVO>();
 				for (Object[] objects : allStatusObjList) {
-					if(map.get((Long)objects[3]) == null){
+					if(map.get((Long)objects[2]) == null){
 						GovtWorksVO vo = new GovtWorksVO();
-						vo.setStatusId((Long)objects[3]);
-						vo.setStatus(objects[4].toString());
-						map.put((Long)objects[3],vo);
+						vo.setStatusId((Long)objects[2]);
+						vo.setStatus(objects[3].toString());
+						map.put((Long)objects[2],vo);
 					}
 				}
 				
@@ -1847,11 +1855,11 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		return voList;
 	}
 	
-	public List<GovtWorksVO> getLOCATIONWISEOVERVIEW(MobileAppInputVO inputVO){
+	public List<GovtWorksVO> getLocationWiseOverview(MobileAppInputVO inputVO){
 		List<GovtWorksVO> voList = new ArrayList<GovtWorksVO>(0);
 		try {
 			//0-statusId,1-statusName,2-kms,3-locationId(,4-workZoneId,5-workzonename)
-			List<Object[]> objList = govtWorkProgressDAO.getLOCATIONWISEOVERVIEW(inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getDistrictId(),inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),inputVO.getWorkZone());
+			List<Object[]> objList = govtWorkProgressDAO.getLocationWiseOverview(inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getDistrictId(),inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),inputVO.getWorkZone());
 			
 			if(objList != null && objList.size() > 0){
 				//0-statusTypeId,1-statusType,2-govtWorkStatusId,3-govtWorkStatus
@@ -1873,7 +1881,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					}
 					
 					//0-statusId,1-statusName,2-kms,3-locationId(,4-workZoneId,5-workzonename)
-					if(inputVO.getWorkZone().equals("yes")){
+					if(inputVO.getWorkZone() != null && inputVO.getWorkZone().equals("Y")){
 						GovtWorksVO matchedWorkVO = getmatchedWorkVO(matchedLocationVo.getWorksList(), Long.parseLong(obj[4].toString()));
 						if(matchedWorkVO == null){
 							matchedWorkVO = new GovtWorksVO();
@@ -1929,7 +1937,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					for (Entry<Long, GovtWorksVO> entry : finalMap.entrySet()) {
 						entry.getValue().setLocation(locationNamesMap.get(entry.getKey()));
 						//calculation totals and %'s
-						if(inputVO.getWorkZone().equals("yes")){
+						if(inputVO.getWorkZone() != null && inputVO.getWorkZone().equals("Y")){
 							if(entry.getValue().getWorksList() != null && entry.getValue().getWorksList().size() > 0){
 								for (GovtWorksVO worksVO : entry.getValue().getWorksList()) {
 									if(worksVO.getStatusList() != null && worksVO.getStatusList().size() > 0){
@@ -1964,7 +1972,10 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}
 					}
 				}
+				if(finalMap.size() > 0)
+					voList.addAll(finalMap.values());
 			}
+			
 		} catch (Exception e) {
 			LOG.error("exception occured at getLOCATIONWISEOVERVIEW", e);
 		}
@@ -1986,8 +1997,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		if(statusObjList != null && statusObjList.size() > 0){
 			for (Object[] objects : statusObjList) {
 				GovtWorksVO vo = new GovtWorksVO();
-				vo.setStatusId((Long)objects[3]);
-				vo.setStatus(objects[4].toString());
+				vo.setStatusId((Long)objects[2]);
+				vo.setStatus(objects[3].toString());
 				voList.add(vo);
 			}
 		}
@@ -2119,6 +2130,9 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}
 					}
 				}
+				
+				if(workZonesMap != null && workZonesMap.size() > 0)
+					resultList.addAll(workZonesMap.values());
 			}
 			
 		} catch (Exception e) {
