@@ -4970,6 +4970,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								Long pmLeadId=0L;
 								PmBriefLead pmBriefLead = null;
 								for (Long subWorkId : workIds) {
+									List<Long> worksList = new ArrayList<Long>(0);
+									worksList.add(subWorkId);
 									pmSubWorkDetails = pmSubWorkDetailsDAO.get(subWorkId);
 									/*if(inputVO.getActionType() != null && inputVO.getActionType().equalsIgnoreCase("ASSIGNED")){
 										inputVO.setStatusId(pmSubWorkDetails.getPmStatusId());
@@ -5108,16 +5110,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 															document.setInsertedUserId(inputVO.getId());
 															document = documentDAO.save(document);
 														}
-														
+													
 														if(document != null)
-															resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),inputVO.getId(), endorsmentNo,petitionId,inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
+															resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),worksList,document.getDocumentId(),inputVO.getId(), endorsmentNo,petitionId,inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 													}
 													
 													if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
 														for (MultipartFile file : inputVO.getFilesList()) {
 															document = null;//saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId(),null);
 															if(document != null)
-																resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
+																resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),worksList,document.getDocumentId(),
 																		inputVO.getId(), endorsmentNo,petitionId,inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 														}
 													}
@@ -5128,7 +5130,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 															if(document == null)
 																document = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId(),null);
 															if(document != null)
-																resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),inputVO.getWorkIds(),document.getDocumentId(),
+																resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),worksList,document.getDocumentId(),
 																		inputVO.getId(), endorsmentNo,petitionId,inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
 														}
 													}
@@ -6151,7 +6153,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				if(!isAccessDashboard){
 					petitiosWorksMap.put(0L, new ArrayList<Long>());
-					List<Object[]> assignedPetitionDetails = pmPetitionAssignedOfficerDAO.getAssignedPetitionforPetitionDeptDesignationOfficer(pmDeptDesignationOfficerIdsList);
+					List<Object[]> assignedPetitionDetails = pmPetitionAssignedOfficerDAO.getAssignedPetitionforPetitionDeptDesignationOfficer(pmDeptDesignationOfficerIdsList,inpuVO);
 					if(commonMethodsUtilService.isListOrSetValid(assignedPetitionDetails)){
 						for (Object[] param : assignedPetitionDetails) {
 							List<Long> petitionsIdsList = new ArrayList<>();

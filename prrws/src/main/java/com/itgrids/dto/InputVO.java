@@ -125,7 +125,15 @@ public class InputVO implements Serializable {
 	
 	private Long subLocationId;
 	private List<String> districtNames = new ArrayList<String>();
+	private List<Long> searchDeptIdsList;
 	
+	
+	public List<Long> getSearchDeptIdsList() {
+		return searchDeptIdsList;
+	}
+	public void setSearchDeptIdsList(List<Long> searchDeptIdsList) {
+		this.searchDeptIdsList = searchDeptIdsList;
+	}
 	public String getRadioSelection() {
 		return radioSelection;
 	}
