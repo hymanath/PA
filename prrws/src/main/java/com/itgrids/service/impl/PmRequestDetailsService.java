@@ -241,7 +241,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			
 			/** Start Petition Referrer Details */
 				if(pmRepresentee != null){
-					Petition petition = savePetitionWorkDetails(pmRepresentee.getPmRepresenteeId(),pmRequestVO,insertionType,userVO.getDeptDesignationOfficerId(),uploadDate);
+					Petition petition = savePetitionWorkDetails(pmRepresentee.getPmRepresenteeId(),pmRequestVO,insertionType,userVO.getDeptDesignationOfficerId(),uploadDate,userVO);
 					if(petition == null)
 						throw new Exception("Petition details not saved successfully.");
 					savePetitionReferralDetails(pmRepresentee.getPmRepresenteeId(),petition.getPetitionId(),pmRequestVO,uploadDate,insertionType);
@@ -765,7 +765,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	
 	@SuppressWarnings("static-access")
 	public Long savePetitionSubWorkDetails(Petition petiton,PetitionsWorksVO mainDataVO,List<PetitionsWorksVO> subWorksList,int uiBuildSeriesNo,Long userId,
-			 String insertionType,PmRequestVO pmRequestVO,Long assignedToPmPetitionAssignedOfficerId,Date uploadDate){
+			 String insertionType,PmRequestVO pmRequestVO,Long assignedToPmPetitionAssignedOfficerId,Date uploadDate,UserVO userVO){
 		Long noOfWorksCount = 0L;
 		try {
 			Long petitonId =petiton.getPetitionId();
@@ -932,6 +932,22 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmTrackingVO.setRemarks(" New work Created and assigned to Minister Peshi.");
 						pmTrackingVO.setPmSubWorkDetailsId(petitionSubWorkLocationDetails.getPmSubWorkDetailsId());
 						updatePetitionTracking(pmTrackingVO,uploadDate);
+						
+						PmPetitionAssignedOfficer pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
+						pmPetitionAssignedOfficer.setPetitionId(petitionSubWorkLocationDetails.getPetitionId());
+						pmPetitionAssignedOfficer.setPmSubWorkDetailsId(petitionSubWorkLocationDetails.getPmSubWorkDetailsId());
+						pmPetitionAssignedOfficer.setPmDepartmentDesignationId(userVO.getDeptDesignationId());
+						pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(userVO.getDeptDesignationOfficerId());
+						pmPetitionAssignedOfficer.setRemarks("New Petition Created and assigned to Minister peshi.");
+						pmPetitionAssignedOfficer.setIsDeleted("N");
+						pmPetitionAssignedOfficer.setActionType("COMPLETED");
+						pmPetitionAssignedOfficer.setInsertedTime(uploadDate);
+						pmPetitionAssignedOfficer.setInsertedUserId(pmRequestVO.getUserId());
+						pmPetitionAssignedOfficer.setUpdatedTime(uploadDate);
+						pmPetitionAssignedOfficer.setUpdatedUserId(pmRequestVO.getUserId());
+						pmPetitionAssignedOfficer.setPmStatusId(1L);//default pending
+						pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
+						
 					}
 				}
 			}else if(commonMethodsUtilService.isListOrSetValid( pmRequestVO.getWorksList())){
@@ -968,6 +984,23 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					pmTrackingVO.setRemarks("New work Created and assigned to Minister Peshi.");
 					pmTrackingVO.setPmSubWorkDetailsId(petitionSubWorkLocationDetails.getPmSubWorkDetailsId());
 					updatePetitionTracking(pmTrackingVO,uploadDate);
+					
+					
+					PmPetitionAssignedOfficer pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
+					pmPetitionAssignedOfficer.setPetitionId(petitionSubWorkLocationDetails.getPetitionId());
+					pmPetitionAssignedOfficer.setPmSubWorkDetailsId(petitionSubWorkLocationDetails.getPmSubWorkDetailsId());
+					pmPetitionAssignedOfficer.setPmDepartmentDesignationId(userVO.getDeptDesignationId());
+					pmPetitionAssignedOfficer.setPmDepartmentDesignationOfficerId(userVO.getDeptDesignationOfficerId());
+					pmPetitionAssignedOfficer.setRemarks("New Petition Created and assigned to Minister peshi.");
+					pmPetitionAssignedOfficer.setIsDeleted("N");
+					pmPetitionAssignedOfficer.setActionType("COMPLETED");
+					pmPetitionAssignedOfficer.setInsertedTime(uploadDate);
+					pmPetitionAssignedOfficer.setInsertedUserId(pmRequestVO.getUserId());
+					pmPetitionAssignedOfficer.setUpdatedTime(uploadDate);
+					pmPetitionAssignedOfficer.setUpdatedUserId(pmRequestVO.getUserId());
+					pmPetitionAssignedOfficer.setPmStatusId(1L);//default pending
+					pmPetitionAssignedOfficer = pmPetitionAssignedOfficerDAO.save(pmPetitionAssignedOfficer);
+					
 				}
 			}
 		} catch (Exception e) {
@@ -978,7 +1011,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	}
 	
 	@SuppressWarnings("static-access")
-	public Petition savePetitionWorkDetails(Long pmRepresenteeId,PmRequestVO pmRequestVO,String insertionType,Long assignedToPmPetitionAssignedOfficerId,Date uploadDate){
+	public Petition savePetitionWorkDetails(Long pmRepresenteeId,PmRequestVO pmRequestVO,String insertionType,Long assignedToPmPetitionAssignedOfficerId,Date uploadDate,UserVO userVO){
 		Petition petition = null;
 		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
 		try {
@@ -1051,12 +1084,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							i=i+1;
 							if(petition != null && petition.getPetitionId() != null && petition.getPetitionId().longValue()>0L && commonMethodsUtilService.isListOrSetValid(dataVO.getSubWorksList())){
-								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition,dataVO.getSubWorksList().get(0),dataVO.getSubWorksList(),i,pmRequestVO.getUserId(),insertionType,pmRequestVO,assignedToPmPetitionAssignedOfficerId,uploadDate);
+								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition,dataVO.getSubWorksList().get(0),dataVO.getSubWorksList(),i,pmRequestVO.getUserId(),insertionType,pmRequestVO,assignedToPmPetitionAssignedOfficerId,uploadDate,userVO);
 								if(tempsubmittedWorksCount == null)
 									throw new Exception(" Sub works are not saved successfully.");
 								submittedWorksCount = submittedWorksCount+tempsubmittedWorksCount;
 							}else{
-								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition,null,null,i,pmRequestVO.getUserId(),insertionType,pmRequestVO,assignedToPmPetitionAssignedOfficerId,uploadDate);
+								Long tempsubmittedWorksCount = savePetitionSubWorkDetails(petition,null,null,i,pmRequestVO.getUserId(),insertionType,pmRequestVO,assignedToPmPetitionAssignedOfficerId,uploadDate,userVO);
 								if(tempsubmittedWorksCount == null)
 									throw new Exception(" Sub works are not entered by user .");
 								submittedWorksCount = submittedWorksCount+tempsubmittedWorksCount;
