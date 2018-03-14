@@ -8545,8 +8545,8 @@ public class NREGSTCSService implements INREGSTCSService{
 	  * @Description :This Service Method is used to get payments Department Wise overview details.
 	  * @since 12-MARCH-2018
 	  */
-	public NregaPaymentsVO getNregaPaymentsDepartmentWiseOverview(InputVO inputVO) {
-		NregaPaymentsVO paymentDtlsVO = new NregaPaymentsVO();
+	public List<NregaPaymentsVO> getNregaPaymentsDepartmentWiseOverview(InputVO inputVO) {
+		List<NregaPaymentsVO> paymentDtlsList = new ArrayList<NregaPaymentsVO>();
 		try {
 			if (inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l) {
 				inputVO.setSublocationType(inputVO.getSublocaType().trim());
@@ -8569,6 +8569,7 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				 JSONObject jsonObj = (JSONObject) paymentOverviewDataArr.get(i);
 	 	    				 String department = jsonObj.getString("DEPARTMENT");
 	 	    				if(inputVO.getDeptType() != null && department != null && inputVO.getDeptType().trim().equalsIgnoreCase(department)){
+	 	    					NregaPaymentsVO paymentDtlsVO = new NregaPaymentsVO();
 	 	    					paymentDtlsVO.setId(jsonObj.getString("UNIQUEID"));
 		 	    				paymentDtlsVO.setTotalAmount(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_AMOUNT")));
 		 	    				paymentDtlsVO.setTotalWage(cnvrtRupeesIntoCrores(jsonObj.getString("TOTAL_WAGE_AMT")));
@@ -8649,6 +8650,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				+Double.valueOf(jsonObj.getString("REJECT_MATERIAL_AMT")))));
 		 	    				//-Double.valueOf(jsonObj.getString("RESPONSE_PENDING_MATERIAL_AMT")))));
 		 	    				//+Double.valueOf(jsonObj.getString("RELEASE_PENDING_MATERIAL_AMT")))));
+		 	    				paymentDtlsList.add(paymentDtlsVO);
 	 	    				}
 	 	    				 
 	 	    			 }
@@ -8660,7 +8662,7 @@ public class NREGSTCSService implements INREGSTCSService{
 		} catch (Exception e) {
 			LOG.error("Exception raised at getNregaPaymentsDepartmentWiseOverview - NREGSTCSService service", e);
 		}
-		return paymentDtlsVO;
+		return paymentDtlsList;
 	}
 	
 	/**
@@ -8769,7 +8771,7 @@ public class NREGSTCSService implements INREGSTCSService{
 					String locationId = nregaPaymentsVO.getId();
 					String deptName = nregaPaymentsVO.getDepartMentName();
 					String type = nregaPaymentsVO.getType();
-					if (inputVO != null && deptName != null && (inputVO.getType().equalsIgnoreCase(type) ||  inputVO.getType().equalsIgnoreCase("T")) && inputVO.getDeptType().trim().equalsIgnoreCase(deptName)){
+					if (inputVO != null && deptName != null && !deptName.equalsIgnoreCase("-") && (inputVO.getType().equalsIgnoreCase(type) ||  inputVO.getType().equalsIgnoreCase("T")) && inputVO.getDeptType().trim().equalsIgnoreCase(deptName)){
 					NregaPaymentsVO deptVO = deptMap.get(locationId);
 					if(deptVO == null){
 						deptVO = new NregaPaymentsVO();
@@ -8832,7 +8834,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						}
 					 }
 				  }
-				if (inputVO != null && (inputVO.getType().equalsIgnoreCase(type) || inputVO.getType().equalsIgnoreCase("T"))  && inputVO.getDeptType().equalsIgnoreCase("All")){
+				if (inputVO != null && deptName != null && !deptName.equalsIgnoreCase("-") && (inputVO.getType().equalsIgnoreCase(type) || inputVO.getType().equalsIgnoreCase("T"))  && inputVO.getDeptType().equalsIgnoreCase("All")){
 					NregaPaymentsVO deptVO = deptMap.get(locationId);
 						if(deptVO == null){
 							deptVO = new NregaPaymentsVO();
