@@ -899,7 +899,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				pmDeptDesigIds.clear();
 			}*/
 			Set<Long> pmOffcrDesigids = null;
-			if(officerDesigId.longValue() != 2l || officerDesigId.longValue() != 23l || officerDesigId.longValue() != 86l){
+			if(officerDesigId.longValue() != 2l && officerDesigId.longValue() != 23l && officerDesigId.longValue() != 86l){
 				List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(pmDeptDesigIds,null,"FORWARD");
 				if(commonMethodsUtilService.isListOrSetValid(childDeptDesignationsList)){
 					pmOffcrDesigids = new HashSet<Long>();
