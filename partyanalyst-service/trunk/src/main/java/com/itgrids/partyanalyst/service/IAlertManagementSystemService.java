@@ -22,6 +22,7 @@ import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertResultVO;
 import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -262,7 +263,7 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
 	 public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo);
 	 public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputVo);
-	 public List<AlertVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo);
+	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo);
 	 public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo);
 	 public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVo);
 }        

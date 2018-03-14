@@ -110,6 +110,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertResultVO;
 import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -5808,14 +5809,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVo;
 	}
-	public List<AlertVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputvo){
-		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
+	public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputvo){
 		try{
-			alertVoList = alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(inputvo);
+			return  alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(inputvo);
     	}catch(Exception e){
     		log.error("Exception raised in getJalavanilocationAndStatusDetailsInfo  method in WebServiceHandlerService1",e);
     	}
-    	return alertVoList;
+    	return null;
 	}
 	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo){
 		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
