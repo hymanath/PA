@@ -3798,75 +3798,77 @@ public class WebServiceHandler {
     public Object getJalavanilocationOverview(JalavaniAlertsInputVO inputVo){
 		return  webServiceHandlerService.getJalavanilocationOverview(inputVo);
     }
-	@POST
-    @Path("/getAssignedOfficersDetails")
+	@GET
+    @Path("/getAssignedOfficersDetails/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getAssignedOfficersDetails(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getAssignedOfficersDetails(inputVo);
+    public Object getAssignedOfficersDetails(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.getAssignedOfficersDetails(alertId);
     }
-	@POST
-    @Path("/getDepartmentsByAlert")
+	@GET
+    @Path("/getDepartmentsByAlert/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getDepartmentsByAlert(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getDepartmentsByAlert(inputVo);
+    public Object getDepartmentsByAlert(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.getDepartmentsByAlert(alertId);
     }
-	@POST
-    @Path("/getAlertsData")
+	@GET
+    @Path("/getAlertsDataByAlertId/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getAlertsData(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getAlertsData(inputVo);
+    public Object getAlertsDataByAlertId(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.getAlertsDataByAlertId(alertId);
     }
-	@POST
-    @Path("/getStatusCompletionInfo")
+	/*@GET
+    @Path("/getStatusCompletionInfo/{alertId}/{levelValue}/{designationId}/{levelId}/{userId}/{entitlements}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getStatusCompletionInfo(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getStatusCompletionInfo(inputVo);
-    }
-	@POST
+    public Object getStatusCompletionInfo(@PathParam("alertId") Long alertId,@PathParam("levelValue") 
+    Long levelValue,@PathParam("designationId") Long designationId,@PathParam("levelId") Long levelId,
+    @PathParam("userId") Long userId){
+		return  webServiceHandlerService.getStatusCompletionInfo(alertId,levelValue,designationId,levelId,userId,entitlements);
+    }*/
+	@GET
     @Path("/getGovtAllDepartmentDetails")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getGovtAllDepartmentDetails(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getGovtAllDepartmentDetails(inputVo);
+    public Object getGovtAllDepartmentDetails(){
+		return  webServiceHandlerService.getGovtAllDepartmentDetails();
     }
-	@POST
-    @Path("/viewAlertHistory")
+	@GET
+    @Path("/viewAlertHistory/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object viewAlertHistory(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.viewAlertHistory(inputVo);
+    public Object viewAlertHistory(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.viewAlertHistory(alertId);
     }
-	@POST
-    @Path("/alertDeptmentExistInLogin")
+	@GET
+    @Path("/alertDeptmentExistInLogin/{alertId}/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object alertDeptmentExistInLogin(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.alertDeptmentExistInLogin(inputVo);
+    public Object alertDeptmentExistInLogin(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
+		return  webServiceHandlerService.alertDeptmentExistInLogin(alertId,userId);
     }
-	@POST
-    @Path("/getAlertCategoryByAlert")
+	@GET
+    @Path("/getAlertCategoryByAlert/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getAlertCategoryByAlert(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getAlertCategoryByAlert(inputVo);
+    public Object getAlertCategoryByAlert(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.getAlertCategoryByAlert(alertId);
     }
-	@POST
-    @Path("/getSubTaskInfoForAlert")
+	@GET
+    @Path("/getSubTaskInfoForAlert/{alertId}/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getSubTaskInfoForAlert(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getSubTaskInfoForAlert(inputVo);
+    public Object getDocumentsForAlerts(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
+		return  webServiceHandlerService.getSubTaskInfoForAlert(alertId,userId);
     }
-	@POST
-    @Path("/getDocumentsForAlerts")
+	@GET
+    @Path("/getDocumentsForAlerts/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getDocumentsForAlerts(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getDocumentsForAlerts(inputVo);
+    public Object getDocumentsForAlerts(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.getDocumentsForAlerts(alertId);
     }
 	@POST
     @Path("/getJalavaniAlertSourceDetailsInformation")
