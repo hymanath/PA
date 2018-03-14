@@ -812,7 +812,6 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	callfetchFunction(type);
 }
 function callfetchFunction(type){
-	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
 	if(type !='onchange' && type !==undefined && type !== 'undefined'){
 		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0 && globalDepartMentNames !=null && globalDepartMentNames.length>0){
 			fetchDataForWordCloud("") ;
