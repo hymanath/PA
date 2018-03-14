@@ -898,8 +898,8 @@ public class NregsDashboardController {
 		return "Success";
 	}
 	@PostMapping("/getNregaPaymentsDepartmentWiseOverview")
-	public @ResponseBody NregaPaymentsVO getNregaPaymentsDepartmentWiseOverview(@RequestBody InputVO vo){
-		NregaPaymentsVO returnVO = null;
+	public @ResponseBody List<NregaPaymentsVO> getNregaPaymentsDepartmentWiseOverview(@RequestBody InputVO vo){
+		List<NregaPaymentsVO> returnVO = null;
 		try {
 			returnVO = nregsTcsService.getNregaPaymentsDepartmentWiseOverview(vo);
 			
