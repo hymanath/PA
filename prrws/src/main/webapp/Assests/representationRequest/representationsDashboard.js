@@ -17,11 +17,11 @@ function onLoadCalls(){
 		$("#leadWiseDivId").show();
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
-		$("#officerBlock").show();
+		//$("#officerBlock").show();
 		getReferralWiseOverviewDetails("");
 		getBriefLeads();
 		getLeadWiseOverviewDetails();
-		getPmOfficerWisePetitionDetails("","",loginDesigId);
+		//getPmOfficerWisePetitionDetails("","",loginDesigId);
 	}
 }
 
