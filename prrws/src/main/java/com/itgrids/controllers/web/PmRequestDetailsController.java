@@ -522,6 +522,39 @@ public class PmRequestDetailsController {
 	     
 	     @RequestMapping(value ="/getPmOfficerWisePetitionDetails",method = RequestMethod.POST)
 		 public @ResponseBody List<PmOfficerVO> getPmOfficerWisePetitionDetails(@RequestBody InputVO inputVO ,HttpServletRequest request){
+	    	 HttpSession session=request.getSession();
+				UserVO userVO = (UserVO) session.getAttribute("USER"); 
+				Long userId =null;
+				if(userVO != null){
+					userId = userVO.getUserId();
+				}else{
+					return null;
+				}
+				List<Long> deptIds = null;
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
+				
 		    	 return pmRequestDetailsService.getPmOfficerWisePetitionDetails(inputVO);
 		     }
+	     
+	     @RequestMapping(value ="/getChildOfficersByParentOfficerId",method = RequestMethod.POST)
+		    public @ResponseBody List<KeyValueVO> getChildOfficersByParentOfficerId(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+		    	HttpSession session=request.getSession();
+				UserVO userVO = (UserVO) session.getAttribute("USER"); 
+				Long userId =null;
+				if(userVO != null){
+					userId = userVO.getUserId();
+				}else{
+					return null;
+				}
+				List<Long> deptIds = null;
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+				List<Long> deptDesigIds = null;
+				deptDesigIds= deptVO.getDepDesigIds();
+				Long offcrDesigid =deptVO.getDesignationId();
+				
+				List<Long> statusIds = inputVO.getStatusIds();
+		    	return locationDetailsService.getChildOfficersByParentOfficerId(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getAssetType(),userId,deptDesigIds,offcrDesigid);
+		    }
 }

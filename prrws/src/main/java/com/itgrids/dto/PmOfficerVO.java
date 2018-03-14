@@ -17,8 +17,22 @@ public class PmOfficerVO implements Serializable{
 	private String estimationCost="0";
 	private Long officerDesigId;
 	private String officerDesig;
+	private Long petitionCnt =0l ;
+	private Long subWorkCnt=0l;
 	
 	
+	public Long getPetitionCnt() {
+		return petitionCnt;
+	}
+	public void setPetitionCnt(Long petitionCnt) {
+		this.petitionCnt = petitionCnt;
+	}
+	public Long getSubWorkCnt() {
+		return subWorkCnt;
+	}
+	public void setSubWorkCnt(Long subWorkCnt) {
+		this.subWorkCnt = subWorkCnt;
+	}
 	public Long getOfficerDesigId() {
 		return officerDesigId;
 	}

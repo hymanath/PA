@@ -343,6 +343,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 														<option value="referrelDesignation"> Referral Designation wise </option>
 														<option value="representeeDesignation"> Representee Designation wise </option>
 														<!--<option value="department">Department wise </option>-->
+														<option value="pmOfficer"> Officer wise</option>
 														<option value="subject"> Subject wise</option>
 														<option value="lead"> Lead wise</option>
 														<option value="name"> Name</option>
@@ -379,6 +380,13 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 														<!--<option value="0">Select Department</option>-->
 													</select>
 													<div class="error_colorCls" id="subJErrMsg"></div>
+												</div>	
+												<div class="col-sm-3" id="pmOfficerDivId" style="display:none;">
+												<label> OFFICER</label>
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT OFFICER"  id="officerId" multiple>
+														<!--<option value="0">Select Department</option>-->
+													</select>
+													<div class="error_colorCls" id="officerErrMsg"></div>
 												</div>	
 												<div class="col-sm-3" id="selectLeadDivId" style="display:none;">
 													<label> LEAD </label>
@@ -845,6 +853,8 @@ $(document).on("click",".closeSecondModal",function(){
  var subjId = '${param.subjId}';
  var refCanId ='${param.refCanId}';
  var briefleadId ='${param.leadId}';
+ var gblOfficerId = '${param.officerId}';
+ var statusName = '${param.statusName}';
     if(deptId ==''){
 	deptId=0;
 	}
@@ -864,6 +874,10 @@ $(document).on("click",".closeSecondModal",function(){
 	}else{
 		getPmBriefLeadList(0);
 	}
+	
+	if(gblOfficerId ==''){
+	gblOfficerId=0;
+	}
   if(searchBy != ''){
 	  $("#petitionId").prop("checked",true);
 	  onLoadClickDataDetails();
@@ -877,6 +891,7 @@ $(document).on("click",".closeSecondModal",function(){
 	getStatusList(0);
 	getDepartmntsDetails();
 //}
+
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryViewMembers")));
 //wurl = wurl.replace("/PRRWS-1.0","");

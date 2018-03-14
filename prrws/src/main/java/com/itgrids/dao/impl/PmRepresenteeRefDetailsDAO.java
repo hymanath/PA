@@ -109,7 +109,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				//"left outer join model.pmRefCandidateDesignation model2" +
 				//" left outer join model.pmRefCandidate pmRefCandidate" +
 				" ,PmSubWorkDetails as model1 ");
-		
+		if(filterType != null && (filterType.equalsIgnoreCase("pmOfficer"))){
+			sb.append(" ,PmPetitionAssignedOfficer PAO ");
+		}
 				sb.append(" left join model1.pmSubject pmSubject" +
 						" left join model1.pmSubSubject pmSubSubject " +
 						" left join model1.pmBriefLead pmBriefLead " +
@@ -117,7 +119,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 						" left join model1.pmGrant pmGrant " +
 						" left join model1.pmWorkType pmWorkType " +
 						" left join model1.pmLead pmLead ");
-		
+				
 		//if(filterType != null && (filterType.equalsIgnoreCase("work") || 
 			//	filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject")) && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model1.locationAddress locationAddress " );
@@ -147,6 +149,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 				" and model.petition.isDeleted='N' " );
 		sb.append("  and model.pmRefCandidateDesignation.isDeleted='N' and model.pmRepresenteeDesignation.isDeleted='N' " );
+		if(filterType != null && (filterType.equalsIgnoreCase("pmOfficer"))){
+			sb.append(" and  PAO.petition.petitionId = model.petition.petitionId and PAO.isDeleted='N' ");
+		}
 		/*sb.append(" and  model.pmRefCandidateDesignation.isDeleted = 'N' and model1.petition.isDeleted='N' ");
 		sb.append("  and model.pmRefCandidate.isDeleted = 'N' and model.pmRepresentee.isDeleted = 'N'  ");
 		sb.append(" and model2.pmRefCandidateId=model.pmRefCandidateId "); 
@@ -198,6 +203,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("referralName") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidateDesignationId in (:filterValue) ");
+		}else if(filterType != null && filterType.equalsIgnoreCase("pmOfficer") && filterValue != null && !filterValue.isEmpty()){
+			sb.append(" and PAO.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId in (:filterValue) ");
 		}
 		
 		if(filterType != null && !filterType.equalsIgnoreCase("department") && inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0){

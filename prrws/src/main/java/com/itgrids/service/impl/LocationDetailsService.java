@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,6 +24,7 @@ import com.itgrids.dao.IPanchayatDAO;
 import com.itgrids.dao.IParliamentAssemblyDAO;
 import com.itgrids.dao.IPmBriefLeadDAO;
 import com.itgrids.dao.IPmDepartmentDAO;
+import com.itgrids.dao.IPmDepartmentDesignationHierarchyDAO;
 import com.itgrids.dao.IPmDeptSubjectDetailsDAO;
 import com.itgrids.dao.IPmDesignationDAO;
 import com.itgrids.dao.IPmGrantDAO;
@@ -110,7 +111,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 	private IPmRepresenteeDesignationDAO pmRepresenteeDesignationDAO;
 	@Autowired
 	private IPmRequestDetailsService pmRequestDetailsService;
-	
+	@Autowired
+	private IPmDepartmentDesignationHierarchyDAO pmDepartmentDesignationHierarchyDAO;
 	
 	 /**
 		 * Date : 30/11/2017
@@ -872,6 +874,53 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 					KeyValueVO vo = new KeyValueVO();
 					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
 					//String deptName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getDepartmentsBySearchType() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getChildOfficersByParentOfficerId(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,String pmOfficerId,Long userId,List<Long> pmDeptDesigIds
+			,Long officerDesigId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> deptObjs=null;
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDate != null && toDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+				startDate = format.parse(fromDate);
+				endDate = format.parse(toDate);
+			}
+			/*if(officerDesigId.longValue() == 2l || officerDesigId.longValue() == 23l || officerDesigId.longValue() == 86l){
+				pmDeptDesigIds.clear();
+			}*/
+			Set<Long> pmOffcrDesigids = null;
+			if(officerDesigId.longValue() != 2l || officerDesigId.longValue() != 23l || officerDesigId.longValue() != 86l){
+				List<Object[]> childDeptDesignationsList = pmDepartmentDesignationHierarchyDAO.getSubDesignationDetailsForParentDeptDesignations(pmDeptDesigIds,null,"FORWARD");
+				if(commonMethodsUtilService.isListOrSetValid(childDeptDesignationsList)){
+					pmOffcrDesigids = new HashSet<Long>();
+					for (Object[] param : childDeptDesignationsList) {
+						pmOffcrDesigids.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						pmOffcrDesigids.add(commonMethodsUtilService.getLongValueForObject(param[2]));
+					}
+				}
+			}
+			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
+			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
+			if(searchType !=null && searchType.trim().equalsIgnoreCase("pmOfficer")){
+				deptObjs=pmSubWorkDetailsDAO.getChildOfficersByParentOfficerId(deptIds,startDate,endDate,statusIds,Long.valueOf(pmOfficerId),petitionIdsList,pmOffcrDesigids);
+			}
+		//	Map<Long,KeyValueVO> officers=new HashMap<Long,KeyValueVO>();
+			if(deptObjs != null && deptObjs.size() > 0){
+				for(Object[] param : deptObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					String officername = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
 					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
 					finalList.add(vo);
 				}

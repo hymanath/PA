@@ -602,4 +602,54 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		 }
 		 return (String)query.uniqueResult();
 	}
+	public List<Object[]> getChildOfficersByParentOfficerId(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,Long pmOfficerid,Set<Long> petitionIdsList,Set<Long> pmOffcrDesigids){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId" +
+				",model.pmDepartmentDesignationOfficer.pmOfficer.name" +
+				//",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmDepartment.shortName" +
+				//",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.designation "+
+				 " from PmPetitionAssignedOfficer model where model.isDeleted='N' and model.pmSubWorkDetails.pmSubject.isDeleted='N' " +
+				" and model.pmSubWorkDetails.pmSubject.parentPmSubjectId is null and model.petition.isDeleted='N' ");
+		if(deptIds != null && deptIds.size()>0){
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		if(pmOffcrDesigids != null && pmOffcrDesigids.size()>0){
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:pmOffcrDesigids) ");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate "); 
+		}
+		if(statusIds != null && statusIds.size() >0){
+			sb.append(" and model.pmSubWorkDetails.pmStatus.pmStatusId in (:statusIds) ");
+		}
+		
+		if(pmOfficerid != null && pmOfficerid.longValue()>0l){
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId = :pmOfficerid ");
+		}
+		if(petitionIdsList != null && petitionIdsList.size() >0){
+			sb.append(" and  model.petition.petitionId in(:petitionIdsList) ");
+		}
+		//sb.append( "order by model.pmSubject.orderNo asc ");
+		Query query =getSession().createQuery(sb.toString());
+		if(deptIds != null && deptIds.size()>0){
+			query.setParameterList("deptIds", deptIds);
+		}
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		if(statusIds != null && statusIds.size() >0){
+			query.setParameterList("statusIds", statusIds);
+		}
+		if(pmOfficerid != null && pmOfficerid.longValue()>0l){
+			query.setParameter("pmOfficerid", pmOfficerid);
+		}
+		if(petitionIdsList != null && petitionIdsList.size() >0){
+			query.setParameterList("petitionIdsList", petitionIdsList);
+		}
+		if(pmOffcrDesigids != null && pmOffcrDesigids.size()>0){
+			query.setParameterList("pmOffcrDesigids", pmOffcrDesigids);
+		}
+		return query.list();
+	}
 }
