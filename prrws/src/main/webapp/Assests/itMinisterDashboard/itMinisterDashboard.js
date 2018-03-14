@@ -192,13 +192,13 @@ function initializeStatusProperties(ajaxresp){
 		if(ajaxresp[0].subList[i].name === "Occupied"){
 			$(".statusBuildingOccupiedCls").html('<b>Occupied</b>'+'&nbsp;&nbsp'+'<b>'+ajaxresp[0].subList[i].count+'</b>'+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size:12px;'>"+ajaxresp[0].subList[i].sum+"</span>"+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>");
 		}
-		if(ajaxresp[0].subList[i].name === "Available IT Companies"){
+		if(ajaxresp[0].subList[i].name === "Applied IT Companies"){
+			
 			$("#statusAppliedItCompaniesId").html("Applied IT Companies"+'&nbsp;&nbsp;&nbsp;&nbsp'+"<span style='font-size:12px;'>"+ajaxresp[0].subList[i].count+"</span>");
 		}
 		if(ajaxresp[0].subList[i].name === "Occupied IT Companies"){
 			$("#statusOccupiedItCompaniesId").html("Occupied IT Companies"+'&nbsp;&nbsp;&nbsp;&nbsp'+"<span style='font-size:12px;'>"+ajaxresp[0].subList[i].count+"</span>");
 		}
-		
 	}
 	for(var i in ajaxresp[1].subList){
 		if(ajaxresp[1].subList[i].name === "Available"){
@@ -207,7 +207,7 @@ function initializeStatusProperties(ajaxresp){
 		if(ajaxresp[1].subList[i].name === "Occupied"){
 			$(".nonStatusBuildingOccupiedCls").html('<b>Occupied</b>'+'&nbsp;&nbsp'+'<b>'+ajaxresp[1].subList[i].count+'</b>'+"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style='font-size:12px;'>"+ajaxresp[1].subList[i].sum +"</span>"+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>");
 		}
-		if(ajaxresp[1].subList[i].name === "Available IT Companies"){
+		if(ajaxresp[1].subList[i].name === "Applied IT Companies"){
 			$("#nonStatusAppliedItCompaniesId").html("Applied IT Companies"+'&nbsp;&nbsp;&nbsp;&nbsp'+"<span style='font-size:12px;'>"+ajaxresp[1].subList[i].count+"</span>");
 		}
 		if(ajaxresp[1].subList[i].name === "Occupied IT Companies"){
