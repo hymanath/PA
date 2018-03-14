@@ -3868,4 +3868,11 @@ public class WebServiceHandler {
     public Object getDocumentsForAlerts(JalavaniAlertsInputVO inputVo){
 		return  webServiceHandlerService.getDocumentsForAlerts(inputVo);
     }
+	@POST
+    @Path("/getJalavaniAlertSourceDetailsInformation")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Object getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo){
+		return  webServiceHandlerService.getJalavaniAlertSourceDetailsInformation(inputVo);
+    }
 }
