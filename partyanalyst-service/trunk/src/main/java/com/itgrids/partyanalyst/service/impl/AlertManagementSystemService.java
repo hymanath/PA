@@ -48,6 +48,7 @@ import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertSubTaskStatusDAO;
 import com.itgrids.partyanalyst.dao.IAlertTypeDAO;
 import com.itgrids.partyanalyst.dao.IAmsOfficerOtpDetailsDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.IEditionsDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertDepartmentLocationNewDAO;
 import com.itgrids.partyanalyst.dao.IGovtAlertSubTaskDAO;
@@ -73,6 +74,7 @@ import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
+import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.ITvNewsChannelDAO;
 import com.itgrids.partyanalyst.dao.IUserDAO;
 import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
@@ -203,6 +205,9 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	
 	private ICadreDetailsService cadreDetailsService;
 	private IAlertTypeDAO alertTypeDAO;
+	private IDistrictDAO districtDAO;
+	private ITehsilDAO tehsilDAO;
+	
 	//private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	
 	
@@ -210,8 +215,21 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 			IParliamentAssemblyDAO parliamentAssemblyDAO) {
 		this.parliamentAssemblyDAO = parliamentAssemblyDAO;
 	}*/
+	
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
+	}
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+	public ITehsilDAO getTehsilDAO() {
+		return tehsilDAO;
+	}
+	public void setTehsilDAO(ITehsilDAO tehsilDAO) {
+		this.tehsilDAO = tehsilDAO;
 	}
 	public ImageAndStringConverter getImageAndStringConverter() {
 		return imageAndStringConverter;
@@ -16998,5 +17016,58 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				}
 			}
 		}
+	}
+	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo){
+		List<JalavaniAlertResultVO> finalVoList = new ArrayList<JalavaniAlertResultVO>(0);
+		try {
+			Date startDate = null;Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVo.getFromDateStr() != null && inputVo.getToDateStr() != null){
+				startDate = sdf.parse(inputVo.getFromDateStr());
+				endDate = sdf.parse(inputVo.getToDateStr());
+			}
+			List<Object[]> dataObjList =null;
+			List<Long> locationIds = new ArrayList<Long>(0);
+			List<Object[]> locationNameObjList = new ArrayList<Object[]>();
+				//0-alert-id,1-title,source-2,3-designation_name , 4-alertstatus 5-deptScopeId 6-location level value
+			dataObjList = alertDAO.getJalavaniAlertDetailsInformation(startDate, endDate,inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getStatusId(),inputVo.getSourceId());
+		
+			
+			if(dataObjList != null && dataObjList.size() >0){
+				for (Object[] objects : dataObjList) {
+					JalavaniAlertResultVO VO= new JalavaniAlertResultVO();
+						VO.setAlertId((Long)objects[0]);
+						VO.setTitle((String)objects[1]);
+						VO.setSource((String)objects[2]);
+						VO.setDesignationName((String)objects[3]);
+						VO.setAlertStatus((String)objects[4]);
+						VO.setDeptScopeId((Long)objects[5]);
+						if((Long)objects[5] != null && (Long)objects[5] == 5l){
+							locationIds.add((Long)objects[6]);
+						}
+						else if((Long)objects[5] != null && (Long)objects[5] == 8l){
+							locationIds.add((Long)objects[6]);
+							 
+						}
+						if (inputVo.getLocationTypeId() == 5l){
+							locationNameObjList=districtDAO.getSpecificDistrictIdAndName(locationIds);
+						}
+						else if (inputVo.getLocationTypeId() == 8l) {
+							locationNameObjList =  tehsilDAO.getTehsilNameByTehsilIdsList(locationIds);
+						}
+						Map<Long,String> locationNamesMap = new HashMap<Long, String>(0);
+			            if(locationNameObjList != null && locationNameObjList.size() > 0){
+			            	for (Object[] object : locationNameObjList) {
+			            		locationNamesMap.put((Long)object[0], object[1].toString());
+			            	}
+			            }
+				  
+		          }
+			}
+	
+		}catch (Exception e){
+			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
+		}
+		return finalVoList;
 	}
 }

@@ -313,6 +313,7 @@ public interface IWebServiceHandlerService {
     public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo);
     public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId);
     public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputvo);
+    public List<AlertVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo);
     public List<GovtDepartmentVO> getAssignedOfficersDetails(JalavaniAlertsInputVO inputvo);
     public List<GovtDepartmentVO> getDepartmentsByAlert(JalavaniAlertsInputVO inputvo);
     public List<AlertDataVO> getAlertsData(JalavaniAlertsInputVO inputvo);
