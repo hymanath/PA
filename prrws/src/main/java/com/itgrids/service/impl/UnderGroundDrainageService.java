@@ -24,6 +24,7 @@ import com.itgrids.dao.IDocumentDAO;
 import com.itgrids.dao.IGovtMainWorkDAO;
 import com.itgrids.dao.IGovtWorkDAO;
 import com.itgrids.dao.IGovtWorkDocumentDAO;
+import com.itgrids.dao.IGovtWorkProgressCommentDAO;
 import com.itgrids.dao.IGovtWorkProgressDAO;
 import com.itgrids.dao.IGovtWorkProgressDocumentDAO;
 import com.itgrids.dao.IGovtWorkProgressTrackDAO;
@@ -55,6 +56,7 @@ import com.itgrids.model.District;
 import com.itgrids.model.GovtWork;
 import com.itgrids.model.GovtWorkDocument;
 import com.itgrids.model.GovtWorkProgress;
+import com.itgrids.model.GovtWorkProgressComment;
 import com.itgrids.model.GovtWorkProgressDocument;
 import com.itgrids.model.GovtWorkProgressTrack;
 import com.itgrids.model.GovtWorkProgressUpdate;
@@ -124,6 +126,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	private ISubDivisionDAO subDivisionDAO;
 	@Autowired
 	private ISubDivisionTehsilDAO subDivisionTehsilDAO;
+	@Autowired
+	private IGovtWorkProgressCommentDAO govtWorkProgressCommentDAO;
 	
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
@@ -848,7 +852,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		govtWorkProgressTrack.setGovtWorkId(workStatusVO.getWorkId());
 		govtWorkProgressTrack.setGovtWorkProgressUpdateId(uniqueUpdateId);
 		govtWorkProgressTrack.setGovtWorkStatusId(workStatusVO.getGovtWorkStatusId());
-		//govtWorkProgressTrack.setWorkLength(workStatusVO.getWorkLenght() != null ? workStatusVO.getWorkLenght():null);
+		govtWorkProgressTrack.setGovtWorkProgressCommentId(workStatusVO.getCommentId() != null ? workStatusVO.getCommentId():null);
 		govtWorkProgressTrack.setWorkLength(workStatusVO.getCurrentWorkLength() != null ? workStatusVO.getCurrentWorkLength():null);
 		govtWorkProgressTrack.setUpdatedBy(workStatusVO.getUserId());
 		govtWorkProgressTrack.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
@@ -2379,5 +2383,53 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			LOG.error("Exception raised at getAllStatusOfWorkType", e);
 		}
 		return voList;
+	}
+	
+	public ResultStatus updateWorkStatusComments(WorkStatusVO vo){
+		ResultStatus rs = new ResultStatus();
+		try {
+			
+			if(vo.getComment() == null || vo.getComment().trim().isEmpty()){
+				rs.setMessage("failure");
+				return rs;
+			}else{
+				GovtWorkProgressComment govtWorkProgressComment = new GovtWorkProgressComment();
+				govtWorkProgressComment.setComment(vo.getComment());
+				govtWorkProgressComment.setUpdatedBy(vo.getUserId() != null ? vo.getUserId():null);
+				govtWorkProgressComment.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				govtWorkProgressComment = govtWorkProgressCommentDAO.save(govtWorkProgressComment);
+				
+				GovtWorkProgress govtWorkProgress = govtWorkProgressDAO.getWorkProgressId(vo.getWorkId(),vo.getGovtWorkStatusId());
+				if(govtWorkProgress == null){
+					govtWorkProgress = new GovtWorkProgress();
+					govtWorkProgress.setGovtWorkId(vo.getWorkId());
+					govtWorkProgress.setGovtWorkStatusId(vo.getGovtWorkStatusId());
+					govtWorkProgress.setWorkLength(0.00);
+					govtWorkProgress.setCompletedPercentage(0.00);
+					govtWorkProgress.setIsCompleted("N");
+				}
+				govtWorkProgress.setGovtWorkProgressCommentId(govtWorkProgressComment.getGovtWorkProgressCommentId());
+				govtWorkProgress.setUpdatedBy(vo.getUserId() != null ? vo.getUserId():null);
+				govtWorkProgress.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				govtWorkProgress = govtWorkProgressDAO.save(govtWorkProgress);
+				
+				
+				//save details in tracking table
+				GovtWorkProgressUpdate govtWorkProgressUpdate = new GovtWorkProgressUpdate();
+				govtWorkProgressUpdate.setGovtWorkId(vo.getWorkId());
+				govtWorkProgressUpdate.setUpdatedBy(vo.getUserId());
+				govtWorkProgressUpdate.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+				Long uniqueUpdateId = govtWorkProgressUpdateDAO.save(govtWorkProgressUpdate).getGovtWorkProgressUpdateId();
+				
+				vo.setCommentId(govtWorkProgressComment.getGovtWorkProgressCommentId());
+				saveWorkStatusDetailsInTracking(vo,uniqueUpdateId);
+			}
+			
+			rs.setMessage("success");
+		} catch (Exception e) {
+			rs.setMessage("failure");
+			LOG.error("exception occured while updating the work status comments", e);
+		}
+		return rs;
 	}
 }
