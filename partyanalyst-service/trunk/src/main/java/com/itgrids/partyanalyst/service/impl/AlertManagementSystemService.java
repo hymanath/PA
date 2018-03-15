@@ -16500,7 +16500,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	public List<AlertVO> getMonthSkeleton(){
 		List<AlertVO> voList = new ArrayList<AlertVO>(0);
 		List<Long> monthIds = IConstants.MONTH_IDS;
-		String[] months = IConstants.MONTH_NAMES;
+		String[] months = IConstants.JALAVANI_MONTH_NAMES;
 		List<String> monthNames =new ArrayList<String>();
 		for (String monthName : months) {
 			monthNames.add(monthName);
