@@ -22,7 +22,14 @@ public class JalavaniAlertsInputVO implements Serializable {
 	private List<String> entitlements;
 	private Long statusId;
 	private Long sourceId;
+	private Long deptId;
 	
+	public Long getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
 	public Long getStatusId() {
 		return statusId;
 	}
