@@ -3877,7 +3877,7 @@ public class WebServiceHandler {
     @Path("/getAlertCategoryByAlert/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public String getAlertCategoryByAlert(@PathParam("alertId") Long alertId){
+    public KeyValueVO getAlertCategoryByAlert(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getAlertCategoryByAlert(alertId);
     }
 	@GET
@@ -3903,16 +3903,17 @@ public class WebServiceHandler {
     }
 	
 	@GET
-    @Path("/getJalavaniAlertSourceDetailsInformation/{startDateStr}/{endDateStr}/{locationTypeId}/{locationId}/{statusId}/{categoryId}")
+    @Path("/getJalavaniAlertSourceDetailsInformation/{startDateStr}/{endDateStr}/{searchType}/{type}/{locationTypeId}/{alertCategoryId}/{statusId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(
+    public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(
     		@PathParam("startDateStr") String startDateStr,
     		@PathParam("endDateStr") String endDateStr,
+    		@PathParam("searchType") String searchType,
+    		@PathParam("type") String type,
     		@PathParam("locationTypeId") Long locationTypeId,
-    		@PathParam("locationId") Long locationId,
-    		@PathParam("statusId") Long statusId,
-    		@PathParam("categoryId") Long categoryId){
-		return  webServiceHandlerService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,locationTypeId,locationId,statusId,categoryId);
+    		@PathParam("alertCategoryId") Long alertCategoryId,
+    		@PathParam("statusId") Long statusId){
+		return  webServiceHandlerService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,searchType,type,locationTypeId,alertCategoryId,statusId);
     }
 }
