@@ -11691,41 +11691,44 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	return  query.list();
  	}
 	public List<Object[]> getJalavaniAlertDetailsInformation(Date fromDate,Date toDate,Long locationTypeId,Long locationId,
-			Long statusId,Long sourceId){
+			Long statusId,Long categoryId){
  		StringBuilder str = new StringBuilder();
  		Query query =null;
- 		str.append(" A.alert_id as alertId,A.title as title,ARS.source as source,GDDN.designation_name as designationName," +
+ 		str.append(" select A.alert_id as alertId,A.title as title,ARS.source as source,GDDN.designation_name as designationName," +
  				" AStatus.alert_status as alertStatus ,GDDON.govt_department_scope_id as deptScopeId,GDDON.level_value as levelValue" +
  				" FROM alert A,alert_source ARS,alert_assigned_officer_new AAON," +
  				" govt_department_designation_officer_new GDDON,govt_department_designation_new GDDN," +
- 				" user_address UA,alert_status AStatus ");
+ 				" user_address UA,alert_status AStatus,alert_category ACG ");
  				
- 		str.append(" ARS.alert_source_id=A.alert_source_id and A.alert_id=AAON.alert_id " +
+ 		str.append(" where ARS.alert_source_id=A.alert_source_id and A.alert_id=AAON.alert_id " +
  				" and AAON.govt_department_designation_officer_id=GDDON.govt_department_designation_officer_id" +
  				" and GDDON.govt_department_designation_id=GDDN.govt_department_designation_id " +
- 				" and A.address_id=UA.user_address_id ");
+ 				" and A.address_id=UA.user_address_id and A.alert_category_id=ACG.alert_category_id ");
 
  		if(locationTypeId !=null && locationTypeId.longValue() >0 && locationTypeId == 5l){
  			if(locationId !=null && locationId.longValue() >0){
+ 				str.append(" and GDDON.govt_department_scope_id =:locationTypeId ");
  				str.append("AND UA.district_id=:locationId ");
  			}
  		}else if(locationTypeId == 8l){
+ 			str.append(" and GDDON.govt_department_scope_id =:locationTypeId ");
  			if(locationId !=null && locationId.longValue() >0){
  				str.append("AND UA.tehsil_id=:locationId ");
  			}
  		}
+ 		
  		if(fromDate !=null && toDate !=null){
  			str.append(" AND date(A.created_time) between :fromDate and :toDate  ");
+ 		}
+ 		if(categoryId !=null && categoryId.longValue()>0){
+ 			str.append("and A.alert_category_id =:categoryId ");
  		}
  		if(statusId !=null && statusId.longValue()>0){
  			str.append("AND AStatus.alert_status_id =:statusId ");
  		}
- 		if(sourceId !=null && sourceId.longValue()>0){
- 			str.append("and ARS.alert_source_id =:sourceId ");
- 		}
  		str.append(" and A.is_deleted = 'N' and A.govt_department_id=:govtDeptId ");
  		
- 		str.append(" group by A.alert_id ");
+ 		//str.append(" group by A.alert_id ");
  		
  		query = getSession().createSQLQuery(str.toString())
  				 .addScalar("alertId",Hibernate.LONG)
@@ -11741,17 +11744,22 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  			query.setParameter("fromDate",fromDate);
  			query.setParameter("toDate",toDate);
  		}
- 		if(locationId !=null && locationId.longValue() >0){
- 			query.setParameter("locationId",locationId);
+ 		if(locationTypeId !=null && locationTypeId.longValue() >0 && locationTypeId == 5l){
+ 			query.setParameter("locationTypeId",locationTypeId);
+ 			if(locationId !=null && locationId.longValue() >0){
+ 				query.setParameter("locationId",locationId);
+ 			}
+ 		}else if(locationTypeId == 8l){
+ 			query.setParameter("locationTypeId",locationTypeId);
+ 			if(locationId !=null && locationId.longValue() >0){
+ 				query.setParameter("locationId",locationId);
+ 			}
  		}
  		if(statusId !=null && statusId.longValue()>0){
  			query.setParameter("statusId",statusId);
  		}
- 		if(sourceId !=null && sourceId.longValue()>0){
- 			query.setParameter("sourceId",sourceId);
- 		}
- 		if(locationTypeId !=null && locationTypeId.longValue() >0){ 
- 			query.setParameter("locationTypeId",locationTypeId);
+ 		if(categoryId !=null && categoryId.longValue()>0){
+ 			query.setParameter("categoryId",categoryId);
  		}
  		return  query.list();
   }

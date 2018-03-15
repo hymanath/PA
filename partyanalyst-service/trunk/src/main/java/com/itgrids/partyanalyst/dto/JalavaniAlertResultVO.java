@@ -16,8 +16,23 @@ public class JalavaniAlertResultVO {
 	public String alertStatus;
 	public Long deptScopeId;
     public Long levelvalue;
+    public String location;
+    public Long locationId;
     
-    public Long getAlertId() {
+    
+    public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocation() {
+		return location;
+	}
+	public void setLocation(String location) {
+		this.location = location;
+	}
+	public Long getAlertId() {
 		return alertId;
 	}
 	public void setAlertId(Long alertId) {

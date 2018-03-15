@@ -5809,14 +5809,16 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVo;
 	}
-	public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputvo){
-		try{
-			return  alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(inputvo);
-    	}catch(Exception e){
-    		log.error("Exception raised in getJalavanilocationAndStatusDetailsInfo  method in WebServiceHandlerService1",e);
-    	}
-    	return null;
-	}
+	public  List<JalavaniAlertResultVO>  getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId){
+		 List<JalavaniAlertResultVO> alertVoLIst = new ArrayList<JalavaniAlertResultVO>(0);
+		  try{			  
+			  alertVoLIst = alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(fromDateStr, toDateStr, searchType, type, alertCategoryId);			  
+		  }catch(Exception e){
+			  e.printStackTrace();
+				log.error("exception occured in  the getJalavanilocationAndStatusDetailsInfo  method in WebServiceHandlerService");
+		  }
+		  return alertVoLIst;
+	  }
 	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo){
 		List<AlertVO> alertVoList = new ArrayList<AlertVO>(0);
 		try{
@@ -5934,13 +5936,12 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	
-	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputvo){
+	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId){
 		List<JalavaniAlertResultVO> alertVoList = new ArrayList<JalavaniAlertResultVO>(0);
 		try{
-			alertVoList = alertManagementSystemService.getJalavaniAlertSourceDetailsInformation(inputvo);
+			alertVoList = alertManagementSystemService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,locationTypeId,locationId,statusId,categoryId);
     	}catch(Exception e){
-    		log.error("Exception raised in getJalavanilocationOverview  method in WebServiceHandlerService1",e);
+    		log.error("Exception raised in getJalavaniAlertSourceDetailsInformation  method in WebServiceHandlerService1",e);
     	}
     	return alertVoList;
 	}

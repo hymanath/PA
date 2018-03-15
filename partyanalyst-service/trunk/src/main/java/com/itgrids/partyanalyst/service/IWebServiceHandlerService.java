@@ -309,11 +309,9 @@ public interface IWebServiceHandlerService {
     public AffiliatedMemberVO saveAffiliatedMemberDetails(JSONObject jobj);
     public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputvo);
     public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputvo);
-    public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputvo);
     public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO inputvo);
     public ResultStatus updateAlertIssueCategory(Long categoryId,Long categoryTypeId,Long issueCategoryId);
     public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputvo);
-    public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo);
     public List<GovtDepartmentVO> getAssignedOfficersDetails(Long alertId);
     public List<GovtDepartmentVO> getDepartmentsByAlert(Long alertId);
     public List<AlertDataVO> getAlertsDataByAlertId(Long alertId);
@@ -324,4 +322,7 @@ public interface IWebServiceHandlerService {
     public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId,Long userId);
 	public List<KeyValueVO> getDocumentsForAlerts(Long alertId);
 	public String alertDeptmentExistInLogin(Long alertId,Long userId);
+    public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId);
+    public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId);
 }
+
