@@ -8944,4 +8944,51 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return null;
 	}
+	/*
+	 * Date : 15/3/2018
+	 * Author : Harika
+	 * @description : getWorkCompletionData
+	 */
+	
+	public List<NregsDataVO> getWorkCompletionData(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>(0);
+		try{
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String str = convertingInputVOToString(inputVO);
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WorkCompletion/WorkCompletionData", str,IConstants.REQUEST_METHOD_POST);
+			if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WorkCompletion/WorkCompletionData "+str);
+	 	      }else{
+	 	    	 if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				vo.setUniqueCode(jObj.get("UNIQUEID").toString());
+	 	    				vo.setDistrict(jObj.getString("DNAME"));
+	 	    				vo.setConstituency(jObj.getString("CNAME"));
+	 	    				vo.setMandal(jObj.getString("MNAME"));
+	 	    				vo.setPanchayat(jObj.getString("PNAME"));
+	 	    				vo.setYear1314(jObj.getString("Y_1314"));
+	 	    				vo.setYear1415(jObj.getString("Y_1415"));
+	 	    				vo.setYear1516(jObj.getString("Y_1516"));
+	 	    				vo.setYear1617(jObj.getString("Y_1617"));
+	 	    				vo.setYear1718(jObj.getString("Y_1718"));
+	 	    				vo.setYear(jObj.getString("Y"));
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	 }
+	 	    	  
+	 	      }
+		}catch (Exception e){
+			LOG.error("Exception raised at getWorkCompletionData - NREGSTCSService service", e);
+			
+		}
+		return returnList;	
+	}
+	
 }

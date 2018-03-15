@@ -199,6 +199,13 @@ public class NregsDataVO implements Serializable{
 	private String materialIsLow;
 	private String totalIsHigh;
 	private String totalIsLow;
+	private String year1314;
+	private String year1415;
+	private String year1516;
+	private String year1617;
+	private String year1718;
+	private String year;
+	
 	
 	
 	public String getPersonDaysIsHigh() {
@@ -1244,6 +1251,42 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setVillagesInGold(Long villagesInGold) {
 		VillagesInGold = villagesInGold;
+	}
+	public String getYear1314() {
+		return year1314;
+	}
+	public void setYear1314(String year1314) {
+		this.year1314 = year1314;
+	}
+	public String getYear1415() {
+		return year1415;
+	}
+	public void setYear1415(String year1415) {
+		this.year1415 = year1415;
+	}
+	public String getYear1516() {
+		return year1516;
+	}
+	public void setYear1516(String year1516) {
+		this.year1516 = year1516;
+	}
+	public String getYear1617() {
+		return year1617;
+	}
+	public void setYear1617(String year1617) {
+		this.year1617 = year1617;
+	}
+	public String getYear1718() {
+		return year1718;
+	}
+	public void setYear1718(String year1718) {
+		this.year1718 = year1718;
+	}
+	public String getYear() {
+		return year;
+	}
+	public void setYear(String year) {
+		this.year = year;
 	}
 	
 	
