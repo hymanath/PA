@@ -11763,4 +11763,114 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  		}
  		return  query.list();
   }
+ public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId){
+ 		StringBuilder str = new StringBuilder();
+ 		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
+ 			if(type !=null && type.equalsIgnoreCase("district")){
+ 				str.append(" select distinct A.alert_id as alertId " +
+ 	 					" from alert A,user_address UA,alert_category AC,district D " +
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
+ 	 			
+ 			}else if(type !=null && type.equalsIgnoreCase("constituency")){
+ 				str.append(" select distinct A.alert_id as alertId " +
+ 	 					" from alert A,user_address UA,alert_category AC,constituency C,district D " +
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 ");
+ 	 			
+ 			}else if(type !=null && type.equalsIgnoreCase("mandal")){
+ 				str.append(" select distinct A.alert_id as alertId " +
+ 	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
+ 	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
+ 			}
+ 		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
+ 			if(type !=null && type.equalsIgnoreCase("district")){
+ 				str.append(" select distinct A.alert_id as alertId " +
+ 	 					" from alert A,user_address UA,alert_category AC,district D,alert_status ARS ");
+ 	 			
+ 	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.district_id =D.district_id ") ;
+ 				
+ 			}else if(type !=null && type.equalsIgnoreCase("constituency")){
+ 				str.append(" select distinct A.alert_id as alertId " +
+ 	 					" from alert A,user_address UA,alert_category AC,constituency C,alert_status ARS,district D ");
+ 	 			
+ 	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.constituency_id =C.constituency_id and D.district_id= C.district_id " +
+ 	 					" and C.district_id between 11 and 23 ") ;
+ 	 			
+ 			}else if(type !=null && type.equalsIgnoreCase("mandal")){
+ 				str.append(" select distinct A.alert_id as alertId" +
+ 	 					" from alert A,user_address UA,alert_category AC,tehsil T,alert_status ARS,constituency C,district D ");
+ 	 			
+ 	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id " +
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ") ;
+ 			}
+ 		}
+ 		
+ 		str.append(" and A.govt_department_id =:govtDeptId and A.is_deleted='N' and UA.state_id=1 ");
+ 		
+ 		if(statusId !=null && statusId.longValue() >0){
+ 			str.append(" and A.alert_status_id =:statusId ");
+ 		}
+ 		
+ 		if(type !=null && type.equalsIgnoreCase("district")){
+			str.append(" and UA.district_id =:locationTypeId ");
+ 		}else if(type !=null && type.equalsIgnoreCase("constituency")){
+ 			str.append(" and UA.constituency_id =:locationTypeId ");
+ 		}else if(type !=null && type.equalsIgnoreCase("mandal")){
+ 			str.append(" and UA.tehsil_id =:locationTypeId ");
+ 		}
+ 		
+		if(fromDate !=null && toDate !=null){
+ 			str.append(" and date(A.created_time) between :fromDate and :toDate  ");
+ 		}
+		if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+			str.append(" and AC.alert_category_id =:alertCategoryId ");
+		}else{
+			str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+		}
+		/*if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
+ 			if(type !=null && type.equalsIgnoreCase("district")){
+ 				str.append(" group by AC.alert_category_id,D.district_id ");
+ 			}else if(type !=null && type.equalsIgnoreCase("constituency")){
+ 				str.append(" group by AC.alert_category_id,C.constituency_id");
+ 			}else if(type !=null && type.equalsIgnoreCase("mandal")){
+ 				str.append(" group by AC.alert_category_id,T.tehsil_id");
+ 			}
+		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
+			if(type !=null && type.equalsIgnoreCase("district")){
+ 				str.append(" group by ARS.alert_status_id,D.district_id ");
+ 			}else if(type !=null && type.equalsIgnoreCase("constituency")){
+ 				str.append(" group by ARS.alert_status_id,C.constituency_id");
+ 			}else if(type !=null && type.equalsIgnoreCase("mandal")){
+ 				str.append(" group by ARS.alert_status_id,T.tehsil_id");
+ 			}
+		}*/
+ 		Query query = getSession().createSQLQuery(str.toString()).addScalar("alertId",Hibernate.LONG);
+ 		
+ 		query.setParameter("govtDeptId",49l);
+		 	
+	 		if(fromDate !=null && toDate !=null){
+	 			query.setParameter("fromDate",fromDate);
+	 			query.setParameter("toDate",toDate);
+	 		}
+	 		if(type !=null && type.equalsIgnoreCase("district")){
+				query.setParameter("locationTypeId",locationTypeId);
+	 		}else if(type !=null && type.equalsIgnoreCase("constituency")){
+	 			query.setParameter("locationTypeId",locationTypeId);
+	 		}else if(type !=null && type.equalsIgnoreCase("mandal")){
+	 			query.setParameter("locationTypeId",locationTypeId);
+	 		}
+	 		if(statusId !=null && statusId.longValue() >0){
+	 			query.setParameter("statusId",statusId);
+	 		}
+			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+				query.setParameter("alertCategoryId",alertCategoryId);
+			}else{
+				query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+			}
+	 	return  query.list();
+ 	}
 }
