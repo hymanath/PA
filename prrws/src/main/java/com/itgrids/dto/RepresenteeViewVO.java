@@ -80,6 +80,8 @@ public class RepresenteeViewVO {
 	private Long withCostPetitionsCount=0L;
 	private Long withCostWorksCount=0L;
 	private String otherLead;
+	private List<String> base64ImageList = new ArrayList<String>(0);
+	private Long totaCount=0L;
 	
 	public RepresenteeViewVO(){}
 	public RepresenteeViewVO(Long id, String name){
@@ -87,6 +89,13 @@ public class RepresenteeViewVO {
 		this.name=name;
 	}
 
+	
+	public Long getTotaCount() {
+		return totaCount;
+	}
+	public void setTotaCount(Long totaCount) {
+		this.totaCount = totaCount;
+	}
 	public String getOtherLead() {
 		return otherLead;
 	}
@@ -504,5 +513,10 @@ public class RepresenteeViewVO {
 	public void setNoOfKm(String noOfKm) {
 		this.noOfKm = noOfKm;
 	}
-	
+	public List<String> getBase64ImageList() {
+		return base64ImageList;
+	}
+	public void setBase64ImageList(List<String> base64ImageList) {
+		this.base64ImageList = base64ImageList;
+	}
 }

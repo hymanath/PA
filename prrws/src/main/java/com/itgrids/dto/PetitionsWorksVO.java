@@ -51,7 +51,14 @@ public class PetitionsWorksVO {
 	private Long uiSeriesNo;
 	private List<PetitionHistoryVO> historyList = new ArrayList<PetitionHistoryVO>(0);
 	private List<PetitionHistoryVO> petitionHistoryList = new ArrayList<PetitionHistoryVO>(0);
-
+	private List<String> base64ImageList = new ArrayList<String>(0);
+	
+	public List<String> getBase64ImageList() {
+		return base64ImageList;
+	}
+	public void setBase64ImageList(List<String> base64ImageList) {
+		this.base64ImageList = base64ImageList;
+	}
 	public List<PetitionHistoryVO> getPetitionHistoryList() {
 		return petitionHistoryList;
 	}

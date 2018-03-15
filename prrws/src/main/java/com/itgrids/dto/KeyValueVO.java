@@ -61,6 +61,11 @@ public class KeyValueVO {
 		this.key = key;
 		this.value = value;
 	}
+	public KeyValueVO(Long key,String value,String name){
+		this.key = key;
+		this.value = value;
+		this.name=name;
+	}
 	public KeyValueVO(Long key,String value,Long count){
 		this.key = key;
 		this.value = value;
