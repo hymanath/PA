@@ -249,7 +249,7 @@
 	</nav>
 	
 
-<section class="navbar-section">
+<section class="navbar-section" style="padding: 10px;background-color: #fff;">
 		<div class="container-fluid">
 			<div class="row">
 				<!--<div class="col-sm-2 m_top5">
@@ -268,56 +268,27 @@
 		</div>
 	</section>
 </header>
+<section style="padding: 10px;background-color: #fff;margin-top:1px;">
 	<div class="container-fluid">
-		<div class="white-block" style="padding: 30px;">
+		<div class="white-block">
 			<div class="row">
 				<div class="col-sm-12">
-					<h3 class="font_BebasNeue" style="color:#252D30;">WORK TYPES-05</h3>
+					<h3 class="font_BebasNeue" style="color:#252D30;">WORK TYPES-<span id="noofUGDWorksId"></span></h3>
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-sm-4 m_top10">
-					<div class="panel panel-default panel_WMS">
-					  <div class="panel-heading">
-						<h4 class="font_BebasNeue f_22_normal"><span class="border_number">1</span>&nbsp;&nbsp;&nbsp;UGD WORKS</h4>
-					  </div>
-					  <div class="panel-body" style="background-color:#F9F9F9;">
-							<div class="row">
-								<div class="col-sm-12">
-									<h4 class="font_BebasNeue f_22_normal text-capital" style="color:#252D30;">Phase I</h4>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-sm-6 m_top10">
-									<h3 class="font_BebasNeue worksCountColor f_32">503</h3>
-									<h5 class="font_BebasNeue">completed works</h5>
-								</div>
-								<div class="col-sm-6 m_top10">
-									<h3 class="font_BebasNeue worksCountColor f_32">503 KM</h3>
-									<h5 class="font_BebasNeue">completed KM</h5>
-								</div>
-							</div>
-							<div class="bg_yash_color_10 m_top10">
-								<div class="row">
-									<div class="col-sm-5">
-										<h4 class="font_BebasNeue text-capital">Work proposal for</h4>
-										<h4 class="font_BebasNeue text-capital m_top5 f_15">157 Villages</h4>
-									</div>
-									<div class="col-sm-2">
-										<i class="fa fa-hand-o-right hand_icon" aria-hidden="true"></i>
-									</div>
-									<div class="col-sm-5">
-										<h4 class="font_BebasNeue text-capital">Work Zones</h4>
-										<h4 class="font_BebasNeue m_top5 f_15">785</h4>
-									</div>
-								</div>
-							</div>
-					  </div>
-					</div>
+				<div class="col-sm-12">
+					<div id="overAllWorkTypesDivId"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="timeLinesWorkTypesDivId"></div>
 				</div>
 			</div>
 		</div>
-	</div>		
+	</div>	
+</section>	
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
