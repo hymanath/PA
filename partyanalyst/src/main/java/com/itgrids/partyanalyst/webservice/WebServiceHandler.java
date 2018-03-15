@@ -70,6 +70,7 @@ import com.itgrids.partyanalyst.dto.GISIssuesVO;
 import com.itgrids.partyanalyst.dto.GISUserTrackingVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationDetailsVO;
 import com.itgrids.partyanalyst.dto.GISVisualizationParameterVO;
+import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
 import com.itgrids.partyanalyst.dto.GrievanceAlertVO;
 import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -3824,28 +3825,28 @@ public class WebServiceHandler {
     @Path("/getAssignedOfficersDetails/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getAssignedOfficersDetails(@PathParam("alertId") Long alertId){
+    public List<GovtDepartmentVO> getAssignedOfficersDetails(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getAssignedOfficersDetails(alertId);
     }
 	@GET
     @Path("/getDepartmentsByAlert/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getDepartmentsByAlert(@PathParam("alertId") Long alertId){
+    public List<GovtDepartmentVO> getDepartmentsByAlert(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getDepartmentsByAlert(alertId);
     }
 	@GET
-    @Path("/getAlertsDataByAlertId/{alertId}")
+    @Path("/getAlertData/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getAlertsDataByAlertId(@PathParam("alertId") Long alertId){
+    public List<AlertDataVO> getAlertsDataByAlertId(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getAlertsDataByAlertId(alertId);
     }
 	@GET
     @Path("/getStatusCompletionInfo/{alertId}/{levelValue}/{designationId}/{levelId}/{userId}/{entitlements}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getStatusCompletionInfo(@PathParam("alertId") Long alertId,@PathParam("levelValue") 
+    public List<IdNameVO> getStatusCompletionInfo(@PathParam("alertId") Long alertId,@PathParam("levelValue") 
     Long levelValue,@PathParam("designationId") Long designationId,@PathParam("levelId") Long levelId,
     @PathParam("userId") Long userId,
     @PathParam("entitlementsStr") List<String> entitlementsStr){
@@ -3855,15 +3856,15 @@ public class WebServiceHandler {
     @Path("/getGovtAllDepartmentDetails")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getGovtAllDepartmentDetails(){
+    public List<IdNameVO> getGovtAllDepartmentDetails(){
 		return  webServiceHandlerService.getGovtAllDepartmentDetails();
     }
 	@GET
-    @Path("/viewAlertHistory/{alertId}")
+    @Path("/viewAlertHistory/{alertId}/{task}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object viewAlertHistory(@PathParam("alertId") Long alertId){
-		return  webServiceHandlerService.viewAlertHistory(alertId);
+    public List<List<AlertTrackingVO>> viewAlertHistory(@PathParam("alertId") Long alertId, @PathParam("task") String task){
+		return  webServiceHandlerService.viewAlertHistory(alertId,task);
     }
 	@GET
     @Path("/alertDeptmentExistInLogin/{alertId}/{userId}")
@@ -3876,22 +3877,29 @@ public class WebServiceHandler {
     @Path("/getAlertCategoryByAlert/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getAlertCategoryByAlert(@PathParam("alertId") Long alertId){
+    public String getAlertCategoryByAlert(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getAlertCategoryByAlert(alertId);
     }
 	@GET
     @Path("/getSubTaskInfoForAlert/{alertId}/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public List<AlertTrackingVO> getDocumentsForAlerts(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
+    public List<AlertTrackingVO> getSubTaskInfoForAlert(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
 		return  webServiceHandlerService.getSubTaskInfoForAlert(alertId,userId);
     }
 	@GET
     @Path("/getDocumentsForAlerts/{alertId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getDocumentsForAlerts(@PathParam("alertId") Long alertId){
+    public List<KeyValueVO> getDocumentsForAlerts(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getDocumentsForAlerts(alertId);
+    }
+	@GET
+    @Path("/getCommentsForAlert/{alertId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<AlertTrackingVO> getCommentsForAlert(@PathParam("alertId") Long alertId){
+		return  webServiceHandlerService.getCommentsForAlert(alertId);
     }
 	
 	@GET
