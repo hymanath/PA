@@ -30,7 +30,7 @@ public class AlertVO implements java.io.Serializable{
 	private String fileIdList;
 	private Double statusPercent = 0.0d;
 	private String assignedDate;
-	private Double percentage = 0.0d,posPerc=0.0,negPerc=0.0;
+	private Double percentage = 0.0d,posPerc=0.0,negPerc=0.0,socPerc=0.0;
 	private Long alertCnt = 0l;
 	private String createdTime;
     private String year;
@@ -42,13 +42,26 @@ public class AlertVO implements java.io.Serializable{
 	private Long posCount=0l,negCount=0l,totalNewsCnt=0l;
 	private Long locationCnt=0l;
 	private Long statusCount=0l;
-	private Long count1 = 0l,printCount=0l,electCount=0l,feedbackCount=0l;
+	private Long count1 = 0l,printCount=0l,electCount=0l,feedbackCount=0l,socialCount=0l;
 	private String comment;
 	
 	private List<AlertVO> subList1 = new ArrayList<AlertVO>(0);
 	private List<AlertVO> subList2 = new ArrayList<AlertVO>(0);
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	
+	
+	public Long getSocialCount() {
+		return socialCount;
+	}
+	public void setSocialCount(Long socialCount) {
+		this.socialCount = socialCount;
+	}
+	public Double getSocPerc() {
+		return socPerc;
+	}
+	public void setSocPerc(Double socPerc) {
+		this.socPerc = socPerc;
+	}
 	public Long getFeedbackCount() {
 		return feedbackCount;
 	}
