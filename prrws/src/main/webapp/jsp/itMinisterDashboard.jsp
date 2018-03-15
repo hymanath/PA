@@ -40,9 +40,13 @@
 			{
 				margin-top:20px;
 			}
-			.m_Top10
+			.m_top10
 			{
 				margin-top:10px;
+			}
+			.m_top5
+			{
+				margin-top:5px;
 			}
 		</style>
 	</head>
@@ -53,10 +57,11 @@
 					<div class="block box_shad">
 						<div class="row">
 							<div class="col-sm-6">
-								<h3 class="borderBottom">Overall Overview</h3>
+								<h3>Overall Overview</h3>
+								<p class="m_top5" style="border-top:1px solid grey; width:50%;"></p>
 							</div>
 						</div>
-						<div class="row m_Top10">
+						<div class="row m_top10">
 							<div class="col-sm-6">
 								<div class="block">
 									<div class="row">
@@ -237,57 +242,60 @@
 					</div>
 				</div>
 			</div>
-				<div class="row m_top10">
-							<div class="col-sm-6">
-								<h3 class="borderBottom">Government Approval Process Flow</h3>
+				<div class="block box_shad ">
+					<div class="row ">
+							<div class="col-sm-6 ">
+								<h3>Government Approval Process Flow</h3>
+								<p class="m_top5" style="border-top:1px solid grey; width:60%;"></p>
 							</div>
 						</div>
-						<div class="row m_top5">
+				
+						<div class="row m_top10">
 							<div class="col-sm-12">
-								<div class="m_top10" style="border:1px solid #e3e3e3; padding:10px; border-radius:5px; background-color: #FFFFFF;">
-									<div class="row " >
+								<div class="block m_top5" style="border:1px solid #e3e3e3; padding:5px; border-radius:5px; background-color: #FFFFFF;">
+									<div class="row m_top10" >
 										<div class="col-sm-3">
 											<div class="pad_5" style="border-right:1px solid grey; height: 56px;">
-												<h6 class="font_weight">Pending@</h6>
+												<h4 align="center" class="font_weight"><b>Pending@</b></h4>
 											</div>
 										</div>
 										<div class="col-sm-9">
-											<div class="row">
+											<div class="row m_top10">
 												<div class="col-sm-2">
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding:10px;">
-														<h6 class="font_weight">APPLICANT</h6>
+													<div class="pad_5 " style="border-right:1px solid grey; height: 56px;">
+														<h5 class="font_weight"><b>APPLICANT</b></h5>
 													</div>
 												</div>
 												<div class="col-sm-2">
 													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;">
-														<h6 class="font_weight">STAFF</h6>
+														<h5 class="font_weight"><b>STAFF</b></h5>
 													</div>
 												</div>
 												<div class="col-sm-2">
 													<div class="pad_5 m_left-20" style="border-right:1px solid grey;height: 56px;">
-														<h6 class="font_weight">CEO - INFRA / JD</h6>
+														<h5 class="font_weight"><b>CEO - INFRA / JD</b></h5>
 													</div>
 												</div>
 												<div class="col-sm-2">
 													<div class="pad_5 m_left-20" style="border-right:1px solid grey;height: 56px;">
-														<h6 class="font_weight">TECHNICAL TEAM / LEGAL TEAM</h6>
+														<h5 class="font_weight"><b>TECHNICAL TEAM / LEGAL TEAM</b></h5>
 													</div>
 												</div>
 												<div class="col-sm-2">
 													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;">
-														<h6 class="font_weight">CCITI</h6>
+														<h5 class="font_weight"><b>CCITI</b></h5>
 													</div>
 												</div>
 												<div class="col-sm-2">
 													<div class="pad_5 m_left-20">
-														<h6 class="font_weight">HMIT OFFICE</h6>
+														<h5 class="font_weight"><b>HMIT OFFICE</b></h5>
 													</div>
 												</div>
 											</div>	
 										</div>
 									</div>
 								</div>	
-								<div class="m_top5" style="border:1px solid #e3e3e3; padding:10px; border-radius:5px; background-color: #FFFFFF;">
+								<div class=" block m_top5" style="border:1px solid #e3e3e3; padding:10px; border-radius:5px; background-color: #FFFFFF;">
 									<div class="row m_top5 ">
 										<div class="col-sm-3">
 											<div class="pad_5" style="border-right:1px solid grey; height: 56px;">
@@ -430,15 +438,17 @@
 								
 							</div>
 						</div>
+					</div>
 			<div class="block box_shad m_Top10">
 						<div class="row">
 							<div class="col-sm-6">
-								<h3 class="borderBottom">DTP Status Properties</h3>
+								<h3>DTP Status Properties</h3>
+								<p class="m_top5" style="border-top:1px solid grey; width:40%;"></p>
 							</div>
 						</div>
 					<div class="row">
 					<div class="col-sm-6">
-						<div class="block m_Top10" style="border:1px solid #C4D5FF;border-left:10px solid #C4D5FF;">
+						<div class="block m_top10" style="border:1px solid #C4D5FF;border-left:10px solid #C4D5FF;">
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="col-sm-8 m_Top10">
@@ -455,7 +465,7 @@
 						</div>
 					</div>
 					<div class="col-sm-6">
-						<div class="block" style="border:1px solid #FF8686;border-left:10px solid #FF8686;">
+						<div class="block m_top10" style="border:1px solid #FF8686;border-left:10px solid #FF8686;">
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="col-sm-8 m_Top10">
@@ -472,7 +482,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row m_Top10">
+				<div class="row m_top10">
 					<div class="col-sm-4">
 						<div class="block" style="border:1px solid #7BD97B;border-left:10px solid #7BD97B;">
 							<div class="row">
@@ -509,7 +519,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="row m_Top10">
+				<div class="row m_top10">
 					<div class="col-sm-12">
 						<div class="block">
 							<div class="row">
@@ -556,7 +566,7 @@
 						</div>
 					</div>
 					<div class="col-sm-12">
-						<div class="block m_Top10">
+						<div class="block m_top10">
 							<div class="row">
 								<div class="col-sm-12">
 									<div class="col-sm-3 m_Top10">
