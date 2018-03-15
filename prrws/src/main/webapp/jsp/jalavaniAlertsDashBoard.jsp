@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Jalavani Alert DashBoard</title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
-<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+<link href="Assests/css/customLessAMS.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
 <link href="Assests/Plugins/Date/daterangepicker.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/less" rel="stylesheet"/>
@@ -262,8 +262,9 @@
 		</div>
 	</section>
 </header>
-	<div class="container-fluid" style="margin-top: 1px;">
-		<div class="white-block pad_20">
+<section class="" style="padding: 10px;background-color: #fff;margin-top:1px;">
+	<div class="container-fluid">
+		<div class="white-block">
 			<div class="pad_border">
 				<div class="row">
 					<div class="col-sm-12">
@@ -278,26 +279,19 @@
 						<div class="col-sm-12">
 							<h4 class="font_weight">FILTERS</h4>
 							<div class="col-sm-3 m_top10">
-								<label class="font_weight">SOURCE TYPE</label>
-								<select class="form-control chosen-select" id="sourceTypeId">
-									<option value="All">All</option>
-									<option value="news">News</option>
-									<option value="alert">Alert</option>
-								</select>
-							</div>
-							<div class="col-sm-3 m_top10">
 								<label class="font_weight">ALERT SOURCE</label>
 								<select class="form-control chosen-select" id="alertTypeId">
-									<option value="All">All</option>
-									<option value="print">Print Media</option>
-									<option value="electronic">Electronic Media</option>
-									<option value="callcenter">Call Center</option>
+									<option value="0">All</option>
+									<option value="2">Print Media</option>
+									<option value="3">Electronic Media</option>
+									<option value="4">Call Center</option>
+									<option value="5">Social Media</option>
 								</select>
 							</div>
 							<div class="col-sm-3 m_top10">
 								<label class="font_weight">VIEW DATA</label>
 								<select class="form-control chosen-select" id="viewTypeId">
-									<option value="All">Select View Type</option>
+									<option value="0">Select View Type</option>
 									<option value="Alert" selected>Alert</option>
 									<option value="Status">Status</option>
 								</select>
@@ -314,7 +308,21 @@
 			</div>	
 		</div>
 	</div>
-	 
+</section>	
+<div class="modal fade" id="alertManagementPopup" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:95%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="modalHeadingTotal">Modal title</h4>
+			</div>
+			<div class="modal-body modal-insurance">
+				
+				<div id="alertManagementPopupBody"></div>
+			</div>
+		</div>
+  </div>
+</div>	 
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
