@@ -3558,6 +3558,7 @@ $(document).on("change","#leadId",function(){
 
 function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusId){
 	var selStatusId = $("#statusId").val();
+	$("#"+selBoxId).empty();
 	//alert(statusId)
 	 var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
@@ -3596,7 +3597,7 @@ function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusI
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		 $("#"+selBoxId).empty();
+		 
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
 			//$("#subjectDivId").show();

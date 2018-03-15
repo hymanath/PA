@@ -914,14 +914,14 @@ function buildOfficerBlock(result,loginUsr){
 			for(var i in result){
 			if( loginUsr!= 23 || result[i].id != 2 ){
 				str+='<div class="col-sm-3">';
-					str+='<div class="panel panel-default officerWiseBlockCls" attr_desig_id='+result[i].id+'>';
+					str+='<div class="panel panel-default officerWiseBlockCls" style="cursor:pointer;" attr_desig_id='+result[i].id+'>';
 					if(i==0 && loginUsr!= 23)
 					  str+='<div class="panel-heading panel_active">';
 					else if(i==1 && loginUsr== 23)
 					  str+='<div class="panel-heading panel_active">';
 					else
 					  str+='<div class="panel-heading dafault-panelCLS" >';
-						str+='<h3 class="panel-title" style="color:#000 !important;"><img src="Assests/icons/Green.png"> <span class="m_left">'+result[i].name+'</span></h3>';
+						str+='<h3 class="panel-title" style="color:#000 !important;"><i class="fa fa-user" style="font-size:18px"></i><span class="m_left">'+result[i].name+'</span></h3>';
 					  str+='</div>';
 					  if(i==0)
 						str+='<div class="panel-body desig_bg officer_bg_Css">';
