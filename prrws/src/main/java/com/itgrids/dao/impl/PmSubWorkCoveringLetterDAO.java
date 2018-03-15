@@ -32,7 +32,7 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		if(petiotionId != null){
 			StringBuilder str = new StringBuilder();
 			str.append(" select model.pmSubWorkDetailsId,model.reportType, model.document.path,model.documentId, model.petitionId,model.refNo from PmSubWorkCoveringLetter model where model.petitionId=:petiotionId " +
-					" and model.isDeleted ='N' ");
+					" and model.isDeleted ='N' group by model.documentId ");
 			Query query = getSession().createQuery(str.toString());
 			if(petiotionId.longValue()>0L)
 				query.setParameter("petiotionId", petiotionId);
