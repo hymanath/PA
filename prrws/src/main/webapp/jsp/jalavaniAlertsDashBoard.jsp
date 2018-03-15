@@ -28,8 +28,8 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj</h4>
-					<p>Tax - DashBoard</p>
+					<h4 class="text-capital">Panchayat Raj,RD&News</h4>
+					<p>RWS - DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -296,7 +296,7 @@
 									<option value="Status">Status</option>
 								</select>
 							</div>
-							<div class="col-sm-2 m_top10">
+							<div class="col-sm-2 m_top40">
 								<h6 style="padding:8px;border:1px solid #4FB800;color:#4FB800;cursor:pointer;" class="m_top25 text-center getResultsCls">GET DETAILS</h6>
 							</div>
 						</div>
@@ -322,7 +322,23 @@
 			</div>
 		</div>
   </div>
-</div>	 
+</div>	
+<div class="modal fade" id="alertManagementPopup1" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:90%;">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="alertManagementPopupHeading">Modal title</h4>
+			</div>
+			<div class="modal-body">
+				<div id="alertManagementPopupBody1"></div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeSecondModal" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+  </div>
+</div> 
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>

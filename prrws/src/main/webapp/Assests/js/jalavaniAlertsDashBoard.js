@@ -1,10 +1,65 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalStatusObj={"SATISFIED":"#0FBE08","NOT SATISFIED":"#FF0909","PAR SATISFIED":"#FFBA00"}
+var currentFromDate=moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY");
+var currentToDate=moment().endOf('year').add(10, 'years').format("DD-MM-YYYY");
 $(".chosen-select").chosen();
-getJalavaniDashBoardOverview();
+ var url = window.location.href;
+	var wurl = url.substr(0,(url.indexOf(".com")+4));
+	if(wurl.length == 3)
+		wurl = url.substr(0,(url.indexOf(".in")+3));
+
+//var wurl="http://mytdp.com"
 var locationArr=['district','constituency','mandal'];
-getJalavaniAlertSourceDetailsInformation()
-levelWiseJalavaniDetails('jalavani',"onload");
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
+$("#dateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"), moment().add(10, 'years').endOf('year').format("DD-MM-YYYY")],
+		   'Today' : [moment(), moment()],
+		   'Yesterday': [moment().subtract(1, 'day').startOf('month'), moment()],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()]
+		   
+		}
+	});
+	var dates= $("#dateRangePicker").val();
+	var pickerDates = currentFromDate+' - '+currentToDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePicker").val('OverAll');
+	}
+	
+	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD-MM-YYYY');
+		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		if(picker.chosenLabel == 'OverAll')
+		{
+			$("#dateRangePicker").val('OverAll');
+		}
+		$("#alertTypeId").val(0)
+		$("#alertTypeId").trigger("chosen:updated")
+		onloadCalls();
+	});
+onloadCalls();	
+function onloadCalls(){
+	getJalavaniDashBoardOverview();
+	levelWiseJalavaniDetails('jalavani',"onload");
+}
+
 
 $(document).on("click",".tab_bordered li",function(){
 	$(this).closest("ul").find("li").removeClass("active_li");
@@ -47,8 +102,8 @@ $(document).on("click",".tab_bordered li",function(){
 function getJalavaniDashBoardOverview(){
 	$("#jalavaniTabOverVewDivId").html(spinner);
 	var json={
-		fromDateStr:"01-01-2017",
-		toDateStr:"31-01-2018"
+		fromDateStr:currentFromDate,
+		toDateStr:currentToDate
 	}
 	$.ajax({                
 	type:'POST',    
@@ -151,17 +206,17 @@ function buildJalavaniDashBoardOverview(result){
 						str+='</div>';		
 					str+='</a>';
 				str+='</li>';
-				str+='<li role="presentation" class="" attr_type="social" attr_block_count="'+result.electCount+'">';
+				str+='<li role="presentation" class="" attr_type="social" attr_block_count="'+result.socialCount+'">';
 					str+='<a href="#social" data-toggle="tab">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-10">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>SOCIAL MEDIA</b></h5>';
-										str+='<h4 class="color_black">'+result.electCount+'</h4>';
+										//str+='<h4 class="color_black">'+result.socialCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
@@ -190,7 +245,12 @@ function buildJalavaniDashBoardOverview(result){
 							str+='</div>';	
 							var colorObj={'Print Media':'#575858','Electronic Media':'#F26532','Call Center':'#E952A0','Social Media':'#0849FF'}
 							for(var i in result.subList1){
-								str+='<div class="col-sm-2">';
+								if(result.subList1[i].name == "Electronic Media"){
+									str+='<div class="col-sm-3">';
+								}else{
+									str+='<div class="col-sm-2">';
+								}
+								
 									str+='<div class="brdR_3 pad_10" style="border: 1px solid '+colorObj[result.subList1[i].name]+';">';
 										if(result.subList1[i].name == "Electronic Media"){
 											str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">Electronic&nbsp;Media <br/>Alerts</h5>';
@@ -393,8 +453,8 @@ function buildJalavaniDashBoardOverview(result){
 function getJalavaniCategoryWiseDetailsInfo(searchType,blockCount){
 	$("#"+searchType+"DetailsDivId").html(spinner);
 	var json={
-		fromDateStr:"01-01-2017",
-		toDateStr:"31-01-2018",
+		fromDateStr:currentFromDate,
+		toDateStr:currentToDate,
 		searchType:searchType//print or electronic or callcenter or social
 		
 	}
@@ -460,16 +520,20 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 							str+='<div class="media-left">';
 							if(searchType == "print"){
 								str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:50px">';
-							}else{
+							}else if(searchType == "electronic"){
 								str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:50px">';
+							}else{
+								str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
 							}	
 							
 							str+='</div>';
 							str+='<div class="media-body">';
 								if(searchType == "print"){
 									str+='<h5 class="media-heading"><b>PRINT MEDIA NEWS</b></h5>';
-								}else{
+								}else if(searchType == "electronic"){
 									str+='<h5 class="media-heading"><b>ELECTRONIC MEDIA NEWS</b></h5>';
+								}else{
+									str+='<h5 class="media-heading"><b>SOCIAL NEWS</b></h5>';
 								}
 								
 								str+='<h3>'+result.totalNewsCnt+'</h3>';
@@ -519,8 +583,10 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 							str+='<div class="media-body">';
 							if(searchType == "print"){
 								str+='<h5 class="media-heading"><b>PRINT MEDIA ALERTS</b></h5>';
-							}else{
+							}else if(searchType == "electronic"){
 								str+='<h5 class="media-heading"><b>ELECTRONIC MEDIA ALERTS</b></h5>';
+							}else{
+								str+='<h5 class="media-heading"><b>SOCIAL MEDIA ALERTS</b></h5>';
 							}
 								
 								str+='<h3>'+result.categoryCount+'</h3>';
@@ -901,14 +967,16 @@ $(document).on("click",".getResultsCls",function(){
 	levelWiseJalavaniDetails('jalavani',"change");
 });	
 function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType){
-	 var  fromDateStr = "01-01-2018";
-	 var toDateStr="14-03-2018";
+	$("#jalavani"+type).html(spinner);
+	 
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+fromDateStr+"/"+toDateStr+"/"+searchType+"/"+type+"/"+alertCategoryId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+fromDateStr+"/"+toDateStr+"/"+searchType+"/"+type+"/"+alertCategoryId
+		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
+		}else{
+			$("#jalavani"+type).html("No Data Available");
 		}
 		
 	});	
@@ -949,11 +1017,23 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 				
 				var globalStatusBgObj={"Call Center":"#FBB9E0","Print Media":"#BFBFBF","Electronic Media":"#FFC3A5","Social Media":"#A8BFFF"}
 				var globalStatusColorObj={"Call Center":"#F648A9","Print Media":"#584A4A","Electronic Media":"#FF6300","Social Media":"#1C49FF"}
+				
+				
+				
 				for(var i in result[0].voList){
 					if(searchType == "Alert"){
 						str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].status]+';color:'+globalStatusColorObj[result[0].voList[i].status]+'">'+result[0].voList[i].status+' <br/>Alerts</th>';	
 					}else{
-						str+='<th style="background-color:'+result[0].voList[i].color+';">'+result[0].voList[i].status+'</th>';	
+						if(result[0].voList[i].status == "Wrongly Mapped Designation"){
+							str+='<th style="background-color:'+result[0].voList[i].color+';">Wrongly&nbsp;Mapped&nbsp;Designation</th>';	
+						}else if(result[0].voList[i].status == "Wrongly Mapped Department"){
+							str+='<th style="background-color:'+result[0].voList[i].color+';">Wrongly&nbsp;Mapped&nbsp;Department</th>';	
+						}else if(result[0].voList[i].status =="Unable to Resolve"){
+							str+='<th style="background-color:'+result[0].voList[i].color+';">Unable&nbsp;to&nbsp;Resolve</th>';	
+						}else{
+							str+='<th style="background-color:'+result[0].voList[i].color+';">'+result[0].voList[i].status+'</th>';	
+						}
+						
 					}
 					
 				}
@@ -974,41 +1054,43 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 						}
 						if(searchType == "Alert"){
 							if(alertSourceId == 0){
-								str+='<td class="total_alerts_color total_alerts getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="0" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</td>';
+								str+='<td class="total_alerts_color total_alerts"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="0" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
 							}else if(alertSourceId == 2){
-								str+='<td class="total_Print_body total_Print_color getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="2" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Print Media">'+result[i].count+'</td>';
+								str+='<td class="total_Print_body total_Print_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="2" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Print Media">'+result[i].count+'</span></td>';
 							}else if(alertSourceId == 3){
-								str+='<td class="total_Electronic total_Electronic_color getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="3" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Electronic Media">'+result[i].count+'</td>';
+								str+='<td class="total_Electronic total_Electronic_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="3" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Electronic Media">'+result[i].count+'</span></td>';
 							}else if(alertSourceId == 4){
-								str+='<td class="total_CallCenter total_CallCenter_color getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="4" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Call Center Media">'+result[i].count+'</td>';
+								str+='<td class="total_CallCenter total_CallCenter_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="4" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Call Center Media">'+result[i].count+'</span></td>';
 							}else if(alertSourceId == 5){
-								str+='<td class="total_SocialMedia total_Social_color getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="5" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Social Media">'+result[i].count+'</td>';
+								str+='<td class="total_SocialMedia total_Social_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="5" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Social Media">'+result[i].count+'</span></td>';
 							}
 						}else{
-							str+='<td class="total_alerts_color total_alerts getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</td>';
+							str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
 						}
 							for(var j in result[i].voList){
 								if(searchType == "Alert"){
 									if(alertSourceId ==0){
 										if(result[i].voList[j].count !=null && result[i].voList[j].count>0){
-											str+='<td class="getAmsPopUpCls" style="background-color:'+globalStatusBgObj[result[i].voList[j].status]+';color:'+globalStatusColorObj[result[i].voList[j].status]+'" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+' <small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
+											str+='<td class="" style="background-color:'+globalStatusBgObj[result[i].voList[j].status]+';color:'+globalStatusColorObj[result[i].voList[j].status]+'"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+result[i].voList[j].statusId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'</span> <small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
 										}else{
 											str+='<td style="background-color:'+globalStatusBgObj[result[i].voList[j].status]+';color:'+globalStatusColorObj[result[i].voList[j].status]+'"> - </td>';
 										}
 									}
 								}else{
+									var globalStatusBgColorObj={"Total":"#c5e6f9","Pending":"#f9b79d","Notified":"#f2d5db","Action In Progress":"#f4debe","Completed":"#beddc8","Unable to Resolve":"#e5d7da","Action Not Required":"#d3d4ed","Duplicate":"#ebdced","Wrongly Mapped Designation":"#f7deb9","Wrongly Mapped Department":"#dae8da","Rejoinder":"#d0e2d7","Reopen":"#d5d5f2","Closed":"#eae1e1","Proposal":"#d3e5df","Pre_Pending":"#eddcde"}
+									
 									if(result[i].voList[j].status == "Wrongly Mapped Department"){
 										if(result[i].voList[j].count !=null && result[i].voList[j].count>0){
-											str+='<td class="getAmsPopUpCls" style="background-color:'+result[i].voList[j].color+';" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].statusId+'" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'&nbsp;<small style="color:#fff;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
+											str+='<td   style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].statusId+'" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'</span>&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
 										}else{
-											str+='<td style="background-color:'+result[i].voList[j].color+';"> - </td>';
+											str+='<td style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'"> - </td>';
 										}
 										
 									}else{
 										if(result[i].voList[j].count !=null && result[i].voList[j].count>0){
-											str+='<td class="getAmsPopUpCls" style="background-color:'+result[i].voList[j].color+';" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].statusId+'" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
+											str+='<td class=""  style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'" ><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].statusId+'" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'</span>&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
 										}else{
-											str+='<td style="background-color:'+result[i].voList[j].color+';"> - </td>';
+											str+='<td style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'"> - </td>';
 										}
 										
 									}
@@ -1043,17 +1125,18 @@ $(document).on("click",".getAmsPopUpCls",function(){
 	var mandal_id = $(this).attr("attr_location_mandal_id");
 	var statusid = $(this).attr("attr_statusid");
 	var statusName = $(this).attr("attr_statusName");
+	var statusType=$("#viewTypeId").val();
 	
-	var locationId='';
+	var locationValueName='';
 	var locationValue='';
 	if(location_id == "district"){
-		locationId =5;
+		locationValueName ='district';
 		locationValue = district_id;
 	}else if(location_id == "constituency"){
-		locationId =5;
+		locationValueName ='constituency';
 		locationValue = constituency_id;
 	}else if(location_id == "mandal"){
-		locationId =8;
+		locationValueName ='mandal';
 		locationValue = mandal_id;
 	}
 	$("#alertManagementPopupBody").html('')
@@ -1065,19 +1148,15 @@ $(document).on("click",".getAmsPopUpCls",function(){
 	});
 	$("#alertManagementPopupBody").html(spinner);
 	
-	getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid,locationId,locationValue,statusName)
+	getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid,locationValueName,locationValue,statusName,statusType)
 });
 
-function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid,locationId,locationValue,statusName){
+function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid,locationValueName,locationValue,statusName,statusType){
 	//district-5,mandal-8,status-id/CategotyID
 	
-	 var fromDateStr = "01-01-2018";
-	 var toDateStr="14-03-2018";
-	
-	
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+fromDateStr+"/"+toDateStr+"/"+locationId+"/"+locationValue+"/"+statusid+"/"+categoryId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+fromDateStr+"/"+toDateStr+"/"+locationId+"/"+locationValue+"/"+statusid+"/"+categoryId
+		url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
 	}).then(function(result){
 		 if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
@@ -1106,7 +1185,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 						str+='<th><span class="location-name">Location</span></th>';
 						str+='<th><span class="channel-name">Status</span></th>';
 						str+='<th><span class="channel-name">Ofcr Name</span></th>';//alertStatus
-						//str+='<th><span class="channel-name">Ofcr Designation</span></th>';
+						str+='<th><span class="channel-name">Ofcr Location</span></th>';
 						//str+='<th><span class="channel-name">Lag Days</span></th>';
 						//str+='<th>Subtask <i class="fa fa-level-down"></i></th>';
 						str+='<th></th>';
@@ -1118,19 +1197,18 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 							str+='<tr>';
 								str+='<td>';
 									
-								/* if(result[i].severtyColor != null)
+								if(result[i].severtyColor != null)
 								{
-									//str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].subList[j].severtyColor+';margin-right:3px;"></i>';
-									str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:#eee;margin-right:3px;"></i>';
+									str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:'+result[i].severtyColor+';margin-right:3px;"></i>';
 								}else{
 									str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:#eee;margin-right:3px;"></i>';
-								} */
-								str+='<i class="glyphicon glyphicon-cog text-danger"  style="color:#eee;margin-right:3px;"></i>';	
+								}
+								
 								str+='</td>';
 								str+='<td> ';
-									if(result[i].alertId != null)
+									if(result[i].id != null)
 									{
-										str+=''+result[i].alertId+'</td>';
+										str+=''+result[i].id+'</td>';
 									}else{
 										str+='-</td>';
 									}
@@ -1162,32 +1240,32 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 									
 								str+='</td>';
 								str+='<td class="text-center">';
-									if(result[i].designationName != null)
+									if(result[i].status != null)
 									{
-										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].designationName+'">'+result[i].designationName+'</span>';
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].status+'">'+result[i].status+'</span>';
 									}else{
 										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
 									}
 									
 								str+='</td>';
 								str+='<td class="text-center">';
-									if(result[i].alertStatus != null)
+									if(result[i].problem != null)
 									{
-										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].alertStatus+'">'+result[i].alertStatus+'</span>';
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].problem+'">'+result[i].problem+'</span>';
 									}else{
 										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
 									}
 									
 								str+='</td>'; 
-								/* str+='<td class="text-center">';
-									if(result[i].subList[j].relatedTo != null)
+								 str+='<td class="text-center">';
+									if(result[i].relatedTo != null)
 									{
-										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].subList[j].relatedTo+'">'+result[i].subList[j].relatedTo+'</span>';
+										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="'+result[i].relatedTo+'">'+result[i].relatedTo+'</span>';
 									}else{
 										str+='<span class="channel-name" data-toggle="tooltip" class="location-name" data-placement="top" title="-">-</span>';
 									}
 									
-								str+='</td>'; */
+								str+='</td>';
 								/* str+='<td class="text-center">';
 									if(result[i].subList[j].interval != null)
 									{
@@ -1208,9 +1286,9 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 									}
 								str+='</td>'; */
 								str+='<td>';
-									if(result[i].alertId != null && result[i].alertId > 0)
+									if(result[i].id != null && result[i].id > 0)
 									{
-										str+='<span class="arrow-icon pull-right alertIdCls" attr_statusId="" attr_alertId="'+result[i].alertId+'" expand-icon="block1">';
+										str+='<span class="arrow-icon pull-right alertIdCls" attr_statusId="'+result[i].statusId+'" attr_alertId="'+result[i].id+'" expand-icon="block1">';
 											str+='<i class="glyphicon glyphicon-menu-right"></i>';
 										str+='</span>';
 
@@ -1238,13 +1316,13 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 $(document).on("click","[expand-icon]",function(){
         var expandBlockName = $(this).attr("expand-icon");
 		var alertId = $(this).attr("attr_alertId");
-		//var statusId = $(this).attr("attr_statusId");
+		var statusId = $(this).attr("attr_statusId");
 		$("[expand-icon]").closest("li").removeClass("active");
 		$("[expand-icon]").removeClass("text-primary");
 		$(this).addClass("text-primary");
 		$(this).closest("li").addClass("active");
 		 rightSideExpandView(alertId);
-		//glStr = '';
+		glStr = '';
 		setTimeout(function(){
 			$("[expanded-block="+expandBlockName+"]").show().css("transition"," ease-in, width 0.7s ease-in-out");
 		},750);
@@ -1325,11 +1403,7 @@ function rightSideExpandView(alertId)
 							str+='<div id="articleAttachment"></div>';
 							str+='<div id="alertCategory"></div>';
 							str+='<div id="rejoinderAttachments"></div>';
-							str+='<div id="alertSubtask"></div>';
-							//str+='<div id="alertComments"></div>';
 							str+='<div id="alertGeneralComments"></div>';
-							str+='<div status-body="task" class="m_top20"></div>';
-							str+='<div status-body="subTask" class="m_top20"></div>';
 						str+='</div>';
 						
 					str+='</div>';
@@ -1344,57 +1418,648 @@ function rightSideExpandView(alertId)
 	str+='</div>';
 	$("#rightSideExpandView").html(str);
 	$('[data-toggle="tooltip"]').tooltip();
-	//google.setOnLoadCallback(onLoad);
 	$(".chosenSelect").chosen({width:'100%'});
 	
-	/* $('.modal-date2').data('daterangepicker');
 	
-	$(function() {
-		var start = moment();
-		
-		function cb(start) {
-			$('.modal-date2').html(start.format('DD/MM/YYYY'));
-		}
-       
-		$('.modal-date2').daterangepicker({
-			startDate: start,
-			singleDatePicker:true,
-			locale:{
-				format:"DD/MM/YYYY"
-			}
-			
-		}, cb);		getGovtAllDepartmentDetails
-	}); */
-	
-	/* initializeFile();
-	dateRangePicker(alertId);
-	assignedOfficersDetailsForAlert(alertId);//yes
-	departmentsByAlert(alertId);//yes
-	getAlertData(alertId);//yes
-	getStatusCompletionInfo(alertId);//Change Parameter DO
-	getGovtAllDepartmentDetails();//Change Parameter DO
-	buildAssignUIAttributes(alertId);//No need
-	getCommentsForAlert(alertId);//GIVEN DO
-	alertDeptmentExistInLogin(alertId); //GIVEN DO Parameter*/
-	
+	getStatusCompletionInfo(alertId);
 	getAssignedOfficersDetails(alertId);
 	getDepartmentsByAlert(alertId);
-	getAlertsDataByAlertId(alertId);
-	
+	getAlertData(alertId);
+	getCommentsForAlert(alertId);
+	getAlertCategoryByAlert(alertId);
+	getDocumentsForAlerts(alertId);
 	
 }
-function getAlertsDataByAlertId(alertId){
+$(document).on("click","[status-icon] li",function(e){
+        e.stopPropagation();
+		var status = $(this).attr("status-icon-block");		
+		var alertId = $(this).attr("attr_alert_id");
+		var subalertid = $(this).attr("subalertid");
+		if(status != null && status != undefined)
+		{
+			if(status == 'alertHistory')
+			{
+				$("#alertManagementPopup1").modal({
+					show: true,
+					keyboard: false,
+					backdrop: 'static'
+				});
+				$("#alertManagementPopupHeading").html('ALERT HISTORY')
+				$("#alertManagementPopup1 .modal-footer").html(' ');
+				viewAlertHistory(alertId);
+			}
+		}
+	});
+
+function viewAlertHistory(alertId){
+	$("#alertManagementPopupBody1").html(spinner)
+	$.ajax({
+		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+	}).then(function(result){
+		if(result != null && result.length> 0)
+		{
+			alertHistory(result);
+		}else{
+			$("#alertManagementPopupBody1").html("NO DATA AVAILABLE...")
+		}
+		
+	});	
+}
+function alertHistory(result)
+{
+	
+	var str='';
+	for(var i in result){
+			str+='<ul class="alert-history m_top10" style="list-style:outside none none">';
+			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
+			
+			for(var j in result[i]){
+				str+='<li>';
+			
+				str+='<span class="alert-history-time" >'+result[i][j].trackingTime+'</span>';
+					if(result[i][j].actionType == 'Assigning'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
+						
+					}else if(result[i][j].actionType == 'Attachment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'</p>'; 
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank" href="../images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';      
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Due Date'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i][j].dueDate+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>'; 
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Priority'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  </p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i][j].severty+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>'; 
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Status Change'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
+						if(result[i][j].status == 'Proposal'){
+							str+=''+result[i][j].status+'';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+							 if(result[i][j].categoryId == 1 ){
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
+								if(result[i][j].proposalStatus == 'Proposal Accept'){
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px">Approved Amount </span> :'+result[i][j].approvedAmount+'/-</p>';
+								}else{
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/- </p>';
+								}
+							}else{
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
+							}
+						 }else if(result[i][j].status == 'Rejoinder'){
+							str+=''+result[i][j].status+'';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Rejoinder Status </span> :'+result[i][j].rejinderStatus+'</p>';
+						}else {
+							str+=''+result[i][j].status+'</p>';
+						} 
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Comment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' </p>'; 
+						
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span> '; 
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>'; 
+					}else if(result[i][j].actionType == 'Feedback Status'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						if(result[i][j].alertFeedbackStatus != null && result[i][j].alertFeedbackStatus != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Feed back Status </span>: '+result[i][j].alertFeedbackStatus+'</p>'; 
+						}
+						
+						if(result[i][j].status != null && result[i][j].status != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Alert Status </span>: '+result[i][j].status+'</p>';
+						}
+						if(result[i][j].alertCallerName != null && result[i][j].alertCallerName != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Caller Name </span>: '+result[i][j].alertCallerName+'</p>';
+						}
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}
+				
+					
+				str+='</li>';	
+			}
+		
+		str+='</ul>';
+		}
+	
+	
+	$("#alertManagementPopup1 .modal-dialog").css("width","60%")
+	$("#alertManagementPopupBody1").html(str);
+}	
+
+var isAdmin = "";
+var globalUserType = "";
+var globalStatusId = 0;
+var isStatusAvailable=true;
+var globalEntitlement= "";
+
+function getStatusCompletionInfo(alertId){
+	isStatusAvailable=true;
+	$("#updateStatusChangeBody").html(spinner);
+	$("#statusDtlsDiv").html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
+	}).then(function(result){
+		$("#updateStatusChangeBody").html('');
+		$("#statusDtlsDiv").html('');
+		$('#displayStatusId,#displayAssignIconId,#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority,#historyId').hide();
+		$('#displayStatusId').attr('status-icon-block','alertStatus');
+		$('#docAttachmentId').hide();	
+		
+		if(result != null && result.length>0){
+			var buildTypeStr = result[0].applicationStatus.split('-')[0].trim();
+			globalUserType = buildTypeStr;
+			var sttatusId = result[0].applicationStatus.split('-')[1].trim();
+			globalStatusId = sttatusId; 
+			
+			if(result.length  == 1)
+				isStatusAvailable=false;
+			
+			if(result[0].idnameList != null && result[0].idnameList.length > 0)
+			{
+				var str='';
+				str+='<div class="row m_top20">';
+					str+='<div class="col-sm-1 text-center body-icons"><i class="fa fa-volume-control-phone fa-2x"></i></div>';
+					str+='<div class="col-sm-11">';
+						str+='<h3>Caller Details </h3>';
+						str+='<ul class="list-inline slickSlider">';
+						for(var  j in result[0].idnameList)
+						{
+							str+='<li style="padding:0px 8px;margin:0px 5px;border:1px solid #ddd;">';
+								str+='<table class="table table-condensed">';
+									str+='<tr>';
+										str+='<td>Name</td>';
+										str+='<td>: '+result[0].idnameList[j].callerName+'</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Mobile No</td>';
+										str+='<td>: '+result[0].idnameList[j].mobileNo+'</td>';
+									str+='</tr>';
+									str+='<tr>';
+										str+='<td>Caller</td>';
+										str+='<td>: '+result[0].idnameList[j].userType+'</td>';
+									str+='</tr>';
+								str+='</table>';
+							str+='</li>';
+						}
+						str+='</ul>';
+						
+					str+='</div>';
+				str+='</div>';
+				$("#callerDetailsDIv").html(str);
+				if(result[0].idnameList.length > 3)
+				{
+					$('.slickSlider').slick({
+						slide: 'li',
+						slidesToShow: 3,
+						slidesToScroll: 1,
+						infinite: false,
+						swipe:false,
+						touchMove:false,
+						variableWidth: false
+					});
+				}
+				
+			}
+			
+			$('#historyId').show();
+			var entitlement = result[0].positionName;
+			globalEntitlement = entitlement;
+			if(result[0].dueDateStr != null && result[0].dueDateStr.trim().length>0){
+				$('.modal-date').html(result[0].dueDateStr)
+				$('.modal-date1').html(result[0].dueDateStr)
+			}else{
+				$('#displayDueDate2').hide();
+				$('#displayDueDate1').hide();
+			}
+			
+			if(buildTypeStr=='own'){  
+				$('#displayStatusId,#displaySubTaskli,#displaySubTasksliId').show();	
+				$('#docAttachmentId').show();	
+				$('#displayDueDate1').show();
+				$('#displayDueDate2').hide();
+				
+				
+				
+				if(globalStatusId == 12 ){ // closed
+					isStatusAvailable=false;
+					$('#displaySubTasksliId,#docAttachmentId').hide();
+				}else {
+					isStatusAvailable=true;
+				}				
+			}
+			else if(buildTypeStr=='subUser'){	
+				$('#displaySubTasksliId').hide();		
+				$('#displayDueDate1').hide();
+				$('#displayStatusId').show();
+				$('#displayStatusId').removeAttr('status-icon-block');
+				
+				$('#displayDueDate2,#displayPriority').show();
+				
+				// closed-12, completed-4, reopen-11
+				if( globalStatusId == 12 || globalStatusId == 4 || globalStatusId == 11){
+					isStatusAvailable=true;
+				}
+				if(globalStatusId != 12){ // for not closed status alerts 
+					$('#displaySubTasksliId,#docAttachmentId').show();					
+				}
+			}else if(buildTypeStr=='same'){ 
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority').show();
+				$('#displayStatusId').show();       
+				$('#displayDueDate1').show(); 
+				isStatusAvailable=false;
+			}
+			else if(buildTypeStr=='other'){
+				$('#displaySubTasksliId').hide();				
+				$('#displayDueDate1').hide();				
+				$('#displayDueDate2').hide();				
+				$('#displayStatusId').show();
+				isStatusAvailable=false;				
+			}
+			if((sttatusId == 1  || sttatusId == 8 || sttatusId==9) && result[0].userStatus != null && result[0].userStatus =='admin'){
+				$('#displayAssignIconId').show();
+				$('#docAttachmentId').show();	
+				 assignUser(alertId);
+				 
+			}
+		
+			if(result[0].userStatus != null && result[0].userStatus =="admin"){
+				isAdmin = "true";
+				//$('#displayStatusId').attr('status-icon-block','');
+				$('#displaySubTasksliId,#displayDueDate1,#displayDueDate2,#displayPriority').hide(); 
+				if(sttatusId !=1)
+					$('#docAttachmentId').show(); 
+			}else{
+				$('#displayStatusId').attr('status-icon-block','alertStatus');
+				isAdmin = "false";
+			}
+			
+			if(isAdmin=='false'){				
+				$('#displayStatusId').attr('status-icon-block','alertStatus');
+			}
+			alertStatus(result,alertId);	
+
+			if(globalStatusId == 12 || globalStatusId ==8 || globalStatusId ==9  ){ // closed || Wrongly Mapped Designation || Wrongly Mapped Department
+				$('#displaySubTasksliId,#docAttachmentId,#displayPriority,#displayDueDate2').hide();
+				$('#displayDueDate1').show();
+			}
+			 if(globalStatusId ==8 || globalStatusId ==9){
+				$("#departDivId").show();
+			} 
+			
+			//alert(" isStatusAvailable :"+isStatusAvailable);
+		}else{
+			$('#displayAssignIconId').show();
+			$('#displayStatusId').show();
+			$('#displaySubTasksliId').hide();  
+			$('#docAttachmentId').hide();  
+		}	
+		setTimeout(function(){
+			$("body").addClass("modal-open");
+		},1000);
+		
+	});	
+}
+
+var glStr='';
+var globalPropasalStr='';
+function alertStatus(result,alertId)
+{
+	glStr='';
+	globalPropasalStr='';
+	var str1='';
+	var str=''; 
+		str1+='<div class="panel panel-default panel-white m_top20 alert-status-change-body">';
+			str1+='<div class="panel-heading" style="margin-left: 20px;">';
+				str1+='<div class="row" id="changeStatusDivId">';
+				for(var i in result)
+				{
+					
+					str1+='<div class="col-sm-4">';
+						str1+='<div class="radioStyling">';
+							if(globalStatusId == parseInt(result[i].id))
+							{
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+result[i].id+'">';
+							}else
+							{
+								str1+='<input class="alertStatusCls" attr_id="'+result[i].id+'" type="radio" name="group1" id="radio-'+result[i].id+'">';
+							}
+							str1+='<label for="radio-'+result[i].id+'"><span class="radio" >'+result[i].name+'</span></label>';
+						str1+='</div>';
+					str1+='</div>';
+				}				
+				str1+='</div>';
+			str1+='</div>';
+			str1+='<div class="panel panel-default proposalAppendBlockDivCls" style="display:none;background-color:#ededed">';
+				str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
+					str1+='<h4 class="panel-title">Proposal Information</h4>';
+				str1+='</div>';
+				str1+='<div class="panel-body" style="background-color:#ededed">';
+					str1+='<div class="row">';
+						str1+='<div class="col-sm-12">';
+							str1+='<div class="m_top10">';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="proposalCheckbox" value="1" name="statusChekBx">Financial Assistance<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="proposalCheckbox" value="2" name="statusChekBx">Policy Decision Required<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<label class="checkbox-inline">';
+								  str1+='<input type="checkbox" class="proposalCheckbox" value="3" name="statusChekBx">Others<span style="color:red">*</span>';
+								str1+='</label>';
+							str1+='</div>';
+						str1+='</div>';
+						str1+='<div class="col-sm-4">';
+							str1+='<div class="input-group amountCls m_top20" style="display:none;">';
+								str1+='<span class="input-group-addon">';
+									str1+='<i class="fa fa-inr"></i>';
+								str1+='</span>';
+								str1+='<input type="text" class="form-control" placeholder="Enter Amount" id="amountId">';
+							str1+='</div>';
+							str1+='<span id="errMsgAmuntId"></span>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>';
+			
+			 str1+='<div class="panel panel-default rejoinderDivCls" style="display:none;background-color:#ededed">';
+				str1+='<div class="panel-heading" style="background-color:#ededed;padding-left:15px;">';
+					str1+='<h4 class="panel-title">Rejoinder Status</h4>';
+				str1+='</div>';
+				str1+='<div class="panel-body" style="background-color:#ededed" >';
+					str1+='<div class="row">';
+						str1+='<div class="col-sm-12">';
+							str1+='<div class="m_top10">';
+								str1+='<label class="checkbox-inline" id="rejinderReqId">';
+								  str1+='<input type="checkbox" class="rejoinderCheckbox" value="1" name="RejoinderChekBx">Rejoinder Request<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<label class="checkbox-inline" id="rejinderRespnseId">';
+								  str1+='<input type="checkbox" class="rejoinderCheckbox" value="2" name="RejoinderChekBx">Rejoinder Response<span style="color:red">*</span>';
+								str1+='</label>';
+								str1+='<form id="alertAssignAttachemntFrRejoinderStatusId" name="uploadAttachementFrRejoinderStatus">';
+									str1+='<input type="file" id="rejoinderAttachmentId" name="imageForDisplay" style="margin-top:21px; margin-left:35px;">';
+									str1+='<input type="hidden" value="'+alertId+'" name="alertVO.alertId">';
+								str1+='</form>';
+							str1+='</div>';
+						str1+='</div>';
+					str1+='</div>';
+				str1+='</div>';
+			str1+='</div>'; 
+
+			
+			str1+='<div class="panel-body pad_0 m_top20">';
+				str1+='<textarea class="form-control" id="updateStatusChangeComment" placeholder="Comment.."></textarea>';
+			str1+='</div>';
+		str1+='</div>';
+
+	
+	str1+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updateStatusChangeId">update</button>';
+	str1+='<span id="updateStatusChangeAjaxSymbol"></span>';
+	str1+='<span id="updateStatusChangeMsg"></span>';
+	
+		str+='<div class="col-sm-12">';
+			str+='<div style="padding:10px;background-color:#ddd">';
+			if(globalPropCategory != null){
+				str+='<p><strong>Proposal Category </strong>:'+globalPropCategory+'</p>';
+			}
+			if(globalPropReqAunt != null && globalPropReqAunt.length > 0){
+				str+='<p class="m_top5"><strong>Requested Amount </strong>:'+globalPropReqAunt+'/- </p>';
+			}
+			str+='</div>';	
+		str+='</div>';	
+		str+='<div class="col-sm-4">';
+			str+='<div class="radioStyling">';
+				str+='<input class="alertStatusCls alertStatusAmountCls" attr_id="3" type="radio" name="group1" id="radio-1">';
+				str+='<label for="radio-1"><span class="radio">Proposal Accept<span style="color:red;"> *</span></span></label>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-4">';
+			str+='<div class="radioStyling ">';
+				str+='<input class="alertStatusCls alertStatusAmountCls" attr_id="2" type="radio" name="group1" id="radio-2">';
+				str+='<label for="radio-2"><span class="radio">Proposal Reject<span style="color:red;"> *</span></span></label>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="col-sm-6">';
+			str+='<div class="input-group m_top5 alertStatusAmountInputCls" style="display:none;">';
+				str+='<span class="input-group-addon">';
+					str+='<i class="fa fa-inr"></i>';
+				str+='</span>';
+				str+='<input type="text" class="form-control" placeholder="Enter Approved Amount" id="approvedAmountId">';
+			str+='</div>';
+			str+='<span id="errMsgAprAmuntId"></span>';
+		str+='</div>'; 
+	   str+='<div class="panel-body pad_0">';
+		str+='<textarea class="form-control m_top10" id="acceptedStatusChangeComment" placeholder="Comment.."></textarea>';
+	str+='</div>';
+	str+='<button class="btn btn-primary btn-sm text-capital" attr_alert_id="'+alertId+'" subTaskId="" id="updatePrposalStatsId">update</button>';
+	str1+='<span id="updateProposalStatusChangeMsg"></span>';
+	glStr=str1;
+	globalPropasalStr=str;
+	//$("#updateStatusChangeBody").html(str1);
+	
+}
+function getCommentsForAlert(alertId){
+	$("#alertGeneralComments").html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+	}).then(function(result){
+		
+		if(result != null && result.length > 0)
+		{
+			buildCommentsForAlert(result);
+		}else{
+			$("#alertGeneralComments").html("NO DATA");
+		}
+		
+	});	
+}
+var globalPropCategory;
+var	globalPropReqAunt;	
+var	globalPrposalCategoryId;	
+function buildCommentsForAlert(result)
+{
+	var str='';
+	str+='<div class="row m_top20">';
+		str+='<div class="col-sm-1 text-center body-icons">';
+			str+='<i class="fa fa-road fa-2x"></i>';
+		str+='</div>';
+		str+='<div class="col-sm-11">';
+			str+='<h4 class="text-muted text-capital">complete alert history</h4>';
+		str+='<ul class="alert-myfoot m_top10" style="list-style:outside none none">';
+		for(var i in result){
+			
+			str+='<li>';
+			str+='<span class="alert-history-date"  style="background-color: lightpink;padding: 3px;border-radius: 5px;" >'+result[i][0].trackingDate+'</span>';
+			for(var j in result[i]){
+					if(result[i][j].actionType == 'Assigning'){     
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Assigned BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>    </p>';
+						
+					}else if(result[i][j].actionType == 'Attachment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						str+='<p><span class="alert-history-body text-capital"><a target="_blank"  href="../images/'+result[i][j].document+'" width="25%" style="margin-left: 25px;" class="m_top5" >'+result[i][j].document+'</a></span></p>';       
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">'+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';     
+					}else if(result[i][j].actionType == 'Due Date'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Changed Date </span> : '+result[i][j].dueDate+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';  
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+						
+					}else if(result[i][j].actionType == 'Priority'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Priority </span> : '+result[i][j].severty+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Status Change'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+'  <span class="pull-right"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						
+						 str+='<p class="m_top20 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px">Status </span> :';
+						if(result[i][j].status == 'Proposal'){
+							str+=''+result[i][j].status+'';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Status </span> :'+result[i][j].proposalStatus+'</p>';
+								globalPrposalCategoryId = result[i][j].categoryId;
+							 if(result[i][j].categoryId == 1 ){
+								 globalPropCategory = result[i][j].category;
+								globalPropReqAunt = result[i][j].amount;
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'';
+								if(result[i][j].proposalStatus == 'Proposal Accept'){
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/-';
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px">Approved Amount </span> :'+result[i][j].approvedAmount+'/-</p>';
+								}else{
+									str+='<span class="text-capital myfontStyle m_top5" style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Amount </span> :'+result[i][j].amount+'/- </p>';
+								}
+							}else{
+								globalPropCategory = result[i][j].category;
+								globalPropReqAunt = result[i][j].amount;
+								str+='<p class="text-capital myfontStyle m_top5"><span style="color:slategrey;font-weight:bold;margin-left: 25px"> Proposal Categoty </span> :'+result[i][j].category+'</p>';
+							}
+						}else if(result[i][j].status == 'Rejoinder'){
+							str+=''+result[i][j].status+'';
+								str+='<p class="text-capital myfontStyle m_top5"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Rejoinder Status </span> :'+result[i][j].rejinderStatus+'</p>';
+						}else {
+							str+=''+result[i][j].status+'</p>';
+						} 
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';     
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Comment'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}else if(result[i][j].actionType == 'Feedback Status'){
+						str+='<p class="alert-history-status m_top20 text-capital" style="background-color: lightgrey;padding: 3px;border-radius: 5px;"><span class="status-icon arrow-icon"></span>Action : '+result[i][j].actionType+' <span class="pull-right"> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Time </span> : <span style="font-size:10px">  '+result[i][j].trackingTime+'  </span></span></p>'; 
+						
+						if(result[i][j].alertFeedbackStatus != null && result[i][j].alertFeedbackStatus != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Feed back Status </span>: '+result[i][j].alertFeedbackStatus+'</p>'; 
+						}
+						if(result[i][j].alertCallerName != null && result[i][j].alertCallerName != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Caller Name </span>: '+result[i][j].alertCallerName+'</p>';
+						}
+						if(result[i][j].status != null && result[i][j].status != ""){
+							str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Alert Status </span>: '+result[i][j].status+'</p>';
+						}
+						
+						str+='<p class="alert-history-body m_top5 text-capital myfontStyle"> <span style="color:slategrey;font-weight:bold;margin-left: 18px"> Comment </span>: '+result[i][j].comment+'</p>';
+						
+						str+='<p class=" alert-history-user m_top20 text-capital "> <span style="color:slategrey;font-weight:bold;margin-left: 25px"> UPDATED BY </span> : <span style="font-size:10px">  '+result[i][j].updatedUserName+'  </span>';
+						if(result[i][j].position != "admin"){
+							str+='<span style="color:slategrey;font-weight:bold;margin-left: 25px"> DEPT </span> : <span style="font-size:10px">  '+result[i][j].deptName+'  </span>   <span style="color:slategrey;font-weight:bold;margin-left: 25px"> DESIGNATION </span> : <span style="font-size:10px">  '+result[i][j].designation+'  </span>  <span style="color:slategrey;font-weight:bold;margin-left: 25px"> Location </span> : <span style="font-size:10px">  '+result[i][j].location+'  </span>';
+						}
+						str+='</p>';
+					}
+			}
+		str+='</li>';	
+		
+		}
+		str+='</ul>';
+	str+='</div>';
+	//$("#alertManagementPopup1 .modal-dialog").css("width","60%")
+	$("#alertGeneralComments").html(str);
+//}
+}
+
+
+function getAlertData(alertId){
 	$("#alertDetails").html(spinner);
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getAlertsDataByAlertId/"+alertId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getAlertsDataByAlertId/"+alertId
+		url: wurl+"/WebService/getAlertData/"+alertId
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getAlertData/"+alertId
 	}).then(function(result){
 		$("#alertDetails").html('');
-		getAlertCategoryByAlert(alertId);
+		
 		//getInvolvedMembersDetilas(alertId);
-		getSubTaskInfoForAlert(alertId);
-		//getCommentsForAlert(alertId); //GIVEN DO
-		getDocumentsForAlerts(alertId);
+		//getSubTaskInfoForAlert(alertId);
+		//getCommentsForAlert(alertId);
+		
 		if(result != null && result.length > 0){
 			buildAlertDataNew(result)
 			if(result[0].categoryId == 2)
@@ -1415,14 +2080,14 @@ function getGroupedArticlesInfo(articleId)
 	$.ajax({
 		  type : 'GET',      
 		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  //url: "http://192.168.11.146:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
 		//$("#alertDetails").append(str);
 	});
 }
 
 var globalProposalStatus;
-  var globalRejoinderStatus;
+var globalRejoinderStatus;
 function buildAlertDataNew(result)
 {
 	var str='';
@@ -1582,14 +2247,13 @@ function buildSocialMediaImage(result){
 }
 
 function getAlertCategoryByAlert(alertId){
-	$("#categoryId").html('');
+	
 	$("#alertCategory").html(spinner);
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
+		url: wurl+"/WebService/getAlertCategoryByAlert/"+alertId
+		//url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
 	}).then(function(result){
-		$("#alertCategory").html('');
-		if(result != null && result.length > 0)
+		if(result != null)
 		{
 			var str='';
 			str+='<div class="row m_top20">';
@@ -1598,19 +2262,23 @@ function getAlertCategoryByAlert(alertId){
 				str+='</div>';
 				str+='<div class="col-sm-11">';
 					str+='<h4 class="text-muted text-capital">category</h4>';
-					str+='<p class="m_top20"><span class="label label-default label-category">'+result+'</span></p>';
+					if(result.name !=null){
+						str+='<p class="m_top20"><span class="label label-default label-category">'+result.name+'</span></p>';
+					}else{
+						str+='<p class="m_top20"><span class="label label-default label-category"> - </span></p>';
+					}
+					
 				str+='</div>';
 			str+='</div>';
-			
-			$("#alertCategory").append(str);
+			$("#alertCategory").html(str);
 		}
 	});	
 }
 function getSubTaskInfoForAlert(alertId){
 	$("#alertSubtask").html(spinner);
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
+		url: wurl+"/WebService/getSubTaskInfoForAlert/"+alertId
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
 	}).then(function(result){
 		$("#alertSubtask").html('');
 		if(result != null && result.length > 0)
@@ -1702,46 +2370,15 @@ function buildSubTaskInfoForAlert(result,alertId)
 			}
 		}	
 	str+='</div>';	
-/*
-	str+='<div class="row m_top20">';
-		str+='<div class="col-sm-1 text-center body-icons">';
-			str+='<i class="fa fa-comments-o fa-2x"></i>';
-		str+='</div>';
-		str+='<div class="col-sm-11">';
-			str+='<h4 class="text-muted text-capital"> Sub Tasks Comments </h4>';
-			for(var i in result)
-			{
-				str+='<div class="media">';
-				
-					str+='<div class="media-body">';
-					if(result[i].commentList != null && result[i].commentList.length>0){
-						for(var k in result[i].commentList){
-							if(result[i].commentList[k].comment != null && result[i].commentList[k].comment.length > 0)
-							{
-								str+='<p class="m_top5">'+result[i].commentList[k].comment+'</p>';
-							}
-							
-							if(result[i].commentList[k].date != null && result[i].commentList[k].date.length > 0)
-							{
-								str+='<p class="m_top5"><i class="glyphicon glyphicon-calendar"></i> '+result[i].commentList[k].date+'</p>';
-							}
-						}
-					}
-						
-					str+='</div>';
-				str+='</div>';
-			}
-		str+='</div>';
-	str+='</div>';
-	*/ 
+
 	$("#alertSubtask").html(str);
 }
 function getDocumentsForAlerts(alertId){
 	$("#existingDocsDivId").html("");
 	$("#existingDocsDivId").html(spinner);
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getDocumentsForAlerts/"+alertId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getDocumentsForAlerts/"+alertId
+		url: wurl+"/WebService/getDocumentsForAlerts/"+alertId
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getDocumentsForAlerts/"+alertId
 	}).then(function(result){
 		$("#existingDocsDivId").html('');
 		if(result != null && result.length > 0){
@@ -1764,8 +2401,8 @@ var globalSubTaskDeptId=0;
 function getDepartmentsByAlert(alertId){
 	
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
+		url: wurl+"/WebService/getDepartmentsByAlert/"+alertId
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
 	}).then(function(result){
 		var str='';
 		str+='<p class="m_top20">';
@@ -1782,8 +2419,8 @@ function getDepartmentsByAlert(alertId){
 function getAssignedOfficersDetails(alertId){
 	
 	$.ajax({
-		//url: wurl+"/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
-		url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
+		url: wurl+"/WebService/getAssignedOfficersDetails/"+alertId
+		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
 	}).then(function(result){
 		if(result != null && result.length > 0)
 		{
@@ -1895,7 +2532,7 @@ function assignUser(alertId)
 	//getDepartmentDetailsOfAlert(alertId);
 }
 
-getArticlesMonthlyOverviewInfoBySearchType("alerts",2,"print");//print media Graph onchange
+//getArticlesMonthlyOverviewInfoBySearchType("alerts",2,"print");//print media Graph onchange
 function getArticlesMonthlyOverviewInfoBySearchType(searchType,alertcategoryId,newsType){
 	var json={
 		fromDateStr:"01-01-2017",
@@ -1917,3 +2554,284 @@ function getArticlesMonthlyOverviewInfoBySearchType(searchType,alertcategoryId,n
 	});
 }
 
+$(document).on("click",".closeSecondModal",function(){
+		setTimeout(function(){
+			$("body").addClass("modal-open")
+		},1000);
+	});
+$(document).on('click', '.imageShowOpen li', function(){
+		var id = $(this).attr("attr_doc_id");
+		var path = "../images/"+$(this).attr("attr_path");
+		window.open(path);
+	});
+$(document).on("click",".articleDetailsCls",function(){
+		var articleId= $(this).attr("attr_articleId");
+		$("#alertManagementPopup1").modal({
+			show: true,
+			keyboard: false,
+			backdrop: 'static'
+		});
+		$("#alertManagementPopup1 .modal-footer").html(' ');
+		getTotalArticledetails(articleId);
+	});
+function getTotalArticledetails(articleId){
+	
+	$("#alertManagementPopupBody1,#alertManagementPopupHeading").html(spinner);
+	$.ajax({
+		  type : 'GET',      
+		  	url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+	}).then(function(results){
+		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
+		var result = results[0];
+		var str = '';
+		var heading = '';
+		heading+='<h4 class="modal-title" id="myModalLabel">';
+			heading+='<p class="m_bottom0" style="height:40px;" id="mdlArtclTtl">'+result.articleTitle+'</p>';
+			heading+='<p class="m_bottom0 text-italic font-16" id="mdlArtclDesc"><i>Edition Source :'+result.editionSource+' ['+result.articleInsertedTime+' ]</i></p>';
+		heading+='</h4>';
+		str+='<div class="row">';
+			str+='<div class="col-md-12">';
+				str+='<img class="mainImage"  src="../NewsReaderImages/'+result.imageURL+'" style="display:block;margin:auto;width:100%;" alt="Img Title"/>';
+			str+='</div>';
+			str+='<div class="col-md-12 m_top10">';
+				str+='<h4 class="panel-title text-success">Description</h4>';
+				str+='<p class="m_0 f_14">'+result.description+'</p>';
+			str+='</div>';
+			str+='<div class="col-md-12">';
+			if( result.subList != null && result.subList.length > 0){
+				for(var i in result.subList){
+				/* Candidate*/
+				str+='<div class="row ">';
+					str+='<div class="col-md-6">';
+						str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+								str+='<h4 class="panel-title">FROM WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+								/* From Table*/
+								if(result.subList[i].fromList != null && result.subList[i].fromList.length > 0){
+									for( var j in result.subList[i].fromList){
+										str+='<table class="table table-bordered m_top10">';
+											str+='<tr>';
+												if( result.subList[i].fromList[j].organizationName != null && $.trim(result.subList[i].fromList[j].organizationName).length > 0 ){
+												str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].fromList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].fromList[j].organizationName+'</td>';
+												}
+												str+='<td><img class="img-circle" src="images/'+result.subList[i].fromList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].fromList[j].benefit+'</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td colspan="2">';
+												var candidataExist = false;
+												if( result.subList[i].fromList[j].candidateName != null && $.trim(result.subList[i].fromList[j].candidateName).length > 0 ){
+												candidataExist = true; 
+												str+=''+result.subList[i].fromList[j].candidateName;
+												}
+												if( result.subList[i].fromList[j].designation != null && $.trim(result.subList[i].fromList[j].designation).length > 0 ){
+												candidataExist = true; 
+												str+=' ('+result.subList[i].fromList[j].designation + ")";
+												}
+												if(!candidataExist){
+												str+=' - ';
+												}
+												str+='</td>';
+											str+='</tr>';
+											str+='<tr>';
+												str+='<td colspan="2">';
+													if(result.subList[i].fromList[j].impactLevel != null && $.trim(result.subList[i].fromList[j].impactLevel).length > 0){
+														str+='<p class="m_0">Impact Level : '+result.subList[i].fromList[j].impactLevel+'</p>';	
+													}else{ 
+														str+='<p class="m_0">Impact Level : - </p>';	
+													}
+													if(result.subList[i].fromList[j].categories != null && $.trim(result.subList[i].fromList[j].categories).length > 0){
+														str+='<p class="m_0">Category : '+result.subList[i].fromList[j].categories+'</p>';	
+													}else{ 
+														str+='<p class="m_0">Category : - </p>';	
+													}
+													if(result.subList[i].fromList[j].newsActivity != null && $.trim(result.subList[i].fromList[j].newsActivity).length > 0){
+														str+='<p class="m_0">News Activity : '+result.subList[i].fromList[j].newsActivity+' </p>';
+													}else{ 
+														str+='<p class="m_0">News Activity : - </p>';	
+													}
+													if(result.subList[i].fromList[j].newsType != null && $.trim(result.subList[i].fromList[j].newsType).length > 0){
+														str+='<p class="m_0">News type : '+result.subList[i].fromList[j].newsType+' </p>';
+													}else{ 
+														str+='<p class="m_0">News type : - </p>';	
+													}
+													if( result.subList[i].fromList[j].newsType != null && result.subList[i].fromList[j].newsType == "Problems"){
+													if(result.subList[i].fromList[j].newsRelated != null && $.trim(result.subList[i].fromList[j].newsRelated).length > 0){
+														str+='<p class="m_0">News Related : '+result.subList[i].fromList[j].newsRelated+' </p>';
+													}else{ 
+														str+='<p class="m_0">News Related : - </p>';	
+													}
+													if(result.subList[i].fromList[j].priority != null && $.trim(result.subList[i].fromList[j].priority).length > 0){
+														str+='<p class="m_0">Priority : '+result.subList[i].fromList[j].priority+' </p>';
+													}else{ 
+														str+='<p class="m_0">Priority : - </p>';	
+													}
+													if(result.subList[i].fromList[j].solution != null && $.trim(result.subList[i].fromList[j].solution).length > 0){
+														str+='<p class="m_0">Solution : '+result.subList[i].fromList[j].solution+' </p>';
+													}else{ 
+														str+='<p class="m_0">Solution : - </p>';	
+													}
+													}
+												str+='</td>';
+											str+='</tr>';
+										str+='</table>';
+									}
+								}
+							str+='</div>';//panel-body
+						str+='</div>';//panel
+					str+='</div>';//colmd6
+					str+='<div class="col-md-6">';
+						str+='<div class="panel panel-default panelArticleGroup">';
+							str+='<div class="panel-heading">';
+								str+='<h4 class="panel-title">TO WHOM</h4>';
+							str+='</div>';
+							str+='<div class="panel-body">';
+							/* TO Table*/
+							if(result.subList[i].toList != null && result.subList[i].toList.length > 0){
+								for( var j in result.subList[i].toList){
+									str+='<table class="table table-bordered m_top10">';
+										str+='<tr>';
+											if( result.subList[i].toList[j].organizationName != null && $.trim(result.subList[i].toList[j].organizationName).length > 0 ){
+												str+='<td><img class="img-circle" src="newCoreDashBoard/img/'+result.subList[i].toList[j].organizationName+'.png" style="width:30px;height:30px;" onerror="setDefaultImage(this);"/> '+result.subList[i].toList[j].organizationName+'</td>';
+											}else{
+												str+='<td> - </td>';
+											}
+												str+='<td><img class="img-circle" src="images/'+result.subList[i].toList[j].benefit+'.png" style="width:20px;height:20px;" alt=""/> '+result.subList[i].toList[j].benefit+'</td>';
+										str+='</tr>';
+										str+='<tr>';
+											str+='<td colspan="2">';
+											var candidataExist = false;
+											if( result.subList[i].toList[j].candidateName != null && $.trim(result.subList[i].toList[j].candidateName).length > 0 ){
+											candidataExist = true; 
+												str+=''+result.subList[i].toList[j].candidateName;
+											}
+											if( result.subList[i].toList[j].designation != null && $.trim(result.subList[i].toList[j].designation).length > 0 ){
+											candidataExist = true; 
+												str+=' ('+result.subList[i].toList[j].designation + ")";
+											}
+											if(!candidataExist){
+												str+=' - ';
+											}
+											str+='</td>';
+										str+='</tr>';
+										str+='<tr>';
+											str+='<td colspan="2">';
+
+												if(result.subList[i].toList[j].impactLevel != null && $.trim(result.subList[i].toList[j].impactLevel).length > 0){
+													str+='<p class="m_0">Impact Level : '+result.subList[i].toList[j].impactLevel+'</p>';	
+												}else{ 
+													str+='<p class="m_0">Impact Level : - </p>';	
+												}
+
+												if(result.subList[i].toList[j].categories != null && $.trim(result.subList[i].toList[j].categories).length > 0){
+													str+='<p class="m_0">Category : '+result.subList[i].toList[j].categories+'</p>';	
+												}else{ 
+													str+='<p class="m_0">Category : - </p>';	
+												}
+												if(result.subList[i].toList[j].newsActivity != null && $.trim(result.subList[i].toList[j].newsActivity).length > 0){
+													str+='<p class="m_0">News Activity : '+result.subList[i].toList[j].newsActivity+' </p>';
+												}else{ 
+													str+='<p class="m_0">News Activity : - </p>';	
+												}
+												if(result.subList[i].toList[j].newsType != null && $.trim(result.subList[i].toList[j].newsType).length > 0){
+													str+='<p class="m_0">News type : '+result.subList[i].toList[j].newsType+' </p>';
+												}else{ 
+													str+='<p class="m_0">News type : - </p>';	
+												}
+												if( result.subList[i].toList[j].newsType != null && result.subList[i].toList[j].newsType == "Problems"){
+
+												if(result.subList[i].toList[j].newsRelated != null && $.trim(result.subList[i].toList[j].newsRelated).length > 0){
+													str+='<p class="m_0">News Related : '+result.subList[i].toList[j].newsRelated+' </p>';
+												}else{ 
+													str+='<p class="m_0">News Related : - </p>';	
+												}
+												if(result.subList[i].toList[j].priority != null && $.trim(result.subList[i].toList[j].priority).length > 0){
+													str+='<p class="m_0">Priority : '+result.subList[i].toList[j].priority+' </p>';
+												}else{ 
+													str+='<p class="m_0">Priority : - </p>';	
+												}
+												if(result.subList[i].toList[j].solution != null && $.trim(result.subList[i].toList[j].solution).length > 0){
+													str+='<p class="m_0">Solution : '+result.subList[i].toList[j].solution+' </p>';
+												}else{ 
+													str+='<p class="m_0">Solution : - </p>';	
+												}
+												}
+											str+='</td>';
+										str+='</tr>';
+									str+='</table>';
+								}
+							}
+
+							str+='</div>';//panelbody
+						str+='</div>';//panel
+					str+='</div>';//colmd6
+
+				str+='</div>';//row
+				}
+			}
+
+			str+='</div>';//colmd12
+		str+='</div>';//row
+		/* Article Scope Location */
+		str+='<div class="row">';
+			str+='<div class="col-md-12">';
+				str+='<div class="panel panel-default panelArticleGroup">';
+					str+='<div class="panel-heading">';
+						str+='<h4 class="panel-title">LOCATION DETAILS</h4>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+						str+='<table class="table table-condensed">';
+							str+='<tr>';
+								str+='<td>Impact Scope : </td>';
+								if(result.impactScopeId!=null){
+									str+='<td>'+obj[result.impactScopeId]+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+							str+='</tr>';
+							str+='<tr>';
+								str+='<td>Location : </td>';
+								if(result.scopeLocation!=null){
+									str+='<td>'+result.scopeLocation+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+							str+='</tr>';
+						str+='</table>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="row">';
+			/*Lnking*/
+			str+='<div class="col-md-6">';
+				str+='<div class="panel panel-default panelArticleGroup">';
+					str+='<div class="panel-heading">';
+						str+='<h4 class="panel-title">LINKED ARTICLES</h4>';
+					str+='</div>';
+					str+='<div class="panel-body">';
+						if( result.linkedList != null && result.linkedList.length > 1){
+							str+='<div class="row">';
+								for( var i in result.linkedList){
+									if(result.linkedList[i].articleId !=articleId ){
+										str+='<div class="col-md-4" style="margin-top:5px;">';
+											str+='<img  class="thumbnail img-responsive linkedArticlesClickId" src="../NewsReaderImages/'+result.linkedList[i].imageURL+'" style="display:block;margin:auto;height:90px;cursor:pointer"/>';
+										str+='</div>';
+									}
+								}
+							str+='</div>';
+						}else{
+							str+="<h5> No Linked Articles Available </h5>";
+						}
+
+					str+='</div>';
+				str+='</div>';
+			str+='</div>'; 
+		str+='</div>';
+
+		$("#alertManagementPopupBody1").html(str);
+		$("#alertManagementPopupHeading").html(heading)
+	});    
+}
