@@ -18,9 +18,15 @@ public class TourTypeDAO extends GenericDaoHibernate<TourType, Long> implements 
 		
 		Query query = getSession().createQuery(" SELECT model.tourTypeId,model.tourType " +
 				"  FROM TourType model  " +
-				"  WHERE model.isDeleted ='N' ");
+				"  WHERE model.isDeleted ='N' and model.parentId is null ");
 		
 		return query.list();
 	}
-	
+	public List<Object[]> getChildTourType(Long tourTypeParentId) {
+		Query query = getSession().createQuery("SELECT model.tourTypeId,model.tourType " +
+				"  FROM TourType model  " +
+				"  WHERE model.isDeleted ='N' and model.parentId=:tourTypeParentId");
+		query.setParameter("tourTypeParentId", tourTypeParentId);
+		return query.list();
+	}
 }

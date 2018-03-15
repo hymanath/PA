@@ -44,6 +44,7 @@ public class ToursVO {
 	private List<ToursVO> toursVoListNew = new ArrayList<ToursVO>(0);
 	private List<IdNameVO> subList = new ArrayList<IdNameVO>();
 	private List<ToursVO> docList = new ArrayList<ToursVO>();
+	private List<IdNameVO> subList1;
 	
 	private String tourDateId;
 	private Long tourCategoryId;
@@ -58,6 +59,10 @@ public class ToursVO {
 	private String category;
 	private Long id;
 	private String remark;
+	private Long tourTypeCategoryId = 0l;
+	private Long tourTypeChildId = 0l;
+	private String tourTypeCategory;
+	private String childTtourType;
 	
 		
 	public String getRemark() {
@@ -378,5 +383,48 @@ public class ToursVO {
 	public void setDocList(List<ToursVO> docList) {
 		this.docList = docList;
 	}
+
+	public List<IdNameVO> getSubList1() {
+		return subList1;
+	}
+
+	public void setSubList1(List<IdNameVO> subList1) {
+		this.subList1 = subList1;
+	}
+
+	public Long getTourTypeCategoryId() {
+		return tourTypeCategoryId;
+	}
+
+	public void setTourTypeCategoryId(Long tourTypeCategoryId) {
+		this.tourTypeCategoryId = tourTypeCategoryId;
+	}
+
+	public Long getTourTypeChildId() {
+		return tourTypeChildId;
+	}
+
+	public void setTourTypeChildId(Long tourTypeChildId) {
+		this.tourTypeChildId = tourTypeChildId;
+	}
+
+	public String getTourTypeCategory() {
+		return tourTypeCategory;
+	}
+
+	public void setTourTypeCategory(String tourTypeCategory) {
+		this.tourTypeCategory = tourTypeCategory;
+	}
+
+	public String getChildTtourType() {
+		return childTtourType;
+	}
+
+	public void setChildTtourType(String childTtourType) {
+		this.childTtourType = childTtourType;
+	}
+    
+	
+	
 	
 }
