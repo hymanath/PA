@@ -775,7 +775,7 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 			desigType="representee";
 		}
 	  } */
-	var depts =$("#departmentId").val();
+	var depts =$("#departmntId").val();
 	if(depts != null && depts !=0){
 		deptIds=depts;
 	}/* else if(deptId >0){
@@ -846,7 +846,7 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
  desigType="representee";
  }
  }
- var depts =$("#departmentId").val();
+ var depts =$("#departmntId").val();
  if(depts != null || depts !=0){
  deptIds=depts;
  }
@@ -907,7 +907,7 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 			desigType="representee";
 		}
 	  }
-	var depts =$("#departmentId").val();
+	var depts =$("#departmntId").val();
 	if(depts != null || depts !=0){
 		deptIds=depts;
 	}
@@ -965,12 +965,25 @@ function getDesignationsBySearchType(searchType,selBoxId,onLoaddesigId,statusId)
 			statusIds.push(statusList[i]);
 		}
 	}
+	var deptIds =  $("#departmntId").val();
+var deptIdsList = [];
+	if(deptIds != null && deptIds.length >0){
+		deptIdsList=deptIds;
+	}
+if(deptIdsList != null && deptIdsList.length>0){
+	for(var i in deptIdsList){
+		if(parseInt(deptIdsList[i])==0){
+			deptIdsList=[];
+		}
+	}
+}
  var json = {
 		 reportType :searchType,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 sourceId:onLoaddesigId,
-		 statusIds :statusIds
+		 statusIds :statusIds,
+		 deptIdsList : deptIdsList
 		}            
 	$.ajax({              
 		type:'POST',    
@@ -1056,6 +1069,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 }
  function searchValidations(){
 	 var isError=false;
+	 $("#leadErrMsg").html('');
 	  $("#locationErrDivlId").html('');
 	  $("#districtCandErrDiv").html('');
 	  $("#constituencyCanErrDiv").html('');
@@ -1116,6 +1130,13 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 		  var subjId=$("#subjectId").val();
 		  if(subjId == null || subjId ==0){
 			 $("#subJErrMsg").html('<h5>Please select subject </h5>');
+			 isError=true;
+			}
+	}
+	if($("#selectLeadDivId").is(':visible')){
+		  var leadId=$("#selectLeadId").val();
+		  if(leadId == null || leadId ==0){
+			 $("#leadErrMsg").html('<h5>Please select lead </h5>');
 			 isError=true;
 			}
 	}
@@ -1283,6 +1304,17 @@ function getRepresentativeSearchDetails1(value,globalStIndex){
 		if($("#subjectDivId").is(':visible')){
 		  if(filterValue == null || filterValue ==0){
 			 $("#errMsgId").html('<h5>Please select subject </h5>');
+			 return;
+			}
+	}
+   }else if(filterType == 'lead'){
+	    var selectLeadId =$("#selectLeadId").val();
+		for(var i in selectLeadId){
+			filterValue = filterValue+selectLeadId[i]+",";
+		}
+		if($("#selectLeadDivId").is(':visible')){
+		  if(filterValue == null || filterValue ==0){
+			 $("#errMsgId").html('<h5>Please select lead </h5>');
 			 return;
 			}
 	}
@@ -1993,11 +2025,24 @@ function getPetitionReferredMemberDetails(desigIds,selrefCanId,statusId){
 	if(refrralCandId != null && refrralCandId.length >0){
 		selrefCanId=refrralCandId;
 	}
+	var deptIds =  $("#departmntId").val();
+    var deptIdsList = [];
+	if(deptIds != null && deptIds.length >0){
+		deptIdsList=deptIds;
+	}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
      var json = {
 		 designationIds:desigIds,
 		 reprType :"referralView",
 		 referrerCandidateId:selrefCanId,
-		 statusIds :statusIds
+		 statusIds :statusIds,
+		 deptIdsList : deptIdsList
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -2068,10 +2113,40 @@ function updatePetitionStatusDetails(){
 	else
 		id=globalDesignationId;
 	
+	var selStatusId = $("#statusId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+	
+		var deptIds =  $("#departmntId").val();
+		alert(deptIds);
+	var deptIdsList = [];
+		if(deptIds != null && deptIds.length >0){
+			deptIdsList=deptIds;
+		}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
+	 
 	 $("#leadId").html('');
 	 $("#leadId").html('<option value="0"> Select lead </option>');
    var json = {
-      designationId:id
+      designationId:id,
+	  deptIdsList : deptIdsList,
+	   statusIds :statusIds,
+	   fromDate :currentFromDate,
+	   toDate : currentToDate
+	   
     };
   $.ajax({              
     type:'POST',    
@@ -2410,12 +2485,27 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 	if(selSubjId != null && selSubjId.length >0){
 		subjectId =selSubjId;
 	}
+	
+	var deptIds =  $("#departmntId").val();
+	var deptIdsList = [];
+		if(deptIds != null && deptIds.length >0){
+			deptIdsList=deptIds;
+		}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
+
  var json = {
 		 reportType :searchType,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 statusIds:statusIds,
-		 assetType:subjectId
+		 assetType:subjectId,
+		 deptIdsList :deptIdsList
 		}           
 	$.ajax({              
 		type:'POST',    

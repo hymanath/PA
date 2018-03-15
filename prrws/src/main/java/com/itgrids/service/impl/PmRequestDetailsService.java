@@ -1436,7 +1436,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 	    	
 	    	List<Long> referralCanIds = null;
 	    	if(dataVo.getReprType() != null && dataVo.getReprType().equalsIgnoreCase("referralView")){
-	    		referralCanIds = pmRepresenteeRefDetailsDAO.getPmReferralCandidateIdsByDesigIds(dataVo.getDesignationIds(),dataVo.getReferrerCandidateId(),dataVo.getStatusIds());
+	    		referralCanIds = pmRepresenteeRefDetailsDAO.getPmReferralCandidateIdsByDesigIds(dataVo.getDesignationIds(),dataVo.getReferrerCandidateId(),dataVo.getStatusIds(),dataVo.getDeptIdsList());
 	    	}
 	    	//  0 petitonrefCndidateId ,1 name,2 designation ,3 stateId,4 stateName
 	    	// 5 districtId 6 district name 7 constincuyId,8 constincyName, 9 tehsilId,10 teshilName

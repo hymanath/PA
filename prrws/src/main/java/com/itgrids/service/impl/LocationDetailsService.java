@@ -114,7 +114,7 @@ public class LocationDetailsService implements ILocationDetailsService {
 	@Autowired
 	private IPmDepartmentDesignationHierarchyDAO pmDepartmentDesignationHierarchyDAO;
 	
-	 /**
+	/**
 		 * Date : 30/11/2017
 		 * Author :babu kurakula <href:kondababu.kurakula@itgrids.com>
 		 * @description : to get districs details in a state
@@ -489,15 +489,22 @@ public List<KeyValueVO>  getPmLeadDetailsList(){
   * Date : 04/12/2017
   * Description : { Getting Petition Brief Lead Details List }
   */
-public List<KeyValueVO>  getPmBriefLeadList(Long deptDesignationId){
+public List<KeyValueVO>  getPmBriefLeadList(Long designationId,List<Long> deptIds,List<Long> statusIds,String fromDate,String toDate){
 	List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
 	    try{
 		LOG.info("Entered into LocationDetailsService of getPmBriefLeadList ");
+		Date startDate = null;
+		Date endDate = null;
+		SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+		if(fromDate != null &&  !fromDate.isEmpty() && !toDate.isEmpty() && toDate!= null){
+			startDate = format.parse(fromDate);
+			endDate = format.parse(toDate);
+		}
 		List<Object[]> petitionDetailsObjsList = null;
-		if(deptDesignationId == null || deptDesignationId.longValue()==0L)
-			petitionDetailsObjsList = pmBriefLeadDAO.getAllPmBriefLeadDetailsList();
+		if(designationId == null || designationId.longValue()==0L)
+			petitionDetailsObjsList = pmBriefLeadDAO.getAllPmBriefLeadDetailsDeptWiseList(deptIds,statusIds,startDate,endDate);
 		else
-			petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList(deptDesignationId);
+			petitionDetailsObjsList = pmBriefLeadDAO.gePmBriefLeadDetailsList(designationId);
 		if(petitionDetailsObjsList != null && petitionDetailsObjsList.size() >0){
 			for(Object[] param: petitionDetailsObjsList){
 				KeyValueVO vo = new KeyValueVO();

@@ -205,6 +205,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and model.pmRefCandidateDesignation.pmRefCandidateDesignationId in (:filterValue) ");
 		}else if(filterType != null && filterType.equalsIgnoreCase("pmOfficer") && filterValue != null && !filterValue.isEmpty()){
 			sb.append(" and PAO.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId in (:filterValue) ");
+		}else if(filterType != null && filterType.equalsIgnoreCase("lead") && filterValue != null && !filterValue.isEmpty()){
+			sb.append(" and model1.pmBriefLead.pmBriefLeadId in (:filterValue) ");
 		}
 		
 		if(filterType != null && !filterType.equalsIgnoreCase("department") && inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size()>0){
@@ -341,7 +343,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		return (Long) query.uniqueResult();
 	}
 	
-	public List<Long> getPmReferralCandidateIdsByDesigIds(List<Long> desigIds,Long refCandId,List<Long> statusIds){
+	public List<Long> getPmReferralCandidateIdsByDesigIds(List<Long> desigIds,Long refCandId,List<Long> statusIds,List<Long> deptIdsList){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select distinct model.pmRefCandidateDesignation.pmRefCandidate.pmRefCandidateId from PmRepresenteeRefDetails model," +
@@ -355,6 +357,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(statusIds != null && statusIds.size() >0){
 			sb.append("  and  model1.pmStatus.pmStatusId in (:statusIds) ");
 		}
+		if(deptIdsList != null && deptIdsList.size() >0){
+			sb.append(" and model1.pmDepartment.pmDepartmentId in(:deptIdsList) ");
+		}
 		Query query = getSession().createQuery(sb.toString());
 		if(desigIds!=null && desigIds.size() >0){
 			query.setParameterList("desigIds", desigIds);
@@ -364,6 +369,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		}
 		if(statusIds != null && statusIds.size() >0){
 			query.setParameterList("statusIds", statusIds);
+		}
+		if(deptIdsList != null && deptIdsList.size() >0){
+			query.setParameterList("deptIdsList", deptIdsList);
 		}
 		return query.list();
 	}

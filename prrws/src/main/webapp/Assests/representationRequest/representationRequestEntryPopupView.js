@@ -1002,7 +1002,7 @@ function buildWorksDetils(result){
 												if(glDesignationId != null && parseInt(glDesignationId) == 92){
 													;
 												}else{
-													str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+													//str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
 												}
 											str+='</div>';
 											str+='<div class="col-sm-2 pull-right">';
@@ -1120,7 +1120,7 @@ function buildWorksDetils(result){
 									if(glDesignationId != null && parseInt(glDesignationId) == 92){
 										;
 									}else{
-										str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
+										//str+='<button type="button" style="margin-right:15px" class="btn btn-primary btn-sm pull-right viewCommentsCls" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> ADD COMMENT </button>';
 									}
 								str+='</div>';
 								str+='<div class="col-sm-2 pull-right">';
@@ -1705,6 +1705,7 @@ function buildWorksDetils(result){
 }
 
 $(document).on("click",".updateStatusChangeCls",function(){
+	$("#coverLetterLableDivId").hide();
 	selectionType="onlyOne";
 	var enrorsNo = $(this).attr("attr_enrorsNo");
 	if(globalActionId == 1 )
@@ -2144,6 +2145,7 @@ $(document).on("change","#statusChangeId",function(){
 	}
 	else if(statusId == 0){
 		$("#endorsentDivId").hide();
+		$("#coverLetterLableDivId").hide();
 		//$("#letterNameId").html("");
 		$("#fileUploadDiv").hide();
 		$("#commentsDivId").show();
@@ -2980,6 +2982,7 @@ var json = {
 $(document).on('click','.petitionWiseViewCommentsCls',function(){
  var pettinId = $(this).attr("attr_petition_id")
  
+ $("#coverLetterLableDivId").hide();
  $("#remarksId").val('');
  $("#uploadFileDivCls").hide();
  $('#actionmemoDivId').hide();

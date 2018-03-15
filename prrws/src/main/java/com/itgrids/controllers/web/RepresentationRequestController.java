@@ -1,9 +1,11 @@
 package com.itgrids.controllers.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
@@ -100,9 +103,28 @@ public class RepresentationRequestController {
     public @ResponseBody List<KeyValueVO> getPmLeadDetailsList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getPmLeadDetailsList();
     }
-	@RequestMapping(value ="/getPmBriefLeadList",method = RequestMethod.POST)
+	/*@RequestMapping(value ="/getPmBriefLeadList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPmBriefLeadList(@RequestBody Map<String,String> inputMap ) {
        return locationDetailsService.getPmBriefLeadList(Long.valueOf(inputMap.get("designationId")));
+    }*/
+	@RequestMapping(value ="/getPmBriefLeadList",method = RequestMethod.POST)
+    public @ResponseBody List<KeyValueVO> getPmBriefLeadList(@RequestBody InputVO inputVO,HttpServletRequest request) {
+		HttpSession session=request.getSession();
+		UserVO userVO = (UserVO) session.getAttribute("USER"); 
+		Long userId =null;
+		if(userVO != null){
+			userId = userVO.getUserId();
+		}else{
+			return null;
+		}
+		List<Long> deptIds = null;
+		Long deptId = inputVO.getDepartmentId();
+		if(deptId != null && deptId.longValue() >0l){
+			deptIds = new ArrayList<Long>();
+			deptIds.add(deptId);
+		}
+		List<Long> statusIds = inputVO.getStatusIds();
+       return locationDetailsService.getPmBriefLeadList(inputVO.getDesignationId(),statusIds,deptIds,inputVO.getFromDate(),inputVO.getToDate());
     }
 	@RequestMapping(value ="/getPmGrantList",method = RequestMethod.POST)
     public @ResponseBody List<KeyValueVO> getPmGrantList(@RequestBody Map<String,String> inputMap ) {

@@ -126,6 +126,7 @@ public class InputVO implements Serializable {
 	private Long subLocationId;
 	private List<String> districtNames = new ArrayList<String>();
 	private List<Long> searchDeptIdsList;
+	private Long designationId;
 	
 	
 	public List<Long> getSearchDeptIdsList() {
@@ -810,6 +811,12 @@ public class InputVO implements Serializable {
 	}
 	public void setDeptType(String deptType) {
 		this.deptType = deptType;
+	}
+	public Long getDesignationId() {
+		return designationId;
+	}
+	public void setDesignationId(Long designationId) {
+		this.designationId = designationId;
 	}
 	
 	
