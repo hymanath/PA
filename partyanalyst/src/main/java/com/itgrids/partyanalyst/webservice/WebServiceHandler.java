@@ -37,6 +37,7 @@ import com.itgrids.partyanalyst.dto.AlertCommentVO;
 import com.itgrids.partyanalyst.dto.AlertCoreDashBoardVO;
 import com.itgrids.partyanalyst.dto.AlertDataVO;
 import com.itgrids.partyanalyst.dto.AlertOverviewVO;
+import com.itgrids.partyanalyst.dto.AlertTrackingVO;
 import com.itgrids.partyanalyst.dto.AlertVO;
 import com.itgrids.partyanalyst.dto.AlertVerificationVO;
 import com.itgrids.partyanalyst.dto.AmsAppLoginVO;
@@ -74,6 +75,7 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
+import com.itgrids.partyanalyst.dto.JalavaniAlertResultVO;
 import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -3767,13 +3769,33 @@ public class WebServiceHandler {
 		
 		return  webServiceHandlerService.getJalavaniCategoryWiseDetailsInfo(inputVo);
     }
-	@POST
+	/*@POST
     @Path("/getJalavanilocationAndStatusDetailsInfo")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Object getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo){
 		return  webServiceHandlerService.getJalavanilocationAndStatusDetailsInfo(inputVo);
-    }
+    }*/
+	@GET
+	@Path("/getJalavanilocationAndStatusDetailsInfo/{fromDateStr}/{toDateStr}/{searchType}/{type}/{alertCategoryId}")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(
+			@PathParam("fromDateStr") String fromDateStr,
+			@PathParam("toDateStr") String toDateStr,
+			@PathParam("searchType") String searchType,
+			@PathParam("type") String type,
+			@PathParam("alertCategoryId") Long alertCategoryId){
+		try{			
+			return webServiceHandlerService.getJalavanilocationAndStatusDetailsInfo(fromDateStr, toDateStr, searchType, type, alertCategoryId);			
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in getJalavanilocationAndStatusDetailsInfo() Method, Exception is ",e);
+			return null;
+		}
+	}
+	
 	@POST
     @Path("/getAlertsMonthlyOverviewInfoBySearchType")
     @Produces(MediaType.APPLICATION_JSON)
@@ -3819,15 +3841,16 @@ public class WebServiceHandler {
     public Object getAlertsDataByAlertId(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getAlertsDataByAlertId(alertId);
     }
-	/*@GET
+	@GET
     @Path("/getStatusCompletionInfo/{alertId}/{levelValue}/{designationId}/{levelId}/{userId}/{entitlements}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public Object getStatusCompletionInfo(@PathParam("alertId") Long alertId,@PathParam("levelValue") 
     Long levelValue,@PathParam("designationId") Long designationId,@PathParam("levelId") Long levelId,
-    @PathParam("userId") Long userId){
-		return  webServiceHandlerService.getStatusCompletionInfo(alertId,levelValue,designationId,levelId,userId,entitlements);
-    }*/
+    @PathParam("userId") Long userId,
+    @PathParam("entitlementsStr") List<String> entitlementsStr){
+		return  webServiceHandlerService.getStatusCompletionInfo(alertId,levelValue,designationId,levelId,userId,entitlementsStr);
+    }
 	@GET
     @Path("/getGovtAllDepartmentDetails")
     @Produces(MediaType.APPLICATION_JSON)
@@ -3846,7 +3869,7 @@ public class WebServiceHandler {
     @Path("/alertDeptmentExistInLogin/{alertId}/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object alertDeptmentExistInLogin(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
+    public String alertDeptmentExistInLogin(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
 		return  webServiceHandlerService.alertDeptmentExistInLogin(alertId,userId);
     }
 	@GET
@@ -3860,7 +3883,7 @@ public class WebServiceHandler {
     @Path("/getSubTaskInfoForAlert/{alertId}/{userId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getDocumentsForAlerts(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
+    public List<AlertTrackingVO> getDocumentsForAlerts(@PathParam("alertId") Long alertId,@PathParam("userId") Long userId){
 		return  webServiceHandlerService.getSubTaskInfoForAlert(alertId,userId);
     }
 	@GET
@@ -3870,11 +3893,18 @@ public class WebServiceHandler {
     public Object getDocumentsForAlerts(@PathParam("alertId") Long alertId){
 		return  webServiceHandlerService.getDocumentsForAlerts(alertId);
     }
-	@POST
-    @Path("/getJalavaniAlertSourceDetailsInformation")
+	
+	@GET
+    @Path("/getJalavaniAlertSourceDetailsInformation/{startDateStr}/{endDateStr}/{locationTypeId}/{locationId}/{statusId}/{categoryId}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Object getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getJalavaniAlertSourceDetailsInformation(inputVo);
+    public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(
+    		@PathParam("startDateStr") String startDateStr,
+    		@PathParam("endDateStr") String endDateStr,
+    		@PathParam("locationTypeId") Long locationTypeId,
+    		@PathParam("locationId") Long locationId,
+    		@PathParam("statusId") Long statusId,
+    		@PathParam("categoryId") Long categoryId){
+		return  webServiceHandlerService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,locationTypeId,locationId,statusId,categoryId);
     }
 }
