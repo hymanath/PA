@@ -318,6 +318,7 @@ public class UnderGroundDrainageController {
 	//get location level wise overview details - screen 3
 	
 	//work zone click screen -5
+	@RequestMapping(value="/getWorkZoneMainOverview", method=RequestMethod.POST)
 	public @ResponseBody GovtWorksVO getWorkZoneMainOverview(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-GovtWorkId
 			return underGroundDrainageService.getWorkZoneMainOverview(inputVO.getWorkId());
@@ -326,6 +327,8 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value="/getWorkZoneStatusDetailsInfo", method=RequestMethod.POST)
 	public @ResponseBody List<WorkStatusVO> getWorkZoneStatusDetailsInfo(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-GovtWorkId,worktypeId
 			return underGroundDrainageService.getWorkZoneStatusDetailsInfo(inputVO.getWorkId(),inputVO.getWorkTypeId());
@@ -334,6 +337,8 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	}	
+	
+	@RequestMapping(value="/getWorkZoneDocumentDetailsInfo", method=RequestMethod.POST)
 	public @ResponseBody List<DocumentVO> getWorkZoneDocumentDetailsInfo(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-GovtWorkId
 			return underGroundDrainageService.getWorkZoneDocumentDetailsInfo(inputVO.getWorkId());
@@ -342,6 +347,8 @@ public class UnderGroundDrainageController {
 		}
 		return null;
 	}
+	
+	@RequestMapping(value="/getWorkZoneWorkStategsDetailsInfo", method=RequestMethod.POST)
 	public @ResponseBody List<GovtWorksVO> getWorkZoneWorkStategsDetailsInfo(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-dates,GovtWorkId,statusId
 			return underGroundDrainageService.getWorkZoneWorkStategsDetailsInfo(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getWorkId(),inputVO.getStatusId());
