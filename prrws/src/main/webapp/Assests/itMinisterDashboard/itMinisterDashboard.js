@@ -15,17 +15,7 @@
 		var removeChar = this.id.replace('company','');	
 		companyIds.push(removeChar);
 		});
-	var approvalDevloperIds = [];
-		$(".approvalDevloperCls").find("h4").each(function(){
-		var removeChar = this.id.replace('devloperId','');	
-		approvalDevloperIds.push(removeChar);
-		});
-	var approvalCompanyIds = [];
-		$(".approvalItCompanyCls").find("h4").each(function(){
-		var removeChar = this.id.replace('itCompanyId','');	
-		approvalCompanyIds.push(removeChar);
-		});
-		
+	
 function noOfCompanyProperties(){
 	$.ajax({
 		//url: wurl+"/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails/",
@@ -134,45 +124,68 @@ function initializeCompanyProperties(ajaxresp){
 		}
 	}
 }
+
 function initializeApprovalProcessFlow(ajaxresp){
+	var devloperCount=0;
+	var itCompanyCount=0;
+	var str = '';
 	for(var i in ajaxresp[0].subList){
-		for(var j in approvalDevloperIds){
-			if(ajaxresp[0].name === "devloper"){
-				if(approvalDevloperIds[j] == ajaxresp[0].subList[i].id){
-					$("#"+"devloperId"+approvalDevloperIds[j]).text(ajaxresp[0].subList[i].count);
-				}
-			}
-		}
+		str+='<div class="col-sm-2">';
+		str+='<div class="pad_5 m_top10" style="border-right:1px solid grey; height: 56px;">';
+		str+='<h5 class="font_weight" style = "text-transform: uppercase;" ><b>'+ajaxresp[0].subList[i].name+'</b></h5>';
+		str+='</div>';
+		str+='</div>';
 	}
+	$("#pendingLevelId").html(str);
+	str='';
+	str+='<div class="col-sm-9">';
+	str+='<div class="row">';
+	for(var i in ajaxresp[0].subList){
+		str+='<div class="col-sm-2" >';
+		str+='<div class="pad_5 m_left-25" style="border-right:1px solid grey; height: 56px;padding-right:10px;">';
+		str+='<div class="col-sm-10 m_top10">';
+		str+='<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">'+ajaxresp[0].subList[i].count+'</h4>';
+		devloperCount+= ajaxresp[0].subList[i].count;
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
+	}
+	str+='</div>';	
+	str+='</div>';	
+	$("#devloperPendingLevelDivId").html(str);
+	str= '';
+	str+='<div class="col-sm-9">';
+	str+='<div class="row">';
 	for(var i in ajaxresp[1].subList){
-		for(var j in approvalCompanyIds){
-			if(ajaxresp[1].name === "itCompany"){
-				if(approvalCompanyIds[j] == ajaxresp[1].subList[i].id){
-					
-					$("#"+"itCompanyId"+approvalCompanyIds[j]).text(ajaxresp[1].subList[i].count);
-				}
-			}
-		}
+		str+='<div class="col-sm-2" >';
+		str+='<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">';
+		str+='<div class="col-sm-10 m_top10">';
+		str+='<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">'+ajaxresp[1].subList[i].count+'</h4>';
+		itCompanyCount+= ajaxresp[1].subList[i].count;
+		str+='</div>';
+		str+='</div>';
+		str+='</div>';
 	}
+	str+='</div>';	
+	str+='</div>';
+	$("#itCompanyPendingLevelDivId").html(str);
+	$("#devloperId").text(devloperCount);
+	$("#itCompanyId").text(itCompanyCount);
 }
 function initializeStatusProperties(ajaxresp){
 	for(var i in ajaxresp){
 		if(ajaxresp[i].name === "Approved Properties"){
-			$(".approvedPropertiesCls").text(ajaxresp[i].count);
-			$(".approvedPropertiesSumCls").html(ajaxresp[i].sum+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>");
+			$(".approvedPropertiesCls").html('<h2>'+ajaxresp[i].count+'</h2><p style="font-size:14px;" >'+ajaxresp[i].sum+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>"+'</p>');
 		}
 		if(ajaxresp[i].name === "Available Properties"){
-			$(".availablePropertiesCls").text(ajaxresp[i].count);
-			$(".availablePropertiesSumCls").html(ajaxresp[i].sum+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>");
+			$(".availablePropertiesCls").html('<h2>'+ajaxresp[i].count+'</h2><p style="font-size:14px;" >'+ajaxresp[i].sum+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>"+'</p>');
 		}
 		if(ajaxresp[i].name === "Occupied Properties"){
-			$(".occupiedPropertiesCls").html('<b>'+ajaxresp[i].count+'</b>');
-			$(".occupiedPropertiesSumCls").html(ajaxresp[i].sum+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>");
+			$(".occupiedPropertiesCls").html('<b>'+ajaxresp[i].count+'</b><p align = "right"style="font-size:14px;" >'+ajaxresp[i].sum+"&nbsp;&nbsp;<span style='font-size:12px;'>"+"sft"+"</span>"+'</p>');
 		}
 		if(ajaxresp[i].name === "Occupied IT Companies"){
 			$(".occupiedItCompanies").html('<b>'+ajaxresp[i].count+'</b>');
 		}
-		
 	}
 }
  function initializeBuildingStatus(ajaxresp){
@@ -213,9 +226,8 @@ function initializeStatusProperties(ajaxresp){
 		if(ajaxresp[1].subList[i].name === "Occupied IT Companies"){
 			$("#nonStatusOccupiedItCompaniesId").html("Occupied IT Companies"+'&nbsp;&nbsp;&nbsp;&nbsp'+"<span style='font-size:12px;'>"+ajaxresp[1].subList[i].count+"</span>");
 		}
-		
 	}
-	
 }	 
 		
+	
 	
