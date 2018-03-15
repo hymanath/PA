@@ -118,6 +118,18 @@ public class UnderGroundDrainageController {
 		return null;
 	} 
 	
+	@RequestMapping(value="/updateWorkStatusComments", method=RequestMethod.POST)
+	public @ResponseBody ResultStatus updateWorkStatusComments(@RequestBody WorkStatusVO workStatusVO){
+		try {
+			return underGroundDrainageService.updateWorkStatusComments(workStatusVO);
+		} catch (Exception e) {
+			LOG.error("Exception raised while updating the govt works status comments details", e);
+		}
+		return null;
+	} 
+	
+	
+	
 	@RequestMapping(value="/updateWorkStatusDocuments", method=RequestMethod.POST)
 	public @ResponseBody List<DocumentVO> updateWorkStatusDocuments(@RequestBody List<WorkStatusVO> WorkStatusVOList){
 		try {

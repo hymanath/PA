@@ -21,6 +21,8 @@ public class WorkStatusVO {
 	public String date;
 	public List<DocumentVO> documentList = new ArrayList<DocumentVO>(0);
 	public List<WorkStatusVO> workStatusVOList = new ArrayList<WorkStatusVO>(0);
+	public String comment;
+	public Long commentId;
 	
 	public Long getWorkId() {
 		return workId;
@@ -137,6 +139,18 @@ public class WorkStatusVO {
 	}
 	public void setCurrentWorkCompletedPercentage(Double currentWorkCompletedPercentage) {
 		this.currentWorkCompletedPercentage = currentWorkCompletedPercentage;
+	}
+	public String getComment() {
+		return comment;
+	}
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
+	public Long getCommentId() {
+		return commentId;
+	}
+	public void setCommentId(Long commentId) {
+		this.commentId = commentId;
 	}
 
 	

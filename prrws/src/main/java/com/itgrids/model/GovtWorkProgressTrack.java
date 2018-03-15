@@ -20,6 +20,7 @@ public class GovtWorkProgressTrack {
 	private Long govtWorkProgressUpdateId;
 	private Long govtWorkId;
 	private Long govtWorkStatusId;
+	private Long govtWorkProgressCommentId;
 	private Double workLength;
 	private Double completedPercentage;
 	private Long updatedBy;
@@ -30,6 +31,7 @@ public class GovtWorkProgressTrack {
 	private GovtWork govtWork;
 	private GovtWorkStatus govtWorkStatus;
 	private MobileAppUser updatedByUser;
+	private GovtWorkProgressComment govtWorkProgressComment;
 	
 	@Id
 	@Column(name="govt_work_progress_track_id")
@@ -139,6 +141,23 @@ public class GovtWorkProgressTrack {
 	}
 	public void setIsCompleted(String isCompleted) {
 		this.isCompleted = isCompleted;
+	}
+	
+	@Column(name="govt_work_progress_comment_id")
+	public Long getGovtWorkProgressCommentId() {
+		return govtWorkProgressCommentId;
+	}
+	public void setGovtWorkProgressCommentId(Long govtWorkProgressCommentId) {
+		this.govtWorkProgressCommentId = govtWorkProgressCommentId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "govt_work_progress_comment_id", insertable = false, updatable = false)
+	public GovtWorkProgressComment getGovtWorkProgressComment() {
+		return govtWorkProgressComment;
+	}
+	public void setGovtWorkProgressComment(GovtWorkProgressComment govtWorkProgressComment) {
+		this.govtWorkProgressComment = govtWorkProgressComment;
 	}
 	
 	
