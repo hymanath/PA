@@ -19,7 +19,7 @@
 function noOfCompanyProperties(){
 	$.ajax({
 		//url: wurl+"/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails/",
-		url : "http://localhost:8080/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails",
+		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -34,7 +34,7 @@ function noOfCompanyProperties(){
 		});
 	$.ajax({
 		//url: wurl+"/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails/",
-		url : "http://localhost:8080/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails",
+		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -49,7 +49,7 @@ function noOfCompanyProperties(){
 		});
 	$.ajax({
 		//url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails/",
-		url : "http://localhost:8080/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails",
+		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -65,7 +65,7 @@ function noOfCompanyProperties(){
 		
 	$.ajax({
 		//url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails/",
-		url : "http://localhost:8080/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails",
+		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -80,7 +80,7 @@ function noOfCompanyProperties(){
 		});	
 	$.ajax({
 		//url: wurl+"/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails/",
-		url : "http://localhost:8080/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails",
+		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
