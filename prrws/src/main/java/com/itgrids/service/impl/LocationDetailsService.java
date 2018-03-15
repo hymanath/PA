@@ -890,7 +890,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getChildOfficersByParentOfficerId(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,String pmOfficerId,Long userId,List<Long> pmDeptDesigIds
+	public List<KeyValueVO> getChildOfficersByParentOfficerId(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,List<Long> pmOfficerIds,Long userId,List<Long> pmDeptDesigIds
 			,Long officerDesigId){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
@@ -920,7 +920,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("pmOfficer")){
-				deptObjs=pmSubWorkDetailsDAO.getChildOfficersByParentOfficerId(deptIds,startDate,endDate,statusIds,Long.valueOf(pmOfficerId),petitionIdsList,pmOffcrDesigids);
+				deptObjs=pmSubWorkDetailsDAO.getChildOfficersByParentOfficerId(deptIds,startDate,endDate,statusIds,pmOfficerIds,petitionIdsList,pmOffcrDesigids);
 			}
 		//	Map<Long,KeyValueVO> officers=new HashMap<Long,KeyValueVO>();
 			if(deptObjs != null && deptObjs.size() > 0){

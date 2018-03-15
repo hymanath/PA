@@ -222,7 +222,11 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			sb.append(" and (date(model.petition.insertedTime) between :fromDate and :toDate) " );
 		}
 		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
-			sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
+			if(filterType != null && filterType.equalsIgnoreCase("pmOfficer") && filterValue != null && !filterValue.isEmpty()){
+				sb.append(" and PAO.pmStatus.pmStatusId in (:statusIds) ");
+			}else{
+				sb.append(" and model1.pmStatus.pmStatusId in (:statusIds) ");
+			}
 		}
 		if(inputVO.getGovtSchmeIdsList() != null && inputVO.getGovtSchmeIdsList().size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:dashBrdDeptIds) ");

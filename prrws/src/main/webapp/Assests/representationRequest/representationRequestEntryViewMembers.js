@@ -549,7 +549,7 @@ $(document).on("change","#locationSelId",function(){
 	   $('#advanceSearchBtnId').prop("checked",false);
 	    $("#workId").prop("checked",false);
 			$("#petitionId").prop("checked",true);
-	  getChildOfficersByParentOfficerId(searchType,"officerId",0,statusId);
+	  getChildOfficersByParentOfficerId(searchType,"pmOfficerId",0,statusId);
 		$("#pmOfficerDivId").show();
 		$("#districtConsMandDivId").hide();
 		$("#advancedSearchButtonDivId").show();
@@ -1327,7 +1327,7 @@ function getRepresentativeSearchDetails1(value,globalStIndex){
    }else if(filterType == 'endorsmentNO'){
 	    filterValue=$("#endorsmentNoId").val();
    }else if(filterType == 'pmOfficer'){
-	    var pmOfficers=$("#officerId").val();
+	    var pmOfficers=$("#pmOfficerId").val();
 		for(var i in pmOfficers){
 			filterValue = filterValue+pmOfficers[i]+",";
 		}
@@ -1485,7 +1485,7 @@ function buildSummeryDetails(result){
 }
 var globalStatusIds = [];
 function getStatusList(onLoadstatusId){
-	
+	 $("#statusId").html('');
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
@@ -1509,7 +1509,7 @@ function getStatusList(onLoadstatusId){
       xhr.setRequestHeader("Content-Type", "application/json");
     }
   }).done(function(result){
-    $("#statusId").empty();
+   
 		if(result !=null && result.length >0){
 			//$("#statusId").html("<option value='0'>All</option>");
 			for(var i in result){
@@ -1518,13 +1518,12 @@ function getStatusList(onLoadstatusId){
 				}else{
 					$("#statusId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 				}
-				globalStatusIds.push(result[i].id);
+				globalStatusIds.push(result[i].id.toString());
 			}
 			if(searchBy == 'officer' && statusName !=''){
-				var idx = $.inArray(statusId, globalStatusIds);
-				if (idx == -1) {
+				if ( $.inArray(statusId.toString(), globalStatusIds) == -1) {
 				  $("#statusId").append("<option value='"+statusId+"' selected>"+statusName+"</option>");
-				} 
+				}
 			}
 		}
 		$("#statusId").trigger('chosen:updated');
@@ -3569,16 +3568,23 @@ function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusI
 			statusIds.push(statusList[i]);
 		}
 	}
-	var selOffcrId = $("#officerId").val();
+	var officerIds =[];
+	var selOffcrId = $("#pmOfficerId").val();
 	if(selOffcrId != null && selOffcrId.length >0){
-		officerId =selOffcrId;
-	} 
+		var statusList = statusId.split(',');
+		officerIds =statusList;
+	} else if(officerId >0){
+		var officerList = officerId.split(',');
+		for(var i=0;i<officerList.length-1;i++){
+			officerIds.push(officerList[i]);
+		}
+	}
  var json = {
 		 reportType :searchType,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 statusIds:statusIds,
-		 assetType:officerId
+		 searchLvlVals:officerIds
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -3598,7 +3604,10 @@ function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusI
 				if(gblOfficerId != null && gblOfficerId==result[i].key){
 					$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
 				}else{
-					$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+					if(result[i].key !=230)
+						$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+					else if(glDesignationId == 2 && result[i].key ==230)
+						$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
 				}
 			}
 		}

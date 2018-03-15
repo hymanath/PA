@@ -156,6 +156,52 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 						</div>
 					</div>
+					
+					<div class="panel-group"  style="display:none;" id="officerBlock">
+						<div class="panel panel-default panel-black">
+							<div class="panel-heading" role="tab" id="headingReferralWiseOverview123">
+								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionReferralWiseOverview123" href="#collapseReferralWiseOverview123">
+									<h4 class="panel-title text-capital">Status - Officer Wise</h4>
+								</a>
+							</div>
+							<div id="collapseReferralWiseOverview123" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReferralWiseOverview123">
+								<div class="panel-body">
+								<div class="col-sm-12 m_top20" >
+									<div class="white-block pad_5 bor_c2">
+										<div class="row">
+											<div class="col-sm-12">
+												<h4 class="pad_10"><b>Status - Officer Wise</b></h4>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="col-sm-12" >			
+									<div class="white-block pad_5 bor_c2">
+										<div id="officerWiseBlockDetailsDivId"></div>
+									</div>
+								</div>
+								<div class="col-sm-12">
+									<div class="white-block pad_5 bor_c2">
+										<div class="row">
+											<div class="col-sm-12">
+												<h4 class="pad_10"><b>Offficer Status Wise Details</b></h4>
+											</div>
+										</div>	
+										<div class="row m_top10">
+											<div class="col-sm-12">
+												<div id="officerDesignationWiseTableDivId"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+									
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
+					
 					<div class="panel-group" id="#accordionReferralWiseOverview">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingReferralWiseOverview">
@@ -208,13 +254,14 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 						</div>
 					</div>
+					
+					
 				</div>	
 				</div>
 				</div>
 				
-					
 				<!--</div>-->
-				<div style="display:none;" id="officerBlock">
+				<!--<div style="display:none;" id="officerBlock">
 				<div class="col-sm-12 m_top20" >
 					<div class="white-block pad_5 bor_c2">
 						<div class="row">
@@ -243,7 +290,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 						</div>
 					</div>
 				</div>
-				</div>
+				</div>-->
 				<!-- <div class="col-sm-12 m_top20" id="refWiseOverViewId" style="display:none;">
 				<div class="white-block pad_5 bor_c2">
 					<div class="row">
