@@ -25,7 +25,7 @@ public class PmRepresenteeRefDocumentDAO extends GenericDaoHibernate<PmRepresent
 	public List<Object[]> getPmRepresenteeRefDocumentByPetition(Long petitionId){
 		StringBuilder str = new StringBuilder();
 		str.append("select distinct model.pmRepresenteeRefDetailsId, model.document.path from PmRepresenteeRefDocument model " +
-				" where model.pmRepresenteeRefDetails.petitionId =:petitionId and model.isDeleted ='N'  ");
+				" where model.pmRepresenteeRefDetails.petitionId =:petitionId and model.isDeleted ='N'  group by model.documentId ");
 		Query query =getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();

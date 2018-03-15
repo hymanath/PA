@@ -23,7 +23,8 @@ public class PmPetitionDocumentDAO extends GenericDaoHibernate<PmPetitionDocumen
 	}
 	public List<Object[]> getPmPetitionDocumentByPetition(Long petitionId){
 		StringBuilder str = new StringBuilder();
-		str.append("select distinct model.pmPetitionDocumentId, model.document.path from PmPetitionDocument model where model.petitionId =:petitionId and model.isDeleted='N' ");
+		str.append("select distinct model.pmPetitionDocumentId, model.document.path from PmPetitionDocument model where model.petitionId =:petitionId and model.isDeleted='N' " +
+				" group by model.pmPetitionDocumentId ");
 		Query query =getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();
@@ -31,7 +32,7 @@ public class PmPetitionDocumentDAO extends GenericDaoHibernate<PmPetitionDocumen
 	
 	public List<Long> getPmPetitionDocumentIds(Long petitionId){
 		StringBuilder str = new StringBuilder();
-		str.append("select  model.pmPetitionDocumentId from PmPetitionDocument model where model.isDeleted='N' and  model.petitionId =:petitionId  and model.isDeleted='N'  ");
+		str.append("select  distinct model.pmPetitionDocumentId from PmPetitionDocument model where model.isDeleted='N' and  model.petitionId =:petitionId  and model.isDeleted='N'  ");
 		Query query =getSession().createQuery(str.toString());
 		query.setParameter("petitionId", petitionId);
 		return query.list();
