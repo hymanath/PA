@@ -293,13 +293,13 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//sb.append(",round(sum(model.costEstimation),2) " );//4
 		
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append(", model2.pmDesignation.pmDesignationId" +//5
-					" ,model2.pmDesignation.designation" + //6
-					",model2.pmDesignation.preferrableOrderNO  ");//7
+			sb.append(", pmDesignation.pmDesignationId" +//5
+					" ,pmDesignation.designation" + //6
+					",pmDesignation.preferrableOrderNO  ");//7
 		//}/*else if(type != null && (type.equalsIgnoreCase("overallStatus") || type.equalsIgnoreCase("status"))){
 			/*sb.append(", model.pmStatus.pmStatusId," +//8
 					" model.pmStatus.status ");//9
-*/		//}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){
+*/		//}*/else if(type != null && (type.equalsIgnoreCase("statusSubject") || type.equalsIgnoreCase("subject"))){       
 			sb.append(", pmSubject.pmSubjectId," +//8
 					" pmSubject.subject," + //9
 					" pmSubject.preferrableOrderNO ");//10
@@ -312,12 +312,16 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		//}
 		
 		sb.append("  from PmSubWorkDetails model,PmRepresenteeRefDetails model1 " );
+		sb.append(" left join  model1.pmRepresenteeDesignation model4 ");
 				sb.append(" left join model1.pmRefCandidateDesignation model2 " );
 		sb.append("  left join  model.pmDepartment pmDepartment left join model.pmSubject pmSubject ");
+		sb.append(" left join model2.pmDesignation pmDesignation ");
 		//if(type != null && (type.equalsIgnoreCase("statusReferral") || type.equalsIgnoreCase("referral"))){
-			sb.append("  where model.isDeleted='N'  and model1.isDeleted='N' " );
+		sb.append("  where ");
+		//	sb.append(" model.petition.petitionId in (3,38,96,107,110,199,326,384,506,1100,1107,1141,1142,1337,1452,1483,1699,1742,100094,100126,100209,100227,100245) and ");
+		sb.append("  model.isDeleted='N'  and model1.isDeleted='N' " );
 			sb.append("and  model1.petition.petitionId=model.petition.petitionId and model1.petition.isDeleted='N'");
-			sb.append("  and model2.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N' " );
+		//	sb.append("  and model2.isDeleted='N' and model4.isDeleted='N' " );
 							/*sb.append(" model1.pmRefCandidateDesignation.pmRefCandidateDesignationId=model2.pmRefCandidateDesignationId  " +
 					"  and model2.pmRefCandidateId=model1.pmRefCandidateId and model1.petition.isDeleted='N' ");
 		sb.append(" and model1.pmRepresentee.isDeleted = 'N'  " +
@@ -354,7 +358,31 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			 //sb.append(" order by model.pmStatus.orderNo asc ");
 		}
 		sb.append(" order by model.costEstimation ");
+		/*
+		 * Query query =getSession().createQuery(" select  distinct  model.petition.petitionId,  model.pmStatus.pmStatusId,model.pmStatus.status ," +
+				"round(model.costEstimation,2) as sum , '','',''  , " +
+				"model.pmSubject.pmSubjectId, model.pmSubject.subject, model.pmSubject.preferrableOrderNO ,model.pmDepartment.pmDepartmentId, model.pmDepartment.department, " +
+				"model.pmDepartment.preferrableOrderNO " +
+				"   from " +
+				" PmSubWorkDetails model  where model.petition.petitionId in " +
+				"(3,38,96,107,110,199,326,384,506,1100,1107,1141,1142,1337,1452,1483,1699,1742,100094,100126,100209,100227,100245)  and model.isDeleted='N'  and" +
+				" model.pmDepartment.pmDepartmentId in (17,27,22,34)  order by model.costEstimation  ".toString()).list();
+				*/
+		/*
+		Query query =getSession().createQuery(" select  distinct model1.petition.petitionId , pmDesignation.pmDesignationId ,pmDesignation.designation, pmDesignation.preferrableOrderNO  " +
+				//"model.pmSubject.pmSubjectId, model.pmSubject.subject, model.pmSubject.preferrableOrderNO ,model.pmDepartment.pmDepartmentId, model.pmDepartment.department, " +
+				//"model.pmDepartment.preferrableOrderNO " +
+				"   from " +
+				" PmRepresenteeRefDetails model1  " +
+				//" left join  model1.pmRepresenteeDesignation model4 " +
+				" left join model1.pmRefCandidateDesignation model2    " +
+				" left join model2.pmDesignation pmDesignation   where model1.petition.petitionId in " +
+				"(3,38,96,107,110,199,326,384,506,1100,1107,1141,1142,1337,1452,1483,1699,1742,100094,100126,100209,100227,100245)  and model1.isDeleted='N'  and" +
+				" model1.isDeleted='N' and model1.petition.isDeleted='N'  and model2.isDeleted='N'   ".toString()).list();
+				*/
+		
 		Query query =getSession().createQuery(sb.toString());
+		
 		if(deptIds != null && deptIds.size() >0){
 			query.setParameterList("deptIds", deptIds);
 		}
