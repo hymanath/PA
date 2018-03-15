@@ -1377,6 +1377,7 @@
 						 <value>com.itgrids.partyanalyst.model.BiometricDeviceLogTrack</value>
 						 <value>com.itgrids.partyanalyst.model.BiometricDeviceLog</value>
 						 <value>com.itgrids.partyanalyst.model.ActivityQuestionAnswerInfo</value>
+						 <value>com.itgrids.partyanalyst.model.TourTypeCategory</value>
 						 <value>com.itgrids.partyanalyst.model.NominatedPostAccessMultiplePositionsDetails</value>
 				  </list>
 			

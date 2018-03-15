@@ -4306,6 +4306,9 @@
 	  <bean id="activityQuestionAnswerInfoDAO" class="com.itgrids.partyanalyst.dao.hibernate.ActivityQuestionAnswerInfoDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	  <bean id="tourTypeCategoryDAO" class="com.itgrids.partyanalyst.dao.hibernate.TourTypeCategoryDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 	 <bean id="nominatedPostAccessMultiplePositionsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessMultiplePositionsDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
