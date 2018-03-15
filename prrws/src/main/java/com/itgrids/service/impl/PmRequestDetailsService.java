@@ -6070,8 +6070,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											List<PetitionHistoryVO> historyWorkList = timeMap.get(timeStr);
 											if(commonMethodsUtilService.isListOrSetValid(historyWorkList)){
 												for (PetitionHistoryVO hVO : historyWorkList) {
-													if(documentsIdsList.contains(hVO.getId()))
-															continue;
+													//if(documentsIdsList.contains(hVO.getId()))
+														//	continue;
 													documentsIdsList.add(hVO.getId());
 													workVO.setWorkId(workId);
 													workVO.setSubWorkDesc(hVO.getSubWorkDesc());
