@@ -26,16 +26,16 @@ public class PmRequestVO {
 	private String representationType;
 	private String representationdate;
 	private Long representeeDesignationId;
-	private AddressVO addressVO;
-	private AddressVO candidateAddressVO;
-	private AddressVO candidateNativeAddressVO ;
+	private AddressVO addressVO = new AddressVO();
+	private AddressVO candidateAddressVO = new AddressVO();
+	private AddressVO candidateNativeAddressVO  = new AddressVO();
 	private List<AddressVO> addressVOList = new ArrayList<AddressVO>(0);
 	private List<PetitionsWorksVO> worksList = new ArrayList<PetitionsWorksVO>(0);
 	private List<PmRequestVO> referList= new ArrayList<PmRequestVO>(0);
 	private List<PmRequestVO> selfReferList= new ArrayList<PmRequestVO>(0);
 	private List<MultipartFile> fileList = new ArrayList<MultipartFile>(0);
 	private List<KeyValueVO> fileNamesList = new ArrayList<KeyValueVO>();
-	
+	private List<String> base64ImageList = new ArrayList<String>(0);
 	private Long refCandidateId;
 	private String startDate;
 	private String endDate;
@@ -269,4 +269,11 @@ public class PmRequestVO {
 	public void setSelfReferList(List<PmRequestVO> selfReferList) {
 		this.selfReferList = selfReferList;
 	}
+	public List<String> getBase64ImageList() {
+		return base64ImageList;
+	}
+	public void setBase64ImageList(List<String> base64ImageList) {
+		this.base64ImageList = base64ImageList;
+	}
+	
 }
