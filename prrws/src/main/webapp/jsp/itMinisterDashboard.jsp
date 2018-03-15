@@ -3,7 +3,7 @@
 	<head>
 		<link rel="stylesheet" type="text/less" href="Assests/less/bootstrap.less" />
 		<link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
-		<link href="Assests/css/custom.less" rel="stylesheet" type="text/less"/>
+		<link href="Assests/css/cust om.less" rel="stylesheet" type="text/less"/>
 		<link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 		<title>ITMinisterDashboard</title>
 		
@@ -50,6 +50,9 @@
 			}
 			.m_Top15{
 				margin-top:15px;
+			}
+			h2{
+				text-align:center
 			}
 		</style>
 	</head>
@@ -98,7 +101,7 @@
 														<h5><b>REGISTRED PROPERTIES</b></h5> 
 													</div>
 													<div class="col-sm-2 pull-right" style="background-color:#CCB064;border-radius: 5px;">
-														<h2 class="white_color" id="devloperRegPropertiesId"></h2>
+														<h2 style="text-align:center" class="white_color" id="devloperRegPropertiesId"></h2>
 													</div>
 												</div>
 											</div>
@@ -255,49 +258,15 @@
 				
 						<div class="row m_top10">
 							<div class="col-sm-12">
-								<div class="block m_top5" style="border:1px solid #e3e3e3; padding:2px; border-radius:5px; background-color: #FFFFFF;">
-									<div class="row m_top10" >
+								<div class="block m_top5" style="border:1px solid #e3e3e3; padding:10px; border-radius:5px; background-color: #FFFFFF;">
+									<div class="row m_top5" >
 										<div class="col-sm-3">
 											<div class="pad_5 m_top10" style="border-right:1px solid grey; height: 56px;">
 												<h4 align="center" class="font_weight"><b>Pending@</b></h4>
 											</div>
 										</div>
 										<div class="col-sm-9">
-											<div class="row m_top10">
-												<div class="col-sm-2">
-													<div class="pad_5 m_top10" style="border-right:1px solid grey; height: 56px;">
-														<h5 class="font_weight"><b>APPLICANT</b></h5>
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_top10" style="border-right:1px solid grey; height: 56px;">
-														<h5 class="font_weight"><b>STAFF</b></h5>
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_top10 " style="border-right:1px solid grey;height: 56px;">
-														<h5 class="font_weight"><b>CEO - INFRA /CEO - PROMOTION</b></h5>
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_top10 " style="border-right:1px solid grey;height: 56px;">
-														<h5 class="font_weight"><b>TECHNICAL TEAM / LEGAL TEAM</b></h5>
-													</div>
-												</div>
-												<div class="col-sm-2">
-
-													<div class="pad_5 m_top10 " style="border-right:1px solid grey; height: 56px;">
-														<h5 class="font_weight"><b>CCITI</b></h5>
-													</div>
-												</div>
-												<div class="col-sm-2">
-												<div>
-													<div class="pad_5 m_top10 m_left-20">
-														<h5 class="font_weight"><b>HMIT OFFICE</b></h5>
-													</div>
-													</div>
-												</div>
-											</div>	
+											<div id="pendingLevelId"></div>
 										</div>
 									</div>
 								</div>	
@@ -310,64 +279,13 @@
 														<h4 style="text-align: center"class="font_weight m_Top20">Developer</h4>
 													</div>
 													<div class="col-sm-4 m_top10">
-														<h4 class="font_weight well-sm" style="background-color: #CDDAEF; ">300</h4>
+														<h4 class="font_weight well-sm" style="background-color: #CDDAEF; "id="devloperId"></h4>
 													</div>
 													
 												</div>		
 											</div>
 										</div>
-										<div class="col-sm-9  approvalDevloperCls">
-											<div class="row">
-												<div class="col-sm-2">
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">	
-															<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;" id="devloperId1">
-															</h4>
-														</div>	
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;" id="devloperId3">
-															</h4>
-														</div>	
-													</div>
-												</div>
-												<div class="col-sm-2" >
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">	
-															<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;" id="devloperId7">
-															</h4>
-														</div>
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;" id="devloperId4">
-															</h4>
-														</div>
-													</div>
-												</div>
-												<div class="col-sm-2" >
-													<div class="pad_5 " style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;" id="devloperId6">
-															</h4>
-														</div>	
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5">
-														<div class="col-sm-10 m_top10">
-															<h4 class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;" id="devloperId8">
-															</h4>
-														</div>
-													</div>
-												</div>
-											</div>	
-										</div>
+										<div id="devloperPendingLevelDivId"> </div>
 									</div>
 								</div>
 								<div class="m_top5" style="border:1px solid #e3e3e3; padding:10px; border-radius:5px; background-color: #FFFFFF;">
@@ -379,69 +297,14 @@
 														<h4 style="text-align: center" class="font_weight m_Top20">IT Company</h4>
 													</div>
 													<div class="col-sm-4 m_top10">
-														<h4 class="font_weight well-sm" style="background-color: #CDDAEF; ">300</h4>
+														<h4 class="font_weight well-sm" style="background-color: #CDDAEF;" id="itCompanyId"></h4>
 													</div>
 												</div>		
 											</div>
 										</div>
-										<div class="col-sm-9 approvalItCompanyCls">
-											<div class="row">
-												<div class="col-sm-2" >
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 id="itCompanyId9" class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">
-															</h4>
-														</div>
-													</div>
-												</div>
-												<div class="col-sm-2" >
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 id="itCompanyId10" class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">
-															</h4>
-														</div>
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 id="itCompanyId5"class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">
-															
-															</h4>
-														</div>
-													</div>
-												</div>
-												<div class="col-sm-2" >
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4  id="itCompanyId0"class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">
-															</h4>
-														</div>	
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="pad_5 m_left-20" style="border-right:1px solid grey; height: 56px;padding-right:10px;">
-														<div class="col-sm-10 m_top10">
-															<h4 id="itCompanyId11"class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">
-															</h4>
-														</div >
-													</div>
-												</div>
-												<div class="col-sm-2">
-													<div class="">
-														<div class="col-sm-10 m_top10">
-															<h4 id="itCompanyId12"class="font_weight well-sm" style="background-color: #FDF0C7; border-radius: 5px;">
-															</h4>
-														</div>
-													</div>
-												</div>
-											</div>	
-										</div>
+										<div id="itCompanyPendingLevelDivId"></div>
 									</div>
 								</div>
-								
-								
-								
 							</div>
 						</div>
 					</div>
@@ -462,8 +325,7 @@
 									</div>
 									<div class="col-sm-4">
 										<div class="pull-right">
-											<h2 class="approvedPropertiesCls"></h2>
-											<p style="font-size:14px;" class = "approvedPropertiesSumCls"></p>
+											<div class="approvedPropertiesCls"></div>
 										</div>
 									</div>
 								</div>
@@ -480,7 +342,6 @@
 									<div class="col-sm-4">
 										<div class="pull-right">
 											<h2 class="availablePropertiesCls"></h2>
-											<p style="font-size:14px;" class="availablePropertiesSumCls"></p>
 										</div>
 									</div>
 								</div>	
@@ -499,8 +360,6 @@
 									<div class="col-sm-6">
 										<div class="" style="background-color:#7BD97B;padding:10px;border-radius: 5px;">
 											<h5 class="occupiedPropertiesCls"></h5>
-												<p align="right" style="font-size:14px;" class="occupiedPropertiesSumCls" >
-												</p>
 										</div>
 									</div>
 								</div>	
@@ -627,3 +486,6 @@
 		<script src ="Assests/itMinisterDashboard/itMinisterDashboard.js" type = "text/javascript" ></script>
 	</body>
 </html>
+
+
+										
