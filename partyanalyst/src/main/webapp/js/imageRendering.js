@@ -881,6 +881,7 @@ function getAllDepartments(isDepartment,type){
 		isDepartment = $(this).attr("attr_type");
 		$("#typeId").html('<div class="row"><div class="col-sm-12"><img src="D2D_Assests/images/spinner.gif" style="width:20px;height:20px;"/></div></div>');
 	$("#wordCloudDepartmentNames").html("");
+	departmentNames=[];
 	getAllDepartments(isDepartment,'onchange');
 	document.getElementsByClassName("btn-primary")[0].disabled = "true";
 	document.getElementsByClassName("newsLettersRefresh")[0].disabled = "true";
