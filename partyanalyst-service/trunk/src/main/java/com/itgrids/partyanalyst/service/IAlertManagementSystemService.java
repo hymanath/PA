@@ -266,6 +266,6 @@ public interface IAlertManagementSystemService {
 	 public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo);
 	 public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVo);
 	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId);
-	 public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId);
+	 public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId);
 }        
 

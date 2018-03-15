@@ -318,12 +318,12 @@ public interface IWebServiceHandlerService {
     public List<IdNameVO> getStatusCompletionInfo(Long alertId,Long levelValue, Long designationId, Long levelId ,Long userId,List<String> entitlements );
     public List<IdNameVO> getGovtAllDepartmentDetails();
     public List<List<AlertTrackingVO>> viewAlertHistory(Long alertdId,String task);
-	public String getAlertCategoryByAlert(Long alertId);
+	public KeyValueVO getAlertCategoryByAlert(Long alertId);
     public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId,Long userId);
 	public List<KeyValueVO> getDocumentsForAlerts(Long alertId);
 	public String alertDeptmentExistInLogin(Long alertId,Long userId);
     public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId);
-    public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId);
+    public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId);
 	public List<AlertTrackingVO> getCommentsForAlert(Long alertId);
 }
 
