@@ -36,6 +36,8 @@ public class SelfAppraisalCandidateDetailsNew {
 	private Long updatedBy;
 	private Date insertedTime;
 	private Date updatedTime;
+	private Long tourTypeCategoryId;
+	private Long tourTypeChildId;
 	
 	private SelfAppraisalCandidate selfAppraisalCandidate;
 	private SelfAppraisalDesignation selfAppraisalDesignation;
@@ -44,6 +46,9 @@ public class SelfAppraisalCandidateDetailsNew {
 	private SelfAppraisalToursMonth selfAppraisalToursMonth;
 	private User insertedUser;
 	private User updatedUser;
+	private TourTypeCategory tourTypeCategory;
+	private TourType tourTypeChild;
+	
 	
 	private String isDeleted;
 	private Long tdpCadreId;
@@ -234,8 +239,38 @@ public class SelfAppraisalCandidateDetailsNew {
 	public void setTdpCadre(TdpCadre tdpCadre) {
 		this.tdpCadre = tdpCadre;
 	}
-	
-	
-	
-	
+	@Column(name="tour_type_category_id")
+	public Long getTourTypeCategoryId() {
+		return tourTypeCategoryId;
+	}
+	public void setTourTypeCategoryId(Long tourTypeCategoryId) {
+		this.tourTypeCategoryId = tourTypeCategoryId;
+	}
+	@Column(name="tour_type_child_id")
+	public Long getTourTypeChildId() {
+		return tourTypeChildId;
+	}
+	public void setTourTypeChildId(Long tourTypeChildId) {
+		this.tourTypeChildId = tourTypeChildId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tour_type_category_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TourTypeCategory getTourTypeCategory() {
+		return tourTypeCategory;
+	}
+	public void setTourTypeCategory(TourTypeCategory tourTypeCategory) {
+		this.tourTypeCategory = tourTypeCategory;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="tour_type_child_id",insertable=false,updatable=false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public TourType getTourTypeChild() {
+		return tourTypeChild;
+	}
+	public void setTourTypeChild(TourType tourTypeChild) {
+		this.tourTypeChild = tourTypeChild;
+	}
 }

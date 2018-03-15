@@ -506,12 +506,24 @@ public class SelfAppraisalCandidateDetailsNewDAO extends GenericDaoHibernate<Sel
     @SuppressWarnings("unchecked")
 	public List<Object[]> getToursOverviewByCadre(Long tdpCadreId, Long tourMonthId){
 	       	StringBuilder queryStr = new StringBuilder();
-	       	
-	       	queryStr.append(" select model.selfAppraisalCandidateDetailsNewId,model.selfAppraisalDesignation.selfAppraisalDesignationId," +
-	       			" model.selfAppraisalDesignation.designation,model.selfAppraisalTourCategory.selfAppraisalTourCategoryId," +
-	       			" model.selfAppraisalTourCategory.tourCategory,model.tourType.tourType," +
-	       			" model.tourDays,model.updatedTime,model.selfAppraisalCandidate.selfAppraisalCandidateId,model.tourType.tourTypeId from " +
-	       			" SelfAppraisalCandidateDetailsNew model ");
+	       	queryStr.append("  select model.selfAppraisalCandidateDetailsNewId," +//0
+	       			        "  model.selfAppraisalDesignation.selfAppraisalDesignationId," +//1
+	       			         " model.selfAppraisalDesignation.designation," +//2
+	       			         " model.selfAppraisalTourCategory.selfAppraisalTourCategoryId," +//3
+	       			         " model.selfAppraisalTourCategory.tourCategory," +//4
+	       			         " model.tourType.tourType," +//5
+	       			         " model.tourDays," +//6
+	       			         " model.updatedTime," +//7
+	       			         " model.selfAppraisalCandidate.selfAppraisalCandidateId," +//8
+	       			         " model.tourType.tourTypeId," +//9
+	       			         " tourTypeCategory.tourTypeCategoryId," +//10
+	       			         " model.tourTypeChildId, " +//11
+	       			         " tourTypeCategory.tourTypeCategory," +//12
+	       			         " tourTypeChild.tourType " +//13
+	       			         " from " +
+	       			         " SelfAppraisalCandidateDetailsNew model " +
+	       			         " left join model.tourTypeCategory tourTypeCategory " +
+	       			         " left join model.tourTypeChild tourTypeChild ");
 	       	
 	    	queryStr.append( " where " +
 	       			" model.tdpCadre.tdpCadreId = :tdpCadreId ");
