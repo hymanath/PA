@@ -573,12 +573,14 @@
 						</div>
 					</div>
 				</div>
+				
 				<div class="col-sm-12 m_top10">
 					<div class="row">
 						<div id="levelWiseOverviewId"></div>
 					</div>
 					
 				</div>
+				
 			</div>
 			
 			<div class="modal fade" id="swmModal" role="dialog">
@@ -594,6 +596,9 @@
         <div class="modal-body">
 			<div class="row">
 				<div id="swmModalContent"></div>
+				<div  class="col-sm-12 m_top10">
+					<div id="gpsCountBlockId"></div>
+				</div>
 			</div>
           
         </div>
@@ -617,6 +622,7 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js"></script>
 <script type="text/javascript" src="Assests/js/locationHierarchy.js"></script>
 <script src="Assests/solidWasteManagement/solidWasteManagement.js" type="text/javascript"></script>
 </body>
