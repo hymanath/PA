@@ -206,7 +206,22 @@ public class NregsDataVO implements Serializable{
 	private String year1718;
 	private String year;
 	
+	private String materialEntitlement;
+	private String balanceMaterial;
 	
+	
+	public String getMaterialEntitlement() {
+		return materialEntitlement;
+	}
+	public void setMaterialEntitlement(String materialEntitlement) {
+		this.materialEntitlement = materialEntitlement;
+	}
+	public String getBalanceMaterial() {
+		return balanceMaterial;
+	}
+	public void setBalanceMaterial(String balanceMaterial) {
+		this.balanceMaterial = balanceMaterial;
+	}
 	
 	public String getPersonDaysIsHigh() {
 		return personDaysIsHigh;

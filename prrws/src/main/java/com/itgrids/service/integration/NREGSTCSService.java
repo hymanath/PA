@@ -8944,6 +8944,115 @@ public class NREGSTCSService implements INREGSTCSService{
 		}
 		return null;
 	}
+	
+	/*
+	 * Date : 15/03/2018
+	 * Author :SRAVANTH.
+	 * @description : getMaterialAvailabilityStatusForFinancialYear
+	 */
+	public List<NregsDataVO> getMaterialAvailabilityStatusForFinancialYear(InputVO inputVO){
+		List<NregsDataVO> returnList = new ArrayList<NregsDataVO>();
+		try {
+			if(inputVO.getSublocaType() != null && inputVO.getSublocaType().trim().toString().length() > 0l)
+				inputVO.setSublocationType(inputVO.getSublocaType().trim());
+			
+			String str = convertingInputVOToString(inputVO);
+			
+			String output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str,IConstants.REQUEST_METHOD_POST);
+	        
+	        if(output == null){
+	 	    	  throw new RuntimeException("Webservice Data Not Found http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew "+str);
+	 	      }else{
+	 	    	if(output != null && !output.isEmpty()){
+	 	    		JSONArray finalArray = new JSONArray(output);
+	 	    		if(finalArray!=null && finalArray.length()>0){
+	 	    			for(int i=0;i<finalArray.length();i++){
+	 	    				NregsDataVO vo = new NregsDataVO();
+	 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+	 	    				vo.setUniqueId(jObj.getLong("UNIQUEID"));
+	 	    				vo.setDistrict(jObj.getString("DISTRICT"));
+	 	    				vo.setConstituency(jObj.getString("CONSTITUENCY"));
+	 	    				vo.setMandal(jObj.getString("MANDAL"));
+	 	    				vo.setPanchayat(jObj.getString("PANCHAYAT"));
+	 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
+	 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
+	 	    				vo.setTotalExpenditure(jObj.getString("TOTALEXPENDITURE"));
+	 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
+	 	    				vo.setMaterialEntitlement(new BigDecimal(Double.valueOf(jObj.getString("WAGEEXPENDITURE"))*2/3).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				vo.setBalanceMaterial(new BigDecimal(Double.valueOf(vo.getMaterialEntitlement()) - Double.valueOf(vo.getMaterialExpenditure())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				returnList.add(vo);
+	 	    			}
+	 	    		}
+	 	    	}
+	 	    	
+	 	    	if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+						&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	 	    		//District
+					if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+						inputVO.setSublocationType("district");
+						inputVO.setLocationType("district");
+						inputVO.setLocationId(inputVO.getDistrictId());
+						
+						str = convertingInputVOToString(inputVO);
+						
+						output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str,IConstants.REQUEST_METHOD_POST);
+				        
+				        if(output == null){
+				 	    	  throw new RuntimeException("Webservice Data Not Found http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew "+str);
+				 	      }else{
+				 	    	if(output != null && !output.isEmpty()){
+				 	    		JSONArray finalArray = new JSONArray(output);
+				 	    		if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int i=0;i<finalArray.length();i++){
+					 	    				NregsDataVO vo = new NregsDataVO();
+					 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+					 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
+					 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
+					 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
+					 	    				vo.setMaterialEntitlement(new BigDecimal(Double.valueOf(jObj.getString("WAGEEXPENDITURE"))*2/3).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					 	    				vo.setBalanceMaterial(new BigDecimal(Double.valueOf(vo.getMaterialEntitlement()) - Double.valueOf(vo.getMaterialExpenditure())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					 	    				returnList.get(0).getSubList().add(vo);
+				 	    				}
+				 	    			}
+				 	    		}
+				 	      }
+					}
+					//State
+					inputVO.setSublocationType("state");
+					inputVO.setLocationType("state");
+					inputVO.setLocationIdStr("-1");
+					
+					str = convertingInputVOToString(inputVO);
+					
+					output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew", str,IConstants.REQUEST_METHOD_POST);
+			        
+			        if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found http://dbtrd.ap.gov.in/NregaDashBoardService/rest/LabourBudgetServiceNew/LabourBudgetDataNew "+str);
+			 	      }else{
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONArray finalArray = new JSONArray(output);
+			 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int i=0;i<finalArray.length();i++){
+				 	    				NregsDataVO vo = new NregsDataVO();
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+				 	    				vo.setWageExpenditure(jObj.getString("WAGEEXPENDITURE"));
+				 	    				vo.setMaterialExpenditure(jObj.getString("MATERIALEXPENDITURE"));
+				 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
+				 	    				vo.setMaterialEntitlement(new BigDecimal(Double.valueOf(jObj.getString("WAGEEXPENDITURE"))*2/3).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				vo.setBalanceMaterial(new BigDecimal(Double.valueOf(vo.getMaterialEntitlement()) - Double.valueOf(vo.getMaterialExpenditure())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				returnList.get(0).getSubList().add(vo);
+			 	    				}
+			 	    			}
+			 	    		}
+			 	      }
+				}
+	 	      }
+	        
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMaterialAvailabilityStatusForFinancialYear - NREGSTCSService service", e);
+		}
+		return returnList;
+	}
 	/*
 	 * Date : 15/3/2018
 	 * Author : Harika

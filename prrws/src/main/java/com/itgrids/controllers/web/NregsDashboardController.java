@@ -919,6 +919,18 @@ public class NregsDashboardController {
 		}
 		return returnList;
 	}
+	
+	@PostMapping("/getMaterialAvailabilityStatusForFinancialYear")
+	public @ResponseBody List<NregsDataVO> getMaterialAvailabilityStatusForFinancialYear(@RequestBody InputVO vo){
+		List<NregsDataVO> levlWiseVOList = null;
+		try {
+			levlWiseVOList = nregsTcsService.getMaterialAvailabilityStatusForFinancialYear(vo);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getMaterialAvailabilityStatusForFinancialYear - NREGSController controller", e);
+		}
+		return levlWiseVOList;
+	}
 	@PostMapping("/getWorkCompletionData")
 	public @ResponseBody List<NregsDataVO> getWorkCompletionData(@RequestBody InputVO vo){
 		List<NregsDataVO> returnList = null;
