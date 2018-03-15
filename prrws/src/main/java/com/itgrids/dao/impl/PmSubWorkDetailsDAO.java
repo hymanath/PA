@@ -602,7 +602,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		 }
 		 return (String)query.uniqueResult();
 	}
-	public List<Object[]> getChildOfficersByParentOfficerId(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,Long pmOfficerid,Set<Long> petitionIdsList,Set<Long> pmOffcrDesigids){
+	public List<Object[]> getChildOfficersByParentOfficerId(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,List<Long> pmOfficerids,Set<Long> petitionIdsList,Set<Long> pmOffcrDesigids){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId" +
 				",model.pmDepartmentDesignationOfficer.pmOfficer.name" +
@@ -623,8 +623,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			sb.append(" and model.pmSubWorkDetails.pmStatus.pmStatusId in (:statusIds) ");
 		}
 		
-		if(pmOfficerid != null && pmOfficerid.longValue()>0l){
-			sb.append(" and model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId = :pmOfficerid ");
+		if(pmOfficerids != null && pmOfficerids.size()>0){
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId in (:pmOfficerids) ");
 		}
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			sb.append(" and  model.petition.petitionId in(:petitionIdsList) ");
@@ -641,8 +641,8 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(statusIds != null && statusIds.size() >0){
 			query.setParameterList("statusIds", statusIds);
 		}
-		if(pmOfficerid != null && pmOfficerid.longValue()>0l){
-			query.setParameter("pmOfficerid", pmOfficerid);
+		if(pmOfficerids != null && pmOfficerids.size()>0){
+			query.setParameter("pmOfficerids", pmOfficerids);
 		}
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			query.setParameterList("petitionIdsList", petitionIdsList);

@@ -566,6 +566,6 @@ public class PmRequestDetailsController {
 				Long offcrDesigid =deptVO.getDesignationId();
 				
 				List<Long> statusIds = inputVO.getStatusIds();
-		    	return locationDetailsService.getChildOfficersByParentOfficerId(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getAssetType(),userId,deptDesigIds,offcrDesigid);
+		    	return locationDetailsService.getChildOfficersByParentOfficerId(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getSearchLvlVals(),userId,deptDesigIds,offcrDesigid);
 		    }
 }

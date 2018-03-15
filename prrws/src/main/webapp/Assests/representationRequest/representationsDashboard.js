@@ -17,11 +17,11 @@ function onLoadCalls(){
 		$("#leadWiseDivId").show();
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
-		//$("#officerBlock").show();
+		$("#officerBlock").show();
 		getReferralWiseOverviewDetails("");
 		getBriefLeads();
 		getLeadWiseOverviewDetails();
-		//getPmOfficerWisePetitionDetails("","",loginDesigId);
+		getPmOfficerWisePetitionDetails("","",loginDesigId);
 	}
 }
 
@@ -920,8 +920,8 @@ function buildOfficerBlock(result,loginUsr){
 					else if(i==1 && loginUsr== 23)
 					  str+='<div class="panel-heading panel_active">';
 					else
-					  str+='<div class="panel-heading">';
-						str+='<h3 class="panel-title" style="color:#000"><img src="Assests/icons/Green.png"> <span class="m_left">'+result[i].name+'</span></h3>';
+					  str+='<div class="panel-heading dafault-panelCLS" >';
+						str+='<h3 class="panel-title" style="color:#000 !important;"><img src="Assests/icons/Green.png"> <span class="m_left">'+result[i].name+'</span></h3>';
 					  str+='</div>';
 					  if(i==0)
 						str+='<div class="panel-body desig_bg officer_bg_Css">';
@@ -991,6 +991,9 @@ function buildOfficerBlock(result,loginUsr){
 
 $(document).on("click",".officerWiseBlockCls",function(){
 	$(".officerWiseBlockCls").find('.panel-heading').removeClass("panel_active");
+	
+	$(".officerWiseBlockCls").find('.panel-heading').addClass("dafault-panelCLS");
+	$(this).find('.panel-heading').removeClass("dafault-panelCLS");
 	$(this).find('.panel-heading').addClass("panel_active");
 	
 	$(".officer_bg_Css").removeClass("desig_bg");
