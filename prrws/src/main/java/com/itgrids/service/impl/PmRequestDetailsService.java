@@ -529,8 +529,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											petitionRefferer.setPmRefCandidateDesignationId(pmRefDesignation.getPmRefCandidateDesignationId());// ref and representee designation same. himself referrer
 											petitionRefferer.setPmRepresenteeId(pmRepRefDesignation.getPmRepresenteeId());
 											petitionRefferer.setPmRepresenteeDesignationId(pmRepRefDesignation.getPmRepresenteeDesignationId());
-											petitionRefferer.setPmRefCandidateId(4074L);//empty name
-											petitionRefferer.setPmRefCandidateDesignationId(4257L);//empty ref details
+											//petitionRefferer.setPmRefCandidateId(4074L);//empty name
+											//petitionRefferer.setPmRefCandidateDesignationId(4257L);//empty ref details
 											petitionRefferer.setIsDeleted("N");
 											petitionRefferer.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 											petitionRefferer.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
