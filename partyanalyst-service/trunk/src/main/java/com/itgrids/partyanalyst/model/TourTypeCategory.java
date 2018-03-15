@@ -11,44 +11,36 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 @Entity
-@Table(name="tour_type")
+@Table(name="tour_type_category")
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-public class TourType {
+public class TourTypeCategory {
 
-	private Long tourTypeId;
-	private String tourType;
+	private Long tourTypeCategoryId;
+	private String tourTypeCategory;
 	private String isDeleted;
-	private Long parentId;
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	@Column(name="tour_type_id", unique=true, nullable=false)
-	public Long getTourTypeId() {
-		return tourTypeId;
+	@Column(name="tour_type_category_id", unique=true, nullable=false)
+	public Long getTourTypeCategoryId() {
+		return tourTypeCategoryId;
 	}
-	public void setTourTypeId(Long tourTypeId) {
-		this.tourTypeId = tourTypeId;
+	public void setTourTypeCategoryId(Long tourTypeCategoryId) {
+		this.tourTypeCategoryId = tourTypeCategoryId;
 	}
-	@Column(name="tour_type")
-	public String getTourType() {
-		return tourType;
+	@Column(name = "tour_type_category")
+	public String getTourTypeCategory() {
+		return tourTypeCategory;
 	}
-	public void setTourType(String tourType) {
-		this.tourType = tourType;
+	public void setTourTypeCategory(String tourTypeCategory) {
+		this.tourTypeCategory = tourTypeCategory;
 	}
-	@Column(name="is_deleted")
+	@Column(name = "is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;
 	}
 	public void setIsDeleted(String isDeleted) {
 		this.isDeleted = isDeleted;
-	}
-	@Column(name = "parent_id")
-	public Long getParentId() {
-		return parentId;
-	}
-	public void setParentId(Long parentId) {
-		this.parentId = parentId;
 	}
 	
 	

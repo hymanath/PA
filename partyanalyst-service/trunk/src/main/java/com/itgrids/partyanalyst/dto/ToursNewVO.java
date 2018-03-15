@@ -57,6 +57,8 @@ public class ToursNewVO implements Serializable {
 	private Long tdpCadreId;
 	private String type;
 	private String remark;
+	private Long tourTypeCategoryId;
+	private Long childTourTypeId;
 		
 
 	public String getRemark() {
@@ -370,9 +372,20 @@ public class ToursNewVO implements Serializable {
 		this.toursVoProgramsList = toursVoProgramsList;
 	}
 
-	
-	
-	
-	
-	
+	public Long getTourTypeCategoryId() {
+		return tourTypeCategoryId;
+	}
+
+	public void setTourTypeCategoryId(Long tourTypeCategoryId) {
+		this.tourTypeCategoryId = tourTypeCategoryId;
+	}
+
+	public Long getChildTourTypeId() {
+		return childTourTypeId;
+	}
+
+	public void setChildTourTypeId(Long childTourTypeId) {
+		this.childTourTypeId = childTourTypeId;
+	}
+   
 }
