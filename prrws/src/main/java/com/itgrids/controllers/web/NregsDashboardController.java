@@ -919,4 +919,14 @@ public class NregsDashboardController {
 		}
 		return returnList;
 	}
+	@PostMapping("/getWorkCompletionData")
+	public @ResponseBody List<NregsDataVO> getWorkCompletionData(@RequestBody InputVO vo){
+		List<NregsDataVO> returnList = null;
+		try {
+			returnList = nregsTcsService.getWorkCompletionData(vo);
+		} catch (Exception e){
+			LOG.error("Exception raised at getWorkCompletionData - NREGSController controller",e);
+		}
+		return  returnList;
+	}
 }
