@@ -96,5 +96,6 @@ public interface INREGSTCSService {
 	public void savingFieldManDaysService();
 	public List<NregaPaymentsVO> getNregaPaymentsDepartmentWiseOverview(InputVO inputVO);
 	public List<NregaPaymentsVO> getNregaPaymentsDeptDtlsLocationWise(InputVO inputVO);
+	public List<NregsDataVO> getMaterialAvailabilityStatusForFinancialYear(InputVO inputVO);
 	public List<NregsDataVO> getWorkCompletionData(InputVO inputVO);
 }
