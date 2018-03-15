@@ -21,8 +21,29 @@ public class JalavaniAlertsInputVO implements Serializable{
 	private Long levelId;
 	private Long userId;
 	private List<String> entitlements;
+	private Long statusId;
+	private Long sourceId;
+	private Long deptId;
 	
 	
+	public Long getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public Long getSourceId() {
+		return sourceId;
+	}
+	public void setSourceId(Long sourceId) {
+		this.sourceId = sourceId;
+	}
 	public Long getAlertId() {
 		return alertId;
 	}
