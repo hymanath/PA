@@ -17029,7 +17029,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}
 		}
 	}
-	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId){
+	/*public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId){
 		List<JalavaniAlertResultVO> finalVoList = new ArrayList<JalavaniAlertResultVO>(0);
 		try {
 			Date startDate = null;Date endDate = null;
@@ -17092,5 +17092,25 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			LOG.error("Error occured getJalavaniAlertSourceDetailsInformation() method of AlertManagementSystemService",e);
 		}
 		return finalVoList;
+	}*/
+	
+	public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId){
+		List<AlertCoreDashBoardVO> finalAlertVOs = new ArrayList<AlertCoreDashBoardVO>(0);
+		try {
+			Date startDate = null;Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDateStr != null && endDateStr != null){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
+			List<Long> alertIdsList = alertDAO.getAlertAndStatusWiseCountsForDistForPopup(startDate, endDate, searchType, type, locationTypeId, alertCategoryId, statusId);
+		
+			List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdsList));
+		    setAlertDtls(finalAlertVOs, list);
+		
+		}catch (Exception e){
+			LOG.error("Error occured getJalavaniAlertSourceDetailsInformation() method of AlertManagementSystemService",e);
+		}
+		return finalAlertVOs;
 	}
 }

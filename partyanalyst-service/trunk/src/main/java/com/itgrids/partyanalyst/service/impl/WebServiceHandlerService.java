@@ -5909,14 +5909,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return returnString;
 	}
-	public String getAlertCategoryByAlert(Long alertId){
-		String returnString = new String();
+	public KeyValueVO getAlertCategoryByAlert(Long alertId){
+		KeyValueVO vo  = new KeyValueVO();
 		try{
-			returnString = cccDashboardService.getAlertCategoryByAlert(alertId);
+			String returnString = cccDashboardService.getAlertCategoryByAlert(alertId);
+			vo.setName(returnString);
     	}catch(Exception e){
     		log.error("Exception raised in getAlertCategoryByAlert  method in WebServiceHandlerService1",e);
     	}
-    	return returnString;
+    	return vo;
 	}
 	public List<AlertTrackingVO> getSubTaskInfoForAlert(Long alertId,Long userId){
 		List<AlertTrackingVO> alertVoList = new ArrayList<AlertTrackingVO>(0);
@@ -5936,10 +5937,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId){
-		List<JalavaniAlertResultVO> alertVoList = new ArrayList<JalavaniAlertResultVO>(0);
+	public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId){
+		List<AlertCoreDashBoardVO> alertVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 		try{
-			alertVoList = alertManagementSystemService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,locationTypeId,locationId,statusId,categoryId);
+			alertVoList = alertManagementSystemService. getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,searchType,type,locationTypeId,alertCategoryId,statusId);
     	}catch(Exception e){
     		log.error("Exception raised in getJalavaniAlertSourceDetailsInformation  method in WebServiceHandlerService1",e);
     	}
