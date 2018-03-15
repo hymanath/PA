@@ -16629,6 +16629,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 3l);//total ELECTRONIC MEDIA alerts count
 			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
 				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 4l);//total ELECTRONIC MEDIA alerts count
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("social")){
+				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 5l);//total ELECTRONIC MEDIA alerts count
 			}
 			
 			finalVo.setCount(totalAlertsCntBySearchType);
@@ -16641,6 +16643,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,3l);
 			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
 				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,4l);
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("social")){
+				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,5l);
 			}
 			
 			if(monthObjList !=null && monthObjList.size() >0){
@@ -16672,6 +16676,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						finalVo.getSubList1().add(vo);
 					}
 				} 
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("social")){
+				statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,5l);
 			}
 			
 			if(statusList !=null && statusList.size() >0){
@@ -16734,27 +16740,27 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return null;
 	}
-	public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo){
+	public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId){
 		List<JalavaniAlertResultVO> finalVoList = new ArrayList<JalavaniAlertResultVO>(0);
 		try {
 			Date startDate = null;Date endDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(inputVo.getFromDateStr() != null && inputVo.getToDateStr() != null){
-				startDate = sdf.parse(inputVo.getFromDateStr());
-				endDate = sdf.parse(inputVo.getToDateStr());
+			if(fromDateStr != null && toDateStr != null){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
 			}
 			//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyId,7-property,8-color,9-color
-			List<Object[]> dataObjList = alertDAO.getAlertAndStatusWiseCountsForDist(startDate,endDate,inputVo.getSearchType(),inputVo.getType(),inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getAlertCategoryId());
+			List<Object[]> dataObjList = alertDAO.getAlertAndStatusWiseCountsForDist(startDate,endDate,searchType,type,0l,0l,alertCategoryId);
 			
 			if(dataObjList != null && dataObjList.size() > 0){
 				Map<Long,JalavaniAlertResultVO> map = new HashMap<Long, JalavaniAlertResultVO>();
 				for (Object[] objects : dataObjList) {
 					JalavaniAlertResultVO vo = null;
-					if(inputVo.getType().equalsIgnoreCase("district")){
+					if(type.equalsIgnoreCase("district")){
 						vo = map.get((Long)objects[0]);
-					}else if(inputVo.getType().equalsIgnoreCase("constituency")){
+					}else if(type.equalsIgnoreCase("constituency")){
 						vo = map.get((Long)objects[2]);
-					}else if(inputVo.getType().equalsIgnoreCase("mandal")){
+					}else if(type.equalsIgnoreCase("mandal")){
 						vo = map.get((Long)objects[4]);
 					}
 					if(vo == null){
@@ -16765,27 +16771,27 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						vo.setConstiruenctName(objects[3] != null && !objects[3].toString().trim().isEmpty()?objects[3].toString():"");
 						vo.setMandalId(objects[4] != null && (Long)objects[4] > 0l?(Long)objects[4]:0l);
 						vo.setMandalName(objects[5] != null && !objects[5].toString().trim().isEmpty()?objects[5].toString():"");
-						if(inputVo.getSearchType().equalsIgnoreCase("Alert")){
-							if(inputVo.getAlertCategoryId() == null || inputVo.getAlertCategoryId() == 0l){
+						if(searchType.equalsIgnoreCase("Alert")){
+							if(alertCategoryId == null || alertCategoryId == 0l){
 								vo.setVoList(getJalavaniAlertCategoryTypeTemplate());
 							}
 						}else{
 							vo.setVoList(getJalavaniAlertStatusTemplate());
 						}
 						
-						if(inputVo.getType().equalsIgnoreCase("district")){
+						if(type.equalsIgnoreCase("district")){
 							map.put((Long)objects[0],vo);
-						}else if(inputVo.getType().equalsIgnoreCase("constituency")){
+						}else if(type.equalsIgnoreCase("constituency")){
 							map.put((Long)objects[2],vo);
-						}else if(inputVo.getType().equalsIgnoreCase("mandal")){
+						}else if(type.equalsIgnoreCase("mandal")){
 							map.put((Long)objects[4],vo);
 						}
 						
-						if(inputVo.getType().equalsIgnoreCase("district")){
+						if(type.equalsIgnoreCase("district")){
 							vo = map.get((Long)objects[0]);
-						}else if(inputVo.getType().equalsIgnoreCase("constituency")){
+						}else if(type.equalsIgnoreCase("constituency")){
 							vo = map.get((Long)objects[2]);
-						}else if(inputVo.getType().equalsIgnoreCase("mandal")){
+						}else if(type.equalsIgnoreCase("mandal")){
 							vo = map.get((Long)objects[4]);
 						}
 					}
@@ -16814,7 +16820,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 							if(totalCount > 0l){
 								locationVO.setCount(totalCount);
 								for (JalavaniAlertResultVO inVO : locationVO.getVoList()) {
-									locationVO.setPercentage(calculatePercantage(inVO.getCount(), totalCount));
+									inVO.setPercentage(calculatePercantage(inVO.getCount(), totalCount));
 								}
 							}
 						}
@@ -16966,7 +16972,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		
 			if(finalVoList != null && finalVoList.size() >0){
 				for (AlertVO locationVo : finalVoList){
-					Long totalCount=locationVo.getSatisfiedCount()+locationVo.getUnSatisfiedCount()+locationVo.getCount();
+					Long totalCount=locationVo.getSatisfiedCount()+locationVo.getUnSatisfiedCount()+locationVo.getCount()+locationVo.getAlertCnt();
 					locationVo.setCount1(totalCount);
 				}
 				for (AlertVO locationVo : finalVoList){
@@ -16976,6 +16982,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						locationVo.setElectPerc(calculatePercantage(locationVo.getUnSatisfiedCount(),locationVo.getCount1()));
 					}else if(locationVo.getCategoryId() == 4l){
 						locationVo.setStatusPercent(calculatePercantage(locationVo.getCount(),locationVo.getCount1()));
+					}else if(locationVo.getCategoryId() == 5l){
+						locationVo.setPercentage(calculatePercantage(locationVo.getAlertCnt(),locationVo.getCount1()));
 					}
 				}
 			}
@@ -17002,6 +17010,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						matchedVO.setUnSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					}else if((Long)obj[3] == 4l){//call enter
 						matchedVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if((Long)obj[3] == 5l){//call enter
+						matchedVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					}
 					finalList.add(matchedVO);
 					
@@ -17012,61 +17022,74 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						matchedVO.setUnSatisfiedCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					}else if((Long)obj[3] == 4l){//call enter
 						matchedVO.setCount(commonMethodsUtilService.getLongValueForObject(obj[2]));
+					}else if((Long)obj[3] == 5l){//social
+						matchedVO.setAlertCnt(commonMethodsUtilService.getLongValueForObject(obj[2]));
 					}
 				}
 			}
 		}
 	}
-	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo){
+	public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId){
 		List<JalavaniAlertResultVO> finalVoList = new ArrayList<JalavaniAlertResultVO>(0);
 		try {
 			Date startDate = null;Date endDate = null;
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(inputVo.getFromDateStr() != null && inputVo.getToDateStr() != null){
-				startDate = sdf.parse(inputVo.getFromDateStr());
-				endDate = sdf.parse(inputVo.getToDateStr());
+			if(startDateStr != null && endDateStr != null){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
 			}
 			List<Object[]> dataObjList =null;
 			List<Long> locationIds = new ArrayList<Long>(0);
 			List<Object[]> locationNameObjList = new ArrayList<Object[]>();
 				//0-alert-id,1-title,source-2,3-designation_name , 4-alertstatus 5-deptScopeId 6-location level value
-			dataObjList = alertDAO.getJalavaniAlertDetailsInformation(startDate, endDate,inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getStatusId(),inputVo.getSourceId());
+			dataObjList = alertDAO.getJalavaniAlertDetailsInformation(startDate, endDate,locationTypeId,locationId,statusId,categoryId);
 		
 			
 			if(dataObjList != null && dataObjList.size() >0){
 				for (Object[] objects : dataObjList) {
 					JalavaniAlertResultVO VO= new JalavaniAlertResultVO();
+					
 						VO.setAlertId((Long)objects[0]);
 						VO.setTitle((String)objects[1]);
 						VO.setSource((String)objects[2]);
 						VO.setDesignationName((String)objects[3]);
 						VO.setAlertStatus((String)objects[4]);
 						VO.setDeptScopeId((Long)objects[5]);
-						if((Long)objects[5] != null && (Long)objects[5] == 5l){
+						VO.setLocationId((Long)objects[6]);
+						
+						if(locationTypeId != null && locationTypeId == 5l){
 							locationIds.add((Long)objects[6]);
 						}
-						else if((Long)objects[5] != null && (Long)objects[5] == 8l){
+						else if(locationTypeId != null && locationTypeId == 8l){
 							locationIds.add((Long)objects[6]);
-							 
 						}
-						if (inputVo.getLocationTypeId() == 5l){
-							locationNameObjList=districtDAO.getSpecificDistrictIdAndName(locationIds);
-						}
-						else if (inputVo.getLocationTypeId() == 8l) {
-							locationNameObjList =  tehsilDAO.getTehsilNameByTehsilIdsList(locationIds);
-						}
-						Map<Long,String> locationNamesMap = new HashMap<Long, String>(0);
-			            if(locationNameObjList != null && locationNameObjList.size() > 0){
-			            	for (Object[] object : locationNameObjList) {
-			            		locationNamesMap.put((Long)object[0], object[1].toString());
-			            	}
-			            }
-				  
+						finalVoList.add(VO);
+						
 		          }
 			}
-	
+			if (locationTypeId == 5l){
+				locationNameObjList=districtDAO.getSpecificDistrictIdAndName(locationIds);
+			}
+			else if (locationTypeId == 8l) {
+				locationNameObjList =  tehsilDAO.getTehsilNameByTehsilIdsList(locationIds);
+			}
+			Map<Long,String> locationNamesMap = new HashMap<Long, String>(0);
+            if(locationNameObjList != null && locationNameObjList.size() > 0){
+            	for (Object[] object : locationNameObjList) {
+            		locationNamesMap.put((Long)object[0], object[1].toString());
+            	}
+            }
+            if(finalVoList !=null && finalVoList.size() >0){
+            	for (JalavaniAlertResultVO finalVO : finalVoList){
+            		if(locationNamesMap !=null){
+            			//for (Long value : locationNamesMap.keySet()){
+            				finalVO.setLocation(locationNamesMap.get(finalVO.getLocationId()));
+						//}
+            		}
+				}
+            }
 		}catch (Exception e){
-			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
+			LOG.error("Error occured getJalavaniAlertSourceDetailsInformation() method of AlertManagementSystemService",e);
 		}
 		return finalVoList;
 	}

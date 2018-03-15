@@ -263,9 +263,9 @@ public interface IAlertManagementSystemService {
 	 public List<IdNameVO> getIvrSurveyQuestions(String fromDateStr,String toDateStr,Long entityType);
 	 public AlertVO getJalavaniDashBoardViewInfo(JalavaniAlertsInputVO inputVo);
 	 public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputVo);
-	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo);
 	 public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo);
 	 public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVo);
-	 public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(JalavaniAlertsInputVO inputVo);
+	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId);
+	 public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId);
 }        
 
