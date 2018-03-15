@@ -21,7 +21,7 @@ function onLoadCalls(){
 		getReferralWiseOverviewDetails("");
 		getBriefLeads();
 		getLeadWiseOverviewDetails();
-		//getPmOfficerWisePetitionDetails("","",loginDesigId);
+		getPmOfficerWisePetitionDetails("","",loginDesigId);
 	}
 }
 
@@ -107,66 +107,75 @@ var json = {
 }
 function buildStatusOverviewDetails(result){
 	var str='';
+	//str+='<ul class="list-inline slickSilderStatusOverView">';
 	if(result != null && result.list != null && result.list.length >0){
 	
 		for(var i in result.list){
-			if(parseInt(result.list[i].id) == 9  || parseInt(result.list[i].id) == 10 || parseInt(result.list[i].id) == 11 || parseInt(result.list[i].id) == 12)
+			if(i==6 || parseInt(result.list[i].id) == 9  || parseInt(result.list[i].id) == 10 || parseInt(result.list[i].id) == 11 || parseInt(result.list[i].id) == 12)
 				continue;
 			
-		str+='<div class="col-sm-2 status_blocks">';
-										str+='<div class="panel panel-default">';
-											//str+='<div class="panel-heading" style="background-color:#FFF8EF">';
-											if(result.list[i].id ==1){
-												str+='<div class="panel-heading" style="background-color:#ECEEEF">';
-												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4363.png">';
-											}else if(result.list[i].id ==2){
-												str+='<div class="panel-heading" style="background-color:#FFF8EF">';
-												
-												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4362.png">';
-											}else if(result.list[i].id ==8 ){
-												str+='<div class="panel-heading" style="background-color:#E5F6Ed">';
-												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4364.png">';
-											}else if(result.list[i].id ==4 ){
-												str+='<div class="panel-heading" style="background-color:#FCEDFF">';
-												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4369.png">';
-											}else if(result.list[i].id ==5 ){
-												str+='<div class="panel-heading" style="background-color:#FDE8F5">';
-												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4427.png">';
-											}else{
-												str+='<div class="panel-heading" style="background-color:#FDE8F5">';
-												str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4369.png">';
-											}
-											str+='<b style="padding-left:5px;font-size:13px">'+result.list[i].name+'</b></h5>';
-											str+='</div>';
-											str+='<div class="panel-body">';
-												str+='<div class="row">';
-												str+='<div class="col-sm-8" style="padding-left:5px">';
-													str+='<p>Representations</p>';
-														var convertToAmt = result.list[i].estimationCost*100000;
-														var crores = (convertToAmt/10000000).toFixed(2);
-														str+='<h5 class="font_weight">'+result.list[i].petitionIds.length+' <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight" style="color:#000">('+crores+')</small></h5>';
-														str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostPetitionsCount+'</h5>';
-														str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostPetitionsCount+'</h5>';
-												str+='</div>';
-												str+='<div class="col-sm-4" style="padding-left:5px">';
-													str+='<p>Works</p>';
-														str+='<h5><b>'+result.list[i].subWorkIds.length+'</b></h5>';
-														str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostWorksCount+'</h5>';
-														str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostWorksCount+'</h5>';
-												str+='</div>';
-												str+='</div>';
-												
-											str+='</div>';
-										str+='</div>';
-									//str+='</div>';
-									
-								//str+='</div>';
-									str+='</div>';
+		str+='<div class="col-sm-3 status_blocks m_top10">';
+			str+='<div class="panel panel-default">';
+				//str+='<div class="panel-heading" style="background-color:#FFF8EF">';
+				if(result.list[i].id ==1){
+					str+='<div class="panel-heading" style="background-color:#ECEEEF;border:1px solid #ddd;">';
+					str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4363.png" style="display:inline-block">';
+				}else if(result.list[i].id ==2){
+					str+='<div class="panel-heading" style="background-color:#FFF8EF;border:1px solid #ddd;">';
+					
+					str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4362.png" style="display:inline-block">';
+				}else if(result.list[i].id ==8 ){
+					str+='<div class="panel-heading" style="background-color:#E5F6Ed;border:1px solid #ddd;">';
+					str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4364.png" style="display:inline-block">';
+				}else if(result.list[i].id ==4 ){
+					str+='<div class="panel-heading" style="background-color:#FCEDFF;border:1px solid #ddd;">';
+					str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4369.png" style="display:inline-block">';
+				}else if(result.list[i].id ==5 ){
+					str+='<div class="panel-heading" style="background-color:#FDE8F5;border:1px solid #ddd;">';
+					str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4427.png" style="display:inline-block">';
+				}else{
+					str+='<div class="panel-heading" style="background-color:#FDE8F5;border:1px solid #ddd;">';
+					str+='<h5 attr_id="'+result.list[i].id+'"><img src="Assests/icons/Group 4369.png" style="display:inline-block">';
+				}
+				str+='<b style="padding-left:5px;font-size:13px;color:#000;">'+result.list[i].name+'</b></h5>';
+				str+='</div>';
+				str+='<div class="panel-body">';
+					str+='<div class="row">';
+					str+='<div class="col-sm-8" style="padding-left:5px">';
+						str+='<p>Representations</p>';
+							var convertToAmt = result.list[i].estimationCost*100000;
+							var crores = (convertToAmt/10000000).toFixed(2);
+							str+='<h5 class="font_weight">'+result.list[i].petitionIds.length+' <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight" style="color:#000">('+crores+')</small></h5>';
+							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostPetitionsCount+'</h5>';
+							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostPetitionsCount+'</h5>';
+					str+='</div>';
+					str+='<div class="col-sm-4" style="padding-left:5px">';
+						str+='<p>Works</p>';
+							str+='<h5><b>'+result.list[i].subWorkIds.length+'</b></h5>';
+							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostWorksCount+'</h5>';
+							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostWorksCount+'</h5>';
+					str+='</div>';
+					str+='</div>';
+					
+				str+='</div>';
+			str+='</div>';
+		//str+='</div>';
+		
+	//str+='</div>';
+		str+='</div>';
 									
 		}
+		//str+='</ul>';
 		
 		$("#statusOverviewId").html(str);
 		$(".tooltipCls").tooltip();
+		/* $(".slickSilderStatusOverView").slick({
+			slides:'li',
+			infinite: false,
+			slidesToShow: 4,
+			slidesToScroll: 1,
+			variableWidth: false
+		 }); */
 	}else{
 		$("#statusOverviewId").html("No data available");
 	}
@@ -556,6 +565,7 @@ function buildLeadWiseOverviewDetails(result){
 	var str='';
 	var count=0;
 	//str+='<div class="row">';
+	//str+='<ul class="list-inline slickSilderLeadWiseOverView">';
 	for(var i in result){
 		count++;
 		str+='<div class="col-sm-3 m_top10">';
@@ -638,9 +648,16 @@ function buildLeadWiseOverviewDetails(result){
 		str+='</div>';
 
 	}
-	//str+='</div>';
+	//str+='</ul>';
 	$("#leadWiseOverviewId").html(str);
 	$(".tooltipCls").tooltip();
+	/* $(".slickSilderLeadWiseOverView").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 4,
+		slidesToScroll: 1,
+		variableWidth: false
+	 }); */
 }
 $(document).on("click",".desigClsDivId",function(){
 	var designationId = $(this).attr("attr_desigId");
@@ -797,7 +814,6 @@ function getReferralWiseOverviewDetails(desigId){
 	
  function buildDesignationsWiseInformation(result){
 	var str='';
-			str+='<div class="col-md-12">';
 			str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered" id="workDetailsTab">';
 					str+='<thead>';
@@ -866,7 +882,7 @@ function getReferralWiseOverviewDetails(desigId){
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
-		str+='</div>';	
+		
 	
 	
 		$("#desigWiseCandidatesView").html(str);
@@ -907,26 +923,32 @@ $.ajax({
 }
 
 function buildOfficerBlock(result,loginUsr){
-	//alert(2)
 	var str='';
-	str+='<div class="row">';
-		str+='<div class="col-sm-12">';
+			var xindex = 0;
 			for(var i in result){
+				if( xindex == 0){
+					str+='<div class="col-sm-12">';
+				}
+				
 			if( loginUsr!= 23 || result[i].id != 2 ){
-				str+='<div class="col-sm-3">';
-					str+='<div class="panel panel-default officerWiseBlockCls" style="cursor:pointer;" attr_desig_id='+result[i].id+'>';
-					if(i==0 && loginUsr!= 23)
-					  str+='<div class="panel-heading panel_active">';
-					else if(i==1 && loginUsr== 23)
-					  str+='<div class="panel-heading panel_active">';
-					else
-					  str+='<div class="panel-heading dafault-panelCLS" >';
-						str+='<h3 class="panel-title" style="color:#000 !important;"><i class="fa fa-user" style="font-size:18px"></i><span class="m_left">'+result[i].name+'</span></h3>';
-					  str+='</div>';
+				str+='<div class="col-sm-3 m_top10">';
+					if(i==0 && loginUsr!= 23){
+						str+='<div class="panel panel-default officerWiseBlockCls panel_active" style="cursor:pointer;" attr_desig_id='+result[i].id+'>';
+					}else if(i==1 && loginUsr== 23){
+						str+='<div class="panel panel-default officerWiseBlockCls panel_active" style="cursor:pointer;" attr_desig_id='+result[i].id+'>';
+					}else if(i==1 && loginUsr== 23){
+						str+='<div class="panel panel-default officerWiseBlockCls panel_active" style="cursor:pointer;" attr_desig_id='+result[i].id+'>';
+					}else{
+						str+='<div class="panel panel-default officerWiseBlockCls dafault-panelCLS" style="cursor:pointer;" attr_desig_id='+result[i].id+'>';
+					}
+					str+='<div class="panel-heading" >';
+						str+='<h3 class="panel-title"><i class="fa fa-user" style="font-size:18px"></i><span class="m_left">'+result[i].name+'</span></h3>';
+					str+='</div>';
+					  
 					  if(i==0)
 						str+='<div class="panel-body desig_bg officer_bg_Css">';
 					  else
-						str+='<div class="panel-body officer_bg_Css">';	
+						str+='<div class="panel-body desig_bg officer_bg_Css">';	
 						str+='<div class="border_bottom_css">';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6">';
@@ -951,13 +973,13 @@ function buildOfficerBlock(result,loginUsr){
 						}
 						str+='<div class="desig_bg_white m_top10">';
 							str+='<div class="row">';
-								str+='<div class="col-sm-4">';
+								str+='<div class="col-sm-3">';
 									str+='<h5 class="font_weight m_top5">Pending</h5>';
 								str+='</div>';
 								str+='<div class="col-sm-3">';
 									str+='<h5 class="font_weight m_top5">'+pendingRep+'</h5>';
 								str+='</div>';
-								str+='<div class="col-sm-5">';
+								str+='<div class="col-sm-6">';
 									str+='<div class="bg_yash_5">';
 										str+='<div class="row">';
 											str+='<div class="col-sm-6">';
@@ -976,6 +998,17 @@ function buildOfficerBlock(result,loginUsr){
 					str+='</div>';
 				str+='</div>';
 			}
+			xindex++;
+			if(result.length-1 == i){
+				if(xindex % 4 == 1){
+					str+='<div class="col-sm-3"></div>';
+					str+='</div>';
+				}
+			}
+			 if( xindex == 4){
+				str+='</div>';
+				xindex = 0;
+			}
 	}
 			
 		if(result[0].id != null && result[0].id>0 && loginUsr!= 23){
@@ -984,17 +1017,17 @@ function buildOfficerBlock(result,loginUsr){
 		  getPmOfficerWisePetitionDetails(result[1].id,"OfficerDetails",loginDesigId);
 	  }	
 			
-	  str+='</div>';			
-   str+='</div>';			
-	$("#officerWiseBlockDetailsDivId").html(str);
+	  			
+   $("#officerWiseBlockDetailsDivId").html(str);
+	
 }
 
 $(document).on("click",".officerWiseBlockCls",function(){
-	$(".officerWiseBlockCls").find('.panel-heading').removeClass("panel_active");
+	$(".officerWiseBlockCls").removeClass("panel_active");
 	
-	$(".officerWiseBlockCls").find('.panel-heading').addClass("dafault-panelCLS");
-	$(this).find('.panel-heading').removeClass("dafault-panelCLS");
-	$(this).find('.panel-heading').addClass("panel_active");
+	$(".officerWiseBlockCls").addClass("dafault-panelCLS");
+	$(this).removeClass("dafault-panelCLS");
+	$(this).addClass("panel_active");
 	
 	$(".officer_bg_Css").removeClass("desig_bg");
 	$(this).parent().find('.officer_bg_Css').addClass("desig_bg");
@@ -1037,8 +1070,6 @@ function getPmOfficerWisePetitionDetails(desiId,dataType,loginUsr){
 }
 function tableBuildOfficerBlock(result){
 	var str='';
-	var str='';
-			str+='<div class="col-md-12">';
 			str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered" id="officerTableid">';
 					str+='<thead>';
@@ -1121,7 +1152,5 @@ function tableBuildOfficerBlock(result){
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
-		str+='</div>';	
-	
 	$("#officerDesignationWiseTableDivId").html(str);
 }

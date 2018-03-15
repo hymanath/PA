@@ -107,7 +107,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					</div>
 				</div>
 				<div class="col-sm-12">
-					<div class="panel-group m_top20" id="#accordionStatusOverview">
+					<div class="panel-group" id="#accordionStatusOverview">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingStatusOverview">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseStatusOverview">
@@ -116,20 +116,13 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseStatusOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingStatusOverview">
 								<div class="panel-body">
-									<div class="col-sm-12" style="display:none;" id="statusDivId">
-										<div class="white-block">
-											<div class="media">
-												<div class="media-left"></div>
-												<div class="media-body">
-													<h4 class="m_top10"><img src="Assests/icons/Group 4631.png"><b>Status Overview</b></h4>
-												</div>
-											</div>
-											<div class="row m_top10">
-												<div class="col-sm-12" id="statusOverviewId">
-												</div>
-											</div>
+								<div style="display:none;" id="statusDivId">
+									<div class="row">
+										<div class="col-sm-12">
+											<div id="statusOverviewId"></div>
 										</div>
 									</div>
+								</div>
 								</div>
 							</div>
 						</div>
@@ -143,12 +136,10 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseLeadWiseOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLeadWiseOverview">
 								<div class="panel-body">
-									<div class="col-sm-12" id="leadWiseDivId" style="display:none;">
-										<div class="white-block" style="padding:10px">
-											<h4><img src="Assests/icons/2000px-Circle-icons-crossroads.svg.png"><b style="padding-left:5px;">Lead wise Overview</b></h4>
-											<div class="row m_top10">
-												<div id ="leadWiseOverviewId">						
-												</div>
+									<div class="" id="leadWiseDivId" style="display:none;">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id ="leadWiseOverviewId"></div>						
 											</div>
 										</div>
 									</div>
@@ -157,7 +148,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 						</div>
 					</div>
 					
-					<div class="panel-group"  style="display:none;" id="officerBlock">
+					<div class="panel-group" style="" id="officerBlock">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingReferralWiseOverview123">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionReferralWiseOverview123" href="#collapseReferralWiseOverview123">
@@ -166,36 +157,24 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseReferralWiseOverview123" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReferralWiseOverview123">
 								<div class="panel-body">
-								<div class="col-sm-12 m_top20" >
-									<div class="white-block pad_5 bor_c2">
-										<div class="row">
-											<div class="col-sm-12">
-												<h4 class="pad_10"><b>Status - Officer Wise</b></h4>
-											</div>
-										</div>
-									</div>
-								</div>
-								<div class="col-sm-12" >			
-									<div class="white-block pad_5 bor_c2">
+								
+								<div class="pad_5" >			
+									<div class="row">
 										<div id="officerWiseBlockDetailsDivId"></div>
 									</div>
 								</div>
-								<div class="col-sm-12">
-									<div class="white-block pad_5 bor_c2">
-										<div class="row">
-											<div class="col-sm-12">
-												<h4 class="pad_10"><b>Offficer Status Wise Details</b></h4>
-											</div>
-										</div>	
-										<div class="row m_top10">
-											<div class="col-sm-12">
-												<div id="officerDesignationWiseTableDivId"></div>
-											</div>
+								<div class="pad_5">
+									<div class="row">
+										<div class="col-sm-12">
+											<h4 class=""><b>Offficer Status Wise Details</b></h4>
+										</div>
+									</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<div id="officerDesignationWiseTableDivId"></div>
 										</div>
 									</div>
 								</div>
-									
-									
 								</div>
 							</div>
 						</div>
@@ -211,45 +190,43 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseReferralWiseOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReferralWiseOverview">
 								<div class="panel-body">
-									<div class="col-sm-12 m_top20" id="refWiseOverViewId" style="display:none;">
-										<div class="white-block pad_5 bor_c2">
-											<div class="row">
-												<div class="col-sm-3">
-													<img src="Assests/icons/group.PNG" style="float:left;"><h4 style="padding-top:18px;"><b>Referral wise Overview</b></h4>
-												</div>
-												<div class="col-sm-2 pull-right">
-													<label>Leads:</label>
-													<select class="form-control" style="background-color:#E4E6E7;" id="briefLeadId">
-														<option value="0">All</option>
-													</select>
-												</div>	
+									<div id="refWiseOverViewId" style="display:none;">
+										<div class="row">
+											<div class="col-sm-2 pull-right">
+												<label>Leads:</label>
+												<select class="form-control" style="background-color:#E4E6E7;" id="briefLeadId">
+													<option value="0">All</option>
+												</select>
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-12" id="desigWiseCountDivId" style="display:none;">			
-										<div class="white-block pad_5 bor_c2">
-											<div class="row" id="desigWiseCountId">
+									<div id="desigWiseCountDivId" style="display:none;">
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="desigWiseCountId"></div>
 											</div>
-											<div class="row" id="">
-												<div class="col-sm-2 col-sm-offset-10" id="" >			
-													<label>Designations:</label>
-													<select class="form-control" style="background-color:#E4E6E7;" id="LeadersId">
-													</select>
-												</div> 
+										</div>
+										<div class="row" id="">
+											<div class="col-sm-2 col-sm-offset-10" id="" >			
+												<label>Designations:</label>
+												<select class="form-control" style="background-color:#E4E6E7;" id="LeadersId">
+												</select>
+											</div> 
+										</div>
+									</div>
+									<div id="refWiseOverViewDivId" style="display:none;">
+										<div class="row">
+											<div class="col-sm-12">
+												<h4 id ="headingDetailsId" style="font-weight:bold; margin:10px;">MLA REFFERAL WISE OVERVIEW DETAILS</h4>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="desigWiseCandidatesView"></div>
 											</div>
 										</div>
 									</div>
-									<div class="col-sm-12" id="refWiseOverViewDivId" style="display:none;">
-										<div class="white-block pad_5 bor_c2">
-											<h4 id ="headingDetailsId" style="font-weight:bold; margin:10px;">MLA REFFERAL WISE OVERVIEW DETAILS</h4>
-											<div class="row" style="margin:-7px;">
-												<p style="border-top:2px solid #b9b6b6;" class="m_top10"></p>
-											</div>	
-											<div class="row m_top10" style="padding:5px 5px;" id="desigWiseCandidatesView">
-												
-											</div>
-										</div>
-									</div>
+									
 								</div>
 							</div>
 						</div>

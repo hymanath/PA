@@ -2124,7 +2124,7 @@ function updatePetitionStatusDetails(){
 	}
 	
 		var deptIds =  $("#departmntId").val();
-		alert(deptIds);
+		//alert(deptIds);
 	var deptIdsList = [];
 		if(deptIds != null && deptIds.length >0){
 			deptIdsList=deptIds;
