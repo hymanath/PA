@@ -47,7 +47,9 @@ public class SolidWasteManagementVO {
 	private Long averageTime=0L;
 	private Long locationId=0L;
 	private String  locationName;
-	private Long   blockNo=0L;
+	private String  dName;
+	
+	private Long   blockNo=0L;;
 	private Long gpCnt=0L;
 	private Long       webServiceDataId;
 	private Long       webserviceId;
@@ -61,6 +63,12 @@ public class SolidWasteManagementVO {
 	private Double outTimePer =0.00;
 	private Long  gpID;
 	private Long  blockID;
+	private Double inTimeTotalGps=0.00;
+	private Double outTimeTotalGps=0.00;
+	private Double trackingPerGps=0.00;
+	private Long targetGps = 0L;
+	private String mergeSort;
+	
 
 	private List<SolidWasteManagementVO> subList = new ArrayList<SolidWasteManagementVO>(0);
 	private Set<SolidWasteManagementVO> gpList=new HashSet<SolidWasteManagementVO>();
@@ -395,6 +403,42 @@ public class SolidWasteManagementVO {
 	public void setGpList(Set<SolidWasteManagementVO> gpList) {
 		this.gpList = gpList;
 	}
+	public String getdName() {
+		return dName;
+	}
+	public void setdName(String dName) {
+		this.dName = dName;
+	}
 	
+	public Double getInTimeTotalGps() {
+		return inTimeTotalGps;
+	}
+	public void setInTimeTotalGps(Double inTimeTotalGps) {
+		this.inTimeTotalGps = inTimeTotalGps;
+	}
+	public Double getOutTimeTotalGps() {
+		return outTimeTotalGps;
+	}
+	public void setOutTimeTotalGps(Double outTimeTotalGps) {
+		this.outTimeTotalGps = outTimeTotalGps;
+	}
+	public Double getTrackingPerGps() {
+		return trackingPerGps;
+	}
+	public void setTrackingPerGps(Double trackingPerGps) {
+		this.trackingPerGps = trackingPerGps;
+	}
+	public Long getTargetGps() {
+		return targetGps;
+	}
+	public void setTargetGps(Long targetGps) {
+		this.targetGps = targetGps;
+	}
+	public String getMergeSort() {
+		return mergeSort;
+	}
+	public void setMergeSort(String mergeSort) {
+		this.mergeSort = mergeSort;
+	}
 	
 	}
