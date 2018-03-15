@@ -3604,9 +3604,13 @@ function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusI
 				if(gblOfficerId != null && gblOfficerId==result[i].key){
 					$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
 				}else{
-					if(result[i].key !=230)
+					if(result[i].key !=230 && result[i].key !=398 && result[i].key !=381)
 						$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
-					else if(glDesignationId == 2 && result[i].key ==230)
+					else if(glDesignationId == 2 && (result[i].key ==230 || result[i].key ==398 || result[i].key ==381))
+						$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+					else if(glDesignationId == 23 && result[i].key ==398 )
+						$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+					else if(glDesignationId == 23 && result[i].key ==381 )
 						$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
 				}
 			}
