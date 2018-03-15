@@ -1,10 +1,12 @@
 package com.itgrids.controllers.web;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -106,4 +108,17 @@ public class SolidWasteManagementController {
 		   	}
 			return resultStatus;
 	   }
+	   @PostMapping("/getGpWiseRfidTrackingOverData")
+	   public @ResponseBody List<SolidWasteManagementVO> getGpWiseRfidTrackingOverData(@RequestBody InputVO inputVO)
+		{
+			
+			List<SolidWasteManagementVO> solidWasteManagementVO= null;
+			try {
+				solidWasteManagementVO = solidWasteManagementService.getGpWiseRfidTrackingOverData(inputVO);
+				
+			} catch (Exception e) {
+				LOG.error("Exception raised at  getGpWiseRfidTrackingOverData - SolidWasteManagementController controller", e);
+			}
+			return solidWasteManagementVO;
+		}
 }

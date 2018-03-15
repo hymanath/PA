@@ -197,7 +197,7 @@ public class Scheduler {
 	}
 	
     
-	@Scheduled(cron ="0 0/15 * ? * *")
+	@Scheduled(cron ="0 0 0/2 * * ?")
 	public void runTheRfidSchedulerInEveryDay()	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 		{	
@@ -209,9 +209,10 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 30 0 * * ?")
+	@Scheduled(cron ="0 0/15 * ? * *")
 	public void runTheSchedulerFrNregaFAVacanciesByEveryDayAT6AM()
-	{
+	{ 
+		
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 		{	
 			LOG.error("Cron Job For E&D Started");

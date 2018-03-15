@@ -13,7 +13,8 @@ public interface ISolidWasteManagementService
 	public SolidWasteManagementVO getSolidWasteManagementOverAllCounts(InputVO inputVO) throws ParseException;
 	public  WebServiceDataVO saveRfidTrackingOverAllTargets(); 
 	public List<SolidWasteManagementVO> getRfidTrackingOverAllTargetsData(InputVO inputVO) throws ParseException;
-	//public List<SolidWasteManagementVO> getGpWiseRfidTrackingOverData(InputVO  inputVO);
+    public List<SolidWasteManagementVO> getGpWiseRfidTrackingOverData(InputVO  inputVO) throws ParseException;
+	
 	
 	
 	
