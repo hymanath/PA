@@ -155,6 +155,7 @@ $(document).on("click",".viewBtnCls",function(){
 }
 
 function buildPetitionDetailsView(result){
+	buildImages(result);
 	 globalDesignationName=$("#hiddenDesignationName").text();
 	 globalDesignationId =$("#hiddenDesignationId").val();
 	 candidateReferralDoc=[];
@@ -1842,7 +1843,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#selectdWorksId").html(selectdWorksArr.length)
 	$("#notSeleWorksId").html(notSeleWorks)
 	//ara
-	getPetitionDetailsBuildImages();
+	//getPetitionDetailsBuildImages();
 	if(globalReviewStatus == "ASSIGNED"){
 		if(!$('#inlineCheckbox2').is(":checked")){
 			//$(".actionChangeCls").hide();
@@ -3047,7 +3048,7 @@ function buildImages(result){
 							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<h5 class="media-heading">';
-									str+='<a class="showPdfOrImagIdCls" attr_status="'+scanCopyExt+'"  attr_value="'+result.allFileList[i].value+'" style="cursor:pointer; color: #fff;">Document_'+(parseInt(i)+1)+'</a> </br>';
+									str+='<a class="showPdfOrImagIdCls" attr_status="'+scanCopyExt+'"  attr_value="'+result.allFileList[i].value+'" style="cursor:pointer; color: #fff;">'+result.allFileList[i].name+'_'+(parseInt(i)+1)+'</a> </br>';
 								str+='</h5>';
 							str+='</div>';
 						str+='</div>';
@@ -3059,7 +3060,7 @@ function buildImages(result){
 							str+='</div>';
 							str+='<div class="media-body">';
 								str+='<h5 class="media-heading">';
-									str+='<a class="showPdfOrImagIdCls" attr_status="'+scanCopyExt+'" attr_value="'+result.allFileList[i].value+'" style="cursor:pointer; color: #fff;>Document_'+(parseInt(i)+1)+'</a> </br>';
+									str+='<a class="showPdfOrImagIdCls" attr_status="'+scanCopyExt+'" attr_value="'+result.allFileList[i].value+'" style="cursor:pointer; color: #fff;>'+result.allFileList[i].name+'_'+(parseInt(i)+1)+'</a> </br>';
 								str+='</h5>';
 							str+='</div>';
 						str+='</div>';	
