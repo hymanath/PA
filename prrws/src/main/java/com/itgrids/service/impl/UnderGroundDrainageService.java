@@ -2157,11 +2157,11 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		GovtWorksVO finalVo = new GovtWorksVO();
 		try {
 			Object[] objArr = govtWorkDAO.getWorkZoneMainOverview(govtWorkId);
-			Object completedKm = govtWorkProgressDAO.getWorkOverallWorkCompletedPercentage(govtWorkId);
+			Object completedKm = govtWorkProgressDAO.getWorkOverallWorkCompletedKms(govtWorkId);
 			
 			if(objArr !=null){
-				finalVo.setTarget((Long) objArr[0]);
-				finalVo.setSanctionAmt((Long)objArr[0]);
+				finalVo.setWorkLenght((Double) objArr[0]);
+				finalVo.setFundAllocated((Double)objArr[0]);
 			}
 			finalVo.setCompletedLength(completedKm !=null ?(Double) completedKm:0.00);
 		} catch (Exception e) {
@@ -2182,9 +2182,9 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						for (Object[] objects : statusList) {
 							WorkStatusVO vo = getMatchedWorkStatusVO(finalVOList,(Long)objects[0]);
 							if(vo !=null){
-								vo.setWorkLenght(objects[2] != null ? (Double)objects[2]:0l);
-								vo.setCurrentWorkLength(objects[3] != null ? (Double)objects[3]:0l);
-								vo.setDate(objects[4] != null ? objects[4].toString():"");
+								vo.setWorkLenght(objects[1] != null ? (Double)objects[1]:0.00);
+								vo.setCurrentWorkLength(objects[2] != null ? (Double)objects[2]:0.00);
+								vo.setDate(objects[3] != null ? objects[3].toString():"");
 								
 							}
 						}
@@ -2264,7 +2264,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				endDate = sdf.parse(toDate);		
 			}
 			
-			Map<String,DocumentVO> map = new HashMap<String, DocumentVO>();
+			Map<String,DocumentVO> map = new LinkedHashMap<String, DocumentVO>();
 			if(startDate != null && endDate != null){
 				List<String> dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
 				if(dateList != null && dateList.size() > 0){
