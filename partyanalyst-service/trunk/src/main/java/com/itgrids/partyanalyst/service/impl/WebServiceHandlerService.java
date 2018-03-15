@@ -5891,10 +5891,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public List<AlertTrackingVO> viewAlertHistory(Long alertdId){
-		List<AlertTrackingVO> alertVoList = new ArrayList<AlertTrackingVO>(0);
+	public List<List<AlertTrackingVO>> viewAlertHistory(Long alertdId,String task){
+		List<List<AlertTrackingVO>> alertVoList = new ArrayList<List<AlertTrackingVO>>(0);
 		try{
-			alertVoList =  alertManagementSystemService.viewAlertHistory(alertdId);
+			alertVoList =  alertManagementSystemService.viewAlertHistoryNew(alertdId,task);
     	}catch(Exception e){
     		log.error("Exception raised in viewAlertHistory  method in WebServiceHandlerService1",e);
     	}
@@ -5940,6 +5940,15 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 		List<JalavaniAlertResultVO> alertVoList = new ArrayList<JalavaniAlertResultVO>(0);
 		try{
 			alertVoList = alertManagementSystemService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,locationTypeId,locationId,statusId,categoryId);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniAlertSourceDetailsInformation  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
+	public List<AlertTrackingVO> getCommentsForAlert(Long alertId){
+		List<AlertTrackingVO> alertVoList = new ArrayList<AlertTrackingVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getCommentsForAlert(alertId);
     	}catch(Exception e){
     		log.error("Exception raised in getJalavaniAlertSourceDetailsInformation  method in WebServiceHandlerService1",e);
     	}
