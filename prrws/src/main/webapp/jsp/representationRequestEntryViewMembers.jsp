@@ -381,13 +381,12 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 													</select>
 													<div class="error_colorCls" id="subJErrMsg"></div>
 												</div>	
-												<div class="col-sm-3" id="pmOfficerDivId" style="display:none;">
+												<!-- <div class="col-sm-3" id="pmOfficerDivId" style="display:none;">
 												<label> OFFICER</label>
-													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT OFFICER"  id="officerId" multiple>
-														<!--<option value="0">Select Department</option>-->
+													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT OFFICER"  id="officerId333" multiple>
 													</select>
 													<div class="error_colorCls" id="officerErrMsg"></div>
-												</div>	
+												</div>	-->
 												<div class="col-sm-3" id="selectLeadDivId" style="display:none;">
 													<label> LEAD </label>
 													<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT LEAD "  id="selectLeadId" multiple>
