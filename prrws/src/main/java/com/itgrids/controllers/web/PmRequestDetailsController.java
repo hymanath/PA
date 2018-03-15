@@ -198,9 +198,17 @@ public class PmRequestDetailsController {
 			}else{
 				return null;
 			}
-			List<Long> deptIds = null;
+			/*List<Long> deptIds = null;
 			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 			 deptIds = deptVO.getDeptIdsList();
+			 Long desigId = inputVO.getSourceId();*/
+			List<Long> deptIds = null;
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				deptIds= inputVO.getDeptIdsList();
+			}else{
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
 			 Long desigId = inputVO.getSourceId();
 			 List<Long> statusIds = inputVO.getStatusIds();
 	    	return locationDetailsService.getDesignationsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,desigId,statusIds,userId);
@@ -243,9 +251,12 @@ public class PmRequestDetailsController {
 				return null;
 			}
 			List<Long> deptIds = null;
-			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-			deptIds = deptVO.getDeptIdsList();
-			
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				deptIds= inputVO.getDeptIdsList();
+			}else{
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
 			List<Long> statusIds = inputVO.getStatusIds();
 	    	return locationDetailsService.getSubjectsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getAssetType(),userId);
 	    }

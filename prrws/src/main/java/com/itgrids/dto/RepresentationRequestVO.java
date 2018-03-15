@@ -67,7 +67,7 @@ public class RepresentationRequestVO implements java.io.Serializable{
 	private String remarks;
 	private List<Long> designationIds = null;
 	private List<Long> statusIds = null;
-	
+	private List<Long> deptIdsList;
 	
 	
 	public List<Long> getStatusIds() {
@@ -509,5 +509,12 @@ public class RepresentationRequestVO implements java.io.Serializable{
 
 	public void setCandidateNativeAddressVO(AddressVO candidateNativeAddressVO) {
 		this.candidateNativeAddressVO = candidateNativeAddressVO;
+	}
+
+	public List<Long> getDeptIdsList() {
+		return deptIdsList;
+	}
+	public void setDeptIdsList(List<Long> deptIdsList) {
+		this.deptIdsList = deptIdsList;
 	}
 }
