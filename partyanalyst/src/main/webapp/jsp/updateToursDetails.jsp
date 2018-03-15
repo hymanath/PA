@@ -103,36 +103,6 @@
 							</div>
 						</div>
 					</div>
-					<!--<div class="panel-body">
-						<div class="table-responsive">
-							<table class="table tableTours">
-								<thead>
-									<th></th>
-									<th>total leaders</th>
-									<th>submited leaders</th>
-									<th>not submited leaders</th>
-									<th>compliance</th>
-									<th>non compliance</th>
-								</thead>
-								<tr>
-									<td>minister <i class="glyphicon glyphicon-info-sign"></i></td>
-									<td>17</td>
-									<td>17</td>
-									<td>17</td>
-									<td>17</td>
-									<td>17</td>
-								</tr>
-								<tr>
-									<td>minister <i class="glyphicon glyphicon-info-sign"></i></td>
-									<td>10</td>
-									<td>10</td>
-									<td>10</td>
-									<td>10</td>
-									<td>10</td>
-								</tr>
-							</table>
-						</div>
-					</div>-->
 				<div class="panel-body pad_0 border_0">
                 	<div class="row">
                     	<div class="col-md-12 col-xs-12 col-sm-12">
@@ -163,35 +133,20 @@
 									<option value="0">SELECT NAME</option>
 								</select>
 								</div>
-							
 								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<!--<h4 class="panel-title text-capital" style="display:none" id="selectProfileId" >selected profile</h4>-->
 										<ul class="list-inline ">
 											<li>
-													<!--<div class="pad_10">
-														<img src="Assests/img/profile.png" style="height: 30px;width: 30px;"/>
-														<p>Kollu Ravindra</p>
-														<p>IXR9816267</p>
-														<p>+91 9988998899</p>
-													</div>-->
 												<div class="row m_top20 hideProfileDivCls">
 													<div class="col-md-12 col-xs-12 col-sm-12">
 														<div class="block">
 															<div ><center ><img style="display: none;" src="images/icons/loading.gif" id="profileProcessingImgId"></center></div>
-															
-															<!--<h4 class="panel-title text-capital" style="display:none" id="selectedProfileId">selected profile</h4>-->
 															<div id="selectedMemberDtslDivId"></div>
 													   </div>
 												   </div>
 												</div>
-										   <!--<div class="pad_10 borderGreen">
-														<label class="checkbox-inline">
-															<input type="checkbox"/>Select Profile</label>
-												</div>-->
 											</li>
 										</ul>
 								</div>
-								
 								<div id="overallDivId" style="display:none;">
 									<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 										<div  id="toursId">
@@ -217,12 +172,7 @@
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
 												<div id="toursCandidateDetails"></div>
 												<div id="commentsUlId"></div>
-												<!--<h4 style="margin-top:20px !important">Program Wise Info</h4>-->
 												<div id="toursCandidateProgramDetails" style="margin-top:10px;"></div>
-												<!-- <div id="remarkId6" style="display:none">
-													<label>Comment: </label>
-													<textarea id="remarkId7" class="form-control" style="resize: none;"></textarea>
-												</div> -->	
 												<div id="attachementsId"></div>
 											</div>
 											<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
@@ -258,7 +208,6 @@
 												</div> 
 											</div>
 										 <!--</form>=-->
-											
 										</div>
 									</div>
 									
@@ -267,7 +216,6 @@
 						</div>
 					</div>
 				</div>
-				
 				<!-- Hidden Variables-->
 				<div>
 					<input type="hidden" id="hiddenCadreId" value="" name="toursNewVO.tdpCadreId" />
@@ -572,7 +520,9 @@
 							<button type="button" class="btn btn-success btn-block" id="updateId"onclick="updateApplication1()" type="button">SUBMIT/UPDATE TOURS</button>
 							<span id="successSpanModalId"></span>  
 						</div>   
-						<!--<div class="col-md-12 col-sm-12 col-xs-12" id="statusId"></div>-->
+						<div class="col-md-1">
+							<div id="updateformSubmitLoader"></div>
+						</div>
 					</div> 
 				<!--</div>-->
 				<div>
@@ -603,7 +553,6 @@
 <script type="text/javascript" src="dragAndDropPhoto/js/editUpdateDetails.js?v=1.0.5"></script>                
 <!-- for file uploader -->
 <script src="dist/2016DashBoard/Plugins/Datatable/jquery.dataTables.js" type="text/javascript"></script>
-
 <script src="js/Tours/updateToursDetails.js" type="text/javascript"></script>
 <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <script type="text/javascript">
@@ -622,7 +571,7 @@ editUpdateDetailsInitilize();
           packages: "transliteration"
     });
 
-    function onLoad() {
+   function onLoad() {
       var options = {
           sourceLanguage:
               google.elements.transliteration.LanguageCode.ENGLISH,
@@ -637,9 +586,9 @@ editUpdateDetailsInitilize();
 		
     }
     google.setOnLoadCallback(onLoad);
-var TourCategoryArray =[];
-var TourTypesArray =[];
-var tourCloneMainDivCount=1;
+	var TourCategoryArray =[];
+	var TourTypesArray =[];
+	var tourCloneMainDivCount=1;
 	$(document).on("click",".tourCloneMainDivNewBtn",function(){
 		var e = $("#tourCloneMainDivNew").clone(true);
 		 e.attr({
@@ -683,53 +632,53 @@ var tourCloneMainDivCount=1;
 		var divId = $(this).attr("attr_div_id_New");
 		$("#"+divId).remove();
 	}); 
-/*New Code End*/
+   /*New Code End*/
 
-$(document).on("click",".closeRetrivalEditModalId",function(){
-	$("#retrivalEditModalId").modal('hide');
-	setTimeout(function(){
-		$("body").addClass('modal-open');
-		//$("#membersOverviewModalEdit").modal('show');
+	$(document).on("click",".closeRetrivalEditModalId",function(){
+		$("#retrivalEditModalId").modal('hide');
+		setTimeout(function(){
+			$("body").addClass('modal-open');
+			//$("#membersOverviewModalEdit").modal('show');
+			
+			$('#membersOverviewModalEdit').modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+			
+		},500);
+	});
+	$(document).on("click",".closeMembersOverviewModalEdit",function(){
+		$("#membersOverviewModalEdit").modal('hide');
+		setTimeout(function(){
+			$("body").addClass('modal-open');
+			//$("#membersOverviewModal").modal('show');
+			$('#membersOverviewModal').modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
+		},500);
+	});
+
+	initializeFile2();   
+	var windowUrl = window.location.href;
+	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
+	wurl = wurl.replace("/PartyAnalyst","");
+	$(document).on("click",".submitedDataModal",function(){
+		//$("#myModal").modal('show');
+		$('#myModal').modal({
+				show: true,
+				keyboard: false,
+				backdrop: 'static'
+			});
 		
-		$('#membersOverviewModalEdit').modal({
-            show: true,
-            keyboard: false,
-            backdrop: 'static'
-        });
-		
-	},500);
-});
-$(document).on("click",".closeMembersOverviewModalEdit",function(){
-	$("#membersOverviewModalEdit").modal('hide');
-	setTimeout(function(){
-		$("body").addClass('modal-open');
-		//$("#membersOverviewModal").modal('show');
-		$('#membersOverviewModal').modal({
-            show: true,
-            keyboard: false,
-            backdrop: 'static'
-        });
-	},500);
-});
+	});
 
-initializeFile2();   
-var windowUrl = window.location.href;
-var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursAction")));
-wurl = wurl.replace("/PartyAnalyst","");
-$(document).on("click",".submitedDataModal",function(){
-	//$("#myModal").modal('show');
-	$('#myModal').modal({
-            show: true,
-            keyboard: false,
-            backdrop: 'static'
-        });
-	
-});
-
-if($(window).width() > 500)
-{
-	$(".table").wrap( "<div class='table-responsive'></div>" );
-}
+	if($(window).width() > 500)
+	{
+		$(".table").wrap( "<div class='table-responsive'></div>" );
+	}
 	var customStartToursDate = moment().subtract(1,'month').startOf("month").format('DD/MM/YYYY')
 	var customEndToursDate = moment().subtract(1,'month').endOf("month").format('DD/MM/YYYY');
 	 defaultDateRangePickerForAppendBlock();
@@ -776,13 +725,7 @@ if($(window).width() > 500)
 			},
 		});	
 	}
-	
-
-	
-	
-	
-	
- var newsTourCloneCount=0;
+    var newsTourCloneCount=0;
 	$(document).on("click",".addAppendTourBlockCls",function(){
 		var c = $("#newsTourCloneMainDiv").clone(true);
 		 c.attr({
@@ -840,7 +783,7 @@ if($(window).width() > 500)
 		c.find(".villWardDivCls").attr("class","col-md-2 col-xs-12 col-sm-2 villWardDivCls locationDivCls"+newsTourCloneCount);
 		c.find(".villWardSelCls").attr("attr_count",newsTourCloneCount);
 		
-		$("#addNewTourBlock").append(c);
+		$("#toursCandidateDetails").append(c);
 			if(TourCategoryArray != null && TourCategoryArray.length>0){
 				for(var i in TourCategoryArray){
 					$('#tourCategoryId'+newsTourCloneCount).append('<option value="'+TourCategoryArray[i].id+'">'+TourCategoryArray[i].name+'</option>');

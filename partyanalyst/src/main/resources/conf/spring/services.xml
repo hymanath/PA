@@ -4161,6 +4161,7 @@
 	  <property name="selfAppraisalDesignationProgramTargetDAO" ref="selfAppraisalDesignationProgramTargetDAO"></property>
 	  <property name="selfAppraisalCandidateProgramDetailsDAO" ref="selfAppraisalCandidateProgramDetailsDAO"></property>	
 	  <property name="selfAppraisalCommentDAO" ref="selfAppraisalCommentDAO"></property>
+	  <property name="tourTypeCategoryDAO" ref="tourTypeCategoryDAO"></property>
 	</bean>  
 	
 	
