@@ -24,9 +24,11 @@ public class PmPetitionRequestJson  {
 	private String jsonFormat;
 	private Long userId;
 	private Date insertedTime;
+	private String exceptionMessage;
 	
-	private Petition petition;
-	private User user;
+	
+//	private Petition petition;
+//	private User user;
 	
 	@Id
 	@Column(name="pm_petition_request_json_id")
@@ -72,7 +74,17 @@ public class PmPetitionRequestJson  {
 	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	
+	@Column(name="status")
+	public String getExceptionMessage() {
+		return exceptionMessage;
+	}
+	public void setExceptionMessage(String exceptionMessage) {
+		this.exceptionMessage = exceptionMessage;
+	}
+	
+	
+	/*@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
 	@JoinColumn(name = "petition_id", insertable = false, updatable = false)
 	public Petition getPetition() {
 		return petition;
@@ -88,5 +100,5 @@ public class PmPetitionRequestJson  {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+	*/
 }
