@@ -4805,6 +4805,7 @@
    	 	 <property name="trainingCampDAO" ref="trainingCampDAO"></property>
    	 	 <property name="trainingCampInviteeConstituencyDAO" ref="trainingCampInviteeConstituencyDAO"></property>
    	 	 <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO"></property>
+   	 	  <property name="alertDAO" ref="alertDAO"></property>
    	 	</bean>
    	 
    	 	<bean name="biometricAttendanceService" class="com.itgrids.partyanalyst.service.impl.BiometricAttendanceService">
