@@ -15,7 +15,7 @@ var newspaperNames=[];
 var editionTypes=[];
 var constituencyNames=[];
 var districtNames=[];
-
+var today = new Date();
 var width = screen.width / 2
 var height = screen.height / 2.2
 var expanded = false;
@@ -38,6 +38,7 @@ $(document).on("click",function(){
 $("#startDate").daterangepicker({
 		startDate: glStartDate,
         singleDatePicker: true,
+		maxDate: today,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
@@ -46,6 +47,7 @@ $("#startDate").daterangepicker({
 $("#endDate").daterangepicker({
 	startDate: glEndDate,
         singleDatePicker: true,
+		maxDate: today,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
