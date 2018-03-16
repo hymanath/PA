@@ -11873,4 +11873,67 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 	 	return  query.list();
  	}
+ 
+	public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date stDate,Date ndDate, Long stateId, String accessType) {
+		StringBuilder sb = new StringBuilder();
+		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
+			sb.append("select pc.constituency_id as parliamentId,pc.name as parliamentName,"); //0,1
+			sb.append(" ALTSTS.alert_status_id as alertStatusId," + // 2
+					" ALTSTS.alert_status as alertStatus, " + // 3
+					" count(distinct ALT.alert_id) as count " ); // 4
+		}else{
+			sb.append(" select C.constituency_id as constituenyId, C.name as constituencyName,");// 0,1
+			sb.append(" pc.constituency_id as parliamentId,pc.name as parliamentName,"); // 2,3
+			sb.append("  D.district_id as districtId, D.district_name as districtName,"); //4,5
+			sb.append(" ALTSTS.alert_status_id as alertStatusId," + //6
+					" ALTSTS.alert_status as alertStatus, " + // 7
+					" count(distinct ALT.alert_id) as count " ); // 8
+		}
+		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
+			sb.append(" from alert ALT, alert_type ALTTYPE ,alert_status ALTSTS," +
+				" user_address UA ");
+		}else{
+			sb.append(" from alert ALT, alert_type ALTTYPE ,alert_status ALTSTS," +
+					" user_address UA join  district D on D.district_id=UA.district_id ");
+		}
+		sb.append(" left join constituency C on C.constituency_id = UA.constituency_id "
+				+ " left Join  parliament_assembly PA on PA.assembly_id=C.constituency_id JOIN"
+				+ " constituency pc ON PA.parliament_id = pc.constituency_id");
+		sb.append(" where ALT.is_deleted = 'N' and "
+				+ " ALT.address_id = UA.user_address_id and "
+				+ " UA.state_id = :stateId and  "
+				+ " ALT.alert_type_id = ALTTYPE.alert_type_id and "
+				+ " ALTTYPE.alert_type_id in (1) and "
+				+ " ALT.alert_status_id = ALTSTS.alert_status_id  AND ALTSTS.alert_status_id not in(6,7) and ");
+		if (stDate != null && ndDate != null) {
+			sb.append(" ALT.created_time between date(:stDate) and date(:ndDate) ");
+		}
+		sb.append(" group by C.constituency_id ,ALTSTS.alert_status_id ");
+
+		SQLQuery query = getSession().createSQLQuery(sb.toString());
+		
+		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
+		query.addScalar("parliamentId", Hibernate.LONG);
+		query.addScalar("parliamentName", Hibernate.STRING);
+		}else{
+			query.addScalar("constituenyId", Hibernate.LONG);
+			query.addScalar("constituencyName", Hibernate.STRING);
+			query.addScalar("parliamentId", Hibernate.LONG);
+			query.addScalar("parliamentName", Hibernate.STRING);
+			query.addScalar("districtId", Hibernate.LONG);
+			query.addScalar("districtName", Hibernate.STRING);
+		}
+
+		query.addScalar("alertStatusId", Hibernate.LONG);
+		query.addScalar("alertStatus", Hibernate.STRING);
+		query.addScalar("count", Hibernate.LONG);
+
+		query.setParameter("stateId", stateId);
+		// query.setParameterList("alertTypeIds", alertTypeIds);
+		if (stDate != null && ndDate != null) {
+			query.setDate("stDate", stDate);
+			query.setDate("ndDate", ndDate);
+		}
+		return query.list();
+	}
 }
