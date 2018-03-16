@@ -62,8 +62,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    					for (int j = 0; j < monthsArr.length(); j++) {
 	 	    						AlertVO monthVo = new AlertVO();
 									JSONObject jobj1 = (JSONObject) monthsArr.get(j);
-									monthVo.setMonthId(jobj1.getLong("smTypeId"));
-									monthVo.setMonthName(jobj1.getString("smType"));
+									monthVo.setMonthName(jobj1.getString("date1"));
+									monthVo.setMonthCount(jobj1.getLong("locationCnt"));
 									monthVo.setPercentage(jobj1.getDouble("percentage"));
 									
 									finalVO.getSubList2().add(monthVo);
@@ -128,9 +128,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    					for (int j = 0; j < monthsArr.length(); j++) {
 	 	    						AlertVO monthVo = new AlertVO();
 									JSONObject jobj1 = (JSONObject) monthsArr.get(j);
-									monthVo.setMonthId(jobj1.getLong("smTypeId"));
-									monthVo.setMonthName(jobj1.getString("smType"));
-									monthVo.setLocationCnt(jobj1.getLong("locationCnt"));
+									monthVo.setMonthName(jobj1.getString("date1"));
+									monthVo.setMonthCount(jobj1.getLong("locationCnt"));
 									monthVo.setPercentage(jobj1.getDouble("percentage"));
 									
 									finalVO.getSubList2().add(monthVo);
