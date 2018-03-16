@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAccessLevelValueDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
+import com.itgrids.partyanalyst.dao.IUserGroupRelationDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.hibernate.PartyMeetingUpdationDocumentsDAO;
 import com.itgrids.partyanalyst.dto.CallTrackingVO;
@@ -132,7 +133,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private PartyMeetingUpdationDetailsDAO partyMeetingUpdationDetailsDAO;
 	private PartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
 	private IPartyMeetingSessionDAO partyMeetingSessionDAO;
-	
+	private IUserGroupRelationDAO userGroupRelationDAO;
 	
 	public void setPartyMeetingSessionDAO(
 			IPartyMeetingSessionDAO partyMeetingSessionDAO) {
@@ -371,6 +372,13 @@ public class PartyMeetingService implements IPartyMeetingService{
 	}
 	public void setPartyMeetingUpdationDocumentsDAO(PartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO) {
 		this.partyMeetingUpdationDocumentsDAO = partyMeetingUpdationDocumentsDAO;
+	}
+	
+	public IUserGroupRelationDAO getUserGroupRelationDAO() {
+		return userGroupRelationDAO;
+	}
+	public void setUserGroupRelationDAO(IUserGroupRelationDAO userGroupRelationDAO) {
+		this.userGroupRelationDAO = userGroupRelationDAO;
 	}
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
 	{
@@ -4717,7 +4725,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		return returnVO;
 	}
 
-	public List<PartyMeetingsVO> getPartyMettingOfAbsents(String startDateStr,String endDateStr,Long meetingId,Long locationLevel,Long locationValue,Long meetingTypeId){
+	public List<PartyMeetingsVO> getPartyMettingOfAbsents(String startDateStr,String endDateStr,Long meetingId,Long locationLevel,Long locationValue,Long meetingTypeId,Long userId){
 		List<PartyMeetingsVO> finalList = new ArrayList<PartyMeetingsVO>();
 		try{
             SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
@@ -4741,6 +4749,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					}
 				}
 			}
+			 Long userGroupId = userGroupRelationDAO.getUserGroupId(userId);
 			 //0-tdpCadreId,1-name,2-mobileNo,3-remark,4-isAttended
 			List<Object[]> totalAbsentList = partyMeetingInviteeDAO.getPartyMeetingOfAbsentCandidate(absentList,locationLevel,locationValue,meetingTypeId,meetingId);
 			if(totalAbsentList != null && totalAbsentList.size()>0){
@@ -4756,6 +4765,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					finalList.add(vo);
 				}
 			}
+			finalList.get(0).setUserGroupId(userGroupId);
 		}catch(Exception e){
 			LOG.error("Exception raised at getPartyMettingOfAbsents", e);
 		}
