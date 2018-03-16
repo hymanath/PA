@@ -1153,4 +1153,16 @@ function tableBuildOfficerBlock(result){
 				str+='</table>';
 			str+='</div>';
 	$("#officerDesignationWiseTableDivId").html(str);
+	
+	$("#officerTableid").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+	});
+	
 }
