@@ -103,10 +103,29 @@ public class PartyMeetingDashboardService implements IPartyMeetingDashboardServi
 			
 			//List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,locationValue);
 			List<Long> allPartyMeetingsList = partyMeetingDAO.getPartyMeetingIdsByLevelAndLocation(partyMeetingLevelId,fromDate,toDate,partyMeetingTypeId,locationLevelId,statesList,districtList,constituencyList,mandalList,townList,divisonList,villageList,wardList);
-			List<Long> partyMeetingsList = new ArrayList<Long>(0);
+			/*List<Long> partyMeetingsList = new ArrayList<Long>(0);
 			if(allPartyMeetingsList!=null && allPartyMeetingsList.size()>0){
 				partyMeetingsList = partyMeetingAttendanceDAO.getConductedMeetings(allPartyMeetingsList);
-			}
+			}*/
+			List<Long> partyMeetingsList = new ArrayList<Long>(0);
+           
+            if(allPartyMeetingsList != null && allPartyMeetingsList.size()>0){
+                 int filterCount = 300;
+                 int i = 0;
+                 int j = filterCount;
+                 int maxcount = allPartyMeetingsList.size();
+                 while (maxcount >0){ 
+                     if(maxcount<filterCount)
+                         j = i+maxcount;       
+                     List<Long>  tempList  = partyMeetingAttendanceDAO.getConductedMeetings(allPartyMeetingsList.subList(i, j));
+                        if(tempList != null && tempList.size()>0l){
+                        	partyMeetingsList.addAll(tempList);
+                        }
+                     i=j;
+                     maxcount = maxcount-filterCount;
+                     j=j+filterCount;
+                 }
+            }
 			
 			if(partyMeetingsList != null && partyMeetingsList.size() > 0)
 			{

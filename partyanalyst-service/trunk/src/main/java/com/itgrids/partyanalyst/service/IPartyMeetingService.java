@@ -49,5 +49,6 @@ public interface IPartyMeetingService {
 	public List<MeetingsVO> getConstWiseNotConductedPartyMeetings(int month , int year);
 	public List<PartyMeetingVO> getUpdateDetails(Long locationLvlId,String startDateStr,String endDateStr,String status,List<Long> distIds,List<Long> constIds,String locationType,String thridPartyStatus);
 	public PartyMeetingVO getDocumentsForMeetingId(Long partyMeetingId);
-
+	public List<PartyMeetingsVO> getPartyMettingOfAbsents(String startDateStr,String endDateStr,Long meetingId,Long locationLevel,Long locationValue,Long meetingTypeId);
+	public String updateMeetingAbsentRemarks(Long inviteeId,String remarks,Long userId,Long meetingId,Long candidateId);
 }

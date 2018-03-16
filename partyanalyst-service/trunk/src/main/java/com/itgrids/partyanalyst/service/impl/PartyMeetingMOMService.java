@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -22,12 +23,14 @@ import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
+import com.itgrids.partyanalyst.dao.IItdpAppUserAccessLocationDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteTrackingDAO;
 import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
@@ -46,6 +49,7 @@ import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
+import com.itgrids.partyanalyst.model.PartyMeetingMinuteStatus;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteTracking;
 import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
@@ -76,6 +80,8 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 	private ILocalElectionBodyDAO localElectionBodyDAO;
 	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	private IRegionScopesDAO regionScopesDAO;
+	private IItdpAppUserAccessLocationDAO itdpAppUserAccessLocationDAO;
+	private IPartyMeetingMinuteStatusDAO partyMeetingMinuteStatusDAO;
 	
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
@@ -127,6 +133,22 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 	}
 	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
 		this.regionScopesDAO = regionScopesDAO;
+	}
+	
+	public IItdpAppUserAccessLocationDAO getItdpAppUserAccessLocationDAO() {
+		return itdpAppUserAccessLocationDAO;
+	}
+	public void setItdpAppUserAccessLocationDAO(
+			IItdpAppUserAccessLocationDAO itdpAppUserAccessLocationDAO) {
+		this.itdpAppUserAccessLocationDAO = itdpAppUserAccessLocationDAO;
+	}
+	
+	public IPartyMeetingMinuteStatusDAO getPartyMeetingMinuteStatusDAO() {
+		return partyMeetingMinuteStatusDAO;
+	}
+	public void setPartyMeetingMinuteStatusDAO(
+			IPartyMeetingMinuteStatusDAO partyMeetingMinuteStatusDAO) {
+		this.partyMeetingMinuteStatusDAO = partyMeetingMinuteStatusDAO;
 	}
 	/**
 	   * @param Long userAccessLevel
@@ -612,14 +634,20 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 										}
 										
 									}
-									model.setAssignedLocationScopeId(upperLevelLocationId > 0 ? upperLevelLocationId:null);
-									model.setAssignedLocationValue(upperLevelLocationValue > 0 ? upperLevelLocationValue:null);
+									if((model.getAssignedLocationScopeId() == null) || (upperLevelLocationId != null && upperLevelLocationId >0l)){
+									 model.setAssignedLocationScopeId(upperLevelLocationId > 0 ? upperLevelLocationId:null);
+									}
+									if((model.getAssignedLocationValue() == null) || (upperLevelLocationValue != null && upperLevelLocationValue >0l) ){
+									 model.setAssignedLocationValue(upperLevelLocationValue > 0 ? upperLevelLocationValue:null);
+									}
 									//assigned Address
+									if (inputVO.getAssignedType() != null && inputVO.getAssignedType().equalsIgnoreCase("assignToUpperLevel")) {
 									UserAddress assignedAddress = saveUserAddressByLevelIdAndLevelValue(upperLevelLocationId,upperLevelLocationValue);//saving user address and getting saved object
 									if (assignedAddress == null) {
 										throw new ArithmeticException();
 									}
 									model.setAssignedAddressId(assignedAddress.getUserAddressId());
+									}
 									model.setStatusId((inputVO.getStatusId() != null && inputVO.getStatusId() > 0) ? inputVO.getStatusId():null );
 									model.setItdpAppUserId((inputVO.getItdpAppUserId() != null && inputVO.getItdpAppUserId() > 0) ? inputVO.getItdpAppUserId() : null);
 									model.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
@@ -630,7 +658,10 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 									inputVO.setAssignedLocationValue(model.getAssignedLocationValue());
 									inputVO.setPartyMeetingMinuteId(model.getPartyMeetingMinuteId());
 									inputVO.setPartyMeetingId(model.getPartyMeetingId());
-									
+									/*if(model.getAssignedAddressId() != null){
+										
+										throw new ArithmeticException();
+									}*/
 								    partyMeetingMinuteDAO.save(model);
 											
 								}
@@ -880,55 +911,53 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
  public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,String monthYear) {
 	 MomDashbaordOverViewDtlsVO resultVO = new MomDashbaordOverViewDtlsVO();
 	  try {
+		  Map<Long,MomDashbaordOverViewDtlsVO> momPriorityMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
+		  Map<Long,MomDashbaordOverViewDtlsVO> momStatusMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
 		  Integer[] monthYearArr = getMontYear(monthYear);
 		  List<Object[]> momPriorityObjList = partyMeetingMinuteDAO.getPartyMeetingMomDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "momPriorityWise");
-		  resultVO.setSubList1(getMomStatusPriorityWiseCountDetails(momPriorityObjList));
+		    momPriorityMap = getMomStatusAndPriorityWiseCountDetails(momPriorityObjList,momPriorityMap);
+		  List<Object[]> momAssignPriorityObjList = partyMeetingMinuteDAO.getPartyMeetingMomAssignDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "momPriorityWise");
+		  if(momAssignPriorityObjList != null && momAssignPriorityObjList.size()>0){
+		     momPriorityMap = getMomStatusAndPriorityWiseCountDetails(momAssignPriorityObjList,momPriorityMap);
+		  }
+		  //resultVO.setSubList1(getMomStatusPriorityWiseCountDetails(momPriorityObjList));
+		  if(momPriorityMap != null && momPriorityMap.size()>0l){
+		      resultVO.getSubList1().addAll(momPriorityMap.values());
+		  }
 		  List<Object[]> momStatusObjList = partyMeetingMinuteDAO.getPartyMeetingMomDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "statusWise");
-		  resultVO.setSubList2(getMomStatusPriorityWiseCountDetails(momStatusObjList));
+		    momStatusMap = getMomStatusAndPriorityWiseCountDetails(momStatusObjList,momStatusMap);
+		  List<Object[]> momAssignStatusObjList = partyMeetingMinuteDAO.getPartyMeetingMomAssignDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "statusWise");
+		  if(momAssignStatusObjList != null && momAssignStatusObjList.size()>0){
+		     momStatusMap = getMomStatusAndPriorityWiseCountDetails(momAssignStatusObjList,momStatusMap);
+		  }
+		     if(momStatusMap != null && momStatusMap.size()>0l){
+		       resultVO.getSubList2().addAll(momStatusMap.values());
+		     }
+		  //resultVO.setSubList2(getMomStatusPriorityWiseCountDetails(momStatusObjList));
 		  
 		  Long momCreatedByYourLocationCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "");
-		  Long momAtYourLocationOnlyCount = 0L;//partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly");;
+		  Long momAtYourLocationOnlyCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly");
 		  Long assignedToOtherCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "assignedToOther");
 		  Long assignedToYourLocationCount = partyMeetingMinuteDAO.getMomAssignedToYourLocation(userAccessLevel, accessValues,monthYearArr[0], monthYearArr[1]);
-		  Long TtotalMomInYourLocation =0L;
-		  if(momCreatedByYourLocationCount == null || momCreatedByYourLocationCount.longValue()==0L){// if not created atleast one MOM
-			  momCreatedByYourLocationCount=0L;
-			  if(assignedToYourLocationCount != null && assignedToYourLocationCount.longValue()>0L) // all assigned MOMs to my location comes under momAtYourLocationOnlyCount
-				  momAtYourLocationOnlyCount = assignedToYourLocationCount;
-		  }else{
-			  if(momCreatedByYourLocationCount != null){// removind assinged to others MOMs
-				  if(assignedToOtherCount != null && assignedToOtherCount.longValue()>0L)
-					  momAtYourLocationOnlyCount = momCreatedByYourLocationCount - assignedToOtherCount;
-				  else
-					  momAtYourLocationOnlyCount=momCreatedByYourLocationCount;
-			  }
-			  // momAtYourLocationOnlyCount = created by me (excluding assigned to others) + assigned to me
-			  if(momAtYourLocationOnlyCount != null && momAtYourLocationOnlyCount.longValue()>0L){ 
-				  momAtYourLocationOnlyCount = momAtYourLocationOnlyCount+assignedToYourLocationCount;
-			  }
-		  }
-		  
-		  if(momCreatedByYourLocationCount != null && momCreatedByYourLocationCount.longValue() >0L){
-			  TtotalMomInYourLocation = momCreatedByYourLocationCount;
-			  if(assignedToOtherCount != null && assignedToOtherCount.longValue()>0L){
-				  TtotalMomInYourLocation = momCreatedByYourLocationCount+assignedToYourLocationCount;// created in my location + assigned to my location
-			  }
-		  }
-		  else if(assignedToOtherCount != null && assignedToOtherCount.longValue()>0L){
-			  TtotalMomInYourLocation = momCreatedByYourLocationCount+assignedToYourLocationCount;// created in my location + assigned to my location
-		  }
 		  
 		  //setting into final VO
 		  resultVO.setMomCreatedByYourLocation(momCreatedByYourLocationCount);
-		  resultVO.setMomAtYourLocationOnly(momAtYourLocationOnlyCount);
+		  resultVO.setMomAtYourLocationOnly(momCreatedByYourLocationCount+assignedToYourLocationCount);
 		  resultVO.setAssignedToOther(assignedToOtherCount);
 		  resultVO.setAssignedToYourLocation(assignedToYourLocationCount);
-		  resultVO.setTotalMomInYourLocation(TtotalMomInYourLocation);
+	
 		  
-		/*  if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
-			  resultVO.setTotalMomInYourLocation(resultVO.getSubList2().get(0).getTotalMomInYourLocation());
-			  resultVO.getSubList2().get(0).setTotalMomInYourLocation(0l);
-		  }*/
+		  resultVO.setTotalMomInYourLocation(momCreatedByYourLocationCount+assignedToYourLocationCount);
+		  Long momYourLocationOnly =0l;
+		  if(resultVO.getAssignedToOther() != null){
+			  momYourLocationOnly = resultVO.getMomAtYourLocationOnly()-resultVO.getAssignedToOther();
+		  }
+		  if(momYourLocationOnly != null)
+		    resultVO.setMomAtYourLocationOnly(momYourLocationOnly);
+		  if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
+			  //resultVO.setTotalMomInYourLocation(resultVO.getSubList2().get(0).getTotalMomInYourLocation());
+			  resultVO.getSubList2().get(0).setTotalMomInYourLocation(momCreatedByYourLocationCount+assignedToYourLocationCount);
+		  }
 		  
 	  } catch (Exception e) {
 		  LOG.error("Exception occurred at getMomDashboardOverviewDtls() of PartyMeetingMOMService class ",e);
@@ -971,34 +1000,46 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
   		   List<Object[]> momCreatedLocObjList = partyMeetingMinuteDAO.getMomCreationLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1]);
 		   if (type != null && type.equalsIgnoreCase("totalMom")) {
 			   
-  			  List<Object[]> momDtlsObjList = partyMeetingMinuteDAO.getTotalMomDetailsByLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1]);
-  			  Set<Long> momIdSet = getMomIdSet(momDtlsObjList);
+  			 List<Object[]> objList = partyMeetingMinuteDAO.getTotalMomDetailsByLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1],new HashSet<Long>());
+  			  Set<Long> momIdSet = getMomIdSet(objList);
+  			  List<Object[]> assignMomObjList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "","assignedMom",new HashSet<Long>());
+	 		  Set<Long> assignMomIdSet = getMomIdSet(assignMomObjList);
+	 		  momIdSet.addAll(assignMomIdSet);
+	 		 //List<Object[]> assignedToOthersObjList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "assignedToOther","createdMom",new HashSet<Long>());
+ 	 		  //Set<Long> assignOthersMomIdSet = getMomIdSet(assignedToOthersObjList);
+ 	 		  //momIdSet.addAll(assignOthersMomIdSet);
   			  List<Object[]> momAssignedLocObjList = partyMeetingMinuteDAO.getMomAssignedLocation(momIdSet,monthYearArr[0], monthYearArr[1]);
+  			 List<Object[]> momDtlsObjList = partyMeetingMinuteDAO.getTotalMomDetailsByLocation(0l, new ArrayList<Long>(), monthYearArr[0], monthYearArr[1],momIdSet);
   		 	  resultList = getMomDetails(momDtlsObjList,userAccessLevel,accessValues,momCreatedLocObjList,momAssignedLocObjList);
   	  	  
 		   } else if (type != null && type.equalsIgnoreCase("yourLocationCreatedMom")) {
 			   
-  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "","createdMom");
+  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "","createdMom",new HashSet<Long>());
   	 		  Set<Long> momIdSet = getMomIdSet(objList);
   			  List<Object[]> momAssignedLocObjList = partyMeetingMinuteDAO.getMomAssignedLocation(momIdSet,monthYearArr[0], monthYearArr[1]);
   			  resultList = getMomDetails(objList,userAccessLevel,accessValues,momCreatedLocObjList,momAssignedLocObjList);
   	 	 
+  			  
 		   } else if (type != null && type.equalsIgnoreCase("atYourLocationOnly")) {
 			   
-  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly","createdMom");
-  	 		  Set<Long> momIdSet = getMomIdSet(objList);
+  	 		  List<Object[]> momObjList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly","createdMom",new HashSet<Long>());
+  	 		  Set<Long> momIdSet = getMomIdSet(momObjList);
+  	 		List<Object[]> assignMomObjList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "","assignedMom",new HashSet<Long>());
+  	 		  Set<Long> momIdList = getMomIdSet(assignMomObjList);
+  	 		  momIdSet.addAll(momIdList);
   			  List<Object[]> momAssignedLocObjList = partyMeetingMinuteDAO.getMomAssignedLocation(momIdSet,monthYearArr[0], monthYearArr[1]);
+  			List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(0l, new ArrayList<Long>(), monthYearArr[0], monthYearArr[1], " "," ",momIdSet);
   			  resultList = getMomDetails(objList,userAccessLevel,accessValues,momCreatedLocObjList,momAssignedLocObjList);
   	 	 
 		   } else if (type != null && type.equalsIgnoreCase("assignedToOther")) {
-  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "assignedToOther","createdMom");
+  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "assignedToOther","createdMom",new HashSet<Long>());
   	 		  Set<Long> momIdSet = getMomIdSet(objList);
   			  List<Object[]> momAssignedLocObjList = partyMeetingMinuteDAO.getMomAssignedLocation(momIdSet,monthYearArr[0], monthYearArr[1]);
   			  resultList = getMomDetails(objList,userAccessLevel,accessValues,momCreatedLocObjList,momAssignedLocObjList);
   			  
   	 	  } else if (type != null && type.equalsIgnoreCase("yourAssignedMom")) {
   	 		  
-  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "","assignedMom");
+  	 		  List<Object[]> objList = partyMeetingMinuteDAO.getMomDetailsByType(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "","assignedMom",new HashSet<Long>());
  	 		  Set<Long> momIdSet = getMomIdSet(objList);
  			  List<Object[]> momAssignedLocObjList = partyMeetingMinuteDAO.getMomAssignedLocation(momIdSet,monthYearArr[0], monthYearArr[1]);
  			  resultList = getMomDetails(objList,userAccessLevel,accessValues,momCreatedLocObjList,momAssignedLocObjList);
@@ -1028,13 +1069,18 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
 	    			Long creationScopeValue = commonMethodsUtilService.getLongValueForObject(param[8]);
 	    			Long assignedScopeId = commonMethodsUtilService.getLongValueForObject(param[9]);
 	    			Long assignedScopeValue = commonMethodsUtilService.getLongValueForObject(param[10]);
+	    			momDetailsVO.setCreatedAddressId(commonMethodsUtilService.getLongValueForObject(param[11]));
 	    			if (userAccessLevel != null && userAccessLevel.equals(creationScopeId) && accessValues != null && accessValues.contains(creationScopeValue)) {
 	    				momDetailsVO.setIsEditable("true");
 	    			}
-		            if (userAccessLevel != null && userAccessLevel.equals(assignedScopeId) && accessValues != null && accessValues.contains(assignedScopeValue)) {
+		            if(userAccessLevel != null && userAccessLevel.equals(assignedScopeId) && accessValues != null && accessValues.contains(assignedScopeValue)) {
 		        	   momDetailsVO.setIsEditable("true");
 	    			}
-		        	momDetailsVO.setCreatedLocation(getRequiredLocationBasedOnLocationLevel(creationScopeId, getMatchObjectArr(momCreatedLocObjList, momDetailsVO.getMomPointsId())));//setting mom creation location name
+		            if((assignedScopeId != null && assignedScopeId.longValue()>0l && userAccessLevel.longValue() != assignedScopeId.longValue() ) || (momDetailsVO.getStatus().equalsIgnoreCase("Completed"))){
+		            	momDetailsVO.setIsEditable("false");
+		            }
+		            momDetailsVO.setCreatedLocation(getLocationName(creationScopeId,userAddressDAO.get(momDetailsVO.getCreatedAddressId())));
+		        	//momDetailsVO.setCreatedLocation(getRequiredLocationBasedOnLocationLevel(creationScopeId, getMatchObjectArr(momCreatedLocObjList, momDetailsVO.getMomPointsId())));//setting mom creation location name
 	    			momDetailsVO.setAssignedLocation(getRequiredLocationBasedOnLocationLevel(assignedScopeId, getMatchObjectArr(momAssignedLocObjList, momDetailsVO.getMomPointsId())));//setting mom assigned location name
 	    			finalList.add(momDetailsVO);
 				}
@@ -1113,7 +1159,7 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
     * @Description :This Service is used get complete mom details 
     * @since 6-DECEMBER-2017
     */
-   public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId) {
+   public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId,Long userLocationId,Long userLocationValue) {
    	MomDetailsVO resultVO = new MomDetailsVO();
    	 try {
    		  
@@ -1123,7 +1169,11 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
    			  resultVO.setMeetingId(model.getPartyMeeting() != null ? model.getPartyMeeting().getPartyMeetingId():0l);
    			  resultVO.setMeetingName(model.getPartyMeeting() != null ? model.getPartyMeeting().getMeetingName():"");
    			  resultVO.setPriority(model.getMomPriority() != null ? model.getMomPriority().getPriority(): "");
-   			  resultVO.setStatus(model.getPartyMeetingMinuteStatus() != null ? model.getPartyMeetingMinuteStatus().getStatus():null);
+   			PartyMeetingMinuteStatus status =  partyMeetingMinuteStatusDAO.get(model.getStatusId());
+   			if(status != null){
+   				resultVO.setStatus(status.getStatus());
+   			}
+   			  //resultVO.setStatus(model.getPartyMeetingMinuteStatus() != null ? model.getPartyMeetingMinuteStatus().getStatus():null);
    			  resultVO.setDate(model.getInsertedTime() != null ? sdf.format(model.getInsertedTime()) : null);
    			  resultVO.setMomPoints(model.getMinutePoint());
    			  resultVO.setMomPointsId(model.getPartyMeetingMinuteId());
@@ -1133,6 +1183,7 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
    			  resultVO.setAssignedLocationScopeValue(model.getAssignedLocationValue());
    			  resultVO.setCreatedLocation(getLocationName(model.getCreatedLocationScopeId(),model.getCreatedAddress()));
    			  resultVO.setAssignedLocation(getLocationName(model.getAssignedLocationScopeId(), model.getAssignedAddress()));
+   			  resultVO.setLocationLevel(model.getLocationScopeId());
    		  }
    		  List<String> docuemntList = partyMeetingDocumentDAO.getMomDocuments(partyMeetingMOMId);
    		  if (docuemntList != null) {
@@ -1147,6 +1198,11 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
    				 commentDtlsVO.setComment(commonMethodsUtilService.getStringValueForObject(param[1]));
    				 resultVO.getCommentList().add(commentDtlsVO);
    			}
+   			   
+   		   }
+   		  
+   		   if((resultVO.getAssignedLocationScopeId() != null  &&  userLocationId.longValue() != resultVO.getAssignedLocationScopeId().longValue() ) || (model.getStatusId() == 3l) ){
+   			   resultVO.setIsEditable("false");
    		   }
    		 
    	 } catch (Exception e) {
@@ -1190,4 +1246,28 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
    	}
    	return locationName;
    }
+   public Map<Long,MomDashbaordOverViewDtlsVO> getMomStatusAndPriorityWiseCountDetails(List<Object[]> objList,Map<Long,MomDashbaordOverViewDtlsVO> momPriorityMap) {
+		  try {
+			  if(objList != null && objList.size()>0){
+				  for(Object[] param : objList){
+					  MomDashbaordOverViewDtlsVO statusVo = momPriorityMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					  if(statusVo == null){
+						  statusVo = new MomDashbaordOverViewDtlsVO();
+						  statusVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						  statusVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						  statusVo.setCount(commonMethodsUtilService.getLongValueForObject(param[2]));
+						  momPriorityMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusVo);
+					  }else{
+						  statusVo.setCount(statusVo.getCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
+					  }
+					  
+				  }
+			  }
+			    
+			    
+	     } catch (Exception e) {
+			   LOG.error("Exception occurred at getMomStatusAndPriorityWiseCountDetails() of PartyMeetingMOMService class ",e);
+		   }
+		  return momPriorityMap;
+	  }
 }

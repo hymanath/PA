@@ -17,7 +17,7 @@ public interface IPartyMeetingMOMService {
 	public String deleteMOMMeetingDetails(Long id, String deletedType,Long loginUserId);
 	public ResultStatus savePartyMeetingMOMDetails(PartyMeetingMOMCreationDtlsvO inputVO);
 	public ResultStatus updateMomDetails(PartyMeetingMOMCreationDtlsvO inputVO);
-	public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId);
+	public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId,Long userLocationId,Long userLocationValue);
 	public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,String monthYear);
 	public List<MomDetailsVO> getMomDetailsBySelectedType(Long userAccessLevel,List<Long> accessValues,String monthYear,String type);
 }

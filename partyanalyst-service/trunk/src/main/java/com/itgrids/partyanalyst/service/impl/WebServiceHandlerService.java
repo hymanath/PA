@@ -5683,9 +5683,9 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
 			}
 			return null;
 	 }
-	 public MomDetailsVO getMomCompletedDetails(Long partyMeetingMinuteId){
+	 public MomDetailsVO getMomCompletedDetails(Long partyMeetingMinuteId,Long userLocationId,Long userLocationValue){
 			try{
-				return partyMeetingMOMService.getMomCompletedDetails(partyMeetingMinuteId);
+				return partyMeetingMOMService.getMomCompletedDetails(partyMeetingMinuteId,userLocationId,userLocationValue);
 			}catch (Exception e) {
 				log.error("Exception raised at getMomCompletedDetails method in WebServiceHandlerService Class", e);
 			}
