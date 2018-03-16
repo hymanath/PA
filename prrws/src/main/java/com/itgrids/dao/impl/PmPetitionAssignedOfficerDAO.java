@@ -97,34 +97,35 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 	
 	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId" +//0
-				",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
+		sb.append(" select model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId" +//0
+				",model.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
 				",model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId" +//2
 				",model.pmDepartmentDesignationOfficer.pmOfficer.name" +//3
-				//",model.petition.petitionId" +//4
-				//",model.pmSubWorkDetails.pmSubWorkDetailsId" +//5
-				",count(distinct model.petition.petitionId)" +//4
-				",count(distinct model.pmSubWorkDetails.pmSubWorkDetailsId)" +//5
-				",model.pmSubWorkDetails.pmStatus.pmStatusId" +//6
-				",model.pmSubWorkDetails.pmStatus.status" +//7
+				",model.petitionId" +//4
+				",pmSubWorkDetails.pmSubWorkDetailsId" +//5
+				//",count(distinct model.petitionId)" +//4
+				//",count(distinct pmSubWorkDetails.pmSubWorkDetailsId)" +//5
+				",pmSubWorkDetails.pmStatus.pmStatusId" +//6
+				",pmSubWorkDetails.pmStatus.status" +//7
 				",model.pmStatus.pmStatusId "+//8
-				",sum(model.pmSubWorkDetails.costEstimation) "+//9
-				" from PmPetitionAssignedOfficer model " +
+				",pmSubWorkDetails.costEstimation "+//9
+				" from PmPetitionAssignedOfficer model left join  model.pmSubWorkDetails pmSubWorkDetails " +
 				",PmRepresenteeRefDetails model1 " +
-				"where model.isDeleted='N' and model.petition.isDeleted='N' " +
-				"and model.pmSubWorkDetails.isDeleted='N' " +
+				"where model.isDeleted='N' and model.isDeleted='N' " +
+				" and pmSubWorkDetails.petition.petitionId=model.petitionId " +
+				" and pmSubWorkDetails.isDeleted='N' " +
 				" and model1.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N' " +
-				" and  model1.petition.petitionId=model.petition.petitionId" +
+				" and  model1.petition.petitionId=model.petitionId" +
 				" and model.pmDepartmentDesignationOfficer.pmOfficer.isActive='Y' ");
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
-			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:officerDesigids) ");
+			sb.append(" and model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:officerDesigids) ");
 		}
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
-			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmDepartment.pmDepartmentId in (:deptIds) ");
+			sb.append(" and model.pmDepartmentDesignation.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
-		sb.append(" group by model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId," +
-				"model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId,model.pmStatus.pmStatusId,model.pmSubWorkDetails.pmStatus.pmStatusId  " +
-				"order by model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.orderNO asc ");
+		//sb.append(" group by model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId," +
+			//	"model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId,model.pmStatus.pmStatusId,pmSubWorkDetails.pmStatus.pmStatusId  " +
+			//	"order by model.pmDepartmentDesignation.pmOfficerDesignation.orderNO asc ");
 		Query query = getSession().createQuery(sb.toString());
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
 			query.setParameterList("officerDesigids", inputVO.getDesignationIds());

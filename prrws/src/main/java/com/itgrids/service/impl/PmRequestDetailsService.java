@@ -6716,8 +6716,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							
 						}
-						Long officerStatusId = commonMethodsUtilService.getLongValueForObject(param[6]);
-						Long currentStatusId = commonMethodsUtilService.getLongValueForObject(param[8]);
+						Long officerStatusId = commonMethodsUtilService.getLongValueForObject(param[8]);
+						Long currentStatusId = commonMethodsUtilService.getLongValueForObject(param[6]);
 						String estimationCost = commonMethodsUtilService.getStringValueForObject(param[9]);
 						if(officerStatusId.longValue() == currentStatusId.longValue()){
 							PmOfficerVO statusVO = getMatchVOForOfficerStatus(offVO.getSubList(), officerStatusId);
@@ -6727,42 +6727,43 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								statusVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
 								offVO.getSubList().add(statusVO);*/
 							
-								/*if(statusVO.getSubWorkIds() == null){
+								if(statusVO.getSubWorkIds() == null){
 									statusVO.setSubWorkIds(new HashSet<Long>());
-								}*/
-								/*if(!statusVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[5]))
-										&& estimationCost != ""){*/
+								}
+								if(!statusVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[5]))
+										&& estimationCost != ""){
 									
-								statusVO.setPetitionCnt(statusVO.getPetitionCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
-								statusVO.setSubWorkCnt(statusVO.getSubWorkCnt()+commonMethodsUtilService.getLongValueForObject(param[5]));
-									//statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
-								if(estimationCost != ""){
-									BigDecimal decmial= new BigDecimal(offVO.getEstimationCost());
+								//statusVO.setPetitionCnt(statusVO.getPetitionCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+								//statusVO.setSubWorkCnt(statusVO.getSubWorkCnt()+commonMethodsUtilService.getLongValueForObject(param[5]));
+									statusVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+								//if(estimationCost != ""){
+									//BigDecimal decmial= new BigDecimal(offVO.getEstimationCost());
 									BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
 									BigDecimal decmial1= new BigDecimal(estimationCost);
-									BigDecimal totalCost = decmial.add(decmial1);
+									//BigDecimal totalCost = decmial.add(decmial1);
 									BigDecimal totalCost1 = decmial2.add(decmial1);
 									statusVO.setEstimationCost(totalCost1.toString());
-									offVO.setEstimationCost(totalCost.toString());
+									//offVO.setEstimationCost(totalCost.toString());
 								}
-								/*if(statusVO.getPetitionIds() == null){
+								if(statusVO.getPetitionIds() == null){
 									statusVO.setPetitionIds(new HashSet<Long>());
 								}
-								statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));*/
+								statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 							}
-						}else{
+						}
+						//else{
 							/*PmOfficerVO statusVO = getMatchVOForOfficerStatus(offVO.getSubList(), 8l);
 							if(statusVO != null){
 								if(statusVO.getSubWorkIds() == null){
 									statusVO.setSubWorkIds(new HashSet<Long>());
 								}*/
-							/*if(offVO.getSubWorkIds() == null){
+							if(offVO.getSubWorkIds() == null){
 								offVO.setSubWorkIds(new HashSet<Long>());
 							}
 								if(!offVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[5]))
 										&& estimationCost != ""){
-									offVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));*/
-							if(estimationCost != ""){
+									offVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));
+							//if(estimationCost != ""){
 									BigDecimal decmial= new BigDecimal(offVO.getEstimationCost());
 									//BigDecimal decmial2= new BigDecimal(statusVO.getEstimationCost());
 									BigDecimal decmial1= new BigDecimal(estimationCost);
@@ -6776,17 +6777,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 								statusVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));*/
 							//}
-						}
-						/*if(offVO.getPetitionIds() == null){
+						//}
+						if(offVO.getPetitionIds() == null){
 							offVO.setPetitionIds(new HashSet<Long>());
 						}
 						offVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
-						if(offVO.getSubWorkIds() == null){
+						/*if(offVO.getSubWorkIds() == null){
 							offVO.setSubWorkIds(new HashSet<Long>());
 						}
 						offVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));*/
-						offVO.setPetitionCnt(offVO.getPetitionCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
-						offVO.setSubWorkCnt(offVO.getSubWorkCnt()+commonMethodsUtilService.getLongValueForObject(param[5]));
+						//offVO.setPetitionCnt(offVO.getPetitionCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+						//offVO.setSubWorkCnt(offVO.getSubWorkCnt()+commonMethodsUtilService.getLongValueForObject(param[5]));
 					}
 				}
 				if(commonMethodsUtilService.isMapValid(officerMap)){
