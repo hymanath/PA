@@ -59,16 +59,13 @@ $('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	endDate = picker.endDate.format("DD-MM-YYYY");
 	onLoadCalls();
 }); 
-
-$("#singleDateRangePicker").daterangepicker({
-		opens: 'left',
-		startDate: startDate,
-		endDate: startDate,
-		singleDatePicker:true,
-		locale: {
-		  format: 'DD-MM-YYYY'
-		}
-	});
+$('#singleDateRangePicker').daterangepicker({
+	singleDatePicker: true,
+	maxDate: new Date,
+	locale: {
+	  format: 'DD-MM-YYYY'
+	}
+});
 $('#singleDateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 	
 /* 	glStartDate = picker.startDate.format('DD-MM-YYYY');
@@ -380,7 +377,13 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 						targetoutTimePer=(outTime/target)*100;	
 						table+='<tr>';
 							table+='<td class="text-capital">Andhra Pardesh</td>';
+							if(totalRfidTags>0){
 							table+='<td>'+totalRfidTags+'</td>'; 
+							}
+							else
+							{
+							table+='<td>-</td>';
+							}							
 							if(target>0 || targetAchievePer>0 || targetinTimePer>0 || targetoutTimePer>0)
 							{
 								table+='<td style="background-color:#D90022; color:#fff;">'+target+'</td>';
@@ -390,10 +393,10 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 								}
 							else
 							{
-							table+='<td style="background-color:#D90022; color:#fff;">0</td>';
-							table+='<td style="background-color:#FFC0CB;">0.0%</td>';
-							table+='<td style="background-color:#92DD5A;">0.0%</td>';
-							table+='<td style="background-color:#1076F1; color:#fff;">0.0%</td>';
+							table+='<td style="background-color:#D90022; color:#fff;">-</td>';
+							table+='<td style="background-color:#FFC0CB;">-</td>';
+							table+='<td style="background-color:#92DD5A;">-</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">-</td>';
 							}
 							//table+='<td style="background-color:#1076F1; color:#fff;">'+outTimePer+'%</td>';
 							//table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
@@ -415,7 +418,12 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							table+='<tr attr_onclick_distname="'+blockid+'">';
 						}
 							table+='<td attr_dist_name="'+result[i].name+'" attr_dist_id="'+result[i].id+'" attr_onclick_distname="'+blockid+'" style="cursor: pointer" class="text-capital" data-toggle="modal" data-target="#swmModal">'+result[i].name+'<i class="fa fa-info-circle pull-right" aria-hidden="true" title="Click for '+result[i].name+' Details" attr_onclick_distname="'+blockid+'" attr_onclick_mandname="gpblockMand"  attr_dist_id="'+result[i].id+'" style="cursor: pointer"></i></td>';
+							if(result[i].totalRfidTags>0){
 							table+='<td attr_dist_rfid="'+result[i].totalRfidTags+'">'+result[i].totalRfidTags+'</td>'; 
+							}
+							else{
+							table+='<td attr_dist_rfid="'+result[i].totalRfidTags+'">-</td>'; 
+							}
 							//table+='<td>0</td>';
 							if(result[i].target>0 || result[i].trackingPer>0 || result[i].inTimePer>0 || result[i].outTimePer>0)
 							{
@@ -426,10 +434,10 @@ function getSolidInfoLocationWise(blockid,distId,locationId,locationType,fromDat
 							}
 							else
 							{
-							table+='<td style="background-color:#D90022; color:#fff;">0</td>';
-							table+='<td style="background-color:#FFC0CB;">0.0%</td>';
-							table+='<td style="background-color:#92DD5A;">0.0%</td>';
-							table+='<td style="background-color:#1076F1; color:#fff;">0.0%</td>';
+							table+='<td style="background-color:#D90022; color:#fff;">-</td>';
+							table+='<td style="background-color:#FFC0CB;">-</td>';
+							table+='<td style="background-color:#92DD5A;">-</td>';
+							table+='<td style="background-color:#1076F1; color:#fff;">-</td>';
 							}
                            //table+='<td style="background-color:#FFA600;">'+result[i].outOfTarget+'</td>';
 							/* table+='<td>0</td>';
@@ -756,158 +764,168 @@ function getAllDistricts(divId){
 		});
 	}
 	
-	//getGpWiseRfidTrackingOverData("668");	 
-	function getGpWiseRfidTrackingOverData(locationId){
-		$("#gpsCountBlockId").html(spinner);
-		var json = {
-			fromDate :startDate,
-			locationId:locationId.toString()
-		}
-		$.ajax({                
-			type:'POST',    
-			url: 'getGpWiseRfidTrackingOverData',
-			dataType: 'json',
-			data : JSON.stringify(json),
-			beforeSend :   function(xhr){
-				xhr.setRequestHeader("Accept", "application/json");
-				xhr.setRequestHeader("Content-Type", "application/json");
-			}
-		}).done(function(result){
-			buildGpWiseRfidTrackingOverData(result);
-			});
-	}	
-	function buildGpWiseRfidTrackingOverData(result)
-	{		
-		var totalgpCount=0;
-		var str='';	
-			str+='<div class="col-sm-12 m_top20 white-block ">';
-				str+='<div class="row m_top10">';
-					str+='<div class="col-sm-12 m_top10 white-block">';
-						str+='<div class="row">';
-							str+='<div class="col-sm-4">';
-								str+='<h4 class="m_top10"><b>GP TRACKING DETAILS</b></h4>';
-							str+='</div>';
-							str+='<div class="col-sm-2 pull-right">';
-								str+="<h4 class='m_top10' id='totalGpCountId'><b></b></h4>";
-							str+='</div>';
-						str+='</div>';
-						str+='<div class="row">';
-						
-							str+='<div class="col-sm-12 custom_border scrolingGpBlockCls">';
-			
-		for(var i in result)
-		{
-			
-			str+='<div class="col-sm-4 m_top10"  >';
-				str+='<div class="pad_5 custom_border scrolingGpBlockCls">';
-					str+='<div class="row">';
-						str+='<div class="col-sm-6">';
-							str+='<h5 class="m_top5"><b>'+result[i].subList[0].locationName+'- GP</b></h5>';
-						str+='</div>';
-						str+='<div class="col-sm-5 pull-right" style="background-color:#F1F1F1;">';
-							str+='<div class="media">';
-								str+='<div class="media-left">';
-									str+='<img src="Assests/images/home.PNG" class="media-object" style="width:35px">';
-								str+='</div>';
-								str+='<div class="media-body">';
-								if(result[i].totalRfidTags !=null && result[i].totalRfidTags!= 0){
-									str+='<h4 class="media-heading">'+result[i].totalRfidTags+'</h4>';
-								}
-								str+='</div>';
-							str+='</div>';
-						str+='</div>';
-					str+='</div>';
-					str+='<div class="row m_top10" style="background-color:#F7F8F7; padding-right:7px;">';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>Target</b></h6>';
-						str+='</div>';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>Achievement</b></h6>';
-						str+='</div>';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>In&nbsp;Time</b></h6>';
-						str+='</div>';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>Out&nbsp;Time</b></h6>';
-						str+='</div>';
-						
-						
-					str+='</div>';
-					str+='<div class="row m_top10" style="background-color:#F7F8F7; padding-right:7px;">';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>'+result[i].target+'</b></h6>';
-						str+='</div>';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>'+result[i].trackingPer+'</b></h6>';
-						str+='</div>';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>'+result[i].inTimePer+'</b></h6>';
-						str+='</div>';
-						str+='<div class="col-sm-3">';
-							str+='<h6><b>'+result[i].outTimePer+'</b></h6>';
-						str+='</div>';
-						
-						
-					str+='</div>';
-					
-					for(var j in result[i].subList)
-					{
-						if(j==0)
-						{
-							totalgpCount=totalgpCount+1;
-						}
-						if(result[i].subList[j].blockNo !=null && result[i].subList[j].blockNo != 0){
-							str+='<div class="row m_top10">';
-								str+='<div class="col-sm-2 m_top10" style="margin-right:20px;">';
-									str+='<div class="pad_top3r">';
-									
-										 str+='<h6 style="font-size:10px;"><b>BLOCK-'+result[i].subList[j].blockNo+'</b></h6>';
-										
-										str+='</div>';
-								str+='</div>';
-								str+='<div class="col-sm-8 m_top5">';
-									str+='<div style="padding:0px 0px 0px 10px;">';
-										str+='<div class="row" style="background-color:red;">';
-											str+='<div class="col-sm-12 bor_LeftF bor_LeftN">';
-											
-												str+='<div class="row pad_top_bottom5" style="background-color:#D90022; padding:5px;">';
-													str+='<h6 style="color:#fff;"><b>Target</b><span class="pull-right"><b>'+result[i].subList[j].target+'</b></span></h6>';
-												str+='</div>';
-												str+='<div class="row pad_top_bottom5" style="background-color:#FFC0CB; padding:5px;">';
-													str+='<h6 style="color:#fff;"><b>Achievement</b><span class="pull-right"><b>'+result[i].subList[j].trackingPer+'%('+result[i].subList[j].achieve+')</b></span></h6>';
-												str+='</div>';
-												str+='<div class="row pad_top_bottom5" style="background-color:#92DD5A; padding:5px;">';
-													str+='<h6 style="color:#fff;"><b>In&nbsp;Time</b><span class="pull-right"><b>'+result[i].subList[j].inTimePer+'%('+result[i].subList[j].inTime+')</b></span></h6>';
-												str+='</div>';	
-												str+='<div class="row pad_top_bottom5" style="background-color:#1076F1; padding:5px;">';
-													str+='<h6 style="color:#fff;"><b>Out&nbsp;Time</b><span class="pull-right"><b>'+result[i].subList[j].outTimePer+'%('+result[i].subList[j].outTime+')</b></span></h6>';
-												str+='</div>';	
-																					
-											str+='</div>';
-											
-										str+='</div>';
-									str+='</div>';
-								str+='</div>';
-							str+='</div>';
-						}
-						else{
-							str+='<h3 style="margin-top:30px;" class="text-center">No Data Available</h3>';
-						}
-						
-					}
-				str+='</div>';
-				$('.scrolingGpBlockCls').mCustomScrollbar({setHeight:'200px'});
-			str+='</div>';
-			
-						
-					}
-				str+='</div>';
-			str+='</div>';
-	str+='</div>';
-	str+='</div>';
-	str+='</div>';
-	$("#gpsCountBlockId").html(str);
-	$("#totalGpCountId").html("TOTAL -"+totalgpCount+"GP'S");
-	$('.scrolingGpBlockCls').mCustomScrollbar({setHeight:'300px'})
-		
+	// getGpWiseRfidTrackingOverData("668");
+function getGpWiseRfidTrackingOverData(locationId) {
+	$("#gpsCountBlockId").html(spinner);
+	var json = {
+		fromDate : startDate,
+		locationId : locationId.toString()
 	}
+	$.ajax({
+		type : 'POST',
+		url : 'getGpWiseRfidTrackingOverData',
+		dataType : 'json',
+		data : JSON.stringify(json),
+		beforeSend : function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result) {
+		buildGpWiseRfidTrackingOverData(result);
+	});
+}
+function buildGpWiseRfidTrackingOverData(result) {
+	var totalgpCount = 0;
+	var str = '';
+	str += '<div class="col-sm-12 m_top20 white-block ">';
+	str += '<div class="row m_top10">';
+	str += '<div class="col-sm-12 m_top10 white-block">';
+	str += '<div class="row">';
+	str += '<div class="col-sm-4">';
+	str += '<h4 class="m_top10"><b>GP TRACKING DETAILS</b></h4>';
+	str += '</div>';
+	str += '<div class="col-sm-2 pull-right">';
+	str += "<h4 class='m_top10' id='totalGpCountId'><b></b></h4>";
+	str += '</div>';
+	str += '</div>';
+	str += '<div class="row">';
+
+	str += '<div class="col-sm-12 custom_border scrolingGpBlockCls">';
+
+	for ( var i in result) {
+
+		str += '<div class="col-sm-4 m_top10"  >';
+		str += '<div class="pad_5 custom_border scrolingGpBlockCls">';
+		str += '<div class="row">';
+		str += '<div class="col-sm-6">';
+		str += '<h5 class="m_top5"><b>' + result[i].subList[0].locationName
+				+ '- GP</b></h5>';
+		str += '</div>';
+		str += '<div class="col-sm-5 pull-right" style="background-color:#F1F1F1;">';
+		str += '<div class="media">';
+		str += '<div class="media-left">';
+		str += '<img src="Assests/images/home.PNG" class="media-object" style="width:35px">';
+		str += '</div>';
+		str += '<div class="media-body">';
+		if (result[i].totalRfidTags != null && result[i].totalRfidTags != 0) {
+			str += '<h4 class="media-heading">' + result[i].totalRfidTags
+					+ '</h4>';
+		}
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '</div>';
+		str += '<div class="row m_top10" style="background-color:#F7F8F7; padding-right:7px;">';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>Target</b></h6>';
+		str += '</div>';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>Achievement</b></h6>';
+		str += '</div>';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>In&nbsp;Time</b></h6>';
+		str += '</div>';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>Out&nbsp;Time</b></h6>';
+		str += '</div>';
+
+		str += '</div>';
+		str += '<div class="row m_top10" style="background-color:#F7F8F7; padding-right:7px;">';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>' + result[i].target + '</b></h6>';
+		str += '</div>';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>' + result[i].trackingPer + '</b></h6>';
+		str += '</div>';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>' + result[i].inTimePer + '</b></h6>';
+		str += '</div>';
+		str += '<div class="col-sm-3">';
+		str += '<h6><b>' + result[i].outTimePer + '</b></h6>';
+		str += '</div>';
+
+		str += '</div>';
+
+		for ( var j in result[i].subList) {
+			if (j == 0) {
+				totalgpCount = totalgpCount + 1;
+			}
+			if (result[i].subList[j].blockNo != null
+					&& result[i].subList[j].blockNo != 0) {
+				str += '<div class="row m_top10">';
+				str += '<div class="col-sm-2 m_top10" style="margin-right:20px;">';
+				str += '<div class="pad_top3r">';
+
+				str += '<h6 style="font-size:10px;"><b>BLOCK-'
+						+ result[i].subList[j].blockNo + '</b></h6>';
+
+				str += '</div>';
+				str += '</div>';
+				str += '<div class="col-sm-8 m_top5">';
+				str += '<div style="padding:0px 0px 0px 10px;">';
+				str += '<div class="row" style="background-color:red;">';
+				str += '<div class="col-sm-12 bor_LeftF bor_LeftN">';
+
+				str += '<div class="row pad_top_bottom5" style="background-color:#D90022; padding:5px;">';
+				str += '<h6 style="color:#fff;"><b>Target</b><span class="pull-right"><b>'
+						+ result[i].subList[j].target + '</b></span></h6>';
+				str += '</div>';
+				str += '<div class="row pad_top_bottom5" style="background-color:#FFC0CB; padding:5px;">';
+				str += '<h6 style="color:#fff;"><b>Achievement</b><span class="pull-right"><b>'
+						+ result[i].subList[j].trackingPer
+						+ '%('
+						+ result[i].subList[j].achieve + ')</b></span></h6>';
+				str += '</div>';
+				str += '<div class="row pad_top_bottom5" style="background-color:#92DD5A; padding:5px;">';
+				str += '<h6 style="color:#fff;"><b>In&nbsp;Time</b><span class="pull-right"><b>'
+						+ result[i].subList[j].inTimePer
+						+ '%('
+						+ result[i].subList[j].inTime + ')</b></span></h6>';
+				str += '</div>';
+				str += '<div class="row pad_top_bottom5" style="background-color:#1076F1; padding:5px;">';
+				str += '<h6 style="color:#fff;"><b>Out&nbsp;Time</b><span class="pull-right"><b>'
+						+ result[i].subList[j].outTimePer
+						+ '%('
+						+ result[i].subList[j].outTime + ')</b></span></h6>';
+				str += '</div>';
+
+				str += '</div>';
+
+				str += '</div>';
+				str += '</div>';
+				str += '</div>';
+				str += '</div>';
+			} else {
+				str += '<h3 style="margin-top:30px;" class="text-center">No Data Available</h3>';
+			}
+
+		}
+		str += '</div>';
+		$('.scrolingGpBlockCls').mCustomScrollbar({
+			setHeight : '200px'
+		});
+		str += '</div>';
+
+	}
+	str += '</div>';
+	str += '</div>';
+	str += '</div>';
+	str += '</div>';
+	str += '</div>';
+	$("#gpsCountBlockId").html(str);
+	$("#totalGpCountId").html("TOTAL -" + totalgpCount + "GP'S");
+	$('.scrolingGpBlockCls').mCustomScrollbar({
+		setHeight : '300px'
+	})
+
+}
