@@ -996,7 +996,7 @@ function buildWorksDetils(result){
 										totalWorksToUpdate = parseInt(totalWorksToUpdate)-parseInt(1);
 									}
 								}
-								
+							if(	( result.statusList[0].subList != null && result.statusList[0].subList.length > 0 ) || globalDesignationId == 2 || globalDesignationId == 86 ){
 								str+='<div class="row m_top10">';
 										str+='<div class="col-sm-12">';
 											str+='<div class="col-sm-2 pull-right">';
@@ -1011,7 +1011,11 @@ function buildWorksDetils(result){
 													;
 												}else{
 													if(parseInt(totalWorksToUpdate) >0){
-														str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+														if(result.statusList[0].subList.length > 0 ){
+															str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls activeUpdateStatusCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+														}else{
+															str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+														}
 													}
 												}
 											str+='</div>';
@@ -1029,11 +1033,13 @@ function buildWorksDetils(result){
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
-									
+							}
 							str+='<table class="table table_customRep table-bordered  m_top25" id="workDetails1Tab" >';
 								str+='<thead>';
 									str+='<tr>';
+										if(	( result.statusList[0].subList != null && result.statusList[0].subList.length > 0 ) || globalDesignationId == 2 || globalDesignationId == 86 ){
 											str+='<th style="text-align:center" title="Select All"> <input type="checkbox" name="" id="" class="workStatusClassicalViewSelectedAllCls" value="0" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'" />&nbsp;ALL&nbsp</th>';
+										}
 											str+='<th style="text-align:center" >DISTRICT</th>';
 											str+='<th style="text-align:center" >CONSTITUENCY</th>';
 											str+='<th style="text-align:center" >MANDAL/ MUNCIPALITY</th>';
@@ -1054,11 +1060,13 @@ function buildWorksDetils(result){
 									subjectIdsArr.push(result.subWorksList[i].subWorksList[j].subjectId);
 								
 								str+='<tr>';
+								if(	( result.statusList[0].subList != null && result.statusList[0].subList.length > 0 ) || globalDesignationId == 2 || globalDesignationId == 86 ){
 									str+='<td  style="text-align:center" > <input type="checkbox" name="" id="" value="'+result.subWorksList[i].subWorksList[j].workId+'" class="workStatusUpdateCls ClassicalViewCheckbox'+result.subWorksList[i].endorsmentNo+'" style="margin-top: 2px;" attr_department_id="'+result.subWorksList[i].subWorksList[j].deptId+'" attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"/></td>';
 									if(typeof result.subWorksList[i].subWorksList[j].addressVO.districtName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.districtName != null && result.subWorksList[i].subWorksList[j].addressVO.districtName.length>0)
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].addressVO.districtName+'</td>';
 									else
 										str+='<td  style="text-align:center" > - </td>';
+								}
 									if(typeof result.subWorksList[i].subWorksList[j].addressVO.assemblyName != 'undefined' && result.subWorksList[i].subWorksList[j].addressVO.assemblyName != null && result.subWorksList[i].subWorksList[j].addressVO.assemblyName.length>0)
 										str+='<td  style="text-align:center" >'+result.subWorksList[i].subWorksList[j].addressVO.assemblyName+'</td>';
 									else
@@ -1114,7 +1122,8 @@ function buildWorksDetils(result){
 							}
 							str+='</tbody>';
 						str+='</table>';
-						
+					
+					if(	( result.statusList[0].subList != null && result.statusList[0].subList.length > 0) || globalDesignationId == 2 || globalDesignationId == 86 ){
 						str+='<div class="row m_top10">';
 							str+='<div class="col-sm-12">';
 								str+='<div class="col-sm-2 pull-right">';
@@ -1129,7 +1138,11 @@ function buildWorksDetils(result){
 										;
 									}else{
 										if(parseInt(totalWorksToUpdate) >0){
-											str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+											if(result.statusList[0].subList.length > 0){
+												str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls activeUpdateStatusCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+											}else{
+												str+='<button  type="button" class="btn btn-primary btn-sm  pull-right updateStatusChangeCls" style="cursor:pointer;" attr_total_works="'+result.subWorksList[i].noOfWorks+'" attr_petition_id="'+petitionId+'"  attr_enrorsNo="'+result.subWorksList[i].endorsmentNo+'"> UPDATE STATUS </button>';
+											}
 										}
 									}
 								str+='</div>';
@@ -1147,7 +1160,7 @@ function buildWorksDetils(result){
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
-						
+					}
 					str+='</div>';
 				str+='</div>';			
 				str+='</div>';			
@@ -1706,6 +1719,7 @@ function buildWorksDetils(result){
 }
 
 $(document).on("click",".updateStatusChangeCls",function(){
+	 $("#endorsWorksId").attr("disabled",false);
 	$("#coverLetterLableDivId").hide();
 	selectionType="onlyOne";
 	var enrorsNo = $(this).attr("attr_enrorsNo");
@@ -1834,6 +1848,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 	$("#statusChangeId").trigger('chosen:updated');
 	
 	$("#endorseMentModalDivId").modal("show");
+	 $('#imageBuildingId').show();
 	if(enrorsNo == null || typeof enrorsNo == 'undefined' || parseInt(enrorsNo) == 0)
 		;//$("#endorseMentHeadingId").html(" PRESENT STATUS : "+globalActionName.toUpperCase()+" PENDING ") ;
 	else
@@ -1861,6 +1876,21 @@ $(document).on("click",".updateStatusChangeCls",function(){
 		  $("#endorsWorksId").html('Save Details')
 		 $('#actionTypeStr').val(globalReviewStatus);
 	 }
+	 //here hide the  SELECT ACTION ,Comment,COVERING LETTER,WORK DOCUMENT,REFER DOCUMENT IF ( DESIGANTION ID =2 AND SELECT ACTION  LIST IS EMPATY
+	 if((glDesignationId == 2 || glDesignationId == 86 )&& !$(this).hasClass("activeUpdateStatusCls")){//kk
+		$("#statusChangeDivId").hide();
+		$("#commentsDivId").hide();
+		$("#imageBuildingId").hide();//
+		$("#endorseDivId").hide();
+		$("#uploadCoverFileDivCls").show();
+		$("#uploadCoverFile").html('<input type="file" attr_name="" name="" attr_image_tyep=""  id="uploadCoveringDocId" class="m_top10"/>');
+		initializeSingleUploadDocument("uploadCoveringDocId");
+	}else{
+		$("#commentsDivId").show();
+		$('#imageBuildingId').show();
+		 $("#statusChangeDivId").show();
+
+	}
 });	
 
 $(document).on("click","#assignToUserId",function(){
@@ -2660,7 +2690,7 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	
 	//formData.append("petitionId", petitionId);
 	//alert(formData.get("refNo"));
-	//return;
+	$("#endorsWorksId").attr("disabled",true);
 $.ajax({
 			url: $("#endorsingSubWorksId").attr("action"),
 			data: formData,
@@ -2687,14 +2717,15 @@ $.ajax({
 						 // $("#statusMsgAppntReqt").html("<center><h3 style='color: green;margin-top:-25px;'>Application Saved Successfully</h3></center>").fadeOut(4000);
 					  }else{
 						  $('#endorsWorksId').show();
+						  $("#endorsWorksId").attr("disabled",false);
 					  }
 					}else{
+						$("#endorsWorksId").attr("disabled",false);
 					 $('#endorsWorksId').show();
 					}
 			},
 			error: function(request,error) { 
 				$("#savingDetailsSpinner").html('');
-				
 				setTimeout(function () {
 						$("#ajaxcallImageId").html("<center><h4 style='color: red;'>Error occured while updating details.try again.</h4></center>")
 						}, 5000);
@@ -2704,7 +2735,8 @@ $.ajax({
 				 //$("#").html("<center><h5 style='color: green;margin-top:-25px;'>Error occured while updating details.Pelase check once any required data missing to fill.Then try again.</h5></center>")
 				 //$("#ajaxImageId").hide();
 				//alert("Error occured while updating details.Pelase check once any required data missing to fill.Then try again.");	
-				$('#endorsWorksId').show();				
+				$('#endorsWorksId').show();	
+				$("#endorsWorksId").attr("disabled",false);
 			}
      });
  }	
@@ -2779,6 +2811,9 @@ function generateCoveringLetterForPetition(){
 	//$('#endorsWorksId').hide();
 	
 	
+$("#imageOrPdfDisId").show();
+  $('#coveringLetterGenerator').show();
+  
 	var flag = false;
 	$('#endorsementNoErr').html('');
 	$('#leadIdErr').html('');
@@ -2973,8 +3008,6 @@ var json = {
 		 $('#endorsementNoErr').html("");
 		 $('#endorsementNoErr').html("<h5 style='color:red;'>This endorsment no exist</h5>");
 		}
-	
-	
  }); 
 }
 
@@ -2983,6 +3016,7 @@ var json = {
 $(document).on('click','.petitionWiseViewCommentsCls',function(){
  var pettinId = $(this).attr("attr_petition_id")
  
+ $("#ajaxcallImageId").html('');
  $("#coverLetterLableDivId").hide();
  $("#remarksId").val('');
  $("#uploadFileDivCls").hide();
@@ -3011,8 +3045,11 @@ $(document).on('click','.petitionWiseViewCommentsCls',function(){
  
  $('#endorsWorksId').show();
  $('#endorseDivId').hide();
- $('.uploadCoverFileDivCls').hide();
+ $('#uploadCoverFileDivCls').hide();
  $('#endorseDivId').hide();
+ $('#imageBuildingId').hide();
+ $("#imageOrPdfDisId").hide();
+  $('#coveringLetterGenerator').hide();
  $('#endorsWorksId').html("Save Details");
  
 })
