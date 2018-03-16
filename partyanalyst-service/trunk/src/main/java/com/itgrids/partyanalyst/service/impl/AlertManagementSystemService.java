@@ -16862,13 +16862,44 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					if(searchType.equalsIgnoreCase("Alert")){
 						matchedVO = getMatchedPropertyVO(vo.getVoList(),(Long)objects[6]);
 					}else{
-						matchedVO = getMatchedStatusVO(vo.getVoList(),(Long)objects[6]);
+						matchedVO = getMatchedPropertyStatusVO(vo.getVoList(),(Long)objects[6]);
 					}
 					
 					if(matchedVO != null){
 						matchedVO.setCount(objects[9] != null ? (Long)objects[9]:0l);
 					}
 				}//main for
+				
+				//combine vizag and vizal rural counts
+				if(map.size() > 0){
+					JalavaniAlertResultVO vizagVO = map.get(Long.parseLong("13"));
+					JalavaniAlertResultVO vizagRualVO = map.get(Long.parseLong("517"));
+					
+					if(vizagVO == null && vizagRualVO == null){
+						
+					}else if(vizagVO == null && vizagRualVO != null){
+						vizagRualVO.setDistrictId(13l);
+						vizagRualVO.setDistrictName("Visakhapatnam");
+					}else if(vizagVO != null && vizagRualVO == null){
+						
+					}else if(vizagVO != null && vizagRualVO != null){
+						vizagVO.setCount(vizagVO.getCount()+vizagRualVO.getCount());
+						if(vizagRualVO.getVoList() != null && vizagRualVO.getVoList().size() > 0){
+							for (JalavaniAlertResultVO mainCatVO : vizagRualVO.getVoList()) {
+								if(mainCatVO.getVoList() != null && mainCatVO.getVoList().size() > 0){
+									for (JalavaniAlertResultVO statusVO : mainCatVO.getVoList()) {
+										if(statusVO.getCount() != null && statusVO.getCount() > 0l){
+											JalavaniAlertResultVO matchedStatusVO =  getMatchedPropertyStatusVO(vizagVO.getVoList(),statusVO.getStatusId());
+											if(matchedStatusVO != null)
+												matchedStatusVO.setCount(matchedStatusVO.getCount()+statusVO.getCount());
+										}
+									}
+								}
+							}
+						}
+						map.remove(Long.parseLong("517"));
+					}
+				}
 				
 				//calculating total and %'s
 				finalVoList.addAll(map.values());
@@ -16913,30 +16944,14 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				}
 			}
 			
-			/*List<Object[]> dataObjList =null;
-			List<Object[]> statusObjList=null;
 			
-			//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
-			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("Alert")){
-				dataObjList = alertDAO.getAlertAndStatusWiseCountsForDist(startDate,endDate,inputVo.getSearchType(),inputVo.getType(),inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getAlertCategoryId());
-			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("Status")){
-				//statusObjList =alertDAO.getAlertAndStatusWiseCountsForDist(startDate,endDate,inputVo.getSearchType(),inputVo.getType(),inputVo.getLocationTypeId(),inputVo.getSubLocationId(),inputVo.getAlertCategoryId());
-			}
-			
-			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("Alert")){
-				setLocationWiseData(dataObjList,finalVoList);
-				
-			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("Status")){
-				setStatuWiseData(statusObjList,finalVoList);
-				
-			}*/
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
 		}
 		return finalVoList;
 	}
 	
-	public JalavaniAlertResultVO getMatchedStatusVO(List<JalavaniAlertResultVO> voList,Long statusId){
+	public JalavaniAlertResultVO getMatchedPropertyStatusVO(List<JalavaniAlertResultVO> voList,Long statusId){
 		if(voList != null && voList.size() > 0){
 			for (JalavaniAlertResultVO jalavaniAlertResultVO : voList) {
 				if(jalavaniAlertResultVO.getVoList() != null && jalavaniAlertResultVO.getVoList().size() > 0){
