@@ -4312,4 +4312,7 @@
 	 <bean id="nominatedPostAccessMultiplePositionsDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.NominatedPostAccessMultiplePositionsDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="itdpAppUserAccessLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ItdpAppUserAccessLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

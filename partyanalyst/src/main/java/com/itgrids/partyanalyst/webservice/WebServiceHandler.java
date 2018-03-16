@@ -76,7 +76,6 @@ import com.itgrids.partyanalyst.dto.IdAndNameVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.ImageVO;
 import com.itgrids.partyanalyst.dto.InviteesVO;
-import com.itgrids.partyanalyst.dto.JalavaniAlertResultVO;
 import com.itgrids.partyanalyst.dto.JalavaniAlertsInputVO;
 import com.itgrids.partyanalyst.dto.JalavaniVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
@@ -128,7 +127,6 @@ import com.itgrids.partyanalyst.utils.IConstants;
 import com.itgrids.partyanalyst.webservice.android.abstractservice.IWebServiceHandlerService1;
 import com.itgrids.partyanalyst.webservice.utils.VoterTagVO;
 import com.itgrids.partyanalyst.webserviceutils.android.utilvos.UserLocationTrackingVo;
-import com.sun.jersey.api.spring.Autowire;
 @Component
 @Path("/")
 public class WebServiceHandler {
@@ -3519,7 +3517,7 @@ public class WebServiceHandler {
 	@Consumes(MediaType.APPLICATION_JSON)
 	public MomDetailsVO getMomCompletedDetails(JSONObject jObj){
 		try {
-			return webServiceHandlerService.getMomCompletedDetails(jObj.getLong("partyMeetingMinuteId"));
+			return webServiceHandlerService.getMomCompletedDetails(jObj.getLong("partyMeetingMinuteId"),jObj.getLong("userLocationId"),jObj.getLong("userLocationValue"));
 		} catch (Exception e) {
 			LOG.error("Exception Occured in updateMOMMeetingDetails() Method, Exception is ",e);
 		}

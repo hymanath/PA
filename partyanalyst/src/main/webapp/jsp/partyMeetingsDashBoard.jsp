@@ -1,5 +1,5 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+		pageEncoding="utf-8"%>
 <%@taglib prefix="s" uri="/struts-tags" %>
 <!doctype html>
 <html>
@@ -19,9 +19,13 @@
 <link href="dist/Dropzone/dropzone.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" type="text/css" href="styles/jquery.dataTables.css"> 
 <link href="dist/newmultiselect/chosen.css" rel="stylesheet" type="text/css">
+<link  rel="stylesheet" type="text/css" href="debate/js/jquery.google.api/jquery-ui1.10.3.css"/>
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
   <script type="text/javascript" src="js/jQuery/js/jquery-ui-1.8.5.custom.min.js"></script>
-
+    <script src="debate/js/jquery.google.api/ajax.googleapis.com.ajax.libs.jquery.1.8.2.jquery.min.js"></script>	
+	<script src="debate/js/jquery.google.api/code.jquery.com.ui.1.10.2.jquery-ui.js"></script>
+	<script src="debate/js/jquery.google.api/trentrichardson.com.examples.timepicker.jquery-ui-sliderAccess.js"></script>
+	<script type="text/javascript" src="https://www.google.com/jsapi"></script>
 <style type="text/css">
 .btn {
     border-radius: 0;
@@ -65,6 +69,9 @@ header.eventsheader {
  background-origin: border-box;
  background-repeat: no-repeat;
  height: 71px; 
+}
+.meetingAbsentCls {
+  text-decoration:underline;
 }
 footer{background-color:#5c2d25;color:#ccc;padding:30px}
 </style>
@@ -1160,14 +1167,14 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
 </div> 
 
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-  <div class="modal-dialog" role="document">
+  <div class="modal-dialog" role="document" style="width:62%; margin:auto;">
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
         <h4 class="modal-title" id="modelTitle"></h4>
       </div>
       <div class="modal-body" id="modelBody">
-      
+       <!--<div id="absentId"></div>-->
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -1175,7 +1182,27 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
     </div>
   </div>
 </div>
-
+<div class="modal fade" id="myModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close closeSecondModal" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="modelTitleId"></h4>
+      </div>
+      <div class="modal-body" id="modelBodyId">
+	    <label>Remarks :<span style="color:red;">*</span></label>
+       <textarea  placeholder="Please Enter Candidate Remarks ..." class="form-control remarksTextCls" rows="3" name="remarksId" id="remarksId"></textarea>
+	   <input type="hidden" class="hiddenAnswerCls" attr_hidden_id="remarksId"/>
+      <div class="modal-footer">
+	  <div id="errorId" style="color:red;"></div>
+	  <div id="successId" style="color:green;"></div>
+        <!--<button type="button" class="btn btn-default closeSecondModal"  id="updateId" data-dismiss="modal">UPDATE</button>-->
+		<button type="button" class="btn btn-success " id="updateId">UPDATE</button>
+		<span id="updateImgId"></span>
+      </div>
+    </div>
+  </div>
+</div>
 <s:hidden name="pageAccessTypeName" id="pageAccessTypeId" value="%{pageAccessType}"/>
 
 <!--<footer>
@@ -1538,7 +1565,8 @@ $(document).ready(function(e) {
 							str+="<td>"+pmList[i].attendanceInfo.totalAttended+"</td>";
 							str+="<td>"+pmList[i].attendanceInfo.inviteesAttended+"</td>";
 							str+="<td>"+pmList[i].attendanceInfo.nonInviteesAttended+"</td>";
-							str+="<td>"+pmList[i].attendanceInfo.totalAbsent+"</td>";
+							//str+="<td class="meetingAbsentCls" style="cursor:pointer;" party_meeting_id='"+pmList[i].attendanceInfo.meetingId+"' location_value='"+pmList[i].attendanceInfo.locationId+"' location_level='"+meetinglevel+"' >"+pmList[i].attendanceInfo.totalAbsent+"</td>";
+							str+="<td  class='meetingAbsentCls' style='cursor:pointer' title='click here' party_meeting_id='"+pmList[i].attendanceInfo.meetingId+"' attr-title='"+pmList[i].meetingName+"' >"+pmList[i].attendanceInfo.totalAbsent+"</td>";
 						}else{
 							str+="<td> - </td>";
 							str+="<td> - </td>";
@@ -1587,7 +1615,10 @@ $(document).ready(function(e) {
 					
 				}
 				$("#individualMeetingResultId").html(str); 
-				$('#individualTableId').dataTable();
+				//$('#individualTableId').dataTable();//srujana
+				$('#individualTableId').dataTable({
+                     "aLengthMenu": [[20, 50, 100, -1], [20, 50, 100, "All"]]
+                  });
 				
 			}else{
 				$('.individual').show();
@@ -3123,6 +3154,210 @@ function getStatesForLocationLevel(){
 			}
 		});
 }
+
+function getPartyMettingOfAbsents(meetingId,locationValue,locationLevel,title){
+	$("#modelBody").html('<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:30px;height:30px;margin-left:270px;"/>');
+	$("#myModal").modal('show');
+	$("#modelTitle").html(title+" of Absent Candidates");
+	var dateType=$("#meetingDuration").val();
+	var fromDate,temp1=new Date(),toDate;
+		var month;
+		if((temp1.getMonth()+1)<10){
+			month=0+""+(temp1.getMonth()+1);
+		}else{
+			month=(temp1.getMonth()+1);
+		}
+		toDate = temp1.getFullYear()+"/"+month+"/"+temp1.getDate();
+		var temp = new Date();
+		if(dateType==1){
+			temp.setDate(temp.getDate() - 30);
+		}
+		else if(dateType==2){
+			temp.setDate(temp.getDate() - 90);
+		}
+		else if(dateType==3){
+			temp.setDate(temp.getDate() - 180);
+		}
+		else if(dateType==4){
+			temp.setDate(temp.getDate() - 270);
+		}
+		
+		var finalmonth;
+		if((temp.getMonth()+1)<10){
+			finalmonth=0+""+(temp.getMonth()+1);
+		}else{
+			finalmonth=temp.getMonth()+1;
+		}
+		
+		fromDate = temp.getFullYear()+"/"+finalmonth+"/"+temp.getDate();
+			var jsObj={
+			startDate:fromDate,
+			endDate:toDate,
+			typeOfMeeting :0,
+			locationLevel :0,
+			locationValue:0,
+			meetingId:meetingId
+			}
+			$.ajax({
+				type : "POST",
+				url : "getPartyMettingOfAbsentsAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				if(result != null){
+					buildPartyMettingOfAbsents(result,meetingId);
+				}
+			
+		});	
+	}
+	function updateMeetingAbsentRemarks(invitteId,candidateName,meetingId,candidateId){
+		var comment =$(".remarksTextCls").val();
+		if(comment.trim() == null || comment.trim() == ""){
+			$("#errorId").html("please give remarks");
+			return;
+		}else{
+			$("#errorId").html("");
+		}
+		$("#updateImgId").html('<img src="./images/icons/search.gif" class="offset7"  id="indiAjax" style="width:30px;height:30px;margin-left:10px;"/>');
+			var jsObj={
+			inviteeId:invitteId,
+			remarks:comment,
+			meetingId:meetingId,
+			candidateId:candidateId
+			}
+			$.ajax({
+				type : "POST",
+				url : "updateMeetingAbsentRemarksAction.action",
+				data : {task:JSON.stringify(jsObj)} 
+			}).done(function(result){
+				if(result == "success"){
+					//alert("update remarks successfully");
+					$("#successId").html("update remarks successfully");
+					$("#updateImgId").html('');
+					$("#myModalId").modal('hide');
+					setTimeout(function(){
+                      $('body').addClass("modal-open");
+                    }, 1000);  
+					getPartyMettingOfAbsents(meetingId,0,0,title);
+				}
+			
+		});	
+	} 
+	var meetingId;
+	var title;
+	 $(document).on('click','.meetingAbsentCls',function(){
+		 $(".remarksTextCls").val("");
+		 $("#errorId").html("");
+	    meetingId = $(this).attr("party_meeting_id");
+	   var locationValue=$(this).attr("location_value");
+	   var locationLevel =$(this).attr("location_level");
+	    title=$(this).attr("attr-title");
+	  getPartyMettingOfAbsents(meetingId,locationValue,locationLevel,title);
+  })
+   $(document).on('click','.remarkCls',function(){
+	   $("#myModalId").modal('show');
+	   $(".remarksTextCls").val("");
+	   $("#errorId").html(""); 
+	   $("#successId").html(""); 
+	  var invitteId = $(this).attr("attr_invitee");
+	  var candidateName =$(this).attr("attr_candidate");
+	  var meetingId=$(this).attr("attr_meeting_id");
+	  var candidateId =$(this).attr("attr_candidateId");
+	  $("#modelTitleId").html(candidateName+" of Remarks");
+	  $("#updateId").attr("attr_invitee",invitteId)
+	  $("#updateId").attr("attr_candidate",candidateName)
+	  $("#updateId").attr("attr_meeting_id",meetingId)
+	  $("#updateId").attr("attr_candidateId",candidateId)
+  })
+  $(document).on('click','#updateId',function(){
+	  var invitteId = $(this).attr("attr_invitee");
+	  var candidateName =$(this).attr("attr_candidate");
+	  var meetingId = $(this).attr("attr_meeting_id");
+	   var candidateId = $(this).attr("attr_candidateId");
+	  updateMeetingAbsentRemarks(invitteId,candidateName,meetingId,candidateId);
+  })
+  var userId = '${sessionScope.USER.registrationID}';
+  function buildPartyMettingOfAbsents(result,meetingId)
+  {
+	var str='';
+	if(result !=null){
+			str+='<div class="table-responsive m_top20">';
+				str+='<table class="table table-bordered  dataTableSorting" id="absentCandidateId">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th class="text-capital">Candidate Name</th>';
+						str+='<th class="text-capital">Contact Number</th>';
+						str+='<th class="text-capital">Meeting Type</th>';
+						//str+='<th class="text-capital">Attendance</th>';
+						str+='<th class="text-capital">Remarks</th>';
+						
+					str+='</tr>';
+				str+='</thead>';
+				
+				  str+='<tbody>';
+					for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].name+'</td>';
+						str+='<td>'+result[i].mobileNo+'</td>';
+						str+='<td>'+result[i].meetingType+'</td>';
+						//str+='<td>'+result[i].isCondacted+'</td>';
+						if(userId == "6723" || userId == "3934" || userId == "7464" || userId == "7540" || userId == "6723" || userId == "7446" || userId == "1"){
+						if(result[i].remarks == "" || result[i].remarks == null){
+							
+							str+='<td><i class="fa fa-pencil-square-o text-danger remarkCls" attr_invitee='+result[i].inviteeId+' attr_candidate=\''+result[i].name+'\' attr_meeting_id='+meetingId+' attr_candidateId='+result[i].id+' style="cursor:pointer" title="click here" ></i></td>';
+						}else{
+							str+='<td>'+result[i].remarks+'&nbsp<i class="fa fa-pencil-square-o text-danger remarkCls" attr_invitee='+result[i].inviteeId+' attr_candidate=\''+result[i].name+'\'  attr_meeting_id='+meetingId+' attr_candidateId='+result[i].id+' style="cursor:pointer" title="click here" ></i></td>';
+						}
+						}else{
+							
+							str+='<td>'+result[i].remarks+'</td>';
+						}
+					str+='</tr>';
+					}
+				 str+='</tbody>';
+				str+='</table>';	
+			str+='</div>';
+			
+		$("#modelBody").html(str);
+		 $("#absentCandidateId").dataTable({
+			"aaSorting": [],
+			"iDisplayLength" : 10	
+		   });
+	}else{
+			$("#modelBody").html('<h3>NO DATA AVAILABLE</h3>')
+		}
+
+}
+ $(document).on("click",".closeSecondModal",function(){
+	$(".remarksTextCls").val("");
+	$("#errorId").html(""); 
+  setTimeout(function(){
+    $('body').addClass("modal-open");
+  }, 1000);                     
+}); 
+//Code related to Google Translator START
+var control;
+ google.load("elements", "1", {
+          packages: "transliteration"
+    });
+
+    function onLoad() {
+      var options = {
+          sourceLanguage:
+              google.elements.transliteration.LanguageCode.ENGLISH,
+          destinationLanguage:
+              [google.elements.transliteration.LanguageCode.TELUGU],
+          shortcutKey: 'alt+t',
+          transliterationEnabled: true
+      };
+     control  = new google.elements.transliteration.TransliterationControl(options);
+		control.makeTransliteratable(['remarksId']);
+			 $(".hiddenAnswerCls").each(function(){
+				var id = $(this).attr("attr_hidden_id");
+				control.makeTransliteratable([''+id+'']);
+			}); 
+    }
+ google.setOnLoadCallback(onLoad);
+//Code related to Google Translator END
 </script>
 </body>
 </html>
