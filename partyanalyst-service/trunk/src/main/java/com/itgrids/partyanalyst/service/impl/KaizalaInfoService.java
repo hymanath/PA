@@ -477,7 +477,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				return;
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://www.mytdp.com/KAIZALA/saveKaizalaInstallationTracking");
-			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://localhost:8085/KAIZALA/saveKaizalaInstallationTracking");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.126:8085/KAIZALA/saveKaizalaInstallationTracking");
 			
 			WebResource.Builder builder = webResource.getRequestBuilder();
 			
@@ -511,7 +511,7 @@ public class KaizalaInfoService implements IKaizalaInfoService{
 				JSONObject jsonObj = new JSONObject(output);
 				
 				if(jsonObj.getString("objectType").equalsIgnoreCase("Group") 
-						&& jsonObj.getString("objectId").equalsIgnoreCase("034607bb-6d16-4819-8ac8-32f22043e4d5")){ // KaizalaInstallationTrack  Group(Public Group)
+						&& (jsonObj.getString("objectId").equalsIgnoreCase("034607bb-6d16-4819-8ac8-32f22043e4d5") || jsonObj.getString("objectId").equalsIgnoreCase("9bf9f3bf-1a65-48ee-99f9-102d2062ff7b"))){ // KaizalaInstallationTrack  Group(Public Group)
 					saveKaizalaInstallationTracking(jsonObj);
 					return;
 				}
