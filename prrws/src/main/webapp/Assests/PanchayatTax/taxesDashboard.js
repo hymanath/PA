@@ -121,6 +121,9 @@ function onloadTaxCalls(){
 }	
 
 function getTaxesAndCategoryWiseOverViewDetails(){
+	$("#completeOverviewDivId").html("");
+	$("#categoryTaxOverViewDivId").html("");
+	$("#categoryFeeOverViewDivId").html("");
 	$("#completeOverviewDivId").html(spinner);
 	$("#categoryTaxOverViewDivId").html(spinner);
 	$("#categoryFeeOverViewDivId").html(spinner);
@@ -421,6 +424,7 @@ function buildCompleteOverviewDetails(result){
 }
 
 function getTaxesIndicatorDetails(){
+	$("#indicatorsOverviewDivId").html("");
 	$("#indicatorsOverviewDivId").html(spinner);
 	var locationType='';
 	var locationId='';
@@ -566,6 +570,7 @@ function buildIndicatorDetails(result){
 }
 
 function getTaxesDefaultOverviewDetails(){
+	$("#defaulterOverviewDivId").html("");
 	$("#defaulterOverviewDivId").html(spinner);
 	var locationType='';
 	var locationId='';
@@ -833,8 +838,8 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		defaultersType:defaultersType,
 		locationType:locationType,
 		locationValue:locationValue,
-		fromDate : currentFromDate,
-		toDate : currentToDate
+		fromDateStr : currentFromDate,
+		toDateStr : currentToDate
 	};
 	$.ajax({                
 		type:'POST',    
