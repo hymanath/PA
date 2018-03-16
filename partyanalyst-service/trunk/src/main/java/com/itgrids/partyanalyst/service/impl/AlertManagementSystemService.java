@@ -16705,7 +16705,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	
 	public List<JalavaniAlertResultVO> getJalavaniAlertStatusTemplate(){
 		List<JalavaniAlertResultVO> voList = new ArrayList<JalavaniAlertResultVO>(0);
-		List<AlertStatus> allStatusList = alertStatusDAO.getAll();
+		/*List<AlertStatus> allStatusList = alertStatusDAO.getAll();
 		if(allStatusList != null && allStatusList.size() > 0){
 			for (AlertStatus alertStatus : allStatusList) {
 				JalavaniAlertResultVO vo = new JalavaniAlertResultVO();
@@ -16714,7 +16714,69 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				vo.setColor(alertStatus.getColor());
 				voList.add(vo);
 			}
-		}
+		}*/
+		JalavaniAlertResultVO notStartedVO = new JalavaniAlertResultVO();
+		notStartedVO.setTitle("NOT STARTED");
+			JalavaniAlertResultVO notifiedVo = new JalavaniAlertResultVO();
+			notifiedVo.setStatusId(2l);
+			notifiedVo.setStatus("Notified");
+			notStartedVO.getVoList().add(notifiedVo);
+		voList.add(notStartedVO);
+		
+		JalavaniAlertResultVO initialStageVO = new JalavaniAlertResultVO();
+		initialStageVO.setTitle("INITIAL STAGE");
+			JalavaniAlertResultVO actionInProgressVo = new JalavaniAlertResultVO();
+			actionInProgressVo.setStatusId(3l);
+			actionInProgressVo.setStatus("Action In Progess");
+			initialStageVO.getVoList().add(actionInProgressVo);
+			
+			JalavaniAlertResultVO reOpenVO = new JalavaniAlertResultVO();
+			reOpenVO.setStatusId(11l);
+			reOpenVO.setStatus("Reopen");
+			initialStageVO.getVoList().add(reOpenVO);
+		voList.add(initialStageVO);
+		
+		JalavaniAlertResultVO finishedVO = new JalavaniAlertResultVO();
+		finishedVO.setTitle("Finished");
+			JalavaniAlertResultVO closedVO = new JalavaniAlertResultVO();
+			closedVO.setStatusId(12l);
+			closedVO.setStatus("Closed");
+			finishedVO.getVoList().add(closedVO);
+			
+			JalavaniAlertResultVO completedVO = new JalavaniAlertResultVO();
+			completedVO.setStatusId(4l);
+			completedVO.setStatus("Completed");
+			finishedVO.getVoList().add(completedVO);
+			
+			JalavaniAlertResultVO praposalVO = new JalavaniAlertResultVO();
+			praposalVO.setStatusId(13l);
+			praposalVO.setStatus("Praposal");
+			finishedVO.getVoList().add(praposalVO);
+		voList.add(finishedVO);
+		
+		JalavaniAlertResultVO mtoc = new JalavaniAlertResultVO();
+		mtoc.setTitle("MOVED TO OTHER CATEGORY");
+			JalavaniAlertResultVO anrVO = new JalavaniAlertResultVO();
+			anrVO.setStatusId(6l);
+			anrVO.setStatus("Action Not Required");
+			mtoc.getVoList().add(anrVO);
+			
+			JalavaniAlertResultVO duplicateVO = new JalavaniAlertResultVO();
+			duplicateVO.setStatusId(7l);
+			duplicateVO.setStatus("Duplicate");
+			mtoc.getVoList().add(duplicateVO);
+			
+			JalavaniAlertResultVO wmdVo = new JalavaniAlertResultVO();
+			wmdVo.setStatusId(8l);
+			wmdVo.setStatus("Wrongly Mapped Designation");
+			mtoc.getVoList().add(wmdVo);
+			
+			JalavaniAlertResultVO wmdeptVo = new JalavaniAlertResultVO();
+			wmdeptVo.setStatusId(9l);
+			wmdeptVo.setStatus("Wrongly Mapped Department");
+			mtoc.getVoList().add(wmdeptVo);
+		voList.add(mtoc);
+			
 		return voList;
 	}
 	
@@ -16796,17 +16858,17 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						}
 					}
 					
-					JalavaniAlertResultVO matchedVO = getMatchedPropertyVO(vo.getVoList(),(Long)objects[6]);
-					if(matchedVO == null){
-						matchedVO = new JalavaniAlertResultVO();
-						matchedVO.setStatusId((Long)objects[6]);
-						matchedVO.setStatus(objects[7].toString());matchedVO.setColor(objects[8] != null?objects[8].toString():null);
-						matchedVO.setCount(objects[9] != null ? (Long)objects[9]:0l);
-						vo.getVoList().add(matchedVO);
+					JalavaniAlertResultVO matchedVO = null;
+					if(searchType.equalsIgnoreCase("Alert")){
+						matchedVO = getMatchedPropertyVO(vo.getVoList(),(Long)objects[6]);
 					}else{
+						matchedVO = getMatchedStatusVO(vo.getVoList(),(Long)objects[6]);
+					}
+					
+					if(matchedVO != null){
 						matchedVO.setCount(objects[9] != null ? (Long)objects[9]:0l);
 					}
-				}
+				}//main for
 				
 				//calculating total and %'s
 				finalVoList.addAll(map.values());
@@ -16814,13 +16876,36 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					for (JalavaniAlertResultVO locationVO : finalVoList) {
 						if(locationVO.getVoList() != null && locationVO.getVoList().size() > 0){
 							Long totalCount = 0l;
-							for (JalavaniAlertResultVO inVO : locationVO.getVoList()) {
-								totalCount = totalCount+inVO.getCount();
-							}
-							if(totalCount > 0l){
-								locationVO.setCount(totalCount);
+							if(searchType!=null && searchType.equalsIgnoreCase("Alert")){
 								for (JalavaniAlertResultVO inVO : locationVO.getVoList()) {
-									inVO.setPercentage(calculatePercantage(inVO.getCount(), totalCount));
+									totalCount = totalCount+inVO.getCount();
+								}
+								if(totalCount > 0l){
+									locationVO.setCount(totalCount);
+									for (JalavaniAlertResultVO inVO : locationVO.getVoList()) {
+										inVO.setPercentage(calculatePercantage(inVO.getCount(), totalCount));
+									}
+								}
+							}else{
+								for (JalavaniAlertResultVO mainStatusVO : locationVO.getVoList()) {
+									if(mainStatusVO.getVoList() != null && mainStatusVO.getVoList().size() > 0){
+										for (JalavaniAlertResultVO statusVO : mainStatusVO.getVoList()) {
+											totalCount = totalCount+statusVO.getCount();
+										}
+									}
+								}
+								
+								if(totalCount > 0l){
+									locationVO.setCount(totalCount);
+									for (JalavaniAlertResultVO mainStatusVO : locationVO.getVoList()) {
+										if(mainStatusVO.getVoList() != null && mainStatusVO.getVoList().size() > 0){
+											Long subTotal = 0l;
+											for (JalavaniAlertResultVO statusVO : mainStatusVO.getVoList()) {
+												subTotal = subTotal+statusVO.getCount();
+											}
+											mainStatusVO.setPercentage(calculatePercantage(subTotal, totalCount));
+										}
+									}
 								}
 							}
 						}
@@ -16850,6 +16935,22 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalVoList;
 	}
+	
+	public JalavaniAlertResultVO getMatchedStatusVO(List<JalavaniAlertResultVO> voList,Long statusId){
+		if(voList != null && voList.size() > 0){
+			for (JalavaniAlertResultVO jalavaniAlertResultVO : voList) {
+				if(jalavaniAlertResultVO.getVoList() != null && jalavaniAlertResultVO.getVoList().size() > 0){
+					for (JalavaniAlertResultVO invo : jalavaniAlertResultVO.getVoList()) {
+						if(invo.getStatusId().equals(statusId))
+							return invo;
+					}
+				}
+			}
+		}
+		return null;
+	}
+	
+	
 	//0-distId,1-distname,categoryCount-4
 		public void setLocationWiseData(List<Object[]> objList,List<AlertVO> finalList){
 			if(objList !=null && objList.size() >0){
