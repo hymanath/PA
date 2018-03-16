@@ -128,6 +128,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 									str+='<th rowspan="2">Dalitha Tejam</th>';
 									str+='<th rowspan="2">Kaizala</th>';
 									str+='<th rowspan="2">Training Camp</th>';
+									str+='<th rowspan="2">Alerts</th>';
 									
 									/* for(var i in result.subList2[0].subList1){
 										str+='<th colspan="1" rowspan="3">'+result.subList2[0].subList1[i].locationName+'</th>';
@@ -160,6 +161,8 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport(result){
 										str+='<th>Committee&nbsp;Not&nbsp;Installed&nbsp;%</th>';
 									}else if(lastval == 'Camp'){
 										str+='<th>Not&nbsp;Attended&nbsp;%</th>';
+									}else if(lastval == 'Alerts'){
+										str+='<th>In&nbsp;Progress&nbsp;%</th>';
 									}
 									
 								}
@@ -248,6 +251,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 								str+='<th colspan="4">Committees</th>';
 								str+='<th rowspan="2">Dalitha Tejam</th>';
 								str+='<th rowspan="2">Kaizala</th>';
+								str+='<th rowspan="2">Alerts</th>';
 								//str+='<th rowspan="2">Training Camp</th>';
 							str+='</tr>';
 							str+='<tr>';
@@ -272,6 +276,8 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 										str+='<th>Village&nbsp;Not&nbsp;Covered&nbsp;%</th>';
 									}else if(lastval == 'Kaizala'){
 										str+='<th>Committee&nbsp;Not&nbsp;Installed&nbsp;%</th>';
+									}else if(lastval == 'Alerts'){
+										str+='<th>In Progress&nbsp;%</th>';
 									}/* else if(lastval == 'Camp'){
 										str+='<th>Not Attended %</th>';
 									} */
@@ -320,7 +326,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 	$("#overAllMeetingLevelsDivId1").html(str);
 	getCountOfColorCons("dataTableElecBlock1")
 	var $windowWidth = $(window).width();
-	if($windowWidth < 600)
+	if($windowWidth < 500)
 	{
 		$("#dataTableElecBlock1").dataTable({
 			"paging":   false,
@@ -335,7 +341,7 @@ function buildConsolidatedLevelWisePartyMeetingExceptionReport1(result){
 				"leftColumns": 2,
 			}
 		});
-	$("#dataTableElecBlock1").removeClass('dataTable');
+		$("#dataTableElecBlock1").removeClass('dataTable');
 	}else{
 		$("#dataTableElecBlock1").dataTable({
 			"paging":   false,
