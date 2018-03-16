@@ -144,7 +144,7 @@ public class PmRefCandidateDAO extends GenericDaoHibernate<PmRefCandidate, Long>
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:desigIds) ");
 		}
 		if(deptIds != null && deptIds.size() >0){
-			sb.append(" and model.pmRefCandidate.pmDepartment.pmDepartmentId in (:deptIds) ");
+			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			sb.append(" and model.petition.petitionId in (:petitionIdsList) " );
