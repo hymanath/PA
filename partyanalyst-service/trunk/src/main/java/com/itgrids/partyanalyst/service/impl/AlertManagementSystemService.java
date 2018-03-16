@@ -17078,14 +17078,14 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 	public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo){//monthLy over for PM and Em
 		List<AlertVO> finalVOList = new ArrayList<AlertVO>(0);
 		try {
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			/*SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			Date startDate = null,endDate = null;
 			if(vo.getFromDateStr() != null && vo.getToDateStr() !=null){
 				startDate = sdf.parse(vo.getFromDateStr());
 				endDate = sdf.parse( vo.getToDateStr());
 			}
 			finalVOList.addAll(getMonthSkeleton());
-			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,vo.getAlertCategoryId());
+			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,vo.getAlertCategoryId(),"");
 			if(monthObjList !=null && monthObjList.size() >0){
 				for (Object[] objects : monthObjList) {
 					AlertVO matchedMonthVO = getmatchedMonthVo(finalVOList,commonMethodsUtilService.getLongValueForObject(objects[0]));
@@ -17102,7 +17102,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				for (AlertVO monthVo : finalVOList){
 					monthVo.setStatusPercent(calculatePercantage(monthVo.getLocationCnt(),totalCount));
 				}
-			}
+			}*/
 		}catch (Exception e){
 			Log.error("Exception raised at getAlertsMonthlyOverviewInfoBySearchType", e);
 		}
