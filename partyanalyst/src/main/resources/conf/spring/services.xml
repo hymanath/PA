@@ -4624,7 +4624,8 @@
 			<property name="localElectionBodyDAO" ref="localElectionBodyDAO" />
 			<property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 			<property name="regionScopesDAO" ref="regionScopesDAO" />
-			
+			<property name="itdpAppUserAccessLocationDAO" ref="itdpAppUserAccessLocationDAO" />
+			<property name="partyMeetingMinuteStatusDAO" ref="partyMeetingMinuteStatusDAO" />
 		</bean>
     	<bean name="coreDashboardCoreService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardCoreService" >
     		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />

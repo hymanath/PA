@@ -1379,6 +1379,7 @@
 						 <value>com.itgrids.partyanalyst.model.ActivityQuestionAnswerInfo</value>
 						 <value>com.itgrids.partyanalyst.model.TourTypeCategory</value>
 						 <value>com.itgrids.partyanalyst.model.NominatedPostAccessMultiplePositionsDetails</value>
+						 <value>com.itgrids.partyanalyst.model.ItdpAppUserAccessLocation</value>
 				  </list>
 			
 		</property>
