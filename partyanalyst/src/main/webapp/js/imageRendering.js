@@ -77,7 +77,13 @@ function onLoadCalls(){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Editions selected'
+		allSelectedText: 'All Editions selected',
+		onChange: function() {
+			editionTypes=$('#editionType').val();
+		},
+		onSelectAll: function() {
+          editionTypes=$('#editionType').val();
+        }
 	});
 	$('#wordCloudConstituency').multiselect("destroy");
 	$('#wordCloudConstituency').multiselect({
@@ -738,8 +744,14 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 				optionStr+='<option selected>'+result[i].shortName+'</option>';
 				globalDepartMentNames.push(result[i].shortName);
 			}
-		}else{
+		}else if(isDepartment == "Y"){
 			$("#typeId").html("Department Names");
+			for(var i in result){		
+				optionStr+='<option selected>'+result[i].shortName+'</option>';
+				globalDepartMentNames.push(result[i].shortName);
+			}
+		}else{
+			$("#typeId").html("Party & Department Names");
 			for(var i in result){		
 				optionStr+='<option selected>'+result[i].shortName+'</option>';
 				globalDepartMentNames.push(result[i].shortName);
@@ -775,7 +787,11 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		onChange: function() {
 			districtNames = $('#wordCloudDistrict').val();
 			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
-		}
+		},
+		onSelectAll: function() {
+           districtNames = $('#wordCloudDistrict').val();
+		  getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
+        }
 	});
 	}else if(levelTypeId == "newspapers"){
 		$('#'+levelTypeId).multiselect({
@@ -790,7 +806,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		allSelectedText: 'All News Paper selected',
 		onChange: function() {
 			newspaperNames=$('#newspapers').val();
-		}
+		},
+		onSelectAll: function() {
+          newspaperNames=$('#newspapers').val();
+        }
 	});
 	}else if(levelTypeId == "wordCloudConstituency"){
 		$('#'+levelTypeId).multiselect({
@@ -805,7 +824,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		allSelectedText: 'All Constituencies selected',
 		onChange: function() {
 			constituencies=$('#wordCloudConstituency').val();
-			}
+		},
+		onSelectAll: function() {
+			constituencies=$('#wordCloudConstituency').val();
+        }
 	});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
 		var name="";
@@ -826,7 +848,10 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		allSelectedText: name+' selected',
 		onChange: function() {
 			departmentNames=$('#wordCloudDepartmentNames').val();
-		}
+		},
+		onSelectAll: function() {
+          departmentNames=$('#wordCloudDepartmentNames').val();
+        }
 	});
 	}
 	
@@ -876,13 +901,17 @@ function getAllDepartments(isDepartment,type){
 }
 
  $(document).on("click",".alertCategoryWiseCls li",function(){
-		$(this).parent("ul").find("li").removeClass("active");
+	 $(this).parent("ul").find("li").removeClass("active");
 		$(this).addClass("active");
 		isDepartment = $(this).attr("attr_type");
 		$("#typeId").html('<div class="row"><div class="col-sm-12"><img src="D2D_Assests/images/spinner.gif" style="width:20px;height:20px;"/></div></div>');
-	$("#wordCloudDepartmentNames").html("");
-	departmentNames=[];
-	getAllDepartments(isDepartment,'onchange');
+		departmentNames=[];
+		$("#wordCloudDepartmentNames").html("");
+	if(isDepartment !=null && isDepartment==""){
+		getAllDepartments("Y,N",'onchange');
+	}else{
+		getAllDepartments(isDepartment,'onchange');
+	}
 	document.getElementsByClassName("btn-primary")[0].disabled = "true";
 	document.getElementsByClassName("newsLettersRefresh")[0].disabled = "true";
 });
