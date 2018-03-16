@@ -100,7 +100,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				" ,model1.pmStatus.status ,model.petition.pmStatusId ,pmSubject.subject,pmSubSubject.subject " +//16,17,18,19
 				" ,pmBriefLead.briefLead,pmDepartment.department,model.petition.representeeType,pmGrant.pmGrantName" +//20,21,22,23
 				",pmWorkType.workType,model.pmRepresenteeDesignation.pmDesignation.designation  "+//24,25
-				",district.districtId,district.districtName,constituency.constituencyId,constituency.name,tehsil.tehsilId,tehsil.tehsilName " +//26,27 ,28,29  ,30,31
+				",district1.districtId,district1.districtName,constituency1.constituencyId,constituency1.name,tehsil1.tehsilId,tehsil1.tehsilName " +//26,27 ,28,29  ,30,31
 				",pmSubject.pmSubjectId,pmSubSubject.pmSubjectId,pmLead.leadName,pmBriefLead.pmBriefLeadId " ); // 32,33,34,35
 		}
 		
@@ -119,20 +119,22 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 						" left join model1.pmGrant pmGrant " +
 						" left join model1.pmWorkType pmWorkType " +
 						" left join model1.pmLead pmLead ");
-				
-		if(filterType != null && (filterType.equalsIgnoreCase("work")  && searchLevelId != null && searchLevelId.longValue()>0L)){
+		//if(filterType != null && (filterType.equalsIgnoreCase("all") || filterType.equalsIgnoreCase("email") || filterType.equalsIgnoreCase("mobile") || 
+		//		filterType.equalsIgnoreCase("endorsmentNO") || filterType.equalsIgnoreCase("all") || filterType.equalsIgnoreCase("all")) ){
+		//			sb.append(" left join model1.locationAddress locationAddress " );		
+		/*}else if(filterType != null && (filterType.equalsIgnoreCase("work") && searchLevelId != null && searchLevelId.longValue()>0L)){
 			sb.append(" left join model1.locationAddress locationAddress " );
-		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
+		}else */if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
 				|| filterType.equalsIgnoreCase("referralName")) && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model.pmRefCandidate.address locationAddress " );
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && searchLevelId != null && searchLevelId.longValue()>0L ){
 			sb.append(" left join model.pmRepresenteeDesignation.pmRepresentee.userAddress locationAddress " );
 		}else if(filterType != null && filterType.equalsIgnoreCase("referral") && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model.pmRefCandidate.address locationAddress " );
-		}/*else if(filterType != null && filterType.equalsIgnoreCase("representee")){
+		}else if(filterType != null && filterType.equalsIgnoreCase("representee")){
 			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
-		}*/else if(searchLevelId != null && searchLevelId.longValue()>0L){
-			sb.append(" left join model.pmRepresentee.userAddress locationAddress " );
+		}else{
+			sb.append(" left join model1.locationAddress locationAddress " );
 		}
 		
 		//if(searchLevelId != null && searchLevelId.longValue()>0L){
@@ -144,6 +146,14 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 					//" left join locationAddress.panchayat panchayat  ");
 		//}
 		
+		sb.append(" left join model1.locationAddress locationAddress1 " );
+		sb.append(" left join locationAddress1.state state1 " +
+				" left join locationAddress1.district district1 " +
+				" left join locationAddress1.constituency constituency1 " +
+				" left join locationAddress1.tehsil tehsil1 " +
+				" left join locationAddress1.localElectionBody localElectionBody1 " );
+				//" left join locationAddress1.panchayat panchayat1  ");
+	
 		//sb.append(" where   model.petitionId = assignedOfficer.petitionId and assignedOfficer.pmDepartmentDesignationOfficer.pmOfficerId in (:pmOfficerIdsList)  and model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 		sb.append(" where   model.isDeleted ='N'  and model1.petition.petitionId = model.petition.petitionId and model1.isDeleted='N' " +
 				" and model.petition.isDeleted='N' " );
