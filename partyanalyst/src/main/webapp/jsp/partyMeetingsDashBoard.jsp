@@ -1190,7 +1190,7 @@ footer{background-color:#5c2d25;color:#ccc;padding:30px}
         <h4 class="modal-title" id="modelTitleId"></h4>
       </div>
       <div class="modal-body" id="modelBodyId">
-	    <label>Remarks :<span style="color:red;">*</span></label>
+	    <label>Remarks :<span style="color:red;">*</span><span>(NOTE:Press Alt+t to toggle between Telugu & English)</span></label>
        <textarea  placeholder="Please Enter Candidate Remarks ..." class="form-control remarksTextCls" rows="3" name="remarksId" id="remarksId"></textarea>
 	   <input type="hidden" class="hiddenAnswerCls" attr_hidden_id="remarksId"/>
       <div class="modal-footer">
@@ -3233,7 +3233,9 @@ function getPartyMettingOfAbsents(meetingId,locationValue,locationLevel,title){
 					//alert("update remarks successfully");
 					$("#successId").html("update remarks successfully");
 					$("#updateImgId").html('');
-					$("#myModalId").modal('hide');
+					setTimeout(function(){
+					  $("#myModalId").modal('hide');
+					}, 500);
 					setTimeout(function(){
                       $('body').addClass("modal-open");
                     }, 1000);  
@@ -3262,11 +3264,13 @@ function getPartyMettingOfAbsents(meetingId,locationValue,locationLevel,title){
 	  var candidateName =$(this).attr("attr_candidate");
 	  var meetingId=$(this).attr("attr_meeting_id");
 	  var candidateId =$(this).attr("attr_candidateId");
+	  var remarks =$(this).attr("attr_remarks");
 	  $("#modelTitleId").html(candidateName+" of Remarks");
 	  $("#updateId").attr("attr_invitee",invitteId)
 	  $("#updateId").attr("attr_candidate",candidateName)
 	  $("#updateId").attr("attr_meeting_id",meetingId)
 	  $("#updateId").attr("attr_candidateId",candidateId)
+	   $(".remarksTextCls").val(remarks);
   })
   $(document).on('click','#updateId',function(){
 	  var invitteId = $(this).attr("attr_invitee");
@@ -3275,7 +3279,7 @@ function getPartyMettingOfAbsents(meetingId,locationValue,locationLevel,title){
 	   var candidateId = $(this).attr("attr_candidateId");
 	  updateMeetingAbsentRemarks(invitteId,candidateName,meetingId,candidateId);
   })
-  var userId = '${sessionScope.USER.registrationID}';
+  //var userId = '${sessionScope.USER.registrationID}';
   function buildPartyMettingOfAbsents(result,meetingId)
   {
 	var str='';
@@ -3295,20 +3299,21 @@ function getPartyMettingOfAbsents(meetingId,locationValue,locationLevel,title){
 				
 				  str+='<tbody>';
 					for(var i in result){
+						var userGroupId = result[0].userGroupId;
 					str+='<tr>';
 						str+='<td>'+result[i].name+'</td>';
 						str+='<td>'+result[i].mobileNo+'</td>';
 						str+='<td>'+result[i].meetingType+'</td>';
 						//str+='<td>'+result[i].isCondacted+'</td>';
-						if(userId == "6723" || userId == "3934" || userId == "7464" || userId == "7540" || userId == "6723" || userId == "7446" || userId == "1"){
+						if(userGroupId == "35" || userGroupId == "188"){
 						if(result[i].remarks == "" || result[i].remarks == null){
 							
-							str+='<td><i class="fa fa-pencil-square-o text-danger remarkCls" attr_invitee='+result[i].inviteeId+' attr_candidate=\''+result[i].name+'\' attr_meeting_id='+meetingId+' attr_candidateId='+result[i].id+' style="cursor:pointer" title="click here" ></i></td>';
+							str+='<td><i class="fa fa-pencil-square-o text-danger remarkCls" attr_invitee='+result[i].inviteeId+' attr_candidate=\''+result[i].name+'\' attr_meeting_id='+meetingId+' attr_candidateId='+result[i].id+' attr_remarks=\''+result[i].remarks+'\' style="cursor:pointer" title="click here" ></i></td>';
 						}else{
-							str+='<td>'+result[i].remarks+'&nbsp<i class="fa fa-pencil-square-o text-danger remarkCls" attr_invitee='+result[i].inviteeId+' attr_candidate=\''+result[i].name+'\'  attr_meeting_id='+meetingId+' attr_candidateId='+result[i].id+' style="cursor:pointer" title="click here" ></i></td>';
+							str+='<td>'+result[i].remarks+'&nbsp<i class="fa fa-pencil-square-o text-danger remarkCls" attr_invitee='+result[i].inviteeId+' attr_candidate=\''+result[i].name+'\'  attr_meeting_id='+meetingId+' attr_candidateId='+result[i].id+'  attr_remarks=\''+result[i].remarks+'\' style="cursor:pointer" title="click here" ></i></td>';
 						}
 						}else{
-							
+						
 							str+='<td>'+result[i].remarks+'</td>';
 						}
 					str+='</tr>';

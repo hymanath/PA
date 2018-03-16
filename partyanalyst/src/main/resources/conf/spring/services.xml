@@ -3330,6 +3330,7 @@
 		<property name="partyMeetingUpdationDetailsDAO" ref="partyMeetingUpdationDetailsDAO" />
 		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
 	    <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO" />
+	    <property name="userGroupRelationDAO" ref="userGroupRelationDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">

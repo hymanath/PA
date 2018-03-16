@@ -675,14 +675,18 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		try {
 			LOG.info("Entered into getMeetingSummaryForLocation");
 			jObj = new JSONObject(getTask());
-			
+			Long loggedUser=0l;
+			RegistrationVO regVo = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVo!=null && regVo.getRegistrationID()!=null){
+				loggedUser = regVo.getRegistrationID();
+			}
 			Long typeOfMeeting=jObj.getLong("typeOfMeeting");
 			Long locationLevel=jObj.getLong("locationLevel");
 			Long locationValue =jObj.getLong("locationValue");
 			String startDate=jObj.getString("startDate");
 			String endDate=jObj.getString("endDate");
 			Long meetingId=jObj.getLong("meetingId");
-			partyMeetingVOsList = partyMeetingService.getPartyMettingOfAbsents(startDate,endDate,meetingId,locationLevel,locationValue,typeOfMeeting);
+			partyMeetingVOsList = partyMeetingService.getPartyMettingOfAbsents(startDate,endDate,meetingId,locationLevel,locationValue,typeOfMeeting,loggedUser);
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPartyMettingOfAbsents",e);
 		}
