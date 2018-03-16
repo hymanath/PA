@@ -71,4 +71,10 @@ public class UserGroupRelationDAO extends GenericDaoHibernate<UserGroupRelation,
 		return query.list();
 		
 	}
+	public Long getUserGroupId(Long userId){
+		Query query = getSession().createQuery("select distinct model.userGroup.userGroupId from UserGroupRelation model where " +
+				" model.user.userId = :userId and model.userGroup.userGroupId in(35,188) " );
+		query.setParameter("userId", userId);
+		return (Long)query.uniqueResult();
+	}
 }

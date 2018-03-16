@@ -95,7 +95,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Long attendedCount = 0L;
 	private String meetingLevel;
 	private String mobileNo;
-	
+	private Long userGroupId;
 	
 
 	public String getWardName() {
@@ -566,6 +566,13 @@ public class PartyMeetingsVO implements Serializable{
 	public void setMobileNo(String mobileNo) {
 		this.mobileNo = mobileNo;
 	}
+	public Long getUserGroupId() {
+		return userGroupId;
+	}
+	public void setUserGroupId(Long userGroupId) {
+		this.userGroupId = userGroupId;
+	}
 	
 
+	
 }
