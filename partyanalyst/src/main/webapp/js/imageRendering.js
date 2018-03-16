@@ -18,6 +18,7 @@ var constituencyNames=[];
 var districtNames=[];
 $(".chosen-select").chosen();
 
+var today = new Date();
 var width = 509
 var height = 449
 var expanded = false;
@@ -40,6 +41,7 @@ $(document).on("click",function(){
 $("#startDate").daterangepicker({
 		startDate: glStartDate,
         singleDatePicker: true,
+		maxDate: today,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
@@ -48,6 +50,7 @@ $("#startDate").daterangepicker({
 $("#endDate").daterangepicker({
 	startDate: glEndDate,
         singleDatePicker: true,
+		maxDate: today,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
