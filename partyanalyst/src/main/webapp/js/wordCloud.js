@@ -79,7 +79,13 @@ function onLoadCalls(){
 		buttonWidth: '100%',
 		dropDown: true,
 		selectAllName: true,
-		allSelectedText: 'All Editions selected'
+		allSelectedText: 'All Editions selected',
+		onChange: function() {
+			editionTypes=$('#editionType').val();
+		},
+		onSelectAll: function() {
+          editionTypes=$('#editionType').val();
+        }
 	});
 	$('#wordCloudConstituency').multiselect("destroy");
 	$('#wordCloudConstituency').multiselect({
@@ -710,8 +716,7 @@ function getAllLocations(levelId,levelValue,type){
 }
 
 function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
-	var optionStr='';
-		
+	var optionStr='';	
 	if(levelTypeId =="newspapers"){
 		globalNewsPapres=[];
 		for(var i in result){
@@ -736,80 +741,87 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	}
 	if(levelTypeId=="wordCloudDistrict"){
 		$('#'+levelTypeId).html(optionStr);
-		/* $("#wordCloudDistrict").chosen();
-		$("#wordCloudDistrict").trigger('chosen:updated'); */
 	}else{
 		$('#'+levelTypeId).html(optionStr);
-		/* $('#'+levelTypeId).chosen();
-		$('#'+levelTypeId).trigger('chosen:updated'); */
 	}
-	//$('#'+levelTypeId).trigger("chosen:updated");
 	$('#'+levelTypeId).multiselect("destroy");
 	if(levelTypeId == "wordCloudDistrict"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		enableCaseInsensitiveFiltering: true,
-		includeSelectAllOption: true,
-		selectAllText: 'All Districts',
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All Districts selected',
-		 onChange: function() {
-			districtNames = $('#wordCloudDistrict').val();
-			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
-		}
-	});
+			enableFiltering: true,
+			enableCaseInsensitiveFiltering: true,
+			includeSelectAllOption: true,
+			selectAllText: 'All Districts',
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All Districts selected',
+			 onChange: function() {
+				districtNames = $('#wordCloudDistrict').val();
+				getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
+			},
+			onSelectAll: function() {
+				districtNames = $('#wordCloudDistrict').val();
+	 		  	getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
+	         }
+		});
 	}else if(levelTypeId == "newspapers"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		enableCaseInsensitiveFiltering: true,
-		selectAllText: 'All News Paper',
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All News Paper selected',
-		onChange: function() {
-			newspaperNames=$('#newspapers').val();
-		}
-	});
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			enableCaseInsensitiveFiltering: true,
+			selectAllText: 'All News Paper',
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All News Paper selected',
+			onChange: function() {
+				newspaperNames=$('#newspapers').val();
+			},
+			onSelectAll: function() {
+	          newspaperNames=$('#newspapers').val();
+	        }
+		});
 	}else if(levelTypeId == "wordCloudConstituency"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		enableCaseInsensitiveFiltering: true,
-		selectAllText: 'All Constituency',
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All Constituency selected',
-		onChange: function() {
-		constituencies=$('#wordCloudConstituency').val();
-		}
-	});
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			enableCaseInsensitiveFiltering: true,
+			selectAllText: 'All Constituency',
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All Constituency selected',
+			onChange: function() {
+				constituencies=$('#wordCloudConstituency').val();
+			},
+			onSelectAll: function() {
+				constituencies=$('#wordCloudConstituency').val();
+	        }
+		});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		selectAllText: 'All Department Constituency',
-		maxHeight: 300,
-		enableCaseInsensitiveFiltering: true,
-		buttonWidth: '100%',
-		overflowX: true,
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All Department selected',
-		onChange: function() {
-			departmentNames=$('#wordCloudDepartmentNames').val();
-		}
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			selectAllText: 'All Department Constituency',
+			maxHeight: 300,
+			enableCaseInsensitiveFiltering: true,
+			buttonWidth: '100%',
+			overflowX: true,
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All Department selected',
+			onChange: function() {
+				departmentNames=$('#wordCloudDepartmentNames').val();
+			},
+			onSelectAll: function() {
+	          departmentNames=$('#wordCloudDepartmentNames').val();
+	        }
 		});
 	}
-	
-	callfetchFunction(type);
+callfetchFunction(type);
 }
 function callfetchFunction(type){
 	if(type !='onchange' && type !==undefined && type !== 'undefined'){
