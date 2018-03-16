@@ -28,6 +28,7 @@ public class ConsolidatedExceptionalReportVO {
 	private Double dalithaTejPerc=0.0;
 	private Double kaizalaPerc=0.0;
 	private Double trainingCampPerc=0.0;
+	private Double alertsPerc=0.0;
 	
 	private List<ConsolidatedExceptionalReportVO> subList1;
 	private List<ConsolidatedExceptionalReportVO> subList2;
@@ -218,9 +219,12 @@ public class ConsolidatedExceptionalReportVO {
 	public void setMayBePercentage(Double mayBePercentage) {
 		this.mayBePercentage = mayBePercentage;
 	}
-	
-    
-	
+	public Double getAlertsPerc() {
+		return alertsPerc;
+	}
+	public void setAlertsPerc(Double alertsPerc) {
+		this.alertsPerc = alertsPerc;
+	}
 	
 	
 }
