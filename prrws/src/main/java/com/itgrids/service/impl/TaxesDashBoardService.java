@@ -64,6 +64,8 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			Long demandCurrentUnits = 0L;
 			Long collectionCurrentUnits = 0L;
 			Long balCurrentUnits = 0L;
+			String districtStr = null;
+			JSONArray finalArray = null;
 			Map<Long,TaxesVO> taxTypeMap = new LinkedHashMap<Long,TaxesVO>(0);
 			Map<Long,TaxesVO> feesMap = new LinkedHashMap<Long,TaxesVO>(0);
 			
@@ -85,10 +87,14 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		 	    		if(districtArray!=null && districtArray.length()>0){
 		 	    			for(int i=0;i<districtArray.length();i++){
 		 	    				JSONObject districtObj = (JSONObject) districtArray.get(i);
-		 	    				JSONArray taxesArray = (JSONArray) districtObj.get("taxes");
-		 	    				if(taxesArray!=null && taxesArray.length()>0){
-				 	    			for(int j=0;j<taxesArray.length();j++){
-				 	    				JSONObject taxesObj = (JSONObject) taxesArray.get(j);
+		 	    				districtStr = districtObj.has("taxes") ? districtObj.get("taxes").toString():null;
+		 	    				if(districtStr != null){
+		 	    				    finalArray = new JSONArray(districtStr);
+		 	    				}
+		 	    				
+		 	    				if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int j=0;j<finalArray.length();j++){
+				 	    				JSONObject taxesObj = (JSONObject) finalArray.get(j);
 				 	    				demandArrearAmunt = demandArrearAmunt+Long.valueOf(taxesObj.get("arrearDemand").toString());
 				 	    				collectionArrearAmunt = collectionArrearAmunt+Long.valueOf(taxesObj.get("arrearCollection").toString());
 				 	    				balArrearAmunt = balArrearAmunt+Long.valueOf(taxesObj.get("arrearRemainingTax").toString());
@@ -401,7 +407,8 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	public List<TaxesVO> getTaxesIndicatorDetails(InputVO inputVO){
 		List<TaxesVO> returnList = new ArrayList<TaxesVO>(0);
 		try {
-			
+			String districtStr = null;
+			JSONArray finalArray = null;
 			Map<String,TaxesVO> indicatorsMap = new LinkedHashMap<String,TaxesVO>(0);
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1%20&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDate()+"&toDate="+inputVO.getToDate()+"");
 	        ClientResponse response = webResource.get(ClientResponse.class);
@@ -416,10 +423,13 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	 	    		if(districtArray!=null && districtArray.length()>0){
 	 	    			for(int i=0;i<districtArray.length();i++){
 	 	    				JSONObject districtObj = (JSONObject) districtArray.get(i);
-	 	    				JSONArray taxesArray = (JSONArray) districtObj.get("usages");
-	 	    				if(taxesArray!=null && taxesArray.length()>0){
-			 	    			for(int j=0;j<taxesArray.length();j++){
-			 	    				JSONObject taxesObj = (JSONObject) taxesArray.get(j);
+	 	    				districtStr = districtObj.has("usages") ?districtObj.get("usages").toString():null;
+	 	    				if(districtStr != null){
+	 	    					finalArray = new JSONArray(districtStr);
+	 	    				}
+	 	    				if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int j=0;j<finalArray.length();j++){
+			 	    				JSONObject taxesObj = (JSONObject) finalArray.get(j);
 			 	    				String usageName = taxesObj.get("usage_name").toString();
 			 	    				TaxesVO indicatorVO = indicatorsMap.get(usageName);
 			 	    				if(indicatorVO == null){
@@ -525,6 +535,8 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			Long aboveOneLacUnits = 0L;
 			Long fiveToTwentyUnits = 0L;
 			Long totalAmount = 0L;
+			String districtStr = null;
+			JSONArray finalArray = null;
 			
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://pris.ap.gov.in/api/taxes/taxstats.php?defaultersOverview=1&locationId="+inputVO.getLocationId()+"&locationType="+inputVO.getLocationType()+"");
 	        ClientResponse response = webResource.get(ClientResponse.class);
@@ -539,10 +551,14 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	 	    		if(districtArray!=null && districtArray.length()>0){
 	 	    			for(int i=0;i<districtArray.length();i++){
 	 	    				JSONObject districtObj = (JSONObject) districtArray.get(i);
-	 	    				JSONArray taxesArray = (JSONArray) districtObj.get("defaulters");
-	 	    				if(taxesArray!=null && taxesArray.length()>0){
-			 	    			for(int j=0;j<taxesArray.length();j++){
-			 	    				JSONObject taxesObj = (JSONObject) taxesArray.get(j);
+	 	    				districtStr = districtObj.has("defaulters") ? districtObj.get("defaulters").toString():null;
+	 	    				if(districtStr != null){
+	 	    					finalArray = new JSONArray(districtStr);
+	 	    				}
+	 	    				
+	 	    				if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int j=0;j<finalArray.length();j++){
+			 	    				JSONObject taxesObj = (JSONObject) finalArray.get(j);
 			 	    				belowTwoAmount = belowTwoAmount+Long.valueOf(taxesObj.get("defaulter1").toString());
 			 	    				twotoFiveAmount = twotoFiveAmount+Long.valueOf(taxesObj.get("defaulter2").toString());
 			 	    				fiveToTwentyAmount = fiveToTwentyAmount+Long.valueOf(taxesObj.get("defaulter3").toString());
@@ -798,16 +814,16 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
  	    			for(int i=0;i<jsonArray.length();i++){
  	    				JSONObject jObj = (JSONObject) jsonArray.get(i);
  	    				PanchayatTaxVO mainvo = new PanchayatTaxVO();
- 	    				mainvo.setDistrictId(jObj.has("id") ? Long.valueOf(jObj.get("id").toString()) : null);
- 	    				mainvo.setDistrictName(jObj.has("district") ? jObj.getString("district") : null);
- 	    				mainvo.setParliamentId(jObj.has("parliamentId") ? Long.valueOf(jObj.get("parliamentId").toString()) : null);
- 	    				mainvo.setParliamentName(jObj.has("parliamentName") ? jObj.getString("parliamentName") : null);
- 	    				mainvo.setAssemblyId(jObj.has("assemblyId") ? Long.valueOf(jObj.get("assemblyId").toString()) : null);
- 	    				mainvo.setAssemblyName(jObj.has("assemblyName") ? jObj.getString("assemblyName") : null);
- 	    				mainvo.setMandalId(jObj.has("mandalId") ? Long.valueOf(jObj.get("mandalId").toString()) : null);
- 	    				mainvo.setMandalName(jObj.has("mandalName") ? jObj.getString("mandalName") : null);
- 	    				mainvo.setPanchayatId(jObj.has("panchayat") ? Long.valueOf(jObj.get("panchayat").toString()) : null);
- 	    				mainvo.setPanchyatName(jObj.has("panchayat_name") ? jObj.getString("panchayat_name") : null);
+ 	    				mainvo.setDistrictId(jObj.has("id") ? Long.valueOf(!(jObj.get("id").toString().equalsIgnoreCase("null") || jObj.get("id").toString().equalsIgnoreCase("NA")) ? jObj.get("id").toString():"0") : null);
+ 	    				mainvo.setDistrictName(jObj.has("district") ? !(jObj.getString("district").equalsIgnoreCase("null") || jObj.getString("district").equalsIgnoreCase("NA") ) ? jObj.getString("district"):"0" : null);
+ 	    				mainvo.setParliamentId(jObj.has("parliamentId") ? Long.valueOf(!(jObj.get("parliamentId").toString().equalsIgnoreCase("null") || jObj.get("parliamentId").toString().equalsIgnoreCase("NA")) ? jObj.get("parliamentId").toString():"0") : null);
+ 	    				mainvo.setParliamentName(jObj.has("parliamentName") ? !(jObj.getString("parliamentName").equalsIgnoreCase("null") || jObj.getString("parliamentName").equalsIgnoreCase("NA") ) ? jObj.getString("parliamentName"):"0" : null);
+ 	    				mainvo.setAssemblyId(jObj.has("assemblyId") ? Long.valueOf(!(jObj.get("assemblyId").toString().equalsIgnoreCase("null") || jObj.get("assemblyId").toString().equalsIgnoreCase("NA")) ? jObj.get("assemblyId").toString():"0") : null);
+ 	    				mainvo.setAssemblyName(jObj.has("assemblyName") ? !(jObj.getString("assemblyName").equalsIgnoreCase("null") || jObj.getString("assemblyName").equalsIgnoreCase("NA") ) ? jObj.getString("assemblyName"):"0" : null);
+ 	    				mainvo.setMandalId(jObj.has("mandalId") ? Long.valueOf(!(jObj.get("mandalId").toString().equalsIgnoreCase("null") || jObj.get("mandalId").toString().equalsIgnoreCase("NA")) ?jObj.get("mandalId").toString():"0") : null);
+ 	    				mainvo.setMandalName(jObj.has("mandalName") ? !(jObj.getString("mandalName").equalsIgnoreCase("null") || jObj.getString("mandalName").equalsIgnoreCase("NA") ) ? jObj.getString("mandalName"):"0" : null);
+ 	    				mainvo.setPanchayatId(jObj.has("panchayat") ? Long.valueOf(!(jObj.get("panchayat").toString().equalsIgnoreCase("null") || jObj.get("panchayat").toString().equalsIgnoreCase("NA")) ? jObj.get("panchayat").toString():"0"): null);
+ 	    				mainvo.setPanchyatName(jObj.has("panchayat_name") ? !(jObj.getString("panchayat_name").equalsIgnoreCase("null") || jObj.getString("panchayat_name").equalsIgnoreCase("NA") ) ? jObj.getString("panchayat_name"):"0" : null);
  	    				
  	    				JSONArray taxArr = jObj.has("taxes") ? jObj.getJSONArray("taxes") : null;
  	    				if(taxArr != null && taxArr.length()>0){
