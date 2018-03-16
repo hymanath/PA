@@ -11,13 +11,13 @@ getDeptIdsListBYUserIdsLst();
 function onLoadCalls(){
 	//getDeptIdsListBYUserIdsLst();
 	getCompleteOrStatusOverviewDetails();
-	
+	$("#officerBlock").hide();
 	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
 		$("#refWiseOverViewId").show();
 		$("#leadWiseDivId").show();
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
-		//$("#officerBlock").show();
+		$("#officerBlock").show();
 		getReferralWiseOverviewDetails("");
 		getBriefLeads();
 		getLeadWiseOverviewDetails();
