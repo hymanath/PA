@@ -1031,13 +1031,18 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 						}
 						str+='<th class="" style="background-color:#c5e6f9;" rowspan="2">Total</th>';
 						
-						var globalStatusBgColorObj={"NOT STARTED":"#f9b79d","INITIAL STAGE":"#f7deb9","Finished":"#beddc8","MOVED TO OTHER CATEGORY":"#f2d5db"}
 						
+						var globalStatusBgObj={"NOT STARTED":"#FBB9E0","INITIAL STAGE":"#BFBFBF","Finished":"#FFC3A5","MOVED TO OTHER CATEGORY":"#A8BFFF"}
+						var globalStatusColorObj={"NOT STARTED":"#F648A9","INITIAL STAGE":"#584A4A","Finished":"#FF6300","MOVED TO OTHER CATEGORY":"#1C49FF"}
+						var statuslength=0;
+						
+							
 						for(var i in result[0].voList){
+							statuslength = (result[0].voList[i].voList.length)+1;
 							if(result[0].voList[i].title == "NOT STARTED"){
-								str+='<th colspan="'+result[0].voList[i].voList.length+'" style="background-color:'+globalStatusBgColorObj[result[0].voList[i].title]+';">NOT&nbsp;STARTED</th>';	
+								str+='<th colspan="'+statuslength+'" style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">NOT&nbsp;STARTED</th>';	
 							}else{
-								str+='<th colspan="'+result[0].voList[i].voList.length+'" style="background-color:'+globalStatusBgColorObj[result[0].voList[i].title]+';">'+result[0].voList[i].title+'</th>';	
+								str+='<th colspan="'+statuslength+'" style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">'+result[0].voList[i].title+'</th>';	
 							}
 							
 						}
@@ -1046,8 +1051,10 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 						str+='<tr>';
 							for(var i in result[0].voList){
 								for(var j in result[0].voList[i].voList){
-									str+='<th style="background-color:'+globalStatusBgColorObj[result[0].voList[i].title]+';">'+result[0].voList[i].voList[j].status+'</th>';	
+									str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">'+result[0].voList[i].voList[j].status+'</th>';
+										
 								}
+								str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">%</th>';	
 							}
 						str+='</tr>';
 					str+='</thead>';
@@ -1069,11 +1076,19 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 								for(var j in result[i].voList){
 									for(var k in result[i].voList[j].voList){
 										if(result[i].voList[j].voList[k].count !=null && result[i].voList[j].voList[k].count>0){
-											str+='<td class=""  style="background-color:'+globalStatusBgColorObj[result[i].voList[j].title]+'" ><span class="getAmsPopUpCls" attr_alertCount="'+result[i].voList[j].voList[k].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].voList[k].statusId+'" attr_statusName="'+result[i].voList[j].voList[k].status+'">'+result[i].voList[j].voList[k].count+'</span>&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].voList[k].percentage+'&nbsp;%</small></td>';
+											str+='<td class=""  style="background-color:'+globalStatusBgObj[result[i].voList[j].title]+'" ><span class="getAmsPopUpCls" attr_alertCount="'+result[i].voList[j].voList[k].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].voList[k].statusId+'" attr_statusName="'+result[i].voList[j].voList[k].status+'">'+result[i].voList[j].voList[k].count+'</span></td>';
+											
 										}else{
-											str+='<td style="background-color:'+globalStatusBgColorObj[result[i].voList[j].title]+'"> - </td>';
+											str+='<td style="background-color:'+globalStatusBgObj[result[i].voList[j].title]+'"> - </td>';
+											
 										}
 									}
+									if(result[i].voList[j].percentage !=null && result[i].voList[j].percentage>0){
+										str+='<td style="color:green;margin-left:15px;background-color:'+globalStatusBgObj[result[i].voList[j].title]+'" >'+result[i].voList[j].percentage+'&nbsp;%</td>';
+									}else{
+										str+='<td style="background-color:'+globalStatusBgObj[result[i].voList[j].title]+'"> - </td>';
+									}
+									
 								}
 							str+='</tr>';
 						}
