@@ -6,7 +6,7 @@ $(".chosen-select").chosen();
 var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3));
+		wurl = url.substr(0,(url.indexOf(".in")+3)); 
 
 //var wurl="http://mytdp.com"
 var locationArr=['district','constituency','mandal'];
@@ -272,6 +272,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="row">';
 								str+='<div style="padding:15px;">';
 									str+='<div id="areasplineChartId" style="height:300px;"></div>';
+									//str+='<div class="imagecls"></div>';
 								str+='</div>';
 							str+='</div>';
 							var alertStatusTotalCount=0;
@@ -314,7 +315,10 @@ function buildJalavaniDashBoardOverview(result){
 	
 	
 	for(var i in result.subList2){
-		monthNameArr.push(result.subList2[i].monthName)
+		var monthAndYearSpilt=result.subList2[i].monthName.split('-');
+		var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+		var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+		monthNameArr.push(changedMonthYear)
 		mainArr.push(result.subList2[i].percentage)
 	}
 	for(var i in result.list){
@@ -341,7 +345,7 @@ function buildJalavaniDashBoardOverview(result){
 			labels: {
 				style: {
 					color: '#333',
-					fontSize:'14px',
+					fontSize:'10px',
 					fontWeight:'bold',
 				}
 			},
@@ -999,8 +1003,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	$("#jalavani"+type).html(spinner);
 	 
 	$.ajax({
-		//url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		url: "http://192.168.11.177:8070/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: "http://192.168.11.177:8070/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
