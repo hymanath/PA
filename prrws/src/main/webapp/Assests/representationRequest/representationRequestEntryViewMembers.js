@@ -781,6 +781,14 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 	}/* else if(deptId >0){
 		deptIds.push(deptId);
 	} */
+	if(deptIds != null && deptIds.length>0){
+		for(var i in deptIds){
+			if(parseInt(deptIds[i])==0){
+				deptIds=[];
+			}
+		}
+	}
+
 	var subjIds =$("#subjectId").val();
 	if(subjIds != null && subjIds !=0){
 		subjArr=subjIds;
@@ -850,6 +858,14 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
  if(depts != null || depts !=0){
  deptIds=depts;
  }
+ if(deptIds != null && deptIds.length>0){
+		for(var i in deptIds){
+			if(parseInt(deptIds[i])==0){
+				deptIds=[];
+			}
+		}
+	}
+	
  var selStatusId = $("#statusId").val();
 var statusIds = [];
 if(selStatusId != null && selStatusId.length >0){
@@ -911,6 +927,14 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 	if(depts != null || depts !=0){
 		deptIds=depts;
 	}
+	if(deptIds != null && deptIds.length>0){
+		for(var i in deptIds){
+			if(parseInt(deptIds[i])==0){
+				deptIds=[];
+			}
+		}
+	}
+	
 	var selStatusId = $("#statusId").val();
   var statusIds = [];
   if(selStatusId != null && selStatusId.length >0){
