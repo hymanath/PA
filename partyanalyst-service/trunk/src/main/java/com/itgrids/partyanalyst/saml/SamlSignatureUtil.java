@@ -13,6 +13,9 @@ import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.signature.XMLSignatureException;
@@ -148,8 +151,112 @@ public class SamlSignatureUtil {
 
 		return samlResponseDoc;
 	}
+	public static Document signNew(String xmlString, String idValue, PrivateKey privateKey, X509Certificate cert, String node ) throws Exception{
 
-	private static PrivateKey getPrivateKey(String privateKeyStr)
+		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+
+	    factory.setNamespaceAware(true);
+	    DocumentBuilder db = factory.newDocumentBuilder();
+		Document doc = db.parse(new ByteArrayInputStream(xmlString.getBytes())); 
+		if (doc == null) {
+			LOGGER.log(Level.WARNING, "Dcouent is Obtained as null");
+			throw new Exception(("errorObtainingElement"));// No I18N
+		}
+		
+
+		NodeList nameIds = doc.getElementsByTagName(node); // No I18N
+		if (nameIds == null || nameIds.getLength() == 0) {
+			return null;
+		}
+		Element root = (Element) nameIds.item(0);
+		root.setIdAttribute("ID", true); // No I18N
+		XMLSignature sig = null;
+		try {
+			Constants.setSignatureSpecNSprefix("ds"); // No I18N
+		} catch (XMLSecurityException xse1) {
+			LOGGER.log(Level.WARNING, "Exception while Signing document", xse1);
+			throw new Exception(xse1.getMessage());
+		}
+		if( idValue == null || idValue.length() == 0)
+		{
+				Node nNode = nameIds.item(0);
+		        if (nNode.getNodeType() == Node.ELEMENT_NODE) {
+		            Element eElement = (Element) nNode;
+		            idValue=eElement.getAttribute("ID");
+		        }
+		}
+		String sigAlg = null;
+		IdResolver.registerElementById(root, idValue);
+		try {
+			if ((sigAlg == null) || (sigAlg.trim().length() == 0)) {
+				if (privateKey.getAlgorithm().equalsIgnoreCase(DSA)) {
+					sigAlg = XMLSignature.ALGO_ID_SIGNATURE_DSA;
+				} else {
+					if (privateKey.getAlgorithm().equalsIgnoreCase(RSA)) {
+						sigAlg = XMLSignature.ALGO_ID_SIGNATURE_RSA_SHA1;
+					}
+				}
+			}
+			org.apache.xml.security.Init.init();
+			sig = new XMLSignature(doc, "", sigAlg, "http://www.w3.org/2001/10/xml-exc-c14n#");
+		} catch (XMLSecurityException xse2) {
+			LOGGER.log(Level.WARNING, "Exception while Signing document", xse2);
+			throw new Exception(xse2.getMessage());
+		}
+		Node firstChild = root.getFirstChild();
+		while (firstChild != null && (firstChild.getLocalName() == null || !firstChild.getLocalName().equals("Issuer"))) {
+			firstChild = firstChild.getNextSibling();
+		}
+		Node nextSibling = null;
+		if (firstChild != null) {
+			nextSibling = firstChild.getNextSibling();
+		}
+		if (nextSibling == null) {
+			root.appendChild(sig.getElement());
+		} else {
+			root.insertBefore(sig.getElement(), nextSibling);
+		}
+		sig.getSignedInfo().addResourceResolver(new OfflineResolver());
+		Transforms transforms = new Transforms(doc);
+		try {
+			transforms.addTransform(Transforms.TRANSFORM_ENVELOPED_SIGNATURE);
+		} catch (TransformationException te1) {
+			LOGGER.log(Level.WARNING, "Exception while Signing document", te1);
+			throw new Exception(te1.getMessage());
+		}
+		try {
+			String transformAlg = "http://www.w3.org/2001/10/xml-exc-c14n#";// No I18N
+			transforms.addTransform(transformAlg);
+		} catch (TransformationException te2) {
+			LOGGER.log(Level.WARNING, "Exception while Signing document", te2);
+			throw new Exception(te2.getMessage());
+		}
+		String ref = "#" + idValue;
+		try {
+			sig.addDocument(ref, transforms, Constants.ALGO_ID_DIGEST_SHA1);
+		} catch (XMLSignatureException sige1) {
+			LOGGER.log(Level.WARNING, "Exception while Signing document", sige1);
+			throw new Exception(sige1.getMessage());
+		}
+		if (cert != null) {
+			try {
+				sig.addKeyInfo(cert);
+			} catch (XMLSecurityException xse3) {
+				LOGGER.log(Level.WARNING, "Exception while Signing document", xse3);
+				throw new Exception(xse3.getMessage());
+			}
+		}
+		try {
+			sig.sign(privateKey);
+		} catch (XMLSignatureException sige2) {
+			LOGGER.log(Level.WARNING, "Exception while Signing document", sige2);
+			throw new Exception(sige2.getMessage());
+		}
+
+		return doc;
+	}
+	
+	public static PrivateKey getPrivateKey(String privateKeyStr)
 			throws NoSuchAlgorithmException, InvalidKeySpecException {		
 		byte[] privateKeyBytes = Base64.decode(privateKeyStr);
 		return KeyFactory.getInstance("RSA").generatePrivate(
@@ -157,7 +264,7 @@ public class SamlSignatureUtil {
 		
 	}
 
-	private static X509Certificate getCertificate(String publicKey)
+	public static X509Certificate getCertificate(String publicKey)
 			throws CertificateException {
 		CertificateFactory cf = CertificateFactory.getInstance("X509");
 		X509Certificate cert = (X509Certificate) cf
