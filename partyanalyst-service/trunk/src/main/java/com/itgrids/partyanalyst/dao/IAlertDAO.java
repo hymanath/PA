@@ -212,6 +212,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getPositionOfCadre(List<Long> tdpCadreIds);
 	public List<Object[]> getDistrictWiseTotalAlerts(Date stDate, Date ndDate, Long stateId,List<Long>alertTypeIds);
 	public List<Long> getAlertId(Long categoryId,Long categoryTypeId);
+	public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date fromDate, Date toDate, Long stateId, String levelType);
 	public List<Object[]> getJalavanilocationOverview(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId);
 	public List<Object[]> getJalavaniAlertDetailsInformation(Date fromDate,Date toDate,Long locationTypeId,Long locationId,
 			Long statusId,Long sourceId);
