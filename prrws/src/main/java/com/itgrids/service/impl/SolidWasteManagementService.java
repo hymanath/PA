@@ -333,11 +333,11 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	public String getRfidTrackingData() {
 		String output = null;
 		try {
-			Date fromDate = new Date();
+			Date fromDate = dateUtilService.getCurrentDateAndTime();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String dateStr = sdf.format(fromDate);
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(
-					"http://10.0.3.56/PD/download/getSolidInfoLocationWise/getSwmInfo=1&districtId=0&fromDate="
+					"http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&districtId=0&fromDate="
 							+ dateStr + "&toDate=" + dateStr + "");
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.get(ClientResponse.class);
