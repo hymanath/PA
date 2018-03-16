@@ -11775,7 +11775,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  		}
  		return  query.list();
   }
- public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId){
+ public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId){
  		StringBuilder str = new StringBuilder();
  		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
  			if(type !=null && type.equalsIgnoreCase("district")){
@@ -11828,11 +11828,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  		}
  		
  		if(type !=null && type.equalsIgnoreCase("district")){
-			str.append(" and UA.district_id =:locationTypeId ");
+			str.append(" and UA.district_id in(:locationTypeIds) ");
  		}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 			str.append(" and UA.constituency_id =:locationTypeId ");
+ 			str.append(" and UA.constituency_id in(:locationTypeIds) ");
  		}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 			str.append(" and UA.tehsil_id =:locationTypeId ");
+ 			str.append(" and UA.tehsil_id in(:locationTypeIds) ");
  		}
  		
 		if(fromDate !=null && toDate !=null){
@@ -11852,11 +11852,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 			query.setParameter("toDate",toDate);
 	 		}
 	 		if(type !=null && type.equalsIgnoreCase("district")){
-				query.setParameter("locationTypeId",locationTypeId);
+				query.setParameterList("locationTypeIds",locationTypeIds);
 	 		}else if(type !=null && type.equalsIgnoreCase("constituency")){
-	 			query.setParameter("locationTypeId",locationTypeId);
+	 			query.setParameterList("locationTypeIds",locationTypeIds);
 	 		}else if(type !=null && type.equalsIgnoreCase("mandal")){
-	 			query.setParameter("locationTypeId",locationTypeId);
+	 			query.setParameterList("locationTypeIds",locationTypeIds);
 	 		}
 	 		if(statusId !=null && statusId.longValue() >0){
 	 			query.setParameter("statusId",statusId);

@@ -17191,13 +17191,14 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(startDateStr);
 				endDate = sdf.parse(endDateStr);
 			}
-			Long locationId=0l;
-			if(locationTypeId !=null && locationTypeId ==13l && locationTypeId == 517l){
-				locationId = 13l+517l;
+			List<Long> locationIds=new ArrayList<Long>(0);
+			if(locationTypeId !=null && locationTypeId ==13l){
+				locationIds.add(13l);
+				locationIds.add(517l);
 			}else{
-				locationId =locationTypeId;
+				locationIds.add(locationTypeId);
 			}
-			List<Long> alertIdsList = alertDAO.getAlertAndStatusWiseCountsForDistForPopup(startDate,endDate,searchType,type,locationId,alertCategoryId,statusId);
+			List<Long> alertIdsList = alertDAO.getAlertAndStatusWiseCountsForDistForPopup(startDate,endDate,searchType,type,locationIds,alertCategoryId,statusId);
 		
 			
 			List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdsList));
