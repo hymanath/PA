@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class MomDashbaordOverViewDtlsVO {
@@ -13,8 +14,8 @@ public class MomDashbaordOverViewDtlsVO {
 	private Long assignedToOther =0l ;
 	private Long assignedToYourLocation =0l;
 	
-	private List<MomDashbaordOverViewDtlsVO> subList1;
-	private List<MomDashbaordOverViewDtlsVO> subList2;
+	private List<MomDashbaordOverViewDtlsVO> subList1 = new ArrayList<MomDashbaordOverViewDtlsVO>();
+	private List<MomDashbaordOverViewDtlsVO> subList2 = new ArrayList<MomDashbaordOverViewDtlsVO>();
 	
 	
 	public String getName() {

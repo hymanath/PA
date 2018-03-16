@@ -296,7 +296,7 @@ public interface IWebServiceHandlerService {
     public ResultStatus savePartyMeetingMOMDetails(PartyMeetingMOMCreationDtlsvO inputVO);
     public List<QuestionAnswerVO> getSurveyQuestionDetails(Long tdpCadreId);
     public ResultStatus updateMomDetails(PartyMeetingMOMCreationDtlsvO inputVO);
-    public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId);
+    public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId,Long userLocationId,Long userLocationValue);
     public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,String monthYear);
     public List<MomDetailsVO> getMomDetailsBySelectedType(Long userAccessLevel,List<Long> accessValues,String monthYear,String type);
     public List<ActivityDetailsVO> getActivityDetailsBasedOnLocation(String locationType,List<Long> locationValues,Long activityScopeId,Long constituencyId);

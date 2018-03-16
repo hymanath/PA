@@ -82,4 +82,7 @@ public List<Object[]> getPartyMeetingsInvitationsDetailsByCadreIds(List<Long> td
 	public List<Object[]> getLocationWiseStateMeetingInvitees(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId);
 	public List<Object[]> getLocationWiseMeetingInviteeMembers(List<Long> locationValues,Long locationTypeId,Date fromDate,Date toDate,Long partyMeetingMainTypeid,Long partyMeetingTypeId,Long partyMeetingId,Set<Long> inviteeIds);
 	public List<Object[]> getTdpCadreIdsByMeetingId(Long partyMeetingId);
+	public List<Long> getPartyMeetingOfInviteeList(Long meetingId,Date fromDate,Date toDate);
+	public List<Object[]> getPartyMeetingOfAbsentCandidate(Set<Long> absentList,Long locationLevel,Long locationValue,Long meetingType,Long meetingId);
+	public Long getUpdateMeetingDetails(Long meetingId,Long inviteeId,Long candidateId);
 }

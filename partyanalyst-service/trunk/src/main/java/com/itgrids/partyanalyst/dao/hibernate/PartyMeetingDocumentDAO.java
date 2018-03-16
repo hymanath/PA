@@ -838,7 +838,7 @@ public List<Object[]> getPartyMeetingMomDocumentByUserAccessLevel(Long userAcces
 	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_MANDAL_LEVEl_ID){
 	    queryStr.append(" and model.partyMeeting.meetingAddress.tehsil.tehsilId in (:userAccessLevelValues)");  
 	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_MUNCIPLITY_LEVEl_ID){ //  town/division
-	   queryStr.append(" and model.partyMeeting.meetingAddress.userAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
+	   queryStr.append(" and model.partyMeeting.meetingAddress.localElectionBody.localElectionBodyId in (:userAccessLevelValues)"); 
 	 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_VILLAGE_LEVEl_ID){ 
 	   queryStr.append(" and model.partyMeeting.meetingAddress.panchayat.panchayatId in (:userAccessLevelValues)"); 
      }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.REGIONSCOPE_WARD_LEVEl_ID){ 

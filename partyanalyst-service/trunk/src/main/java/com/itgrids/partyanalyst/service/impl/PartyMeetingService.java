@@ -74,6 +74,7 @@ import com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
+import com.itgrids.partyanalyst.model.PartyMeetingInvitee;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteTracking;
@@ -4715,5 +4716,74 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		return returnVO;
 	}
-	
+
+	public List<PartyMeetingsVO> getPartyMettingOfAbsents(String startDateStr,String endDateStr,Long meetingId,Long locationLevel,Long locationValue,Long meetingTypeId){
+		List<PartyMeetingsVO> finalList = new ArrayList<PartyMeetingsVO>();
+		try{
+            SimpleDateFormat format = new SimpleDateFormat("yyyy/MM/dd");
+			
+			Date startDate= null;
+			Date endDate= null;
+			
+			if(startDateStr.trim().length()>0){
+				startDate= format.parse(startDateStr);
+			}
+			if(startDateStr.trim().length()>0){
+				endDate= format.parse(endDateStr);
+			}
+			Set<Long> absentList = new HashSet<Long>();
+			List<Long> totlattendedList = partyMeetingAttendanceDAO.getPartyMettingOfAttendedList(meetingId,startDate,endDate);
+			List<Long> totalInviteeList = partyMeetingInviteeDAO.getPartyMeetingOfInviteeList(meetingId,startDate,endDate);
+			if(totalInviteeList != null && totalInviteeList.size()>0){
+				for(Long param : totalInviteeList){
+					if(!totlattendedList.contains(param)){
+						absentList.add(param);
+					}
+				}
+			}
+			 //0-tdpCadreId,1-name,2-mobileNo,3-remark,4-isAttended
+			List<Object[]> totalAbsentList = partyMeetingInviteeDAO.getPartyMeetingOfAbsentCandidate(absentList,locationLevel,locationValue,meetingTypeId,meetingId);
+			if(totalAbsentList != null && totalAbsentList.size()>0){
+				for(Object[] param : totalAbsentList){
+					PartyMeetingsVO vo =new PartyMeetingsVO();
+					vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+					vo.setRemarks(commonMethodsUtilService.getStringValueForObject(param[3]));
+					vo.setIsCondacted(commonMethodsUtilService.getStringValueForObject(param[4]));
+					vo.setInviteeId(commonMethodsUtilService.getLongValueForObject(param[5]));
+					vo.setMeetingType(commonMethodsUtilService.getStringValueForObject(param[7]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception raised at getPartyMettingOfAbsents", e);
+		}
+		return finalList;
+	}
+	public String updateMeetingAbsentRemarks(Long inviteeId,String remarks,Long userId,Long meetingId,Long candidateId){
+		String status = "failed";
+		try {
+			LOG.info("Entered into updateMeetingAbsentRemarks");
+			//PartyMeetingInvitee invitee= partyMeetingInviteeDAO.get(inviteeId);
+			Long meetingInvitteId  = partyMeetingInviteeDAO.getUpdateMeetingDetails(meetingId,inviteeId,candidateId);
+			if(meetingInvitteId != null){
+				PartyMeetingInvitee invitee = partyMeetingInviteeDAO.get(meetingInvitteId);
+				if(invitee != null){
+					invitee.setAbsenteeRemark(remarks);
+					invitee.setIsAttended("N");
+					if(userId != null && userId.longValue()>0l){
+						invitee.setUpdatedById(userId);
+					}
+					invitee.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
+					partyMeetingInviteeDAO.save(invitee);
+					status="success";
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at updateMeetingAbsentRemarks", e);
+		}
+		return status;
+	}
 }

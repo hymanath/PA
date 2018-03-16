@@ -521,6 +521,7 @@ public class DebateService implements IDebateService{
 				  		" Thank you for Participanting in the Debate."+
 				  		" Please find below url for more details on the Debate Summary " +
 				  		": http://mytdp.com/genereateReportAction.action?key=15d090b2-9d6a-4d21-a06b-7c26fa56bac8&debateId="+debateId+"&stateId=0 ";
+				  if(mobileNumbers != null)
 				  smsCountrySmsService.sendOTPSmsFromAdminForZohoUser(message, true, mobileNumbers);
 				  
 				//sending for mail
@@ -541,7 +542,8 @@ public class DebateService implements IDebateService{
 					 }
 				 }
 				//sending msg through kaizala
-				 /*for ( int i = 0; i< phoneNumbers.size(); i++){
+				 if(phoneNumbers != null){
+				 for ( int i = 0; i< phoneNumbers.size(); i++){
 				   	KaizalaMessageVO kaizalavo = new KaizalaMessageVO();
 				   	kaizalavo.setPhoneNumberStr("+91"+phoneNumbers.get(i));
 				   	kaizalavo.setGroupId("e88eb184-5b34-4d7b-97bf-5ce39427a149");
@@ -558,7 +560,8 @@ public class DebateService implements IDebateService{
 								.resource("http://mytdp.com/KAIZALA/sendMessagesToPublicGroup");
 					
 					webResource.accept("application/json").type("application/json").post(ClientResponse.class, kaizalavo);
-				 }*/
+				 }
+				 }
 				  resultStatus.setResultCode(ResultCodeMapper.SUCCESS);
 				  return resultStatus;
 				  }

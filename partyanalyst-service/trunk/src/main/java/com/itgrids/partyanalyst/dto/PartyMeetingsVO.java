@@ -94,7 +94,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Long inviteeAttendedCount = 0L;
 	private Long attendedCount = 0L;
 	private String meetingLevel;
-	
+	private String mobileNo;
 	
 	
 
@@ -560,7 +560,12 @@ public class PartyMeetingsVO implements Serializable{
 	public void setMeetingLevel(String meetingLevel) {
 		this.meetingLevel = meetingLevel;
 	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
 	
-	
-	
+
 }

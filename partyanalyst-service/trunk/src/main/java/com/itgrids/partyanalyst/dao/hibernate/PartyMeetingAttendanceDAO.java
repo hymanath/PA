@@ -211,8 +211,9 @@ public class PartyMeetingAttendanceDAO extends GenericDaoHibernate<PartyMeetingA
 	@SuppressWarnings("unchecked")
 	public List<Long> getConductedMeetings(List<Long> partyMeetingsList)
 	{
-		Query query = getSession().createQuery("SELECT model.partyMeeting.partyMeetingId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList) and model.attendance.tdpCadre is not null and " +
-				" model.partyMeeting.isActive='Y' group by model.partyMeeting.partyMeetingId");
+		Query query = getSession().createQuery("SELECT distinct model.partyMeeting.partyMeetingId FROM PartyMeetingAttendance model where model.partyMeeting.partyMeetingId in (:partyMeetingsList)" +
+				" and model.attendance.tdpCadre.tdpCadreId is not null  " +
+				" and model.partyMeeting.isActive='Y' group by model.partyMeeting.partyMeetingId");
 		query.setParameterList("partyMeetingsList",partyMeetingsList);
 		return query.list();
 	}
@@ -1918,6 +1919,29 @@ public List<Object[]> getNoSesstionSpecialMeetingsSessionWiseAttendence(List<Lon
 		if(partyMeetingIds != null && partyMeetingIds.size() > 0l){
 	    	   query.setParameterList("partyMeetingIds", partyMeetingIds);
 	       }
+		 return query.list();
+	}
+
+	public List<Long> getPartyMettingOfAttendedList(Long meetingId,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select  distinct model.attendance.tdpCadreId from PartyMeetingAttendance model " +
+				" where  model.partyMeeting.isActive = 'Y' and model.attendance.tdpCadre.isDeleted='N' " +
+				"  and model.attendance.tdpCadre.enrollmentYear=:enrollmentYear ");
+		 if(fromDate != null && toDate != null){
+	    	   sb.append(" and date(model.partyMeeting.startDate) between :fromDate and :toDate ");
+	       }
+		if(meetingId != null && meetingId.longValue()>0l){
+			sb.append(" and model.partyMeeting.partyMeetingId =:meetingId  ");
+		}
+		 Query query = getSession().createQuery(sb.toString());
+		 if(fromDate != null && toDate != null){
+	         query.setDate("fromDate", fromDate);
+	         query.setDate("toDate", toDate); 
+	       }
+		 if(meetingId != null && meetingId.longValue()>0l){
+			 query.setParameter("meetingId", meetingId);
+		 }
+		 query.setParameter("enrollmentYear", IConstants.CADRE_ENROLLMENT_NUMBER);
 		 return query.list();
 	}
 }

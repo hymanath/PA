@@ -42,7 +42,7 @@ public class PartyMeetingInvitee extends BaseModel implements Serializable{
 	private Long updatedById;
 	private String absenteeRemark;
 	private Long tabUserId;
-	
+	private String isAttended;
 	public PartyMeetingInvitee(){}
 
 	@Id
@@ -196,6 +196,15 @@ public class PartyMeetingInvitee extends BaseModel implements Serializable{
 	public void setTabUserId(Long tabUserId) {
 		this.tabUserId = tabUserId;
 	}
+	@Column(name="is_attended")
+	public String getIsAttended() {
+		return isAttended;
+	}
+
+	public void setIsAttended(String isAttended) {
+		this.isAttended = isAttended;
+	}
+	
 	
 	
 }

@@ -19,9 +19,11 @@ public class MomDetailsVO {
 	private String date;
 	private String comment;
 	private String isEditable;
+	private Long createdAddressId;
 	
 	private List<MomDetailsVO> commentList;
 	private List<String> documentList;
+	private Long locationLevel;
 	
 	public String getMomPoints() {
 		return momPoints;
@@ -126,7 +128,19 @@ public class MomDetailsVO {
 	public void setAssignedLocationScopeValue(Long assignedLocationScopeValue) {
 		this.assignedLocationScopeValue = assignedLocationScopeValue;
 	}
-	
+	public Long getLocationLevel() {
+		return locationLevel;
+	}
+	public void setLocationLevel(Long locationLevel) {
+		this.locationLevel = locationLevel;
+	}
+	public Long getCreatedAddressId() {
+		return createdAddressId;
+	}
+	public void setCreatedAddressId(Long createdAddressId) {
+		this.createdAddressId = createdAddressId;
+	}
+
 	
 	
 }
