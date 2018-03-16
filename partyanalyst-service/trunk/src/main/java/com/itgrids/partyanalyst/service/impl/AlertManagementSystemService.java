@@ -16524,6 +16524,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(inputVo.getFromDateStr());
 				endDate = sdf.parse(inputVo.getToDateStr());
 			}
+			List<Object[]> monthObjList =null;
+			
 			Long totalCallCenterCalls = alertCallerRelationDAO.totalCallCenterCallForRwsDept(startDate,endDate);//total call center calls count
 			
 			List<Object[]> totalAlertcountsList =alertDAO.getTotalAlertCounts(startDate, endDate,0l);//totalAlerts counts for categorywise(callcenter,PM,EMN)
@@ -16539,16 +16541,23 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					finalVo.getSubList1().add(vo);
 				}
 			}
-			finalVo.getSubList2().addAll(getMonthSkeleton());
-			List<Object[]> monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,0l);
-			if(monthObjList !=null && monthObjList.size() >0){
-				for (Object[] objects : monthObjList) {
-					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(matchedMonthVO != null){
-						matchedMonthVO.setLocationCnt((Long)objects[1]);
-					}
+			List<String> datesList = dateUtilService.getDaysBetweenDatesStringFormat(startDate, endDate);
+			if(datesList !=null && datesList.size() <= 31l){
+				//date-0,count-1
+				for (String string : datesList) {
+					AlertVO vo = new AlertVO();
+					vo.setDate1(string);
+					finalVo.getSubList2().add(vo);
 				}
+				//DATE-0,count-1
+				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,0l,"dayWise");
+				getSetDateList(finalVo.getSubList2(), monthObjList,"dayWise");
+			}else{
+				  //month-0,count-1,year-2
+				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,0l,"monthWise");
+				getSetDateList(finalVo.getSubList2(), monthObjList,"monthWise");
 			}
+			
 			//status code 
 			List<AlertStatus> allStatus = alertStatusDAO.getAll();
 			getAlertStatusWiseSkelton(allStatus,finalVo);
@@ -16599,10 +16608,10 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}
 			return null;
 		}
-	public AlertVO getmatchedMonthVo(List<AlertVO> finalVOList,Long monthId){
+	public AlertVO getmatchedMonthVo(List<AlertVO> finalVOList,String date){
 		if(finalVOList != null && finalVOList.size() > 0){
 			for (AlertVO vo : finalVOList) {
-				if(vo.getSmTypeId() != null && vo.getSmTypeId().equals(monthId)){
+				if(vo.getDate1() != null && vo.getDate1().equalsIgnoreCase(date)){
 					return vo;
 				}
 			}
@@ -16622,6 +16631,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			List<Object[]> monthObjList =null;
 			List<Object[]> statusList=null;
 			List<Object[]> totalIvrList =null;
+			String dayWise ="dayWise";
+			String monthWise ="monthWise";
 			
 			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
 				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 2l);//total PRINT MEDIA alerts count
@@ -16632,27 +16643,55 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("social")){
 				totalAlertsCntBySearchType = alertDAO.getCountOfAlertsForAlertWiseCategory(startDate, endDate, 5l);//total ELECTRONIC MEDIA alerts count
 			}
-			
 			finalVo.setCount(totalAlertsCntBySearchType);
 			
-			finalVo.getSubList2().addAll(getMonthSkeleton());
-			
-			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
-				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,2l);
-			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("electronic")){
-				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,3l);
-			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
-				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,4l);
-			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("social")){
-				monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,5l);
+			List<String> datesList = dateUtilService.getDaysBetweenDatesStringFormat(startDate, endDate);
+			if(datesList !=null && datesList.size() <= 31l){
+				for (String string : datesList) {
+					AlertVO vo = new AlertVO();
+					vo.setDate1(string);
+					finalVo.getSubList2().add(vo);
+				}
 			}
 			
-			if(monthObjList !=null && monthObjList.size() >0){
-				for (Object[] objects : monthObjList) {
-					AlertVO matchedMonthVO = getmatchedMonthVo(finalVo.getSubList2(),commonMethodsUtilService.getLongValueForObject(objects[0]));
-					if(matchedMonthVO != null){
-						matchedMonthVO.setLocationCnt((Long)objects[1]);
-					}
+			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
+				if(datesList !=null && datesList.size() <= 31l){
+					//date-0,count-1
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,2l,dayWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,dayWise);
+				}else{
+					  //month-0,count-1,year-2
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,2l,monthWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,monthWise);
+					
+				}
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("electronic")){
+				if(datesList !=null && datesList.size() <= 31l){
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,3l,dayWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,dayWise);
+				}else{
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,3l,monthWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,monthWise);
+					
+				}
+				
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("callcenter")){
+				if(datesList !=null && datesList.size() <= 31l){
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,4l,dayWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,dayWise);
+				}else{
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,4l,monthWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,monthWise);
+					
+				}
+			}else if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("social")){
+				if(datesList !=null && datesList.size() <= 31l){
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,5l,dayWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,dayWise);
+				}else{
+					monthObjList = alertDAO.getAlertsMonthWiseOverview(startDate, endDate,5l,monthWise);
+					getSetDateList(finalVo.getSubList2(),monthObjList,monthWise);
+					
 				}
 			}
 			//status code
@@ -16943,8 +16982,6 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					}
 				}
 			}
-			
-			
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
 		}
@@ -17145,71 +17182,6 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}
 		}
 	}
-	/*public List<JalavaniAlertResultVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,Long locationTypeId,Long locationId,Long statusId,Long categoryId){
-		List<JalavaniAlertResultVO> finalVoList = new ArrayList<JalavaniAlertResultVO>(0);
-		try {
-			Date startDate = null;Date endDate = null;
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-			if(startDateStr != null && endDateStr != null){
-				startDate = sdf.parse(startDateStr);
-				endDate = sdf.parse(endDateStr);
-			}
-			List<Object[]> dataObjList =null;
-			List<Long> locationIds = new ArrayList<Long>(0);
-			List<Object[]> locationNameObjList = new ArrayList<Object[]>();
-				//0-alert-id,1-title,source-2,3-designation_name , 4-alertstatus 5-deptScopeId 6-location level value
-			dataObjList = alertDAO.getJalavaniAlertDetailsInformation(startDate, endDate,locationTypeId,locationId,statusId,categoryId);
-		
-			
-			if(dataObjList != null && dataObjList.size() >0){
-				for (Object[] objects : dataObjList) {
-					JalavaniAlertResultVO VO= new JalavaniAlertResultVO();
-					
-						VO.setAlertId((Long)objects[0]);
-						VO.setTitle((String)objects[1]);
-						VO.setSource((String)objects[2]);
-						VO.setDesignationName((String)objects[3]);
-						VO.setAlertStatus((String)objects[4]);
-						VO.setDeptScopeId((Long)objects[5]);
-						VO.setLocationId((Long)objects[6]);
-						
-						if(locationTypeId != null && locationTypeId == 5l){
-							locationIds.add((Long)objects[6]);
-						}
-						else if(locationTypeId != null && locationTypeId == 8l){
-							locationIds.add((Long)objects[6]);
-						}
-						finalVoList.add(VO);
-						
-		          }
-			}
-			if (locationTypeId == 5l){
-				locationNameObjList=districtDAO.getSpecificDistrictIdAndName(locationIds);
-			}
-			else if (locationTypeId == 8l) {
-				locationNameObjList =  tehsilDAO.getTehsilNameByTehsilIdsList(locationIds);
-			}
-			Map<Long,String> locationNamesMap = new HashMap<Long, String>(0);
-            if(locationNameObjList != null && locationNameObjList.size() > 0){
-            	for (Object[] object : locationNameObjList) {
-            		locationNamesMap.put((Long)object[0], object[1].toString());
-            	}
-            }
-            if(finalVoList !=null && finalVoList.size() >0){
-            	for (JalavaniAlertResultVO finalVO : finalVoList){
-            		if(locationNamesMap !=null){
-            			//for (Long value : locationNamesMap.keySet()){
-            				finalVO.setLocation(locationNamesMap.get(finalVO.getLocationId()));
-						//}
-            		}
-				}
-            }
-		}catch (Exception e){
-			LOG.error("Error occured getJalavaniAlertSourceDetailsInformation() method of AlertManagementSystemService",e);
-		}
-		return finalVoList;
-	}*/
-	
 	public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId){
 		List<AlertCoreDashBoardVO> finalAlertVOs = new ArrayList<AlertCoreDashBoardVO>(0);
 		try {
@@ -17219,8 +17191,15 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(startDateStr);
 				endDate = sdf.parse(endDateStr);
 			}
-			List<Long> alertIdsList = alertDAO.getAlertAndStatusWiseCountsForDistForPopup(startDate, endDate, searchType, type, locationTypeId, alertCategoryId, statusId);
+			Long locationId=0l;
+			if(locationTypeId !=null && locationTypeId ==13l && locationTypeId == 517l){
+				locationId = 13l+517l;
+			}else{
+				locationId =locationTypeId;
+			}
+			List<Long> alertIdsList = alertDAO.getAlertAndStatusWiseCountsForDistForPopup(startDate,endDate,searchType,type,locationId,alertCategoryId,statusId);
 		
+			
 			List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdsList));
 		    setAlertDtls(finalAlertVOs, list);
 		
@@ -17229,4 +17208,26 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalAlertVOs;
 	}
+	public void getSetDateList(List<AlertVO> subList,List<Object[]> monthObjList,String type){
+			if(type !=null && type.equalsIgnoreCase("dayWise")){
+				if(monthObjList !=null && monthObjList.size() >0){
+					for (Object[] objects : monthObjList) {
+						AlertVO matchedMonthVO = getmatchedMonthVo(subList,commonMethodsUtilService.getStringValueForObject(objects[0]));
+						if(matchedMonthVO != null){
+							matchedMonthVO.setLocationCnt((Long)objects[1]);
+						}
+					}
+				}
+			}else if(type !=null && type.equalsIgnoreCase("monthWise")){
+				if(monthObjList !=null && monthObjList.size() >0){
+					for (Object[] objects : monthObjList) {
+						AlertVO vo = new AlertVO();
+						vo.setLocationCnt((Long)objects[1]);
+						vo.setDate1(objects[0].toString()+"-"+objects[2].toString());
+						
+						subList.add(vo);
+					}
+				}
+			}
+	 }
 }
