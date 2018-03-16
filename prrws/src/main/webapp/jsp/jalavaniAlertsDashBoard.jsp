@@ -16,7 +16,14 @@
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
-
+.DTFC_LeftBodyWrapper
+{
+	top:-13px !important;
+}
+.DTFC_LeftBodyWrapper tr td
+{
+	background-color:#fff;
+}
 </style>
 </head>
 <body>
@@ -288,14 +295,14 @@
 									<option value="5">Social Media</option>
 								</select>
 							</div>
-							<div class="col-sm-3 m_top10">
+							<!--<div class="col-sm-3 m_top10">
 								<label class="font_weight">VIEW DATA</label>
 								<select class="form-control chosen-select" id="viewTypeId">
 									<option value="0">Select View Type</option>
 									<option value="Alert" selected>Alert</option>
 									<option value="Status">Status</option>
 								</select>
-							</div>
+							</div>-->
 							<div class="col-sm-2 m_top40">
 								<h6 style="padding:8px;border:1px solid #4FB800;color:#4FB800;cursor:pointer;" class="m_top25 text-center getResultsCls">GET DETAILS</h6>
 							</div>
@@ -349,6 +356,7 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="Assests/js/jalavaniAlertsDashBoard.js" type="text/javascript"></script>
 </body>
 </html>
