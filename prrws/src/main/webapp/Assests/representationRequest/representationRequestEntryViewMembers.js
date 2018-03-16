@@ -1473,7 +1473,7 @@ var json = {
   }); 
 }
 function buildSummeryDetails(result){
-
+		var statusOverViewFlage=false;
 	var str=""; 
 	str+='<div class="panel panel-default" style="margin:15px;">';
 		str+='<div class="panel-heading" style="background-color:#344650; color:#fff;">';
@@ -1495,6 +1495,7 @@ function buildSummeryDetails(result){
 							for(var i in result[0].statusList){
 								if(result[0].statusList[i].petitionIds.length >0){
 									str+='<td style="border:1px solid #DDDDDD;"><span title="Total Representations">'+result[0].statusList[i].petitionIds.length+'</span>/<span title="Total Works">'+result[0].statusList[i].subWorkIds.length+'</span></td>';
+								statusOverViewFlage=true;
 								}else{
 									str+='<td data-toggle="tooltip" title="representations"  style="border:1px solid #DDDDDD;">-</td>';
 								}
@@ -1506,6 +1507,11 @@ function buildSummeryDetails(result){
 			str+='</div>';	
 	str+='</div>';
 	$("#summaryId").html(str);
+	if(statusOverViewFlage == false){
+		$("#summaryId").hide();
+	}else{
+		$("#summaryId").show();
+	}
 }
 var globalStatusIds = [];
 function getStatusList(onLoadstatusId){
@@ -2991,6 +2997,9 @@ function petitionWiseRepresenteeDetails(myResult,radioTypeVal,globalStIndex,coun
 					
 					var endorsmentNo='';
 					str+='<tr>';
+					if(result[i].endorsementNO != null && result[i].endorsementNO != 0){
+						endorsmentNo=result[i].endorsementNO;
+					}
 					if(glDesignationId == 23){
 						str+='<td  style="text-align:center" > <input type="checkbox" name="" id="" value="'+result[i].petitionId+'" class="petitionStatusUpdateCls"/> &nbsp; ';
 						//str+='<i class="fa fa-eye viewBtnCls tooltipCls" aria-hidden="true" attr_enrorsNo="'+endorsmentNo+'" attr_petiotion_id="'+result[i].petitionId+'"  style="margin-right: 20px; font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="View Petition"> </i>';
@@ -2999,14 +3008,14 @@ function petitionWiseRepresenteeDetails(myResult,radioTypeVal,globalStIndex,coun
 					
 					  if(RepresentationDate){	
 						if(result[i].raisedDate != null && typeof(result[i].raisedDate) != "undefined"){
-							str+='<td style="text-align:center;" class="RepresentationDate ">'+result[i].raisedDate+'</td>';
+							str+='<td style="text-align:center;cursor:pointer;" aria-hidden="true" data-container="body" data-placement="top" data-toggle="tooltip" attr_petiotion_id="'+result[i].petitionId+'" attr_enrorsNo="'+endorsmentNo+'" class="RepresentationDate viewBtnCls tooltipCls" data-original-title="View Petition">'+result[i].raisedDate+'</td>';
 						}else{
 							str+='<td style="text-align:center;" class="RepresentationDate "> - </td>';
 						}
 					  }
 					  if(EndorsmentNo){
 						if(result[i].endorsementNO != null && result[i].endorsementNO != 0){
-							str+='<td style="text-align:center;" class="EndorsmentNo">'+result[i].endorsementNO+'</td>';
+							str+='<td style="text-align:center;cursor:pointer;" aria-hidden="true" data-container="body" data-placement="top" data-toggle="tooltip"  attr_petiotion_id="'+result[i].petitionId+'" attr_enrorsNo="'+endorsmentNo+'" class="EndorsmentNo viewBtnCls tooltipCls" data-original-title="View Petition">'+result[i].endorsementNO+'</td>';
 							endorsmentNo=result[i].endorsementNO;
 						}else{
 							str+='<td style="text-align:center;" class="EndorsmentNo"> - </td>';
