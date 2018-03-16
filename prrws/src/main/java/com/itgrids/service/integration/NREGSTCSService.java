@@ -9091,7 +9091,69 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    			}
 	 	    		}
 	 	    	 }
-	 	    	  
+	 	    	if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("district") || inputVO.getLocationType().trim().equalsIgnoreCase("constituency"))
+						&& inputVO.getSector() != null && inputVO.getSector().trim().equalsIgnoreCase("abstract")){
+	 	    		//District
+					if(inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+						inputVO.setSublocationType("district");
+						inputVO.setLocationType("district");
+						inputVO.setLocationId(inputVO.getDistrictId());
+						
+						str = convertingInputVOToString(inputVO);
+						
+						output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WorkCompletion/WorkCompletionData", str,IConstants.REQUEST_METHOD_POST);
+				        
+				        if(output == null){
+				 	    	  throw new RuntimeException("Webservice Data Not Found http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WorkCompletion/WorkCompletionData "+str);
+				 	      }else{
+				 	    	if(output != null && !output.isEmpty()){
+				 	    		JSONArray finalArray = new JSONArray(output);
+				 	    		if(finalArray!=null && finalArray.length()>0){
+				 	    			for(int i=0;i<finalArray.length();i++){
+					 	    				NregsDataVO vo = new NregsDataVO();
+					 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+					 	    				vo.setYear1314(jObj.getString("Y_1314"));
+					 	    				vo.setYear1415(jObj.getString("Y_1415"));
+					 	    				vo.setYear1516(jObj.getString("Y_1516"));
+					 	    				vo.setYear1617(jObj.getString("Y_1617"));
+					 	    				vo.setYear1718(jObj.getString("Y_1718"));
+					 	    				vo.setYear(jObj.getString("Y"));
+					 	    				returnList.get(0).getSubList().add(vo);
+				 	    				}
+				 	    			}
+				 	    		}
+				 	      }
+					}
+					//State
+					inputVO.setSublocationType("state");
+					inputVO.setLocationType("state");
+					inputVO.setLocationIdStr("-1");
+					
+					str = convertingInputVOToString(inputVO);
+					
+					output = webserviceHandlerService.callWebService("http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WorkCompletion/WorkCompletionData", str,IConstants.REQUEST_METHOD_POST);
+			        
+			        if(output == null){
+			 	    	  throw new RuntimeException("Webservice Data Not Found http://dbtrd.ap.gov.in/NregaDashBoardService/rest/WorkCompletion/WorkCompletionData "+str);
+			 	      }else{
+			 	    	if(output != null && !output.isEmpty()){
+			 	    		JSONArray finalArray = new JSONArray(output);
+			 	    		if(finalArray!=null && finalArray.length()>0){
+			 	    			for(int i=0;i<finalArray.length();i++){
+				 	    				NregsDataVO vo = new NregsDataVO();
+				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
+				 	    				vo.setYear1314(jObj.getString("Y_1314"));
+				 	    				vo.setYear1415(jObj.getString("Y_1415"));
+				 	    				vo.setYear1516(jObj.getString("Y_1516"));
+				 	    				vo.setYear1617(jObj.getString("Y_1617"));
+				 	    				vo.setYear1718(jObj.getString("Y_1718"));
+				 	    				vo.setYear(jObj.getString("Y"));
+				 	    				returnList.get(0).getSubList().add(vo);
+			 	    				}
+			 	    			}
+			 	    		}
+			 	      }
+	 	    	   }
 	 	      }
 		}catch (Exception e){
 			LOG.error("Exception raised at getWorkCompletionData - NREGSTCSService service", e);
