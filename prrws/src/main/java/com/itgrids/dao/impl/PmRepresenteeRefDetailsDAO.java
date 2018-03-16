@@ -120,10 +120,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 						" left join model1.pmWorkType pmWorkType " +
 						" left join model1.pmLead pmLead ");
 				
-		//if(filterType != null && (filterType.equalsIgnoreCase("work") || 
-			//	filterType.equalsIgnoreCase("department") || filterType.equalsIgnoreCase("subject")) && searchLevelId != null && searchLevelId.longValue()>0L){
+		if(filterType != null && (filterType.equalsIgnoreCase("work")  && searchLevelId != null && searchLevelId.longValue()>0L)){
 			sb.append(" left join model1.locationAddress locationAddress " );
-		/*}else*/ if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
+		}else if(filterType != null && (filterType.equalsIgnoreCase("referrelDesignation") 
 				|| filterType.equalsIgnoreCase("referralName")) && searchLevelId != null && searchLevelId.longValue()>0L){
 			sb.append(" left join model.pmRefCandidate.address locationAddress " );
 		}else if(filterType != null && filterType.equalsIgnoreCase("representeeDesignation") && searchLevelId != null && searchLevelId.longValue()>0L ){
