@@ -2,7 +2,7 @@
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
 		wurl = url.substr(0,(url.indexOf(".in")+3));
-	
+	console.log(wurl);
 	noOfCompanyProperties();
 	var devloperIds = [];
 		$(".devloperCls").find("h2").each(function(){ 
@@ -18,8 +18,8 @@
 	
 function noOfCompanyProperties(){
 	$.ajax({
-		//url: wurl+"/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails/",
-		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails",
+		url: wurl+"/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails/",
+		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -33,8 +33,8 @@ function noOfCompanyProperties(){
 			}
 		});
 	$.ajax({
-		//url: wurl+"/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails/",
-		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails",
+		url: wurl+"/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails/",
+		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -48,8 +48,8 @@ function noOfCompanyProperties(){
 			}
 		});
 	$.ajax({
-		//url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails/",
-		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails",
+		url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails/",
+		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -64,8 +64,8 @@ function noOfCompanyProperties(){
 		});
 		
 	$.ajax({
-		//url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails/",
-		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails",
+		url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails/",
+		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
@@ -79,8 +79,8 @@ function noOfCompanyProperties(){
 			}
 		});	
 	$.ajax({
-		//url: wurl+"/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails/",
-		url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails",
+		url: wurl+"/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails/",
+		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails",
 		type : "GET",
 		processData : false,
 		contentType : false,
