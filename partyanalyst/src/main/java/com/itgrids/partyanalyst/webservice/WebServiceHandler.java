@@ -3769,13 +3769,6 @@ public class WebServiceHandler {
 		
 		return  webServiceHandlerService.getJalavaniCategoryWiseDetailsInfo(inputVo);
     }
-	/*@POST
-    @Path("/getJalavanilocationAndStatusDetailsInfo")
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Object getJalavanilocationAndStatusDetailsInfo(JalavaniAlertsInputVO inputVo){
-		return  webServiceHandlerService.getJalavanilocationAndStatusDetailsInfo(inputVo);
-    }*/
 	@GET
 	@Path("/getJalavanilocationAndStatusDetailsInfo/{fromDateStr}/{toDateStr}/{searchType}/{type}/{alertCategoryId}")
 	@Produces(MediaType.APPLICATION_JSON)
