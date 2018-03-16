@@ -107,7 +107,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					</div>
 				</div>
 				<div class="col-sm-12">
-					<div class="panel-group" id="#accordionStatusOverview">
+					<div class="panel-group"  style="display:none;" id="statusDivId">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingStatusOverview">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseStatusOverview">
@@ -116,7 +116,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseStatusOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingStatusOverview">
 								<div class="panel-body">
-								<div style="display:none;" id="statusDivId">
+								<div>
 									<div class="row">
 										<div class="col-sm-12">
 											<div id="statusOverviewId"></div>
@@ -127,7 +127,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 						</div>
 					</div>
-					<div class="panel-group" id="#accordionLeadWiseOverview">
+					<div class="panel-group"  id="leadWiseDivId" style="display:none;">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingLeadWiseOverview">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseLeadWiseOverview">
@@ -136,7 +136,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseLeadWiseOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLeadWiseOverview">
 								<div class="panel-body">
-									<div class="" id="leadWiseDivId" style="display:none;">
+									<div class="">
 										<div class="row">
 											<div class="col-sm-12">
 												<div id ="leadWiseOverviewId"></div>						
@@ -148,7 +148,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 						</div>
 					</div>
 					
-					<div class="panel-group" style="" id="officerBlock">
+					<div class="panel-group" style="display:none;" id="officerBlock">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingReferralWiseOverview123">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionReferralWiseOverview123" href="#collapseReferralWiseOverview123">
@@ -181,7 +181,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					</div>
 					
 					
-					<div class="panel-group" id="#accordionReferralWiseOverview">
+					<div class="panel-group" id="refWiseOverViewId" style="display:none;">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingReferralWiseOverview">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseReferralWiseOverview">
@@ -190,7 +190,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 							<div id="collapseReferralWiseOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingReferralWiseOverview">
 								<div class="panel-body">
-									<div id="refWiseOverViewId" style="display:none;">
+									<div >
 										<div class="row">
 											<div class="col-sm-2 pull-right">
 												<label>Leads:</label>
@@ -200,7 +200,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 											</div>
 										</div>
 									</div>
-									<div id="desigWiseCountDivId" style="display:none;">
+									<div >
 										<div class="row">
 											<div class="col-sm-12">
 												<div id="desigWiseCountId"></div>
