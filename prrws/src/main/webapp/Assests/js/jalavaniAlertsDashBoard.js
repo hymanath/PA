@@ -999,8 +999,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	$("#jalavani"+type).html(spinner);
 	 
 	$.ajax({
-		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		url: "http://192.168.11.177:8070/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
@@ -1011,134 +1011,78 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	});	
 }
  function buildJalavanilocationOverview(result,type,searchType){
-	 var alertSourceId=$("#alertTypeId").val();
-	 var viewTypeId=$("#viewTypeId").val();
-	var str='';
-	str+='<div class="row">';
+	  var alertSourceId=$("#alertTypeId").val();
+	 var str='';
+	 str+='<div class="row">';
 		str+='<div class="col-sm-12">';
-		str+='<div class="table-responsive">';
-		if(searchType =="Alert"){
-			str+='<table class="table table_custom_jalavani" id="dataTable'+type+'">';
-		}else{
-			str+='<table class="table table_custom_jalavani_status" id="dataTable'+type+'">';
-		}
-		
-			str+='<thead>';
-				str+='<tr>';
-				if(type =="district"){
-					str+='<th style="background-color:#F3F3F3;">District</th>';	
-				}else if(type =="constituency"){
-					str+='<th style="background-color:#F3F3F3;">District</th>';	
-					str+='<th style="background-color:#F3F3F3;">Constituency</th>';	
-				}else if(type =="mandal"){
-					str+='<th style="background-color:#F3F3F3;">District</th>';	
-					str+='<th style="background-color:#F3F3F3;">Constituency</th>';	
-					str+='<th style="background-color:#F3F3F3;">Mandal</th>';	
-				}
-				if(searchType == "Alert"){
-					if(alertSourceId == 0){
-						str+='<th class="total_alerts_color total_alerts">TOTAL <br/>Alerts</th>';
-					}
-					
-				}else{
-					str+='<th class="total_alerts_color total_alerts">Total</th>';
-				}
-				
-				var globalStatusBgObj={"Call Center":"#FBB9E0","Print Media":"#BFBFBF","Electronic Media":"#FFC3A5","Social Media":"#A8BFFF"}
-				var globalStatusColorObj={"Call Center":"#F648A9","Print Media":"#584A4A","Electronic Media":"#FF6300","Social Media":"#1C49FF"}
-				
-				
-				
-				for(var i in result[0].voList){
-					if(searchType == "Alert"){
-						str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].status]+';color:'+globalStatusColorObj[result[0].voList[i].status]+'">'+result[0].voList[i].status+' <br/>Alerts</th>';	
-					}else{
-						if(result[0].voList[i].status == "Wrongly Mapped Designation"){
-							str+='<th style="background-color:'+result[0].voList[i].color+';">Wrongly&nbsp;Mapped&nbsp;Designation</th>';	
-						}else if(result[0].voList[i].status == "Wrongly Mapped Department"){
-							str+='<th style="background-color:'+result[0].voList[i].color+';">Wrongly&nbsp;Mapped&nbsp;Department</th>';	
-						}else if(result[0].voList[i].status =="Unable to Resolve"){
-							str+='<th style="background-color:'+result[0].voList[i].color+';">Unable&nbsp;to&nbsp;Resolve</th>';	
-						}else{
-							str+='<th style="background-color:'+result[0].voList[i].color+';">'+result[0].voList[i].status+'</th>';	
+			str+='<div class="table-responsive">';
+				str+='<table class="table table_custom_jalavani_status" id="dataTable'+type+'" style="width:100%">';
+					str+='<thead>';
+						str+='<tr>';
+						if(type =="district"){
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">District</th>';	
+						}else if(type =="constituency"){
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">District</th>';	
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">Constituency</th>';	
+						}else if(type =="mandal"){
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">District</th>';	
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">Constituency</th>';	
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">Mandal</th>';	
+						}
+						str+='<th class="" style="background-color:#c5e6f9;" rowspan="2">Total</th>';
+						
+						var globalStatusBgColorObj={"NOT STARTED":"#f9b79d","INITIAL STAGE":"#f7deb9","Finished":"#beddc8","MOVED TO OTHER CATEGORY":"#f2d5db"}
+						
+						for(var i in result[0].voList){
+							if(result[0].voList[i].title == "NOT STARTED"){
+								str+='<th colspan="'+result[0].voList[i].voList.length+'" style="background-color:'+globalStatusBgColorObj[result[0].voList[i].title]+';">NOT&nbsp;STARTED</th>';	
+							}else{
+								str+='<th colspan="'+result[0].voList[i].voList.length+'" style="background-color:'+globalStatusBgColorObj[result[0].voList[i].title]+';">'+result[0].voList[i].title+'</th>';	
+							}
+							
 						}
 						
-					}
-					
-				}
-				str+='</tr>';
-			str+='</thead>';
-			str+='<tbody>';
-				for(var i in result){
-					str+='<tr>';
-						if(type =="district"){
-							str+='<td class="" style="text-align:left !important;">'+result[i].districtName+'</td>';
-						}else if(type =="constituency"){
-							str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
-							str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
-						}else if(type =="mandal"){
-							str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
-							str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
-							str+='<td class="" style="text-align:left !important;">'+result[i].mandalName+'</td>';
-						}
-						if(searchType == "Alert"){
-							if(alertSourceId == 0){
-								str+='<td class="total_alerts_color total_alerts"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="0" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
-							}else if(alertSourceId == 2){
-								str+='<td class="total_Print_body total_Print_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="2" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Print Media">'+result[i].count+'</span></td>';
-							}else if(alertSourceId == 3){
-								str+='<td class="total_Electronic total_Electronic_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="3" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Electronic Media">'+result[i].count+'</span></td>';
-							}else if(alertSourceId == 4){
-								str+='<td class="total_CallCenter total_CallCenter_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="4" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Call Center Media">'+result[i].count+'</span></td>';
-							}else if(alertSourceId == 5){
-								str+='<td class="total_SocialMedia total_Social_color"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="5" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="Social Media">'+result[i].count+'</span></td>';
+						str+='</tr>';
+						str+='<tr>';
+							for(var i in result[0].voList){
+								for(var j in result[0].voList[i].voList){
+									str+='<th style="background-color:'+globalStatusBgColorObj[result[0].voList[i].title]+';">'+result[0].voList[i].voList[j].status+'</th>';	
+								}
 							}
-						}else{
-							str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
-						}
-							for(var j in result[i].voList){
-								if(searchType == "Alert"){
-									if(alertSourceId ==0){
-										if(result[i].voList[j].count !=null && result[i].voList[j].count>0){
-											str+='<td class="" style="background-color:'+globalStatusBgObj[result[i].voList[j].status]+';color:'+globalStatusColorObj[result[i].voList[j].status]+'"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+result[i].voList[j].statusId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'</span> <small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
-										}else{
-											str+='<td style="background-color:'+globalStatusBgObj[result[i].voList[j].status]+';color:'+globalStatusColorObj[result[i].voList[j].status]+'"> - </td>';
-										}
-									}
-								}else{
-									var globalStatusBgColorObj={"Total":"#c5e6f9","Pending":"#f9b79d","Notified":"#f2d5db","Action In Progress":"#f4debe","Completed":"#beddc8","Unable to Resolve":"#e5d7da","Action Not Required":"#d3d4ed","Duplicate":"#ebdced","Wrongly Mapped Designation":"#f7deb9","Wrongly Mapped Department":"#dae8da","Rejoinder":"#d0e2d7","Reopen":"#d5d5f2","Closed":"#eae1e1","Proposal":"#d3e5df","Pre_Pending":"#eddcde"}
-									
-									if(result[i].voList[j].status == "Wrongly Mapped Department"){
-										if(result[i].voList[j].count !=null && result[i].voList[j].count>0){
-											str+='<td   style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].statusId+'" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'</span>&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
-										}else{
-											str+='<td style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'"> - </td>';
-										}
-										
-									}else{
-										if(result[i].voList[j].count !=null && result[i].voList[j].count>0){
-											str+='<td class=""  style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'" ><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].statusId+'" attr_statusName="'+result[i].voList[j].status+'">'+result[i].voList[j].count+'</span>&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].percentage+'&nbsp;%</small></td>';
-										}else{
-											str+='<td style="background-color:'+globalStatusBgColorObj[result[i].voList[j].status]+'"> - </td>';
-										}
-										
-									}
-									
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result){
+							str+='<tr>';
+								if(type =="district"){
+									str+='<td class="" style="text-align:left !important;">'+result[i].districtName+'</td>';
+								}else if(type =="constituency"){
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
+								}else if(type =="mandal"){
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].mandalName+'</td>';
 								}
 								
-							}
-						
-						
-					str+='</tr>';
-				}
-				
-			str+='</tbody>';
-		str+='</table>';
+								str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
+								for(var j in result[i].voList){
+									for(var k in result[i].voList[j].voList){
+										if(result[i].voList[j].voList[k].count !=null && result[i].voList[j].voList[k].count>0){
+											str+='<td class=""  style="background-color:'+globalStatusBgColorObj[result[i].voList[j].title]+'" ><span class="getAmsPopUpCls" attr_alertCount="'+result[i].voList[j].voList[k].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="'+result[i].voList[j].voList[k].statusId+'" attr_statusName="'+result[i].voList[j].voList[k].status+'">'+result[i].voList[j].voList[k].count+'</span>&nbsp;<small style="color:green;margin-left:15px;">'+result[i].voList[j].voList[k].percentage+'&nbsp;%</small></td>';
+										}else{
+											str+='<td style="background-color:'+globalStatusBgColorObj[result[i].voList[j].title]+'"> - </td>';
+										}
+									}
+								}
+							str+='</tr>';
+						}
+					str+='<tbody>';
+				str+='<table>';
+			str+='</div>';
+		str+='</div>';
 	str+='</div>';
-	str+='</div>';
-	str+='</div>';
-	
-	$("#jalavani"+type).html(str);
+	 $("#jalavani"+type).html(str);
 	if(type =="district"){
 		$("#dataTable"+type).dataTable({
 			"paging":   false,
@@ -1164,7 +1108,6 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			}, */
 		});
 	}
-	
 }
 $(document).on("click",".getAmsPopUpCls",function(){
 	var alertCount = $(this).attr("attr_alertCount");
