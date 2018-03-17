@@ -64,6 +64,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 									JSONObject jobj1 = (JSONObject) monthsArr.get(j);
 									monthVo.setMonthName(jobj1.getString("date1"));
 									monthVo.setMonthCount(jobj1.getLong("locationCnt"));
+									monthVo.setMonthType(jobj1.getString("verifyStatus"));
 									monthVo.setPercentage(jobj1.getDouble("percentage"));
 									
 									finalVO.getSubList2().add(monthVo);
@@ -130,6 +131,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 									JSONObject jobj1 = (JSONObject) monthsArr.get(j);
 									monthVo.setMonthName(jobj1.getString("date1"));
 									monthVo.setMonthCount(jobj1.getLong("locationCnt"));
+									monthVo.setMonthType(jobj1.getString("verifyStatus"));
 									monthVo.setPercentage(jobj1.getDouble("percentage"));
 									
 									finalVO.getSubList2().add(monthVo);
@@ -208,7 +210,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
     	List<AlertVO> returnList = new ArrayList<AlertVO>();
    	 try {
    		 if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("news")){
-   		   WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getArticlesMonthlyOverviewInfoBySearchType");
+     	  WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getArticlesMonthlyOverviewInfoBySearchType");
 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getArticlesMonthlyOverviewInfoBySearchType");
 			 ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		        if (response.getStatus() != 200) {
@@ -235,8 +237,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 		 	    	}
 		 	    } 
    		 }else if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("alerts")){
-   		   WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertsMonthlyOverviewInfoBySearchType");
-   			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getAlertsMonthlyOverviewInfoBySearchType");
+     	   WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertsMonthlyOverviewInfoBySearchType");
+  			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getAlertsMonthlyOverviewInfoBySearchType");
    		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
    		  if (response.getStatus() != 200) {
  	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -367,8 +369,8 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
    public  List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVO){
     	List<AlertVO> returnList = new ArrayList<AlertVO>();
    	 try {
-   		  WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationOverview");
-   			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationOverview");
+  		  WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationOverview");
+ 			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationOverview");
 			
    			ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		        if (response.getStatus() != 200) {
