@@ -1,5 +1,6 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -83,4 +84,13 @@ public class AlertStatusDAO extends GenericDaoHibernate<AlertStatus, Long>
 		  query.setParameter("status", status);
 		  return query.list();
 	  }
+	  @SuppressWarnings("unchecked")
+	public List<Object[]> getAllStatusForJalavaniAlertsInfo(){
+		  
+			Query query = getSession().createQuery("select model.alertStatusId, model.alertStatus from AlertStatus model " +
+					" where model.alertStatusId in(:alertStatusIds) ");
+			
+			query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
+			return query.list();
+		}
 }

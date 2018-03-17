@@ -16559,7 +16559,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}
 			
 			//status code 
-			List<AlertStatus> allStatus = alertStatusDAO.getAll();
+			List<Object[]> allStatus = alertStatusDAO.getAllStatusForJalavaniAlertsInfo();
 			getAlertStatusWiseSkelton(allStatus,finalVo);
 			//statusId-0,status-1,statusColor-2,count-3
 			List<Object[]> statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,0l);
@@ -16587,16 +16587,14 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalVo;
 	}
-	 public void getAlertStatusWiseSkelton(List<AlertStatus> allStatus,AlertVO finalVo){
- 		 for (AlertStatus alertStatus : allStatus) {
-			if(alertStatus.getAlertStatusId() > 1l){
+	 public void getAlertStatusWiseSkelton(List<Object[]> allStatus,AlertVO finalVo){
+ 		 for (Object[] obj : allStatus){
 				AlertVO subVO = new AlertVO();
-				subVO.setStatusId(alertStatus.getAlertStatusId());
-				subVO.setStatus(alertStatus.getAlertStatus());
+				subVO.setStatusId((Long)obj[0]);
+				subVO.setStatus(obj[1].toString());
 				
 				finalVo.getList().add(subVO);
 			}
-		}
  	 }
 	 public AlertVO getmatchedStatusVo(List<AlertVO> finalVOList,Long statusId){
 			if(finalVOList != null && finalVOList.size() > 0){
@@ -16695,7 +16693,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				}
 			}
 			//status code
-			List<AlertStatus> allStatus = alertStatusDAO.getAll();
+			List<Object[]> allStatus = alertStatusDAO.getAllStatusForJalavaniAlertsInfo();
 			getAlertStatusWiseSkelton(allStatus,finalVo);
 			//statusId-0,status-1,statusColor-2,count-3
 			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
@@ -16791,6 +16789,12 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			praposalVO.setStatusId(13l);
 			praposalVO.setStatus("Praposal");
 			finishedVO.getVoList().add(praposalVO);
+			
+			JalavaniAlertResultVO rejoinderVO = new JalavaniAlertResultVO();
+			rejoinderVO.setStatusId(10l);
+			rejoinderVO.setStatus("Rejoider");
+			finishedVO.getVoList().add(rejoinderVO);
+			
 		voList.add(finishedVO);
 		
 		JalavaniAlertResultVO mtoc = new JalavaniAlertResultVO();
