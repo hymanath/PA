@@ -37,6 +37,10 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	private NominatedPost nominatedPost;
 	private GovtOrder govtOrder;
 	private String  isExpired;
+
+	private String deletedRemarks;
+	private Long cadreDeletedReasonId;
+	private CadreDeleteReason cadreDeleteReason;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -133,4 +137,29 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	public void setIsExpired(String isExpired) {
 		this.isExpired = isExpired;
 	}
+	@Column(name="deleted_remarks")
+	public String getDeletedRemarks() {
+		return deletedRemarks;
+	}
+	public void setDeletedRemarks(String deletedRemarks) {
+		this.deletedRemarks = deletedRemarks;
+	}
+	@Column(name="cadre_delete_reason_id")
+	public Long getCadreDeletedReasonId() {
+		return cadreDeletedReasonId;
+	}
+	public void setCadreDeletedReasonId(Long cadreDeletedReasonId) {
+		this.cadreDeletedReasonId = cadreDeletedReasonId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="cadre_delete_reason_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public CadreDeleteReason getCadreDeleteReason() {
+		return cadreDeleteReason;
+	}
+	public void setCadreDeleteReason(CadreDeleteReason cadreDeleteReason) {
+		this.cadreDeleteReason = cadreDeleteReason;
+	}
+	
 }

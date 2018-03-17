@@ -9,6 +9,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.INominatedPostGovtOrderDAO;
 import com.itgrids.partyanalyst.model.NominatedPostGovtOrder;
+import com.itgrids.partyanalyst.utils.DateUtilService;
 
 public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPostGovtOrder, Long> implements INominatedPostGovtOrderDAO{
 
@@ -376,5 +377,41 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 return query.list();
 		
 	}
-	
+	//delete
+public int updateApplicationExpiredByPostIdsList(List<Long> nominatedPostIdsLsist,Long reasonId,String remark, Date currentDate,Long userId){
+		
+		StringBuilder queryStr = new StringBuilder();
+		
+		queryStr.append("update NominatedPostGovtOrder model set model.isExpired='Y',model.cadreDeletedReasonId =:reasonId,model.deletedRemarks =:remark, model.updatedTime=:currentDate ");
+		if(userId != null && userId.longValue()>0L){
+			queryStr.append(" ,model.updatedBy=:userId ");
+		}
+		queryStr.append(" where ");
+		if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
+			queryStr.append("  model.nominatedPostId in (:nominatedPostIdsLsist) ");
+		}
+		
+		queryStr.append(" and model.isDeleted='N' and model.isExpired='N' ");
+		
+		Query query = getSession().createQuery(queryStr.toString());
+		
+		if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
+			query.setParameterList("nominatedPostIdsLsist", nominatedPostIdsLsist);
+		}
+		if(userId != null && userId.longValue()>0L){
+			query.setParameter("userId", userId);
+		}
+				 
+		 if(reasonId != null && reasonId.longValue() >0l){
+			 query.setParameter("reasonId", reasonId);
+		 }
+		 if(remark != null && remark.length() >0){
+			 query.setParameter("remark", remark);
+		 }
+		if(currentDate != null){
+		 query.setDate("currentDate", currentDate);
+		}
+		 
+		return query.executeUpdate();
+	}
 }

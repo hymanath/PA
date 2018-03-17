@@ -3363,4 +3363,62 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			return query.list();
 		}
 	 
+	 public List<Long> getNominationPostCandidateIdNominatedPostIdDetailsLsit(Long nominationPostCandidateId,Long deptId,Long boardId,Long positionId){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append("select distinct model.nominatedPostId from NominatedPost model where ");
+		 if(nominationPostCandidateId != null && nominationPostCandidateId.longValue() >0l){
+			 sb.append(" model.nominationPostCandidateId = :nominationPostCandidateId  ");
+		 }
+		 sb.append(" and model.isDeleted='N' and model.isExpired='N' ");
+		 if(deptId != null && deptId.longValue() >0l){
+			 sb.append(" and model.nominatedPostMember.nominatedPostPosition.departmentId =:deptId ");
+		 }
+		 if(boardId != null && boardId.longValue() >0l){
+			 sb.append(" and model.nominatedPostMember.nominatedPostPosition.boardId =:boardId ");
+		 }
+		 if(positionId != null && positionId.longValue() >0l){
+			 sb.append(" and model.nominatedPostMember.nominatedPostPosition.positionId =:positionId ");
+		 }
+		 Query qry = getSession().createQuery(sb.toString());
+		 if(nominationPostCandidateId != null && nominationPostCandidateId.longValue() >0l){
+			 qry.setParameter("nominationPostCandidateId", nominationPostCandidateId);
+		 }
+		 if(deptId != null && deptId.longValue() >0l){
+			 qry.setParameter("deptId", deptId);
+		 }
+		 if(boardId != null && boardId.longValue() >0l){
+			 qry.setParameter("boardId", boardId);
+		 }
+		 if(positionId != null && positionId.longValue() >0l){
+			 qry.setParameter("positionId", positionId);
+		 }
+			
+			return qry.list();
+	
+		}
+	 public int updatePoststoOpenByPostIdsList(List<Long> nominatedPostIdsLsist,Date currentDate,Long userId){
+			
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append(" update NominatedPost model set model.nominationPostCandidateId = null ,model.updatedTime=:currentDate,model.nominatedPostStatusId = 1  ");
+			if(userId != null && userId.longValue()>0L){
+				queryStr.append(" ,model.updatedBy=:updatedBy ");
+			}
+			queryStr.append(" where ");
+            if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
+            	queryStr.append(" model.nominatedPostId in (:nominatedPostIdsLsist) ");
+            }
+            queryStr.append(" and model.isDeleted='N'  and model.isExpired='N' ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			query.setDate("currentDate", currentDate);
+			
+			if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
+				query.setParameterList("nominatedPostIdsLsist", nominatedPostIdsLsist);
+			}
+			if(userId != null && userId.longValue()>0L){
+				query.setParameter("updatedBy", userId);
+			}
+			return query.executeUpdate();
+		}
 }

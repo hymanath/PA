@@ -79,4 +79,5 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	 public List<Object[]> getPendingCandidatesStatus(Long departmentId,Long boardId,Long positionId,Long boardLevelId,
 				Long locationValue,String type,Long searchLevelId);
 	 public List<Object[]> getGeoLevelReportDetails(GeoLevelReportVO vo);
+	 public int updateApplicationExpiredByPostIdsList(List<Long> nominatedPostIdsLsit,Long reasonId,String remark, Long userId,Date currentDate);
 }

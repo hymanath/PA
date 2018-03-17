@@ -17,4 +17,6 @@ public interface INominatedPostGovtOrderDAO extends GenericDao<NominatedPostGovt
 	public List<Object[]> getLevelWiseGoIssuedDate(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Set<Long> nominatedPostIds);
 	public List<Object[]> getNominatedPostExpireDetails(List<Long> locationValues, Date startDate, Date endDate,Long locationTypeId, String year, Long boardLevelId,Long deptId);
 	public List<Object[]> getNominatedPostStateWiseExpireDetails(Date startDate, Date endDate);
+	//delete
+	public int updateApplicationExpiredByPostIdsList(List<Long> nominatedPostIdsLsist,Long reasonId,String remark, Date currentDate,Long userId);
 }
