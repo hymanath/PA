@@ -205,7 +205,7 @@ function buildMyActionsDetails(result){
 								isMyactionApplied = true;
 									str+='<div id="collapseView1'+i+'" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingView1'+i+'">';
 								}else{
-									str+='<div id="collapseView1'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingView1'+i+'">';
+									str+='<div id="collapseView1'+i+'" class="panel-collapse collapsePan" role="tabpanel" aria-labelledby="headingView1'+i+'">';
 								}
 								str+='<div class="panel-body pad_0">';
 								
@@ -379,6 +379,7 @@ function buildMyActionsDetails(result){
 	}else{
 		$("#myActionsId").html("No data available");
 	}
+	$('.collapsePan').addClass('collapse');
 }
 function buildCompleteOrStatusOverviewDetails(result){
 	
