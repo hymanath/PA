@@ -958,7 +958,7 @@ function buildOfficerBlock(result,loginUsr){
 								str+='</div>';
 								str+='<div class="col-sm-6">';
 									str+='<h5 class="font_weight text-center">Works</h5>';
-									str+='<h4 class="font_weight m_top10 text-center">'+result[i].subWorkIds.length+'</h4>';
+									str+='<h4 class="font_weight m_top10 text-center">'+result[i].subWorkCnt+'</h4>';
 								str+='</div>';
 							str+='</div>';
 						str+='</div>';
@@ -968,8 +968,8 @@ function buildOfficerBlock(result,loginUsr){
 							if(result[i].subList[j].id != 4 && result[i].subList[j].id != 5 ){
 								if(typeof(result[i].subList[j].petitionIds) != "undefined")
 									pendingRep=pendingRep+result[i].subList[j].petitionIds.length;
-								if(typeof(result[i].subList[j].subWorkIds) != "undefined")
-									pendingWorks =pendingWorks+result[i].subList[j].subWorkIds.length;
+								if(typeof(result[i].subList[j].subWorkCnt) != "undefined")
+									pendingWorks =pendingWorks+result[i].subList[j].subWorkCnt;
 							}
 						}
 						str+='<div class="desig_bg_white m_top10">';
@@ -1101,8 +1101,8 @@ function tableBuildOfficerBlock(result){
 								}else{
 									str+='<td>-</td>';
 								}
-								if(result[i].subWorkIds.length >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId=0" target="_blank">'+result[i].subWorkIds.length+'</a></td>';
+								if(result[i].subWorkCnt >0){
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId=0" target="_blank">'+result[i].subWorkCnt+'</a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
@@ -1131,8 +1131,8 @@ function tableBuildOfficerBlock(result){
 											str+='<td>-</td>';
 										}
 									
-										if(typeof(result[i].subList[j].subWorkIds) != 'undefined' && result[i].subList[j].subWorkIds.length>0){
-											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId='+result[i].subList[j].id+'&statusName='+result[i].subList[j].name+'" target="_blank">'+result[i].subList[j].subWorkIds.length+'</a></td>';
+										if(typeof(result[i].subList[j].subWorkCnt) != 'undefined' && result[i].subList[j].subWorkCnt>0){
+											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId='+result[i].subList[j].id+'&statusName='+result[i].subList[j].name+'" target="_blank">'+result[i].subList[j].subWorkCnt+'</a></td>';
 										}else{
 											str+='<td>-</td>';
 										}
