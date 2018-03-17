@@ -10,6 +10,7 @@ var url = window.location.href;
 
 //var wurl="http://mytdp.com"
 var locationArr=['district','constituency','mandal'];
+//responsiveTabs();
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -141,7 +142,15 @@ function buildJalavaniDashBoardOverview(result){
 	}
 	 str+='<div class="">';
 		str+='<div class="col-sm-3">';
-			str+='<ul class="nav nav-tabs tab_bordered">';
+			/*str+='<select class="form-control" role="tabListMobile">';
+				str+='<option tab_id="all_Sources_Id">ALL SOURCES</option>';
+				str+='<option tab_id="callcenter">CALL CENTER</option>';
+				str+='<option tab_id="print">PRINT MEDIA</option>';
+				str+='<option tab_id="electronic">ELECTRONIC MEDIA</option>';
+				str+='<option tab_id="social">SOCIAL MEDIA</option>';
+				str+='</select>';*/
+				
+			str+='<ul class="nav nav-tabs tab_bordered" role="tablist">';
 				str+='<li role="presentation" class="active_li" attr_type="All">';
 					str+='<a href="#all_Sources_Id" data-toggle="tab" class="">';
 						str+='<div class="row">';
@@ -325,6 +334,7 @@ function buildJalavaniDashBoardOverview(result){
 		str+='</div>';
 	str+='</div>';
 	$("#jalavaniTabOverVewDivId").html(str);
+	//responsiveTabs();
 	var mainArr=[];
 	var monthNameArr=[];
 	var statusNameArr=[];
@@ -2902,3 +2912,22 @@ function getTotalArticledetails(articleId){
 		$("#alertManagementPopupHeading").html(heading)
 	});    
 }
+/*$(document).on("change","[role='tabListMobile']",function(){
+	var id = $('option:selected', this).attr('tab_id');
+	$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
+	$("#"+id).addClass("active");
+});
+
+function responsiveTabs()
+{
+	var $this = $(this);
+	var $windowWidth = $(window).width();
+	if($windowWidth < 768)
+	{
+		$('[role="tabListMobile"]').show();
+		$('[role="tablist"]').hide();
+	}else{
+		$('[role="tabListMobile"]').hide();
+		$('[role="tablist"]').show();
+	}
+}*/
