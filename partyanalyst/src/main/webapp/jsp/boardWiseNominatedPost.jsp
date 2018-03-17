@@ -222,7 +222,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 m_top10">
-							<div><b>Reason <span style="color:red">*</span>:</b>
+							<div><b>Reason <span style="color:red">*</span>:</b><span style="color:red;" class ="reasonErrCls"></span> 
 								<select id="reasonSelectId" class="form-control">
 									<option value="0">Select Reason</option>
 								</select>
@@ -231,7 +231,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 m_top10">
-							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<div><b>Remark <span style="color:red">*</span>:</b><span style="color:red;" class ="remarkTestErrCls"></span> 
 							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
 						</div>
 					</div>
@@ -632,10 +632,11 @@ function buildNominatedPostMemberDetails(result,type,departmentId,boardId,positi
 					str+='</div>';
 				}	
 				str+='</td>';
-				str+='<td>';
+			 str+='<td>';
 				if(isEligibleToDelete){
-				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
-				}
+				str+='<i attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" ';
+                  str+='attr_cadre_name= "'+result.subList[i].cadreName+'"  attr_dept_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_positn_id="'+positionId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate" style="cursor:pointer;" ></i>';
+				} 
 				str+='</td>';
 			str+='</tr>';
 			/*str+='<tr>';
