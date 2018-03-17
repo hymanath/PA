@@ -14,7 +14,7 @@ public class AlertVO implements java.io.Serializable{
 	private String color;
 	
 	private Long id,monthId;
-	private String name,monthName;
+	private String name,monthName,monthType;
 	private Long statusId;
 	private String status;
 	private Long count = 0l,monthCount =0l;
@@ -49,7 +49,12 @@ public class AlertVO implements java.io.Serializable{
 	private List<AlertVO> subList2 = new ArrayList<AlertVO>(0);
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	
-	
+	public String getMonthType() {
+		return monthType;
+	}
+	public void setMonthType(String monthType) {
+		this.monthType = monthType;
+	}
 	public Long getMonthCount() {
 		return monthCount;
 	}
