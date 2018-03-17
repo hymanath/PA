@@ -1391,6 +1391,6 @@ public interface IConstants {
 	public static final String ZOHO_SAML_RESPONSE_UNIQUE_ID="pfxd7c4f2cc-0365-42d5-b72a-a09070be3b36"; 
 	public static final String ZOHO_SAML_DESK_RELAY_STATE_ID="aHR0cHM6Ly9kZXNrLnpvaG8uY29tX19JQU1fX1pvaG9TdXBwb3J0";
 	public static final Long PARTY_TOUR_TYPE_ID = 1l;
-	 public static final String[] JALAVANI_MONTH_NAMES = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
-	
+	public static final String[] JALAVANI_MONTH_NAMES = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+	public static final List<Long> JALAVANI_ALERT_STATUS_IDS   = Arrays.asList(2l,3l,11l,12l,4l,13l,10l,6l,7l,9l,8l);
 }
