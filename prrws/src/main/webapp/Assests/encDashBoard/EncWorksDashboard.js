@@ -220,7 +220,19 @@ function locationwiseTableBlocks(result,blockId,locationType){
 }
 
 function buildLocationWiseWorksGraph(result){
-
+	var adminSanctionCount = result[0].adminSanctionCount;
+	var techcount =result[0].technicallySanctionedCount;
+	var entrusted= result[0].totalWorksEntrusted;
+	var grounded =result[0].groundedCount;
+	var dataArr =[];
+	dataArr.push({"name": 'Admin Sanctioned',"y": result[0].adminSanctionCount,color:'#5fc24f'});
+	dataArr.push({"name":  'Techincal Sancationed',y: result[0].technicallySanctionedCount,color:'#418CF0'});
+	dataArr.push({"name":  'Entrusted',y: result[0].totalWorksEntrusted,color:'#FFBF00'});
+	dataArr.push({"name":  'Grounded',y: result[0].groundedCount,color:'#ACFA58'});
+	dataArr.push({"name":  'UnderProcess',y: result[0].underProcessCount,color:'#FA5858'});
+	dataArr.push({"name": 'Completed',y:result[0].completedCount,color:'#009999'});
+	dataArr.push({"name":  'Not Grounded',y: result[0].notGrounded,color:'#DF013A'});
+	
 	$("#enclocationWiseChart").highcharts({
 		chart: {
 			type: 'column'
@@ -249,7 +261,7 @@ function buildLocationWiseWorksGraph(result){
 		legend: {
 			enabled: false
 		},
-		plotOptions: {
+		/* plotOptions: {
 			series: {
 				borderWidth: 0,
 				dataLabels: {
@@ -257,7 +269,35 @@ function buildLocationWiseWorksGraph(result){
 					format: '{point.y}'
 				}
 			}
-		},
+		}, */
+		plotOptions: {
+				column: {
+					//colorByPoint: true
+					dataLabels: {
+						useHTML:true,
+						enabled: true,
+						color: '#000',
+						style: {
+							fontWeight: '',
+							fontSize:'9px'
+						},
+						align: 'center',
+						formatter: function() {
+							if(this.point.name !="Admin Sanctioned"){
+								if(this.y == 0){
+									return null;
+								}else{
+									var name=this.point.name;
+									var pcnt = (this.y / adminSanctionCount) * 100;
+									return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+								}
+							}else{
+								return '<span>'+this.y+'</span>';
+							}
+						}
+					}
+				}
+			},
 
 		tooltip: {
 			headerFormat: '<span style="font-size:11px">{series.name}</span><br>',
@@ -267,37 +307,7 @@ function buildLocationWiseWorksGraph(result){
 		series: [{
 			name: 'Works',
 			colorByPoint: true,
-			data: [{
-				name: 'Admin Sanctioned',
-				y: result[0].adminSanctionCount,
-				color:'#5fc24f'
-				
-			}, {
-				name: 'Techincal Sancationed',
-				y: result[0].technicallySanctionedCount,
-				color:'#418CF0	'
-			},{
-				name: 'Entrusted',
-				y: result[0].totalWorksEntrusted,
-				color:'#FFBF00'
-				
-			},{
-				name: 'Grounded',
-				y: result[0].groundedCount,
-				color:'#ACFA58'
-			},{
-				name: 'UnderProcess',
-				y: result[0].underProcessCount,
-				color:'#FA5858'
-			},{
-				name:'Completed',
-				y:result[0].completedCount,
-				color:'#009999'
-			},{
-				name: 'Not Grounded',
-				y: result[0].notGrounded,
-				color:'#DF013A'
-			}]
+			data: dataArr
 		}]
 	});
 }
@@ -341,20 +351,20 @@ function buildGraph(result)	{
 		var cateArr = [];
 		var targetsArr = [];
 		var AchievmentArr = [];
-		
+		var totalTargets=result[0].totTarget;
 		cateArr.push("Quarter-1");
 		cateArr.push("Quarter-2");
 		cateArr.push("Quarter-3");
 		cateArr.push("Quarter-4");
 		
-		targetsArr.push({"y":result[0].q1Target,"extra":""});
-		targetsArr.push({"y":result[0].q2Target,"extra":""});
-		targetsArr.push({"y":result[0].q3Target,"extra":""});
-		targetsArr.push({"y":result[0].q4Target,"extra":""});
-		AchievmentArr.push({"y":result[0].q1Achv,"extra":""});
-		AchievmentArr.push({"y":result[0].q2Achv,"extra":""});
-		AchievmentArr.push({"y":result[0].q3Achv,"extra":""});
-		AchievmentArr.push({"y":result[0].q4Achv,"extra":""});
+		targetsArr.push({"y":result[0].q1Target,"extra":+(parseFloat(result[0].q1Target/result[0].totTarget)*100).toFixed(2)});
+		targetsArr.push({"y":result[0].q2Target,"extra":+(parseFloat(result[0].q2Target/result[0].totTarget)*100).toFixed(2)});
+		targetsArr.push({"y":result[0].q3Target,"extra":+(parseFloat(result[0].q3Target/result[0].totTarget)*100).toFixed(2)});
+		targetsArr.push({"y":result[0].q4Target,"extra":+(parseFloat(result[0].q4Target/result[0].totTarget)*100).toFixed(2)});
+		AchievmentArr.push({"y":result[0].q1Achv,"extra":+(parseFloat(result[0].q1Achv/result[0].q1Target)*100).toFixed(2)});
+		AchievmentArr.push({"y":result[0].q2Achv,"extra":+(parseFloat(result[0].q2Achv/result[0].q2Target)*100).toFixed(2)});
+		AchievmentArr.push({"y":result[0].q3Achv,"extra":+(parseFloat(result[0].q3Achv/result[0].q3Target)*100).toFixed(2)});
+		AchievmentArr.push({"y":result[0].q4Achv,"extra":+(parseFloat(result[0].q4Achv/result[0].q4Target)*100).toFixed(2)});
 		
 		$("#TargetNAcheievementDetailsTotal").highcharts({
 			chart: {
@@ -387,12 +397,6 @@ function buildGraph(result)	{
 						//+'Total: ' + this.point.stackTotal;
 				}
 			},
-			plotOptions: {
-				column: {
-					stacking: 'normal',
-					 pointPadding: 0.2,
-				}
-			},
 			series: [{
 				name: 'Targets',
 				data: [result[0].totTarget],
@@ -403,7 +407,33 @@ function buildGraph(result)	{
 				data: [result[0].totAchv],
 				stack: 'Achievments',
 				color:'#C61379'
-			}]
+			}],
+			plotOptions: {
+				column: {
+					dataLabels: {
+						useHTML:true,
+						enabled: true,
+						color: '#000',
+						style: {
+							fontWeight: '',
+							fontSize:'9px'
+						},
+						align: 'center',
+						formatter: function() {
+							if(this.y !=totalTargets){
+								if(this.y == 0){
+									return null;
+								}else{	
+								var pcnt = (this.y / totalTargets) * 100;
+								return '<span>'+this.y+'<br>('+Highcharts.numberFormat(pcnt)+'%)</span>';
+								}
+							}else{
+								return '<span>'+this.y+'</span>';
+							}
+						}
+					}
+				}
+			},
 		});
 		$("#quaterWiseTargetAchievement").highcharts({
 			chart: {
@@ -430,7 +460,6 @@ function buildGraph(result)	{
 			},
 			tooltip: {
 				formatter: function () {
-					var value = (this.point.extra).split("-");
 					return '<b>' + this.x + '</b><br/>' +
 						this.series.name + ': ' + this.y ;
 						//'Total: ' + this.point.stackTotal + '<br/>' +
@@ -438,8 +467,24 @@ function buildGraph(result)	{
 			},
 			plotOptions: {
 				column: {
-					stacking: 'normal',
-					pointPadding: 0.2,
+					dataLabels: {
+						useHTML:true,
+						enabled: true,
+						color: '#000',
+						style: {
+							fontWeight: '',
+							fontSize:'9px'
+						},
+						align: 'center',
+						formatter: function() {
+								if(this.y == 0){
+									return null;
+								}else{	
+									return '<span>'+this.y+'<br>('+this.point.extra+'%)</span>';
+								}
+							
+						}
+					}
 				}
 			},
 			series: [{
@@ -629,7 +674,7 @@ function buildGraphforExceededWorks(response){
 	  for(var j in response[i].subList){
 			var tempArr = [];
 			statusNamesArr.push(response[i].subList[j].name);
-			dataArr.push({"y":response[i].subList[j].count,"extra":""+response[i].subList[j].ongoingPWSExceededCount+"-"+response[i].subList[j].completedPWSExceededCount});
+			dataArr.push({"y":response[i].subList[j].count,"extra":""+response[i].subList[j].ongoingPWSExceededCount+"-"+response[i].subList[j].completedPWSExceededCount,"counts":response[i].subList[j].count});
 			totalCount=totalCount+response[i].subList[j].count;
 			
 			if(response[i].subList[j].name == "In Time"){
@@ -676,16 +721,33 @@ function buildGraphforExceededWorks(response){
 				var value = (this.point.extra).split("-");
 				return '<b>' + this.x + '</b><br/>' +
 					'Total : ' + this.y + '<br/>'+
-					//'Total: ' + this.point.stackTotal + '<br/>' +
-					'OnGoingExceededWorks :' +value[0]+ '<br/>' +
-					'CompletedExceededWorks :' +value[1]+ '';
+					'OnGoingExceededWorks :' +value[0]+ '-('+(parseFloat(value[0]/this.y)*100).toFixed(2)+'%)<br/>' +
+					'CompletedExceededWorks :' +value[1]+ '-('+(parseFloat(value[1]/this.y)*100).toFixed(2)+'%)';
 			}
 		},
 		plotOptions: {
-			column: {
-				stacking: 'normal'
-			}
-		},
+				column: {
+					dataLabels: {
+						useHTML:true,
+						enabled: true,
+						color: '#000',
+						style: {
+							fontWeight: '',
+							fontSize:'9px'
+						},
+						align: 'center',
+						formatter: function() {
+								var value = this.point.counts;
+								if(this.y == 0){
+									return null;
+								}else{	
+									return '<span>'+this.y+'<br>('+(parseFloat(value/totalCount)*100).toFixed(2)+'%)</span>';
+								}
+							
+						}
+					}
+				}
+			},
 		series: [{
 			name: '',
 			data: dataArr,
