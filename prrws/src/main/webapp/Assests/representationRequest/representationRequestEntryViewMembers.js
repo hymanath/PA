@@ -2654,6 +2654,13 @@ $(document).on("click",".menu-cls-table",function(e){
 	e.stopPropagation();
 	$(".menuCls-table").toggle();
 });
+$(document).on("click",function(e){
+	var searchContainerCls = $(".menuCls-table");
+	if (!searchContainerCls.is(e.target) 
+        && searchContainerCls.has(e.target).length === 0) {
+        searchContainerCls.hide();
+    }
+});
 
 function petitionWiseRepresenteeDetails(myResult,radioTypeVal,globalStIndex,countByDate){
 	 
@@ -3462,9 +3469,9 @@ $(document).on("click",".uploadFuncCls",function(){
 		$('#advanceSearchId').trigger('click');
 		
 	});	
-$(document).click(function() {
+/* $(document).click(function() {
     $(".menuCls-table").hide();
-});
+}); */
 
 $(document).on("click",".petitionsSelectedAllCls",function(){
 	if($(this).is(":checked")){
