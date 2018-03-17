@@ -97,8 +97,8 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 	
 	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId" +//0
-				",model.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
+		/*sb.append(" select model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId" +//0
+				",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
 				",model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId" +//2
 				",model.pmDepartmentDesignationOfficer.pmOfficer.name" +//3
 				",model.petitionId" +//4
@@ -109,24 +109,77 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 				",pmSubWorkDetails.pmStatus.status" +//7
 				",model.pmStatus.pmStatusId "+//8
 				",pmSubWorkDetails.costEstimation "+//9
-				" from PmPetitionAssignedOfficer model left join  model.pmSubWorkDetails pmSubWorkDetails " +
+				" from PmPetitionAssignedOfficer model " +
+				"left join  model.pmSubWorkDetails pmSubWorkDetails " +
 				",PmRepresenteeRefDetails model1 " +
 				"where model.isDeleted='N' and model.isDeleted='N' " +
 				" and pmSubWorkDetails.petition.petitionId=model.petitionId " +
 				" and pmSubWorkDetails.isDeleted='N' " +
-				" and model1.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N' " +
-				" and  model1.petition.petitionId=model.petitionId" +
-				" and model.pmDepartmentDesignationOfficer.pmOfficer.isActive='Y' ");
+				" and model1.isDeleted='N' " +
+				"and model1.pmRepresenteeDesignation.isDeleted='N' " +
+				" and  model1.petition.petitionId=model.petitionId " +
+				//" and model.pmDepartmentDesignationOfficer.pmOfficer.isActive='Y'" +
+				" and model.petition.isDeleted='N' ");
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
-			sb.append(" and model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:officerDesigids) ");
+			sb.append(" and model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId in (:officerDesigids) ");
 		}
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
-			sb.append(" and model.pmDepartmentDesignation.pmDepartment.pmDepartmentId in (:deptIds) ");
+			sb.append(" and pmSubWorkDetails.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		//sb.append(" group by model.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId," +
 			//	"model.pmDepartmentDesignationOfficer.pmOfficer.pmOfficerId,model.pmStatus.pmStatusId,pmSubWorkDetails.pmStatus.pmStatusId  " +
 			//	"order by model.pmDepartmentDesignation.pmOfficerDesignation.orderNO asc ");
 		Query query = getSession().createQuery(sb.toString());
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+			query.setParameterList("officerDesigids", inputVO.getDesignationIds());
+		}
+		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+			query.setParameterList("deptIds", inputVO.getDeptIdsList());
+		}
+		return query.list();*/
+		
+		sb.append("SELECT DISTINCT p.petition_id as petitionId , " +//0
+		" COUNT(DISTINCT pswd.pm_sub_work_details_id)  as workCount" +//1
+		",d.pm_officer_designation_id  as officerDesigId" +//2
+		",d.designation  as officerDesig" +//3
+		",po.pm_officer_id  as officerId,po.`name`  as officerName, " + //4,5
+		" pswd.pm_status_id  as workStatusId,ppao.pm_status_id as assignedStatusId " +//6,7
+		" ,sum(pswd.cost_estimation) as workCost" +//8
+		" from pm_petition_assigned_officer ppao, " +
+		" petition p " +
+		" ,pm_sub_work_details pswd " +
+		",pm_dept_designation_officer c  " +
+		", pm_officer_designation d  " +
+		",pm_officer po " +
+		",pm_dept_designation e  " +
+		"where ppao.pm_status_id is not null " + 
+		"and pswd.pm_status_id is not null " + 
+		"and p.petition_id=ppao.petition_id and p.is_deleted='N' and ppao.is_deleted='N'  " +
+		"and pswd.petition_id=ppao.petition_id  " +
+		"and pswd.is_deleted='N'  " +
+		"and ppao.pm_dept_designation_id = e.pm_dept_designation_id and  " +
+		"e.pm_officer_designation_id = d.pm_officer_designation_id  " +
+		"and po.pm_officer_id=c.pm_officer_id  " +
+		"and c.pm_dept_designation_officer_id=ppao.pm_dept_designation_officer_id " );
+		
+		
+		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
+			sb.append(" and d.pm_officer_designation_id in (:officerDesigids) ");
+		}
+		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+			sb.append(" and pswd.pm_department_id in (:deptIds) ");
+		}
+	sb.append("GROUP BY p.petition_id ,d.pm_officer_designation_id,po.pm_officer_id ORDER BY d.order_no ASC ");
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("petitionId")
+				.addScalar("workCount")
+				.addScalar("officerDesigId")
+				.addScalar("officerDesig")
+				.addScalar("officerId")
+				.addScalar("officerName")
+				.addScalar("workStatusId")
+				.addScalar("assignedStatusId")
+				.addScalar("workCost");
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
 			query.setParameterList("officerDesigids", inputVO.getDesignationIds());
 		}
