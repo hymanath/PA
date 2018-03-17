@@ -18,7 +18,7 @@
 	
 function noOfCompanyProperties(){
 	$.ajax({
-		url: wurl+"/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails/",
+		url: "http://mytdp.in:9900/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails/",
 		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getDeveloperPropertyOverviewDetails",
 		type : "GET",
 		processData : false,
@@ -33,7 +33,7 @@ function noOfCompanyProperties(){
 			}
 		});
 	$.ajax({
-		url: wurl+"/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails/",
+		url: "http://mytdp.in:9900/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails/",
 		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getItCompanyPropertyOverviewDetails",
 		type : "GET",
 		processData : false,
@@ -48,7 +48,7 @@ function noOfCompanyProperties(){
 			}
 		});
 	$.ajax({
-		url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails/",
+		url: "http://mytdp.in:9900/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails/",
 		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelOverviewDetails",
 		type : "GET",
 		processData : false,
@@ -64,7 +64,7 @@ function noOfCompanyProperties(){
 		});
 		
 	$.ajax({
-		url: wurl+"/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails/",
+		url: "http://mytdp.in:9900/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails/",
 		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getPendingLevelPropertiesDetails",
 		type : "GET",
 		processData : false,
@@ -79,7 +79,7 @@ function noOfCompanyProperties(){
 			}
 		});	
 	$.ajax({
-		url: wurl+"/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails/",
+		url: "http://mytdp.in:9900/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails/",
 		//url : "http://192.168.11.165:8080/DTP/iTMinisterDashboardRestController/getBuildingStatusDetails",
 		type : "GET",
 		processData : false,
