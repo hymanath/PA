@@ -17216,6 +17216,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						AlertVO matchedMonthVO = getmatchedMonthVo(subList,commonMethodsUtilService.getStringValueForObject(objects[0]));
 						if(matchedMonthVO != null){
 							matchedMonthVO.setLocationCnt((Long)objects[1]);
+							matchedMonthVO.setVerifyStatus(type);
 						}
 					}
 				}
@@ -17225,6 +17226,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						AlertVO vo = new AlertVO();
 						vo.setLocationCnt((Long)objects[1]);
 						vo.setDate1(objects[0].toString()+"-"+objects[2].toString());
+						vo.setVerifyStatus(type);
 						
 						subList.add(vo);
 					}
