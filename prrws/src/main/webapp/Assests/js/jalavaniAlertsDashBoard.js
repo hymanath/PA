@@ -6,7 +6,7 @@ $(".chosen-select").chosen();
 var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3)); 
+		wurl = url.substr(0,(url.indexOf(".in")+3));
 
 //var wurl="http://mytdp.com"
 var locationArr=['district','constituency','mandal'];
@@ -30,7 +30,7 @@ $("#dateRangePicker").daterangepicker({
 		   'This Month': [moment().startOf('month'), moment()],
 		   'This Year': [moment().startOf('Year'), moment()],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last 1 Year': ['01-01-2017', moment()]
 		   
 		}
@@ -121,14 +121,31 @@ function getJalavaniDashBoardOverview(){
 }
 function buildJalavaniDashBoardOverview(result){
 	var str='';
-	var allSourceCount=result.categoryCount+result.printCount+result.electCount;
+	//var allSourceCount=result.categoryCount+result.printCount+result.electCount;
+	var allSourceCount=0;
+	var callcenterCount=0;
+	var printMediaCount=0;
+	var electronicMediaCount=0;
+	var socialMedia=0;
+	for(var i in result.subList1){
+		allSourceCount = allSourceCount+result.subList1[i].alertCnt;
+		if(result.subList1[i].name == "Print Media"){
+			printMediaCount  = callcenterCount+result.subList1[i].alertCnt;
+		}else if(result.subList1[i].name == "Electronic Media"){
+			electronicMediaCount  = callcenterCount+result.subList1[i].alertCnt;
+		}else if(result.subList1[i].name == "Call Center"){
+			callcenterCount  = callcenterCount+result.subList1[i].alertCnt;
+		}else if(result.subList1[i].name == "Social Media"){
+			socialMedia  = socialMedia+result.subList1[i].alertCnt;
+		}
+	}
 	 str+='<div class="">';
 		str+='<div class="col-sm-3">';
 			str+='<ul class="nav nav-tabs tab_bordered">';
 				str+='<li role="presentation" class="active_li" attr_type="All">';
 					str+='<a href="#all_Sources_Id" data-toggle="tab" class="">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-10">';
+							str+='<div class="col-sm-8">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									 str+='<img src="Assests/images/icon_all.PNG" class="media-object" style="width:45px">';
@@ -139,87 +156,87 @@ function buildJalavaniDashBoardOverview(result){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-2">';
+							str+='<div class="col-sm-4">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';	
 					str+='</a>';
 				str+='</li>';
-				str+='<li role="presentation" class="" attr_type="callcenter" attr_block_count="'+result.categoryCount+'">';
+				str+='<li role="presentation" class="" attr_type="callcenter" attr_block_count="'+callcenterCount+'">';
 					str+='<a href="#callcenter" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-10">';
+							str+='<div class="col-sm-8">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/call_center_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>CALL CENTER</b></h5>';
-										str+='<h4 class="color_black">'+result.categoryCount+'</h4>';
+										str+='<h4 class="color_black">'+callcenterCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-2">';
+							str+='<div class="col-sm-4">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
 					str+='</a>';
 				str+='</li>';
-				str+='<li role="presentation" class="" attr_type="print" attr_block_count="'+result.printCount+'">';
+				str+='<li role="presentation" class="" attr_type="print" attr_block_count="'+printMediaCount+'">';
 					str+='<a href="#print" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-10">';
+							str+='<div class="col-sm-8">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>PRINT MEDIA</b></h5>';
-										str+='<h4 class="color_black">'+result.printCount+'</h4>';
+										str+='<h4 class="color_black">'+printMediaCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-2">';
+							str+='<div class="col-sm-4">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
 					str+='</a>';
 				str+='</li>';
-				str+='<li role="presentation" class="" attr_type="electronic" attr_block_count="'+result.electCount+'">';
+				str+='<li role="presentation" class="" attr_type="electronic" attr_block_count="'+electronicMediaCount+'">';
 					str+='<a href="#electronic" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-10">';
+							str+='<div class="col-sm-8">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>ELECTRONIC MEDIA</b></h5>';
-										str+='<h4 class="color_black">'+result.electCount+'</h4>';
+										str+='<h4 class="color_black">'+electronicMediaCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-2">';
+							str+='<div class="col-sm-4">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
 					str+='</a>';
 				str+='</li>';
-				str+='<li role="presentation" class="" attr_type="social" attr_block_count="'+result.socialCount+'">';
+				str+='<li role="presentation" class="" attr_type="social" attr_block_count="'+socialMedia+'">';
 					str+='<a href="#social" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-10">';
+							str+='<div class="col-sm-8">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>SOCIAL MEDIA</b></h5>';
-										//str+='<h4 class="color_black">'+result.socialCount+'</h4>';
+										str+='<h4 class="color_black">'+socialMedia+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-2">';
+							str+='<div class="col-sm-4">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
@@ -271,7 +288,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<h5 class="font_weight">ALERTS - MONTHLY OVERVIEW</h5>';
 							str+='<div class="row">';
 								str+='<div style="padding:15px;">';
-									str+='<div id="areasplineChartId" style="height:300px;"></div>';
+									str+='<div id="areasplineChartId" class="monthGraphCss"></div>';
 									//str+='<div class="imagecls"></div>';
 								str+='</div>';
 							str+='</div>';
@@ -282,7 +299,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';
 							str+='<div class="row">';
 								str+='<div style="padding:15px;">';
-									str+='<div id="alertStatusChartId" style="height:300px;"></div>';
+									str+='<div id="alertStatusChartId" class="monthGraphCss"></div>';
 								str+='</div>';
 							str+='</div>';
 							
@@ -324,141 +341,156 @@ function buildJalavaniDashBoardOverview(result){
 			var changedMonthYear = result.subList2[i].monthName;
 			monthNameArr.push(changedMonthYear);
 		}
-		mainArr.push(result.subList2[i].percentage)
+		mainArr.push({y:result.subList2[i].percentage,"extra":result.subList2[i].monthCount})
 	}
 	for(var i in result.list){
-		if(result.list[i].statusId !=5 && result.list[i].statusId !=14 && result.list[i].statusId !=10){
+		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
 			statusNameArr.push(result.list[i].status);
 			var tempArr = [];
 			tempArr.push(result.list[i].statusCount);
 			dataArr.push(tempArr);
 		}	
 	}
-	$('#areasplineChartId').highcharts({
-		colors:['#D9E8CE'],
-	  chart: {
-			type: 'areaspline'
-		},
-		title: {
-			text: '',
-		},
-		legend: {
-			enabled: false,
-		},
-		xAxis: {
-			
-			categories: monthNameArr,
-			labels: {
-				style: {
-					color: '#333',
-					fontSize:'10px',
-					fontWeight:'bold',
-				}
+	if(result.subList2 !=null && result.subList2.length>0){
+		$('#areasplineChartId').removeClass('height_10').addClass('monthGraphCss')
+		$('#areasplineChartId').highcharts({
+			colors:['#D9E8CE'],
+		  chart: {
+				type: 'areaspline'
 			},
-			
-		},
-		yAxis: {
-			min: 0,
 			title: {
 				text: '',
 			},
-		},
-		tooltip: {
-			formatter: function () {
-				return '<b>' + this.x + '</b> - ' +
-					this.y+" %"
-			}
-		},
-		credits: {
-			enabled: false
-		},
-		plotOptions: {
-				areaspline: {
-				fillOpacity: 0.5,
-				lineColor: '#25CAA1',
-				 dataLabels: {
-						enabled: true,
-						color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
-						formatter: function() {
-							return (this.y)+"%";
-						},
-					},
+			legend: {
+				enabled: false,
 			},
-		series: {
-				marker: {
-					fillColor: '#FFFFFF',
-					lineColor: '#25CAA1',
-					lineWidth: 1,  // inherit from series
-				}
-			}
-		},
-		series: [{
-			name: '',
-			data: mainArr,
-			
-			
-		}]
-	});
-	
-	$('#alertStatusChartId').highcharts({
-		colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
-		 chart: {
-			type: 'column',
-		},
-		title: {
-			text: '',
-		},
-	  xAxis: {
-			min: 0,
-			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			categories: statusNameArr,
-			labels: {
-				style: {
-					color: '#333',
-					fontSize:'10px',
-					fontWeight:'bold',
-				 }
+			xAxis: {
+				
+				categories: monthNameArr,
+				labels: {
+					style: {
+						color: '#333',
+						fontSize:'10px',
+						fontWeight:'bold',
+					}
+				},
+				
 			},
-		},
-		yAxis: {
-			min: 0,
-			gridLineWidth: 0,
-			minorGridLineWidth: 0,
-			title: {
-				text: ''
-			},
-		},
-		legend: {
-		  enabled:false,
-		},
-		tooltip: {
-			formatter: function () {
-				return '<b>' + this.x + '</b> - ' +
-					this.y+""
-			}
-		},
-		plotOptions: {
-				column: {
-					colorByPoint: true,
-					pointWidth: 30,
-					gridLineWidth: 15
-					
+			yAxis: {
+				min: 0,
+				title: {
+					text: '',
 				},
 			},
-		series:[{
-				name: '',
-				data: dataArr,
-				dataLabels: {
-					enabled: true,
-					color: '#000',
-					align: 'center',
-					formatter: function() {
-						return '<span>'+this.y+'</span>';
+			 tooltip: {
+					 formatter: function() {
+						return  (this.x)+"<br/>"+(this.point.extra)+" - "+(this.y)+"%";
+					},
+					//headerFormat: '<b>{series.name}</b><br/>',
+					//pointFormat: '{point.y}'
+				},
+			credits: {
+				enabled: false
+			},
+			plotOptions: {
+					areaspline: {
+					fillOpacity: 0.5,
+					lineColor: '#25CAA1',
+					 dataLabels: {
+							enabled: true,
+							color: (Highcharts.theme && Highcharts.theme.dataLabelsColor) || 'gray',
+							formatter: function() {
+								return (this.y)+"%";
+							},
+						},
+				},
+			series: {
+					marker: {
+						fillColor: '#FFFFFF',
+						lineColor: '#25CAA1',
+						lineWidth: 1,  // inherit from series
 					}
 				}
-			}],
-	});
+			},
+			series: [{
+				name: '',
+				data: mainArr,
+				
+				
+			}]
+		});
+	
+	}else{
+		$('#areasplineChartId').html("No Data Available");
+		$('#areasplineChartId').removeClass('monthGraphCss').addClass('height_10')
+	}
+	
+	if(result.list !=null && result.list.length>0){
+		$('#areasplineChartId').removeClass('height_10').addClass('monthGraphCss')
+		$('#alertStatusChartId').highcharts({
+			colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
+			 chart: {
+				type: 'column',
+			},
+			title: {
+				text: '',
+			},
+		  xAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				categories: statusNameArr,
+				labels: {
+					style: {
+						color: '#333',
+						fontSize:'10px',
+						fontWeight:'bold',
+					 }
+				},
+			},
+			yAxis: {
+				min: 0,
+				gridLineWidth: 0,
+				minorGridLineWidth: 0,
+				title: {
+					text: ''
+				},
+			},
+			legend: {
+			  enabled:false,
+			},
+			tooltip: {
+				formatter: function () {
+					return '<b>' + this.x + '</b> - ' +
+						this.y+""
+				}
+			},
+			plotOptions: {
+					column: {
+						colorByPoint: true,
+						pointWidth: 30,
+						gridLineWidth: 15
+						
+					},
+				},
+			series:[{
+					name: '',
+					data: dataArr,
+					dataLabels: {
+						enabled: true,
+						color: '#000',
+						align: 'center',
+						formatter: function() {
+							return '<span>'+this.y+'</span>';
+						}
+					}
+				}],
+		});
+	}else{
+		$('#alertStatusChartId').html("No Data Available");
+		$('#alertStatusChartId').removeClass('monthGraphCss').addClass('height_10')
+	}
+	
 }
 
 
@@ -494,7 +526,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	var str='';
 	if(searchType == "callcenter"){
 		str+='<div class="row">';
-			str+='<div class="col-sm-3">';
+			/* str+='<div class="col-sm-3">';
 				str+='<div class="" style="border: 1px solid #447BB3;">';
 					str+='<div class="panel-heading">';
 						str+='<div class="media">';
@@ -508,7 +540,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 						str+='</div>';
 					str+='</div>';	
 				str+='</div>';
-			str+='</div>';	
+			str+='</div>';	 */
 			str+='<div class="col-sm-3">';
 				str+='<div class="" style="border: 1px solid #3C3B3B; background-color:#F6A323;">';
 					str+='<div class="panel-heading">';
@@ -647,7 +679,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		str+='<h5 class="font_weight">ALERTS - MONTHLY OVERVIEW</h5>';
 		str+='<div class="row">';
 			str+='<div style="padding:15px;">';
-				str+='<div id="areaspline'+searchType+'ChartId" style="height:300px;"></div>';
+				str+='<div id="areaspline'+searchType+'ChartId" class="monthGraphCss"></div>';
 			str+='</div>';
 		str+='</div>';
 		var alertStatusTotalCount=0;
@@ -661,17 +693,17 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 					str+='<div class="row">';
 						str+='<div class="col-sm-8">';
 							str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';
-							str+='<div id="alertStatus'+searchType+'ChartId" style="height:300px;" class="m_top10"></div>';
+							str+='<div id="alertStatus'+searchType+'ChartId"  class="m_top10 monthGraphCss"></div>';
 						str+='</div>';
 						str+='<div class="col-sm-4">';
 							str+='<h5 class="font_weight">Jalavani Call Center IVR feedback</h5>';
-							str+='<div id="callcenterIVRFeedBackId" style="height:300px;" class="m_top10"></div>';
+							str+='<div id="callcenterIVRFeedBackId" class="m_top10 monthGraphCss"></div>';
 						str+='</div>';
 					str+='</div>';
 					
 				}else{
 					str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';	
-					str+='<div id="alertStatus'+searchType+'ChartId" style="height:300px;" class="m_top10"></div>';
+					str+='<div id="alertStatus'+searchType+'ChartId" class="m_top10 monthGraphCss"></div>';
 				}
 				
 			str+='</div>';
@@ -685,13 +717,22 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	var statusNameArr=[];
 	var dataArr=[];
 	
-	
 	for(var i in result.subList2){
-		monthNameArr.push(result.subList2[i].monthName)
-		mainArr.push(result.subList2[i].percentage)
+		if(result.subList2[i].monthType == "monthWise"){
+			var monthAndYearSpilt=result.subList2[i].monthName.split('-');
+			var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+			var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+			monthNameArr.push(changedMonthYear);
+		}else if(result.subList2[i].monthType == "dayWise"){
+			var changedMonthYear = result.subList2[i].monthName;
+			monthNameArr.push(changedMonthYear);
+		}
+		mainArr.push({y:result.subList2[i].percentage,"extra":result.subList2[i].monthCount})
 	}
+	
+	
 	for(var i in result.list){
-		if(result.list[i].statusId !=5 && result.list[i].statusId !=14 && result.list[i].statusId !=10){
+		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
 			statusNameArr.push(result.list[i].status);
 			var tempArr = [];
 			tempArr.push(result.list[i].statusCount);
@@ -706,6 +747,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	}
 	dataIVRArr.push(AverageIVr);
 	if(result.subList2 !=null && result.subList2.length>0){
+		$('#areaspline'+searchType+'ChartId').removeClass("height_10").addClass('monthGraphCss')
 		$('#areaspline'+searchType+'ChartId').highcharts({
 			colors:['#D9E8CE'],
 		  chart: {
@@ -736,10 +778,11 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 				},
 			},
 			tooltip: {
-				formatter: function () {
-					return '<b>' + this.x + '</b> - ' +
-						this.y+" %"
-				}
+				 formatter: function() {
+					return  (this.x)+"<br/>"+(this.point.extra)+" - "+(this.y)+"%";
+				},
+				//headerFormat: '<b>{series.name}</b><br/>',
+				//pointFormat: '{point.y}'
 			},
 			credits: {
 				enabled: false
@@ -773,8 +816,10 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		});
 	}else{
 		$('#areaspline'+searchType+'ChartId').html("No Data Available")
+		$('#areaspline'+searchType+'ChartId').removeClass("monthGraphCss").addClass('height_10')
 	}
 	if(result.list !=null && result.list.length>0){
+		$('#alertStatus'+searchType+'ChartId').removeClass("height_10").addClass('monthGraphCss')
 		$('#alertStatus'+searchType+'ChartId').highcharts({
 			colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
 			 chart: {
@@ -836,8 +881,10 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		});
 	}else{
 		$('#alertStatus'+searchType+'ChartId').html("No Data Available")
+		$('#alertStatus'+searchType+'ChartId').removeClass("monthGraphCss").addClass('height_10')
 	}
 	if(result.subList1 !=null && result.subList1.length>0){
+		$('#callcenterIVRFeedBackId').removeClass("height_10").addClass('monthGraphCss')
 		$('#callcenterIVRFeedBackId').highcharts({
 			colors:["#0FBE08","#FF0909","#FFBA00"],
 			 chart: {
@@ -900,6 +947,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		});
 	}else{
 		$('#callcenterIVRFeedBackId').html("No Data Available")
+		$('#callcenterIVRFeedBackId').removeClass("monthGraphCss").addClass('height_10')
 	}
 }
 
@@ -1043,17 +1091,17 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 						str+='<th class="" style="background-color:#c5e6f9;" rowspan="2">Total</th>';
 						
 						
-						var globalStatusBgObj={"NOT STARTED":"#FBB9E0","INITIAL STAGE":"#BFBFBF","Finished":"#FFC3A5","MOVED TO OTHER CATEGORY":"#A8BFFF"}
-						var globalStatusColorObj={"NOT STARTED":"#F648A9","INITIAL STAGE":"#584A4A","Finished":"#FF6300","MOVED TO OTHER CATEGORY":"#1C49FF"}
+						var globalStatusBgObj={"NOT STARTED":"#ef5656","INITIAL STAGE":"#ffb2b2","Finished":"#4aad50","MOVED TO OTHER CATEGORY":"#A8BFFF"}
+						var globalStatusColorObj={"NOT STARTED":"#ef5656","INITIAL STAGE":"#ffb2b2","Finished":"#4aad50","MOVED TO OTHER CATEGORY":"#1C49FF"}
 						var statuslength=0;
 						
 							
 						for(var i in result[0].voList){
 							statuslength = (result[0].voList[i].voList.length)+1;
 							if(result[0].voList[i].title == "NOT STARTED"){
-								str+='<th colspan="'+statuslength+'" style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">NOT&nbsp;STARTED</th>';	
+								str+='<th colspan="'+statuslength+'" style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';">NOT&nbsp;STARTED</th>';	
 							}else{
-								str+='<th colspan="'+statuslength+'" style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">'+result[0].voList[i].title+'</th>';	
+								str+='<th colspan="'+statuslength+'" style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';">'+result[0].voList[i].title+'</th>';	
 							}
 							
 						}
@@ -1062,10 +1110,10 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 						str+='<tr>';
 							for(var i in result[0].voList){
 								for(var j in result[0].voList[i].voList){
-									str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">'+result[0].voList[i].voList[j].status+'</th>';
+									str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';">'+result[0].voList[i].voList[j].status+'</th>';
 										
 								}
-								str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';color:'+globalStatusColorObj[result[0].voList[i].title]+'">%</th>';	
+								str+='<th style="background-color:'+globalStatusBgObj[result[0].voList[i].title]+';">%</th>';	
 							}
 						str+='</tr>';
 					str+='</thead>';
@@ -1095,7 +1143,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 										}
 									}
 									if(result[i].voList[j].percentage !=null && result[i].voList[j].percentage>0){
-										str+='<td style="color:green;margin-left:15px;background-color:'+globalStatusBgObj[result[i].voList[j].title]+'" >'+result[i].voList[j].percentage+'&nbsp;%</td>';
+										str+='<td style="font-weight:bold;margin-left:15px;background-color:'+globalStatusBgObj[result[i].voList[j].title]+'" >'+result[i].voList[j].percentage+'&nbsp;%</td>';
 									}else{
 										str+='<td style="background-color:'+globalStatusBgObj[result[i].voList[j].title]+'"> - </td>';
 									}
