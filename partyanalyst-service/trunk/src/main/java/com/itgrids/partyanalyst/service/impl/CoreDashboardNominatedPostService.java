@@ -218,9 +218,9 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 			          }
 		            if(statusId.longValue() == 1l){
 		        	   deptVO.setOpenCount(deptVO.getOpenCount()+commonMethodsUtilService.getLongValueForObject(param[2])); 
-		            }else if(statusId.longValue() == 4l || statusId.longValue() == 3l){
+		            }else if(statusId.longValue() == 4l){
 		            	deptVO.setGoIsuuedCount(deptVO.getGoIsuuedCount()+commonMethodsUtilService.getLongValueForObject(param[2]));
-		            }else if(statusId.longValue() == 2l){
+		            }else if(statusId.longValue() == 3l){
 		            	deptVO.setFinalizedPost(deptVO.getFinalizedPost()+commonMethodsUtilService.getLongValueForObject(param[2]));
 		            }
 		            deptVO.setTotalPosts(deptVO.getTotalPosts()+commonMethodsUtilService.getLongValueForObject(param[2]));
