@@ -1899,8 +1899,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       				   " CC.categoryName, " +
 	       				   " GO.govtOrderId, " +
 	       				   " GO.orderName, " + //21 
-	       				   " GO.fromDate, " +
-	       				   " GO.toDate ,TC.image,NPC.imageurl,TC.tdpCadreId ");//26   
+	       				   " GO.fromDate, " +//22
+	       				   " GO.toDate ,TC.image,NPC.imageurl,TC.tdpCadreId,NPC.nominationPostCandidateId ");//27   
 	  
 	       
 	       queryStr.append(" from  " +  
