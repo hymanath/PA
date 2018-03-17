@@ -17,7 +17,7 @@ var editionTypes=[];
 var constituencyNames=[];
 var districtNames=[];
 $(".chosen-select").chosen();
-
+ var today = new Date();
 var width = screen.width / 2
 var height = screen.height / 2.2
 var expanded = false;
@@ -40,6 +40,7 @@ $(document).on("click",function(){
 $("#startDate").daterangepicker({
 		startDate: glStartDate,
         singleDatePicker: true,
+		  maxDate: today,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
@@ -48,6 +49,7 @@ $("#startDate").daterangepicker({
 $("#endDate").daterangepicker({
 	startDate: glEndDate,
         singleDatePicker: true,
+		  maxDate: today,
 		locale: {
 		  format: 'YYYY-MM-DD'
 		},
@@ -86,7 +88,7 @@ function onLoadCalls(){
 	$('#wordCloudConstituency').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
-		//selectAllText: 'All',
+		selectAllText: 'All',
 		maxHeight: 300,
 		buttonWidth: '100%',
 		dropDown: true,
@@ -95,6 +97,17 @@ function onLoadCalls(){
 	});
 	$('#newspapers').multiselect("destroy");
 	$('#newspapers').multiselect({
+		enableFiltering: true,
+		includeSelectAllOption: true,
+		selectAllText: 'All',
+		maxHeight: 300,
+		buttonWidth: '100%',
+		dropDown: true,
+		selectAllName: true,
+		allSelectedText: 'All selected'
+	});
+	$('#wordCloudDepartmentNames').multiselect("destroy");
+	$('#wordCloudDepartmentNames').multiselect({
 		enableFiltering: true,
 		includeSelectAllOption: true,
 		selectAllText: 'All',
@@ -720,7 +733,6 @@ function getAllLocations(levelId,levelValue,type){
 
 function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	var optionStr='';
-		
 	if(levelTypeId =="newspapers"){
 		globalNewsPapres=[];
 		for(var i in result){
@@ -756,14 +768,9 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	}
 	if(levelTypeId=="wordCloudDistrict"){
 		$('#'+levelTypeId).html(optionStr);
-		/* $("#wordCloudDistrict").chosen();
-		$("#wordCloudDistrict").trigger('chosen:updated'); */
 	}else{
 		$('#'+levelTypeId).html(optionStr);
-		/* $('#'+levelTypeId).chosen();
-		$('#'+levelTypeId).trigger('chosen:updated'); */
 	}
-	//$('#'+levelTypeId).trigger("chosen:updated");
 	$('#'+levelTypeId).multiselect("destroy");
 	if(levelTypeId == "wordCloudDistrict"){
 		$('#'+levelTypeId).multiselect({
@@ -775,10 +782,25 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		dropDown: true,
 		selectAllName: true,
 		allSelectedText: 'All Districts selected',
-		 onChange: function() {
-			districtNames = $('#wordCloudDistrict').val();
+		onChange: function() {
+			for(var i in $('#wordCloudDistrict').val()){
+				districtNames=[];
+				if( $('#wordCloudDistrict').val()[i]=='Visakhapatnam'){
+					 districtNames.push('Visakhapatnam Rural');
+					 districtNames.push('Visakhapatnam Urban');
+				 }else{
+					 districtNames=[];
+					 districtNames.push($('#wordCloudDistrict').val()[i]);
+				 }
+			}
 			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
-		}
+		},onSelectAll: function() {
+			districtNames=[];
+			districtNames.push("");
+			$("#wordCloudConstituency").html("");
+			getAllLocations(3,districtNames,"onChange");
+			districtNames = $('#wordCloudDistrict').val();
+        }
 	});
 	}else if(levelTypeId == "newspapers"){
 		$('#'+levelTypeId).multiselect({
@@ -805,7 +827,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 		selectAllName: true,
 		allSelectedText: 'All Constituency selected',
 		onChange: function() {
-		constituencies=$('#wordCloudConstituency').val();
+			constituencies=$('#wordCloudConstituency').val();
 		}
 	});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
@@ -827,7 +849,7 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	callfetchFunction(type);
 }
 function callfetchFunction(type){
-	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
+	
 	if(type !='onchange' && type !==undefined && type !== 'undefined'){
 		if(globalDistricts != null && globalDistricts.length>0 && globalNewsPapres !=null && globalNewsPapres.length>0 && globalDepartMentNames !=null && globalDepartMentNames.length>0){
 			fetchDataForWordCloud("") ;
