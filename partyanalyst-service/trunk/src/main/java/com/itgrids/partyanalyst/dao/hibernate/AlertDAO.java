@@ -11161,7 +11161,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 						" count(model.alertId) " +
 		 				" from Alert model" +
 		 				" where model.isDeleted='N' " +
-		 				" and model.govtDepartmentId =:govtDeptId " );
+		 				" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) " );
 				if(typeId !=null && typeId.longValue()>0){
 		 			str.append("  and model.alertCategoryId =:typeId ");
 		 		}else{
@@ -11178,6 +11178,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}else{
 		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
 		 		}
+		 		query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 		 		if(fromDate !=null && toDate !=null){
 		 			query.setParameter("fromDate",fromDate);
 		 			query.setParameter("toDate",toDate);
@@ -11197,7 +11198,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	               " from Alert model " +
 	               " where model.isDeleted='N' ");
 	          }
-	         str.append(" and model.govtDepartmentId =:govtDeptId ");
+	         str.append(" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) ");
 	         
 	         if(typeId !=null && typeId.longValue()>0){
 	            str.append("  and model.alertCategoryId =:typeId ");
@@ -11214,6 +11215,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	          }
 	        Query query = getSession().createQuery(str.toString());
 	          query.setParameter("govtDeptId",49l);
+	          query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 	          if(typeId !=null && typeId.longValue()>0){
 	            query.setParameter("typeId",typeId);
 	          }else{
@@ -11232,8 +11234,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 					" model.alertStatus.color,count(distinct model.alertId) from Alert model " +
 					" WHERE model.isDeleted ='N'  " +
 					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+") " +
-							" and model.alertStatus.alertStatusId !=1 " +
-							" and model.govtDepartmentId =:govtDeptId ");
+							" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) ");
 				if(typeId !=null && typeId.longValue()>0){
 		 			str.append("  and model.alertCategoryId =:typeId ");
 		 		}else{
@@ -11250,6 +11251,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}else{
 		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
 		 		}
+			 	query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 		 		if(fromDate !=null && toDate !=null){
 		 			query.setParameter("fromDate",fromDate);
 		 			query.setParameter("toDate",toDate);
@@ -11260,7 +11262,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		StringBuilder str = new StringBuilder();
 			str.append("SELECT count(distinct model.alertId) from Alert model " +
 					" WHERE model.isDeleted ='N'  " +
-							" and model.govtDepartmentId =:govtDeptId ");
+							" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) ");
 				if(typeId !=null && typeId.longValue()>0){
 		 			str.append("  and model.alertCategoryId =:typeId ");
 		 		}
@@ -11270,6 +11272,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		str.append(" GROUP BY model.alertCategoryId ");
 		 	Query query = getSession().createQuery(str.toString());
 		 	query.setParameter("govtDeptId",49l);
+		 	query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 			 	if(typeId !=null && typeId.longValue()>0){
 		 			query.setParameter("typeId",typeId);
 		 		}
