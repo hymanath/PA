@@ -7778,6 +7778,7 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 				 nominatedPostMemberVO.setGovtOrderName(commonMethodsUtilService.getStringValueForObject(candidate[21]));
 				 nominatedPostMemberVO.setFromDate(commonMethodsUtilService.getStringValueForObject(candidate[22]));
 				 nominatedPostMemberVO.setToDate(commonMethodsUtilService.getStringValueForObject(candidate[23])); 
+				 nominatedPostMemberVO.setNominatedPostCandidateId(commonMethodsUtilService.getLongValueForObject(candidate[27]));
 				 Date today = new DateUtilService().getCurrentDateAndTime();
 				 
 				 String tempFromDate = commonMethodsUtilService.getStringValueForObject(candidate[22]);
