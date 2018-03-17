@@ -1118,9 +1118,9 @@ function getNominatedPostApplication(startIndex)
 					}
 					
 					
-					if(isEligibleToDelete){
+					/*if(isEligibleToDelete){
 						str+='<i style ="margin-left:28px;;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
-					}
+					}*/
 		   			str+='</ul>	';
 			}
 					str +='</li>';

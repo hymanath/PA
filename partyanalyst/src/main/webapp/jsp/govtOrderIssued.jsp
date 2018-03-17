@@ -156,7 +156,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 m_top10">
-							<div><b>Reason <span style="color:red">*</span>:</b>
+							<div><b>Reason <span style="color:red">*</span>:</b><span style="color:red;" class ="reasonErrCls"></span>
 								<select id="reasonSelectId" class="form-control">
 									<option value="0">Select Reason</option>
 								</select>
@@ -165,7 +165,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 m_top10">
-							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<div><b>Remark <span style="color:red">*</span>:</b><span style="color:red;" class ="remarkTestErrCls"></span> 
 							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
 						</div>
 					</div>
@@ -403,7 +403,7 @@ if(globalLocationLevelId == 2){
 								str+='</div>';
 								str+='<div class="media-body">';
 								if(isEligibleToDelete){
-								str+='<i style ="margin-left:240px;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+								str+='<i style ="margin-left:240px;cursor:pointer;color:red;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name= "'+result[i].name+'"  attr_dept_id="'+result[i].deptId+'" attr_board_id ="'+result[i].deptBoardId+'" attr_positn_id ="'+result[i].deptBoardPostnId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 									}
 								if(result[i].tdpCadreId != null && result[i].tdpCadreId > 0){
 									str+='<a target="_blank" href="cadreDetailsAction.action?cadreId='+result[i].tdpCadreId+'" >';

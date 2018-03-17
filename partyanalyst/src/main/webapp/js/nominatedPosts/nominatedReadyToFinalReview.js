@@ -833,7 +833,7 @@ function buildNominatedPostMemberDetails(result,levelId,levelValue,departmentId,
 				str+='</td>';
 				if(isEligibleToDelete){
 				str+='<td>';
-				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+				str+='<i  style="cursor:pointer;" attr_nomination_post_candidate_id="'+result.subList[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result.subList[i].tdpCadreId+'" attr_cadre_name= "'+result.subList[i].cadreName+'" attr_dept_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_positn_id="'+positionId+'"  class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 					}
 				str+='</td>';
 			str+='</tr>';
@@ -1927,7 +1927,7 @@ function buildWishListDetails(result,levelId,levelValue,departmentId,boardId,pos
 				str+='</td>';
 				if(isEligibleToDelete){
 				str+='<td>';
-				str+='<i  style="cusor:pointer;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
+				str+='<i  style="cusor:pointer;" attr_nomination_post_candidate_id="'+result[i].nominatedPostCandidateId+'" attr_tdp_cadre_id="'+result[i].tdpCadreId+'" attr_cadre_name= "'+result.subList[i].cadreName+'"  attr_dept_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_positn_id="'+positionId+'" class="glyphicon glyphicon-remove remove-icon removeIconCls pull-right" data-toggle="tooltip" data-placement="bottom" title="Remove Candidate"></i>';
 				}
 				str+='</td>';
 			str+='</tr>';

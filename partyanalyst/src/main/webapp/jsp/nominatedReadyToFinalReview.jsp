@@ -344,7 +344,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 m_top10">
-							<div><b>Reason <span style="color:red">*</span>:</b>
+							<div><b>Reason <span style="color:red">*</span>:</b><span style="color:red;" class ="reasonErrCls"></span>
 								<select id="reasonSelectId" class="form-control">
 									<option value="0">Select Reason</option>
 								</select>
@@ -353,7 +353,7 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12 m_top10">
-							<div><b>Remark <span style="color:red">*</span>:</b> 
+							<div><b>Remark <span style="color:red">*</span>:</b><span style="color:red;" class ="remarkTestErrCls"></span>  
 							<textarea class="form-control" id="remarkTextAreaId"></textarea></div>
 						</div>
 					</div>
