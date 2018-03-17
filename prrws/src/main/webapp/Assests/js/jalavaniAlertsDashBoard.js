@@ -315,14 +315,21 @@ function buildJalavaniDashBoardOverview(result){
 	
 	
 	for(var i in result.subList2){
-		var monthAndYearSpilt=result.subList2[i].monthName.split('-');
-		var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
-		var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
-		monthNameArr.push(changedMonthYear)
+		if(result.subList2[i].monthType == "monthWise"){
+			var monthAndYearSpilt=result.subList2[i].monthName.split('-');
+			var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+			var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+			monthNameArr.push(changedMonthYear);
+		}else if(result.subList2[i].monthType == "dayWise"){
+			var changedMonthYear = result.subList2[i].monthName;
+			monthNameArr.push(changedMonthYear);
+		}
 		mainArr.push(result.subList2[i].percentage)
 	}
 	for(var i in result.list){
-		statusNameArr.push(result.list[i].status);
+		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
+			statusNameArr.push(result.list[i].status);
+		}
 		var tempArr = [];
 		tempArr.push(result.list[i].statusCount);
 		dataArr.push(tempArr);
@@ -685,7 +692,9 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		mainArr.push(result.subList2[i].percentage)
 	}
 	for(var i in result.list){
-		statusNameArr.push(result.list[i].status);
+		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
+			statusNameArr.push(result.list[i].status);
+		}
 		var tempArr = [];
 		tempArr.push(result.list[i].statusCount);
 		dataArr.push(tempArr);
@@ -716,7 +725,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 				labels: {
 					style: {
 						color: '#333',
-						fontSize:'14px',
+						fontSize:'10px',
 						fontWeight:'bold',
 					}
 				},
