@@ -112,7 +112,7 @@ function buildLevelWisePostsOverView(result){
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Finalized <br>Posts</h5>';
 							if(result[i].finalizedPer !=null && result[i].finalizedPer>0){
-								str+='<h5 class="m_top10 font_weight statusClickCls"   attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="finalIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="2">'+result[i].finalizedPost+' <small style="color:green">'+result[i].finalizedPer.toFixed(1)+'%</small></h5>';
+								str+='<h5 class="m_top10 font_weight statusClickCls"   attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="finalIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="3">'+result[i].finalizedPost+' <small style="color:green">'+result[i].finalizedPer.toFixed(1)+'%</small></h5>';
 							}else{
 								str+='<h5 class="m_top10 font_weight"> - </h5>';
 							}
@@ -123,7 +123,7 @@ function buildLevelWisePostsOverView(result){
 						str+='<div class="pad_yash_8">';
 							str+='<h5>Completed/ <br>G.O Issued</h5>';
 							if(result[i].goIssuedPer !=null && result[i].goIssuedPer>0){
-								str+='<h5 class="m_top10 font_weight statusClickCls"  attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="0">'+result[i].goIsuuedCount+' <small style="color:green">'+result[i].goIssuedPer.toFixed(1)+'%</small></h5>';
+								str+='<h5 class="m_top10 font_weight statusClickCls"  attr_boardLevelId="'+result[i].boardLevelId+'" attr_type="goIssued" attr_department_name="'+result[i].board+' Level" attr_department_id="0" attr_board_statusIds="4">'+result[i].goIsuuedCount+' <small style="color:green">'+result[i].goIssuedPer.toFixed(1)+'%</small></h5>';
 							}else{
 								str+='<h5 class="m_top10 font_weight"> - </h5>';
 							}
