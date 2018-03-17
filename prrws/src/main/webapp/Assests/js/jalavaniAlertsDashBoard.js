@@ -329,11 +329,10 @@ function buildJalavaniDashBoardOverview(result){
 	for(var i in result.list){
 		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
 			statusNameArr.push(result.list[i].status);
-		}
-		var tempArr = [];
-		tempArr.push(result.list[i].statusCount);
-		dataArr.push(tempArr);
-		
+			var tempArr = [];
+			tempArr.push(result.list[i].statusCount);
+			dataArr.push(tempArr);
+		}	
 	}
 	$('#areasplineChartId').highcharts({
 		colors:['#D9E8CE'],
@@ -694,11 +693,10 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	for(var i in result.list){
 		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
 			statusNameArr.push(result.list[i].status);
+			var tempArr = [];
+			tempArr.push(result.list[i].statusCount);
+			dataArr.push(tempArr);
 		}
-		var tempArr = [];
-		tempArr.push(result.list[i].statusCount);
-		dataArr.push(tempArr);
-		
 	}
 	var dataIVRArr=[];
 	var AverageIVr=0;
