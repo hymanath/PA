@@ -2727,4 +2727,76 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 			query.setParameter("nominationPostCandidateId", nominationPostCandidateId);
 			return query.list();
 		}
+	 
+	 public List<Long> getNominationPostCandidateIdNominatedPostApplicationDetailsList(Long nominationPostCandidateId,Long deptId,Long boardId,Long positionId){
+		 StringBuilder sb = new StringBuilder();
+		 sb.append(" select distinct model.nominatedPostApplicationId from NominatedPostApplication model where ");
+		 if(nominationPostCandidateId != null && nominationPostCandidateId.longValue() >0l){
+			 sb.append(" model.nominationPostCandidateId = :nominationPostCandidateId ");
+		 }
+		 sb.append(" and model.isDeleted='N' and model.isExpired='N'");
+		 
+		 if(deptId != null && deptId.longValue() >0l){
+			 sb.append(" and model.nominatedPostMember.nominatedPostPosition.departmentId =:deptId ");
+		 }
+		 if(boardId != null && boardId.longValue() >0l){
+			 sb.append(" and model.nominatedPostMember.nominatedPostPosition.boardId =:boardId ");
+		 }
+		 if(positionId != null && positionId.longValue() >0l){
+			 sb.append(" and model.nominatedPostMember.nominatedPostPosition.positionId =:positionId ");
+		 }
+		 Query qry = getSession().createQuery(sb.toString());
+		 
+		 if(nominationPostCandidateId != null && nominationPostCandidateId.longValue() >0l){
+			 qry.setParameter("nominationPostCandidateId", nominationPostCandidateId);
+		 }
+		 if(deptId != null && deptId.longValue() >0l){
+			 qry.setParameter("deptId", deptId);
+		 }
+		 if(boardId != null && boardId.longValue() >0l){
+			 qry.setParameter("boardId", boardId);
+		 }
+		 if(positionId != null && positionId.longValue() >0l){
+			 qry.setParameter("positionId", positionId);
+		 }
+			
+			return qry.list();
+					
+		}
+	 
+	 
+	 public int updateApplicationExpiredByAppldsList(List<Long> nominatedPostApplciationIdsLsit,Long reasonId,String remark, Long userId,Date currentDate){
+			StringBuilder queryStr = new StringBuilder();
+			queryStr.append("  update NominatedPostApplication model set   model.isExpired='Y' , model.cadreDeletedReasonId =:reasonId, model.deletedRemarks =:remark,model.updatedTime =:currentDate");
+			if(userId != null && userId.longValue()>0L)
+				queryStr.append(" , model.updatedBy=:userId ");
+			
+			if(nominatedPostApplciationIdsLsit != null && nominatedPostApplciationIdsLsit.size() >0){
+				queryStr.append("  where model.nominatedPostApplicationId in (:nominatedPostApplciationIdsLsit) ");
+			}
+			
+			queryStr.append("  and model.isDeleted='N' and model.isExpired='N' ");
+			
+			Query query = getSession().createQuery(queryStr.toString());
+			
+			if(userId != null && userId.longValue()>0L){
+				query.setParameter("userId", userId);
+			}
+			
+			if(nominatedPostApplciationIdsLsit != null && nominatedPostApplciationIdsLsit.size() >0){
+				 query.setParameterList("nominatedPostApplciationIdsLsit", nominatedPostApplciationIdsLsit);
+			}
+		
+			 if(reasonId != null && reasonId.longValue() >0l){
+				 query.setParameter("reasonId", reasonId);
+			 }
+			 if(remark != null && remark.length() >0){
+				 query.setParameter("remark", remark);
+			 }
+			if(currentDate != null){
+			 query.setDate("currentDate", currentDate);
+			}
+			 int count = query.executeUpdate();
+			 return count;
+		}
 	}
