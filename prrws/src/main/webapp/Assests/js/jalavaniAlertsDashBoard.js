@@ -26,7 +26,7 @@ $("#dateRangePicker").daterangepicker({
 		},
 		ranges: {
 		   'Today' : [moment(), moment()],
-		   'Yesterday': [moment().subtract(1, 'day').startOf('month'), moment()],
+		   'Yesterday': [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
 		   'This Month': [moment().startOf('month'), moment()],
 		   'This Year': [moment().startOf('Year'), moment()],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
@@ -327,7 +327,7 @@ function buildJalavaniDashBoardOverview(result){
 		mainArr.push(result.subList2[i].percentage)
 	}
 	for(var i in result.list){
-		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
+		if(result.list[i].statusId !=5 && result.list[i].statusId !=14 && result.list[i].statusId !=10){
 			statusNameArr.push(result.list[i].status);
 			var tempArr = [];
 			tempArr.push(result.list[i].statusCount);
@@ -691,7 +691,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		mainArr.push(result.subList2[i].percentage)
 	}
 	for(var i in result.list){
-		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
+		if(result.list[i].statusId !=5 && result.list[i].statusId !=14 && result.list[i].statusId !=10){
 			statusNameArr.push(result.list[i].status);
 			var tempArr = [];
 			tempArr.push(result.list[i].statusCount);
