@@ -701,14 +701,14 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 			str+='<div style="padding:15px;">';
 				if(searchType == "callcenter"){
 					str+='<div class="row">';
-						str+='<div class="col-sm-8">';
+						str+='<div class="col-sm-12">';
 							str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';
 							str+='<div id="alertStatus'+searchType+'ChartId"  class="m_top10 monthGraphCss"></div>';
 						str+='</div>';
-						str+='<div class="col-sm-4">';
+						/* str+='<div class="col-sm-4">';
 							str+='<h5 class="font_weight">Jalavani Call Center IVR feedback</h5>';
 							str+='<div id="callcenterIVRFeedBackId" class="m_top10 monthGraphCss"></div>';
-						str+='</div>';
+						str+='</div>'; */
 					str+='</div>';
 					
 				}else{
@@ -1069,7 +1069,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	 
 	$.ajax({
 		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		//url: "http://192.168.11.177:8070/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: "http://192.168.11.172:8447/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
@@ -1233,7 +1233,7 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 	
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		//url: "http://192.168.11.172:8447/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
 	}).then(function(result){
 		 if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
@@ -1532,7 +1532,7 @@ function viewAlertHistory(alertId){
 	$("#alertManagementPopupBody1").html(spinner)
 	$.ajax({
 		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://192.168.11.172:8447/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
 	}).then(function(result){
 		if(result != null && result.length> 0)
 		{
