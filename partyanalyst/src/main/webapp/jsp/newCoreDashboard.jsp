@@ -80,7 +80,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">
+          <a class="navbar-brand">
           	<span class="logo"></span>
             <span class="logoText">TDP PARTY</span>
           </a>
@@ -128,10 +128,10 @@
 						<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
-						<li>
+						<li class="exceptionalReportsBlockCls">
                         	<label class="m_top10"><a target="_blank" href="exceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Exceptional Reports</a></label>
                         </li>
-						<li>
+						<li class="exceptionalReportsBlockCls">
                         	<label class="m_top10"><a target="_blank" href="consolidatedExceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Consolidated view of Exceptional Reports</a></label>
                         </li>
 						<!--<li>
@@ -201,7 +201,7 @@
 <div class="container m_top20">
 	<div class="row">
 		<!-- Alerts Start -->
-	 	<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock" expand-block="alerts">
+		<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock" expand-block="alerts">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -238,7 +238,7 @@
 								<li role="presentation" class="text-capital active"><a href="#impactScope" aria-controls="impactScope" role="tab" data-toggle="tab">Impact Scope </a></li>
 								<li role="presentation"   class="text-capital"><a href="#alertStatus" aria-controls="alertStatus" role="tab" data-toggle="tab">Alert Status</a></li>
 							  </ul>
-								<button type="button" class="btn btn-success getAlertDetailsCls" onClick="getAlertDtlsBasedOnSelection('click');">Get Details</button>
+								
 							 
 							</div>
 							<div class="col-md-6 col-xs-12 col-sm-6 pad_left0 pad_right4">
@@ -877,7 +877,7 @@
 	</div>
 	<div class="row">
 		 <!-----------News Letters Start----------->
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="newsLetters">
+		<div class="col-md-6 col-xs-12 col-sm-12 wordCloudBlock" expand-block="newsLetters">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -1875,7 +1875,7 @@
 		</div>
 	<!-- Electronic Media End -->
 		<!-- Praja Sankalpam Yatra News  Start --> 
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="prajaSankaplaYatra">
+		<div class="col-md-6 col-xs-12 col-sm-12 prajaSankaplaYatraBlock" expand-block="prajaSankaplaYatra">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -1986,7 +1986,7 @@
 	</div>
 	<div class="row">
 		<!-- EM Coverage Time start -->
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="EMCoverageTime">
+		<div class="col-md-6 col-xs-12 col-sm-12 EMCoverageTimeBlock" expand-block="EMCoverageTime">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -3184,7 +3184,7 @@
 	<div class="row">
 		
 		<!-- Kaizala  Start --> 
-		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="kaizala">
+		<div class="col-md-6 col-xs-12 col-sm-12 kaizalaBlock" expand-block="kaizala">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
 					<div class="row">
@@ -6331,13 +6331,13 @@ $(document).on("click",".globalDateChange",function(){
 	var type = $(this).attr("attr_type");
 	 var URLArray = windowUrl.split('/');
 	 var fnlURL = URLArray[parseInt(URLArray.length) - 1].replace('.action','');
-	 if(fnlURL =="partyAndLeaderActivitiesAndPerformanceTracking"){
+	 if(fnlURL =="partyAndLeaderActivitiesAndPerformanceTracking" || fnlURL =="partyAndLeaderActivitiesAndPerformanceTracking#"){
 		  globalPrintMediaCalls(type);
 		  globalToursCalls(type);
 		  globalPressMeetMediaCalls(type);
 		  globalPrajaSankalpaYatraCalls(type)
 		  globalMeetingsCalls(type);
-	  }else if(fnlURL =="partyLeadersDashboardAction"){
+	  }else if(fnlURL =="partyLeadersDashboardAction" || fnlURL =="partyLeadersDashboardAction#"){
 		  globalPrintMediaCalls(type);
 		  globalToursCalls(type);
 		  globalPressMeetMediaCalls(type);
@@ -6466,31 +6466,93 @@ var globalImages;
 		//$(".eventsheader").hide();
 		$('[data-toggle="tooltip"]').tooltip();
 		//stateLevelCampDetails();
-		getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();
 		getCadreEnrolmentYears();
-		getBoothCadreEnrolmentYears();
+		
 	});
 	getLoggedInUserStructure();
 	onLoadCalls();
 	function onLoadCalls(){
 		getUserTypeWiseBoothCommitteesInchargeDetails();
-		//Preemeet
-		preemeeetOnloadCalls();
-		onLoadEmCoverageTimeCalls();
-		onloadPrajaSankaplaYatraCalls();
-		onloadKaizalaCalls1();
+		
 		//news please dont remove
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
-		var URLArr = windowUrl.split('/');
+	   var URLArr = windowUrl.split('/');
 		//console.log(URLArr[parseInt(URLArr.length) - 1].replace('.action',''));
-	 var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
-	  if(finalURL =="dailyMonthlyPartyActivities")
+	   var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
+	
+	  
+	  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking" || finalURL =="partyAndLeaderActivitiesAndPerformanceTracking#")
 	  {
-		  
+		$(".exceptionalReportsBlockCls").hide();    
+	    $("#mainHeadinId").html("KALA VENKATA RAO");
+		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.pressmeetBlock,.cadreInsuranceBlock").remove();
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
+		$(".specialMeetingSeeting").closest(".panelBlock").hide();
+		onloadKaizalaCalls1();
+		getRescentArticleTime();
+		getToursBasicOverviewDtls();
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		getBoothCadreEnrolmentYears();
+		
+		getPartySpecialMeetingsMainTypeOverview(0);
+	  }else  if(finalURL =="partyLeadersDashboardAction" || finalURL =="partyLeadersDashboardAction#")//finalURL =="coreDashboardAction1"
+	  {
+		 $(".exceptionalReportsBlockCls").hide(); 
+		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.pressmeetBlock,.cadreInsuranceBlock").remove();
+		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
+		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
+		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
+		$(".dateRangePickerClsForNews").toggleClass("hide");
+		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
+		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
+		$(".specialMeetingSeeting").closest(".panelBlock").hide();
+		onloadKaizalaCalls1();
+		getRescentArticleTime();
+		getToursBasicOverviewDtls();
+		getPartyMeetingTypeByPartyMeetingMainType();
+		getStateLevelMeetingsByMeetingType();
+		//getNewsBasicCounts();
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		getBoothCadreEnrolmentYears();
+		//getAlertOverviewDetails();
+		//getAlertDtlsBasedOnSelection('default');
+	  }else if(finalURL == "govtPartyCoreDashboardAction" || finalURL == "govtPartyCoreDashboardAction#")
+	  {
+		  $(".exceptionalReportsBlockCls").hide();    
+		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.kaizalaBlock,.pressmeetBlock,.boothCommitteesBlock").remove();
+		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
+		globalUserAccessLevelId = 2;
+		globalUserAccessLevelValues.push(1);
+		globalActivityMemberId=44;
+		globalUserTypeId="2";//ara
+		commonNewsBasicCalls();
+		getAllNewsPapers();
+		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
+		getAllTvChannels();
+		getRescentNewsBulletinTime();
+	  }else if(finalURL =="dailyMonthlyPartyActivities" || finalURL =="dailyMonthlyPartyActivities#")
+	  {
+		$(".exceptionalReportsBlockCls").show();  
 		$(".nominatedSideMenuCls").hide();
 		$(".newNominatedPostBlock").remove();
 		//ALL BLOCKS
 		$("#mainHeadinId").html("KALA VENKATA RAO");
+		
+		preemeeetOnloadCalls();
+		onLoadEmCoverageTimeCalls();
+		onloadPrajaSankaplaYatraCalls();
+		onloadKaizalaCalls1();
+		getBoothCadreEnrolmentYears();
 		getRescentArticleTime();		
 		//committeeBasicCall();
 		
@@ -6554,64 +6616,18 @@ var globalImages;
 		$("#attendanceId").html('TODAY ('+datStr+')');
 		
 	  }
-	  else  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking")
+	  else if(finalURL =="partyC0reDashboardAction" || finalURL =="partyC0reDashboardAction#")
 	  {
-	    $("#mainHeadinId").html("KALA VENKATA RAO");
-		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu,.newNominatedPostBlock").remove();
-		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
-		$(".dateRangePickerClsForNews").toggleClass("hide");
-		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
-		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
-		$(".specialMeetingSeeting").closest(".panelBlock").hide();
-		getRescentArticleTime();
-		getToursBasicOverviewDtls();
-		getPartyMeetingTypeByPartyMeetingMainType();
-		getStateLevelMeetingsByMeetingType();
-		//getNewsBasicCounts();
-		commonNewsBasicCalls();
-		getAllNewsPapers();
-		
-		getPartySpecialMeetingsMainTypeOverview(0);
-	  }else  if(finalURL =="partyLeadersDashboardAction")//finalURL =="coreDashboardAction1"
-	  {
-		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu,.newNominatedPostBlock").remove();
-		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
-		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
-		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
-		$(".dateRangePickerClsForNews").toggleClass("hide");
-		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
-		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
-		$(".specialMeetingSeeting").closest(".panelBlock").hide();
-		getRescentArticleTime();
-		getToursBasicOverviewDtls();
-		getPartyMeetingTypeByPartyMeetingMainType();
-		getStateLevelMeetingsByMeetingType();
-		//getNewsBasicCounts();
-		commonNewsBasicCalls();
-		getAllNewsPapers();
-		//getAlertOverviewDetails();
-		//getAlertDtlsBasedOnSelection('default');
-	  }else if(finalURL == "govtPartyCoreDashboardAction")
-	  {
-		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock").remove();
-		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
-		globalUserAccessLevelId = 2;
-		globalUserAccessLevelValues.push(1);
-		globalActivityMemberId=44;
-		globalUserTypeId="2";//ara
-		commonNewsBasicCalls();
-		getAllNewsPapers();
-		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
-		getAllTvChannels();
-		getRescentNewsBulletinTime();
-	  }else if(finalURL =="partyC0reDashboardAction")
-	  {
+		 $(".exceptionalReportsBlockCls").show();     
 		//ALL BLOCKS
 		$(".nominatedSideMenuCls").show();
 		$("#mainHeadinId").html("KALA VENKATA RAO");
-		getRescentArticleTime();		
+		getRescentArticleTime();	
+		preemeeetOnloadCalls();
+		onLoadEmCoverageTimeCalls();
+		onloadPrajaSankaplaYatraCalls();
+		onloadKaizalaCalls1();
+		getBoothCadreEnrolmentYears();	
 		//committeeBasicCall();
 		
 		//training program call
@@ -6676,8 +6692,14 @@ var globalImages;
 		
 	  }
 	  else{
+		  $(".exceptionalReportsBlockCls").show();    
 		   $("#mainHeadinId").html("KALA VENKATA RAO");
 			//ALL BLOCKS
+			preemeeetOnloadCalls();
+			onLoadEmCoverageTimeCalls();
+			onloadPrajaSankaplaYatraCalls();
+			onloadKaizalaCalls1();
+			getBoothCadreEnrolmentYears();
 			getRescentArticleTime();		
 			//committeeBasicCall();
 			

@@ -186,7 +186,7 @@ onloadTourCalls();
 						str+='<table class="table details-overview-tour">';
 							str+='<thead>';
 								str+='<tr>';
-								   str+='<th>State</th>';
+								   //str+='<th>State</th>';
 							    	str+='<th>District</th>';
 									str+='<th>Parliament</th>';
 									str+='<th>Constituency</th>';
@@ -198,11 +198,11 @@ onloadTourCalls();
 							str+='<tbody>';
 								for(var i in result.subList1){
 									str+='<tr>';
-										if(result.subList1[i].addressVO.stateName !=null && result.subList1[i].addressVO.stateName.trim().  length>0){
+										/*if(result.subList1[i].addressVO.stateName !=null && result.subList1[i].addressVO.stateName.trim().  length>0){
 											str+='<td>'+result.subList1[i].addressVO.stateName+'</td>';
 										}else{
 											str+='<td> - </td>';
-										}
+										}*/
 										if(result.subList1[i].addressVO.districtName !=null && result.subList1[i].addressVO.districtName.trim().  length>0){
 											str+='<td>'+result.subList1[i].addressVO.districtName+'</td>';
 										}else{
