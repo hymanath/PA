@@ -207,7 +207,7 @@ function buildOverAllAlertsDetails(result){
 							//for(var i in result){
 								str+='<tr style="text-align:center;">';
 									if(result[1].name == "Last Month Alerts"){
-										str+='<td>Last&nbsp;Month&nbsp;Alerts</td>';
+										str+='<td>Last&nbsp;Month<br/>Alerts</td>';
 									}
 									str+='<td>'+result[1].totalAlert+'</td>';
 									var compPerc=0;

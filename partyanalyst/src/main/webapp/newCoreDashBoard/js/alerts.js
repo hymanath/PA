@@ -210,14 +210,14 @@
 		},
 		ranges: {
 			'Today': [moment(), moment()],
-           'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-		   'Last 6 Months': [moment().subtract(6, 'month'), moment()],
-		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-           'This Month': [moment().startOf('month'), moment().endOf('month')],
-           'This Year': [moment().startOf('Year'), moment()],
-		   'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()],
+			'YesterDay': [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
+			'This Month': [moment().startOf('month'), moment().endOf('month')],
+		    'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		    'Last 3 Months': [moment().subtract(3, 'month'), moment()],
+		    'Last 6 Months': [moment().subtract(6, 'month'), moment()],
+			'This Year': [moment().startOf('Year'), moment()],
+		    'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+            'Overall' : [moment().subtract(30, 'years').startOf('year'), moment()]
         }
 	})
 	
