@@ -91,6 +91,7 @@ public class IdNameVO implements Serializable{
 	private Long fiveToTenCount = 0L;
 	private Long tenToTwentyCount = 0L;
 	private Long changedCount = 0L;
+	private String todayPerc;
 	
 	
 	public IdNameVO() {
@@ -559,6 +560,12 @@ public class IdNameVO implements Serializable{
 	}
 	public String getLocationName() {
 		return locationName;
+	}
+	public String getTodayPerc() {
+		return todayPerc;
+	}
+	public void setTodayPerc(String todayPerc) {
+		this.todayPerc = todayPerc;
 	}
 	
 }

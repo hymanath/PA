@@ -345,6 +345,30 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setTotl(new BigDecimal(vo.getCount()*100.0/totalCount).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				else
 	 	    					vo.setTotl("0.00");
+	 	    				
+	 	    				if(vo.getOrderNo() != null && Double.valueOf(vo.getOrderNo()) > 0 && vo.getCount() != null && Double.valueOf(vo.getCount()) > 0){
+	 	    					vo.setTodayPerc(new BigDecimal(Double.valueOf(vo.getCount())*100.0/Double.valueOf(vo.getOrderNo())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				}else{
+	 	    					vo.setTodayPerc("0.00");
+	 	    				}
+	 	    				vo.setTodayPerc(String.valueOf(100.00 - Double.valueOf(vo.getTodayPerc())));
+	 	    				if(vo.getName() != null && (vo.getName().trim().equalsIgnoreCase("0") || vo.getName().trim().equalsIgnoreCase("Below 1") || vo.getName().trim().equalsIgnoreCase("1-5") || vo.getName().trim().equalsIgnoreCase("5-10") || vo.getName().trim().equalsIgnoreCase("10-20"))){
+	 	    					if (vo.getTodayPerc() != null && vo.getTodayPerc().contains("-")) {
+									vo.setAssetType("Decrement");
+									String[] Arr = vo.getTodayPerc().split("-");
+									vo.setTodayPerc(Arr[1]);
+								} else {
+									vo.setAssetType("Increment");
+								}
+	 	    				}else{
+	 	    					if (vo.getTodayPerc() != null && vo.getTodayPerc().contains("-")) {
+									vo.setAssetType("Increment");
+									String[] Arr = vo.getTodayPerc().split("-");
+									vo.setTodayPerc(Arr[1]);
+								} else {
+									vo.setAssetType("Decrement");
+								}
+	 	    				}
 						}
 	 	    		}
 	 	    		
@@ -602,6 +626,70 @@ public class NREGSTCSService implements INREGSTCSService{
 					}
 	 	    	}
 	 	    	
+	 	    	if(finalVO != null){
+	 	    		//Setting Red Percentage
+	 	    		if(finalVO.getMandalsInRed() != null && Double.valueOf(finalVO.getMandalsInRed()) > 0 && finalVO.getPreviousRedMandals() != null && Double.valueOf(finalVO.getPreviousRedMandals()) > 0){
+	 	    			finalVO.setMandalRedPerc(new BigDecimal(Double.valueOf(finalVO.getMandalsInRed())*100.0/Double.valueOf(finalVO.getPreviousRedMandals())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+    				}else{
+    					finalVO.setMandalRedPerc("0.00");
+    				}
+	 	    		finalVO.setMandalRedPerc(String.valueOf(100.00 - Double.valueOf(finalVO.getMandalRedPerc())));
+    				if (finalVO.getMandalRedPerc() != null && finalVO.getMandalRedPerc().contains("-")) {
+    					finalVO.setRedType("Decrement");
+    					String[] Arr = finalVO.getMandalRedPerc().split("-");
+    					finalVO.setMandalRedPerc(Arr[1]);
+					} else {
+						finalVO.setRedType("Increment");
+					}
+    				
+    				//Setting Orange Percentage
+    				if(finalVO.getMandalsInOrange() != null && Double.valueOf(finalVO.getMandalsInOrange()) > 0 && finalVO.getPreviousOrangeMandals() != null && Double.valueOf(finalVO.getPreviousOrangeMandals()) > 0){
+	 	    			finalVO.setMandalOrangePerc(new BigDecimal(Double.valueOf(finalVO.getMandalsInOrange())*100.0/Double.valueOf(finalVO.getPreviousOrangeMandals())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+    				}else{
+    					finalVO.setMandalOrangePerc("0.00");
+    				}
+	 	    		finalVO.setMandalOrangePerc(String.valueOf(100.00 - Double.valueOf(finalVO.getMandalOrangePerc())));
+	 	    		if (finalVO.getMandalOrangePerc() != null && finalVO.getMandalOrangePerc().contains("-")) {
+    					finalVO.setOrangeType("Increment");
+    					String[] Arr = finalVO.getMandalOrangePerc().split("-");
+    					finalVO.setMandalOrangePerc(Arr[1]);
+					} else {
+						finalVO.setOrangeType("Decrement");
+					}
+	 	    		
+	 	    		//Setting Green Percentage
+	 	    		if(finalVO.getMandalsInGreen() != null && Double.valueOf(finalVO.getMandalsInGreen()) > 0 && finalVO.getPreviousGreenMandals() != null && Double.valueOf(finalVO.getPreviousGreenMandals()) > 0){
+	 	    			finalVO.setMandalGreenPerc(new BigDecimal(Double.valueOf(finalVO.getMandalsInGreen())*100.0/Double.valueOf(finalVO.getPreviousGreenMandals())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}else{
+						finalVO.setMandalGreenPerc("0.00");
+					}
+	 	    		finalVO.setMandalGreenPerc(String.valueOf(100.00 - Double.valueOf(finalVO.getMandalGreenPerc())));
+	 	    		if (finalVO.getMandalGreenPerc() != null && finalVO.getMandalGreenPerc().contains("-")) {
+						finalVO.setGreenType("Increment");
+						String[] Arr = finalVO.getMandalGreenPerc().split("-");
+						finalVO.setMandalGreenPerc(Arr[1]);
+					} else {
+						finalVO.setGreenType("Decrement");
+					}
+	 	    		
+	 	    		//Setting Gold Percentage
+	 	    		if(finalVO.getMandalsInGold() != null && Double.valueOf(finalVO.getMandalsInGold()) > 0 && finalVO.getPreviousGoldMandals() != null && Double.valueOf(finalVO.getPreviousGoldMandals()) > 0){
+	 	    			finalVO.setMandalGoldPerc(new BigDecimal(Double.valueOf(finalVO.getMandalsInGold())*100.0/Double.valueOf(finalVO.getPreviousGoldMandals())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					}else{
+						finalVO.setMandalGoldPerc("0.00");
+					}
+	 	    		finalVO.setMandalGoldPerc(String.valueOf(100.00 - Double.valueOf(finalVO.getMandalGoldPerc())));
+	 	    		if (finalVO.getMandalGoldPerc() != null && finalVO.getMandalGoldPerc().contains("-")) {
+						finalVO.setGoldType("Increment");
+						String[] Arr = finalVO.getMandalGoldPerc().split("-");
+						finalVO.setMandalGoldPerc(Arr[1]);
+					} else {
+						finalVO.setGoldType("Decrement");
+					}
+	 	    	}
+	 	    	
+	 	    	
+	 	    	
 	 	    	if(presentList != null && !presentList.isEmpty()){
 	 	    		for (Object[] obj : presentList) {
 	 	    			String mandalStr = obj[0] != null ? obj[0].toString():"0";
@@ -635,13 +723,13 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    		if(mandalsList != null && !mandalsList.isEmpty()){
 		 	    		for (String mandlStr : mandalsList) {
 							 String percValue = mandPercMap.get(mandlStr);
-							 if(Double.valueOf(percValue)  < 60)
+							 if(Double.valueOf(percValue)  < 60){
 								 vo.setMandalsInRed(vo.getMandalsInRed()+1L);
-	    					 else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90)
+							 }else if(Double.valueOf(percValue)  >=60 && Double.valueOf(percValue) <90){
 	    						 vo.setMandalsInOrange(vo.getMandalsInOrange()+1L);
-	    					 else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100)
-	    						 vo.setMandalsInGreen(vo.getMandalsInGreen()+1L);
-	    					 else if(Double.valueOf(percValue)  >=100)
+							 }else if(Double.valueOf(percValue)  >=90 && Double.valueOf(percValue) <100){
+								 vo.setMandalsInGreen(vo.getMandalsInGreen()+1L);
+							 }else if(Double.valueOf(percValue)  >=100)
 	    						 vo.setMandalsInGold(vo.getMandalsInGold()+1L);
 	    				}
 		 	    	}

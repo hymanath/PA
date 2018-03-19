@@ -2930,24 +2930,48 @@ function buildNregasOverViewBlock(result,projectDivId,menuLocationType,menuLocat
 						str1+=' <td>'+result.previousGoldMandals+'</td>';
 					str1+='</tr>';
 					str1+='<tr>';
-						str1+='<th>As Of Today</th>';
+						str1+='<th>As&nbsp;Of&nbsp;Today</th>';
 						if(result.mandalsInRed != null && result.mandalsInRed>0){
-						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+redClor+' style="cursor:pointer;">'+result.mandalsInRed+'</td>';
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+redClor+' style="cursor:pointer;">'+result.mandalsInRed+'&nbsp;';
+							if(result.redType == "Decrement"){
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalRedPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>&nbsp;)';
+							}else{
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalRedPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>&nbsp;)';
+							}
+							str1+='</td>';
 						}else{
 							str1+=' <td>'+result.mandalsInRed+'</td>';
 						}
 						if(result.mandalsInOrange != null && result.mandalsInOrange>0){
-						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+oragneClor+' style="cursor:pointer;">'+result.mandalsInOrange+'</td>';
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+oragneClor+' style="cursor:pointer;">'+result.mandalsInOrange+'&nbsp;';
+							if(result.orangeType == "Increment"){
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalOrangePerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>&nbsp;)';
+							}else{
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalOrangePerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>&nbsp;)';
+							}
+							str1+='</td>';
 						}else{
 							str1+=' <td>'+result.mandalsInOrange+'</td>';
 						}
 						if(result.mandalsInGreen != null && result.mandalsInGreen>0){
-						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+greenColor+' style="cursor:pointer;">'+result.mandalsInGreen+'</td>';
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+greenColor+' style="cursor:pointer;">'+result.mandalsInGreen+'&nbsp;';
+							if(result.greenType == "Increment"){
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalGreenPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>&nbsp;)';
+							}else{
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalGreenPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>&nbsp;)';
+							}
+							str1+='</td>';
 						}else{
 							str1+=' <td>'+result.mandalsInGreen+'</td>';
 						}
 						if(result.mandalsInGold != null && result.mandalsInGold>0){
-						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+goldColor+' style="cursor:pointer;" >'+result.mandalsInGold+'</td>';
+						str1+=' <td class="commentsBlockCls" attr_divName ='+projectDivId+' attr_location_Type ='+menuLocationType+' attr_loaction_id ='+menuLocationId+' attr_color ='+goldColor+' style="cursor:pointer;" >'+result.mandalsInGold+'&nbsp;';
+							if(result.goldType == "Increment"){
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalGoldPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>&nbsp;)';
+							}else{
+								str1+='<span>(&nbsp;'+parseFloat(result.mandalGoldPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>&nbsp;)';
+							}
+							str1+='</td>';
 						}else{
 							str1+=' <td>'+result.mandalsInGold+'</td>';
 						}
@@ -3058,18 +3082,32 @@ function buildLabrBudgetExpBlock(result,projectDivId,menuLocationType,menuLocati
 						 }
 					  str+='</tr>';
 					  str+=' <tr>';
-						str+=' <td><b>As On Nov 30th</b></td>';
+						str+=' <td><b>As&nbsp;On&nbsp;Nov&nbsp;30th</b></td>';
 						for(var i in result){
 							str+='<td>'+result[i].orderNo+'</td>';
 						}
 					str+='</tr>';
 					str+=' <tr>';
-						str+=' <td>As Of Today</td>';//As Of Now
+						str+=' <td><b>As&nbsp;Of&nbsp;Today</b></td>';//As Of Now
 						for(var i in result){
 							if(result[i].count != null && result[i].count != 0){
-								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'" attr_radioType="'+radioType+'">'+result[i].count+'</td>';
+								str+='<td class="cuntCls" style="cursor:pointer;" attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'" attr_radioType="'+radioType+'" nowrap>'+result[i].count+'&nbsp;';
+								if(result[i].name != null && (result[i].name == "0" || result[i].name == "Below 1" || result[i].name == "1-5" || result[i].name == "5-10" || result[i].name == "10-20")){
+									if(result[i].assetType == "Decrement"){
+										str+='<span>(&nbsp;'+parseFloat(result[i].todayPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-down text-success" aria-hidden="true"></i></span>&nbsp;)';
+									}else{
+										str+='<span>(&nbsp;'+parseFloat(result[i].todayPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-up text-danger" aria-hidden="true"></i></span>&nbsp;)';
+									}
+								}else{
+									if(result[i].assetType == "Increment"){
+										str+='<span>(&nbsp;'+parseFloat(result[i].todayPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>&nbsp;)';
+									}else{
+										str+='<span>(&nbsp;'+parseFloat(result[i].todayPerc).toFixed(2)+'&nbsp;%&nbsp;<i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>&nbsp;)';
+									}
+								}
+								str+='</td>';
 							}else{
-								str+='<td attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'">'+result[i].count+'</td>';
+								str+='<td attr_range="'+result[i].name+'" attr_location_type="'+menuLocationType+'" attr_loaction_id="'+menuLocationId+'" nowrap>'+result[i].count+'</td>';
 							}
 						}
 					str+='</tr>';
