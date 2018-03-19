@@ -1393,4 +1393,5 @@ public interface IConstants {
 	public static final Long PARTY_TOUR_TYPE_ID = 1l;
 	public static final String[] JALAVANI_MONTH_NAMES = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
 	public static final List<Long> JALAVANI_ALERT_STATUS_IDS   = Arrays.asList(2l,3l,11l,12l,4l,13l,10l,6l,7l,9l,8l);
+	public static final List<String> JALAVANI_ALERT_STATUS_NAMES=Arrays.asList("NOTIFIED","ACTION IN PROGRESS","REOPEN","CLOSED","COMPLETED","PROPOSAL","REJOINDER","ACTION NOT REQUIRED","DUPLICATE","WRONGLY MAPPED DESIGNATION","WRONGLY MAPPED DEPARTMENT");
 }
