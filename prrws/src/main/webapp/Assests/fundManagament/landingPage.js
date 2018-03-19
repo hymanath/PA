@@ -197,7 +197,10 @@ function buildFavouriteComponentsResult(result) {
 						str+='<div class="block-footer" style="border-top: 1px solid lightgrey;padding-top: 5px;padding-bottom: 5px;">';
 							if(result[i].name == 'NEWS'){
 								str+='<a class="pull-right" href="'+result[i].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
-							}else{
+							}else if(result[i].name == 'JALAVANI'){
+								str+='<a class="pull-right" href="jalavaniAlertsDashBoard" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
+							}
+							else{
 								str+='<i class="fa fa-star starcolorChange '+componentNameWithoutSpace+'Color" attr_url="'+result[i].url
 							+'" attr_full_block_name="'+compnentName+'" attr_color_name="green" attr_block_name="'+componentNameWithoutSpace+'" aria-hidden="true"></i>';
 							str+='<a class="pull-right" href="'+result[i].url+'" target="_blank" style="font-size: 12px;"><i class="fa fa-external-link-square" aria-hidden="true"></i>Get More Details...</a>';
@@ -424,7 +427,7 @@ function onloadCallToGetAllBlockAchievent () {
 	getSBPaymentsAbstract();//SWATCH BHARATH PAYMENTS
 	getNtrJalaSiriLvlWiseData('Ntr Jalasiri','state',"0");//ntr jalasiri
 	getRDAbstractDataByType('WaterBudget','state',"0");//Water Budget
-	getLocationWiseAlertStatusCounts();//jalavani Old//Teja
+	//getLocationWiseAlertStatusCounts();//jalavani Old//Teja
 	getJalavaniDashBoardOverview();//jalavani //Teja
 	getAssetInfoBetweenDates();//assets
 	getKeyPerformanceIndicatorsInfo();//key performance
@@ -1357,14 +1360,20 @@ function getJalavaniDashBoardOverview(){
 		//if(result !=null){
 			var notifiedAct = 0;
 			var inProgressAct = 0;
+			var notifiedPerc = 10;
+			var inProgressPerc = 10;
 				for(var i in result.list){
 					if(result.list[i].statusId==2){
 						notifiedAct =result.list[i].statusCount;
+						notifiedPerc =result.list[i].statusPerc;
 					}else if(result.list[i].statusId==3){
 						inProgressAct =result.list[i].statusCount;
+						inProgressPerc =result.list[i].statusPerc;
 					}
 				}
-				$(".JALAVANIAllCls").html(notifiedAct+' / '+inProgressAct);
+				//$(".JALAVANIAllCls").html(jalavaniData(notifiedAct,inProgressAct));
+				//$(".JALAVANIAllCls").html(+notifiedAct+'20%'' / '+inProgressAct+'20%');
+				$(".JALAVANIAllCls").html(""+notifiedAct+"<small style='color:red;position: relative;top: 1px;left: 1px;font-size: 16px !important;'>("+notifiedPerc+" %)</small> / "+inProgressAct+"<small style='color:red;position: relative;top: 1px;left: 1px;font-size: 16px !important;'>("+inProgressPerc+" %)</small>");
 		//}
 	});
 }
@@ -2549,16 +2558,20 @@ function jalavaniData(notifiedValue,inProgressValue)
 {
 	var str='';
 	str+='<div class="row" >';
-		str+='<div class="col-sm-12 text-right">';
-			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:15px;">NOTIFIED - </span><b>'+notifiedValue+'</b></h5>';
-			//str+='</h5>';
-				
+		str+='<div class="col-sm-8 text-right">';
+			str+='<h3 style="margin-top: 0px;font-size:18px;">'+notifiedValue+'</h3>';
+			//str+='<p style="font-size:13px;">NOTIFIED</p>';
 		str+='</div>';
-		str+='<div class="col-sm-12 text-right m_top10">';
-			str+='<h5 style="margin-top: 0px;"><span class="m_top5" style="font-size:15px;">IN&nbsp;PROGRESS - </span><b>'+inProgressValue+'</b></h5>';
+		str+='<div class="col-sm-1 text-right">';
+			str+='<h3 style="font-size:30px;">/</h3>';
 		str+='</div>';
-	str+='</div>';		
+		str+='<div class="col-sm-3 text-right">';
+			str+='<h3 class="" style="margin-top: 0px;font-size:15px;">'+inProgressValue+'</h3>';
+			//str+='<p style="font-size:13px;">IN&nbsp;PROGRESS</p>';
+		str+='</div>';
+	str+='</div>';				
 	return str;
+	
 }
 
 function getPRBioMetricDashboardOverViewDtls(){
