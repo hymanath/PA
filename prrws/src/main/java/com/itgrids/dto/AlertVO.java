@@ -30,7 +30,7 @@ public class AlertVO implements java.io.Serializable{
 	private String fileIdList;
 	private Double statusPercent = 0.0d;
 	private String assignedDate;
-	private Double percentage = 0.0d,posPerc=0.0,negPerc=0.0,socPerc=0.0;
+	private Double percentage = 0.0d,posPerc=0.0,negPerc=0.0,socPerc=0.0,statusPerc=0.0;
 	private Long alertCnt = 0l;
 	private String createdTime;
     private String year;
@@ -49,6 +49,13 @@ public class AlertVO implements java.io.Serializable{
 	private List<AlertVO> subList2 = new ArrayList<AlertVO>(0);
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	
+	
+	public Double getStatusPerc() {
+		return statusPerc;
+	}
+	public void setStatusPerc(Double statusPerc) {
+		this.statusPerc = statusPerc;
+	}
 	public String getMonthType() {
 		return monthType;
 	}
