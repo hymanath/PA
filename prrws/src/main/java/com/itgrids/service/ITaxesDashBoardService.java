@@ -3,6 +3,7 @@ package com.itgrids.service;
 import java.util.List;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
 import com.itgrids.dto.VehicleTrackingVO;
@@ -16,4 +17,5 @@ public interface ITaxesDashBoardService {
 	
 	public List<PanchayatTaxVO> getPanchyatTaxDashboardFilterWiseDetails(panchayatTaxInputVO inputVO);
 	public VehicleTrackingVO getVehicletrackingDetails();
+	public List<LocationAddressVO> getLocationIdAndName(InputVO inputVO);
 }

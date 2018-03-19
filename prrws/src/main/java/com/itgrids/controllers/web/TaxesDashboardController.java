@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
 import com.itgrids.dto.VehicleTrackingVO;
@@ -70,4 +71,12 @@ public class TaxesDashboardController {
 	   VehicleTrackingVO  reusltVO = taxesDashBoardService.getVehicletrackingDetails();
 	   return reusltVO;
    }
+   
+   @RequestMapping(value = "/getLocationIdAndName", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE,consumes = MediaType.APPLICATION_JSON_VALUE)
+   public @ResponseBody  List<LocationAddressVO>  getLocationIdAndName(@RequestBody InputVO inputVo){
+	   List<LocationAddressVO> returnList =  taxesDashBoardService.getLocationIdAndName(inputVo);
+	   return returnList;
+   }
+   
+   
 }

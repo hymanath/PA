@@ -13,7 +13,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.itgrids.dao.IConstituencyDAO;
+import com.itgrids.dao.IDistrictDAO;
+import com.itgrids.dao.ITehsilConstituencyDAO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.PanchayatTaxVO;
 import com.itgrids.dto.TaxesVO;
 import com.itgrids.dto.VehicleTrackingVO;
@@ -39,6 +43,12 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	private CommonMethodsUtilService commonMethodsUtilService;
 	@Autowired
 	private IWebserviceHandlerService webserviceHandlerService;
+	@Autowired
+	private IDistrictDAO  districtDAO;
+	@Autowired
+	private IConstituencyDAO  constituencyDAO;
+	@Autowired
+	private  ITehsilConstituencyDAO tehsilConstituencyDAO;
 	
 	/*
 	 * Author : Nandhini.k,
@@ -1005,4 +1015,45 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 		}
 		return returnVO;
 	}
+	
+	/*
+	 * Author : Harika,
+	 * Description : getLocationIdAndName,
+	 * Date : 19/03/2018
+	 */
+	
+	public List<LocationAddressVO> getLocationIdAndName(InputVO inputVO){
+		List<LocationAddressVO> returnList = new ArrayList<LocationAddressVO>(0);
+		try{
+			List<Object[]> locationList = null;
+			if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("district")){
+				locationList = districtDAO.getDistrictIdAndName(inputVO.getLocationId());
+			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("constituency")){
+				locationList = constituencyDAO.getConstituencyDetails1(inputVO.getLocationId());
+			}else if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+				locationList = tehsilConstituencyDAO.getTehsilIdAndName1(inputVO.getLocationId());
+			}
+			if(locationList != null && !locationList.isEmpty()){
+				for(Object[] param : locationList){
+					LocationAddressVO vo = new LocationAddressVO();
+					 vo.setDistrictId(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					 vo.setDistrictName(param[1] != null ? param[1].toString():"0");
+				     if(inputVO.getLocationType() != null && (inputVO.getLocationType().trim().equalsIgnoreCase("constituency") || inputVO.getLocationType().trim().equalsIgnoreCase("mandal"))){
+					     vo.setConstituencyId(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+					     vo.setConstituencyName(param[3] != null ? param[3].toString():"0");  
+				     } 
+				     if(inputVO.getLocationType() != null && inputVO.getLocationType().trim().equalsIgnoreCase("mandal")){
+				    	 vo.setTehsilId(Long.valueOf(param[4] != null ? param[4].toString():"0"));
+						 vo.setTehsilName(param[5] != null ? param[5].toString():"0");
+					}
+					returnList.add(vo);
+				}
+			}
+		} catch (Exception e){
+			LOG.error(" Exception raised at getLocationIdAndName in TaxesDashBoardService service", e);
+		}
+		return returnList;
+		
+	}
+	
 }

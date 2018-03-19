@@ -12,4 +12,5 @@ public interface ITehsilConstituencyDAO extends GenericDao<TehsilConstituency,Lo
 
 	public List<Object[]> getNonFundedLocations(Set<Long> keysList,Long searchLevelId,Long searchScopeId,List<Long> searchScopeValuesList);
 	public List<Object[]> getConstituencyOfTehsil(Long tehsilId);
+	public List<Object[]> getTehsilIdAndName1(Long tehsilId);
 }
