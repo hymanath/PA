@@ -424,7 +424,8 @@ function onloadCallToGetAllBlockAchievent () {
 	getSBPaymentsAbstract();//SWATCH BHARATH PAYMENTS
 	getNtrJalaSiriLvlWiseData('Ntr Jalasiri','state',"0");//ntr jalasiri
 	getRDAbstractDataByType('WaterBudget','state',"0");//Water Budget
-	getLocationWiseAlertStatusCounts();//jalavani
+	getLocationWiseAlertStatusCounts();//jalavani Old//Teja
+	getJalavaniDashBoardOverview();//jalavani //Teja
 	getAssetInfoBetweenDates();//assets
 	getKeyPerformanceIndicatorsInfo();//key performance
 	getWaterSourceDeatils2();//water source
@@ -1294,7 +1295,7 @@ function getNtrJalaSiriLvlWiseData(type,locType,locId)
 		}
 	});
 }
-function getLocationWiseAlertStatusCounts()
+/* function getLocationWiseAlertStatusCounts()
 {
 	$(".JALAVANIAllCls").html(spinner);
 	var json = {
@@ -1333,6 +1334,38 @@ function getLocationWiseAlertStatusCounts()
 			//$(".JALAVANIAllCls").html(jalavaniData(notifiedAct,inProgressAct));
 			$(".JALAVANIAllCls").html(notifiedAct+' / '+inProgressAct);
 		}
+	});
+} */
+var jalavaniStartDate = moment().startOf('month').format("DD-MM-YYYY");
+var jalavaniEndDate = moment().format("DD-MM-YYYY");
+function getJalavaniDashBoardOverview(){
+	$(".JALAVANIAllCls").html(spinner);
+	var json={
+		fromDateStr:jalavaniStartDate,
+		toDateStr:jalavaniEndDate
+	}
+	$.ajax({                
+	type:'POST',    
+	url: 'getJalavaniDashBoardOverview',
+	dataType: 'json',
+	data : JSON.stringify(json),
+	beforeSend :   function(xhr){
+		xhr.setRequestHeader("Accept", "application/json");
+		xhr.setRequestHeader("Content-Type", "application/json");
+	}
+	}).done(function(result){
+		//if(result !=null){
+			var notifiedAct = 0;
+			var inProgressAct = 0;
+				for(var i in result.list){
+					if(result.list[i].statusId==2){
+						notifiedAct =result.list[i].statusCount;
+					}else if(result.list[i].statusId==3){
+						inProgressAct =result.list[i].statusCount;
+					}
+				}
+				$(".JALAVANIAllCls").html(notifiedAct+' / '+inProgressAct);
+		//}
 	});
 }
 function getAssetInfoBetweenDates()
