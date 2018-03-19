@@ -466,6 +466,47 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 									model.setUserAddressId(model.getCreatedAddressId());
 								}
 								
+								// getting upper level assigned location
+								Long upperLevelLocationId = 0l;
+								Long upperLevelLocationValue = 0l;
+								if (inputVO.getAssignedType() != null && inputVO.getAssignedType().equalsIgnoreCase("assignToUpperLevel")) {
+									  UserAddress assignedAddress = null;
+									  Long locationScopeId = 0l;
+									 if (model.getAssignedAddressId() == null) { 
+										 //if first time mom has not assigned to any location, 
+										// then we are assigning to upper level location by creation scopeId. 
+										  
+										 assignedAddress = userAddressDAO.get(model.getCreatedAddressId());
+										 locationScopeId = inputVO.getCreatedLocationScopeId();
+									 } else {
+										  //But if mom has already assigned then user want to assign once again to upper level location
+										  // of current assign location ,then we are taking assigned location scopeId and address 
+										  // by that we are assign to upper level of current assign location 
+										  
+										 locationScopeId = model.getAssignedLocationScopeId();
+										 assignedAddress = userAddressDAO.get(model.getAssignedAddressId());
+									 }
+									List<Long> uppderLevelLocationIds = regionScopesDAO.getUppderLevelLocationId(locationScopeId);
+									if (uppderLevelLocationIds != null && uppderLevelLocationIds.size() > 0) {
+										upperLevelLocationId = uppderLevelLocationIds.get(0);
+										upperLevelLocationValue = getUpperLevelLocationValue(upperLevelLocationId,assignedAddress); // getting upper level location value
+									}
+									
+								}
+								if((model.getAssignedLocationScopeId() == null) || (upperLevelLocationId != null && upperLevelLocationId >0l)){
+								 model.setAssignedLocationScopeId(upperLevelLocationId > 0 ? upperLevelLocationId:null);
+								}
+								if((model.getAssignedLocationValue() == null) || (upperLevelLocationValue != null && upperLevelLocationValue >0l) ){
+								 model.setAssignedLocationValue(upperLevelLocationValue > 0 ? upperLevelLocationValue:null);
+								}
+								//assigned Address
+								if (inputVO.getAssignedType() != null && inputVO.getAssignedType().equalsIgnoreCase("assignToUpperLevel")) {
+								UserAddress assignedAddress = saveUserAddressByLevelIdAndLevelValue(upperLevelLocationId,upperLevelLocationValue);//saving user address and getting saved object
+								if (assignedAddress == null) {
+									throw new ArithmeticException();
+								}
+								model.setAssignedAddressId(assignedAddress.getUserAddressId());
+								}
 								/* end saving location details for web dashboard */
 								
 								model = partyMeetingMinuteDAO.save(model);
