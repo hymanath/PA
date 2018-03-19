@@ -1667,6 +1667,7 @@ $(document).on("change",".departmentOverviewCls",function(){
 	var department = $(".departmentOverviewCls option:selected").text();
 	var levelId = $(this).attr("attr_levelId");
 	var projectDivId = $(this).attr("attr_projectDivId");
+	var locationId = $("[overview-block]").attr("attr_locationId");
 	
 	var menuLocationId = '';
 	var menuLocationType = '';
