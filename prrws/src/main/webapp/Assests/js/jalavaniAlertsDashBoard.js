@@ -9,7 +9,7 @@ var url = window.location.href;
 		wurl = url.substr(0,(url.indexOf(".in")+3));
 
 //var wurl="http://mytdp.com"
-var locationArr=['district','constituency','mandal'];
+var locationArr=['state','district','constituency','mandal'];
 //responsiveTabs();
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -356,9 +356,7 @@ function buildJalavaniDashBoardOverview(result){
 	for(var i in result.list){
 		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
 			statusNameArr.push(result.list[i].status);
-			var tempArr = [];
-			tempArr.push(result.list[i].statusCount);
-			dataArr.push(tempArr);
+			dataArr.push({"y":result.list[i].statusCount,"extra":result.list[i].statusPerc});
 		}	
 	}
 	if(result.subList2 !=null && result.subList2.length>0){
@@ -436,9 +434,9 @@ function buildJalavaniDashBoardOverview(result){
 	}
 	
 	if(result.list !=null && result.list.length>0){
-		$('#areasplineChartId').removeClass('height_10').addClass('monthGraphCss')
+		$('#alertStatusChartId').removeClass('height_10').addClass('monthGraphCss')
 		$('#alertStatusChartId').highcharts({
-			colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
+			colors:["#EF5656","#FFB2B2","#FFB2B2","#4AAD50","#4AAD50","#4AAD50","#4AAD50","#A8BFFF","#A8BFFF","#A8BFFF","#A8BFFF"],
 			 chart: {
 				type: 'column',
 			},
@@ -471,8 +469,7 @@ function buildJalavaniDashBoardOverview(result){
 			},
 			tooltip: {
 				formatter: function () {
-					return '<b>' + this.x + '</b> - ' +
-						this.y+""
+						return  (this.x)+"<br/>"+(this.y)+" - "+(this.point.extra)+"%";
 				}
 			},
 			plotOptions: {
@@ -744,9 +741,8 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	for(var i in result.list){
 		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
 			statusNameArr.push(result.list[i].status);
-			var tempArr = [];
-			tempArr.push(result.list[i].statusCount);
-			dataArr.push(tempArr);
+			
+			dataArr.push({"y":result.list[i].statusCount,"extra":result.list[i].statusPerc});
 		}
 	}
 	var dataIVRArr=[];
@@ -831,7 +827,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	if(result.list !=null && result.list.length>0){
 		$('#alertStatus'+searchType+'ChartId').removeClass("height_10").addClass('monthGraphCss')
 		$('#alertStatus'+searchType+'ChartId').highcharts({
-			colors:["#A27FC2","#0175F3","#3EC3FF","#049968","#F21A98","#FD6E07","#CF0001","#FE9900","#0C9514","#82CA9C","#C9AC82","#ababab","#FFA07A","#FFD07A"],
+			colors:["#EF5656","#FFB2B2","#FFB2B2","#4AAD50","#4AAD50","#4AAD50","#4AAD50","#A8BFFF","#A8BFFF","#A8BFFF","#A8BFFF"],
 			 chart: {
 				type: 'column',
 			},
@@ -864,8 +860,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 			},
 			tooltip: {
 				formatter: function () {
-					return '<b>' + this.x + '</b> - ' +
-						this.y+""
+					return  (this.x)+"<br/>"+(this.y)+" - "+(this.point.extra)+"%";
 				}
 			},
 			plotOptions: {
@@ -1088,7 +1083,9 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 				str+='<table class="table table_custom_jalavani_status" id="dataTable'+type+'" style="width:100%">';
 					str+='<thead>';
 						str+='<tr>';
-						if(type =="district"){
+						if(type =="state"){
+							str+='<th style="background-color:#F3F3F3;" rowspan="2">State</th>';	
+						}else if(type =="district"){
 							str+='<th style="background-color:#F3F3F3;" rowspan="2">District</th>';	
 						}else if(type =="constituency"){
 							str+='<th style="background-color:#F3F3F3;" rowspan="2">District</th>';	
@@ -1130,7 +1127,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 					str+='<tbody>';
 						for(var i in result){
 							str+='<tr>';
-								if(type =="district"){
+								
+								if(type =="district" || type =="state"){
 									str+='<td class="" style="text-align:left !important;">'+result[i].districtName+'</td>';
 								}else if(type =="constituency"){
 									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';

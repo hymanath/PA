@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dto.AlertVO;
-import com.itgrids.dto.InputVO;
 import com.itgrids.dto.JalavaniAlertsInputVO;
-import com.itgrids.dto.NregsFmsWorksVO;
 import com.itgrids.service.IJalavaniDashboardService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.sun.jersey.api.client.ClientResponse;
@@ -31,7 +29,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 		AlertVO finalVO = new AlertVO();
 		try {
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavaniDashBoardViewInfo");
-			 //WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavaniDashBoardViewInfo");
+			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavaniDashBoardViewInfo");
 		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 		     
 	        if(response.getStatus() != 200){
@@ -80,6 +78,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 									statusVo.setStatus(jobj2.getString("status"));
 									statusVo.setColor(jobj2.getString("color"));
 									statusVo.setStatusCount(jobj2.getLong("statusCount"));
+									statusVo.setStatusPerc(jobj2.getDouble("statusPerc"));
 									
 									finalVO.getList().add(statusVo);
 								}
@@ -87,7 +86,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    			}
 	 	    		}
 	 	      }
-	        WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getjavalavaniOverViewDashBoardForPrintAndElectronicInfo");
+	       /* WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getjavalavaniOverViewDashBoardForPrintAndElectronicInfo");
 			//WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getjavalavaniOverViewDashBoardForPrintAndElectronicInfo");
 			 ClientResponse response1 = webResource1.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 			   
@@ -101,7 +100,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
     				finalVO.setElectCount(jObj.getLong("count1"));//EN count
     				finalVO.setSocialCount(0l);
 				}
-	 	      }
+	 	      }*/
 		} catch (Exception e) {
 			LOG.error("Exception raised at getJalavaniDashBoardOverview - JalavaniDashboardService service", e);
 		}
@@ -147,6 +146,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 									statusVo.setStatus(jobj2.getString("status"));
 									statusVo.setColor(jobj2.getString("color"));
 									statusVo.setStatusCount(jobj2.getLong("statusCount"));
+									statusVo.setStatusPerc(jobj2.getDouble("statusPerc"));
 									
 									finalVO.getList().add(statusVo);
 								}
@@ -272,7 +272,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
     	List<AlertVO> returnList = new ArrayList<AlertVO>();
    	 try {
    		 WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationAndStatusDetailsInfo");
-   		 //WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo");
+   		//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo");
 	     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 	     if (response.getStatus() != 200) {
 		 	    	  throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
@@ -369,7 +369,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
    public  List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVO){
     	List<AlertVO> returnList = new ArrayList<AlertVO>();
    	 try {
-  		  WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationOverview");
+   		  WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getJalavanilocationOverview");
  			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getJalavanilocationOverview");
 			
    			ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
