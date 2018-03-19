@@ -11285,7 +11285,16 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId){
  		StringBuilder str = new StringBuilder();
  		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
- 			if(type !=null && type.equalsIgnoreCase("district")){
+ 			
+ 			if(type !=null && type.equalsIgnoreCase("state")){
+ 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+ 				str.append(" select S.state_id as distId,S.state_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
+ 						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
+ 	 					" from alert A,user_address UA,alert_category AC,state S " +
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and UA.state_id =S.state_id and UA.district_id is not null ") ;
+ 	 			
+ 			}else if(type !=null && type.equalsIgnoreCase("district")){
  				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
  				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
@@ -11307,7 +11316,16 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
  			}
  		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
- 			if(type !=null && type.equalsIgnoreCase("district")){
+ 			if(type !=null && type.equalsIgnoreCase("state")){
+ 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+ 				str.append(" select S.state_id as distId,S.state_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
+ 						" ARS.alert_status_id as propertyTypeId,ARS.alert_status as property,ARS.alert_color as color,count(distinct A.alert_id) as count " +
+ 	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
+ 				
+ 				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id and UA.district_id is not null ") ;
+ 				
+ 			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
  						" ARS.alert_status_id as propertyTypeId,ARS.alert_status as property,ARS.alert_color as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,district D,alert_status ARS ");
@@ -11351,7 +11369,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
 		}
 		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
- 			if(type !=null && type.equalsIgnoreCase("district")){
+			if(type !=null && type.equalsIgnoreCase("state")){
+ 				str.append(" group by AC.alert_category_id,S.state_id ");
+ 			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" group by AC.alert_category_id,D.district_id ");
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
  				str.append(" group by AC.alert_category_id,C.constituency_id");
@@ -11359,7 +11379,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  				str.append(" group by AC.alert_category_id,T.tehsil_id");
  			}
 		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
-			if(type !=null && type.equalsIgnoreCase("district")){
+			if(type !=null && type.equalsIgnoreCase("state")){
+ 				str.append(" group by ARS.alert_status_id,S.state_id ");
+ 			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" group by ARS.alert_status_id,D.district_id ");
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
  				str.append(" group by ARS.alert_status_id,C.constituency_id");

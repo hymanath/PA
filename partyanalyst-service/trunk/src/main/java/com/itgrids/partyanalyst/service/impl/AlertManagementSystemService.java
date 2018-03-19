@@ -16559,8 +16559,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			}
 			
 			//status code 
-			List<Object[]> allStatus = alertStatusDAO.getAllStatusForJalavaniAlertsInfo();
-			getAlertStatusWiseSkelton(allStatus,finalVo);
+			//List<Object[]> allStatus = alertStatusDAO.getAllStatusForJalavaniAlertsInfo();
+			getAlertStatusWiseSkelton(finalVo);
 			//statusId-0,status-1,statusColor-2,count-3
 			List<Object[]> statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,0l);
 			if(statusList !=null && statusList.size() >0){
@@ -16581,19 +16581,29 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					monthVo.setPercentage(calculatePercantage(monthVo.getLocationCnt(), finalVo.getLocationCnt()));
 				}
 			}
-			
+			Long statusTotal=0l;
+			if(finalVo.getList() != null && finalVo.getList().size() >0){
+				for (AlertVO statusVO : finalVo.getList()){
+					statusTotal = statusTotal+statusVO.getStatusCount();
+				}
+				for (AlertVO statusVO : finalVo.getList()){
+					statusVO.setStatusPerc(calculatePercantage(statusVO.getStatusCount(),statusTotal));
+				}
+			}
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniDashBoardViewInfo() method of AlertManagementSystemService",e);
 		}
 		return finalVo;
 	}
-	 public void getAlertStatusWiseSkelton(List<Object[]> allStatus,AlertVO finalVo){
- 		 for (Object[] obj : allStatus){
-				AlertVO subVO = new AlertVO();
-				subVO.setStatusId((Long)obj[0]);
-				subVO.setStatus(obj[1].toString());
+	 public void getAlertStatusWiseSkelton(AlertVO finalVo){
+		 List<Long> catIds = IConstants.JALAVANI_ALERT_STATUS_IDS;
+			List<String> catNames = IConstants.JALAVANI_ALERT_STATUS_NAMES;
+			for (int i=0;i<catIds.size();i++) {
+				AlertVO vo = new AlertVO();
+				vo.setStatusId(catIds.get(i));
+				vo.setStatus(catNames.get(i));
 				
-				finalVo.getList().add(subVO);
+				finalVo.getList().add(vo);
 			}
  	 }
 	 public AlertVO getmatchedStatusVo(List<AlertVO> finalVOList,Long statusId){
@@ -16693,8 +16703,8 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				}
 			}
 			//status code
-			List<Object[]> allStatus = alertStatusDAO.getAllStatusForJalavaniAlertsInfo();
-			getAlertStatusWiseSkelton(allStatus,finalVo);
+			//List<Object[]> allStatus = alertStatusDAO.getAllStatusForJalavaniAlertsInfo();
+			getAlertStatusWiseSkelton(finalVo);
 			//statusId-0,status-1,statusColor-2,count-3
 			if(inputVo.getSearchType() !=null && inputVo.getSearchType().equalsIgnoreCase("print")){
 				statusList = alertDAO.getAlertsStatusOverView(startDate, endDate,2l);
@@ -16732,6 +16742,15 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				}
 				for (AlertVO monthVo : finalVo.getSubList2()) {
 					monthVo.setPercentage(calculatePercantage(monthVo.getLocationCnt(), finalVo.getLocationCnt()));
+				}
+			}
+			Long statusTotal=0l;
+			if(finalVo.getList() != null && finalVo.getList().size() >0){
+				for (AlertVO statusVO : finalVo.getList()){
+					statusTotal = statusTotal+statusVO.getStatusCount();
+				}
+				for (AlertVO statusVO : finalVo.getList()){
+					statusVO.setStatusPerc(calculatePercantage(statusVO.getStatusCount(),statusTotal));
 				}
 			}
 		}catch (Exception e){
@@ -16792,7 +16811,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			
 			JalavaniAlertResultVO rejoinderVO = new JalavaniAlertResultVO();
 			rejoinderVO.setStatusId(10l);
-			rejoinderVO.setStatus("Rejoider");
+			rejoinderVO.setStatus("Rejoinder");
 			finishedVO.getVoList().add(rejoinderVO);
 			
 		voList.add(finishedVO);
@@ -16861,7 +16880,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				Map<Long,JalavaniAlertResultVO> map = new HashMap<Long, JalavaniAlertResultVO>();
 				for (Object[] objects : dataObjList) {
 					JalavaniAlertResultVO vo = null;
-					if(type.equalsIgnoreCase("district")){
+					if(type.equalsIgnoreCase("district") || type.equalsIgnoreCase("state")){
 						vo = map.get((Long)objects[0]);
 					}else if(type.equalsIgnoreCase("constituency")){
 						vo = map.get((Long)objects[2]);
@@ -16884,7 +16903,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 							vo.setVoList(getJalavaniAlertStatusTemplate());
 						}
 						
-						if(type.equalsIgnoreCase("district")){
+						if(type.equalsIgnoreCase("district") || type.equalsIgnoreCase("state")){
 							map.put((Long)objects[0],vo);
 						}else if(type.equalsIgnoreCase("constituency")){
 							map.put((Long)objects[2],vo);
@@ -16892,7 +16911,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 							map.put((Long)objects[4],vo);
 						}
 						
-						if(type.equalsIgnoreCase("district")){
+						if(type.equalsIgnoreCase("district") || type.equalsIgnoreCase("state")){
 							vo = map.get((Long)objects[0]);
 						}else if(type.equalsIgnoreCase("constituency")){
 							vo = map.get((Long)objects[2]);
@@ -16914,7 +16933,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				}//main for
 				
 				//combine vizag and vizal rural counts
-				if(map.size() > 0){
+				if(map.size() > 0 && type.equalsIgnoreCase("district")){
 					JalavaniAlertResultVO vizagVO = map.get(Long.parseLong("13"));
 					JalavaniAlertResultVO vizagRualVO = map.get(Long.parseLong("517"));
 					

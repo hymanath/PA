@@ -115,8 +115,15 @@ public class AlertVO {
 	private Long issueCategoryId;
 	private Double printPerc = 0.0d;
 	private Double electPerc = 0.0d;
+	private Double statusPerc = 0.0d;
 	
 	
+	public Double getStatusPerc() {
+		return statusPerc;
+	}
+	public void setStatusPerc(Double statusPerc) {
+		this.statusPerc = statusPerc;
+	}
 	public Double getPrintPerc() {
 		return printPerc;
 	}
