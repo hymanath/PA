@@ -6890,6 +6890,4 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			}
  			return assignedPetitionsIdsList;
  		}
- 		
- 		public List 
 }
