@@ -781,7 +781,7 @@ function getReferralWiseOverviewDetails(desigId){
 		{
 	   str+='<div class="panel panel-default desigClsDivId"  style="cursor:pointer;" attr_desigId="'+result.subList[i].deptDesigId+'" attr_desg_name="'+result.subList[i].desigName+'">';
 		}
-		str+='<div class="panel-heading" style="background-color:#D2DEF1; color:#333;"><h4><b>'+result.subList[i].desigName+'-'+result.subList[i].subWorkIds.length+'</b></h4></div>';
+		str+='<div class="panel-heading" style="background-color:#D2DEF1; color:#333;"><h4><b>'+result.subList[i].desigName+'</b></h4></div>';
 			str+='<div class="panel-body" style="background-color:#E7EDF8;">';
 				
 				   str+='<div class="row">';			
