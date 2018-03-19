@@ -84,7 +84,7 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 			str.append("select distinct model.pmPetitionAssignedOfficerId, model.pmDepartmentDesignationOfficer.pmOfficer.name," +//0,1
 					" model.pmDepartmentDesignation.pmOfficerDesignation.designation" +//2
 					",model.pmDepartmentDesignation.pmDepartment.shortName " +//3
-					",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId " +//4,5,6
+					",model.petition.petitionId,model.insertedTime ,model.pmSubWorkDetailsId,model.pmDepartmentDesignationOfficer.pmOfficerId " +//4,5,6,7
 					"from PmPetitionAssignedOfficer model where model.pmPetitionAssignedOfficerId  " +
 					"in (SELECT max(model2.pmPetitionAssignedOfficerId) from PmPetitionAssignedOfficer model2 " +
 					" where model2.petitionId in (:petitionIds) and model2.isDeleted='N' group by model2.petitionId)   " );
