@@ -1,6 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalStatusObj={"SATISFIED":"#0FBE08","NOT SATISFIED":"#FF0909","PAR SATISFIED":"#FFBA00"}
-var currentFromDate=moment().startOf('Year').format("DD-MM-YYYY");
+var currentFromDate=moment().startOf('month').format("DD-MM-YYYY");
 var currentToDate=moment().format("DD-MM-YYYY");
 $(".chosen-select").chosen();
 var url = window.location.href;
@@ -32,23 +32,23 @@ $("#dateRangePicker").daterangepicker({
 		   'This Year': [moment().startOf('Year'), moment()],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 1 Year': ['01-01-2017', moment()]
-		   
+		   'Last Year': ['01-01-2017', moment()],
+		   'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
 		}
 	});
 	var dates= $("#dateRangePicker").val();
 	var pickerDates = currentFromDate+' - '+currentToDate
 	if(dates == pickerDates)
 	{
-		$("#dateRangePicker").val('This Year');
+		$("#dateRangePicker").val('This Month');
 	}
 	
 	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
-		if(picker.chosenLabel == 'This Year')
+		if(picker.chosenLabel == 'This Month')
 		{
-			$("#dateRangePicker").val('This Year');
+			$("#dateRangePicker").val('This Month');
 		}
 		$("#alertTypeId").val(0)
 		$("#alertTypeId").trigger("chosen:updated")
