@@ -53,6 +53,14 @@ public class NregsOverviewVO implements Serializable{
 	private Long previousCount = 0L;
 	private Long presentCount = 0L;
 	private Long changedCount = 0L;
+	private String mandalRedPerc;
+	private String redType;
+	private String mandalGreenPerc;
+	private String greenType;
+	private String mandalOrangePerc;
+	private String orangeType;
+	private String mandalGoldPerc;
+	private String goldType;
 	
 	
 	public Long getChangedCount() {
@@ -307,4 +315,53 @@ public class NregsOverviewVO implements Serializable{
 	public void setTotalBudget(String totalBudget) {
 		this.totalBudget = totalBudget;
 	}
+	public String getMandalRedPerc() {
+		return mandalRedPerc;
+	}
+	public void setMandalRedPerc(String mandalRedPerc) {
+		this.mandalRedPerc = mandalRedPerc;
+	}
+	public String getRedType() {
+		return redType;
+	}
+	public void setRedType(String redType) {
+		this.redType = redType;
+	}
+	public String getMandalGreenPerc() {
+		return mandalGreenPerc;
+	}
+	public void setMandalGreenPerc(String mandalGreenPerc) {
+		this.mandalGreenPerc = mandalGreenPerc;
+	}
+	public String getGreenType() {
+		return greenType;
+	}
+	public void setGreenType(String greenType) {
+		this.greenType = greenType;
+	}
+	public String getMandalOrangePerc() {
+		return mandalOrangePerc;
+	}
+	public void setMandalOrangePerc(String mandalOrangePerc) {
+		this.mandalOrangePerc = mandalOrangePerc;
+	}
+	public String getOrangeType() {
+		return orangeType;
+	}
+	public void setOrangeType(String orangeType) {
+		this.orangeType = orangeType;
+	}
+	public String getMandalGoldPerc() {
+		return mandalGoldPerc;
+	}
+	public void setMandalGoldPerc(String mandalGoldPerc) {
+		this.mandalGoldPerc = mandalGoldPerc;
+	}
+	public String getGoldType() {
+		return goldType;
+	}
+	public void setGoldType(String goldType) {
+		this.goldType = goldType;
+	}
+	
 }
