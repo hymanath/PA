@@ -102,11 +102,19 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#483D8B">
 													<a href="vehicleTrackingDashboard">
 														<h3>VT</h3>
                            								 <p>Vehicle Tracking</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#59bf82">
+													<a href="jalavaniAlertsDashBoard">
+														<h3>JALAVANI</h3>
+														 <p>Jalavani Alert Dashboard</p>
 													</a>
 												</div>
 											</div>
