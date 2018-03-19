@@ -8421,13 +8421,13 @@ public class NREGSTCSService implements INREGSTCSService{
 			int deletedStatus = componentWiseAchievementConfigurationTempDAO.deleteRecrdsFrmTable();
 			
 			//Inserting New Data Into a Table
-			if(Long.valueOf(deletedStatus) != null && deletedStatus > 0){
+			//if(Long.valueOf(deletedStatus) != null && deletedStatus > 0){
 				if(commonMethodsUtilService.isListOrSetValid(list)){
 					for (ComponentWiseAchievementConfigurationTemp finalData : list) {
 						componentWiseAchievementConfigurationTempDAO.save(finalData);
 					}
 				}
-			}
+			//}
 		
 			statusVO.setName("SUCCESS");	
 			
