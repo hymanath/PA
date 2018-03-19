@@ -160,7 +160,8 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 		"and ppao.pm_dept_designation_id = e.pm_dept_designation_id and  " +
 		"e.pm_officer_designation_id = d.pm_officer_designation_id  " +
 		"and po.pm_officer_id=c.pm_officer_id  " +
-		"and c.pm_dept_designation_officer_id=ppao.pm_dept_designation_officer_id " );
+		"and c.pm_dept_designation_officer_id=ppao.pm_dept_designation_officer_id" +
+		" and po.is_active ='Y' " );
 		
 		
 		if(inputVO.getDesignationIds() != null && inputVO.getDesignationIds().size() >0){
