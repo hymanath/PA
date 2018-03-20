@@ -6,10 +6,12 @@ import java.util.Set;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
+import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.PmSubWorkCoveringLetter;
 
 @Repository
@@ -73,4 +75,40 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		return null;			
 	}
 	
+	public List<Object[]> getDocumentsDetailsForPDFDocument(InputVO inputVO,List<Long> petitionIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT ");
+		sb.append(" sub.petition_id as petition_id, sub.work_endorsment_no as work_endorsment_no ,sub.pm_sub_work_details_id as pm_sub_work_details_id," +
+				" l.report_type as report_type ,l.ref_no as ref_no,l.document_type_id as document_type_id,dType.pm_document_type as pm_document_type ");
+		sb.append(" from  ");
+		sb.append(" pm_sub_work_details sub  ");
+		sb.append(" LEFT JOIN pm_department d  on d.pm_department_id = sub.pm_department_id and d.is_deleted='N' ");
+		sb.append(" LEFT JOIN pm_subject ps on sub.pm_subject_id = ps.pm_subject_id and ps.is_deleted='N' ");
+		sb.append(" LEFT JOIN location_address la on sub.address_id = la.location_address_id  ");
+		sb.append(" LEFT JOIN district dis on la.district_id = dis.district_id  ");
+		sb.append(" LEFT JOIN constituency c on la.constituency_id = c.constituency_id , ");
+		sb.append(" pm_sub_work_covering_letter l "+
+				  " LEFT JOIN pm_document_type dType on l.document_type_id = dType.pm_document_type_id ");
+		sb.append(" where  ");
+		sb.append(" sub.pm_sub_work_details_id = l.pm_sub_work_details_id and  ");
+		sb.append(" sub.pm_department_id = d.pm_department_id and  ");
+		sb.append(" sub.is_deleted='N' and  ");
+		sb.append(" d.is_deleted='N' and d.pm_department_id in (17,22,27,34)  ");
+		if( inputVO.getIdsList() != null &&  inputVO.getIdsList().size()>0)
+			sb.append(" and c.constituency_id in (:constituencyList) ");
+		sb.append(" GROUP BY  ");
+		sb.append(" sub.petition_id,l.report_type  ");
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("petition_id", StandardBasicTypes.LONG)
+				.addScalar("work_endorsment_no", StandardBasicTypes.STRING)
+				.addScalar("pm_sub_work_details_id", StandardBasicTypes.LONG)
+				.addScalar("report_type", StandardBasicTypes.STRING)
+				.addScalar("ref_no", StandardBasicTypes.STRING)
+				.addScalar("document_type_id", StandardBasicTypes.LONG)
+				.addScalar("pm_document_type", StandardBasicTypes.LONG);
+		
+		if( inputVO.getIdsList() != null &&  inputVO.getIdsList().size()>0)
+			query.setParameterList("constituencyList", inputVO.getIdsList());
+		return query.list();
+	}
 }
