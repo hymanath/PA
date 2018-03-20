@@ -1064,7 +1064,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	 
 	$.ajax({
 		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		//url: "http://192.168.11.172:8447/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: "http://192.168.11.177:8086/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
@@ -1140,6 +1140,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 								}
 								
 								str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
+								
 								for(var j in result[i].voList){
 									for(var k in result[i].voList[j].voList){
 										if(result[i].voList[j].voList[k].count !=null && result[i].voList[j].voList[k].count>0){
@@ -1178,7 +1179,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 				"leftColumns": 1,
 			}, */
 		});
-	}else{
+	}else if(type != 'state'){
 		$("#dataTable"+type).dataTable({
 			"iDisplayLength": 10,
 			"aaSorting": [],
@@ -1213,6 +1214,9 @@ $(document).on("click",".getAmsPopUpCls",function(){
 	}else if(location_id == "mandal"){
 		locationValueName ='mandal';
 		locationValue = mandal_id;
+	}else if(location_id == "state"){
+		locationValueName ='state';
+		locationValue = 1;
 	}
 	$("#alertManagementPopupBody").html('')
 	
@@ -1231,7 +1235,7 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 	
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
-		//url: "http://192.168.11.172:8447/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		//url: "http://192.168.11.177:8086/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
 	}).then(function(result){
 		 if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
