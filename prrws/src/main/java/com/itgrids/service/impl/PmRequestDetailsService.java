@@ -3413,7 +3413,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 		}
 		
 		@SuppressWarnings("static-access")
-		public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate){
+		public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate,List<Long> deptIdsList){
 			RepresenteeViewVO returnVO = new RepresenteeViewVO();
 			try {
 				Map<Long,List<Long>> petitionsMap= getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
@@ -3422,7 +3422,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					petitionsIdsList = petitionsMap.keySet();
 				}
 				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
-				List<Long> deptIds = deptVO.getDeptIdsList();
+				//List<Long> deptIds = deptVO.getDeptIdsList();
 				List<Long> statusIds = new ArrayList<>();
 				
 				boolean isAccessDashboard=false;
@@ -3486,7 +3486,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					if(commonMethodsUtilService.isListOrSetValid(latestPetitionIdsList))
 						petitionsIdsList = new HashSet<Long>(latestPetitionIdsList);
 				}*/
-				List<Object[]> tempobjectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIds, fromDate, toDate,"",petitionsIdsList);
+				List<Object[]> tempobjectList = pmSubWorkDetailsDAO.getCompleteOrStatusOverviewDetails(deptIdsList, fromDate, toDate,"",petitionsIdsList);
 				Map<Long,Map<String,Map<Long,Set<Long>>>> leadBudgentWiseWorksMap = new HashMap<Long,Map<String,Map<Long,Set<Long>>>>(0);
 				Set<Long> withCostIdsSet = new HashSet<Long>(0);
 				Set<Long> noCostIdsSet = new HashSet<Long>(0);
@@ -4476,7 +4476,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return deptVO;
 		}
 		
-		public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate){
+		public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate,List<Long> deptIdsList){
 			List<RepresenteeViewVO> leadList = null;
 			RepresenteeViewVO leadVO=null;
 			try { 
@@ -4488,7 +4488,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 				
 				KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
-				List<Long> deptIds = deptVO.getDeptIdsList();
+				//List<Long> deptIds = deptVO.getDeptIdsList();
 				//KeyValueVO userAccesStatusVO = getPmDeptStatusIdsByUserIdsLst(userId);
 				//List<Long> statusIds = userAccesStatusVO.getDeptIdsList();
 				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
@@ -4501,7 +4501,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				}
 				List<Long> statusIds = Arrays.asList(1l,2l);
 				Map<Long,RepresenteeViewVO> leadMap = null;
-				List<Object[]> leadObjects = pmSubWorkDetailsDAO.getLeadWiseOverviewDetails(deptIds, fromDate, toDate,petitionsIdsList);
+				List<Object[]> leadObjects = pmSubWorkDetailsDAO.getLeadWiseOverviewDetails(deptIdsList, fromDate, toDate,petitionsIdsList);
 				if(commonMethodsUtilService.isListOrSetValid(leadObjects)){
 					
 					leadMap = new LinkedHashMap<Long,RepresenteeViewVO>();
@@ -6716,8 +6716,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			List<PmOfficerVO> finalList = null;
 			try {
 				Map<Long,PmOfficerVO> officerMap = new LinkedHashMap<Long,PmOfficerVO>();
+				
+				SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+				Date startDate = null;
+				Date endDate = null;
+				
+				if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
+					startDate = format.parse(inputVO.getFromDate());
+					endDate = format.parse(inputVO.getToDate());
+				}
 				List<Object[]> desigStatusList = pmDeptDesignationPrePostStatusDetailsDAO.getDesignationWiseStatus(inputVO.getDesignationIds());
-				List<Object[]> officerList = pmPetitionAssignedOfficerDAO.getPmOfficerAssignedPetitionDetails(inputVO);
+				List<Object[]> officerList = pmPetitionAssignedOfficerDAO.getPmOfficerAssignedPetitionDetails(inputVO,startDate,endDate);
 				if(commonMethodsUtilService.isListOrSetValid(officerList)){
 					for (Object[] param : officerList) {
 						PmOfficerVO offVO = null;

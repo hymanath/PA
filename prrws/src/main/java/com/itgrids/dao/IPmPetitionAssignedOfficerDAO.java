@@ -1,5 +1,6 @@
 package com.itgrids.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -15,5 +16,5 @@ public interface IPmPetitionAssignedOfficerDAO extends GenericDao<PmPetitionAssi
 	public List<Object[]> getPetitionAssignedPrinciplSecretoryDetails(Long petitionId);
 	public List<Object[]> getOfficerDetailsForOfficerIdsList(List<Long> assignedToOfficerIdsList);
 	public List<Object[]> getLatestUpdatedDetailsOfPetition(Set<Long> petitionIds);
-	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO);
+	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO,Date startDate,Date endDate);
 }

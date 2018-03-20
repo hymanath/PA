@@ -289,8 +289,20 @@ public class PmRequestDetailsController {
 			}
 	       return pmRequestDetailsService.getRegistrationPersonDetails(inputMap);
 	    }
+	    /* public @ResponseBody RepresenteeViewVO getCompleteOrStatusOverviewDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+    	Long userId =null;
+    	HttpSession session=request.getSession();
+		UserVO userVO = (UserVO) session.getAttribute("USER"); 
+		
+		if(userVO != null){
+			userId = userVO.getUserId();
+		}else{
+			return null;
+		}
+    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
+      }*/
 	    @RequestMapping(value ="/getCompleteOrStatusOverviewDetails",method = RequestMethod.POST)
-	    public @ResponseBody RepresenteeViewVO getCompleteOrStatusOverviewDetails(@RequestBody Map<String,String> inputMap ,HttpServletRequest request) {
+	    public @ResponseBody RepresenteeViewVO getCompleteOrStatusOverviewDetails(@RequestBody InputVO inputVO ,HttpServletRequest request) {
 	    	Long userId =null;
 	    	HttpSession session=request.getSession();
 			UserVO userVO = (UserVO) session.getAttribute("USER"); 
@@ -300,7 +312,7 @@ public class PmRequestDetailsController {
 			}else{
 				return null;
 			}
-	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
+	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDeptIdsList());
 	    }
 	    @RequestMapping(value ="/representationsDashboard", method = RequestMethod.GET)
 	    public String representationsDashboard(ModelMap model,HttpServletRequest request) {
@@ -352,7 +364,7 @@ public class PmRequestDetailsController {
 	       return pmRequestDetailsService.updatePetitionsStatusDetails(userId,inputMap.get("petitionIdsList"),inputMap.get("remark"),Long.valueOf(inputMap.get("statusId")));
 	    }
 	    
-	    @RequestMapping(value ="/getLeadWiseOverviewDetails",method = RequestMethod.POST)
+	   /* @RequestMapping(value ="/getLeadWiseOverviewDetails",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getLeadWiseOverviewDetails(@RequestBody Map<String,String> inputMap,HttpServletRequest request) {
 	    	Long userId =null;
 	    	HttpSession session=request.getSession();
@@ -364,6 +376,19 @@ public class PmRequestDetailsController {
 				return null;
 			}
 	       return pmRequestDetailsService.getLeadWiseOverviewDetails(userId,inputMap.get("fromDate"),inputMap.get("toDate"));
+	    }*/
+	    @RequestMapping(value ="/getLeadWiseOverviewDetails",method = RequestMethod.POST)
+	    public @ResponseBody List<RepresenteeViewVO> getLeadWiseOverviewDetails(@RequestBody InputVO inputVO,HttpServletRequest request) {
+	    	Long userId =null;
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
+	       return pmRequestDetailsService.getLeadWiseOverviewDetails(userId,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDeptIdsList());
 	    }
 	    
 	    @RequestMapping(value ="/updatePetitionStatusDetails",method = RequestMethod.POST)
@@ -543,9 +568,9 @@ public class PmRequestDetailsController {
 				}else{
 					return null;
 				}
-				List<Long> deptIds = null;
-				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
+				//List<Long> deptIds = null;
+				//KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				//inputVO.setDeptIdsList(deptVO.getDeptIdsList());
 				
 		    	 return pmRequestDetailsService.getPmOfficerWisePetitionDetails(inputVO);
 		     }

@@ -92,6 +92,20 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 			<div class="row m_top10">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
+					<div class="row">
+						<div class="col-sm-3 pull-right" >	
+							<div class="input-group inline-block" >
+								<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+								</span>
+								<input type="text"  class="form-control" id="dateRangePicker"/>
+							</div>
+						</div>
+							<div class="col-sm-3 " id="deptsDivId" style="left:780px;">
+								<select class="form-control chosen-select "  data-placeholder="SELECT DEPARTMENT "  id="departmntId" multiple>
+								</select>
+							</div>	
+					</div>
 						<div class="row">
 						<div class="col-sm-6" style="display:none;" id="completeOverViewDivId"> 
 								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>

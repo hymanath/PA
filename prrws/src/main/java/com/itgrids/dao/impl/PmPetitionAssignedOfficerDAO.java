@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -95,7 +96,7 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 		return null;
 	}
 	
-	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO){
+	public List<Object[]> getPmOfficerAssignedPetitionDetails(InputVO inputVO,Date startDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		/*sb.append(" select model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.pmOfficerDesignationId" +//0
 				",model.pmDepartmentDesignationOfficer.pmDepartmentDesignation.pmOfficerDesignation.designation" +//1
@@ -142,7 +143,7 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 		" COUNT(DISTINCT pswd.pm_sub_work_details_id)  as workCount" +//1
 		",d.pm_officer_designation_id  as officerDesigId" +//2
 		",d.designation  as officerDesig" +//3
-		",po.pm_officer_id  as officerId,po.`name`  as officerName, " + //4,5
+		",po.pm_officer_id  as officerId,po.name  as officerName, " + //4,5
 		" pswd.pm_status_id  as workStatusId,ppao.pm_status_id as assignedStatusId " +//6,7
 		" ,sum(pswd.cost_estimation) as workCost" +//8
 		" from pm_petition_assigned_officer ppao, " +
@@ -170,6 +171,9 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 			sb.append(" and pswd.pm_department_id in (:deptIds) ");
 		}
+		if(startDate != null && endDate != null){
+			sb.append(" and  date(pswd.inserted_time) between :startDate and :endDate  ");
+		}
 	sb.append("GROUP BY p.petition_id ,d.pm_officer_designation_id,po.pm_officer_id ORDER BY d.order_no ASC ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("petitionId")
@@ -186,6 +190,10 @@ public class PmPetitionAssignedOfficerDAO extends GenericDaoHibernate<PmPetition
 		}
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 			query.setParameterList("deptIds", inputVO.getDeptIdsList());
+		}
+		if(startDate != null && endDate != null){
+			query.setDate("startDate",startDate);
+			query.setDate("endDate",endDate);
 		}
 		return query.list();
 	}
