@@ -4751,6 +4751,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 			}
 			 Long userGroupId = userGroupRelationDAO.getUserGroupId(userId);
 			 //0-tdpCadreId,1-name,2-mobileNo,3-remark,4-isAttended
+			 if(absentList != null && absentList.size()>0){
 			List<Object[]> totalAbsentList = partyMeetingInviteeDAO.getPartyMeetingOfAbsentCandidate(absentList,locationLevel,locationValue,meetingTypeId,meetingId);
 			if(totalAbsentList != null && totalAbsentList.size()>0){
 				for(Object[] param : totalAbsentList){
@@ -4766,6 +4767,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				}
 			}
 			finalList.get(0).setUserGroupId(userGroupId);
+			 }
 		}catch(Exception e){
 			LOG.error("Exception raised at getPartyMettingOfAbsents", e);
 		}
