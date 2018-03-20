@@ -18,7 +18,7 @@ public class EncWorks {
 	private String workName;
 	private Long schemeId;
 	private String schemeName;
-	private Long agreementAmount;
+	private Double agreementAmount;
 	private Long technicalsancAmount;
 	private Date agrementDate;
 	private Date adminSanctionDate;
@@ -81,10 +81,10 @@ public class EncWorks {
 	}
 	
 	@Column(name="agreement_amount")
-	public Long getAgreementAmount() {
+	public Double getAgreementAmount() {
 		return agreementAmount;
 	}
-	public void setAgreementAmount(Long agreementAmount) {
+	public void setAgreementAmount(Double agreementAmount) {
 		this.agreementAmount = agreementAmount;
 	}
 	
