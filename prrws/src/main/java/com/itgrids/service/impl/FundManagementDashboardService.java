@@ -1611,7 +1611,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 	}
  	@Override
 	public List<LocationFundDetailsVO> getAllConstituenciesByDistrictName(List<String> districtNames){
-		  List<LocationFundDetailsVO> constincyList= null;
+		  List<LocationFundDetailsVO> constincyList= new ArrayList<>();
 		  try{
 		    List<Object[]> constiesObjs =constituencyDAO.getConstituenciesbyDistrictName(districtNames);
 		    if(constiesObjs != null && constiesObjs.size() > 0l){ 
