@@ -11831,7 +11831,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  			
  			if(type !=null && type.equalsIgnoreCase("state")){
  				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
- 				str.append(" sselect distinct A.alert_id as alertId " +
+ 				str.append(" select distinct A.alert_id as alertId " +
  	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
  				
  				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
