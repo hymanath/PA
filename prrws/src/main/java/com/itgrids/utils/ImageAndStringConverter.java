@@ -7,11 +7,23 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.ColumnText;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfWriter;
 
 @Service
 public class ImageAndStringConverter {
@@ -129,5 +141,67 @@ public class ImageAndStringConverter {
 		} 
 		return null;
 	}
-	
+	// base64 string to pdf conversation
+	public String convertBase64ToPDF(String base64Str){
+		List<String> imagePaths = new LinkedList<String>();
+		try{
+			
+				String destinationPath = "";          //path 
+				String [] pathsArr=base64Str.split(",");
+				 byte[] imageByteArray=null;
+				if(pathsArr != null && pathsArr.length > 1){
+					imageByteArray = Base64.decodeBase64(pathsArr[1]);
+				}else{
+					 imageByteArray = Base64.decodeBase64(base64Str);
+				}
+				destinationPath = destinationPath+".jpg";
+				File file = new File(destinationPath);
+				FileOutputStream fop = new FileOutputStream(file);
+				fop.write(imageByteArray);
+				fop.flush();
+				fop.close();
+				imagePaths.add(destinationPath);
+			
+			//convert image to PDF
+				Long width=0l;
+				Long height=0L;
+			String finalFilePath = convertImageToPdf(destinationPath, width , height);
+			return finalFilePath;
+		}catch(Exception e){
+			
+		}
+		return null;
+	}
+	public String convertImageToPdf(String imgePath,Long width ,Long height){
+		String destinationPath = "";
+		try{
+			if(destinationPath !=null && destinationPath.trim().length() >0){
+		
+				destinationPath = destinationPath+".pdf";
+				Rectangle pdfSize = new Rectangle(width,height);
+				Document document = new Document(pdfSize);
+				Font ffont = new Font(Font.FontFamily.UNDEFINED, 24, Font.BOLD);
+				 FileOutputStream fos = new FileOutputStream(destinationPath);
+			      PdfWriter writer = PdfWriter.getInstance(document, fos);
+			      writer.open();
+			      document.open();
+			      PdfContentByte cb = writer.getDirectContent();
+		          Phrase header = new Phrase("   ", ffont);
+		          ColumnText.showTextAligned(cb, Element.ALIGN_CENTER,
+		                  header,
+		                  (document.right() - document.left()) / 2 + document.leftMargin(),
+		                  document.top() + 10, 0);
+			    	  Image image1 = Image.getInstance(imgePath);
+				      image1.setSpacingAfter(0);
+				      document.add(image1);
+				      File removeFile = new File(imgePath);
+				      removeFile.delete();
+			      
+			}
+		}catch(Exception e){
+			
+		}
+		return destinationPath;
+	}
+		
 }
