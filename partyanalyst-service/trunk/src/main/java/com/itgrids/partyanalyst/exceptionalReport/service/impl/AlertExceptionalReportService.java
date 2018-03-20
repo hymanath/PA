@@ -415,4 +415,124 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 		}
 		return d;
 	}
+	
+	public List<AlertCoreDashBoardVO> getLocationWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds,String locationType){
+		try{
+			List<AlertCoreDashBoardVO> finalalertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Date stDate = null;
+			Date ndDate = null;
+			if(startDate != null && startDate.trim().length() == 10 && endDate != null && endDate.trim().length() == 10){
+				stDate = sdf.parse(startDate.trim());
+				ndDate = sdf.parse(endDate.trim());
+			}
+			List<Object[]> districtWiseAlertCount =null;
+			List<Object[]> constituencyList =null;
+			if(locationType !=null && locationType.equalsIgnoreCase("district")){
+				districtWiseAlertCount = alertDAO.getDistrictWiseTotalAlerts(stDate,ndDate,stateId,alertTypeIds);
+			}else {
+				districtWiseAlertCount= alertDAO.getDistrictWiseTotalAlertsforConslidated(stDate, ndDate, stateId,alertTypeIds,locationType);
+				if(locationType !=null && locationType.equalsIgnoreCase("constituency")){
+					constituencyList= alertDAO.getDistrictWiseTotalAlertsforConslidated(stDate, ndDate, stateId,alertTypeIds,locationType);
+				}
+			}
+		
+			//create map for distId and statusId and count map
+			Map<Long,Map<Long,Long>> distIdAndStatusIdAndCountMap = new HashMap<Long,Map<Long,Long>>();
+			Map<Long,Long> statusIdAndCountMap = null;
+			
+			Map<Long,String> distIdAndNameMap = new HashMap<Long,String>();
+			Map<Long,String> statusIdAndNameMap = new HashMap<Long,String>();
+			
+			if(districtWiseAlertCount != null && districtWiseAlertCount.size() > 0){
+				for(Object[] param : districtWiseAlertCount){
+					statusIdAndCountMap = distIdAndStatusIdAndCountMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(statusIdAndCountMap == null){
+						statusIdAndCountMap = new HashMap<Long,Long>();
+						distIdAndStatusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), statusIdAndCountMap);
+					}
+					if(locationType !=null && locationType.equalsIgnoreCase("constituency")){
+						statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[6]), commonMethodsUtilService.getLongValueForObject(param[8]));
+						distIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+						statusIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[6]), commonMethodsUtilService.getStringValueForObject(param[7]));
+					}else{
+						statusIdAndCountMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getLongValueForObject(param[4]));
+						distIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), commonMethodsUtilService.getStringValueForObject(param[1]));
+						statusIdAndNameMap.put(commonMethodsUtilService.getLongValueForObject(param[2]), commonMethodsUtilService.getStringValueForObject(param[3]));
+					}
+				}
+			}
+			
+			List<AlertCoreDashBoardVO> alertCoreDashBoardVOs = new ArrayList<AlertCoreDashBoardVO>();
+			AlertCoreDashBoardVO alertCoreDashBoardVO = null;
+			
+			if(distIdAndStatusIdAndCountMap != null && distIdAndStatusIdAndCountMap.size() > 0){
+				for(Entry<Long,Map<Long,Long>> outerParam : distIdAndStatusIdAndCountMap.entrySet()){
+					alertCoreDashBoardVO = new AlertCoreDashBoardVO();
+					alertCoreDashBoardVO.setId(outerParam.getKey());
+					alertCoreDashBoardVO.setName(distIdAndNameMap.get(outerParam.getKey()));
+					if(outerParam != null && outerParam.getValue() != null && outerParam.getValue().size() > 0){
+						Long total = new Long(0L);
+						Long pending = 0L;
+						Long actionNotRequired = new Long(0L);
+						for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
+							total = total + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
+							if(innerParam != null && innerParam.getKey() != null && innerParam.getKey().longValue() == 3L){
+								pending = innerParam.getValue();
+							}
+							if(innerParam != null && innerParam.getKey() != null && (innerParam.getKey().longValue() == 6L || innerParam.getKey().longValue() == 7L)){
+								actionNotRequired = actionNotRequired + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
+							}
+							
+						}
+						alertCoreDashBoardVO.setTotalAlert(total);
+						alertCoreDashBoardVO.setPendingCount(pending);
+						alertCoreDashBoardVO.setActionRequired(total-actionNotRequired);
+						alertCoreDashBoardVO.setPendingCountPer(calculatePercantage(alertCoreDashBoardVO.getPendingCount(),alertCoreDashBoardVO.getActionRequired()));
+					}
+					alertCoreDashBoardVOs.add(alertCoreDashBoardVO);
+				}
+			}
+			
+			if (commonMethodsUtilService.isListOrSetValid(constituencyList)) {
+				for (Object[] param : constituencyList) {
+					for (AlertCoreDashBoardVO alertVo : alertCoreDashBoardVOs) {
+						if(alertVo.getId().longValue() ==commonMethodsUtilService.getLongValueForObject(param[0]).longValue() && alertVo.getConstituencyId()== null ){
+							alertVo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[2]));
+							alertVo.setConstituency(commonMethodsUtilService.getStringValueForObject(param[3]));
+						}
+							
+					}
+				
+				}
+				
+			}
+			Collections.sort(alertCoreDashBoardVOs, new Comparator<AlertCoreDashBoardVO>(){
+				@Override
+				public int compare(AlertCoreDashBoardVO obj2,AlertCoreDashBoardVO obj1) {
+					int returnVal = 0;
+					Double value2 = obj2.getPendingCountPer();
+					Double value1 = obj1.getPendingCountPer();
+					returnVal = value1.compareTo(value2);
+					return returnVal;
+				}
+			});
+			if(locationType !=null && locationType.equalsIgnoreCase("district")){
+				finalalertCoreDashBoardVOs.addAll(alertCoreDashBoardVOs);
+			}else if(locationType !=null && locationType.equalsIgnoreCase("constituency")){
+				for (int i = 0; i < 10; i++) {
+					finalalertCoreDashBoardVOs.add(alertCoreDashBoardVOs.get(i));
+				}
+			}else if(locationType !=null && locationType.equalsIgnoreCase("parliament")){
+				for (int i = 0; i < 7; i++) {
+					finalalertCoreDashBoardVOs.add(alertCoreDashBoardVOs.get(i));
+				}
+			}
+
+			return finalalertCoreDashBoardVOs;
+		}catch(Exception e){
+			LOG.error("Error occured getOverAllAlertsDetails() method of AlertExceptionalReportService{}");
+		}
+		return null;
+	}
 }
