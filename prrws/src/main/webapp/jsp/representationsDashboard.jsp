@@ -232,6 +232,28 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 						</div>
 					</div>
 					
+					<div class="panel-group" id="pdfWiseOverViewId" style="display:none;">
+						<div class="panel panel-default panel-black">
+							<div id="collapsepdfWiseOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingpdfWiseOverview">
+								<div class="panel-body">
+									<div id="pdfWiseOverViewDivId">
+										<div class="row">
+											<div class="col-sm-12">
+												<h4 id ="" style="font-weight:bold; margin:10px;"> REPRESENTATION DETAILS </h4>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-sm-12">
+												<div id="pdfWiswPetitionsView"></div>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+							</div>
+						</div>
+					</div>
+					
 					
 				</div>	
 				</div>

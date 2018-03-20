@@ -1165,3 +1165,115 @@ function tableBuildOfficerBlock(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
 }
+
+getPetitionsDetailsForPDFDocument();
+
+function getPetitionsDetailsForPDFDocument(){
+
+	var locationIDsArr =[];
+	locationIDsArr.push(111);
+	
+	  var json = {
+		  idsList: locationIDsArr
+	};
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDetailsForPDFDocument',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null){
+			buildPetitionDetailsForPDF(result);
+		}
+	});	
+}
+
+function buildPetitionDetailsForPDF(result){
+	
+	var str='';
+	str+='<div class="table-responsive">';
+		str+='<table class="table table-bordered" id="petionsDtailsTab">';
+		str+='<thead>';
+		str+='<tr>';
+			str+='<th> GIVEN DATE </th>';
+			str+='<th> ENDORSMENT NO</th>';
+			str+='<th> WORK REF NO </th>';
+			str+='<th> LOCATION </th>';
+			str+='<th> WORK DESC </th>';
+			str+='<th> ESTIMATED COST </th>';
+			str+='<th> REF BY </th>';
+			str+='<th> ACTION MEMO </th>';
+			str+='<th> GO ISSUED </th>';
+			str+='<th> PENDING </th>';
+			str+='</tr>';
+		str+='</thead>';
+		
+		str+='<tbody>';
+			for(var i in result){
+				
+				if(result[i].subWorksList != null && result[i].subWorksList.length>0){
+					for(var k in result[i].subWorksList){
+						str+='<tr>';
+						str+='<td>'+result[i].subWorksList[k].representationDate+'</td>';
+						str+='<td>'+result[i].subWorksList[k].endorsmentNo+'</td>';
+						str+='<td>'+result[i].subWorksList[k].workId+'</td>';
+						str+='<td>';
+						if(result[i].subWorksList[k].addressVO != null){
+							if(typeof result[i].subWorksList[k].addressVO.districtName != 'undefined')
+								str+=' DISTRICT: '+result[i].subWorksList[k].addressVO.districtName+'';
+							if(typeof result[i].subWorksList[k].addressVO.assemblyName != 'undefined')
+								str+=' ASSEMBLY: '+result[i].subWorksList[k].addressVO.assemblyName+'';
+							if(typeof result[i].subWorksList[k].addressVO.tehsilName != 'undefined')
+								str+=' MANDAL: '+result[i].subWorksList[k].addressVO.tehsilName+'';
+							if(typeof result[i].subWorksList[k].addressVO.panchayatName != 'undefined')
+								str+=' PANCHAYAT: '+result[i].subWorksList[k].addressVO.panchayatName+'';
+						}
+						str+='</td>';
+						str+='<td>'+result[i].subWorksList[k].workDescription+'</td>';
+						str+='<td>'+result[i].subWorksList[k].estimationCost+'</td>';
+						/*str+='<td>';
+						if(result[i].subWorksList[k].subList1 != null && result[i].subWorksList[k].subList1.length>0){
+							for(var j in result[i].subWorksList[k].subList1){
+								if(j >0)
+									str+=' ,';
+								str+=''+result[i].subWorksList[k].subList1[j].name+' ('+result[i].subWorksList[k].subList1[j].designation+')';
+							}
+						}
+						str+='</td>';
+						*/
+						str+='<td>';
+						if(result[i].subWorksList[k].subList2 != null && result[i].subWorksList[k].subList2.length>0){
+							for(var j in result[i].subWorksList[k].subList2){
+								if(j >0)
+									str+=' ,';
+								str+=''+result[i].subWorksList[k].subList2[j].name+' ('+result[i].subWorksList[k].subList2[j].designation+')';
+							}
+						}
+						str+='</td>';
+						str+='<td>'+result[i].subWorksList[k].actionMemo+'</td>';
+						str+='<td>'+result[i].subWorksList[k].goRefNo+'</td>';
+						str+='<td>'+result[i].subWorksList[k].pendingAt+'</td>';
+						str+='</tr>';
+					}
+				}
+			}
+		str+='</tbody>';
+	str+='</table>';
+	str+='</div>';
+	
+	$('#pdfWiswPetitionsView').html(str);
+	$("#petionsDtailsTab").dataTable({
+		"paging":   true,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		"iDisplayLength": 10,
+		"aaSorting": [],
+		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
+	});
+}
