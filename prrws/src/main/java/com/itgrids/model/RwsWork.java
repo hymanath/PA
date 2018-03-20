@@ -30,6 +30,8 @@ public class RwsWork {
 	private Date commissionedDate;
 	private Date stipulatedTargetDate;
 	private String isActive;
+	private Date technicalSanctionDate;
+	private Date entrustedDate;
 	
 	@Id
 	@Column(name="rws_work_id")
@@ -158,6 +160,20 @@ public class RwsWork {
 	}
 	public void setIsActive(String isActive) {
 		this.isActive = isActive;
+	}
+	@Column(name="technical_sanction_date")
+	public Date getTechnicalSanctionDate() {
+		return technicalSanctionDate;
+	}
+	public void setTechnicalSanctionDate(Date technicalSanctionDate) {
+		this.technicalSanctionDate = technicalSanctionDate;
+	}
+	@Column(name="entrusted_date")
+	public Date getEntrustedDate() {
+		return entrustedDate;
+	}
+	public void setEntrustedDate(Date entrustedDate) {
+		this.entrustedDate = entrustedDate;
 	}
 	
 	
