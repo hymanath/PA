@@ -6775,8 +6775,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									statusVO.setEstimationCost(totalCost1.toString());
 									//offVO.setEstimationCost(totalCost.toString());
 								}
-								
-								
 							}
 						}
 						//else{

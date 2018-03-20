@@ -19,8 +19,36 @@ public class PmOfficerVO implements Serializable{
 	private String officerDesig;
 	private Long petitionCnt =0l ;
 	private Long subWorkCnt=0l;
+	private Long locationId;
+	private String locationName;
+	private Set<Long> withOutCostPetitionIds = null;
+	private Set<Long> withOutCostSubWorkIds = null;
 	
 	
+	public Set<Long> getWithOutCostPetitionIds() {
+		return withOutCostPetitionIds;
+	}
+	public void setWithOutCostPetitionIds(Set<Long> withOutCostPetitionIds) {
+		this.withOutCostPetitionIds = withOutCostPetitionIds;
+	}
+	public Set<Long> getWithOutCostSubWorkIds() {
+		return withOutCostSubWorkIds;
+	}
+	public void setWithOutCostSubWorkIds(Set<Long> withOutCostSubWorkIds) {
+		this.withOutCostSubWorkIds = withOutCostSubWorkIds;
+	}
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
 	public Long getPetitionCnt() {
 		return petitionCnt;
 	}

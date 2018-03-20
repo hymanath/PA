@@ -1,4 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var currentFromDate=moment().subtract(7, 'year').format("DD-MM-YYYY");
+var currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
 /* $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menuCls").toggle();
@@ -7,17 +9,61 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 	$(".menu-data-cls").hide();
 });  */
 getDeptIdsListBYUserIdsLst();
+$(".chosen-select").chosen();
 
+$("#dateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'All':[moment().subtract(7,"year").format("DD-MM-YYYY"), moment().add(38,"year").format("DD-MM-YYYY")],
+		   'Today' : [moment(), moment()],
+		   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   
+		}
+	});
+	
+	var dates= $("#dateRangePicker").val();
+	var pickerDates = currentFromDate+' - '+currentToDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePicker").val('All');
+	}
+
+	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD-MM-YYYY');
+		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		if(picker.chosenLabel == 'All')
+		{
+			$("#dateRangePicker").val('All');
+		}
+		
+	});
 function onLoadCalls(){
 	//getDeptIdsListBYUserIdsLst();
 	getCompleteOrStatusOverviewDetails();
 	$("#officerBlock").hide();
 	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
 		$("#refWiseOverViewId").show();
+		//$("#locationWiseBlockId").show();
 		$("#leadWiseDivId").show();
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
 		$("#officerBlock").show();
+		getDepartmentsBySearchType("department","departmentId",0,0);
+		getStatusList(0);
+		getSubjectsBySearchType("subject","subjectId",0,0);
+
+		getLocationWiseRepresentationsOverviewDetails("district","districtWiseLocationDetailsDivId");
+		getLocationWiseRepresentationsOverviewDetails("constituency","constituencyWiseLocationDetailsDivId");
 		getReferralWiseOverviewDetails("");
 		getBriefLeads();
 		getLeadWiseOverviewDetails();
@@ -1165,6 +1211,300 @@ function tableBuildOfficerBlock(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
 }
+ 
+function getLocationWiseRepresentationsOverviewDetails(locationtype,divId){
+	var selStatusId = $("#statusLocId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}
+	if(locationtype == "district"){
+		$("#districtWiseLocationDetailsDivId").html(spinner);
+	}else{
+		$("#constituencyWiseLocationDetailsDivId").html(spinner);
+	}
+	var subjArr = [];
+	var subjIds =$("#subjectId").val();
+	if(subjIds != null && subjIds !=0){
+		subjArr=subjIds;
+	}
+	var deptIds =  $("#departmentId").val();
+	var deptIdsList = [];
+		if(deptIds != null && deptIds.length >0){
+			deptIdsList=deptIds;
+		}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
+var json = {
+		 deptIdsList :deptIdsList,
+		 statusIds:statusIds,
+		 lightVendorIdList:subjArr,
+		 assetType:locationtype,
+		 fromDate:currentFromDate,
+		 toDate:currentToDate
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getLocationWiseRepresentationsOverviewDetails',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildLocationWiseRepresentationsOverviewDetails(result,locationtype,divId);
+		}else{
+			$("#"+divId).html("No Data Available");
+		}
+		
+	});	
+}
+
+function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,divId){
+	var str='';
+	var selStatusId = $("#statusLocId").val();
+	var selDptId = $("#departmentId").val();
+	var selSubjId = $("#subjectId").val();
+	var searchBy = '';
+	if(locationtype == "district"){
+		str+='<h4 class="font_weight0">District wise Representation Overview</h4>';
+		searchBy=locationtype;
+	}else{
+		str+='<h4 class="font_weight0">Constituecy wise Representation Overview</h4>';
+		searchBy=locationtype;
+	}
+	if(selSubjId != null && selSubjId != 0){
+		searchBy = "subject";
+	}
+	str+='<div class="table-responsive m_top10">';
+		str+='<table class="table table-bordered" id="dataTableLoc'+divId+'">';
+			str+='<thead>';
+				str+='<tr>';
+				if(locationtype == "district"){
+					str+='<th>District</th>';
+				}else{
+					str+='<th>District</th>';
+					str+='<th>Constituency</th>';
+				}
+				str+='<th>Total Representations</th>';
+				str+='<th>Total works</th>';
+				str+='<th>Estimated cost</th>';
+				str+='<th>With out cost Representations</th>';
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+			var distId = 0;
+			var constId =0;
+			
+				for(var i in result){
+					str+='<tr>';
+						if(locationtype == "district"){
+							str+='<td>'+result[i].locationName+'</td>';
+							distId=result[i].locationId;
+						}else{
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td>'+result[i].locationName+'</td>';
+							constId=result[i].locationId;
+							distId=result[i].id;
+						}
+						if(result[i].petitionIds.length !=null && result[i].petitionIds.length>0){
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].petitionIds.length+'</a></td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						
+						if(result[i].subWorkIds.length !=null && result[i].subWorkIds.length>0){
+							str+='<td>'+result[i].subWorkIds.length+'</td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						if(typeof(result[i].estimationCost) != "undefined" && result[i].estimationCost != 0){
+								var convertToAmt = result[i].estimationCost*100000;
+								var crores = (convertToAmt/10000000).toFixed(2);
+								str+='<td><b>'+crores+'</b></td>';
+						}else{
+								str+='<td><b>-</b></td>';
+						}
+						//str+='<td>'+result[i].estimationCost+'</td>';
+						if(result[i].withOutCostPetitionIds.length !=null && result[i].withOutCostPetitionIds.length>0){
+							str+='<td>'+result[i].withOutCostPetitionIds.length+'</td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						
+					str+='</tr>';
+				}
+			str+='</tbody>';
+		str+='</table>';
+		str+='</div>';
+		
+		$("#"+divId).html(str);
+		$("#dataTableLoc"+divId).dataTable({
+			"iDisplayLength": 13,
+			"aaSorting": [],
+			"aLengthMenu": [[13, 15, 20,50, -1], [13, 15, 20,50, "All"]]
+		});
+		
+		
+}
+function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
+	var selStatusId = $("#statusLocId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}else if(statusId.length >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+	var dptId = $("#departmentId").val();
+	if(dptId != null && dptId.length >0){
+		ondeptId=dptId;
+	}
+ var json = {
+		 reportType :searchType,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 departmentId:ondeptId,
+		 statusId:statusIds
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getDepartmentsBySearchType',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#"+selBoxId).empty();
+		if(result !=null && result.length >0){
+			$("#departMentsDiv").show();
+			//$("#"+selBoxId).html("<option value='0'>All</option>");
+			for(var i in result){
+				//if(deptId != null && deptId==result[i].key){
+					//$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+				//}else{
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+				//}
+			}
+		}
+		$("#"+selBoxId).trigger('chosen:updated');
+	});	
+}
+
+function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
+	var selStatusId = $("#statusLocId").val();
+	//alert(statusId)
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}else if(statusId >0){
+		var statusList = statusId.split(',');
+		for(var i=0;i<statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+	var selSubjId = $("#subjectId").val();
+	if(selSubjId != null && selSubjId.length >0){
+		subjectId =selSubjId;
+	}
+	
+	var deptIds =  $("#departmntId").val();
+	var deptIdsList = [];
+		if(deptIds != null && deptIds.length >0){
+			deptIdsList=deptIds;
+		}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
+
+ var json = {
+		 reportType :searchType,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 statusIds:statusIds,
+		 assetType:subjectId,
+		 deptIdsList :deptIdsList
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getSubjectsBySearchType',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		 $("#"+selBoxId).empty();
+		if(result !=null && result.length >0){
+			//$("#"+selBoxId).html("<option value='0'>All</option>");
+			for(var i in result){
+				//if(subjId != null && subjId==result[i].key){
+					//$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+				//}else{
+					$("#"+selBoxId).append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+				//}
+			}
+		}
+		$("#"+selBoxId).trigger('chosen:updated');
+	});	
+}
+
+function getStatusList(onLoadstatusId){
+	 $("#statusLocId").html('');
+	var selStatusId = $("#statusLocId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}else if(onLoadstatusId.length >0){
+		var statusList = onLoadstatusId.split(',');
+		for(var i=0;i<=statusList.length-1;i++){
+			statusIds.push(statusList[i]);
+		}
+	}
+	var json = {
+		statusIds :statusIds
+	}
+  $.ajax({                
+    type:'POST',    
+    url: 'getStatusList',
+    dataType: 'json',
+	data : JSON.stringify(json),
+    beforeSend :   function(xhr){
+      xhr.setRequestHeader("Accept", "application/json");
+      xhr.setRequestHeader("Content-Type", "application/json");
+    }
+  }).done(function(result){
+   
+		if(result !=null && result.length >0){
+			//$("#statusLocId").html("<option value='0'>All</option>");
+			for(var i in result){
+				$("#statusLocId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+			}
+		}
+		$("#statusLocId").trigger('chosen:updated');
+  }); 
+}
+$(document).on("click",".getLocWiseDetailsCls",function(){
+	getLocationWiseRepresentationsOverviewDetails("district","districtWiseLocationDetailsDivId");
+	getLocationWiseRepresentationsOverviewDetails("constituency","constituencyWiseLocationDetailsDivId");
+});
+
 
 getPetitionsDetailsForPDFDocument();
 

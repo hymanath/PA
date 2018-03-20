@@ -854,7 +854,9 @@ $(document).on("click",".closeSecondModal",function(){
  var briefleadId ='${param.leadId}';
  var gblOfficerId = '${param.officerId}';
  var statusName = '${param.statusName}';
-    if(deptId ==''){
+  var distId = '${param.distId}';
+   var constId = '${param.constId}';
+    if(deptId =='' || deptId ==null){
 	deptId=0;
 	}
 	if(refCanId ==''){
@@ -863,12 +865,14 @@ $(document).on("click",".closeSecondModal",function(){
 	if(desigId ==''){
 	desigId=0;
 	}
-	if(statusId ==''){
+	if(statusId =='' || statusId ==null){
 	statusId=0;
 	}
-	if(briefleadId ==''){
+	if(subjId ==''  || subjId ==null){
 	subjId=0;
-	}if(briefleadId ==''){
+	}
+	
+	if(briefleadId ==''){
 		briefleadId=0;
 	}else{
 		getPmBriefLeadList(0);
@@ -876,6 +880,12 @@ $(document).on("click",".closeSecondModal",function(){
 	
 	if(gblOfficerId ==''){
 	gblOfficerId=0;
+	}
+	if(distId ==''){
+	distId=0;
+	}
+	if(constId ==''){
+	constId=0;
 	}
   if(searchBy != ''){
 	  $("#petitionId").prop("checked",true);
@@ -921,7 +931,7 @@ var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryVie
 		}
 	}); */
 	
-	
+var allDeptIds = [];	
 function getDepartmntsDetails(){
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
@@ -951,10 +961,26 @@ function getDepartmntsDetails(){
 		}
 	}).done(function(result){
 		$("#departmntId").empty();
-		$("#departmntId").append("<option value='0' selected> ALL </option>");
+		
+		var paraDepts =[];
+		if(deptId != null && deptId.length > 0){
+				if(deptId.length >0){
+					   var deptList = deptId.split(',');
+						for(var i=0;i<=deptList.length-1;i++){
+						paraDepts.push(deptList[i]);
+					}
+				}
+			}else{
+				$("#departmntId").append("<option value='0' selected> ALL </option>");
+			}
 		if(result !=null && result.length >0){
-			for(var i in result)
-				$("#departmntId").append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+			for(var i in result){
+				if ( $.inArray(result[i].key.toString(), paraDepts) == -1) {
+					$("#departmntId").append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+				}else{
+					$("#departmntId").append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+				}
+			}
 		}
 		$("#departmntId").trigger('chosen:updated');
 	});	
