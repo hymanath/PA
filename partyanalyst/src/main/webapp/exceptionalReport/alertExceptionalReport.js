@@ -2,7 +2,10 @@ var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><
 onloadAlertCalls();
 function onloadAlertCalls(){
 	//getAssignedCandidateWisePendingAlerts();
-	getDistrictWiseAlertsDetails();
+	//getDistrictWiseAlertsDetails();
+	getLocationWiseAlertsDetails("constituency")
+	getLocationWiseAlertsDetails("district")
+	getLocationWiseAlertsDetails("parliament");
 	getOverAllAlertsDetails();
 }
  $(document).on("click",".alertExRRefresh",function(e){
@@ -29,16 +32,32 @@ function getAssignedCandidateWisePendingAlerts(){
 		}
 	});
 }
-function buildAssignedCandidateWisePendingAlerts(result){
+function buildAssignedCandidateWisePendingAlerts(result,locationType){
 	var str='';
 	str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top20">';
-				str+='<h5 class="text_bold text-capital font_size24" >District Wise Action Required Alerts</h5>';
+			if(locationType == 'district'){
+					str+='<h5 class="text_bold text-capital font_size24" >District Wise Action Required Alerts</h5>';
+				}else if(locationType == 'constituency'){
+					str+='<h5 class="text_bold text-capital font_size24" >Constituency Wise Action Required Alerts</h5>';
+				}else if(locationType == 'parliament'){
+					str+='<h5 class="text_bold text-capital font_size24" >PARLIMENT Wise Action Required Alerts</h5>';
+				}
+				
 				str+='<div class="table-responsive m_top10" >';
-					str+='<table class="table details-overview1" id="dataTableId1">';
+					str+='<table class="table details-overview1" id="dataTableId'+locationType+'">';
+				
 						str+='<thead>';
 							str+='<tr>';
+							if(locationType == 'district'){
 								str+='<th>District</th>';
+							}else if(locationType == 'constituency'){
+								str+='<th>Constituency</th>';
+								str+='<th>Parliament</th>';
+							}else if(locationType == 'parliament'){
+								str+='<th>Parliament</th>';
+								
+							}
 								str+='<th>Total Alerts</th>';
 								str+='<th>Action Required</th>';
 								str+='<th>In Progress</th>';
@@ -50,6 +69,9 @@ function buildAssignedCandidateWisePendingAlerts(result){
 							for(var i in result){
 								str+='<tr>';
 									str+='<td>'+result[i].name+'</td>';
+									if(locationType == 'constituency'){
+										str+='<td>'+result[i].constituency+'</td>';
+									}
 									str+='<td>'+result[i].totalAlert+'</td>';
 									str+='<td>'+result[i].actionRequired+'</td>';
 									str+='<td>'+result[i].pendingCount+'</td>';
@@ -63,15 +85,36 @@ function buildAssignedCandidateWisePendingAlerts(result){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	$("#assignedParliamentWiseAlertsDivId").html(str)
-	 $("#dataTableId1").dataTable({
-		"paging":   false,
-		"info":     false,
-		"searching": false,
-		"autoWidth": true,
-		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-		"aaSorting": [[ 4, "desc" ]]
-	});
+	if(locationType == 'district'){
+		$("#assignedDistrictWiseAlertsDivId").html(str);
+		
+	}else if(locationType == 'constituency'){
+		$("#assignedConstituencyWiseAlertsDivId").html(str);
+		
+	}else if(locationType == 'parliament'){
+		$("#assignedParliamentWiseAlertsDivId").html(str);
+		
+	}
+	if(locationType == 'constituency'){
+		$("#dataTableId"+locationType).dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"aaSorting": [[ 5, "desc" ]]
+		});
+	}else{
+		$("#dataTableId"+locationType).dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": true,
+			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+			"aaSorting": [[ 4, "desc" ]]
+		});
+	}
+	 
 }
 function getOverAllAlertsDetails(){
 	$("#overAllAlertsDivId").html(spinner);	
@@ -273,13 +316,24 @@ function buildOverAllAlertsDetails(result){
 }
 
 
-function getDistrictWiseAlertsDetails(){  
+function getLocationWiseAlertsDetails(locationType){  
+	if(locationType == 'district'){
+		$("#assignedDistrictWiseAlertsDivId").html(spinner);
+		
+	}else if(locationType == 'constituency'){
+		$("#assignedConstituencyWiseAlertsDivId").html(spinner);
+		
+	}else if(locationType == 'parliament'){
+		$("#assignedParliamentWiseAlertsDivId").html(spinner);
+		
+	}
 	var jsObj = { 
 		fromDateStr : "01/01/2010",
 		toDateStr : "01/01/2050",
 		stateId : 1,
 		size : 50,
-		alertTypeIds : [1]
+		alertTypeIds : [1],
+		locationType:locationType
 	}
 	$.ajax({
 		type : 'POST',      
@@ -288,9 +342,19 @@ function getDistrictWiseAlertsDetails(){
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildAssignedCandidateWisePendingAlerts(result);
+			buildAssignedCandidateWisePendingAlerts(result,locationType);
 		}else{
-			$("#assignedParliamentWiseAlertsDivId").html("No Data Available")
+			
+			if(locationType == 'district'){
+				$("#assignedDistrictWiseAlertsDivId").html("No Data Available");
+				
+			}else if(locationType == 'constituency'){
+				$("#assignedConstituencyWiseAlertsDivId").html("No Data Available");
+				
+			}else if(locationType == 'parliament'){
+				$("#assignedParliamentWiseAlertsDivId").html("No Data Available");
+				
+			}
 		}
 	});
 }
