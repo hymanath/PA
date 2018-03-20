@@ -11803,7 +11803,14 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId){
  		StringBuilder str = new StringBuilder();
  		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
- 			if(type !=null && type.equalsIgnoreCase("district")){
+ 			if(type !=null && type.equalsIgnoreCase("state")){
+ 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+ 				str.append(" select distinct A.alert_id as alertId " +
+ 						" from alert A,user_address UA,alert_category AC,state S " +
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and UA.state_id =S.state_id and UA.district_id is not null ") ;
+ 	 			
+ 			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" select distinct A.alert_id as alertId " +
  	 					" from alert A,user_address UA,alert_category AC,district D " +
  	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
@@ -11821,7 +11828,16 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
  			}
  		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
- 			if(type !=null && type.equalsIgnoreCase("district")){
+ 			
+ 			if(type !=null && type.equalsIgnoreCase("state")){
+ 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+ 				str.append(" sselect distinct A.alert_id as alertId " +
+ 	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
+ 				
+ 				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id and UA.district_id is not null ") ;
+ 				
+ 			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" select distinct A.alert_id as alertId " +
  	 					" from alert A,user_address UA,alert_category AC,district D,alert_status ARS ");
  	 			
@@ -11852,7 +11868,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  			str.append(" and A.alert_status_id =:statusId ");
  		}
  		
- 		if(type !=null && type.equalsIgnoreCase("district")){
+ 		if(type !=null && type.equalsIgnoreCase("state")){
+ 			str.append(" and UA.state_id in(:locationTypeIds) ");
+		}else if(type !=null && type.equalsIgnoreCase("district")){
 			str.append(" and UA.district_id in(:locationTypeIds) ");
  		}else if(type !=null && type.equalsIgnoreCase("constituency")){
  			str.append(" and UA.constituency_id in(:locationTypeIds) ");
@@ -11876,7 +11894,10 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 			query.setParameter("fromDate",fromDate);
 	 			query.setParameter("toDate",toDate);
 	 		}
-	 		if(type !=null && type.equalsIgnoreCase("district")){
+	 		
+	 		if(type !=null && type.equalsIgnoreCase("state")){
+				query.setParameterList("locationTypeIds",locationTypeIds);
+	 		}else if(type !=null && type.equalsIgnoreCase("district")){
 				query.setParameterList("locationTypeIds",locationTypeIds);
 	 		}else if(type !=null && type.equalsIgnoreCase("constituency")){
 	 			query.setParameterList("locationTypeIds",locationTypeIds);
