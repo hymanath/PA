@@ -11894,7 +11894,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	return  query.list();
  	}
  
-	public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date stDate,Date ndDate, Long stateId, String accessType) {
+	public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date stDate,Date ndDate, Long stateId,List<Long> alertIds, String accessType) {
 		StringBuilder sb = new StringBuilder();
 		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
 			sb.append("select pc.constituency_id as parliamentId,pc.name as parliamentName,"); //0,1
@@ -11923,18 +11923,28 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				+ " ALT.address_id = UA.user_address_id and "
 				+ " UA.state_id = :stateId and  "
 				+ " ALT.alert_type_id = ALTTYPE.alert_type_id and "
-				+ " ALTTYPE.alert_type_id in (1) and "
-				+ " ALT.alert_status_id = ALTSTS.alert_status_id  AND ALTSTS.alert_status_id not in(6,7) and ");
+				+ " ALT.alert_status_id = ALTSTS.alert_status_id  AND ");
+				if(alertIds !=null && alertIds.size()>0){
+					sb.append("	ALTTYPE.alert_type_id in (:alertIds) and ");
+				}else{
+					sb.append("  ALTTYPE.alert_type_id in (1) and ALTSTS.alert_status_id not in(6,7) and ");
+				}
+			
 		if (stDate != null && ndDate != null) {
 			sb.append(" ALT.created_time between date(:stDate) and date(:ndDate) ");
 		}
-		sb.append(" group by C.constituency_id ,ALTSTS.alert_status_id ");
+		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
+			sb.append(" group by pc.constituency_id ,ALTSTS.alert_status_id ");
+		}else{
+			sb.append(" group by C.constituency_id ,ALTSTS.alert_status_id ");
+		}
+		
 
 		SQLQuery query = getSession().createSQLQuery(sb.toString());
 		
 		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
-		query.addScalar("parliamentId", Hibernate.LONG);
-		query.addScalar("parliamentName", Hibernate.STRING);
+			query.addScalar("parliamentId", Hibernate.LONG);
+			query.addScalar("parliamentName", Hibernate.STRING);
 		}else{
 			query.addScalar("constituenyId", Hibernate.LONG);
 			query.addScalar("constituencyName", Hibernate.STRING);
@@ -11953,6 +11963,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		if (stDate != null && ndDate != null) {
 			query.setDate("stDate", stDate);
 			query.setDate("ndDate", ndDate);
+		}
+		if(alertIds !=null && alertIds.size()>0){
+			query.setParameterList("alertIds", alertIds);
 		}
 		return query.list();
 	}
