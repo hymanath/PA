@@ -6303,7 +6303,9 @@ public String getDistrictWiseAlertsDetails(){
 				alertTypeIdList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
 			}
 		}
-		alertCoreDashBoardVOs = alertExceptionalReportService.getDistrictWiseAlertsDetails(fromDateStr,toDateStr,stateId,size,alertTypeIdList);
+		String locationType= jObj.getString("locationType");
+		//CoreDashBoardVOs = alertExceptionalReportService.getDistrictWiseAlertsDetails(fromDateStr,toDateStr,stateId,size,alertTypeIdList);
+		alertCoreDashBoardVOs = alertExceptionalReportService.getLocationWiseAlertsDetails(fromDateStr,toDateStr,stateId,size,alertTypeIdList,locationType);
 	}catch(Exception e){
 		LOG.error("Exception raised at getAssignedCandidateWisePendingAlerts() method of CoreDashBoardAction", e);
 	}
