@@ -2,7 +2,6 @@ package com.itgrids.service;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import com.itgrids.dto.CadreRegistrationVO;
 import com.itgrids.dto.InputVO;
@@ -10,6 +9,7 @@ import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionTrackingVO;
+import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.dto.PetitionsPDFVO;
 import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -52,5 +52,5 @@ public interface IPmRequestDetailsService {
 	public ResultStatus uploadCoveringLetter(RepresenteeViewVO inputVO);
 	public Map<Long,String> getRefCandidateDepartments(List<Long> refCandIds);
 	public List<PmOfficerVO> getPmOfficerWisePetitionDetails(InputVO inputVO);
-	public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(InputVO inputVO);
+	public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(PetitionsInputVO inputVO);
 }
