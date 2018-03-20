@@ -49,19 +49,37 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 	
 	public List<Object[]> getCompletedMianWorkPercentage(Long userId,Long workTypeId,Long locationScopeId,List<Long> locationValues){
 		//0-mainWorkId,1-totalKms,2-completedKms
-		Query query = getSession().createSQLQuery("select gmw.govt_main_work_id as mainWorkId,gmw.approved_km as totalKms,sum(gwp.work_length) as completedKms "
-				+ " from govt_work_progress gwp,govt_main_work gmw,govt_work gw "
+		StringBuilder sb = new StringBuilder();
+		sb.append("select gmw.govt_main_work_id as mainWorkId,gmw.approved_km as totalKms,sum(gwp.work_length) as completedKms "
+				+ " from govt_work_progress gwp,govt_main_work gmw,govt_work gw,location_addess la "
 				+ " where gw.is_deleted='N' "
 				+ " and gwp.govt_work_id=gw.govt_work_id "
 				+ " and gw.govt_main_work_id=gmw.govt_main_work_id "
-				+ " and gw.created_by=:userId and gmw.govt_work_type_id=:workTypeId and gwp.govt_work_status_id=:statusId  "
-				+ " and gmw.location_scope_id=:locationScopeId and gmw.location_scope_id in (:locationValues) "
-				+ " group by gmw.govt_main_work_id");
+				+ " and gmw.location_address_id=la.location_address_id "
+				+ " and gw.created_by=:userId and gmw.govt_work_type_id=:workTypeId and gwp.govt_work_status_id=:statusId  ");
+		
+			if(locationScopeId == 3l){
+				sb.append(" and la.district_id in (:locationValues) ");
+			}else if(locationScopeId == 12l){
+				sb.append(" and la.division_id in (:locationValues) ");
+			}else if(locationScopeId == 13l){
+				sb.append(" and la.sub_division_id in (:locationValues) ");
+			}else if(locationScopeId == 5l){
+				sb.append(" and la.tehsil_id in (:locationValues) ");
+			}else if(locationScopeId == 6l){
+				sb.append(" and la.panchayat_id in (:locationValues) ");
+			}
+				
+			sb.append(" group by gmw.govt_main_work_id");
+		
+		Query query = getSession().createSQLQuery(sb.toString());
 		
 		query.setParameter("userId", userId);
 		query.setParameter("workTypeId", workTypeId);
-		query.setParameter("locationScopeId", locationScopeId);
-		query.setParameterList("locationValues", locationValues);
+		if(locationScopeId == 3l || locationScopeId == 12l || locationScopeId == 13l || locationScopeId == 5l || locationScopeId == 6l){
+			query.setParameterList("locationValues", locationValues);
+		}
+		
 		if(workTypeId == 1l){
 			query.setParameter("statusId", IConstants.UGDFINISHSTATUSID);
 		}
