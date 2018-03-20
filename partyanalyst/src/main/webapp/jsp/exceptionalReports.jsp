@@ -332,7 +332,9 @@ header
 						</div>
 							<div class="panel-body">
 								<div id="overAllAlertsDivId"></div>
+								<div id="assignedDistrictWiseAlertsDivId"></div>
 								<div id="assignedParliamentWiseAlertsDivId"></div>
+								<div id="assignedConstituencyWiseAlertsDivId"></div>
 						</div>
 				</div>
 			</div>
