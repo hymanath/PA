@@ -6939,7 +6939,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						String desc=commonMethodsUtilService.getStringValueForObject(param[18]);
 						String workCost=commonMethodsUtilService.getStringValueForObject(param[19]);
-						if(workCost == null || workCost.isEmpty())
+						if(workCost == null || workCost.isEmpty() || workCost.equalsIgnoreCase("0"))
 							workCost="0.00";
 						
 						String reprDes=commonMethodsUtilService.getStringValueForObject(param[20]);
@@ -6957,8 +6957,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							withCostWorkIds.add(workId);
 						else
 							withoutCostWorkIds.add(workId);
-						
-						
 						
 						PetitionsPDFVO vo = new PetitionsPDFVO();
 						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);

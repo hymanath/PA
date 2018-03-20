@@ -1547,6 +1547,21 @@ function getPetitionsDetailsForPDFDocument(){
 function buildPetitionDetailsForPDF(result){
 	
 	var str='';
+	str+='<div>';
+		str+='<span> NO OF PETITIONS : </span> '+result[0].totalCount+' <br> ';
+		str+='<span> NO OF WORKS WITH COST : </span> '+result[0].noOfWorksWithCost+'  <br> ';
+		str+='<span> TOTAL ESTIMATED COST (IN LAKHS) : </span> '+result[0].estimationCost+'  <br> ';
+		str+='<span> SANCTIONED WORKS  : </span> '+result[0].sanctionedWorksCount+' <br> ';
+		str+='<span> TO BE SANCTIONED WORKS : </span>'+result[0].toBeSanctionedWorksCount+' <br>  ';
+		str+='<span> NO. OF WORKS MEMOS ISSUED  : </span>'+result[0].noOfMemoIssuedCount+' <br>  ';
+		
+		str+='<span> NO OF WORKS : </span>'+result[0].totalWorksCount+'  <br> ';
+		str+='<span> NO OF WORKS WITHOUT COST : </span>'+result[0].noOfWorksWithoutCost+' <br>  ';
+		
+		str+='<span> SANCTIONED COST (IN LAKHS)  : </span> '+result[0].sanctionedCost+' <br> ';
+		str+='<span> TO BE SANCTIONED COST (IN LAKHS)  : </span>'+result[0].toBeSanctionedCost	+' <br>  ';
+		str+='<span> NO. OF WORKS G.O. ISSUED  : </span>'+result[0].noOfGOIssuedCount+' <br>  ';
+	str+='</div>';
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered" id="petionsDtailsTab">';
 		str+='<thead>';
