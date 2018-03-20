@@ -707,7 +707,7 @@ function getAllLocations(levelId,levelValue,type){
 			dataType : 'json',
 			data : {task :JSON.stringify(jsObj)}
 		}).done(function(result){
-			return buildResultforWordCloud('wordCloudDistrict',result,type);
+			return buildResultforWordCloud('wordCloudDistrict',result,type,isDepartment);
 		});
 		
 	}else if(levelId==3){
@@ -733,7 +733,11 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	if(levelTypeId =="newspapers"){
 		globalNewsPapres=[];
 		for(var i in result){
-			optionStr+='<option selected>'+result[i].paperName+'</option>';
+			if(result[i].paperId !=8){
+				optionStr+='<option selected>'+result[i].paperName+'</option>';
+			}else{
+				optionStr+='<option>'+result[i].paperName+'</option>';
+			}
 			if(result[i].paperId !=8){
 				globalNewsPapres.push(result[i].paperName);
 			}
@@ -764,9 +768,20 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	}else {
 		globalDistricts=[];
 		for(var i in result){
-			optionStr+='<option selected>'+result[i].locationName+'</option>';
 			if(levelTypeId=="wordCloudDistrict"){
-				globalDistricts.push(result[i].locationName);
+				if(isDepartment !=null && isDepartment =='Y'){
+					if(result[i].locationId !=517){
+						optionStr+='<option selected>'+result[i].locationName+'</option>';
+						globalDistricts.push(result[i].locationName);
+					}
+					
+				}else{
+					optionStr+='<option selected>'+result[i].locationName+'</option>';
+					globalDistricts.push(result[i].locationName);
+					
+				}
+			}else{
+				optionStr+='<option selected>'+result[i].locationName+'</option>';
 			}
 		}
 	}
@@ -778,60 +793,79 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 	$('#'+levelTypeId).multiselect("destroy");
 	if(levelTypeId == "wordCloudDistrict"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		enableCaseInsensitiveFiltering: true,
-		selectAllText: 'All Districts',
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All Districts selected',
-		onChange: function() {
-			districtNames = $('#wordCloudDistrict').val();
-			getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
-		},
-		onSelectAll: function() {
-           districtNames = $('#wordCloudDistrict').val();
-		  getAllLocations(3,$('#wordCloudDistrict').val(),"onChange");
-        }
-	});
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			enableCaseInsensitiveFiltering: true,
+			selectAllText: 'All Districts',
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All Districts selected',
+			onChange: function() {
+				if(isDepartment =='Y'){
+					districtNames=[];var districtsArr=[];
+					var districts =$('#wordCloudDistrict').val();
+					for(var i in districts){
+						if( districts[i]=='Visakhapatnam'){
+							 districtNames.push('Visakhapatnam Rural');
+							 districtNames.push('Visakhapatnam Urban');
+							 districtsArr.push('Visakhapatnam');
+							 districtsArr.push('Visakhapatnam Rural');
+						 }else{
+							 districtNames .push(districts[i]);
+							 districtsArr.push(districts[i]);
+						 }
+					}
+					getAllLocations(3,districtsArr,"onChange");
+				}else{
+					districtNames= $('#wordCloudDistrict').val();
+					getAllLocations(3,districtNames,"onChange");
+				}
+			},
+			onSelectAll: function() {
+				districtNames=[];
+				getAllLocations(3,districtNames,"onChange");
+				districtNames = $('#wordCloudDistrict').val();
+				
+	        }
+		});
 	}else if(levelTypeId == "newspapers"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		enableCaseInsensitiveFiltering: true,
-		selectAllText: 'All News Paper',
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All News Paper selected',
-		onChange: function() {
-			newspaperNames=$('#newspapers').val();
-		},
-		onSelectAll: function() {
-          newspaperNames=$('#newspapers').val();
-        }
-	});
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			enableCaseInsensitiveFiltering: true,
+			selectAllText: 'All News Paper',
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All News Paper selected',
+			onChange: function() {
+				newspaperNames=$('#newspapers').val();
+			},
+			onSelectAll: function() {
+	          newspaperNames=$('#newspapers').val();
+	        }
+		});
 	}else if(levelTypeId == "wordCloudConstituency"){
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		enableCaseInsensitiveFiltering: true,
-		selectAllText: 'All Constituencies',
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: 'All Constituencies selected',
-		onChange: function() {
-			constituencies=$('#wordCloudConstituency').val();
-		},
-		onSelectAll: function() {
-			constituencies=$('#wordCloudConstituency').val();
-        }
-	});
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			enableCaseInsensitiveFiltering: true,
+			selectAllText: 'All Constituencies',
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: 'All Constituencies selected',
+			onChange: function() {
+				constituencies=$('#wordCloudConstituency').val();
+			},
+			onSelectAll: function() {
+				constituencies=$('#wordCloudConstituency').val();
+	        }
+		});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
 		var name="";
 		if(isDepartment == "N"){
@@ -840,22 +874,22 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 			name="All Departments"
 		}
 		$('#'+levelTypeId).multiselect({
-		enableFiltering: true,
-		includeSelectAllOption: true,
-		enableCaseInsensitiveFiltering: true,
-		selectAllText: name,
-		maxHeight: 300,
-		buttonWidth: '100%',
-		dropDown: true,
-		selectAllName: true,
-		allSelectedText: name+' selected',
-		onChange: function() {
-			departmentNames=$('#wordCloudDepartmentNames').val();
-		},
-		onSelectAll: function() {
-          departmentNames=$('#wordCloudDepartmentNames').val();
-        }
-	});
+			enableFiltering: true,
+			includeSelectAllOption: true,
+			enableCaseInsensitiveFiltering: true,
+			selectAllText: name,
+			maxHeight: 300,
+			buttonWidth: '100%',
+			dropDown: true,
+			selectAllName: true,
+			allSelectedText: name+' selected',
+			onChange: function() {
+				departmentNames=$('#wordCloudDepartmentNames').val();
+			},
+			onSelectAll: function() {
+	          departmentNames=$('#wordCloudDepartmentNames').val();
+	        }
+		});
 	}
 	
 	callfetchFunction(type);
@@ -912,8 +946,10 @@ function getAllDepartments(isDepartment,type){
 		$("#wordCloudDepartmentNames").html("");
 	if(isDepartment !=null && isDepartment==""){
 		getAllDepartments("Y,N",'onchange');
+		getAllLocations(2,'1','onchange');
 	}else{
 		getAllDepartments(isDepartment,'onchange');
+		getAllLocations(2,'1','onchange');
 	}
 	document.getElementsByClassName("btn-primary")[0].disabled = "true";
 	document.getElementsByClassName("newsLettersRefresh")[0].disabled = "true";
