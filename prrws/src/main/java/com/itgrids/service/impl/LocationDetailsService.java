@@ -982,7 +982,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 					if(locationVO.getWithOutCostSubWorkIds() == null){
 						locationVO.setWithOutCostSubWorkIds(new HashSet<Long>());
 					}
-					String estimationCost = commonMethodsUtilService.getStringValueForObject(param[3]);
+					String estimationCost = commonMethodsUtilService.getStringValueForObject(param[2]);
 					if(!locationVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[1]))
 							&& estimationCost != "" && estimationCost != "0"){
 						locationVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));

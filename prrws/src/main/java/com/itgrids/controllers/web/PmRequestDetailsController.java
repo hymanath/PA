@@ -597,16 +597,11 @@ public class PmRequestDetailsController {
 				}else{
 					return null;
 				}
-				List<Long> deptIds = null;
-				if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
-					deptIds= inputVO.getDeptIdsList();
-				}else{
+				if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size() ==0){
 					KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-					deptIds = deptVO.getDeptIdsList();
+					inputVO.getDeptIdsList().addAll(deptVO.getDeptIdsList());
 				}
-				inputVO.getDeptIdsList().clear();
-				inputVO.getDeptIdsList().addAll(deptIds);
-				List<Long> statusIds = inputVO.getStatusIds();
-		    	return locationDetailsService.getLocationWiseRepresentationsOverviewDetails(inputVO);
+				
+				return locationDetailsService.getLocationWiseRepresentationsOverviewDetails(inputVO);
 		    }
 }

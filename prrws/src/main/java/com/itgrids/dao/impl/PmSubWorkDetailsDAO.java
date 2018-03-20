@@ -702,7 +702,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			sb.append(" and  model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
-			sb.append(" and  model.pmDepartment.pmDepartmentId in (:statusIds) ");
+			sb.append(" and  model.pmStatus.pmStatusId in (:statusIds) ");
 		}
 		if(inputVO.getLightVendorIdList() != null && inputVO.getLightVendorIdList().size()>0){
 			sb.append(" and model.pmSubject.pmSubjectId in (:subjectIds) ");
