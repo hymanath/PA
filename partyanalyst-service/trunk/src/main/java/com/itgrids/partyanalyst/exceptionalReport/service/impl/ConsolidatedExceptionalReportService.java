@@ -1936,10 +1936,10 @@ public class ConsolidatedExceptionalReportService implements IConsolidatedExcept
 			 //preparing parliament wise activities details data
 			
 			 if(accessType != null && accessType.equalsIgnoreCase("parliament")){
-				 List<Object[]> parliamentWiseAlertsDtlsObjList = alertDAO.getDistrictWiseTotalAlertsforConslidated(inputVO.getFromDate(), inputVO.getToDate(), inputVO.getStateId(),accessType);
+				 List<Object[]> parliamentWiseAlertsDtlsObjList = alertDAO.getDistrictWiseTotalAlertsforConslidated(inputVO.getFromDate(), inputVO.getToDate(), inputVO.getStateId(),null,accessType);
 				 prepareAlertDetailsData(parliamentWiseAlertsDtlsObjList,locationMap1,accessType,"alerts", locationMap);
 			}else{
-				List<Object[]> constituencyWiseAlertDtlsObjList = alertDAO.getDistrictWiseTotalAlertsforConslidated(inputVO.getFromDate(), inputVO.getToDate(), inputVO.getStateId(),accessType);
+				List<Object[]> constituencyWiseAlertDtlsObjList = alertDAO.getDistrictWiseTotalAlertsforConslidated(inputVO.getFromDate(), inputVO.getToDate(), inputVO.getStateId(),null,accessType);
 				prepareAlertDetailsData(constituencyWiseAlertDtlsObjList,locationMap1,accessType,"alerts",locationMap);
 			}
 		 } catch (Exception e) {
