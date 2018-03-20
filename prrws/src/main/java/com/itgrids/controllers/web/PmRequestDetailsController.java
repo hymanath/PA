@@ -24,6 +24,7 @@ import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionTrackingVO;
+import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.dto.PetitionsPDFVO;
 import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -571,7 +572,7 @@ public class PmRequestDetailsController {
 		    }
 	     
 	     @RequestMapping(value ="/getPetitionDetailsForPDFDocument",method = RequestMethod.POST)
-		    public @ResponseBody List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+		    public @ResponseBody List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(@RequestBody PetitionsInputVO inputVO,HttpServletRequest request ) {
 		    	HttpSession session=request.getSession();
 				UserVO userVO = (UserVO) session.getAttribute("USER"); 
 				Long userId =null;
@@ -580,14 +581,6 @@ public class PmRequestDetailsController {
 				}else{
 					return null;
 				}
-				List<Long> deptIds = null;
-				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-				deptIds = deptVO.getDeptIdsList();
-				List<Long> deptDesigIds = null;
-				deptDesigIds= deptVO.getDepDesigIds();
-				Long offcrDesigid =deptVO.getDesignationId();
-				
-				List<Long> statusIds = inputVO.getStatusIds();
 		    	return pmRequestDetailsService.getPetitionsDetailsForPDFDocument(inputVO);
 		    }
 	     

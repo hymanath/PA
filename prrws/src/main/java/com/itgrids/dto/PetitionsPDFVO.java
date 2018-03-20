@@ -3,7 +3,7 @@ package com.itgrids.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class PetitionsPDFVO {
+public class PetitionsPDFVO implements java.io.Serializable{
 
 	private Long id=0l;
 	private String name;
@@ -14,7 +14,7 @@ public class PetitionsPDFVO {
 	private String workDescription="";
 	private String endorsDate="";
 	private String representationDate="";
-	private String estimationCost="";
+	private String estimationCost="0.00";
 	private String repName="";
 	private String repDes="";
 	private String refferrersName="";
@@ -27,9 +27,9 @@ public class PetitionsPDFVO {
 	private Long noOfWorksWithCost=0l;
 	private Long noOfWorksWithoutCost=0l;
 	private Long sanctionedWorksCount=0l;
-	private Long sanctionedCostCount=0l;
-	private Long toBeSanctionedWorksCount=0l;
-	private Long toBeSanctionedCostCount=0l;
+	private String sanctionedCost="0.00";
+	private Long toBeSanctionedWorksCount=0L;
+	private String toBeSanctionedCost="0.00";
 	private Long noOfMemoIssuedCount=0l;
 	private Long noOfGOIssuedCount=0l;
 	private Long totalWorksCount=0l;
@@ -150,23 +150,24 @@ public class PetitionsPDFVO {
 	public void setSanctionedWorksCount(Long sanctionedWorksCount) {
 		this.sanctionedWorksCount = sanctionedWorksCount;
 	}
-	public Long getSanctionedCostCount() {
-		return sanctionedCostCount;
-	}
-	public void setSanctionedCostCount(Long sanctionedCostCount) {
-		this.sanctionedCostCount = sanctionedCostCount;
-	}
+	
 	public Long getToBeSanctionedWorksCount() {
 		return toBeSanctionedWorksCount;
 	}
 	public void setToBeSanctionedWorksCount(Long toBeSanctionedWorksCount) {
 		this.toBeSanctionedWorksCount = toBeSanctionedWorksCount;
 	}
-	public Long getToBeSanctionedCostCount() {
-		return toBeSanctionedCostCount;
+	public String getSanctionedCost() {
+		return sanctionedCost;
 	}
-	public void setToBeSanctionedCostCount(Long toBeSanctionedCostCount) {
-		this.toBeSanctionedCostCount = toBeSanctionedCostCount;
+	public void setSanctionedCost(String sanctionedCost) {
+		this.sanctionedCost = sanctionedCost;
+	}
+	public String getToBeSanctionedCost() {
+		return toBeSanctionedCost;
+	}
+	public void setToBeSanctionedCost(String toBeSanctionedCost) {
+		this.toBeSanctionedCost = toBeSanctionedCost;
 	}
 	public Long getNoOfMemoIssuedCount() {
 		return noOfMemoIssuedCount;

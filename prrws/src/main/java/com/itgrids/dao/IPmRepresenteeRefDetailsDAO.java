@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.model.PmRepresenteeRefDetails;
 
 public interface IPmRepresenteeRefDetailsDAO extends GenericDao<PmRepresenteeRefDetails, Long> {
@@ -16,5 +17,5 @@ public interface IPmRepresenteeRefDetailsDAO extends GenericDao<PmRepresenteeRef
 	public int updatePmRepresenteRefDetails(List<Long> representeRefDetailsIds,Date updatedTime,Long userId);
 	public Long getRepresenteeDetailsByPetitonId(Long petitionId);
 	public List<Long> getPmReferralCandidateIdsByDesigIds(List<Long> desigIds,Long refCandId,List<Long> statusIds,List<Long> deptIdsList);
-	public List<Object[]> getPetitionsDetailsForPdf(InputVO inputVO,Set<Long> petitionIdsList);
+	public List<Object[]> getPetitionsDetailsForPdf(PetitionsInputVO inputVO);
 }

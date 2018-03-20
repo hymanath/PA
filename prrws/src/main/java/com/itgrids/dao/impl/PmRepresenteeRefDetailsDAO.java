@@ -8,12 +8,12 @@ import java.util.Set;
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.hibernate.type.StandardBasicTypes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.model.PmRepresenteeRefDetails;
 @Repository
 public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresenteeRefDetails, Long> implements IPmRepresenteeRefDetailsDAO {
@@ -667,17 +667,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		return query.list();
 	}
 	
-	public List<Object[]> getPetitionsDetailsForPdf(InputVO inputVO,Set<Long> petitionIdsList){
+	public List<Object[]> getPetitionsDetailsForPdf(PetitionsInputVO inputVO){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
-		/*
-		sb.append(" p.petition_id as petition_id ,CONCAT('#',date(p.representation_date)) as representation_date ,CONCAT('#',date(p.endorsment_date)) as endorsment_date, ");
-		sb.append(" p.endorsment_no as endorsment_no ,p.representee_type as representee_type ,p.no_of_works as no_of_works, ");
-		sb.append(" repd1.designation as designation,sub.pm_sub_work_details_id as pm_sub_work_details_id ,p.pm_status_id as pm_status_id, ");
-		sb.append(" dis.district_name as district_name ,c.name as name,t.tehsil_name as tehsil_name , p1.panchayat_name as panchayat_name , ");
-		sb.append(" sub.grievance_description as grievance_description,sub.cost_estimation as cost_estimation,rcand.name as Refname ,refd.designation  as reddesignation");
-		*/
-		
 		sb.append(" p.petition_id as petition_id,CONCAT('#',date(p.representation_date))as representation_date ,CONCAT('#',date(p.endorsment_date)) as endorsment_date, ");
 		sb.append(" p.endorsment_no as endorsment_no,p.representee_type as representee_type ,p.no_of_works as no_of_works, ");
 		sb.append(" sub.pm_sub_work_details_id as pm_sub_work_details_id ,p.pm_status_id as pm_status_id, ");
@@ -712,15 +704,23 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" p.petition_id = sub.petition_id and  ");
 		sb.append(" sub.pm_department_id = d.pm_department_id and  ");
 		sb.append(" p.is_deleted='N' and sub.is_deleted='N' and  ");
-		sb.append(" p.petition_id = a.petition_id and  ");
+		sb.append(" p.petition_id = a.petition_id and d.is_deleted='N' and  ");
 		sb.append(" a.pm_petition_assigned_officer_id in ( ");
 		sb.append(" SELECT max(o1.pm_petition_assigned_officer_id) from pm_petition_assigned_officer o1 where o1.is_deleted='N' GROUP BY o1.petition_id ");
 		sb.append(" )   ");
 		
-		if( inputVO.getIdsList() != null &&  inputVO.getIdsList().size()>0)
-			sb.append(" and c.constituency_id in (111,282)  ");
-		
-		sb.append(" and d.is_deleted='N' and  d.pm_department_id in (17,22,27,34)   ");
+		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
+			sb.append(" and c.constituency_id in (:constituencyIdsList)  ");
+		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
+			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
+		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
+			sb.append("  and  sub.pm_statusId in (:statusIdsList)   ");
+		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null)
+			sb.append(" and (date(p.inserted_time) between :startDate and :endDate)  ");
+		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
+			sb.append("  and  sub.pm_subject_id in (:subjectIdsList)   ");
+		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
+			sb.append("  and  sub.pm_sub_subject_id in (:subSubjectIdsList)   ");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 				/*.addScalar("petition_id", StandardBasicTypes.LONG)
@@ -731,24 +731,37 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				.addScalar("no_of_works", StandardBasicTypes.LONG)
 				.addScalar("pm_sub_work_details_id", StandardBasicTypes.LONG)
 				.addScalar("pm_status_id", StandardBasicTypes.LONG)
-				.addScalar("district_name", StandardBasicTypes.STRING)
-				.addScalar("cname", StandardBasicTypes.STRING)
-				.addScalar("tehsil_name", StandardBasicTypes.STRING)
-				.addScalar("panchayat_name", StandardBasicTypes.STRING)
 				.addScalar("state_id", StandardBasicTypes.LONG)
 				.addScalar("district_id", StandardBasicTypes.LONG)
 				.addScalar("constituency_id", StandardBasicTypes.LONG)
 				.addScalar("tehsil_id", StandardBasicTypes.LONG)
 				.addScalar("panchayat_id", StandardBasicTypes.LONG)
+				.addScalar("state_name", StandardBasicTypes.STRING)
+				.addScalar("district_name", StandardBasicTypes.STRING)
+				.addScalar("cname", StandardBasicTypes.STRING)
+				.addScalar("tehsil_name", StandardBasicTypes.STRING)
+				.addScalar("panchayat_name", StandardBasicTypes.STRING)
 				.addScalar("grievance_description", StandardBasicTypes.STRING)
 				.addScalar("cost_estimation", StandardBasicTypes.STRING)
 				.addScalar("repDesignation", StandardBasicTypes.STRING)
 				.addScalar("repname", StandardBasicTypes.STRING)
 				.addScalar("refDesignation", StandardBasicTypes.STRING)
-				.addScalar("refName", StandardBasicTypes.STRING);*/
-		//if( inputVO.getIdsList() != null &&  inputVO.getIdsList().size()>0)
-		//	query.setParameter("constituencyIdsList", inputVO.getIdsList());
-		
+				.addScalar("refName", StandardBasicTypes.STRING)3
+				.addScalar("officerName", StandardBasicTypes.STRING);*/
+		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
+			query.setParameterList("constituencyIdsList", inputVO.getConstituencyIdsList());
+		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
+			query.setParameterList("deptIdsList", inputVO.getDeptIdsList());
+		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
+			query.setParameterList("statusIdsList", inputVO.getStatusIdsList());
+		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
+			query.setParameterList("subjectIdsList", inputVO.getSubjectIdsList());
+		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
+			query.setParameterList("subSubjectIdsList", inputVO.getSubSubjectIdsList());
+		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null){
+			query.setParameter("startDate", inputVO.getFromDate());
+			query.setParameter("endDate", inputVO.getEndDate());
+		}
 		return query.list();
 	}
 }

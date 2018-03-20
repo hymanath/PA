@@ -71,6 +71,7 @@ import com.itgrids.dto.PetitionFileVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionTrackingVO;
+import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.dto.PetitionsPDFVO;
 import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmOfficerVO;
@@ -6892,30 +6893,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
  			return assignedPetitionsIdsList;
  		}
  		
- 		public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(InputVO inputVO){
+ 		public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(PetitionsInputVO inputVO){
  			 List<PetitionsPDFVO> returnList = new ArrayList<>();
  		try {
-				List<Object[]> petitonsDetailsList = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO, null);
+				List<Object[]> petitonsDetailsList = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO);
 				Map<Long,Map<Long,PetitionsPDFVO>> petitionsMap = new HashMap<Long,Map<Long,PetitionsPDFVO>> (0);
 				
-				Long totalEstimationCost=0L;
-				Long totalCount=0l;
-				Long totalWorksCount=0l;
 				
-				Long noOfWorksWithCost=0l;
-				Long noOfWorksWithoutCost=0l;
+								
+				Set<Long> petitionIdsList = new HashSet<>();
+				Set<Long> withCostWorkIds = new HashSet<>();
+				Double totalEstimationCost=0.0d;
+				Set<Long> sanctionedWorkIds = new HashSet<>();
+				Set<Long> toBeSanctionedWorkIds = new HashSet<>();
+				Set<Long> withMemoWorkIds = new HashSet<>();
 				
-				Long sanctionedWorksCount=0l;
-				Long toBeSanctionedWorksCount=0l;
-				
-				Long sanctionedCostCount=0l;				
-				Long toBeSanctionedCostCount=0l;
-				
-				Long noOfMemoIssuedCount=0l;
-				Long noOfGOIssuedCount=0l;
-				
-				
-				Long noOfWorksCount=0L;
+				Set<Long> workIdsList = new HashSet<>();
+				Set<Long> withoutCostWorkIds = new HashSet<>();
+				Double sanctionedCost=0.0d;
+				Double toBeSanctionedCost=0.0d;
+				Set<Long> withGOWorkIds = new HashSet<>();
 				
 				if(commonMethodsUtilService.isListOrSetValid(petitonsDetailsList)){
 					for (Object[] param : petitonsDetailsList) {
@@ -6943,6 +6940,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						String desc=commonMethodsUtilService.getStringValueForObject(param[18]);
 						String workCost=commonMethodsUtilService.getStringValueForObject(param[19]);
+						if(workCost == null || workCost.isEmpty())
+							workCost="0.00";
 						
 						String reprDes=commonMethodsUtilService.getStringValueForObject(param[20]);
 						String reprName=commonMethodsUtilService.getStringValueForObject(param[21]);
@@ -6950,6 +6949,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						String refName=commonMethodsUtilService.getStringValueForObject(param[23]);
 						
 						String pendingAtOfficerName=commonMethodsUtilService.getStringValueForObject(param[24]);
+						
+						petitionIdsList.add(petitionId);
+						workIdsList.add(workId);
+						totalEstimationCost = totalEstimationCost+Double.valueOf(workCost);
+						
+						if(workCost != null && !workCost.equalsIgnoreCase("0.00"))
+							withCostWorkIds.add(workId);
+						else
+							withoutCostWorkIds.add(workId);
+						
+						
 						
 						PetitionsPDFVO vo = new PetitionsPDFVO();
 						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
@@ -6982,8 +6992,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setWorkDescription(desc);
 						vo.setEstimationCost(workCost);
 						vo.setPendingAt(pendingAtOfficerName);
-						//vo.setRepDes(reprDes);
-						//vo.setRepName(reprName);
 						
 						boolean isRepDetailsMapped = false;
 						boolean isRefDetailsMapped = false;
@@ -7064,10 +7072,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									vo = worksMap.get(wrkId);
 								}
 								if(vo != null){
-									if(reprotType.equalsIgnoreCase("ACTION COPY"))
+									if(reprotType.equalsIgnoreCase("ACTION COPY")){
 										vo.setActionMemo(refNo);
-									if(GODocType != null && GODocType.trim().length()>0)
+										withMemoWorkIds.add(workId);
+									}if(GODocType != null && GODocType.trim().length()>0){
 										vo.setGoRefNo(refNo);
+										withGOWorkIds.add(workId);
+									}
+									
+									if(goDocTypeId != null && goDocTypeId.longValue()>0L){
+										sanctionedWorkIds.add(workId);
+										sanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
+									}else{
+										toBeSanctionedWorkIds.add(workId);
+										toBeSanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
+									}
 								}
 							}
 						}
@@ -7081,6 +7100,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							petitionVO.setPetitionId(petitionId);
 							petitionVO.getSubWorksList().addAll(petitionsMap.get(petitionId).values());
 							returnList.add(petitionVO);
+						}
+					}
+					
+					if(commonMethodsUtilService.isListOrSetValid(returnList)){
+						PetitionsPDFVO firstVO = returnList.get(0);
+						if(firstVO != null){
+							
+							firstVO.setTotalCount(commonMethodsUtilService.isListOrSetValid(petitionIdsList)?Long.valueOf(String.valueOf(petitionIdsList.size())):0L);
+							firstVO.setNoOfWorksWithCost(commonMethodsUtilService.isListOrSetValid(withCostWorkIds)?Long.valueOf(String.valueOf(withCostWorkIds.size())):0L);
+							firstVO.setEstimationCost(String.valueOf(totalEstimationCost));
+							firstVO.setSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(sanctionedWorkIds)?Long.valueOf(String.valueOf(sanctionedWorkIds.size())):0L);
+							firstVO.setToBeSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(toBeSanctionedWorkIds)?Long.valueOf(String.valueOf(toBeSanctionedWorkIds.size())):0L);
+							firstVO.setNoOfMemoIssuedCount(commonMethodsUtilService.isListOrSetValid(withMemoWorkIds)?Long.valueOf(String.valueOf(withMemoWorkIds.size())):0L);
+							
+							firstVO.setTotalWorksCount(commonMethodsUtilService.isListOrSetValid(workIdsList)?Long.valueOf(String.valueOf(workIdsList.size())):0L);
+							firstVO.setNoOfWorksWithoutCost(commonMethodsUtilService.isListOrSetValid(withoutCostWorkIds)?Long.valueOf(String.valueOf(withoutCostWorkIds.size())):0L);
+							firstVO.setSanctionedCost(String.valueOf(sanctionedCost));
+							firstVO.setToBeSanctionedCost(String.valueOf(toBeSanctionedCost));
+							firstVO.setNoOfGOIssuedCount(commonMethodsUtilService.isListOrSetValid(withGOWorkIds)?Long.valueOf(String.valueOf(withGOWorkIds.size())):0L);
 						}
 					}
 				}

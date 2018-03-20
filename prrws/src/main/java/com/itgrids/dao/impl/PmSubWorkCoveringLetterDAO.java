@@ -11,7 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IPmSubWorkCoveringLetterDAO;
-import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.model.PmSubWorkCoveringLetter;
 
 @Repository
@@ -75,7 +75,7 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		return null;			
 	}
 	
-	public List<Object[]> getDocumentsDetailsForPDFDocument(InputVO inputVO,List<Long> petitionIdsList){
+	public List<Object[]> getDocumentsDetailsForPDFDocument(PetitionsInputVO inputVO,List<Long> petitionIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" sub.petition_id as petition_id, sub.work_endorsment_no as work_endorsment_no ,sub.pm_sub_work_details_id as pm_sub_work_details_id," +
@@ -93,11 +93,23 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		sb.append(" sub.pm_sub_work_details_id = l.pm_sub_work_details_id and  ");
 		sb.append(" sub.pm_department_id = d.pm_department_id and  ");
 		sb.append(" sub.is_deleted='N' and  ");
-		sb.append(" d.is_deleted='N' and d.pm_department_id in (17,22,27,34)  ");
-		if( inputVO.getIdsList() != null &&  inputVO.getIdsList().size()>0)
-			sb.append(" and c.constituency_id in (:constituencyList) ");
-		sb.append(" GROUP BY  ");
-		sb.append(" sub.petition_id,l.report_type  ");
+		sb.append(" d.is_deleted='N' ");
+		
+		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
+			sb.append(" and c.constituency_id in (:constituencyIdsList)  ");
+		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
+			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
+		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
+			sb.append("  and  sub.pm_statusId in (:statusIdsList)   ");
+		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null)
+			sb.append(" and (date(p.inserted_time) between :startDate and :endDate)  ");
+		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
+			sb.append("  and  sub.pm_subject_id in (:subjectIdsList)   ");
+		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
+			sb.append("  and  sub.pm_sub_subject_id in (:subSubjectIdsList)   ");
+		
+		//sb.append(" GROUP BY  ");
+		//sb.append(" sub.petition_id,l.report_type  ");
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("petition_id", StandardBasicTypes.LONG)
 				.addScalar("work_endorsment_no", StandardBasicTypes.STRING)
@@ -107,8 +119,20 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 				.addScalar("document_type_id", StandardBasicTypes.LONG)
 				.addScalar("pm_document_type", StandardBasicTypes.LONG);
 		
-		if( inputVO.getIdsList() != null &&  inputVO.getIdsList().size()>0)
-			query.setParameterList("constituencyList", inputVO.getIdsList());
+		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
+			query.setParameterList("constituencyIdsList", inputVO.getConstituencyIdsList());
+		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
+			query.setParameterList("deptIdsList", inputVO.getDeptIdsList());
+		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
+			query.setParameterList("statusIdsList", inputVO.getStatusIdsList());
+		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
+			query.setParameterList("subjectIdsList", inputVO.getSubjectIdsList());
+		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
+			query.setParameterList("subSubjectIdsList", inputVO.getSubSubjectIdsList());
+		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null){
+			query.setParameter("startDate", inputVO.getFromDate());
+			query.setParameter("endDate", inputVO.getEndDate());
+		}
 		return query.list();
 	}
 }
