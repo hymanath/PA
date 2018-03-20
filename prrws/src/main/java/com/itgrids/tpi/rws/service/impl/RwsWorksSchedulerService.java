@@ -21,7 +21,6 @@ import com.itgrids.dao.IEncWorksDAO;
 import com.itgrids.dao.IRwsWorkDAO;
 import com.itgrids.dao.IRwsWorkLocationDAO;
 import com.itgrids.dao.ITehsilDAO;
-import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.model.EncWorks;
 import com.itgrids.model.RwsWork;
@@ -107,6 +106,22 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 														}else{
 															work.setStipulatedTargetDate(null);
 														}
+													}
+													if(jObj.has("technicalSanctionedDate")){
+														if(!jObj.getString("technicalSanctionedDate").equalsIgnoreCase("--")){
+															work.setStipulatedTargetDate(sdf.parse(jObj.has("technicalSanctionedDate") ? jObj.getString("technicalSanctionedDate") : null));
+														}else{
+															work.setStipulatedTargetDate(null);
+														}
+														
+													}
+													if(jObj.has("entrustedDate")){
+														if(!jObj.getString("entrustedDate").equalsIgnoreCase("--")){
+															work.setStipulatedTargetDate(sdf.parse(jObj.has("entrustedDate") ? jObj.getString("entrustedDate") : null));
+														}else{
+															work.setStipulatedTargetDate(null);
+														}
+														
 													}
 													if(work.getCommissionedDate() == null && work.getCompletedDate() == null && work.getGroundedDate()!=null ){
 														work.setWorkStatus("Grounded");
@@ -269,34 +284,93 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 									EncWorks work = new EncWorks();
 									work.setWorkId(json.has("WORK_ID") ? json.getLong("WORK_ID"): 0l);
 									work.setSchemeId(json.has("SCHEME")? json.getLong("SCHEME"):0l);
-									work.setAgreementAmount(json.has("AGREEMENT_AMOUNT")? json.getLong("AGREEMENT_AMOUNT"):0l);
-									work.setTargetDate(json.has("TARGET_DATE")?  sdf.parse(json.getString("TARGET_DATE")):null);
+									if(json.has("AGREEMENT_AMOUNT") && json.getString("AGREEMENT_AMOUNT").trim().length()> 0){
+										work.setAgreementAmount(json.has("AGREEMENT_AMOUNT")? json.getDouble("AGREEMENT_AMOUNT"):0.00);
+									}else{
+										work.setAgreementAmount(null);
+									}
+									//work.setTargetDate(json.has("TARGET_DATE")?  sdf.parse(json.getString("TARGET_DATE")):null);
 									work.setDitrictName(json.has("DIST_NAME")? json.getString("DIST_NAME"):"");
-									work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
 									work.setHabName(json.has("HABS")? json.getString("HABS"):"");
 									work.setAssemblyName(json.has("AC_NAME")? json.getString("AC_NAME"):"");
 									work.setMandalId(json.has("MAND_CODE")? json.getLong("MAND_CODE"):0l);
 									work.setParlimentId(json.has("PC_CODE")? json.getLong("PC_CODE"):0l);
 									work.setParlimentName(json.has("PC_NAME")? json.getString("PC_NAME"):"");
-									work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);
 									work.setWorkName(json.has("WORK_NAME")? json.getString("WORK_NAME"):"");
 									//work.setAdmin(json.getString("ADMIN_SANC_AMOUNT"));
 									work.setMandalName(json.has("MAND_NAME")? json.getString("MAND_NAME"):"");
-									work.setTechnicalsancAmount(json.has("TECHSAN_AMOUNT")? json.getLong("TECHSAN_AMOUNT"):0l);
+									if(json.has("TECHSAN_AMOUNT") && json.getString("TECHSAN_AMOUNT").trim().length()> 0){
+										work.setTechnicalsancAmount(json.has("TECHSAN_AMOUNT")? json.getLong("TECHSAN_AMOUNT"):0l);
+									}else{
+										work.setTechnicalsancAmount(null);
+									}
+									
 									work.setSchemeName(json.has("SCHEME_NAME")? json.getString("SCHEME_NAME"):"");
 									work.setDistrictId(json.has("DIST_CODE")? json.getLong( "DIST_CODE"):0l);
 									work.setAssemblyId(json.has("AC_CODE")? json.getLong("AC_CODE"):0l);
-									work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
-									work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
-									work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+									if(json.has("AGREEMENT_DATE") && json.getString("AGREEMENT_DATE").trim().length()>0){
+										work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
+									}else{
+										work.setAgrementDate(null);
+									}
+									if(json.has("TARGET_DATE") && json.getString("TARGET_DATE").trim().length()>0){
+										work.setTargetDate(json.has("TARGET_DATE")? sdf.parse(json.getString("TARGET_DATE")):null);							
+									}else{
+										work.setTargetDate(null);
+									}
+									if(json.has("ADMIN_SANC_DT") && json.getString("ADMIN_SANC_DT").trim().length()>0){
+										work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);							
+									}else{
+										work.setAdminSanctionDate(null);
+									}
+									if(json.has("GROUND_DATE") && json.getString("GROUND_DATE").trim().length()>0){
+										work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
+									}else{
+										work.setAgrementDate(null);
+									}
+									if(json.has("DT_COMPLETED") && json.getString("DT_COMPLETED").trim().length()>0){
+										work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
+									}else{
+										work.setCompletionDate(null);
+									}
+									if(json.has("TECH_SANCTION_DATE") && json.getString("TECH_SANCTION_DATE").trim().length()>0){
+										work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+									}else{
+										work.setTechSanctionDate(null);
+									}
 									work = encWorksDAO.save(work);
 								}else{
 									EncWorks work =encWorksDAO.findOneByworkId((json.has("WORK_ID") ? json.getLong("WORK_ID"): 0l));
-									work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
-									work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);
-									work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
-									work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
-									work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+									if(json.has("AGREEMENT_DATE") && json.getString("AGREEMENT_DATE").trim().length()>0){
+										work.setAgrementDate(json.has("AGREEMENT_DATE")? sdf.parse(json.getString("AGREEMENT_DATE")):null);
+									}else{
+										work.setAgrementDate(null);
+									}
+									if(json.has("ADMIN_SANC_DT") && json.getString("ADMIN_SANC_DT").trim().length()>0){
+										work.setAdminSanctionDate(json.has("ADMIN_SANC_DT")? sdf.parse(json.getString("ADMIN_SANC_DT")):null);							
+									}else{
+										work.setAdminSanctionDate(null);
+									}
+									if(json.has("GROUND_DATE") && json.getString("GROUND_DATE").trim().length()>0){
+										work.setGroundedDate(json.has("GROUND_DATE")? sdf.parse(json.getString("GROUND_DATE")):null);
+									}else{
+										work.setGroundedDate(null);
+									}
+									if(json.has("DT_COMPLETED") && json.getString("DT_COMPLETED").trim().length()>0){
+										work.setCompletionDate(json.has("DT_COMPLETED")? sdf.parse(json.getString("DT_COMPLETED")):null);
+									}else{
+										work.setCompletionDate(null);
+									}
+									if(json.has("TECH_SANCTION_DATE") && json.getString("TECH_SANCTION_DATE").trim().length()>0){
+										work.setTechSanctionDate(json.has("TECH_SANCTION_DATE")? sdf.parse(json.getString("TECH_SANCTION_DATE")): null);
+									}else{
+										work.setTechSanctionDate(null);
+									}
+									if(json.has("AGREEMENT_AMOUNT") && json.getString("AGREEMENT_AMOUNT").trim().length()> 0){
+										work.setAgreementAmount(json.has("AGREEMENT_AMOUNT")? json.getDouble("AGREEMENT_AMOUNT"):0.0);
+									}else{
+										work.setAgreementAmount(null);
+									}
 									work = encWorksDAO.save(work);
 
 								}
