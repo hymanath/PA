@@ -53,7 +53,7 @@ function onLoadCalls(){
 	$("#officerBlock").hide();
 	if(loginDesigId == 2 || loginDesigId == 23 || loginDesigId ==86){
 		$("#refWiseOverViewId").show();
-		//$("#locationWiseBlockId").show();
+		$("#locationWiseBlockId").show();
 		$("#leadWiseDivId").show();
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
@@ -1319,14 +1319,15 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 							constId=result[i].locationId;
 							distId=result[i].id;
 						}
+						//<a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">
 						if(result[i].petitionIds.length !=null && result[i].petitionIds.length>0){
-							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].petitionIds.length+'</a></td>';
+							str+='<td>'+result[i].petitionIds.length+'</td>';
 						}else{
 							str+='<td> - </td>';
 						}
-						
+						//<a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">
 						if(result[i].subWorkIds.length !=null && result[i].subWorkIds.length>0){
-							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].subWorkIds.length+'</a></td>';
+							str+='<td>'+result[i].subWorkIds.length+'</td>';
 						}else{
 							str+='<td> - </td>';
 						}
