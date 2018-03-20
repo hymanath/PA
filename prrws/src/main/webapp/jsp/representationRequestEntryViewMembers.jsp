@@ -856,7 +856,7 @@ $(document).on("click",".closeSecondModal",function(){
  var statusName = '${param.statusName}';
   var distId = '${param.distId}';
    var constId = '${param.constId}';
-    if(deptId =='' || deptId ==null){
+    if(deptId =='' || deptId =='null'){
 	deptId=0;
 	}
 	if(refCanId ==''){
@@ -865,10 +865,10 @@ $(document).on("click",".closeSecondModal",function(){
 	if(desigId ==''){
 	desigId=0;
 	}
-	if(statusId =='' || statusId ==null){
+	if(statusId =='' || statusId =='null'){
 	statusId=0;
 	}
-	if(subjId ==''  || subjId ==null){
+	if(subjId ==''  || subjId =='null'){
 	subjId=0;
 	}
 	
@@ -963,7 +963,7 @@ function getDepartmntsDetails(){
 		$("#departmntId").empty();
 		
 		var paraDepts =[];
-		if(deptId != null && deptId.length > 0){
+		if(deptId != 'null' && deptId.length > 0){
 				if(deptId.length >0){
 					   var deptList = deptId.split(',');
 						for(var i=0;i<=deptList.length-1;i++){

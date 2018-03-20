@@ -1683,6 +1683,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			KeyValueVO deptVO = getDeptIdsListBYUserIds(inputVO.getLocationId());
 			if(deptVO != null){
 				inputVO.getIdsList().add(deptVO.getId());
+				if(inputVO.getSearchDeptIdsList() == null || inputVO.getSearchDeptIdsList().size()==0)
 				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
 			}
 			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
