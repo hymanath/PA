@@ -680,4 +680,51 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		}
 		return query.list();
 	}
+	
+	public List<Object[]> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		
+		
+		sb.append(" select model.petition.petitionId,model.pmSubWorkDetailsId, model.costEstimation ");
+		if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("district")){
+			sb.append(" ,model.locationAddress.district.districtId,model.locationAddress.district.districtName ");
+		}else if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("constituency")){
+			sb.append(" ,model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name ");
+			sb.append(" ,model.locationAddress.district.districtId,model.locationAddress.district.districtName ");
+		}
+		sb.append(" from PmSubWorkDetails as  model,PmRepresenteeRefDetails as model1  " +
+				" where model.isDeleted='N' " +
+				" and model.petition.isDeleted='N'  ");
+		
+		sb.append("  and model1.pmRefCandidateDesignation.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N'" +
+				" and model1.petition.petitionId = model.petition.petitionId and  model1.isDeleted ='N' " );
+		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+			sb.append(" and  model.pmDepartment.pmDepartmentId in (:deptIds) ");
+		}
+		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
+			sb.append(" and  model.pmDepartment.pmDepartmentId in (:statusIds) ");
+		}
+		if(inputVO.getLightVendorIdList() != null && inputVO.getLightVendorIdList().size()>0){
+			sb.append(" and model.pmSubject.pmSubjectId in (:subjectIds) ");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.petition.insertedTime) between :fromDate and :toDate ");
+		}
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+			query.setParameterList("deptIds", inputVO.getDeptIdsList());
+		}
+		if(inputVO.getStatusIds() != null && inputVO.getStatusIds().size()>0){
+			query.setParameterList("statusIds", inputVO.getStatusIds());
+		}
+		if(inputVO.getLightVendorIdList() != null && inputVO.getLightVendorIdList().size()>0){
+			query.setParameterList("subjectIds", inputVO.getLightVendorIdList());
+		}
+		if(fromDate != null && toDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("toDate", toDate);
+		}
+		return query.list();
+	}
 }

@@ -31,4 +31,6 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public int saveTempEndorseNo(Long petitionId,List<Long> subWorkDetailsIds,String tempEndorsNo,Long userId,Date updateTime);
 	public String getMaxEndirseNoAndValidatingEndorseNo(String endorseNo);
 	public List<Object[]> getChildOfficersByParentOfficerId(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,List<Long> pmOfficerid,Set<Long> petitionIdsList,Set<Long> pmOffcrDesigids);
+	public List<Object[]> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO,Date fromDate,Date toDate);
+	
 }

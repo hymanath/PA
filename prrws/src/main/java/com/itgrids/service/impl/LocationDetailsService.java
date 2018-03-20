@@ -1,11 +1,13 @@
 package com.itgrids.service.impl;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -43,6 +45,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.service.ILocationDetailsService;
 import com.itgrids.service.IPmRequestDetailsService;
 import com.itgrids.utils.CommonMethodsUtilService;
@@ -936,5 +939,73 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			LOG.error("Exception occured at getDepartmentsBySearchType() in LocationDetailsService class ", e);
 		}
 		return finalList;
+	}
+	
+	public List<PmOfficerVO> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO){
+		List<PmOfficerVO> returnList = new ArrayList<PmOfficerVO>();
+		
+		try {
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getToDate().isEmpty()){
+				startDate = format.parse(inputVO.getFromDate());
+				endDate = format.parse(inputVO.getToDate());
+			}
+			Map<Long,PmOfficerVO> locationMap = new HashMap<Long,PmOfficerVO>();
+			List<Object[]> objList = pmSubWorkDetailsDAO.getLocationWiseRepresentationsOverviewDetails(inputVO, startDate, endDate);
+			
+			if(commonMethodsUtilService.isListOrSetValid(objList)){
+				for (Object[] param : objList) {
+					PmOfficerVO locationVO =locationMap.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+					if(locationVO == null){
+						locationVO = new PmOfficerVO();
+						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[3]));
+						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("constituency")){
+							locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
+							locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						}
+						locationMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), locationVO);
+					}
+					
+					if(locationVO.getPetitionIds() == null){
+						locationVO.setPetitionIds(new HashSet<Long>());
+					}
+					locationVO.getPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(locationVO.getWithOutCostPetitionIds() == null){
+						locationVO.setWithOutCostPetitionIds(new HashSet<Long>());
+					}
+					if(locationVO.getSubWorkIds() == null){
+						locationVO.setSubWorkIds(new HashSet<Long>());
+					}
+					if(locationVO.getWithOutCostSubWorkIds() == null){
+						locationVO.setWithOutCostSubWorkIds(new HashSet<Long>());
+					}
+					String estimationCost = commonMethodsUtilService.getStringValueForObject(param[3]);
+					if(!locationVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[1]))
+							&& estimationCost != "" && estimationCost != "0"){
+						locationVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						BigDecimal decmial2= new BigDecimal(locationVO.getEstimationCost());
+						BigDecimal decmial1= new BigDecimal(estimationCost);
+						BigDecimal totalCost1 = decmial2.add(decmial1);
+						locationVO.setEstimationCost(totalCost1.toString());
+					}else if(!locationVO.getWithOutCostSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[1]))
+							&& (estimationCost == "" || estimationCost == "0")){
+						locationVO.getWithOutCostSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
+						locationVO.getWithOutCostPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}
+					
+				}
+			}
+			
+			if(commonMethodsUtilService.isMapValid(locationMap)){
+				returnList.addAll(locationMap.values());
+			}
+			
+		} catch (Exception e) {
+			// TODO: handle exception
+		}
+		return returnList;
 	}
 }

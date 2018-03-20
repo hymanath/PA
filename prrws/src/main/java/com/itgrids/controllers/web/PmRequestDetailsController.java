@@ -587,4 +587,26 @@ public class PmRequestDetailsController {
 	     
 	    // public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(InputVO inputVO,Set<Long> petitionIdsList)
 	     
+	     @RequestMapping(value ="/getLocationWiseRepresentationsOverviewDetails",method = RequestMethod.POST)
+		    public @ResponseBody List<PmOfficerVO> getLocationWiseRepresentationsOverviewDetails(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+		    	HttpSession session=request.getSession();
+				UserVO userVO = (UserVO) session.getAttribute("USER"); 
+				Long userId =null;
+				if(userVO != null){
+					userId = userVO.getUserId();
+				}else{
+					return null;
+				}
+				List<Long> deptIds = null;
+				if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+					deptIds= inputVO.getDeptIdsList();
+				}else{
+					KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+					deptIds = deptVO.getDeptIdsList();
+				}
+				inputVO.getDeptIdsList().clear();
+				inputVO.getDeptIdsList().addAll(deptIds);
+				List<Long> statusIds = inputVO.getStatusIds();
+		    	return locationDetailsService.getLocationWiseRepresentationsOverviewDetails(inputVO);
+		    }
 }

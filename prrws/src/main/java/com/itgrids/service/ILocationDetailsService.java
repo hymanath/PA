@@ -6,6 +6,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.LocationFundDetailsVO;
 import com.itgrids.dto.LocationVO;
+import com.itgrids.dto.PmOfficerVO;
 
 public interface ILocationDetailsService {
 	
@@ -32,4 +33,5 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO> getDepartmentsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,Long userId);
 	public List<KeyValueVO> getSubjectsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusId,String subjectId,Long userId);
 	public List<KeyValueVO> getChildOfficersByParentOfficerId(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,List<Long> pmOfficerId,Long userId,List<Long> pmDeptDesigIds,Long officerDesigId);
+	public List<PmOfficerVO> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO);
 }

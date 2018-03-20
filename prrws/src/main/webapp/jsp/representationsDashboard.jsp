@@ -255,6 +255,63 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					</div>
 					
 					
+					<div class="panel-group" style="display:none;" id="locationWiseBlockId">
+						<div class="panel panel-default panel-black">
+							<div class="panel-heading" role="tab" id="headingLocationWise123">
+								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionLocationWise123" href="#collapseLocationWise123">
+									<h4 class="panel-title text-capital">Location Wise</h4>
+								</a>
+							</div>
+							<div id="collapseLocationWise123" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLocationWise123">
+								<div class="panel-body">
+								
+								<div class="pad_5" >			
+									<div class="row">
+										<div class="col-sm-2">
+											<select class="chosen-select form-control" id="departmentId" data-placeholder="All" multiple>
+												<!--<option value="0">All</option>-->
+											</select>
+										</div>
+										<div class="col-sm-2">
+											<select class="chosen-select form-control" id="statusLocId" data-placeholder="All" multiple>
+												<!--<option value="0">All</option>-->
+											</select>
+										</div>
+										<div class="col-sm-2">
+											<select class="chosen-select form-control" id="subjectId" data-placeholder="All" multiple>
+												<!--<option value="0">All</option>-->
+											</select>
+										</div>
+										<!--<div class="col-sm-2">
+											<select class="chosen-select form-control" id="worksNonWorksLocId">
+												<option value="0">Select Works/Non Works</option>
+											</select>
+										</div>-->
+										<div class="col-sm-3">	
+											<div class="input-group inline-block" >
+												<span class="input-group-addon">
+													<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+												</span>
+												<input type="text"  class="form-control" id="dateRangePicker"/>
+											</div>
+										</div>
+										<div class="col-sm-3 pull-right">	
+											<button type="button" class="btn btn-success getLocWiseDetailsCls">Submit</button>
+										</div>
+									</div>
+								</div>
+								<div class="pad_5">
+									<div class="row">
+										<div id="districtWiseLocationDetailsDivId"></div>
+									</div>
+									<div class="row">
+										<div id="constituencyWiseLocationDetailsDivId"></div>
+									</div>
+								</div>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>	
 				</div>
 				</div>
