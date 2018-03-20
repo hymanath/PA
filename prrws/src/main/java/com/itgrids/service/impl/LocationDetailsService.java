@@ -984,14 +984,14 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 					}
 					String estimationCost = commonMethodsUtilService.getStringValueForObject(param[2]);
 					if(!locationVO.getSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[1]))
-							&& estimationCost != "" && estimationCost != "0"){
+							&& !estimationCost.equalsIgnoreCase("") && !estimationCost.equalsIgnoreCase("0")){
 						locationVO.getSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						BigDecimal decmial2= new BigDecimal(locationVO.getEstimationCost());
 						BigDecimal decmial1= new BigDecimal(estimationCost);
 						BigDecimal totalCost1 = decmial2.add(decmial1);
 						locationVO.setEstimationCost(totalCost1.toString());
 					}else if(!locationVO.getWithOutCostSubWorkIds().contains(commonMethodsUtilService.getLongValueForObject(param[1]))
-							&& (estimationCost == "" || estimationCost == "0")){
+							&& (estimationCost.equalsIgnoreCase("") || estimationCost.equalsIgnoreCase("0"))){
 						locationVO.getWithOutCostSubWorkIds().add(commonMethodsUtilService.getLongValueForObject(param[1]));
 						locationVO.getWithOutCostPetitionIds().add(commonMethodsUtilService.getLongValueForObject(param[0]));
 					}
