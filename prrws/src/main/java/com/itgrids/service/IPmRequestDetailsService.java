@@ -29,11 +29,11 @@ public interface IPmRequestDetailsService {
 	public UserVO getPmOffceUserDetails(Long userId, UserVO userVO);
 	
 	public CadreRegistrationVO getRegistrationPersonDetails(Map<String,String> inputMap);
-	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate);
+	public RepresenteeViewVO getCompleteOrStatusOverviewDetails(Long userId,String startDate,String endDate,List<Long> deptIdsList);
 	public KeyValueVO getDeptIdsListBYUserIds(Long userId);
 	public KeyValueVO getPmDeptStatusIdsByUserIdsLst(Long userId,String isDashboard);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,String petitionIdsArr, String remark, Long statusId);
-	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate);
+	public List<RepresenteeViewVO> getLeadWiseOverviewDetails(Long userId,String startDate,String endDate,List<Long> deptIdsList);
 	public ResultStatus updatePetitionsStatusDetails(Long userId,List<Long> petitionIdsList, List<Long> subWorkIdsList,String remark,Long statusId);
 	public List<KeyValueVO> getLoginUserAccessSubDeptDesignationDetail(List<Long> deptIdsList ,Long statusId, Long userId);
 	public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList,Long statusId, Long userId);
