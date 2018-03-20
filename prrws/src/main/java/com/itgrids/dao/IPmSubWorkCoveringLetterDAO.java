@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.PmSubWorkCoveringLetter;
 
 public interface IPmSubWorkCoveringLetterDAO extends GenericDao<PmSubWorkCoveringLetter, Long> {
@@ -12,4 +13,5 @@ public interface IPmSubWorkCoveringLetterDAO extends GenericDao<PmSubWorkCoverin
 	public List<Object[]> getSubWorkWiseRequiredDocumentsDetailsByPetitionId(Long petiotionId);
 	public int disableExistingCoveringLettersForPetition(Long petitionId,String reporttype);
 	public List<Object[]> getAllTypeOfDocumentsForPetition(Set<Long> petiotionIds,String reportType);
+	public List<Object[]> getDocumentsDetailsForPDFDocument(InputVO inputVO,List<Long> petitionIdsList);
 }

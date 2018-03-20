@@ -19,8 +19,7 @@ public class KeyValueVO {
 	private String deptName="";
 	private List<Long> depDesigIds  = null; 
 	  
-	
-	  public Long getId() {
+	public Long getId() {
 		return id;
 	}
 	public void setId(Long id) {

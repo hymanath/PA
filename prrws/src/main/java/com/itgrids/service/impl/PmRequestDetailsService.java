@@ -71,6 +71,7 @@ import com.itgrids.dto.PetitionFileVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionMemberVO;
 import com.itgrids.dto.PetitionTrackingVO;
+import com.itgrids.dto.PetitionsPDFVO;
 import com.itgrids.dto.PetitionsWorksVO;
 import com.itgrids.dto.PmOfficerVO;
 import com.itgrids.dto.PmRequestEditVO;
@@ -6889,5 +6890,203 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionWithWhomeDetails() "+e.getMessage());
 			}
  			return assignedPetitionsIdsList;
+ 		}
+ 		
+ 		public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(InputVO inputVO){
+ 			 List<PetitionsPDFVO> returnList = new ArrayList<>();
+ 		try {
+				List<Object[]> petitonsDetailsList = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO, null);
+				Map<Long,Map<Long,PetitionsPDFVO>> petitionsMap = new HashMap<Long,Map<Long,PetitionsPDFVO>> (0);
+				
+				Long totalEstimationCost=0L;
+				Long totalCount=0l;
+				Long totalWorksCount=0l;
+				
+				Long noOfWorksWithCost=0l;
+				Long noOfWorksWithoutCost=0l;
+				
+				Long sanctionedWorksCount=0l;
+				Long toBeSanctionedWorksCount=0l;
+				
+				Long sanctionedCostCount=0l;				
+				Long toBeSanctionedCostCount=0l;
+				
+				Long noOfMemoIssuedCount=0l;
+				Long noOfGOIssuedCount=0l;
+				
+				
+				Long noOfWorksCount=0L;
+				
+				if(commonMethodsUtilService.isListOrSetValid(petitonsDetailsList)){
+					for (Object[] param : petitonsDetailsList) {
+						
+						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
+						String reprDate=commonMethodsUtilService.getStringValueForObject(param[1]);
+						String endorsDate=commonMethodsUtilService.getStringValueForObject(param[2]);
+						String endorsNo=commonMethodsUtilService.getStringValueForObject(param[3]);
+						String repType=commonMethodsUtilService.getStringValueForObject(param[4]);
+						Long noOfWorks=commonMethodsUtilService.getLongValueForObject(param[5]);		
+						Long workId=commonMethodsUtilService.getLongValueForObject(param[6]);
+						Long statusId=commonMethodsUtilService.getLongValueForObject(param[7]);
+						
+						/*Long stateId=commonMethodsUtilService.getLongValueForObject(param[8]);
+						Long districtId=commonMethodsUtilService.getLongValueForObject(param[9]);
+						Long assemblyId=commonMethodsUtilService.getLongValueForObject(param[10]);
+						Long mandalId=commonMethodsUtilService.getLongValueForObject(param[11]);
+						Long panchayataId=commonMethodsUtilService.getLongValueForObject(param[12]);*/
+						
+						String stateName=commonMethodsUtilService.getStringValueForObject(param[13]);
+						String districtName=commonMethodsUtilService.getStringValueForObject(param[14]);
+						String assemblyName=commonMethodsUtilService.getStringValueForObject(param[15]);
+						String mandalName=commonMethodsUtilService.getStringValueForObject(param[16]);
+						String panchayatName=commonMethodsUtilService.getStringValueForObject(param[17]);
+						
+						String desc=commonMethodsUtilService.getStringValueForObject(param[18]);
+						String workCost=commonMethodsUtilService.getStringValueForObject(param[19]);
+						
+						String reprDes=commonMethodsUtilService.getStringValueForObject(param[20]);
+						String reprName=commonMethodsUtilService.getStringValueForObject(param[21]);
+						String refDes=commonMethodsUtilService.getStringValueForObject(param[22]);
+						String refName=commonMethodsUtilService.getStringValueForObject(param[23]);
+						
+						String pendingAtOfficerName=commonMethodsUtilService.getStringValueForObject(param[24]);
+						
+						PetitionsPDFVO vo = new PetitionsPDFVO();
+						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
+						
+						if(petitionsMap.get(petitionId) != null){
+							worksMap = petitionsMap.get(petitionId);
+						}
+						if(worksMap.get(workId) != null){
+							vo = worksMap.get(workId);
+						}
+						
+						vo.setPetitionId(petitionId);
+						vo.setWorkId(workId);
+						vo.setRepresentationDate(reprDate);
+						vo.setEndorsDate(endorsDate);
+						vo.setEndorsmentNo(endorsNo);
+						vo.setRepresentationType(repType);
+						vo.setNoOfWorksCount(noOfWorks);
+						vo.setStatusId(statusId);
+						
+						AddressVO addressVO = setAddressDetailsToResultView(null,param[8],param[9],param[10],param[11],null,param[12]);
+						if(addressVO!= null){
+							vo.setAddressVO(addressVO);
+							addressVO.setStateName(stateName);
+							addressVO.setDistrictName(districtName);
+							addressVO.setAssemblyName(assemblyName);
+							addressVO.setTehsilName(mandalName);
+							addressVO.setPanchayatName(panchayatName);
+						}
+						vo.setWorkDescription(desc);
+						vo.setEstimationCost(workCost);
+						vo.setPendingAt(pendingAtOfficerName);
+						//vo.setRepDes(reprDes);
+						//vo.setRepName(reprName);
+						
+						boolean isRepDetailsMapped = false;
+						boolean isRefDetailsMapped = false;
+						if(commonMethodsUtilService.isListOrSetValid(vo.getSubList1())){
+							for (KeyValueVO designationVO : vo.getSubList1()) {
+								if(designationVO.getName().contains(reprName.trim())){
+									if(!designationVO.getDesignation().contains(reprDes.trim())){
+										designationVO.setDesignation(designationVO.getDesignation()+","+reprDes.trim());
+									}
+									isRepDetailsMapped=true;
+								}
+							}
+						}
+						
+						if(!isRepDetailsMapped)
+						{
+							KeyValueVO designationVO = new KeyValueVO();
+							designationVO.setName(reprName.trim());
+							designationVO.setDesignation(reprDes.trim());
+							vo.getSubList1().add(designationVO);
+						}
+						
+						if(commonMethodsUtilService.isListOrSetValid(vo.getSubList2())){
+							for (KeyValueVO designationVO : vo.getSubList2()) {
+								if(designationVO.getName().contains(refName.trim())){
+									if(!designationVO.getDesignation().contains(refDes.trim())){
+										designationVO.setDesignation(designationVO.getDesignation()+","+refDes.trim());
+									}
+									isRefDetailsMapped = true;
+								}
+							}
+						}
+						
+						if(!isRefDetailsMapped)
+						{
+							KeyValueVO designationVO = new KeyValueVO();
+							designationVO.setName(refName.trim());
+							designationVO.setDesignation(refDes.trim());
+							vo.getSubList2().add(designationVO);
+						}
+						
+						worksMap.put(workId, vo);
+						petitionsMap.put(petitionId, worksMap);
+					} 
+				}
+				
+				List<Object[]> documentsList = pmSubWorkCoveringLetterDAO.getDocumentsDetailsForPDFDocument(inputVO, null);
+				if(commonMethodsUtilService.isListOrSetValid(documentsList)){
+					for (Object[] param : documentsList) {
+						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
+						Long workId =commonMethodsUtilService.getLongValueForObject(param[2]);
+						String reprotType =commonMethodsUtilService.getStringValueForObject(param[3]);
+						String refNo =commonMethodsUtilService.getStringValueForObject(param[4]);
+						Long goDocTypeId =commonMethodsUtilService.getLongValueForObject(param[5]);
+						String GODocType =commonMethodsUtilService.getStringValueForObject(param[6]);
+						
+						PetitionsPDFVO vo = null;
+						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
+						
+						if(petitionsMap.get(petitionId) != null){
+							worksMap = petitionsMap.get(petitionId);
+						}
+						
+						if(workId != null && workId.longValue()>0L){
+							if(worksMap.get(workId) != null){
+								vo = worksMap.get(workId);
+							}
+							
+							if(vo != null){
+								if(reprotType.equalsIgnoreCase("ACTION COPY"))
+									vo.setActionMemo(refNo);
+								if(GODocType != null && GODocType.trim().length()>0)
+									vo.setGoRefNo(refNo);
+							}
+						}else{
+							for (Long wrkId : worksMap.keySet()) {
+								if(worksMap.get(wrkId) != null){
+									vo = worksMap.get(wrkId);
+								}
+								if(vo != null){
+									if(reprotType.equalsIgnoreCase("ACTION COPY"))
+										vo.setActionMemo(refNo);
+									if(GODocType != null && GODocType.trim().length()>0)
+										vo.setGoRefNo(refNo);
+								}
+							}
+						}
+					}
+				}
+				
+				if(commonMethodsUtilService.isMapValid(petitionsMap)){
+					for (Long petitionId : petitionsMap.keySet()) {
+						if(commonMethodsUtilService.isMapValid(petitionsMap.get(petitionId))){
+							PetitionsPDFVO petitionVO = new PetitionsPDFVO();
+							petitionVO.setPetitionId(petitionId);
+							petitionVO.getSubWorksList().addAll(petitionsMap.get(petitionId).values());
+							returnList.add(petitionVO);
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionsDetailsForPDFDocument() "+e.getMessage());
+			}
+ 			 return returnList;
  		}
 }
