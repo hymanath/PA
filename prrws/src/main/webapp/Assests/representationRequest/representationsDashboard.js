@@ -45,6 +45,7 @@ $("#dateRangePicker").daterangepicker({
 		{
 			$("#dateRangePicker").val('All');
 		}
+		onLoadCalls();
 		
 	});
 function onLoadCalls(){
@@ -124,9 +125,24 @@ function getCompleteOrStatusOverviewDetails(){
 		$("#statusDivId").hide();
 		$("#myActionsId").html(spinner);
 	}
+	
+	var departmentIdMainList =[];
+	var deptIds =  $("#departmntId").val();
+		if(deptIds != null && deptIds.length >0){
+			departmentIdMainList=deptIds;
+		}
+	if(departmentIdMainList != null && departmentIdMainList.length>0){
+		for(var i in departmentIdMainList){
+			if(parseInt(departmentIdMainList[i])==0){
+				departmentIdMainList=[];
+			}
+		}
+	}
+	
 var json = {
-		 fromDate :"",
-		 toDate:""
+		 fromDate :currentFromDate,
+		 toDate:currentToDate,
+		 deptIdsList:departmentIdMainList
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -584,9 +600,23 @@ function getLeadWiseOverviewDetails(){
 	$("#completeOverviewId").html(spinner);
 	$("#leadWiseOverviewId").html(spinner);
     $("#myActionsId").html(spinner);
+	
+	var departmentIdMainList =[];
+	var deptIds =  $("#departmntId").val();
+		if(deptIds != null && deptIds.length >0){
+			departmentIdMainList=deptIds;
+		}
+	if(departmentIdMainList != null && departmentIdMainList.length>0){
+		for(var i in departmentIdMainList){
+			if(parseInt(departmentIdMainList[i])==0){
+				departmentIdMainList=[];
+			}
+		}
+	}
 var json = {
-		 fromDate :"",
-		 toDate:""
+		 fromDate :currentFromDate,
+		 toDate:currentToDate,
+		 deptIdsList:departmentIdMainList
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -783,9 +813,25 @@ function getReferralWiseOverviewDetails(desigId){
 		briefLeadIds.push($("#briefLeadId").val());
 	}
 	
+	var departmentIdMainList =[];
+	var deptIds =  $("#departmntId").val();
+		if(deptIds != null && deptIds.length >0){
+			departmentIdMainList=deptIds;
+		}
+	if(departmentIdMainList != null && departmentIdMainList.length>0){
+		for(var i in departmentIdMainList){
+			if(parseInt(departmentIdMainList[i])==0){
+				departmentIdMainList=[];
+			}
+		}
+	}
+	
 	var json = {
-			designationIds:desigIds,
-				lightVendorIdList:briefLeadIds
+		  designationIds:desigIds,
+		  lightVendorIdList:briefLeadIds,
+		  fromDate : currentFromDate,
+		  toDate : currentToDate,
+		  deptIdsList : departmentIdMainList
 	  };
 	$.ajax({              
 		type:'POST',    
@@ -1096,9 +1142,26 @@ function getPmOfficerWisePetitionDetails(desiId,dataType,loginUsr){
 	}else{
 		$("#officerWiseBlockDetailsDivId").html(spinner);
 	}
+	
+	var departmentIdMainList =[];
+	var deptIds =  $("#departmntId").val();
+		if(deptIds != null && deptIds.length >0){
+			departmentIdMainList=deptIds;
+		}
+	if(departmentIdMainList != null && departmentIdMainList.length>0){
+		for(var i in departmentIdMainList){
+			if(parseInt(departmentIdMainList[i])==0){
+				departmentIdMainList=[];
+			}
+		}
+	}
+	
 	var json = {
 		designationIds:desigIds,
-		displayType:dataType
+		displayType:dataType,
+		fromDate: currentFromDate,
+		toDate: currentToDate,
+		deptIdsList : departmentIdMainList
 	};
 	$.ajax({              
 		type:'POST',    
@@ -1644,3 +1707,44 @@ function buildPetitionDetailsForPDF(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	});
 }
+
+getDepartmntsDetails();
+function getDepartmntsDetails(){
+ var json = {
+		 reportType :"department",
+		 fromDate :"",
+		 toDate : "",
+		 departmentId:0,
+		 statusId:""
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getDepartmentsBySearchType',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		
+		$("#departmntId").empty();
+		$("#departmntId").append("<option value='0' selected> ALL </option>");
+		if(result !=null && result.length >0){
+			for(var i in result)
+				$("#departmntId").append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
+			
+		}
+		$("#departmntId").trigger('chosen:updated');
+	});	 
+}
+$(document).on('change','#departmntId',function(){
+	var deptId = $(this).val();
+	
+		if(deptId != null){
+		 onLoadCalls();
+
+		}
+
+})
+ 
