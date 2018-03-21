@@ -1342,10 +1342,10 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 	var selSubjId = $("#subjectId").val();
 	var searchBy = '';
 	if(locationtype == "district"){
-		str+='<h4 class="font_weight0">District wise Representation Overview</h4>';
+		//str+='<h4 class="font_weight0">District wise Representation Overview</h4>';
 		searchBy=locationtype;
 	}else{
-		str+='<h4 class="font_weight0">Constituecy wise Representation Overview</h4>';
+		//str+='<h4 class="font_weight0">Constituecy wise Representation Overview</h4>';
 		searchBy=locationtype;
 	}
 	if(selSubjId != null && selSubjId != 0){
