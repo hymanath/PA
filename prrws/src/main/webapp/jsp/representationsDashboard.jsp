@@ -291,11 +291,51 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 									</div>
 								</div>
 								<div class="pad_5">
-									<div class="row">
+									<!--<div class="row">
 										<div id="districtWiseLocationDetailsDivId"></div>
+									</div>-->
+									<div class="panel-group">
+										<div class="panel panel-default panel-black">
+											<div class="panel-heading" role="tab" id="headingDistrictOverview">
+												<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseDistrictOverview">
+													<h4 class="panel-title">DISTRICT WISE REPRESENTATION OVERVIEW</h4>
+												</a>
+											</div>
+											<div id="collapseDistrictOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDistrictOverview">
+												<div class="panel-body">
+												<div>
+													<div class="row">
+														<div class="col-sm-12">
+															<div id="districtWiseLocationDetailsDivId"></div>
+														</div>
+													</div>
+												</div>
+												</div>
+											</div>
+										</div>
 									</div>
-									<div class="row">
+									<!--<div class="row">
 										<div id="constituencyWiseLocationDetailsDivId"></div>
+									</div>-->
+									<div class="panel-group">
+										<div class="panel panel-default panel-black">
+											<div class="panel-heading" role="tab" id="headingConstituecyOverview">
+												<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordion" href="#collapseConstituecyOverview">
+													<h4 class="panel-title">CONSTITUECY WISE REPRESENTATION OVERVIEW</h4>
+												</a>
+											</div>
+											<div id="collapseConstituecyOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingConstituecyOverview">
+												<div class="panel-body">
+												<div>
+													<div class="row">
+														<div class="col-sm-12">
+															<div id="constituencyWiseLocationDetailsDivId"></div>
+														</div>
+													</div>
+												</div>
+												</div>
+											</div>
+										</div>
 									</div>
 								</div>
 								</div>
