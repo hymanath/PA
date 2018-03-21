@@ -39,9 +39,9 @@ function buildAssignedCandidateWisePendingAlerts(result,locationType){
 			if(locationType == 'district'){
 					str+='<h5 class="text_bold text-capital font_size24" >District Wise Action Required Alerts</h5>';
 				}else if(locationType == 'constituency'){
-					str+='<h5 class="text_bold text-capital font_size24" >Constituency Wise Action Required Alerts</h5>';
+					str+='<h5 class="text_bold text-capital font_size24" >Top-10 Constituency Wise Action Required Alerts</h5>';
 				}else if(locationType == 'parliament'){
-					str+='<h5 class="text_bold text-capital font_size24" >PARLIMENT Wise Action Required Alerts</h5>';
+					str+='<h5 class="text_bold text-capital font_size24" >Top-7 PARLIMENT Wise Action Required Alerts</h5>';
 				}
 				
 				str+='<div class="table-responsive m_top10" >';
@@ -328,7 +328,7 @@ function getLocationWiseAlertsDetails(locationType){
 		
 	}
 	var jsObj = { 
-		fromDateStr : "01/01/2010",
+		fromDateStr : "01/01/1988",
 		toDateStr : "01/01/2050",
 		stateId : 1,
 		size : 50,
