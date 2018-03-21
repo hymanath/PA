@@ -295,9 +295,11 @@ $(document).on("click",".casteGroupCls",function(){
 					$('#candPositonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					$('#positonId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 					$('#PostnId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+					$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
 				}
 				$("#candPositonId").trigger("chosen:updated");
 				$("#positonId").trigger("chosen:updated");
+				$("#positionId").trigger("chosen:updated");
 				$("#PostnId").trigger("chosen:updated");
 				$("#PostnId_chosen").hide();
 				
@@ -2112,11 +2114,11 @@ if($("#positionStatusId").val() == 0){
  var postStatusIdsLst = [$("#positionStatusId").val()];
 }
   var jsObj={
-        postLevelId : $('#locationsLevelId').val(),
-		casteGrpId   :$('#casteGroupId').val(),
+        postLevelId  : $("#locationLevelId").val(),
+		casteGrpId   :$("#casteGroupId").val(),
 		casteId      : 0,
 		ageRangeId:0,
-		positionId:$('#candPositonId').val(),
+		positionId:$('#positionId').val(),
 		gender:0,
 		stateId:globalStateId,
 		searchType:searchType,
@@ -3028,4 +3030,29 @@ function getCastListByCasteCatgryId(id){
 	}
  $( document ).ready(function() {
 	  $(".districtLvlCls").show();
+});
+
+function getDepartmentWisePositionList(){
+	var boardId =$("#corporationId").val();
+		var jsObj={
+			boardId : boardId
+		}
+		$.ajax({
+			type:'GET',
+			url:'getDepartmentWisePositionListAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			$('#positionId').empty();
+			$('#positionId').append('<option value="0">ALL</option>');
+			if(result != null && result.length > 0){
+				for(var i in result){
+					$('#positionId').append('<option value="'+result[i].id+'">'+result[i].name+'</option>');
+				}
+				$("#positionId").trigger("chosen:updated");
+			}
+		});
+	}
+$(document).on('change','#corporationId',function(){  
+  getDepartmentWisePositionList();
 });

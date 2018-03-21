@@ -147,6 +147,9 @@
 		var stateId = $('input[name=stateName]:checked').val();
 		if(stateId >1)
 			stateId = 36;
+		if(levelId == 1){
+			stateId =0;
+		}
 		var jsObj =
 		{
 			levelId:levelId,
@@ -394,12 +397,12 @@ $(document).on("click",".stateCls",function(){
 		getNominatdPostsOverview("villageORWardWiseOverviewId",7,"Panchayat");
 });
 $('document').ready(function(){
-	getNominatdPostsOverview("centralWiseOverviewId",1,"central");
-	getNominatdPostsOverview("stateWiseOverviewId",2,"state");
-	getNominatdPostsOverview("districtWiseOverviewId",3,"district");
-	getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
-	getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
-	//getNominatdPostsOverview("villageORWardWiseOverviewId",7);
+	 getNominatdPostsOverview("centralWiseOverviewId",1,"central");
+	 getNominatdPostsOverview("stateWiseOverviewId",2,"state");
+	 getNominatdPostsOverview("districtWiseOverviewId",3,"district");
+	 getNominatdPostsOverview("assemblyWiseOverviewId",4,"constituency");
+	 getNominatdPostsOverview("mandalORMunciWiseOverviewId",5,"mandal");
+	 //getNominatdPostsOverview("villageORWardWiseOverviewId",7);
 	getNominatdPostsOverview("villageORWardWiseOverviewId",7,"Panchayat");
 		
 	});

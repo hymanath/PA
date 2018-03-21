@@ -222,10 +222,10 @@ h1,h2,h3,h4,h5,h6,p,ul,table
 					<c:if test="${sessionScope.USER.isAdmin == 'true'}">
 					<span class="pull-right" style="margin-top:-21px">
 						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
-							<input type="radio" checked="true" class="stateCls" style="cursor:pointer;" name="stateName" value="0" onclick="handleFunctions();"> <b>ALL</b>
+							<input type="radio"  class="stateCls" style="cursor:pointer;" name="stateName" value="0" onclick="handleFunctions();"> <b>ALL</b>
 						  </span>
 						  <span class="btn btn-xs btn-success" style="border-radius:15px;"> 
-							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="1" onclick="handleFunctions();"> <b>AP</b>
+							<input type="radio"  checked="true" class="stateCls" style="cursor:pointer;" name="stateName" value="1" onclick="handleFunctions();"> <b>AP</b>
 						  </span> 
 						  <span class="btn btn-xs btn-success" style="border-radius:15px;">
 							<input type="radio" class="stateCls" style="cursor:pointer;" name="stateName" value="36" onclick="handleFunctions();"> <b>TS</b>
