@@ -11547,9 +11547,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				" D.district_id in ("+IConstants.AP_NEW_DISTRICTS_IDS_LIST+") and " +
 				" ALT.alert_type_id = ALTTYPE.alert_type_id and " +
 				" ALTTYPE.alert_type_id in (:alertTypeIds) and " +
-				" ALT.alert_status_id = ALTSTS.alert_status_id and " );
+				" ALT.alert_status_id = ALTSTS.alert_status_id and ALT.impact_scope_id in(1,2,3,4, 5,6,7,8,9,12) " );
 		if(stDate != null && ndDate != null){
-			sb.append(" ALT.created_time between date(:stDate) and date(:ndDate) ");
+			sb.append(" and ALT.created_time between date(:stDate) and date(:ndDate) ");
 		}
 		sb.append(" group by D.district_id,ALTSTS.alert_status_id ");
 		SQLQuery query = getSession().createSQLQuery(sb.toString());
@@ -11944,15 +11944,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				+ " ALT.address_id = UA.user_address_id and "
 				+ " UA.state_id = :stateId and  "
 				+ " ALT.alert_type_id = ALTTYPE.alert_type_id and "
-				+ " ALT.alert_status_id = ALTSTS.alert_status_id  AND ");
+				+ " ALT.alert_status_id = ALTSTS.alert_status_id and ALT.impact_scope_id in(1,2,3,4, 5,6,7,8,9,12) ");
 				if(alertIds !=null && alertIds.size()>0){
-					sb.append("	ALTTYPE.alert_type_id in (:alertIds) and ");
+					sb.append(" and	ALTTYPE.alert_type_id in (:alertIds)  ");
 				}else{
-					sb.append("  ALTTYPE.alert_type_id in (1) and ALTSTS.alert_status_id not in(6,7) and ");
+					sb.append(" and ALTTYPE.alert_type_id in (1) and ALTSTS.alert_status_id not in(6,7)  ");
 				}
 			
 		if (stDate != null && ndDate != null) {
-			sb.append(" ALT.created_time between date(:stDate) and date(:ndDate) ");
+			sb.append(" and ALT.created_time between date(:stDate) and date(:ndDate) ");
 		}
 		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
 			sb.append(" group by pc.constituency_id ,ALTSTS.alert_status_id ");
