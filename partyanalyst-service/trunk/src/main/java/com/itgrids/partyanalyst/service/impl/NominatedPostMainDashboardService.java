@@ -26,6 +26,7 @@ import com.itgrids.partyanalyst.dao.INominatedPostApplicationDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostFinalDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostMemberDAO;
+import com.itgrids.partyanalyst.dao.INominatedPostPositionDAO;
 import com.itgrids.partyanalyst.dao.INominatedPostStatusDAO;
 import com.itgrids.partyanalyst.dao.INominationPostCandidateDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -71,7 +72,7 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 	public ITdpCadreCandidateDAO tdpCadreCandidateDAO;
 	private ICasteCategoryDAO casteCategoryDAO;
 	private ICasteStateDAO casteStateDAO;
-
+    private INominatedPostPositionDAO nominatedPostPositionDAO;
 	
 	
 	public ICasteCategoryDAO getCasteCategoryDAO() {
@@ -222,6 +223,17 @@ public class NominatedPostMainDashboardService implements INominatedPostMainDash
 
 	public void setCasteStateDAO(ICasteStateDAO casteStateDAO) {
 		this.casteStateDAO = casteStateDAO;
+	}
+
+	
+	public INominatedPostPositionDAO getNominatedPostPositionDAO() {
+		return nominatedPostPositionDAO;
+	}
+
+
+	public void setNominatedPostPositionDAO(
+			INominatedPostPositionDAO nominatedPostPositionDAO) {
+		this.nominatedPostPositionDAO = nominatedPostPositionDAO;
 	}
 
 
@@ -1871,5 +1883,22 @@ public List<GeoLevelListVO> setReturnListValues(List<GeoLevelListVO> locationsLi
 			LOG.error("Exception Occured in getCastListByCasteCatgryId()", e);
 		}
 		return null;    
+	}
+
+ public List<IdAndNameVO> getDepartmentWisePositionList(Long boardId){
+		LOG.info("Entered into getDepartmentWisePositionList() of NominatedPostMainDashboardService.");
+		try{
+			List<IdAndNameVO> pstnList = new ArrayList<IdAndNameVO>();
+			List<Object[]> positionList = nominatedPostPositionDAO.getDepartmentWisePositionList(boardId);
+			if(positionList != null && positionList.size() > 0){
+				setDataToVO(positionList, pstnList);
+			}
+			return pstnList;  
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			LOG.error("Exception Occured in getDepartmentWisePositionList()", e);
+		}
+		return null;
 	}
 }
