@@ -477,8 +477,8 @@ public class AlertExceptionalReportService implements IAlertExceptionalReportSer
 						Long actionNotRequired = new Long(0L);
 						for(Entry<Long,Long> innerParam : outerParam.getValue().entrySet()){
 							total = total + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
-							if(innerParam != null && innerParam.getKey() != null && innerParam.getKey().longValue() == 3L){
-								pending = innerParam.getValue();
+							if(innerParam != null && innerParam.getKey() != null && innerParam.getKey().longValue() == 3L || innerParam.getKey().longValue() == 1L || innerParam.getKey().longValue() == 2L ){
+								pending = pending+innerParam.getValue();
 							}
 							if(innerParam != null && innerParam.getKey() != null && (innerParam.getKey().longValue() == 6L || innerParam.getKey().longValue() == 7L)){
 								actionNotRequired = actionNotRequired + commonMethodsUtilService.getLongValueForObject(innerParam.getValue());
