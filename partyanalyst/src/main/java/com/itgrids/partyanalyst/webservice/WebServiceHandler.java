@@ -3908,4 +3908,24 @@ public class WebServiceHandler {
     		@PathParam("statusId") Long statusId){
 		return  webServiceHandlerService.getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,searchType,type,locationTypeId,alertCategoryId,statusId);
     }
+	@GET
+    @Path("/getJalavaniFeedBackDetailsInfo/{startDateStr}/{endDateStr}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<BasicVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(
+    		@PathParam("startDateStr") String startDateStr,
+    		@PathParam("endDateStr") String endDateStr){
+		return  webServiceHandlerService.getJalavaniFeedBackDetailsInfo(startDateStr,endDateStr);
+    }
+	@GET
+    @Path("/getJalavaniFeedBackNotSatisifiedAlertsInfo/{startDateStr}/{endDateStr}/{feedBackStatusId}/{districtId}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(
+    		@PathParam("startDateStr") String startDateStr,
+    		@PathParam("endDateStr") String endDateStr,
+    		@PathParam("feedBackStatusId") Long feedBackStatusId,
+    		@PathParam("districtId") Long districtId){
+		return  webServiceHandlerService.getJalavaniFeedBackNotSatisifiedAlertsInfo(startDateStr,endDateStr,feedBackStatusId,districtId);
+    }
 }
