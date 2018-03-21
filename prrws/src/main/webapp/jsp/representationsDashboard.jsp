@@ -266,7 +266,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					<!--<div id="pdfWiswPetitionsView"></div>-->
 					
 					
-					<div class="panel-group" style="display:none;" id="locationWiseBlocksId">
+					<div class="panel-group" style="display:none;" id="locationWiseBlockId">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingLocationWise123">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionLocationWise123" href="#collapseLocationWise123">

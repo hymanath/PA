@@ -1382,15 +1382,15 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 							constId=result[i].locationId;
 							distId=result[i].id;
 						}
-						//<a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">
+						
 						if(result[i].petitionIds.length !=null && result[i].petitionIds.length>0){
-							str+='<td>'+result[i].petitionIds.length+'</td>';
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].petitionIds.length+'</a></td>';
 						}else{
 							str+='<td> - </td>';
 						}
-						//<a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">
+						
 						if(result[i].subWorkIds.length !=null && result[i].subWorkIds.length>0){
-							str+='<td>'+result[i].subWorkIds.length+'</td>';
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].subWorkIds.length+'</a></td>';
 						}else{
 							str+='<td> - </td>';
 						}
