@@ -51,7 +51,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		//0-mainWorkId,1-totalKms,2-completedKms
 		StringBuilder sb = new StringBuilder();
 		sb.append("select gmw.govt_main_work_id as mainWorkId,gmw.approved_km as totalKms,sum(gwp.work_length) as completedKms "
-				+ " from govt_work_progress gwp,govt_main_work gmw,govt_work gw,location_addess la "
+				+ " from govt_work_progress gwp,govt_main_work gmw,govt_work gw,location_address la "
 				+ " where gw.is_deleted='N' "
 				+ " and gwp.govt_work_id=gw.govt_work_id "
 				+ " and gw.govt_main_work_id=gmw.govt_main_work_id "
