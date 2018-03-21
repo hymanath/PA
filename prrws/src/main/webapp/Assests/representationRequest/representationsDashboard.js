@@ -1610,7 +1610,114 @@ function getPetitionsDetailsForPDFDocument(){
 function buildPetitionDetailsForPDF(result){
 	
 	var str='';
-	str+='<div>';
+		str+='<div class="row">';
+			str+='<button class="btn btn-md btn-success printViewCls pull-right dispalyNone" attr_divId="printableArea">Print</button>';
+		str+='</div>';
+		
+		str+='<div class="petition_print_heading m_top10">';
+			str+='<div class="row">';
+				str+='<h4 class="font_weight text-center">1-ICHAPURAM CONSTITUENCY, SRIKAKULAM DISTRICT ROADS REQUESTED, PANCHAYAT RAJ DEPARTMENT</h4>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="row m_top10">'
+			str+='<div class="col-sm-6">';
+				str+='<div class="pad_border line_heightCss">';
+					str+='<h5 class="font_weight">NO OF PETITIONS <span class="pull-right">'+result[0].totalCount+'</span></h5>';
+					str+='<h5 class="font_weight">NO OF WORKS WITH COST <span class="pull-right">'+result[0].noOfWorksWithCost+'</span></h5>';
+					str+='<h5 class="font_weight">TOTAL ESTIMATED COST (IN LAKHS) <span class="pull-right">'+result[0].estimationCost+'</span></h5>';
+					str+='<h5 class="font_weight">SANCTIONED WORKS <span class="pull-right">'+result[0].sanctionedWorksCount+'</span></h5>';
+					str+='<h5 class="font_weight">TO BE SANCTIONED WORKS <span class="pull-right">'+result[0].toBeSanctionedWorksCount+'</span></h5>';
+					str+='<h5 class="font_weight">NO. OF WORKS MEMOS ISSUED <span class="pull-right">'+result[0].noOfMemoIssuedCount+'</span></h5>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-6">';
+				str+='<div class="pad_border line_heightCss">';
+					str+='<h5 class="font_weight">NO OF WORKS <span class="pull-right">'+result[0].totalWorksCount+'</span></h5>';
+					str+='<h5 class="font_weight">NO OF WORKS WITHOUT COST <span class="pull-right">'+result[0].noOfWorksWithoutCost+'</span></h5>';
+					str+='<h5 class="font_weight">SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].sanctionedCost+'</span></h5>';
+					str+='<h5 class="font_weight">TO BE SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].toBeSanctionedCost+'</span></h5>';
+					str+='<h5 class="font_weight">NO. OF WORKS G.O. ISSUED <span class="pull-right">'+result[0].noOfGOIssuedCount+'</span></h5>';
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		str+='<div class="row m_top10">'
+		str+='<div class="col-sm-12">'
+			str+='<div class="table-responsive">';
+			str+='<table class="table details-overview_petition_print">';
+				str+='<thead>';
+					str+='<tr>';
+						str+='<th>GIVEN&nbsp;DATE</th>';
+						str+='<th>ENDORSMENT&nbsp;NO</th>';
+						str+='<th>WORK&nbsp;REF&nbsp;NO </th>';
+						str+='<th>LOCATION</th>';
+						str+='<th>WORK&nbsp;DESC</th>';
+						str+='<th>ESTIMATED&nbsp;COST</th>';
+						str+='<th>REF BY</th>';
+						str+='<th>ACTION MEMO</th>';
+						//str+='<th> GO ISSUED </th>';
+						str+='<th>PENDING&nbsp;@</th>';
+						str+='<th> INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+						for(var i in result){
+							
+							if(result[i].subWorksList != null && result[i].subWorksList.length>0){
+								for(var k in result[i].subWorksList){
+									str+='<tr>';
+									str+='<td>'+result[i].subWorksList[k].representationDate+'</td>';
+									str+='<td>'+result[i].subWorksList[k].endorsmentNo+'</td>';
+									str+='<td>'+result[i].subWorksList[k].workId+'</td>';
+									str+='<td>';
+									if(result[i].subWorksList[k].addressVO != null){
+										if(typeof result[i].subWorksList[k].addressVO.districtName != 'undefined')
+											str+='D:'+result[i].subWorksList[k].addressVO.districtName+'<br/>';
+										if(typeof result[i].subWorksList[k].addressVO.assemblyName != 'undefined')
+											str+='A:'+result[i].subWorksList[k].addressVO.assemblyName+'<br/>';
+										if(typeof result[i].subWorksList[k].addressVO.tehsilName != 'undefined')
+											str+='M:'+result[i].subWorksList[k].addressVO.tehsilName+'<br/>';
+										if(typeof result[i].subWorksList[k].addressVO.panchayatName != 'undefined')
+											str+='P:'+result[i].subWorksList[k].addressVO.panchayatName+'';
+									}
+									str+='</td>';
+									str+='<td>'+result[i].subWorksList[k].workDescription+'</td>';
+									str+='<td>'+result[i].subWorksList[k].estimationCost+'</td>';
+									/*str+='<td>';
+									if(result[i].subWorksList[k].subList1 != null && result[i].subWorksList[k].subList1.length>0){
+										for(var j in result[i].subWorksList[k].subList1){
+											if(j >0)
+												str+=' ,';
+											str+=''+result[i].subWorksList[k].subList1[j].name+' ('+result[i].subWorksList[k].subList1[j].designation+')';
+										}
+									}
+									str+='</td>';
+									*/
+									str+='<td>';
+									if(result[i].subWorksList[k].subList2 != null && result[i].subWorksList[k].subList2.length>0){
+										for(var j in result[i].subWorksList[k].subList2){
+											if(j >0)
+												str+=' ,';
+											str+=''+result[i].subWorksList[k].subList2[j].name+' ('+result[i].subWorksList[k].subList2[j].designation+')';
+										}
+									}
+									str+='</td>';
+									str+='<td>'+result[i].subWorksList[k].actionMemo+'</td>';
+									//str+='<td>'+result[i].subWorksList[k].goRefNo+'</td>';
+									str+='<td>'+result[i].subWorksList[k].pendingAt+'</td>';
+									str+='<td></td>';
+									str+='</tr>';
+								}
+							}
+						}
+					str+='</tbody>';
+			str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		str+='</div>';
+		$('#pdfWiswPetitionsView').html(str);
+		
+	/* str+='<div>';
 		str+='<span> NO OF PETITIONS : </span> '+result[0].totalCount+' <br> ';
 		str+='<span> NO OF WORKS WITH COST : </span> '+result[0].noOfWorksWithCost+'  <br> ';
 		str+='<span> TOTAL ESTIMATED COST (IN LAKHS) : </span> '+result[0].estimationCost+'  <br> ';
@@ -1624,8 +1731,8 @@ function buildPetitionDetailsForPDF(result){
 		str+='<span> SANCTIONED COST (IN LAKHS)  : </span> '+result[0].sanctionedCost+' <br> ';
 		str+='<span> TO BE SANCTIONED COST (IN LAKHS)  : </span>'+result[0].toBeSanctionedCost	+' <br>  ';
 		str+='<span> NO. OF WORKS G.O. ISSUED  : </span>'+result[0].noOfGOIssuedCount+' <br>  ';
-	str+='</div>';
-	str+='<div class="table-responsive">';
+	str+='</div>'; */
+	/* str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered" id="petionsDtailsTab">';
 		str+='<thead>';
 		str+='<tr>';
@@ -1673,8 +1780,8 @@ function buildPetitionDetailsForPDF(result){
 								str+=''+result[i].subWorksList[k].subList1[j].name+' ('+result[i].subWorksList[k].subList1[j].designation+')';
 							}
 						}
-						str+='</td>';
-						*/
+						str+='</td>';///////////
+						
 						str+='<td>';
 						if(result[i].subWorksList[k].subList2 != null && result[i].subWorksList[k].subList2.length>0){
 							for(var j in result[i].subWorksList[k].subList2){
@@ -1705,8 +1812,21 @@ function buildPetitionDetailsForPDF(result){
 		"iDisplayLength": 10,
 		"aaSorting": [],
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
-	});
+	}); */
 }
+ $(document).on("click",".printViewCls",function(){
+	printDiv();
+});
+function printDiv() {
+	 var printContents = document.getElementById('printableArea').innerHTML;
+	 var originalContents = document.body.innerHTML;
+	 document.title = "";
+     document.body.innerHTML = printContents;
+	 window.print();
+    document.body.innerHTML = originalContents;
+	$(".dispalyNone").show();
+}
+
 
 getDepartmntsDetails();
 function getDepartmntsDetails(){
@@ -1747,4 +1867,3 @@ $(document).on('change','#departmntId',function(){
 		}
 
 })
- 
