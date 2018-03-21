@@ -714,9 +714,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
 			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
 		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
-			sb.append("  and  sub.pm_statusId in (:statusIdsList)   ");
+			sb.append("  and  sub.pm_status_id in (:statusIdsList)   ");
 		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null)
-			sb.append(" and (date(p.inserted_time) between :startDate and :endDate)  ");
+			sb.append(" and (date(sub.inserted_time) between :startDate and :endDate)  ");
 		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
 			sb.append("  and  sub.pm_subject_id in (:subjectIdsList)   ");
 		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
