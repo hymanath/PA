@@ -81,7 +81,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 									JSONArray finalArray = jsonObj.has("onClickWorksList") ? jsonObj.getJSONArray("onClickWorksList") : null;
 									if (finalArray != null && finalArray.length() > 0) {
 										RwsWorkLocation location = null; 
-										for (int i = 0; i < finalArray.length(); i++) {
+										for (int i = 0; i < 1000 ; i++) {  //finalArray.length();//
 											location = new RwsWorkLocation();
 											JSONObject jObj = (JSONObject) finalArray.get(i);
 											
@@ -109,17 +109,17 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 													}
 													if(jObj.has("technicalSanctionedDate")){
 														if(!jObj.getString("technicalSanctionedDate").equalsIgnoreCase("--")){
-															work.setStipulatedTargetDate(sdf.parse(jObj.has("technicalSanctionedDate") ? jObj.getString("technicalSanctionedDate") : null));
+															work.setTechnicalSanctionDate(sdf.parse(jObj.has("technicalSanctionedDate") ? jObj.getString("technicalSanctionedDate") : null));
 														}else{
-															work.setStipulatedTargetDate(null);
+															work.setTechnicalSanctionDate(null);
 														}
 														
 													}
 													if(jObj.has("entrustedDate")){
 														if(!jObj.getString("entrustedDate").equalsIgnoreCase("--")){
-															work.setStipulatedTargetDate(sdf.parse(jObj.has("entrustedDate") ? jObj.getString("entrustedDate") : null));
+															work.setEntrustedDate(sdf.parse(jObj.has("entrustedDate") ? jObj.getString("entrustedDate") : null));
 														}else{
-															work.setStipulatedTargetDate(null);
+															work.setEntrustedDate(null);
 														}
 														
 													}
