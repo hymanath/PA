@@ -371,6 +371,10 @@ body .mainDivHeaderCls h1, h2, h3, h4, h5, h6, p, ul, .form-group, .table{
 <script src="Assests/constituencyWorks/constituencyWiseWorkStatus.js" type="text/javascript" ></script>
 <script>
 
+var gConstituencyId ='${param.constId}';
+var gDistrictId ='${param.distId}';
+var gDeptId ='${param.deptId}';
+
 </script>
 </body>
 </html>
