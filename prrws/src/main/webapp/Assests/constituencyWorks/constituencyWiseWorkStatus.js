@@ -159,7 +159,7 @@ function getAllSubLocationsOnsuperLocation(superLocationId){
 						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
 					}
 				}else{
-					if(i==0){
+					if(i==1){
 						str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
 					}else{
 						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
