@@ -154,18 +154,18 @@ function buildJalavaniDashBoardOverview(result){
 				str+='<li role="presentation" class="active_li" attr_type="All">';
 					str+='<a href="#all_Sources_Id" data-toggle="tab" class="">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									 str+='<img src="Assests/images/icon_all.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 class="media-heading color_black m_top5"><b>ALL SOURCES</b></h5>';
+										str+='<h5 class="media-heading color_black m_top5 font_weight">ALL&nbsp;SOURCES</h5>';
 										str+='<h4 class="color_black">'+allSourceCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-4">';
+							str+='<div class="col-sm-3">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';	
@@ -174,18 +174,18 @@ function buildJalavaniDashBoardOverview(result){
 				str+='<li role="presentation" class="" attr_type="callcenter" attr_block_count="'+callcenterCount+'">';
 					str+='<a href="#callcenter" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/call_center_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 class="media-heading color_black m_top5"><b>CALL CENTER</b></h5>';
+										str+='<h5 class="media-heading color_black m_top5 font_weight">CALL&nbsp;CENTER</h5>';
 										str+='<h4 class="color_black">'+callcenterCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-4">';
+							str+='<div class="col-sm-3">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
@@ -194,18 +194,18 @@ function buildJalavaniDashBoardOverview(result){
 				str+='<li role="presentation" class="" attr_type="print" attr_block_count="'+printMediaCount+'">';
 					str+='<a href="#print" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 class="media-heading color_black m_top5"><b>PRINT MEDIA</b></h5>';
+										str+='<h5 class="media-heading color_black m_top5 font_weight">PRINT&nbsp;MEDIA</h5>';
 										str+='<h4 class="color_black">'+printMediaCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-4">';
+							str+='<div class="col-sm-3">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
@@ -214,18 +214,18 @@ function buildJalavaniDashBoardOverview(result){
 				str+='<li role="presentation" class="" attr_type="electronic" attr_block_count="'+electronicMediaCount+'">';
 					str+='<a href="#electronic" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
-										str+='<h5 class="media-heading color_black m_top5"><b>ELECTRONIC MEDIA</b></h5>';
+										str+='<h5 class="media-heading color_black m_top5 font_weight">ELECTRONIC MEDIA</h5>';
 										str+='<h4 class="color_black">'+electronicMediaCount+'</h4>';
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-4">';
+							str+='<div class="col-sm-3">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
@@ -234,7 +234,7 @@ function buildJalavaniDashBoardOverview(result){
 				str+='<li role="presentation" class="" attr_type="social" attr_block_count="'+socialMedia+'">';
 					str+='<a href="#social" data-toggle="tab">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-8">';
+							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
 									  str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
@@ -245,7 +245,7 @@ function buildJalavaniDashBoardOverview(result){
 									str+='</div>';
 								str+='</div>';
 							str+='</div>';
-							str+='<div class="col-sm-4">';
+							str+='<div class="col-sm-3">';
 								str+='<i class="fa fa-angle-right color_black f_30"></i>';
 							str+='</div>';
 						str+='</div>';		
@@ -708,6 +708,8 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 						str+='</div>'; */
 					str+='</div>';
 					
+					
+					
 				}else{
 					str+='<h5 class="font_weight">ALERTS STATUS - '+alertStatusTotalCount+'</h5>';	
 					str+='<div id="alertStatus'+searchType+'ChartId" class="m_top10 monthGraphCss"></div>';
@@ -716,9 +718,16 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 			str+='</div>';
 		str+='</div>';
 		
+		if(searchType == "callcenter"){
+			
+			str+='<div style="padding:15px;background-color:#fff;">';
+				str+='<div id="ivrStatusFeedBackDivId"></div>';
+			str+='</div>';
+		}
 	str+='</div>';
 	
 	$("#"+searchType+"DetailsDivId").html(str);
+	getJalavaniFeedBackDetailsInfo();
 	var mainArr=[];
 	var monthNameArr=[];
 	var statusNameArr=[];
@@ -1217,6 +1226,10 @@ $(document).on("click",".getAmsPopUpCls",function(){
 	}else if(location_id == "state"){
 		locationValueName ='state';
 		locationValue = 1;
+	}else if(location_id == "ivrStatus"){
+		locationValueName ='district';
+		locationValue = district_id;
+		categoryId =0;
 	}
 	$("#alertManagementPopupBody").html('')
 	
@@ -1235,7 +1248,7 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 	
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
-		//url: "http://192.168.11.177:8086/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		//url: "http://mytdp.com/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
 	}).then(function(result){
 		 if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
@@ -2933,3 +2946,93 @@ function responsiveTabs()
 		$('[role="tablist"]').show();
 	}
 }*/
+
+function getJalavaniFeedBackDetailsInfo(){
+	$("#ivrStatusFeedBackDivId").html(spinner);
+	 
+	$.ajax({
+		url: wurl+"/WebService/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
+		
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+		if(result !=null && result.length>0){
+			buildJalavaniFeedBackDetailsInfo(result);
+		}else{
+			$("#ivrStatusFeedBackDivId").html("No Data Available");
+		}
+	});	
+}
+
+function buildJalavaniFeedBackDetailsInfo(result){
+	var str='';
+		str+='<div class="row">';
+				str+='<div class="col-sm-4">';
+					str+='<div class="bg_yash_border">';
+						str+='<h5 class="font_weight" style="color:#0FBE08;">COMPLETLY SATISIFIED</h5>';
+						str+='<h4 class="m_top10"><span class="" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].satisfiedCount+'">'+result[0].satisfiedCount+'</span><small style="color:#0FBE08"> '+result[0].satisfiedPerc+'%</small></h4>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="bg_yash_border">';
+						str+='<h5  class="font_weight" style="color:#FF0909;">NOT SATISIFIED</h5>';
+						str+='<h4 class="m_top10"><span class="" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].notSatisfiedCount+'">'+result[0].notSatisfiedCount+'</span><small style="color:#FF0909"> '+result[0].notSatisfiedPerc+'%</small></h4>';
+					str+='</div>';
+				str+='</div>';
+				str+='<div class="col-sm-4">';
+					str+='<div class="bg_yash_border">';
+						str+='<h5 class="font_weight" style="color:#ec7b02;">PARTIALLY SATISIFIED</h5>';
+						str+='<h4 class="m_top10"><span class="" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].partiallySatisfiedCount+'">'+result[0].partiallySatisfiedCount+'</span><small style="color:#ec7b02"> '+result[0].partiallySatsifyPerc+'%</small></h4>';
+					str+='</div>';
+				str+='</div>';
+				
+			str+='</div>';
+		
+		str+='<div class="row">';
+		str+='<div class="col-sm-12 m_top10">';
+			str+='<div class="table-responsive">';
+				str+='<table class="table table_custom_jalavani_status table-bordered" id="dataTabledefaulters">';
+					str+='<thead>';
+						str+='<tr>';
+						str+='<th>LOCATION</th>';
+						for(var i in result[0].feedbackStatusList){
+							str+='<th>'+result[0].feedbackStatusList[i].name+'</th>';
+							str+='<th>Perc(%)</th>';
+						}
+						str+='</tr>';
+					str+='</thead>';
+					str+='<tbody>';
+					
+					
+						for(var i in result){
+							str+='<tr>';
+								
+								str+='<td  style="text-align:left !important;">'+result[i].name+'</td>';
+								for(var j in result[i].feedbackStatusList){
+									str+='<td class="" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'">'+result[i].feedbackStatusList[j].count+'</td>';
+									if(result[i].feedbackStatusList[j].id==1){
+										str+='<td style="color:#0FBE08">'+result[i].feedbackStatusList[j].satisfiedPerc+'</td>';
+									}else if(result[i].feedbackStatusList[j].id==2){
+										str+='<td style="color:#FF0909">'+result[i].feedbackStatusList[j].notSatisfiedPerc+'</td>';
+									}else if(result[i].feedbackStatusList[j].id==3){
+										str+='<td style="color:#ec7b02">'+result[i].feedbackStatusList[j].partiallySatsifyPerc+'</td>';
+									}
+									
+									
+								}
+							str+='</tr>';
+						}
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+		str+='</div>';
+		str+='</div>';
+	$("#ivrStatusFeedBackDivId").html(str);
+	$("#dataTabledefaulters").dataTable({
+		"paging":   false,
+		"info":     false,
+		"searching": true,
+		"autoWidth": true,
+		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+	});
+	
+}
