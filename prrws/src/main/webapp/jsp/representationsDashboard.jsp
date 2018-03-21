@@ -20,7 +20,7 @@
 <!--<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" rel="stylesheet" type="text/css"/>-->
 <script src="https://use.fontawesome.com/07d3416f74.js"></script>
 <script src="Assests/Plugins/Less/less.js"></script>
-
+<link href="Assests/css/print.css" rel="stylesheet" type="text/css"/>
  <link rel="stylesheet" type="text/css" href="Assests/SimplePagination/simplePagination.css"/>
  <style>
 	
@@ -245,27 +245,6 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 							</div>
 						</div>
 					</div>
-					
-					<div class="panel-group" id="pdfWiseOverViewId" style="display: none;">
-						<div class="panel panel-default panel-black">
-							<div id="collapsepdfWiseOverview" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingpdfWiseOverview">
-								<div class="panel-body">
-									<div id="pdfWiseOverViewDivId">
-										
-										<div class="row">
-											<div class="col-sm-12">
-												<!-- <div id="pdfWiswPetitionsView"></div> -->
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-						</div>
-					</div>
-					<!--<div id="pdfWiswPetitionsView"></div>-->
-					
-					
 					<div class="panel-group" style="display:none;" id="locationWiseBlockId">
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingLocationWise123">
@@ -325,220 +304,15 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					</div>
 				</div>	
 				</div>
-				</div>
-				
-				<!--</div>-->
-				<!--<div style="display:none;" id="officerBlock">
-				<div class="col-sm-12 m_top20" >
-					<div class="white-block pad_5 bor_c2">
-						<div class="row">
-							<div class="col-sm-12">
-								<h4 class="pad_10"><b>Status - Officer Wise</b></h4>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div class="col-sm-12" >			
-					<div class="white-block pad_5 bor_c2">
-						<div id="officerWiseBlockDetailsDivId"></div>
-					</div>
-				</div>
-				<div class="col-sm-12">
-					<div class="white-block pad_5 bor_c2">
-						<div class="row">
-							<div class="col-sm-12">
-								<h4 class="pad_10"><b>Offficer Status Wise Details</b></h4>
-							</div>
-						</div>	
-						<div class="row m_top10">
-							<div class="col-sm-12">
-								<div id="officerDesignationWiseTableDivId"></div>
-							</div>
-						</div>
-					</div>
-				</div>
-				</div>-->
-				<!-- <div class="col-sm-12 m_top20" id="refWiseOverViewId" style="display:none;">
-				<div class="white-block pad_5 bor_c2">
+				<div class="white-block pad_10" id="printableArea" style="display:none;">
 					<div class="row">
-						<div class="col-sm-3">
-							<img src="Assests/icons/group.PNG" style="float:left;"><h4 style="padding-top:18px;"><b>Referral wise Overview</b></h4>
+						<div class="col-sm-12">
+							<div id="pdfWiswPetitionsView"></div>
 						</div>
-						<div class="col-sm-2 pull-right">
-							<label>Leads:</label>
-							<select class="form-control" style="background-color:#E4E6E7;" id="briefLeadId">
-								<option value="0">All</option>
-							</select>
-						</div>	
 					</div>
-				</div>
-			</div> 
-			<div class="col-sm-12" id="desigWiseCountDivId" style="display:none;">			
-				<div class="white-block pad_5 bor_c2">
-					<div class="row" id="desigWiseCountId">
-					</div>
-					<div class="row" id="">
-				        <div class="col-sm-2 col-sm-offset-10" id="" >			
-					       <label>Designations:</label>
-					         <select class="form-control" style="background-color:#E4E6E7;" id="LeadersId">
-					         </select>
-				    </div> 
 				</div>
 				</div>
 			</div>
-			<div class="col-sm-12" id="refWiseOverViewDivId" style="display:none;">
-				<div class="white-block pad_5 bor_c2">
-					<h4 id ="headingDetailsId" style="font-weight:bold; margin:10px;">MLA REFFERAL WISE OVERVIEW DETAILS</h4>
-					<div class="row" style="margin:-10px;">
-						<p style="border-top:2px solid #b9b6b6;" class="m_top10"></p>
-					</div>	
-					<div class="row m_top10" style="padding:5px 5px;" id="desigWiseCandidatesView">
-					    
-					</div>
-				</div>
-			</div>-->
-			<!--<div class="col-sm-12 m_top20">
-					<div class="white-block" style="padding:10px">
-						<div class="row">
-							<div class="col-sm-9"><h4><img src=""><i class="fa fa-info info_icon" aria-hidden="true"></i><b style="padding-left:2px">Status - Officer Wise</b></h4></div>
-							<div class="col-sm-3">
-								<select>
-									<option>All</option>
-								</select>
-							</div>
-							<div class="col-sm-12">
-								<div class="row m_top10">
-									<div class="col-sm-3">
-										<div class="panel panel-default">
-											<div class="panel-heading">
-												<h5><i class="fa fa-user-circle-o" aria-hidden="true"></i> <b>Minister</b></h5>
-											</div>
-											<div class="panel-body">
-												<div class="row" style="border-bottom:1px solid grey;padding-bottom:10px">
-													<div class="col-sm-6">
-														<p>Representations</p>
-														<h4><b>187</b></h4>
-													</div>
-													<div class="col-sm-6">
-														<p>Works</p>
-														<h4><b>187</b></h4>
-													</div>
-												</div>
-												<div class="row m_top5">
-													<div class="col-sm-12" style="padding:2px">
-														<div class="row">
-															<div class="col-sm-6" style="padding-top:5px"><span>Pending</span><b class="pull-right">100</b></div>
-															<div class="col-sm-6">
-																<div class="well pad_5 m_bottom_0">
-																	<span>Works</span><b class="pull-right">100</b>
-																</div>
-															</div>
-														</div>
-													</div>
-												</div>
-											</div>
-										</div>
-									</div>
-									
-								</div>
-							</div>
-							
-							<div class="col-sm-12 m_top10">
-								<div class="officers_block" style="padding:5px 10px">
-									<div class="row">
-										<div class="col-sm-3">
-											<h5><b>Venkateshwar Rao</b></h5>
-											<p style="font-size:13px">Principal Secretary</p>
-										</div>
-										<div class="col-sm-3">
-											<div class="well pad_5 m_bottom_0">
-												<div class="row">
-													<div class="col-sm-4">
-														<p style="font-size:12px">Total Representations</p>
-														<h4><b>390</b></h4>
-													</div>
-													<div class="col-sm-8">
-														<div style="padding:10px;background-color:#DCDCDC">
-															<div class="row">
-																<div class="col-sm-4" style="border-right:1px solid grey">
-																	<p>Works</p>
-																	<h5><b>39,000</b></h5>
-																</div>
-																<div class="col-sm-8">
-																	<p>Estimated Cost</p>
-																	<h5><b>39,000</b></h5>
-																</div>
-															</div>
-														</div>
-													</div>
-													
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-3">
-											<div class="well pad_5 m_bottom_0">
-												<div class="row">
-													<div class="col-sm-4">
-														<p style="font-size:12px">Pending Action Memo</p>
-														<h4><b>390</b></h4>
-													</div>
-													<div class="col-sm-8">
-														<div style="padding:10px;background-color:#DCDCDC">
-															<div class="row">
-																<div class="col-sm-4" style="border-right:1px solid grey">
-																	<p>Works</p>
-																	<h5><b>39,000</b></h5>
-																</div>
-																<div class="col-sm-8">
-																	<p>Estimated Cost</p>
-																	<h5><b>39,000</b></h5>
-																</div>
-															</div>
-														</div>
-													</div>
-													
-												</div>
-											</div>
-										</div>
-										<div class="col-sm-3">
-											<div class="well pad_5 m_bottom_0">
-												<div class="row">
-													<div class="col-sm-4">
-														<p style="font-size:12px">Total Representations</p>
-														<h4><b>390</b></h4>
-													</div>
-													<div class="col-sm-8">
-														<div style="padding:10px;background-color:#DCDCDC">
-															<div class="row">
-																<div class="col-sm-4" style="border-right:1px solid grey">
-																	<p>Works</p>
-																	<h5><b>39,000</b></h5>
-																</div>
-																<div class="col-sm-8">
-																	<p>Estimated Cost</p>
-																	<h5><b>39,000</b></h5>
-																</div>
-															</div>
-														</div>
-													</div>
-													
-												</div>
-											</div>
-										</div>
-										
-										
-									</div>
-								</div>
-							</div>
-							
-						</div>
-						
-						
-					</div>
-				</div>
-				-->
-		
-		</div>
 	</section>
 </main>
 
