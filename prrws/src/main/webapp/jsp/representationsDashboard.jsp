@@ -93,20 +93,24 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
 					<div class="row">
-						<div class="col-sm-3 pull-right" >	
-							<div class="input-group inline-block" >
-								<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
-								</span>
-								<input type="text"  class="form-control" id="dateRangePicker"/>
+						<div class="col-sm-6 pull-right">
+							<div class="row">
+								<div class="col-sm-6 " id="deptsDivId">
+									<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId" multiple>
+									</select>
+								</div>
+								<div class="col-sm-6">	
+									<div class="input-group inline-block">
+										<span class="input-group-addon">
+											<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+										</span>
+										<input type="text"  class="form-control" id="dateRangePicker"/>
+									</div>
+								</div>
 							</div>
-						</div>
-							<div class="col-sm-3 " id="deptsDivId" style="left:780px;">
-								<select class="form-control chosen-select "  data-placeholder="SELECT DEPARTMENT "  id="departmntId" multiple>
-								</select>
-							</div>	
+						</div>		
 					</div>
-						<div class="row">
+						<div class="row m_top20">
 						<div class="col-sm-6" style="display:none;" id="completeOverViewDivId"> 
 								<h4><img src="Assests/icons/Group 4361.png"><b>Complete Overview</b></h4>
 								<div class="petition_cls m_top10" style="border:1px solid #6DA4D6;background-color:#E2F2F9" id="completeOverviewId">
@@ -257,27 +261,31 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 								
 								<div class="pad_5" >			
 									<div class="row">
-										<div class="col-sm-2">
-											<select class="chosen-select form-control" id="departmentId" data-placeholder="All" multiple>
-												<!--<option value="0">All</option>-->
-											</select>
-										</div>
-										<div class="col-sm-2">
-											<select class="chosen-select form-control" id="statusLocId" data-placeholder="All" multiple>
-												<!--<option value="0">All</option>-->
-											</select>
-										</div>
-										<div class="col-sm-2">
-											<select class="chosen-select form-control" id="subjectId" data-placeholder="All" multiple>
-												<!--<option value="0">All</option>-->
-											</select>
-										</div>
+										<div class="col-sm-7">
+											<div class="row">
+												<div class="col-sm-4 m_top5">
+													<select class="chosen-select form-control" id="departmentId" data-placeholder="All" multiple>
+														<!--<option value="0">All</option>-->
+													</select>
+												</div>
+												<div class="col-sm-4 m_top5">
+													<select class="chosen-select form-control" id="statusLocId" data-placeholder="All" multiple>
+														<!--<option value="0">All</option>-->
+													</select>
+												</div>
+												<div class="col-sm-4 m_top5">
+													<select class="chosen-select form-control" id="subjectId" data-placeholder="All" multiple>
+														<!--<option value="0">All</option>-->
+													</select>
+												</div>
+											</div>
+										</div>		
 										<!--<div class="col-sm-2">
 											<select class="chosen-select form-control" id="worksNonWorksLocId">
 												<option value="0">Select Works/Non Works</option>
 											</select>
 										</div>-->
-										<div class="col-sm-3">	
+										<div class="col-sm-3 m_top5">	
 											<div class="input-group inline-block" >
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
@@ -285,8 +293,8 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 												<input type="text"  class="form-control" id="dateRangePicker"/>
 											</div>
 										</div>
-										<div class="col-sm-3 pull-right">	
-											<button type="button" class="btn btn-success getLocWiseDetailsCls">Submit</button>
+										<div class="col-sm-2 pull-right">	
+											<button type="button" class="btn btn-success getLocWiseDetailsCls form-control">Submit</button>
 										</div>
 									</div>
 								</div>
