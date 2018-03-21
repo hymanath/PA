@@ -204,7 +204,7 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId);
 	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId);
 	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId);
-	public List<Object[]> getjalavaniIvrSurveyDeatails(Date fromDate,Date toDate);
+	public List<Object[]> getjalavaniFeedbackSurveyDeatails(Date fromDate,Date toDate);
 	public List<Object[]> getAssignedCandidateWisePendingAlerts(Date startDate,Date endDate,Long stateId,List<Long> alertTypeId);
 	public List<Object[]> getOverAllAlertDtls(Date pastDate,Date endDate,Long stateId,List<Long> alertTypeIds,List<Long> statusIds);
 	public Long getOverAllLastMonthComp(Date pastDate,Date endDate,Long stateId,List<Long> alertTypeIds,String range);
@@ -217,4 +217,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getJalavaniAlertDetailsInformation(Date fromDate,Date toDate,Long locationTypeId,Long locationId,
 			Long statusId,Long sourceId);
 	public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId);
+	public List<Long> getJalavaniFeedBackNotSatisifiedAlertsInfo(Date fromDate,Date toDate,Long feedBackId,Long districtId);
 }
