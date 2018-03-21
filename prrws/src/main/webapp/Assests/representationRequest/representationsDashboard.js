@@ -1342,10 +1342,10 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 	var selSubjId = $("#subjectId").val();
 	var searchBy = '';
 	if(locationtype == "district"){
-		//str+='<h4 class="font_weight0">District wise Representation Overview</h4>';
+		//str+='<h4 class="font_weight0"> DISTRICT WISE REPRESENTATIONS OVERVIEW </h4>';
 		searchBy=locationtype;
 	}else{
-		//str+='<h4 class="font_weight0">Constituecy wise Representation Overview</h4>';
+		//str+='<h4 class="font_weight0">CONSTITUENCY WISE REPRESENTATIONS OVERVIEW </h4>';
 		searchBy=locationtype;
 	}
 	if(selSubjId != null && selSubjId != 0){
@@ -1356,15 +1356,23 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 			str+='<thead>';
 				str+='<tr>';
 				if(locationtype == "district"){
-					str+='<th>District</th>';
+					str+='<th>DISTRICT</th>';
 				}else{
-					str+='<th>District</th>';
-					str+='<th>Constituency</th>';
+					str+='<th>DISTRICT</th>';
+					str+='<th>CONSTITUENCY</th>';
 				}
-				str+='<th>Total Representations</th>';
-				str+='<th>Total works</th>';
-				str+='<th>Estimated cost</th>';
-				str+='<th>With out cost Representations</th>';
+				str+='<th>TOTAL&nbsp;REPRESENTATIONS</th>';
+				str+='<th>TOTAL&nbsp;WORKS</th>';
+				str+='<th>ESTIMATED&nbsp;COST</th>';
+				str+='<th>WITHOUT&nbsp;COST&nbsp;REPRESENTATIONS</th>';
+				
+				if(locationtype == "district"){
+					;
+				}else{
+						str+='<th> </th>';
+				}
+				
+			
 				str+='</tr>';
 			str+='</thead>';
 			str+='<tbody>';
@@ -1406,6 +1414,12 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 							str+='<td>'+result[i].withOutCostPetitionIds.length+'</td>';
 						}else{
 							str+='<td> - </td>';
+						}
+						
+						if(locationtype == "district"){
+							;
+						}else{
+							str+='<td style="text-align:center;"> <button class="btn btn-md btn-warning btn-xs prntCls" attr_distict_name="'+result[i].name+'" attr_const_name="'+result[i].locationName+' " attr_id="'+result[i].locationId+'" title="Click here to download PDF document." > GET PDF </button> </td>';
 						}
 						
 					str+='</tr>';
@@ -1458,7 +1472,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 		$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
 			$("#departMentsDiv").show();
-			//$("#"+selBoxId).html("<option value='0'>All</option>");
+			//$("#"+selBoxId).html("<option value='0' selected>All Departments</option>");
 			for(var i in result){
 				//if(deptId != null && deptId==result[i].key){
 					//$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
@@ -1521,7 +1535,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 	}).done(function(result){
 		 $("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
-			//$("#"+selBoxId).html("<option value='0'>All</option>");
+			//$("#"+selBoxId).html("<option value='0' selected>All Subjects</option>");
 			for(var i in result){
 				//if(subjId != null && subjId==result[i].key){
 					//$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
@@ -1561,7 +1575,7 @@ function getStatusList(onLoadstatusId){
   }).done(function(result){
    
 		if(result !=null && result.length >0){
-			//$("#statusLocId").html("<option value='0'>All</option>");
+			//$("#statusLocId").html("<option value='0' selected>All Status</option>");
 			for(var i in result){
 				$("#statusLocId").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 			}
@@ -1575,7 +1589,7 @@ $(document).on("click",".getLocWiseDetailsCls",function(){
 });
 
 
-getPetitionsDetailsForPDFDocument();
+//getPetitionsDetailsForPDFDocument();
 
 function getPetitionsDetailsForPDFDocument(){
 
@@ -1602,13 +1616,13 @@ function getPetitionsDetailsForPDFDocument(){
 		}
 	}).done(function(result){
 		if(result != null){
-			buildPetitionDetailsForPDF(result);
+			buildPetitionsDetailsForPDF(result);
 		}
 	});	
 }
 
-function buildPetitionDetailsForPDF(result){
-	
+function buildPetitionDetailsForPDF(result,districtName,assemblyName){
+
 	var str='';
 		str+='<div class="row">';
 			str+='<button class="btn btn-md btn-success printViewCls pull-right dispalyNone" attr_divId="printableArea">Print</button>';
@@ -1616,27 +1630,27 @@ function buildPetitionDetailsForPDF(result){
 		
 		str+='<div class="petition_print_heading m_top10">';
 			str+='<div class="row">';
-				str+='<h4 class="font_weight text-center">1-ICHAPURAM CONSTITUENCY, SRIKAKULAM DISTRICT ROADS REQUESTED, PANCHAYAT RAJ DEPARTMENT</h4>';
+				str+='<h4 class="font_weight text-center">'+assemblyName.toUpperCase()+' CONSTITUENCY, '+districtName.toUpperCase()+' DISTRICT </h4>';
 			str+='</div>';
 		str+='</div>';
 		str+='<div class="row m_top10">'
 			str+='<div class="col-sm-6">';
 				str+='<div class="pad_border line_heightCss">';
-					str+='<h5 class="font_weight">NO OF PETITIONS <span class="pull-right">'+result[0].totalCount+'</span></h5>';
-					str+='<h5 class="font_weight">NO OF WORKS WITH COST <span class="pull-right">'+result[0].noOfWorksWithCost+'</span></h5>';
-					str+='<h5 class="font_weight">TOTAL ESTIMATED COST (IN LAKHS) <span class="pull-right">'+result[0].estimationCost+'</span></h5>';
-					str+='<h5 class="font_weight">SANCTIONED WORKS <span class="pull-right">'+result[0].sanctionedWorksCount+'</span></h5>';
-					str+='<h5 class="font_weight">TO BE SANCTIONED WORKS <span class="pull-right">'+result[0].toBeSanctionedWorksCount+'</span></h5>';
-					str+='<h5 class="font_weight">NO. OF WORKS MEMOS ISSUED <span class="pull-right">'+result[0].noOfMemoIssuedCount+'</span></h5>';
+					str+='<h6 class="font_weight">NO OF PETITIONS <span class="pull-right">'+result[0].totalCount+'</span></h6>';
+					str+='<h6 class="font_weight">NO OF WORKS WITH COST <span class="pull-right">'+result[0].noOfWorksWithCost+'</span></h6>';
+					str+='<h6 class="font_weight">TOTAL ESTIMATED COST (IN LAKHS) <span class="pull-right">'+result[0].estimationCost+'</span></h6>';
+					str+='<h6 class="font_weight">SANCTIONED WORKS <span class="pull-right">'+result[0].sanctionedWorksCount+'</span></h6>';
+					str+='<h6 class="font_weight">TO BE SANCTIONED WORKS <span class="pull-right">'+result[0].toBeSanctionedWorksCount+'</span></h6>';
+					str+='<h6 class="font_weight">NO. OF WORKS MEMOS ISSUED <span class="pull-right">'+result[0].noOfMemoIssuedCount+'</span></h6>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-6">';
 				str+='<div class="pad_border line_heightCss">';
-					str+='<h5 class="font_weight">NO OF WORKS <span class="pull-right">'+result[0].totalWorksCount+'</span></h5>';
-					str+='<h5 class="font_weight">NO OF WORKS WITHOUT COST <span class="pull-right">'+result[0].noOfWorksWithoutCost+'</span></h5>';
-					str+='<h5 class="font_weight">SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].sanctionedCost+'</span></h5>';
-					str+='<h5 class="font_weight">TO BE SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].toBeSanctionedCost+'</span></h5>';
-					str+='<h5 class="font_weight">NO. OF WORKS G.O. ISSUED <span class="pull-right">'+result[0].noOfGOIssuedCount+'</span></h5>';
+					str+='<h6 class="font_weight">NO OF WORKS <span class="pull-right">'+result[0].totalWorksCount+'</span></h6>';
+					str+='<h6 class="font_weight">NO OF WORKS WITHOUT COST <span class="pull-right">'+result[0].noOfWorksWithoutCost+'</span></h6>';
+					str+='<h6 class="font_weight">SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].sanctionedCost+'</span></h6>';
+					str+='<h6 class="font_weight">TO BE SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].toBeSanctionedCost+'</span></h6>';
+					//str+='<h6 class="font_weight">NO. OF WORKS G.O. ISSUED <span class="pull-right">'+result[0].noOfGOIssuedCount+'</span></h5>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -1671,13 +1685,13 @@ function buildPetitionDetailsForPDF(result){
 									str+='<td>'+result[i].subWorksList[k].workId+'</td>';
 									str+='<td>';
 									if(result[i].subWorksList[k].addressVO != null){
-										if(typeof result[i].subWorksList[k].addressVO.districtName != 'undefined')
+										if(typeof result[i].subWorksList[k].addressVO.districtName != 'undefined' && result[i].subWorksList[k].addressVO.districtName .length>0)
 											str+='D:'+result[i].subWorksList[k].addressVO.districtName+'<br/>';
-										if(typeof result[i].subWorksList[k].addressVO.assemblyName != 'undefined')
+										if(typeof result[i].subWorksList[k].addressVO.assemblyName != 'undefined'  && result[i].subWorksList[k].addressVO.assemblyName .length>0)
 											str+='A:'+result[i].subWorksList[k].addressVO.assemblyName+'<br/>';
-										if(typeof result[i].subWorksList[k].addressVO.tehsilName != 'undefined')
+										if(typeof result[i].subWorksList[k].addressVO.tehsilName != 'undefined'  && result[i].subWorksList[k].addressVO.tehsilName .length>0)
 											str+='M:'+result[i].subWorksList[k].addressVO.tehsilName+'<br/>';
-										if(typeof result[i].subWorksList[k].addressVO.panchayatName != 'undefined')
+										if(typeof result[i].subWorksList[k].addressVO.panchayatName != 'undefined'  && result[i].subWorksList[k].addressVO.panchayatName .length>0)
 											str+='P:'+result[i].subWorksList[k].addressVO.panchayatName+'';
 									}
 									str+='</td>';
@@ -1698,7 +1712,8 @@ function buildPetitionDetailsForPDF(result){
 										for(var j in result[i].subWorksList[k].subList2){
 											if(j >0)
 												str+=' ,';
-											str+=''+result[i].subWorksList[k].subList2[j].name+' ('+result[i].subWorksList[k].subList2[j].designation+')';
+											if(typeof result[i].subWorksList[k].subList2[j].designation != 'undefined' && result[i].subWorksList[k].subList2[j].designation.length>0)
+												str+=''+result[i].subWorksList[k].subList2[j].name+' ('+result[i].subWorksList[k].subList2[j].designation+')';
 										}
 									}
 									str+='</td>';
@@ -1716,6 +1731,8 @@ function buildPetitionDetailsForPDF(result){
 		str+='</div>';
 		str+='</div>';
 		$('#pdfWiswPetitionsView').html(str);
+		
+		$('.printViewCls').trigger('click');
 		
 	/* str+='<div>';
 		str+='<span> NO OF PETITIONS : </span> '+result[0].totalCount+' <br> ';
@@ -1814,6 +1831,91 @@ function buildPetitionDetailsForPDF(result){
 		"aLengthMenu": [[10, 50, 100, -1], [10, 50, 100, "All"]]
 	}); */
 }
+
+$(document).on('click','.prntCls',function(){
+	
+	var locationId =$(this).attr('attr_id');
+	var districtName=$(this).attr('attr_distict_name');
+	var constituencyName =$(this).attr('attr_const_name');
+	var locationIDsArr =[];
+	locationIDsArr.push(locationId);
+	 
+	var selStatusId = $("#statusLocId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}
+	
+	if(statusIds != null && statusIds.length>0){
+		for(var i in statusIds){
+			if(parseInt(statusIds[i])==0){
+				statusIds=[];
+			}
+		}
+	}
+	
+	var subjArr = [];
+	var subjIds =$("#subjectId").val();
+	if(subjIds != null && subjIds !=0){
+		subjArr=subjIds;
+	}
+	
+	if(subjArr != null && subjArr.length>0){
+		for(var i in subjArr){
+			if(parseInt(subjArr[i])==0){
+				subjArr=[];
+			}
+		}
+	}
+	
+	var deptIds =  $("#departmentId").val();
+	var deptIdsList = [];
+		if(deptIds != null && deptIds.length >0){
+			deptIdsList=deptIds;
+		}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
+/*var json = {
+		 deptIdsList :deptIdsList,
+		 statusIds:statusIds,
+		 lightVendorIdList:subjArr,
+		 assetType:locationtype,
+		 fromDate:currentFromDate,
+		 toDate:currentToDate
+		} 
+		*/
+		
+		 var json = {
+			  constituencyIdsList: locationIDsArr, 
+			  deptIdsList: deptIdsList,
+			  statusIdsList: statusIds,
+			  subjectIdsList: subjArr,
+			  subSubjectIdsList: [],
+			  fromDate:'',
+			  endDate:''
+		};
+	
+	$.ajax({              
+		type:'POST',    
+		url: 'getPetitionDetailsForPDFDocument',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null){
+			buildPetitionDetailsForPDF(result,districtName,constituencyName);
+		}
+	});	
+});
+
  $(document).on("click",".printViewCls",function(){
 	printDiv();
 });

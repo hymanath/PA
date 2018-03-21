@@ -100,9 +100,9 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
 			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
 		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
-			sb.append("  and  sub.pm_statusId in (:statusIdsList)   ");
+			sb.append("  and  sub.pm_status_id in (:statusIdsList)   ");
 		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null)
-			sb.append(" and (date(p.inserted_time) between :startDate and :endDate)  ");
+			sb.append(" and (date(sub.inserted_time) between :startDate and :endDate)  ");
 		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
 			sb.append("  and  sub.pm_subject_id in (:subjectIdsList)   ");
 		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
@@ -117,7 +117,7 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 				.addScalar("report_type", StandardBasicTypes.STRING)
 				.addScalar("ref_no", StandardBasicTypes.STRING)
 				.addScalar("document_type_id", StandardBasicTypes.LONG)
-				.addScalar("pm_document_type", StandardBasicTypes.LONG);
+				.addScalar("pm_document_type", StandardBasicTypes.STRING);
 		
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			query.setParameterList("constituencyIdsList", inputVO.getConstituencyIdsList());

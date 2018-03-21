@@ -247,7 +247,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			sb.append(" and model.petition.petitionId in(:petitionIdsList) ");
 		}
-		sb.append( "order by model.pmDepartment.orderNo asc ");
+		sb.append( "order by model.pmDepartment.department asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size()>0){
 			query.setParameterList("deptIds", deptIds);
@@ -479,7 +479,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			sb.append(" and  model.petition.petitionId in(:petitionIdsList) ");
 		}
-		sb.append( "order by model.pmSubject.orderNo asc ");
+		sb.append( "order by model.pmSubject.subject asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size()>0){
 			query.setParameterList("deptIds", deptIds);

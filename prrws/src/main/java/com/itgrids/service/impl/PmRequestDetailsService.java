@@ -6915,7 +6915,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				Set<Long> sanctionedWorkIds = new HashSet<>();
 				Set<Long> toBeSanctionedWorkIds = new HashSet<>();
 				Set<Long> withMemoWorkIds = new HashSet<>();
-				
+
 				Set<Long> workIdsList = new HashSet<>();
 				Set<Long> withoutCostWorkIds = new HashSet<>();
 				Double sanctionedCost=0.0d;
@@ -6926,8 +6926,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					for (Object[] param : petitonsDetailsList) {
 						
 						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
-						String reprDate=commonMethodsUtilService.getStringValueForObject(param[1]);
-						String endorsDate=commonMethodsUtilService.getStringValueForObject(param[2]);
+						String reprDate=commonMethodsUtilService.getStringValueForObject(param[1]).replace("#", "");
+						String endorsDate=commonMethodsUtilService.getStringValueForObject(param[2]).replace("#", "");
 						String endorsNo=commonMethodsUtilService.getStringValueForObject(param[3]);
 						String repType=commonMethodsUtilService.getStringValueForObject(param[4]);
 						Long noOfWorks=commonMethodsUtilService.getLongValueForObject(param[5]);		
@@ -7044,6 +7044,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					} 
 				}
 				
+				toBeSanctionedWorkIds.addAll(workIdsList);
+				toBeSanctionedCost = totalEstimationCost;
+				
 				List<Object[]> documentsList = pmSubWorkCoveringLetterDAO.getDocumentsDetailsForPDFDocument(inputVO, null);
 				if(commonMethodsUtilService.isListOrSetValid(documentsList)){
 					for (Object[] param : documentsList) {
@@ -7067,10 +7070,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							}
 							
 							if(vo != null){
-								if(reprotType.equalsIgnoreCase("ACTION COPY"))
+								if(reprotType.equalsIgnoreCase("ACTION COPY")){
 									vo.setActionMemo(refNo);
-								if(GODocType != null && GODocType.trim().length()>0)
+									withMemoWorkIds.add(workId);
+								}if(GODocType != null && GODocType.trim().length()>0){
 									vo.setGoRefNo(refNo);
+									withGOWorkIds.add(workId);
+								}
+								
+								if(goDocTypeId != null && goDocTypeId.longValue()>0L){
+									sanctionedWorkIds.add(workId);
+									sanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
+									
+									toBeSanctionedWorkIds.remove(workId);
+									toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(vo.getEstimationCost());
+								}
 							}
 						}else{
 							for (Long wrkId : worksMap.keySet()) {
@@ -7089,9 +7103,9 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									if(goDocTypeId != null && goDocTypeId.longValue()>0L){
 										sanctionedWorkIds.add(workId);
 										sanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
-									}else{
-										toBeSanctionedWorkIds.add(workId);
-										toBeSanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
+										
+										toBeSanctionedWorkIds.remove(workId);
+										toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(vo.getEstimationCost());
 									}
 								}
 							}
