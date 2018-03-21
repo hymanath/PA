@@ -2951,7 +2951,7 @@ function getJalavaniFeedBackDetailsInfo(){
 	$("#ivrStatusFeedBackDivId").html(spinner);
 	 
 	$.ajax({
-		url: wurl+"/WebService/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
 		
 		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
