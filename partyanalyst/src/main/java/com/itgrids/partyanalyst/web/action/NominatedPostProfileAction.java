@@ -2486,5 +2486,17 @@ public String execute()
 		}
 		return Action.SUCCESS;
 	}
-	
+	public String getDepartmentWisePositionList(){
+		try{
+			LOG.info("Entered into nominatedPostProfileAction of getDepartmentWisePositionList() ");
+			jObj = new JSONObject(getTask());
+			Long boardId = jObj.getLong("boardId") ;
+			idAndNameVOList = nominatedPostMainDashboardService.getDepartmentWisePositionList(boardId);  
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getDepartmentWisePositionList method of NominatedPostProfileAction Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }
