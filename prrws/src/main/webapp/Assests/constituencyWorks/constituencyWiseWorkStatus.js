@@ -147,14 +147,24 @@ function getAllSubLocationsOnsuperLocation(superLocationId){
             
     }).done(function(result){
 			var str='';
-			str+='<option value="0">SELECT DISTRICT</option>';
+			str+='<option value="0">SELECT DISTRICT </option>';
+			
 			for(var i in result){
-				if(i==0){
-					str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
+				var ids = ""+result[i].id;
+				ids = ids.substring(1);
+				if(typeof gDistrictId !='undefined' && gDistrictId != null && parseInt(gDistrictId)>0){
+					if(parseInt(gDistrictId) == parseInt(ids)){
+						str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
+					}else{
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+					}
 				}else{
-					str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+					if(i==0){
+						str+='<option value="'+result[i].id+'" selected>'+result[i].name+'</option>'
+					}else{
+						str+='<option value="'+result[i].id+'">'+result[i].name+'</option>'
+					}
 				}
-				
 			}
 		 $("#districtSelId").html(str);
 		 $("#districtSelId").chosen();
@@ -177,6 +187,9 @@ $(document).on("change","#districtSelId",function(){
 });
 function getLocationsNamesBySubLocation(locationId,type){  
  $("#constituencySelId").html('');
+	if(typeof gDistrictId !='undefined' && gDistrictId != null && parseInt(gDistrictId)>0)
+		locationId = gDistrictId;
+	
 	 var json = {
           locationId:locationId
         }
@@ -192,13 +205,29 @@ function getLocationsNamesBySubLocation(locationId,type){
     }).done(function(result){
 		var str='';
 		str+='<option value="0">SELECT CONSTITUENCY</option>';
+		
 		for(var i in result){
-			if(i==0){
+			var ids = ""+result[i].locationId;
+				ids = ids.substring(1);
+				if(typeof gConstituencyId !='undefined' && gConstituencyId != null && parseInt(gConstituencyId)>0){
+					if(parseInt(gConstituencyId) == parseInt(ids)){
+						str+='<option value="'+result[i].locationId+'" selected>'+result[i].locationName+'</option>'
+					}else{
+						str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
+					}
+				}else{
+					if(i==0){
+						str+='<option value="'+result[i].locationId+'" selected>'+result[i].locationName+'</option>'
+					}else{
+						str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
+					}
+				}			
+			/*if(i==0){
 				str+='<option value="'+result[i].locationId+'" selected>'+result[i].locationName+'</option>'
 			}else{
 				str+='<option value="'+result[i].locationId+'">'+result[i].locationName+'</option>'
 			}
-			
+			*/
 		}
 		 $("#constituencySelId").html(str);
 		$("#constituencySelId").chosen();
@@ -447,7 +476,7 @@ $(document).on("click",".submitCls",function(){
 	var departmentId = $("#DepartmentsId").val();
 	//getDistrictNameAndMlaNameByConsitutency();
 	if(districtId == null || districtId == 0){
-		alert("Please Select District")
+		alert("Please Select District ")
 		return;
 	}
 	

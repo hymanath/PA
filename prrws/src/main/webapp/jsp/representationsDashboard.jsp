@@ -28,7 +28,7 @@
  </style>
 </head>
 <body>
-<header style="box-shadow:none;">
+<header style="box-shadow:none;" class="dispalyNone">
 	<nav>
 		<div class="container-fluid">
 			<div class="row">
@@ -84,12 +84,12 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 <main>
 	<section>
 		<div class="container-fluid">
-		<div class="row">
+		<div class="row dispalyNone">
 			<div class="col-sm-12">
 				<h4 class="pull-right">Note: All amounts in Crores</h4>
 			</div>
 		</div>
-			<div class="row m_top10">
+			<div class="row m_top10 dispalyNone">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
 					<div class="row">
@@ -253,7 +253,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 						<div class="panel panel-default panel-black">
 							<div class="panel-heading" role="tab" id="headingLocationWise123">
 								<a role="button" class="panelCollapseIcon collapsed"  data-toggle="collapse" data-parent="#accordionLocationWise123" href="#collapseLocationWise123">
-									<h4 class="panel-title text-capital">Location Wise</h4>
+									<h4 class="panel-title text-capital">Location Wise OVERVIEW </h4>
 								</a>
 							</div>
 							<div id="collapseLocationWise123" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingLocationWise123">
@@ -263,11 +263,11 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 									<div class="row">
 										<div class="col-sm-7">
 											<div class="row">
-												<div class="col-sm-4 m_top5">
+												<!--<div class="col-sm-4 m_top5">
 													<select class="chosen-select form-control" id="departmentId" data-placeholder="All" multiple>
-														<!--<option value="0">All</option>-->
+													
 													</select>
-												</div>
+												</div>-->
 												<div class="col-sm-4 m_top5">
 													<select class="chosen-select form-control" id="statusLocId" data-placeholder="All" multiple>
 														<!--<option value="0">All</option>-->
@@ -285,14 +285,14 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 												<option value="0">Select Works/Non Works</option>
 											</select>
 										</div>-->
-										<div class="col-sm-3 m_top5">	
+										<!--<div class="col-sm-3 m_top5">	
 											<div class="input-group inline-block" >
 												<span class="input-group-addon">
 													<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
 												</span>
 												<input type="text"  class="form-control" id="dateRangePicker"/>
 											</div>
-										</div>
+										</div>-->
 										<div class="col-sm-2 pull-right">	
 											<button type="button" class="btn btn-success getLocWiseDetailsCls form-control">Submit</button>
 										</div>
@@ -352,10 +352,12 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 					</div>
 				</div>	
 				</div>
-				<div class="white-block pad_10" id="printableArea" style="display:none;">
-					<div class="row">
-						<div class="col-sm-12">
-							<div id="pdfWiswPetitionsView"></div>
+				<div id="printableArea" style="display:none;" class="displayBlock">
+					<div class="white-block pad_10" id="printcontent">
+						<div class="row">
+							<div class="col-sm-12">
+								<div id="pdfWiswPetitionsView" ></div>
+							</div>
 						</div>
 					</div>
 				</div>

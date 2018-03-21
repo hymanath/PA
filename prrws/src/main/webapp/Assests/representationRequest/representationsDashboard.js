@@ -59,7 +59,7 @@ function onLoadCalls(){
 		$("#desigWiseCountDivId").show();
 		$("#refWiseOverViewDivId").show();
 		$("#officerBlock").show();
-		getDepartmentsBySearchType("department","departmentId",0,0);
+		getDepartmentsBySearchType("department","departmntId",0,0);
 		getStatusList(0);
 		getSubjectsBySearchType("subject","subjectId",0,0);
 
@@ -1296,7 +1296,7 @@ function getLocationWiseRepresentationsOverviewDetails(locationtype,divId){
 	if(subjIds != null && subjIds !=0){
 		subjArr=subjIds;
 	}
-	var deptIds =  $("#departmentId").val();
+	var deptIds =  $("#departmntId").val();
 	var deptIdsList = [];
 		if(deptIds != null && deptIds.length >0){
 			deptIdsList=deptIds;
@@ -1338,7 +1338,7 @@ var json = {
 function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,divId){
 	var str='';
 	var selStatusId = $("#statusLocId").val();
-	var selDptId = $("#departmentId").val();
+	var selDptId = $("#departmntId").val();
 	var selSubjId = $("#subjectId").val();
 	var searchBy = '';
 	if(locationtype == "district"){
@@ -1385,10 +1385,10 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 							str+='<td>'+result[i].locationName+'</td>';
 							distId=result[i].locationId;
 						}else{
-							str+='<td>'+result[i].name+'</td>';
-							str+='<td>'+result[i].locationName+'</td>';
 							constId=result[i].locationId;
 							distId=result[i].id;
+							str+='<td>'+result[i].name+'</td>';
+							str+='<td> <a  title=" Click here to get '+result[i].locationName+' constituency page." href="'+wurl+'/constituencyWiseWorkStatus?distId='+distId+'&constId='+constId+'&deptId='+selDptId+'" target="_blank">'+result[i].locationName+'</a></td>';
 						}
 						
 						if(result[i].petitionIds.length !=null && result[i].petitionIds.length>0){
@@ -1419,7 +1419,7 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 						if(locationtype == "district"){
 							;
 						}else{
-							str+='<td style="text-align:center;"> <button class="btn btn-md btn-warning btn-xs prntCls" attr_distict_name="'+result[i].name+'" attr_const_name="'+result[i].locationName+' " attr_id="'+result[i].locationId+'" title="Click here to download PDF document." > GET PDF </button> </td>';
+							str+='<td style="text-align:center;"> <button class="btn btn-md btn-warning btn-xs prntCls" attr_distict_name="'+result[i].name+'" attr_const_name="'+result[i].locationName+' " attr_id="'+result[i].locationId+'" title="Click here to download PDF document." > PRINT </button>  <span id="loadingId'+result[i].locationId+'"> </span></td>';
 						}
 						
 					str+='</tr>';
@@ -1430,9 +1430,9 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 		
 		$("#"+divId).html(str);
 		$("#dataTableLoc"+divId).dataTable({
-			"iDisplayLength": 13,
-			"aaSorting": [],
-			"aLengthMenu": [[13, 15, 20,50, -1], [13, 15, 20,50, "All"]]
+			"iDisplayLength": 20,
+			"aaSorting": [[ 2, "desc" ]],
+			"aLengthMenu": [[20, ,50,100, -1], [20,50,100, "All"]]
 		});
 		
 		
@@ -1448,7 +1448,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 			statusIds.push(statusList[i]);
 		}
 	}
-	var dptId = $("#departmentId").val();
+	var dptId = $("#departmntId").val();
 	if(dptId != null && dptId.length >0){
 		ondeptId=dptId;
 	}
@@ -1588,23 +1588,76 @@ $(document).on("click",".getLocWiseDetailsCls",function(){
 	getLocationWiseRepresentationsOverviewDetails("constituency","constituencyWiseLocationDetailsDivId");
 });
 
-
-//getPetitionsDetailsForPDFDocument();
-
-function getPetitionsDetailsForPDFDocument(){
-
-	var locationIDsArr =[];
-	locationIDsArr.push(111);
+$(document).on('click','.prntCls',function(){
 	
-	  var json = {
-		  constituencyIdsList: locationIDsArr, 
-		  deptIdsList: [],
-		  statusIdsList: [],
-		  subjectIdsList: [],
-		  subSubjectIdsList: [],
-		  fromDate:'',
-		  endDate:''
-	};
+	var locationId =$(this).attr('attr_id');
+	var districtName=$(this).attr('attr_distict_name');
+	var constituencyName =$(this).attr('attr_const_name');
+	
+	var locationIDsArr =[];
+	locationIDsArr.push(locationId);
+	 
+	var selStatusId = $("#statusLocId").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}
+	
+	if(statusIds != null && statusIds.length>0){
+		for(var i in statusIds){
+			if(parseInt(statusIds[i])==0){
+				statusIds=[];
+			}
+		}
+	}
+	
+	var subjArr = [];
+	var subjIds =$("#subjectId").val();
+	if(subjIds != null && subjIds !=0){
+		subjArr=subjIds;
+	}
+	
+	if(subjArr != null && subjArr.length>0){
+		for(var i in subjArr){
+			if(parseInt(subjArr[i])==0){
+				subjArr=[];
+			}
+		}
+	}
+	
+	var deptIds =  $("#departmntId").val();
+	var deptIdsList = [];
+		if(deptIds != null && deptIds.length >0){
+			deptIdsList=deptIds;
+		}
+	if(deptIdsList != null && deptIdsList.length>0){
+		for(var i in deptIdsList){
+			if(parseInt(deptIdsList[i])==0){
+				deptIdsList=[];
+			}
+		}
+	}
+
+	var fromDateArr = currentFromDate.split('-');
+	var toDateArr = currentToDate.split('-');
+	
+	var finalFromDateStr="";
+	var finalToDateStr="";
+	if(fromDateArr != null && fromDateArr.length == 3 && toDateArr != null && toDateArr.length == 3){
+		finalFromDateStr=fromDateArr[2]+'-'+fromDateArr[1]+'-'+fromDateArr[0];
+		finalToDateStr=toDateArr[2]+'-'+toDateArr[1]+'-'+toDateArr[0];
+	}
+	$('#loadingId'+locationId+'').html(spinner);
+	var json = {
+			  constituencyIdsList: locationIDsArr, 
+			  deptIdsList: deptIdsList,
+			  statusIdsList: statusIds,
+			  subjectIdsList: subjArr,
+			  subSubjectIdsList: [],
+			  fromDate:finalFromDateStr,
+			  endDate:finalToDateStr
+		};
+	
 	$.ajax({              
 		type:'POST',    
 		url: 'getPetitionDetailsForPDFDocument',
@@ -1615,11 +1668,13 @@ function getPetitionsDetailsForPDFDocument(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$('#loadingId'+locationId+'').html('');
 		if(result != null){
-			buildPetitionsDetailsForPDF(result);
+			buildPetitionDetailsForPDF(result,districtName,constituencyName);
 		}
 	});	
-}
+});
+
 
 function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 
@@ -1636,21 +1691,21 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 		str+='<div class="row m_top10">'
 			str+='<div class="col-sm-6">';
 				str+='<div class="pad_border line_heightCss">';
-					str+='<h6 class="font_weight">NO OF PETITIONS <span class="pull-right">'+result[0].totalCount+'</span></h6>';
-					str+='<h6 class="font_weight">NO OF WORKS WITH COST <span class="pull-right">'+result[0].noOfWorksWithCost+'</span></h6>';
-					str+='<h6 class="font_weight">TOTAL ESTIMATED COST (IN LAKHS) <span class="pull-right">'+result[0].estimationCost+'</span></h6>';
-					str+='<h6 class="font_weight">SANCTIONED WORKS <span class="pull-right">'+result[0].sanctionedWorksCount+'</span></h6>';
-					str+='<h6 class="font_weight">TO BE SANCTIONED WORKS <span class="pull-right">'+result[0].toBeSanctionedWorksCount+'</span></h6>';
-					str+='<h6 class="font_weight">NO. OF WORKS MEMOS ISSUED <span class="pull-right">'+result[0].noOfMemoIssuedCount+'</span></h6>';
+					str+='<h5 class="font_weight font_size_12">NO OF PETITIONS <span class="pull-right">'+result[0].totalCount+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">NO OF WORKS WITH COST <span class="pull-right">'+result[0].noOfWorksWithCost+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">TOTAL ESTIMATED COST (IN LAKHS) <span class="pull-right">'+result[0].estimationCost+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">SANCTIONED WORKS <span class="pull-right">'+result[0].sanctionedWorksCount+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">TO BE SANCTIONED WORKS <span class="pull-right">'+result[0].toBeSanctionedWorksCount+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">NO. OF WORKS MEMOS ISSUED <span class="pull-right">'+result[0].noOfMemoIssuedCount+'</span></h5>';
 				str+='</div>';
 			str+='</div>';
 			str+='<div class="col-sm-6">';
 				str+='<div class="pad_border line_heightCss">';
-					str+='<h6 class="font_weight">NO OF WORKS <span class="pull-right">'+result[0].totalWorksCount+'</span></h6>';
-					str+='<h6 class="font_weight">NO OF WORKS WITHOUT COST <span class="pull-right">'+result[0].noOfWorksWithoutCost+'</span></h6>';
-					str+='<h6 class="font_weight">SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].sanctionedCost+'</span></h6>';
-					str+='<h6 class="font_weight">TO BE SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].toBeSanctionedCost+'</span></h6>';
-					//str+='<h6 class="font_weight">NO. OF WORKS G.O. ISSUED <span class="pull-right">'+result[0].noOfGOIssuedCount+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">NO OF WORKS <span class="pull-right">'+result[0].totalWorksCount+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">NO OF WORKS WITHOUT COST <span class="pull-right">'+result[0].noOfWorksWithoutCost+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].sanctionedCost+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">TO BE SANCTIONED COST (IN LAKHS) <span class="pull-right">'+result[0].toBeSanctionedCost+'</span></h5>';
+					str+='<h5 class="font_weight font_size_12">NO. OF WORKS G.O. ISSUED <span class="pull-right">'+result[0].noOfGOIssuedCount+'</span></h5>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -1662,16 +1717,16 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th>GIVEN&nbsp;DATE</th>';
-						str+='<th>ENDORSMENT&nbsp;NO</th>';
+						str+='<th>ENDORS&nbsp;NO</th>';
 						str+='<th>WORK&nbsp;REF&nbsp;NO </th>';
 						str+='<th>LOCATION</th>';
 						str+='<th>WORK&nbsp;DESC</th>';
-						str+='<th>ESTIMATED&nbsp;COST</th>';
+						str+='<th>EST&nbsp;COST<br>(in Lakhs)</th>';
 						str+='<th>REF BY</th>';
 						str+='<th>ACTION MEMO</th>';
-						//str+='<th> GO ISSUED </th>';
+						str+='<th>GO ISSUED </th>';
 						str+='<th>PENDING&nbsp;@</th>';
-						str+='<th> INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
+						str+='<th>INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -1718,7 +1773,7 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 									}
 									str+='</td>';
 									str+='<td>'+result[i].subWorksList[k].actionMemo+'</td>';
-									//str+='<td>'+result[i].subWorksList[k].goRefNo+'</td>';
+									str+='<td>'+result[i].subWorksList[k].goRefNo+'</td>';
 									str+='<td>'+result[i].subWorksList[k].pendingAt+'</td>';
 									str+='<td></td>';
 									str+='</tr>';
@@ -1832,101 +1887,18 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 	}); */
 }
 
-$(document).on('click','.prntCls',function(){
-	
-	var locationId =$(this).attr('attr_id');
-	var districtName=$(this).attr('attr_distict_name');
-	var constituencyName =$(this).attr('attr_const_name');
-	var locationIDsArr =[];
-	locationIDsArr.push(locationId);
-	 
-	var selStatusId = $("#statusLocId").val();
-	var statusIds = [];
-	if(selStatusId != null && selStatusId.length >0){
-		statusIds=selStatusId;
-	}
-	
-	if(statusIds != null && statusIds.length>0){
-		for(var i in statusIds){
-			if(parseInt(statusIds[i])==0){
-				statusIds=[];
-			}
-		}
-	}
-	
-	var subjArr = [];
-	var subjIds =$("#subjectId").val();
-	if(subjIds != null && subjIds !=0){
-		subjArr=subjIds;
-	}
-	
-	if(subjArr != null && subjArr.length>0){
-		for(var i in subjArr){
-			if(parseInt(subjArr[i])==0){
-				subjArr=[];
-			}
-		}
-	}
-	
-	var deptIds =  $("#departmentId").val();
-	var deptIdsList = [];
-		if(deptIds != null && deptIds.length >0){
-			deptIdsList=deptIds;
-		}
-	if(deptIdsList != null && deptIdsList.length>0){
-		for(var i in deptIdsList){
-			if(parseInt(deptIdsList[i])==0){
-				deptIdsList=[];
-			}
-		}
-	}
-/*var json = {
-		 deptIdsList :deptIdsList,
-		 statusIds:statusIds,
-		 lightVendorIdList:subjArr,
-		 assetType:locationtype,
-		 fromDate:currentFromDate,
-		 toDate:currentToDate
-		} 
-		*/
-		
-		 var json = {
-			  constituencyIdsList: locationIDsArr, 
-			  deptIdsList: deptIdsList,
-			  statusIdsList: statusIds,
-			  subjectIdsList: subjArr,
-			  subSubjectIdsList: [],
-			  fromDate:'',
-			  endDate:''
-		};
-	
-	$.ajax({              
-		type:'POST',    
-		url: 'getPetitionDetailsForPDFDocument',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result != null){
-			buildPetitionDetailsForPDF(result,districtName,constituencyName);
-		}
-	});	
-});
 
  $(document).on("click",".printViewCls",function(){
 	printDiv();
 });
 function printDiv() {
 	 var printContents = document.getElementById('printableArea').innerHTML;
-	 var originalContents = document.body.innerHTML;
+	 var originalContents = document.getElementById("printcontent").innerHTML;
 	 document.title = "";
-     document.body.innerHTML = printContents;
+     document.getElementById("printcontent").innerHTML = printContents;
 	 window.print();
-    document.body.innerHTML = originalContents;
-	$(".dispalyNone").show();
+     document.getElementById("printcontent").innerHTML = originalContents;
+	 $(".dispalyNone").show();
 }
 
 

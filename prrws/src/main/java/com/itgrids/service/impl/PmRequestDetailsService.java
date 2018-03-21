@@ -6945,11 +6945,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						String assemblyName=commonMethodsUtilService.getStringValueForObject(param[15]);
 						String mandalName=commonMethodsUtilService.getStringValueForObject(param[16]);
 						String panchayatName=commonMethodsUtilService.getStringValueForObject(param[17]);
-						
 						String desc=commonMethodsUtilService.getStringValueForObject(param[18]);
-						String workCost=commonMethodsUtilService.getStringValueForObject(param[19]);
-						if(workCost == null || workCost.isEmpty() || workCost.equalsIgnoreCase("0"))
-							workCost="0.00";
+						String tempWorkCost=commonMethodsUtilService.getStringValueForObject(param[19]);
+						
+						
+						if(tempWorkCost == null || tempWorkCost.isEmpty() || tempWorkCost.equalsIgnoreCase("0"))
+							tempWorkCost="0.00";
+						String workCost = commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(Double.valueOf(tempWorkCost));//*0.01d);// converting lakhs to crores 1 lakh = 0.01 Cr.
 						
 						String reprDes=commonMethodsUtilService.getStringValueForObject(param[20]);
 						String reprName=commonMethodsUtilService.getStringValueForObject(param[21]);
@@ -6958,14 +6960,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						String pendingAtOfficerName=commonMethodsUtilService.getStringValueForObject(param[24]);
 						
+						if(!workIdsList.contains(workId)){
+							totalEstimationCost = totalEstimationCost+(Double.valueOf(workCost));
+							if(workCost != null && !workCost.equalsIgnoreCase("0.00"))
+								withCostWorkIds.add(workId);
+							else
+								withoutCostWorkIds.add(workId);
+						}
 						petitionIdsList.add(petitionId);
 						workIdsList.add(workId);
-						totalEstimationCost = totalEstimationCost+Double.valueOf(workCost);
-						
-						if(workCost != null && !workCost.equalsIgnoreCase("0.00"))
-							withCostWorkIds.add(workId);
-						else
-							withoutCostWorkIds.add(workId);
 						
 						PetitionsPDFVO vo = new PetitionsPDFVO();
 						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
@@ -7057,6 +7060,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						Long goDocTypeId =commonMethodsUtilService.getLongValueForObject(param[5]);
 						String GODocType =commonMethodsUtilService.getStringValueForObject(param[6]);
 						
+						if(refNo != null && refNo.length()>20){
+							String tempStr = "";
+							int j=20;
+							int i=0;
+							for (;i<refNo.length();) {
+								tempStr = tempStr+""+refNo.substring(i, j)+"<br>";
+								 j=j+20;
+								if(refNo.length()>j){
+									i=j-21;
+								}else{
+									i=j-20;
+									j=refNo.length();
+									break;
+								}
+							}
+							tempStr = tempStr+""+refNo.substring(i, j)+"";
+							refNo = tempStr;
+						}
+						
 						PetitionsPDFVO vo = null;
 						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
 						
@@ -7079,11 +7101,17 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 								}
 								
 								if(goDocTypeId != null && goDocTypeId.longValue()>0L){
+									if(!sanctionedWorkIds.contains(workId)){
+										
+										BigDecimal decmial2= new BigDecimal(sanctionedCost);
+										BigDecimal decmial1= new BigDecimal(vo.getEstimationCost());
+										BigDecimal totalCost1 = decmial2.add(decmial1);
+										
+										sanctionedCost = Double.valueOf(totalCost1.toString());
+										toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(decmial1.toString());
+									}
 									sanctionedWorkIds.add(workId);
-									sanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
-									
 									toBeSanctionedWorkIds.remove(workId);
-									toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(vo.getEstimationCost());
 								}
 							}
 						}else{
@@ -7101,11 +7129,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									}
 									
 									if(goDocTypeId != null && goDocTypeId.longValue()>0L){
+										if(!sanctionedWorkIds.contains(workId)){
+											BigDecimal decmial2= new BigDecimal(sanctionedCost);
+											BigDecimal decmial1= new BigDecimal(vo.getEstimationCost());
+											BigDecimal totalCost1 = decmial2.add(decmial1);
+											
+											sanctionedCost = Double.valueOf(totalCost1.toString());
+											toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(decmial1.toString());
+										}
 										sanctionedWorkIds.add(workId);
-										sanctionedCost = sanctionedCost+Double.valueOf(vo.getEstimationCost());
-										
 										toBeSanctionedWorkIds.remove(workId);
-										toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(vo.getEstimationCost());
 									}
 								}
 							}
@@ -7129,15 +7162,15 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							
 							firstVO.setTotalCount(commonMethodsUtilService.isListOrSetValid(petitionIdsList)?Long.valueOf(String.valueOf(petitionIdsList.size())):0L);
 							firstVO.setNoOfWorksWithCost(commonMethodsUtilService.isListOrSetValid(withCostWorkIds)?Long.valueOf(String.valueOf(withCostWorkIds.size())):0L);
-							firstVO.setEstimationCost(String.valueOf(totalEstimationCost));
+							firstVO.setEstimationCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(totalEstimationCost));
 							firstVO.setSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(sanctionedWorkIds)?Long.valueOf(String.valueOf(sanctionedWorkIds.size())):0L);
 							firstVO.setToBeSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(toBeSanctionedWorkIds)?Long.valueOf(String.valueOf(toBeSanctionedWorkIds.size())):0L);
 							firstVO.setNoOfMemoIssuedCount(commonMethodsUtilService.isListOrSetValid(withMemoWorkIds)?Long.valueOf(String.valueOf(withMemoWorkIds.size())):0L);
 							
 							firstVO.setTotalWorksCount(commonMethodsUtilService.isListOrSetValid(workIdsList)?Long.valueOf(String.valueOf(workIdsList.size())):0L);
 							firstVO.setNoOfWorksWithoutCost(commonMethodsUtilService.isListOrSetValid(withoutCostWorkIds)?Long.valueOf(String.valueOf(withoutCostWorkIds.size())):0L);
-							firstVO.setSanctionedCost(String.valueOf(sanctionedCost));
-							firstVO.setToBeSanctionedCost(String.valueOf(toBeSanctionedCost));
+							firstVO.setSanctionedCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(sanctionedCost));
+							firstVO.setToBeSanctionedCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(toBeSanctionedCost));
 							firstVO.setNoOfGOIssuedCount(commonMethodsUtilService.isListOrSetValid(withGOWorkIds)?Long.valueOf(String.valueOf(withGOWorkIds.size())):0L);
 						}
 					}

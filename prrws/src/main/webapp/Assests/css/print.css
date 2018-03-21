@@ -484,7 +484,7 @@
 		color-adjust:exact;
 	}
 	.details-overview_petition_print thead tr th{
-		font-size:7px !important;
+		font-size:6px !important;
 		padding:2px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
@@ -494,7 +494,7 @@
 		color-adjust:exact;
 	}
 	.details-overview_petition_print tbody tr td{
-		font-size:9px !important;
+		font-size:8px !important;
 		padding:2px !important;
 		font-weight:bold !important;
 		border:1px solid #000 !important;
@@ -513,6 +513,13 @@
 	}
 	.dispalyNone{
 		display:none !important;
+	}
+	.font_size_12{
+		
+		font-size:10px !important;
+	}
+	.displayBlock{
+		display:block !important;
 	}
 	@page { 
 		size: auto;  
