@@ -16,6 +16,7 @@ import com.itgrids.partyanalyst.dto.AmsDataVO;
 import com.itgrids.partyanalyst.dto.AmsKeyValueVO;
 import com.itgrids.partyanalyst.dto.AmsTrackingVO;
 import com.itgrids.partyanalyst.dto.AmsVO;
+import com.itgrids.partyanalyst.dto.BasicVO;
 import com.itgrids.partyanalyst.dto.DistrictOfficeViewAlertVO;
 import com.itgrids.partyanalyst.dto.FilterSectionVO;
 import com.itgrids.partyanalyst.dto.GovtDepartmentVO;
@@ -267,5 +268,7 @@ public interface IAlertManagementSystemService {
 	 public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVo);
 	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId);
 	 public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId);
+	 public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(String startDateStr,String endDateStr,Long feedbackId,Long districtId);
+	 public List<BasicVO> getJalavaniFeedBackDetailsInfo(String startDateStr,String endDateStr);
 }        
 

@@ -11431,21 +11431,33 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 	 	return  query.list();
  	}
-	public List<Object[]> getjalavaniIvrSurveyDeatails(Date fromDate,Date toDate){
+	public List<Object[]> getjalavaniFeedbackSurveyDeatails(Date fromDate,Date toDate){
  		StringBuilder str = new StringBuilder();
-		str.append("SELECT IO.satisfied_status,COUNT(ISA.ivr_survey_answer_id)" +
-				" FROM ivr_survey SV,ivr_survey_entity ISE,ivr_survey_answer ISA,ivr_option IO ");
+		str.append(" SELECT " +
+				" UA.district_id as distId,D.district_name as distName," +
+				" F.alert_feedback_status_id as statusId,F.status as status,COUNT(F.alert_feedback_status_id) as count " +
+				" FROM alert_feedback_status F,alert A,user_address UA,district D" +
+				" WHERE" +
+				" F.alert_feedback_status_id = A.alert_feedback_status_id AND" +
+				" A.address_id =UA.user_address_id and" +
+				" UA.district_id = D.district_id and" +
+				" A.is_deleted = 'N' ");
 		
-	 			str.append(" WHERE SV.ivr_survey_id = ISE.ivr_survey_id AND " +
-	 					" ISE.ivr_survey_id = ISA.ivr_survey_id AND ISA.ivr_option_id = IO.ivr_option_id  AND" +
-	 					" ISE.is_deleted = 'false' AND ISE.ivr_survey_entity_type_id =:surveyEntityTypeId and ISA.is_deleted = 'false' ");
+		str.append(" and A.govt_department_id=:govtDeptId ");
+		
 	 		if(fromDate !=null && toDate !=null){
-	 			str.append(" AND date(SV.start_date) between :fromDate and :toDate  ");
+	 			str.append(" and DATE(A.created_time) between :fromDate and :toDate  ");
 	 		}
-	 		str.append(" GROUP BY IO.satisfied_status ");
+	 		str.append(" GROUP BY A.alert_feedback_status_id,UA.district_id ");
 	 		
-	 	Query query = getSession().createSQLQuery(str.toString());
-	 	query.setParameter("surveyEntityTypeId",6l);//rws survey releated status counts
+	 	Query query = getSession().createSQLQuery(str.toString())
+	 			.addScalar("distId", Hibernate.LONG)
+				.addScalar("distName", Hibernate.STRING)
+				.addScalar("statusId", Hibernate.LONG)
+				.addScalar("status", Hibernate.STRING)
+				.addScalar("count", Hibernate.LONG);
+	 	  
+	 	query.setParameter("govtDeptId",49l);
 	 		if(fromDate !=null && toDate !=null){
 	 			query.setDate("fromDate",fromDate);
 	 			query.setDate("toDate",toDate);
@@ -11990,4 +12002,37 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		}
 		return query.list();
 	}
+	public List<Long> getJalavaniFeedBackNotSatisifiedAlertsInfo(Date fromDate,Date toDate,Long feedBackStatusId,Long districtId){
+ 		StringBuilder str = new StringBuilder();
+		str.append("SELECT A.alert_id " +
+				" FROM alert_feedback_status F,alert A,user_address UA,district D" +
+				" WHERE F.alert_feedback_status_id = A.alert_feedback_status_id AND" +
+				" A.address_id =UA.user_address_id and " +
+				" UA.district_id = D.district_id and " +
+				" A.is_deleted = 'N' " );
+		
+			if(feedBackStatusId !=null && feedBackStatusId.longValue()>0){
+				str.append(" and F.alert_feedback_status_id =:feedBackStatusId ");
+			}
+			if(districtId !=null && districtId.longValue()>0){
+				str.append(" and UA.district_id =:districtId ");
+			}
+			str.append(" A.govt_department_id =:govtDeptId ");
+	 		if(fromDate !=null && toDate !=null){
+	 			str.append(" and DATE(A.created_time) between :fromDate and :toDate  ");
+	 		}
+	 	Query query = getSession().createSQLQuery(str.toString());
+	 		query.setParameter("govtDeptId",49l);
+	 		if(fromDate !=null && toDate !=null){
+	 			query.setDate("fromDate",fromDate);
+	 			query.setDate("toDate",toDate);
+	 		}
+	 		if(feedBackStatusId !=null && feedBackStatusId.longValue()>0){
+	 			query.setParameter("feedBackStatusId",feedBackStatusId);
+			}
+			if(districtId !=null && districtId.longValue()>0){
+				query.setParameter("districtId",districtId);
+			}
+	 	return query.list();
+ 	}
 }

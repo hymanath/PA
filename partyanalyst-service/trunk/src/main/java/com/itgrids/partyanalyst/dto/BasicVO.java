@@ -56,6 +56,9 @@ public class BasicVO implements Serializable{
 	private Long totalResult=0L;
 	private String date;
 	private List<EventDocumentVO> documentsVOList = new ArrayList<EventDocumentVO>(0);
+	private List<BasicVO> feedbackStatusList = new ArrayList<BasicVO>(0);
+	private Long notSatisfiedCount=0l,partiallySatisfiedCount=0l,satisfiedCount=0l;
+	private Double notSatisfiedPerc=0.0,partiallySatsifyPerc=0.0,satisfiedPerc=0.0;
 	
 	public BasicVO(){}
 	
@@ -66,7 +69,38 @@ public class BasicVO implements Serializable{
 		
 	}
 	
-	
+	public Double getNotSatisfiedPerc() {
+		return notSatisfiedPerc;
+	}
+
+	public void setNotSatisfiedPerc(Double notSatisfiedPerc) {
+		this.notSatisfiedPerc = notSatisfiedPerc;
+	}
+
+	public Double getPartiallySatsifyPerc() {
+		return partiallySatsifyPerc;
+	}
+
+	public void setPartiallySatsifyPerc(Double partiallySatsifyPerc) {
+		this.partiallySatsifyPerc = partiallySatsifyPerc;
+	}
+
+	public Double getSatisfiedPerc() {
+		return satisfiedPerc;
+	}
+
+	public void setSatisfiedPerc(Double satisfiedPerc) {
+		this.satisfiedPerc = satisfiedPerc;
+	}
+
+	public List<BasicVO> getFeedbackStatusList() {
+		return feedbackStatusList;
+	}
+
+	public void setFeedbackStatusList(List<BasicVO> feedbackStatusList) {
+		this.feedbackStatusList = feedbackStatusList;
+	}
+
 	public Map<String, Long> getDayWiseMap() {
 		return dayWiseMap;
 	}
@@ -363,6 +397,30 @@ public class BasicVO implements Serializable{
 
 	public void setDocumentsVOList(List<EventDocumentVO> documentsVOList) {
 		this.documentsVOList = documentsVOList;
+	}
+
+	public Long getNotSatisfiedCount() {
+		return notSatisfiedCount;
+	}
+
+	public void setNotSatisfiedCount(Long notSatisfiedCount) {
+		this.notSatisfiedCount = notSatisfiedCount;
+	}
+
+	public Long getPartiallySatisfiedCount() {
+		return partiallySatisfiedCount;
+	}
+
+	public void setPartiallySatisfiedCount(Long partiallySatisfiedCount) {
+		this.partiallySatisfiedCount = partiallySatisfiedCount;
+	}
+
+	public Long getSatisfiedCount() {
+		return satisfiedCount;
+	}
+
+	public void setSatisfiedCount(Long satisfiedCount) {
+		this.satisfiedCount = satisfiedCount;
 	}
 	
 }

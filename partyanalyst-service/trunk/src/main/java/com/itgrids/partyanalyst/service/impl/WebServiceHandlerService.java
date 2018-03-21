@@ -5955,4 +5955,22 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
+	public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(String startDateStr,String endDateStr,Long feedbackStatusId,Long districtId){
+		List<AlertCoreDashBoardVO> alertVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavaniFeedBackNotSatisifiedAlertsInfo(startDateStr,endDateStr,feedbackStatusId,districtId);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniFeedBackNotSatisifiedAlertsInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
+	public List<BasicVO> getJalavaniFeedBackDetailsInfo(String startDateStr,String endDateStr){
+		List<BasicVO> alertVoList = new ArrayList<BasicVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavaniFeedBackDetailsInfo(startDateStr,endDateStr);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniFeedBackDetailsInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
 }
