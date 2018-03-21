@@ -42,4 +42,5 @@ public interface INominatedPostMainDashboardService {
 	 public List<GeoLevelListVO> getGeoLevelReportDetails(GeoLevelReportVO vo);
 	 public List<IdAndNameVO> getAllAgeRangesList();
 	 public List<IdAndNameVO> getCastListByCasteCatgryId(List<Long> casteCatgryId,Long stateId);
+	 public List<IdAndNameVO> getDepartmentWisePositionList(Long boardId);
 }
