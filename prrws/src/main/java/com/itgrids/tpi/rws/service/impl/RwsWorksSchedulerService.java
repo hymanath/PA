@@ -81,7 +81,7 @@ public class RwsWorksSchedulerService implements IRwsWorksSchedulerService {
 									JSONArray finalArray = jsonObj.has("onClickWorksList") ? jsonObj.getJSONArray("onClickWorksList") : null;
 									if (finalArray != null && finalArray.length() > 0) {
 										RwsWorkLocation location = null; 
-										for (int i = 0; i < 1000 ; i++) {  //finalArray.length();//
+										for (int i = 0; i < finalArray.length() ; i++) {  //finalArray.length();//
 											location = new RwsWorkLocation();
 											JSONObject jObj = (JSONObject) finalArray.get(i);
 											
