@@ -580,7 +580,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			 	    				twentyToFivtyUnits = twentyToFivtyUnits+Long.valueOf(taxesObj.get("defaulter4Ass").toString());
 			 	    				fivtyToOneLacUnits = fivtyToOneLacUnits+Long.valueOf(taxesObj.get("defaulter5Ass").toString());
 			 	    				aboveOneLacUnits = aboveOneLacUnits+Long.valueOf(taxesObj.get("defaulter6Ass").toString());
-			 	    				//fiveToTwentyUnits = 0;
+			 	    				fiveToTwentyUnits = fiveToTwentyUnits+Long.valueOf(taxesObj.get("defaulter3Ass").toString());
 			 	    				totalAmount = belowTwoAmount+twotoFiveAmount+fiveToTwentyAmount+twentyToFivtyAmount+fivtyToOneLacAmunt+aboveOneLacAmount;
 		 	    			}
  	    				}
