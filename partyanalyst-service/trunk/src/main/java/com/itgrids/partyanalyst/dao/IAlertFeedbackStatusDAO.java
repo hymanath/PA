@@ -9,5 +9,6 @@ import com.itgrids.partyanalyst.model.AlertFeedbackStatus;
 public interface IAlertFeedbackStatusDAO extends GenericDao<AlertFeedbackStatus, Long>{
 	
 	public List<Object[]> getFeedBackStatus();
+	public List<Object[]> getjalavaniFeedBackStatus();
 
 }

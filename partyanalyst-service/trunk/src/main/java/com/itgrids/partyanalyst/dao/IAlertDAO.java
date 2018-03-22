@@ -218,4 +218,5 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 			Long statusId,Long sourceId);
 	public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId);
 	public List<Long> getJalavaniFeedBackNotSatisifiedAlertsInfo(Date fromDate,Date toDate,Long feedBackId,Long districtId);
+	public List<Object[]> getJalavaniStatusWiseSummaryGraphDetailsInfo(Date fromDate,Date toDate,String searchType);
 }

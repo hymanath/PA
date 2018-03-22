@@ -12017,7 +12017,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			if(districtId !=null && districtId.longValue()>0){
 				str.append(" and UA.district_id =:districtId ");
 			}
-			str.append(" A.govt_department_id =:govtDeptId ");
+			str.append(" and A.govt_department_id =:govtDeptId ");
 	 		if(fromDate !=null && toDate !=null){
 	 			str.append(" and DATE(A.created_time) between :fromDate and :toDate  ");
 	 		}
@@ -12035,4 +12035,39 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 	 	return query.list();
  	}
+	public List<Object[]> getJalavaniStatusWiseSummaryGraphDetailsInfo(Date fromDate,Date toDate,String searchType){
+        StringBuilder str = new StringBuilder();
+          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
+           //feedbackstatusId-0,status-1,count-2,date-3
+        	  str.append("select model.alertFeedbackStatusId,model.alertFeedbackStatus.status," +
+        	  		" count(model.alertFeedbackStatusId),date(model.createdTime) ");
+        	  
+          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
+        	  //feedbackstatusId-0,status-1,count-2,Month-3,year-4
+        	  str.append("select model.alertFeedbackStatusId,model.alertFeedbackStatus.status," +
+        	  		" count(model.alertFeedbackStatusId)," +
+        	  		" month(model.createdTime),year(model.createdTime)  ");
+          }
+          
+          str.append(" from Alert model where model.isDeleted='N' and model.alertFeedbackStatus.isDeleted='N'" +
+          		" and model.govtDepartmentId =:govtDeptId ");
+         
+          if(fromDate !=null && toDate !=null){
+            str.append(" and date(model.createdTime) between :fromDate and :toDate ");
+          }
+          
+          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
+            str.append(" group by model.alertFeedbackStatusId,date(model.createdTime) ");  
+          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
+            str.append(" group by model.alertFeedbackStatusId,month(model.createdTime),year(model.createdTime) order by month(model.createdTime),year(model.createdTime) ");
+          }
+        Query query = getSession().createQuery(str.toString());
+          query.setParameter("govtDeptId",49l);
+          
+          if(fromDate !=null && toDate !=null){
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+          }
+        return  query.list();
+      }
 }

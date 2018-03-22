@@ -22,5 +22,13 @@ public class AlertFeedbackStatusDAO extends GenericDaoHibernate<AlertFeedbackSta
 				" where model.isDeleted = 'N' order by model.orderNo ");
 		return query.list();
 	}
+	public List<Object[]> getjalavaniFeedBackStatus(){
+		Query query = getSession().createQuery("select " +
+				" model.alertFeedbackStatusId," +
+				" model.status " +
+				" from AlertFeedbackStatus model " +
+				" where model.isDeleted = 'N' order by model.jalavaniOrderNo ");
+		return query.list();
+	}
 
 }
