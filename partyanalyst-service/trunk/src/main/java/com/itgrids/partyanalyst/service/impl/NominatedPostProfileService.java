@@ -7561,9 +7561,22 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 												nominatedPostApplication.setUpdatedBy(userId);
 												nominatedPostApplication.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 												nominatedPostApplicationDAO.save(nominatedPostApplication);
+												NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
+												nogo.setNominatedPostId(entry.getKey());
+												nogo.setNominationPostCandidateId(entry.getValue());
+												nogo.setNominatedPostApplicationId(long1);
+												nogo.setGovtOrderId(govtOrder.getGovtOrderId());
+												nogo.setInsertedBy(userId);
+												nogo.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+												nogo.setUpdatedBy(userId);
+												nogo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+												nogo.setIsDeleted("N");
+												nogo.setIsExpired("N");
+												nominatedPostGovtOrderDAO.save(nogo);
 											}
-											NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
+											/*NominatedPostGovtOrder nogo = new NominatedPostGovtOrder();
 										nogo.setNominatedPostId(entry.getKey());
+										nogo.setNominationPostCandidateId(entry.getValue());
 										nogo.setGovtOrderId(govtOrder.getGovtOrderId());
 										nogo.setInsertedBy(userId);
 										nogo.setInsertedTime(dateUtilService.getCurrentDateAndTime());
@@ -7571,7 +7584,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 										nogo.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 										nogo.setIsDeleted("N");
 										nogo.setIsExpired("N");
-										nominatedPostGovtOrderDAO.save(nogo);
+										nominatedPostGovtOrderDAO.save(nogo);*/
 										}
 									
 									nominatedPostDAO.updateNominatedPost(entry.getKey(),entry.getValue(),dateUtilService.getCurrentDateAndTime(),userId);

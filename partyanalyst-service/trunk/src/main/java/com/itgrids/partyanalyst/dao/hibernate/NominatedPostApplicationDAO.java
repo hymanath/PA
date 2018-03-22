@@ -1881,7 +1881,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       				   " D.departmentId,D.deptName," +//0,1
 	       				   " NPS.nominatedPostStatusId, " +
 	       				   " NPS.status, " +
-	       				   " model.nominatedPostId, " +
+	       				   " NPGO.nominatedPost.nominatedPostId, " +
 	       				   " NPC.candidateName, " + 
 	       				   " TC.firstname, " +//6
 	       				   " NPC.mobileNo, " +
@@ -1904,12 +1904,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	  
 	       
 	       queryStr.append(" from  " +  
-	       				   " NominatedPost model, " +
+	       				   //" NominatedPost model, " +
 	       				   " NominatedPostGovtOrder NPGO " +
-	       				   " left join model.nominationPostCandidate NPC " +   
-	       				   " left join model.nominatedPostStatus NPS" +
+	       				   " left join NPGO.nominationPostCandidate NPC " +
+	       				   " left join NPGO.nominatedPost nominatedPost " +
+	       				  // " left join model.nominationPostCandidate NPC " +   
+	       				   " left join nominatedPost.nominatedPostStatus NPS" +
 	       				   " left join NPC.tdpCadre TC " +
-	       				   " left join model.nominatedPostMember NPM " +  
+	       				   " left join nominatedPost.nominatedPostMember NPM " +  
 	       				   " left join NPM.nominatedPostPosition NPP " +
 	       				   " left join NPM.boardLevel BL " +
 	       				   " left join NPP.board B " +
@@ -1920,14 +1922,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       				   " left join CS.casteCategoryGroup CCG " +
 	       				   " left join CCG.casteCategory CC " +
 	       				   " left join NPGO.govtOrder GO " +
-	       				   " left join NPGO.nominatedPost NPOST " +  
+	       				  // " left join NPGO.nominatedPost NPOST " +  
 	       		           " where " +
-	       		           " model.isDeleted = 'N' " +  
+	       		           " nominatedPost.isDeleted = 'N' " +  
 	       		           " and NPGO.isDeleted = 'N' " +
 	       		           " and NPGO.govtOrder.isDeleted = 'N' " +
-	       		           " and model.isDeleted='N' and "+
-	       		           " model.nominatedPostMember.isDeleted='N' and "+
-	       		           " model.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+	       		           " and nominatedPost.isDeleted='N' and "+
+	       		           " nominatedPost.nominatedPostMember.isDeleted='N' and "+
+	       		           " nominatedPost.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
 	       		           " ");    
 	       
 	       if(status != null && status.equalsIgnoreCase("finalReview"))
@@ -1958,8 +1960,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       if(fromDate != null && expDate != null){
 	    	   queryStr.append(" and (date(NPGO.govtOrder.toDate) between :lowerRange and :expDate ) ");        
 	       }  
-	       queryStr.append(" and model.nominatedPostId = NPOST.nominatedPostId " +   
-	       		           " and NPC.isDeleted = 'N' " +
+	       //queryStr.append(" and nominatedPost.nominatedPostId = NPOST.nominatedPostId " );   
+	       queryStr.append(" and NPC.isDeleted = 'N' " +
 	       		           //" and TC.isDeleted = 'N' " +
 	       		           " and NPM.isDeleted = 'N' " + 
 	       		           " and NPP.isDeleted = 'N' " +  
@@ -1972,14 +1974,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       }
 	       if(positionList != null && positionList.size() > 0 && positionList.get(0) != 0l){ 
 	    	   if(positionList.size() == 1 && positionList.get(0).longValue() >0L)
-	    		   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
+	    		   queryStr.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
 	    	   else if(positionList.size() > 1)
-	    		   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
+	    		   queryStr.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId in (:positionList) ");
 	       }
 	       /*if(LocationLevelId != null && LocationLevelId.longValue() >= 1l && departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() ==  0l){
 	    	   queryStr.append(" group by model.nominatedPostMember.nominatedPostPosition.departments.departmentId order by model.nominatedPostMember.nominatedPostPosition.departments.departmentId ");
 	       }*/
-	       queryStr.append(" order by model.nominatedPostId, B.boardId, P.positionId");    
+	       queryStr.append(" order by nominatedPost.nominatedPostId, B.boardId, P.positionId");    
 	       Query query = getSession().createQuery(queryStr.toString());
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
