@@ -5973,4 +5973,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
+	public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr){
+		List<BasicVO> alertVoList = new ArrayList<BasicVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavaniStatusWiseSummaryGraphDetailsInfo(startDateStr,endDateStr);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniStatusWiseSummaryGraphDetailsInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
 }
