@@ -73,12 +73,29 @@
 							<div class="col-md-12 col-xs-12 col-sm-12">
 								<div class="pad_15" style="background-color:#F5F5F5">
 									<div class="row" >
-										<div class="col-md-4 col-sm-6 col-xs-12" style="float:right;">
-											<label>Expire Date</label>  
-											<div class="input-group"><input type="text" id="DateRanges" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div> 
-										</div>
+										<div class="col-sm-6 pull-right">
+											<div class="row">
+												<div class="col-sm-6" style="margin-top:25px;">
+													<fieldset id="Expire">
+														<label class="radio-inline">
+															<input type="radio" class="radionBtn" name="Expire" value="all">ALL
+														</label>
+														<label class="radio-inline">
+															<input type="radio" class="radionBtn" name="Expire" value="running" checked>RUNNING
+														</label>
+														<label class="radio-inline">
+															<input type="radio" class="radionBtn" name="Expire" value="expire">EXPIRE
+														</label>
+													</fieldset>	
+												</div>
+												<div class="col-md-6 col-sm-6 col-xs-12">
+													<label>Expire Date</label>  
+													<div class="input-group"><input type="text" id="DateRanges" class="form-control"/><span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span></div> 
+												</div>
+											</div>
+										</div>		
 									</div>
-									<div class="row">
+									<div class="row m_top10">
 									
 										<div class="col-md-3 col-xs-12 col-sm-6 levelShowCls" >
 											<label>Board Level</label>
@@ -363,15 +380,34 @@ if(globalLocationLevelId == 2){
 			});   
 			
 	}
-	function buildModel(result,typeId){      
-		var str = '';
+	function buildModel(myresult,typeId){
+		var radioVal = "";
+		$(".radionBtn").each(function(){
+			if($(this).is(":checked")){
+				radioVal =$(this).val() ;
+			}
+		});
+	var str = '';
+		var result = myresult;
+		if(radioVal == "expire" || radioVal == "running"){
+			result=[];
+			for(var i in myresult){
+				if(radioVal == "expire" && myresult[i].expireDate == " All Ready Expired"){
+					result.push(myresult[i]);
+				}else{
+					if(radioVal == "running" && myresult[i].expireDate != " All Ready Expired"){
+					result.push(myresult[i]);
+				}
+				}
+			}
+		}
 		var strDate = $("#DateRanges").val();
 			var dateArray = strDate.split("-");
 			var fromDate = dateArray[0].trim();
 			var expireDate = dateArray[1].trim();  
-			if( result[0].uiFromDateStr != null && result[0].uiToDateStr != null  ){
-					fromDate= result[0].uiFromDateStr;
-					expireDate= result[0].uiToDateStr;
+			if( myresult[0].uiFromDateStr != null && myresult[0].uiToDateStr != null  ){
+					fromDate= myresult[0].uiFromDateStr;
+					expireDate= myresult[0].uiToDateStr;
 			}
 			
 			var isEligibleToDelete=false;
@@ -438,13 +474,13 @@ if(globalLocationLevelId == 2){
 					str+='</div>';
 				str+='</div>';
 			}
-			if( result[0].uiFromDateStr != null && result[0].uiToDateStr != null  ){
+			if( myresult[0].uiFromDateStr != null && myresult[0].uiToDateStr != null  ){
 				if(typeId == 0){
-					$("#DateRanges").val(result[0].uiFromDateStr+"-"+result[0].uiToDateStr);			
+					$("#DateRanges").val(myresult[0].uiFromDateStr+"-"+myresult[0].uiToDateStr);			
 					$("#DateRanges").daterangepicker({
 					opens:'left',
-					startDate: result[0].uiFromDateStr,
-					endDate: result[0].uiToDateStr,
+					startDate: myresult[0].uiFromDateStr,
+					endDate: myresult[0].uiToDateStr,
 					 ranges: {
 						   'Next One Month': [moment(), moment().add(1, 'month')],
 						   'Next two Month': [moment(), moment().add(2, 'month')],
@@ -472,9 +508,11 @@ if(globalLocationLevelId == 2){
 				
 				});
 			}
-			
-		}		
-		$("#bodyId").html(str);  
+			$("#bodyId").html(str);
+		}else{
+			$("#bodyId").html("No Data Is Available...")
+			}		
+		  
 	} 
 	
 
@@ -738,6 +776,7 @@ var locationsArr=[];
    
    });
   }
+
 	
 </script>
 </body>
