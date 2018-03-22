@@ -2354,11 +2354,10 @@ $(document).on("click",".docsViewCls",function(){
 				var scanCopySpl = docsList[j].value.split("."); 
 				var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
 					str+='<div class="col-sm-6">';
-						
 						str+='<div class="viewImageCss">';
 						if(scanCopyExt =="pdf"){
 							str+='<a class="fancyboxView" href="#inline'+j+'">';
-							str+='<div class="mouse-over">Expand</div>';
+							str+='<div class="mouse-over"><a class="fancyboxView" target="_blank"  href="'+docsList[j].value+'"> Expand </a> </div>';
 								str+='<object data="'+docsList[j].value+'" type="application/pdf" width="100%"height="300px;"></object>';
 								
 							str+='</a>';
@@ -2369,7 +2368,7 @@ $(document).on("click",".docsViewCls",function(){
 							
 						}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 							str+='<a class="fancyboxView" href="#inline'+j+'">';
-							str+='<div class="mouse-over">Expand</div>';
+							str+='<div class="mouse-over"><a class="fancyboxView" target="_blank"  href="/docsList[j].value"> Expand </a></div>';
 								str+='<img src="'+docsList[j].value+'"  width="100%" height="300px;"></img>';
 								
 							str+='</a>';
