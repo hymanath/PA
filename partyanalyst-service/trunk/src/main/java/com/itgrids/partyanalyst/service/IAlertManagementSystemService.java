@@ -270,5 +270,6 @@ public interface IAlertManagementSystemService {
 	 public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId);
 	 public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(String startDateStr,String endDateStr,Long feedbackId,Long districtId);
 	 public List<BasicVO> getJalavaniFeedBackDetailsInfo(String startDateStr,String endDateStr);
+	 public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
 }        
 

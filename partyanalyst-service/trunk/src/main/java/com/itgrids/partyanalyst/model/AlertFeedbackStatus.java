@@ -21,6 +21,7 @@ public class AlertFeedbackStatus extends BaseModel implements Serializable{
 	private String status;
 	private String isDeleted;
 	private Long orderNo;
+	private Long jalavaniOrderNo;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -55,4 +56,12 @@ public class AlertFeedbackStatus extends BaseModel implements Serializable{
 	public void setOrderNo(Long orderNo) {
 		this.orderNo = orderNo;
 	}
+	@Column(name = "jalavani_order_no")
+	public Long getJalavaniOrderNo() {
+		return jalavaniOrderNo;
+	}
+	public void setJalavaniOrderNo(Long jalavaniOrderNo) {
+		this.jalavaniOrderNo = jalavaniOrderNo;
+	}
+	
 }
