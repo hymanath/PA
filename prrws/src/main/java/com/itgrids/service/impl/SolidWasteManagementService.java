@@ -372,6 +372,9 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			// Set<Long> gpIds = new HashSet<Long>();
 			Set<SolidWasteManagementVO> blockSet = new HashSet<SolidWasteManagementVO>();
 			Long webserviceId = webServiceDataDAO.getMaxidforRFIDService(fromDate);
+			if(webserviceId ==null || webserviceId.longValue() ==0){
+				webServiceDataDAO.getMaxidforRFIDService(null);
+			}
 			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
 			if (rfidList != null && rfidList.length() > 0) {
 				String jsonData = rfidList;
