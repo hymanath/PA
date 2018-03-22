@@ -354,6 +354,32 @@
 		</div>
   </div>
 </div> 
+<div class="modal fade" id="timeSeriesWiseModalId" tabindex="-2" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:70%;">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-10">
+						<h4 style="font-weight:bold;">Time Series Wise Details</h4>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:red;font-size:30px;">&times;</span></button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="timeSeriesWisGraphDivId" style="height:300px;"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn-default pull-right" data-dismiss="modal">Close</button>
+					</div>
+				</div>
+			</div>
+		</div>
+  </div>
+</div> 
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>

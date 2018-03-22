@@ -719,8 +719,8 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		str+='</div>';
 		
 		if(searchType == "callcenter"){
-			
-			str+='<div style="padding:15px;background-color:#fff;">';
+			str+='<h5 class="font_weight text-capital">Call Center Feedback</h5>';	
+			str+='<div style="padding:15px;background-color:#fff;" class="m_top10">';
 				str+='<div id="ivrStatusFeedBackDivId"></div>';
 			str+='</div>';
 		}
@@ -1073,7 +1073,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	 
 	$.ajax({
 		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		//url: "http://192.168.11.177:8086/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
@@ -1547,7 +1547,7 @@ function viewAlertHistory(alertId){
 	$("#alertManagementPopupBody1").html(spinner)
 	$.ajax({
 		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
-		//url: "http://192.168.11.172:8447/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://localhost:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
 	}).then(function(result){
 		if(result != null && result.length> 0)
 		{
@@ -1691,7 +1691,7 @@ function getStatusCompletionInfo(alertId){
 	$("#statusDtlsDiv").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
 	}).then(function(result){
 		$("#updateStatusChangeBody").html('');
 		$("#statusDtlsDiv").html('');
@@ -1995,7 +1995,7 @@ function getCommentsForAlert(alertId){
 	$("#alertGeneralComments").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://localhost:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
 	}).then(function(result){
 		
 		if(result != null && result.length > 0)
@@ -2144,7 +2144,7 @@ function getAlertData(alertId){
 	$("#alertDetails").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getAlertData/"+alertId
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getAlertData/"+alertId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getAlertData/"+alertId
 	}).then(function(result){
 		$("#alertDetails").html('');
 		
@@ -2172,7 +2172,7 @@ function getGroupedArticlesInfo(articleId)
 	$.ajax({
 		  type : 'GET',      
 		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-		  //url: "http://192.168.11.146:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
 		//$("#alertDetails").append(str);
 	});
@@ -2343,7 +2343,7 @@ function getAlertCategoryByAlert(alertId){
 	$("#alertCategory").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getAlertCategoryByAlert/"+alertId
-		//url: "http://192.168.11.173:8085/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
 	}).then(function(result){
 		if(result != null)
 		{
@@ -2370,7 +2370,7 @@ function getSubTaskInfoForAlert(alertId){
 	$("#alertSubtask").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getSubTaskInfoForAlert/"+alertId
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
 	}).then(function(result){
 		$("#alertSubtask").html('');
 		if(result != null && result.length > 0)
@@ -2494,7 +2494,7 @@ function getDepartmentsByAlert(alertId){
 	
 	$.ajax({
 		url: wurl+"/WebService/getDepartmentsByAlert/"+alertId
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
 	}).then(function(result){
 		var str='';
 		str+='<p class="m_top20">';
@@ -2512,7 +2512,7 @@ function getAssignedOfficersDetails(alertId){
 	
 	$.ajax({
 		url: wurl+"/WebService/getAssignedOfficersDetails/"+alertId
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
 	}).then(function(result){
 		if(result != null && result.length > 0)
 		{
@@ -2953,7 +2953,7 @@ function getJalavaniFeedBackDetailsInfo(){
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
 		
-		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavaniFeedBackDetailsInfo(result);
@@ -2969,24 +2969,29 @@ function buildJalavaniFeedBackDetailsInfo(result){
 				str+='<div class="col-sm-4">';
 					str+='<div class="bg_yash_border">';
 						str+='<h5 class="font_weight" style="color:#0FBE08;">COMPLETLY SATISIFIED</h5>';
-						str+='<h4 class="m_top10"><span class="" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].satisfiedCount+'">'+result[0].satisfiedCount+'</span><small style="color:#0FBE08"> '+result[0].satisfiedPerc+'%</small></h4>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="bg_yash_border">';
-						str+='<h5  class="font_weight" style="color:#FF0909;">NOT SATISIFIED</h5>';
-						str+='<h4 class="m_top10"><span class="" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].notSatisfiedCount+'">'+result[0].notSatisfiedCount+'</span><small style="color:#FF0909"> '+result[0].notSatisfiedPerc+'%</small></h4>';
+						str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].satisfiedCount+'" style="cursor:pointer;">'+result[0].satisfiedCount+'</span><small style="color:#0FBE08;"> ('+result[0].satisfiedPerc+'%)</small></h4>';
 					str+='</div>';
 				str+='</div>';
 				str+='<div class="col-sm-4">';
 					str+='<div class="bg_yash_border">';
 						str+='<h5 class="font_weight" style="color:#ec7b02;">PARTIALLY SATISIFIED</h5>';
-						str+='<h4 class="m_top10"><span class="" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].partiallySatisfiedCount+'">'+result[0].partiallySatisfiedCount+'</span><small style="color:#ec7b02"> '+result[0].partiallySatsifyPerc+'%</small></h4>';
+						str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].partiallySatisfiedCount+'" style="cursor:pointer;">'+result[0].partiallySatisfiedCount+'</span><small style="color:#ec7b02;">( '+result[0].partiallySatsifyPerc+'%)</small></h4>';
 					str+='</div>';
 				str+='</div>';
-				
+				str+='<div class="col-sm-4">';
+					str+='<div class="bg_yash_border">';
+						str+='<h5  class="font_weight" style="color:#FF0909;">NOT SATISIFIED</h5>';
+						str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].notSatisfiedCount+'" style="cursor:pointer;">'+result[0].notSatisfiedCount+'</span><small style="color:#FF0909;">( '+result[0].notSatisfiedPerc+'%)</small></h4>';
+					str+='</div>';
+				str+='</div>';
 			str+='</div>';
 		
+		str+='<div class="row">';
+			str+='<div class="col-sm-12 m_top10">';
+				str+='<button type="button" class="btn btn-success btn-sm timeSeriesWiseSummaryCls pull-right">Time Series Wise Summary</button>';
+			str+='</div>';
+		str+='</div>';
+			
 		str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10">';
 			str+='<div class="table-responsive">';
@@ -2995,8 +3000,20 @@ function buildJalavaniFeedBackDetailsInfo(result){
 						str+='<tr>';
 						str+='<th>LOCATION</th>';
 						for(var i in result[0].feedbackStatusList){
-							str+='<th>'+result[0].feedbackStatusList[i].name+'</th>';
-							str+='<th>Perc(%)</th>';
+							if(result[0].feedbackStatusList[i].id==1){
+								str+='<th style="background-color:#6dd18b">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#6dd18b">Perc(%)</th>';
+								
+							}else if(result[0].feedbackStatusList[i].id==2){
+								str+='<th style="background-color:#f35555">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#f35555">Perc(%)</th>';
+							
+							}else if(result[0].feedbackStatusList[i].id==3){
+								str+='<th style="background-color:#e59866">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#e59866">Perc(%)</th>';
+							
+							}
+							
 						}
 						str+='</tr>';
 					str+='</thead>';
@@ -3008,13 +3025,21 @@ function buildJalavaniFeedBackDetailsInfo(result){
 								
 								str+='<td  style="text-align:left !important;">'+result[i].name+'</td>';
 								for(var j in result[i].feedbackStatusList){
-									str+='<td class="" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'">'+result[i].feedbackStatusList[j].count+'</td>';
 									if(result[i].feedbackStatusList[j].id==1){
-										str+='<td style="color:#0FBE08">'+result[i].feedbackStatusList[j].satisfiedPerc+'</td>';
+										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#6dd18b">'+result[i].feedbackStatusList[j].count+'</td>';
 									}else if(result[i].feedbackStatusList[j].id==2){
-										str+='<td style="color:#FF0909">'+result[i].feedbackStatusList[j].notSatisfiedPerc+'</td>';
+										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#f35555" >'+result[i].feedbackStatusList[j].count+'</td>';
 									}else if(result[i].feedbackStatusList[j].id==3){
-										str+='<td style="color:#ec7b02">'+result[i].feedbackStatusList[j].partiallySatsifyPerc+'</td>';
+										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#e59866">'+result[i].feedbackStatusList[j].count+'</td>';
+									}
+									
+									
+									if(result[i].feedbackStatusList[j].id==1){
+										str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].satisfiedPerc+'</td>';
+									}else if(result[i].feedbackStatusList[j].id==2){
+										str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].notSatisfiedPerc+'</td>';
+									}else if(result[i].feedbackStatusList[j].id==3){
+										str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].partiallySatsifyPerc+'</td>';
 									}
 									
 									
@@ -3030,9 +3055,145 @@ function buildJalavaniFeedBackDetailsInfo(result){
 	$("#dataTabledefaulters").dataTable({
 		"paging":   false,
 		"info":     false,
-		"searching": true,
+		"searching":false,
 		"autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 	});
+}
+$(document).on("click",".feedbackStatusCls",function(){
+	var locationId = $(this).attr("attr_location_district_id");
+	var feedaBackstatusId = $(this).attr("attr_statusid");
+	var statusName = $(this).attr("attr_statusName");
+	var alertCount = $(this).attr("attr_alertCount");
 	
+	$("#alertManagementPopupBody").html('')
+	
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	$("#alertManagementPopupBody").html(spinner);
+	getJalavaniFeedBackNotSatisifiedAlertsInfo(feedaBackstatusId,locationId,statusName,alertCount);
+});
+
+function getJalavaniFeedBackNotSatisifiedAlertsInfo(feedBackStatusId,districtId,statusName,alertCount){
+ 
+	$.ajax({
+		url: wurl+"/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
+	}).then(function(result){
+		 if(result != null && result.length > 0){
+			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
+		}else{
+			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+		}
+	});	
+}
+
+function getJalavaniStatusWiseSummaryGraphDetailsInfo(){
+	$('#timeSeriesWisGraphDivId').html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/getJalavaniStatusWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavaniStatusWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+		 if(result != null && result.length > 0){
+			buildJalavaniStatusWiseSummaryGraphDetailsInfo(result);
+		}else{
+			$("#timeSeriesWisGraphDivId").html('NO DATA AVAILABLE')
+		}
+	});	
+}
+$(document).on("click",".timeSeriesWiseSummaryCls",function(){
+	$("#timeSeriesWiseModalId").modal("show");
+	getJalavaniStatusWiseSummaryGraphDetailsInfo();
+});
+
+function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result){
+	var categoryDateArr=[];
+	var compleSatisfyArr=[];
+	var partiallySatisfyArr=[];
+	var notSatisfyArr=[];
+	if(result !=null && result.length>0){
+		for(var i in result){
+			if(result[i].count !=null && result[i].count>0){
+				categoryDateArr.push(result[i].date);
+				if(result[i].feedbackStatusList !=null && result[i].feedbackStatusList.length>0){
+					for(var j in result[i].feedbackStatusList){
+						if(result[i].feedbackStatusList[j].id==1){
+							compleSatisfyArr.push({y:result[i].feedbackStatusList[j].count,"extra":result[i].feedbackStatusList[j].satisfiedPerc})
+						}else if(result[i].feedbackStatusList[j].id==2){
+							notSatisfyArr.push({y:result[i].feedbackStatusList[j].count,"extra":result[i].feedbackStatusList[j].notSatisfiedPerc})
+						}else if(result[i].feedbackStatusList[j].id==3){
+							partiallySatisfyArr.push({y:result[i].feedbackStatusList[j].count,"extra":result[i].feedbackStatusList[j].partiallySatsifyPerc})
+						}
+						
+						
+					}
+				}
+			}
+				
+		}
+	}
+	
+	$('#timeSeriesWisGraphDivId').highcharts({
+		chart: {
+			type: 'spline'
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories:categoryDateArr
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: ''
+			},
+			labels: {
+				formatter: function () {
+					return this.value + '';
+				}
+			}
+		},
+		tooltip: {
+			formatter: function () {
+			var s = '<b>' + this.x + '</b>';
+
+				$.each(this.points, function () {
+					if(this.series.name != "Series 1")  
+					s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+					this.y+" - "+(this.point.extra)+"%";
+				});
+
+				return s;
+			},
+			shared: true
+		},
+		plotOptions: {
+			
+		},
+		series: [{
+			name: 'COMPLETLY SATISIFIED',
+			data: compleSatisfyArr,
+			color:'#6dd18b'
+		}, {
+			name: 'PARTIALLY SATISIFIED',
+			data: partiallySatisfyArr,
+			color:'#e59866'
+		}, {
+			name: 'NOT SATISIFIED',
+			data: notSatisfyArr,
+			color:'#f35555'
+		}]
+	});
 }
