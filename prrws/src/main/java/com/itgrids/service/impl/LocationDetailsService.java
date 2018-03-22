@@ -961,10 +961,10 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 					if(locationVO == null){
 						locationVO = new PmOfficerVO();
 						locationVO.setLocationId(commonMethodsUtilService.getLongValueForObject(param[3]));
-						locationVO.setLocationName(commonMethodsUtilService.getStringValueForObject(param[4]));
+						locationVO.setLocationName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getCapitalStringValueForObject(param[4])));
 						if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("constituency")){
 							locationVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
-							locationVO.setName(commonMethodsUtilService.getStringValueForObject(param[6]));
+							locationVO.setName(commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getCapitalStringValueForObject(param[6])));
 						}
 						locationMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), locationVO);
 					}

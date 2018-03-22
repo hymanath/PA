@@ -1334,7 +1334,9 @@ var json = {
 		
 	});	
 }
-
+$(document).on("change","#statusLocId",function(){
+	getSubjectsBySearchType("subject","subjectId",0,0);
+});
 function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,divId){
 	var str='';
 	var selStatusId = $("#statusLocId").val();
@@ -1408,7 +1410,11 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 						}
 						if(result[i].petitionIds !=null && result[i].petitionIds.length>0 && result[i].withOutCostPetitionIds !=null){
 							var withCostRep = result[i].petitionIds.length-result[i].withOutCostPetitionIds.length;
-							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+withCostRep+'</a></td>';
+							if(withCostRep >0){
+								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+withCostRep+'</a></td>';
+							}else{
+								str+='<td> - </td>';
+							}
 						}else{
 							str+='<td> - </td>';
 						}
@@ -1507,6 +1513,7 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 }
 
 function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
+	$("#"+selBoxId).empty();
 	var selStatusId = $("#statusLocId").val();
 	//alert(statusId)
 	var statusIds = [];
@@ -1554,7 +1561,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		 $("#"+selBoxId).empty();
+		 //$("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0' selected>All Subjects</option>");
 			for(var i in result){
