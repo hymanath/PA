@@ -19,12 +19,12 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 	}
 	
 	@Override
-	public String getRfidTrackingOverAllTargetsData(Date fromDate) {		
+	public String getRfidTrackingOverAllTargetsData(Long id) {		
 		Query query = getSession().createQuery("select model.responceData from WebServiceData model where  "
-					+ " model.webServiceDataId in (select max(model1.webServiceDataId) from WebServiceData  model1 where date(model1.insertedTime) =:fromDate and model1.webserviceId=127) ");
+					+ " model.webServiceDataId in (:id)");
 			
-		if(fromDate != null){
-		query.setParameter("fromDate", fromDate);
+		if(id != null ){
+		query.setParameter("id", id);
 		}
 			//query.setParameter("webserviceId", webserviceId);
 			return (String)query.uniqueResult();
@@ -69,5 +69,20 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 				" ORDER BY CNT DESC ");
 		
 		return query.list();
+	}
+
+	@Override
+	public Long getMaxidforRFIDService(Date fromDate) {
+		StringBuilder sb = new StringBuilder();
+		sb.append("select max(model1.webServiceDataId) from WebServiceData  model1 where model1.webserviceId=127 ");
+		if(fromDate != null ){
+			sb.append(" and date(model1.insertedTime) =:fromDate ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(fromDate != null ){
+			query.setParameter("fromDate", fromDate);
+			}
+		return (Long) query.uniqueResult();
 	}
 }
