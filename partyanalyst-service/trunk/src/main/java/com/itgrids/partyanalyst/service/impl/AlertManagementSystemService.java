@@ -17289,8 +17289,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				startDate = sdf.parse(startDateStr);
 				endDate = sdf.parse(endDateStr);
 			}
-			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getFeedBackStatus();
-				
+			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getjalavaniFeedBackStatus();
 				
 			//distId-0,distName-1,feedbackid-2,status-3,count-4
 			List<Object[]> feedBackIdsList = alertDAO.getjalavaniFeedbackSurveyDeatails(startDate,endDate);
@@ -17399,4 +17398,113 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return voList;
 	}
+	public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr){
+		List<BasicVO> finalVOList = new ArrayList<BasicVO>(0);
+		try {
+			Date startDate = null;Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDateStr != null && endDateStr != null){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr );
+			}
+			List<Object[]> dateAndMonthObjList =null;
+			String dayWise="dayWise";
+			String monthWise="monthWise";
+			
+			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getjalavaniFeedBackStatus();
+			
+			List<String> datesList = dateUtilService.getDaysBetweenDatesStringFormat(startDate, endDate);
+			if(datesList !=null && datesList.size() <= 31l){
+				for (String string : datesList) {
+					BasicVO vo = new BasicVO();
+						vo.setDate(string);
+						vo.setFeedbackStatusList(setFeedBackStatusTemplate(feedbackStatusList));
+					finalVOList.add(vo);
+				}
+				dateAndMonthObjList = alertDAO.getJalavaniStatusWiseSummaryGraphDetailsInfo(startDate, endDate,dayWise);
+				setFeedBackStatusGraphdata(finalVOList,dateAndMonthObjList,dayWise);
+			}else{
+				 
+				dateAndMonthObjList = alertDAO.getJalavaniStatusWiseSummaryGraphDetailsInfo(startDate, endDate,monthWise);
+				setFeedBackStatusGraphdata(finalVOList,dateAndMonthObjList,monthWise);
+			}
+			
+			if(finalVOList !=null && finalVOList.size() >0){
+				for (BasicVO vo :finalVOList){
+					if(vo.getFeedbackStatusList() != null && vo.getFeedbackStatusList().size() >0){
+						Long statusTotalCount=0l;
+						for (BasicVO statusVo : vo.getFeedbackStatusList()) {
+							statusTotalCount = statusTotalCount+statusVo.getCount();
+						}
+						if(statusTotalCount>0l){
+							vo.setCount(statusTotalCount);
+							for (BasicVO statusVo : vo.getFeedbackStatusList()) {
+								if(statusVo.getId()==1l){
+									statusVo.setSatisfiedPerc(caclPercantage(statusVo.getCount(),statusTotalCount));
+								}else if(statusVo.getId()==2l){
+									statusVo.setNotSatisfiedPerc(caclPercantage(statusVo.getCount(),statusTotalCount));
+								}else if(statusVo.getId()==3l){
+									statusVo.setPartiallySatsifyPerc(caclPercantage(statusVo.getCount(),statusTotalCount));
+								}
+							}
+						}
+					}
+				}
+			}
+		}catch (Exception e){
+			LOG.error("Error occured getJalavaniStatusWiseSummaryGraphDetailsInfo() method of AlertManagementSystemService",e);
+		}
+		return finalVOList;
+	}
+	public BasicVO getmatchedFeedbackStatusMonthVo(List<BasicVO> finalVOList,String date){
+		if(finalVOList != null && finalVOList.size() > 0){
+			for (BasicVO vo : finalVOList) {
+				if(vo.getDate() != null && vo.getDate().equalsIgnoreCase(date)){
+					return vo;
+				}
+			}
+		}
+		return null;
+	}
+	public void setFeedBackStatusGraphdata(List<BasicVO> finalVoList,List<Object[]> monthObjList,String type){
+		
+		if(type !=null && type.equalsIgnoreCase("dayWise")){
+			//feedbackstatusId-0,status-1,count-2,date-3
+			if(monthObjList != null && monthObjList.size() > 0){
+				for (Object[] obj : monthObjList) {
+					BasicVO matchedVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[3].toString());
+					if(matchedVO != null){
+						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedVO.getFeedbackStatusList(),(Long)obj[0]);
+						if(matchedStatusVO != null){
+							matchedStatusVO.setCount((Long)obj[2]);
+						}
+					}
+				}
+			}
+		}else if(type !=null && type.equalsIgnoreCase("monthWise")){
+			//feedbackstatusId-0,status-1,count-2,Month-3,year-4
+			if(monthObjList != null && monthObjList.size() > 0){
+				List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getjalavaniFeedBackStatus();
+				for (Object[] obj : monthObjList){
+					BasicVO matchedMonthVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[3].toString()+"-"+obj[4].toString());
+					if(matchedMonthVO == null){
+						matchedMonthVO = new BasicVO();
+						matchedMonthVO.setDate(obj[3].toString()+"-"+obj[4].toString());
+						matchedMonthVO.setFeedbackStatusList(setFeedBackStatusTemplate(feedbackStatusList));
+						
+						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedMonthVO.getFeedbackStatusList(),(Long)obj[0]);
+							if(matchedStatusVO != null){
+								matchedStatusVO.setCount((Long)obj[2]);
+							}
+							finalVoList.add(matchedMonthVO);
+					}else{
+						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedMonthVO.getFeedbackStatusList(),(Long)obj[0]);
+						if(matchedStatusVO != null){
+							matchedStatusVO.setCount((Long)obj[2]);
+						}
+					}
+				}
+			}
+		}
+ }
 }
