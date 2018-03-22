@@ -11,9 +11,11 @@ public interface IWebServiceDataDAO extends GenericDao<WebServiceData, Long>{
 
 	public Long getLatestDataId();
 	
-	public String getRfidTrackingOverAllTargetsData(Date fromDate);
+	public String getRfidTrackingOverAllTargetsData(Long Id);
 	
 	public List<Object[]> getWebserviceResponseData(Long webserviceId,String input);
 	
 	public List<Object[]> getWebserviceDataDetails();
+
+	public Long getMaxidforRFIDService(Date fromDate);
 }
