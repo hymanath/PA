@@ -33,7 +33,8 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	private Long updatedBy;
 	private Date updatedTime;
 	private String isDeleted;
-	
+	private Long nominationPostCandidateId;
+	private Long nominatedPostApplicationId;
 	private NominatedPost nominatedPost;
 	private GovtOrder govtOrder;
 	private String  isExpired;
@@ -41,6 +42,8 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	private String deletedRemarks;
 	private Long cadreDeletedReasonId;
 	private CadreDeleteReason cadreDeleteReason;
+	private NominationPostCandidate nominationPostCandidate;
+	private NominatedPostApplication nominatedPostApplication;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -161,5 +164,47 @@ public class NominatedPostGovtOrder extends BaseModel implements Serializable{
 	public void setCadreDeleteReason(CadreDeleteReason cadreDeleteReason) {
 		this.cadreDeleteReason = cadreDeleteReason;
 	}
+	
+	@Column(name="nomination_post_candidate_id")
+	public Long getNominationPostCandidateId() {
+		return nominationPostCandidateId;
+	}
+	public void setNominationPostCandidateId(Long nominationPostCandidateId) {
+		this.nominationPostCandidateId = nominationPostCandidateId;
+	}
+	
+	@Column(name="nominated_post_application_id")
+	public Long getNominatedPostApplicationId() {
+		return nominatedPostApplicationId;
+	}
+	public void setNominatedPostApplicationId(Long nominatedPostApplicationId) {
+		this.nominatedPostApplicationId = nominatedPostApplicationId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="nomination_post_candidate_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NominationPostCandidate getNominationPostCandidate() {
+		return nominationPostCandidate;
+	}
+	public void setNominationPostCandidate(
+			NominationPostCandidate nominationPostCandidate) {
+		this.nominationPostCandidate = nominationPostCandidate;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+	@JoinColumn(name="nominated_post_application_id", insertable=false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action=NotFoundAction.IGNORE)
+	public NominatedPostApplication getNominatedPostApplication() {
+		return nominatedPostApplication;
+	}
+	public void setNominatedPostApplication(
+			NominatedPostApplication nominatedPostApplication) {
+		this.nominatedPostApplication = nominatedPostApplication;
+	}
+	
+	
 	
 }
