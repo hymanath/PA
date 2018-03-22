@@ -3928,4 +3928,13 @@ public class WebServiceHandler {
     		@PathParam("districtId") Long districtId){
 		return  webServiceHandlerService.getJalavaniFeedBackNotSatisifiedAlertsInfo(startDateStr,endDateStr,feedBackStatusId,districtId);
     }
+	@GET
+    @Path("/getJalavaniStatusWiseSummaryGraphDetailsInfo/{startDateStr}/{endDateStr}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(
+    		@PathParam("startDateStr") String startDateStr,
+    		@PathParam("endDateStr") String endDateStr){
+		return  webServiceHandlerService.getJalavaniStatusWiseSummaryGraphDetailsInfo(startDateStr,endDateStr);
+    }
 }
