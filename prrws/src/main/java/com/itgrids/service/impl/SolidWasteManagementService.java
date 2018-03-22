@@ -628,7 +628,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 					});
 				}
-				for (SolidWasteManagementVO solidWasteManagementVO : finalList) {
+			/*	for (SolidWasteManagementVO solidWasteManagementVO : finalList) {
 					Collections.sort(finalList, new Comparator<SolidWasteManagementVO>() {
 						public int compare(SolidWasteManagementVO o1, SolidWasteManagementVO o2) {
 							return o1.getLocationName().compareTo(o2.getLocationName());
@@ -636,7 +636,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 						}
 
 					});
-				}
+				}*/
 
 			}
 
