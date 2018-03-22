@@ -842,9 +842,9 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 			}
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
-		if(constId >0){
+		 if(distId >0){
 			getConstituenciesBySearchTypeAndDistrict('work',[distId],'constituencyCanId');
-		}
+		} 
 		if(distId >0 && constId==0){
 			getRepresentativeSearchDetails1("petition",0);
 		} 
@@ -1269,9 +1269,10 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
    getPetitionDetails(petionId,endorsNo);
  }); */
 function getRepresentativeSearchDetails1(value,globalStIndex){
-	$("#representationRequestEntryTable").html(spinner);
+	
 	$("#petitionSubWorkRadioDivId").hide();
 	$("#errMsgId").html("");
+	$("#subJErrMsg").html('');
 	$("#summaryId").html("");
 	if(globalStIndex == 0)
 		$(".paginationId").html("");
@@ -1441,6 +1442,7 @@ var briefLeadId = $("#selectLeadId").val();
 	if(briefLeadId != null && briefLeadId.length >0){
 		briefLeadIdsArr=briefLeadId;
 	}
+	$("#representationRequestEntryTable").html(spinner);
 var json = {
     filterType :filterType,//mobileno/department/name/email
     filterValue:filterValue,
@@ -2535,6 +2537,7 @@ function checkIsNumber(id,value){
 }
 function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 	var selStatusId = $("#statusId").val();
+	$("#errMsgId").html("");
 	//alert(statusId)
 	var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
@@ -2581,6 +2584,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#subJErrMsg").html('');
 		 $("#"+selBoxId).empty();
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0'>Select Department</option>");
