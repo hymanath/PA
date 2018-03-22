@@ -314,7 +314,11 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			model.setIsDeleted("N");
 			model.setDataDate(dateUtilService.getCurrentDateAndTime());
 			model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-			WebServiceData rfidData = webServiceDataDAO.save(model);
+		
+			WebServiceData rfidData =null;
+			if(jsonList!=null && jsonList.length()>3 && !jsonList.isEmpty()){
+				rfidData = webServiceDataDAO.save(model);
+			}
 			// WebServiceData data = webServiceDataDAO.get(webserviceId);
 			// data.setIsDeleted("Y");
 			// webServiceDataDAO.save(data);
@@ -345,10 +349,6 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
 			} else {
 				output = response.getEntity(String.class);
-				if (output != null && !output.isEmpty()) {
-					// JSONArray finalArray = new JSONArray(output);
-					// return finalArray.toString();
-				}
 			}
 		} catch (Exception e) {
 			LOG.error("Exception occured at getRfidTrackingOverAllTargetsData() in  SolidWasteManagementService class",
@@ -371,8 +371,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			Map<Long, SolidWasteManagementVO> locationMap = new HashMap<Long, SolidWasteManagementVO>();
 			// Set<Long> gpIds = new HashSet<Long>();
 			Set<SolidWasteManagementVO> blockSet = new HashSet<SolidWasteManagementVO>();
-
-			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(fromDate);
+			Long webserviceId = webServiceDataDAO.getMaxidforRFIDService(fromDate);
+			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
 			if (rfidList != null && rfidList.length() > 0) {
 				String jsonData = rfidList;
 				if (jsonData != null && !jsonData.isEmpty()) {
@@ -510,7 +510,11 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			}
 			Map<Long, List<SolidWasteManagementVO>> gpMap = new HashMap<Long, List<SolidWasteManagementVO>>();
 			Map<Long, SolidWasteManagementVO> locationMap = new HashMap<Long, SolidWasteManagementVO>();
-			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(fromDate);
+			Long webserviceId = webServiceDataDAO.getMaxidforRFIDService(fromDate);
+			if(webserviceId ==null || webserviceId.longValue() ==0){
+				webServiceDataDAO.getMaxidforRFIDService(null);
+			}
+			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
 			if (rfidList != null && rfidList.length() > 0) {
 				if (rfidList != null && rfidList.length() > 0) {
 					String jsonData = rfidList;
