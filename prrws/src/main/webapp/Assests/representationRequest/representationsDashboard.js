@@ -1363,8 +1363,11 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 				}
 				str+='<th>TOTAL&nbsp;REPRESENTATIONS</th>';
 				str+='<th>TOTAL&nbsp;WORKS</th>';
+				str+='<th>WITH&nbsp;COST&nbsp;REPRESENTATIONS</th>';
+				str+='<th>WITH&nbsp;COST&nbsp;WORKS</th>';
 				str+='<th>ESTIMATED&nbsp;COST</th>';
 				str+='<th>WITHOUT&nbsp;COST&nbsp;REPRESENTATIONS</th>';
+				str+='<th>WITHOUT&nbsp;COST&nbsp;WORKS</th>';
 				
 				if(locationtype == "district"){
 					;
@@ -1397,7 +1400,19 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 							str+='<td> - </td>';
 						}
 						
-						if(result[i].subWorkIds.length !=null && result[i].subWorkIds.length>0){
+						if(result[i].withOutCostSubWorkIds !=null && result[i].subWorkIds !=null){
+							var totalWorks =result[i].subWorkIds.length+result[i].withOutCostSubWorkIds.length; 
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+totalWorks+'</a></td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						if(result[i].petitionIds !=null && result[i].petitionIds.length>0 && result[i].withOutCostPetitionIds !=null){
+							var withCostRep = result[i].petitionIds.length-result[i].withOutCostPetitionIds.length;
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+withCostRep+'</a></td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						if(result[i].subWorkIds !=null && result[i].subWorkIds.length>0){
 							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].subWorkIds.length+'</a></td>';
 						}else{
 							str+='<td> - </td>';
@@ -1410,8 +1425,14 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 								str+='<td><b>-</b></td>';
 						}
 						//str+='<td>'+result[i].estimationCost+'</td>';
-						if(result[i].withOutCostPetitionIds.length !=null && result[i].withOutCostPetitionIds.length>0){
+						if(result[i].withOutCostPetitionIds !=null && result[i].withOutCostPetitionIds.length>0){
 							str+='<td>'+result[i].withOutCostPetitionIds.length+'</td>';
+						}else{
+							str+='<td> - </td>';
+						}
+						
+						if(result[i].withOutCostSubWorkIds !=null && result[i].withOutCostSubWorkIds.length>0){
+							str+='<td>'+result[i].withOutCostSubWorkIds.length+'</td>';
 						}else{
 							str+='<td> - </td>';
 						}
