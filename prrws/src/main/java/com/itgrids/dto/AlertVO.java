@@ -13,7 +13,7 @@ public class AlertVO implements java.io.Serializable{
 	private String candidateId;
 	private String color;
 	
-	private Long id,monthId;
+	private Long id,monthId,feedBackId;
 	private String name,monthName,monthType;
 	private Long statusId;
 	private String status;
@@ -50,6 +50,12 @@ public class AlertVO implements java.io.Serializable{
 	private List<AlertVO> list = new ArrayList<AlertVO>(0);
 	
 	
+	public Long getFeedBackId() {
+		return feedBackId;
+	}
+	public void setFeedBackId(Long feedBackId) {
+		this.feedBackId = feedBackId;
+	}
 	public Double getStatusPerc() {
 		return statusPerc;
 	}
