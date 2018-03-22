@@ -843,7 +843,7 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 		}
 		$("#"+selBoxId).trigger('chosen:updated');
 		if(constId >0){
-			getConstituenciesBySearchTypeAndDistrict('work',distId,'constituencyCanId');
+			getConstituenciesBySearchTypeAndDistrict('work',[distId],'constituencyCanId');
 		}
 		if(distId >0 && constId==0){
 			getRepresentativeSearchDetails1("petition",0);
@@ -895,7 +895,7 @@ statusIds.push(statusList[i]);
 }
  var json = {
 		 filterType :searchType,
-		 searchLvlVals: [distictId],
+		 searchLvlVals: distictId,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 deptIdsList:deptIds,
