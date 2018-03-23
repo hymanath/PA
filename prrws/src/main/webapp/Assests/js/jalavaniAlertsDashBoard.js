@@ -2299,8 +2299,8 @@ function buildAlertDataNew(result)
 								for(var k in result[i].rejinderDocList[j].subList1)
 								{
 									 var nameArr = result[i].rejinderDocList[j].subList1[k].name.split('/');
-									 var name = nameArr[3];
-									str2+='<p><i class="fa fa-file-o" aria-hidden="true"></i>&nbsp;&nbsp;<a href="http://www.mytdp.com/images/"'+result[i].rejinderDocList[j].subList1[k].name+' style="cursor:pointer;">'+name+'</a>&nbsp;&nbsp;(<i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;'+result[i].rejinderDocList[j].subList1[k].date1+')</p>';
+									 var name1 = nameArr[3];
+									str2+='<p><i class="fa fa-file-o" aria-hidden="true"></i>&nbsp;&nbsp;<a href="http://www.mytdp.com/images/'+result[i].rejinderDocList[j].subList1[k].name+'" style="cursor:pointer;">'+name1+'</a>&nbsp;&nbsp;(<i class="fa fa-calendar" aria-hidden="true"></i> &nbsp;'+result[i].rejinderDocList[j].subList1[k].date1+')</p>';
 								}
 								
 							str2+='</div>';
