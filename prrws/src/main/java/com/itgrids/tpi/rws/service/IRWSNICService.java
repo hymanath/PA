@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
+import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -68,4 +69,5 @@ public interface IRWSNICService {
 	public List<WorksVO> getSchemeWiseWorkDetails2(InputVO VO);
 	public List<IdNameVO> getNotGroundedWorkDetailsLocationWise(InputVO inputVO);
 	public List<IdNameVO> getOnClickNotGroundedWorkDetails(InputVO inputVO, String type);
+	public List<GrantVO> getRwsProgramsCodeAndName(InputVO inputVO);
 }

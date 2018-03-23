@@ -5,8 +5,6 @@ import java.util.List;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
-import org.hibernate.SessionFactory;
-import org.hibernate.type.StandardBasicTypes;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IRwsWorkDAO;
@@ -142,5 +140,12 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		}
 		return query.list();
 	}
+	
+	@Override
+	public List<Object[]> getRwsProgramsCodeAndName(){
+		 Query query = getSession().createQuery("select distinct model.programCode,model.programName from RwsWork model");
+		 return query.list();
+	}
+	
 
 }
