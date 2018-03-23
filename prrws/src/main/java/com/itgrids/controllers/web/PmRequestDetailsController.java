@@ -587,7 +587,11 @@ public class PmRequestDetailsController {
 				}
 				List<Long> deptIds = null;
 				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-				deptIds = deptVO.getDeptIdsList();
+				if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size() ==0){
+					deptIds = deptVO.getDeptIdsList();
+				}else{
+					deptIds = inputVO.getDeptIdsList();	
+				}
 				List<Long> deptDesigIds = null;
 				deptDesigIds= deptVO.getDepDesigIds();
 				Long offcrDesigid =deptVO.getDesignationId();

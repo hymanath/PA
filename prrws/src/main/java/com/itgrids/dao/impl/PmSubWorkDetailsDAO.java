@@ -692,12 +692,13 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			sb.append(" ,model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name ");
 			sb.append(" ,model.locationAddress.district.districtId,model.locationAddress.district.districtName ");
 		}
-		sb.append(" from PmSubWorkDetails as  model,PmRepresenteeRefDetails as model1  " +
+		sb.append(" from PmSubWorkDetails as  model" +
+				//",PmRepresenteeRefDetails as model1  " +
 				" where model.isDeleted='N' " +
 				" and model.petition.isDeleted='N'  ");
 		
-		sb.append("  and model1.pmRefCandidateDesignation.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N'" +
-				" and model1.petition.petitionId = model.petition.petitionId and  model1.isDeleted ='N' " );
+		//sb.append("  and model1.pmRefCandidateDesignation.isDeleted='N' and model1.pmRepresenteeDesignation.isDeleted='N'" +
+				//" and model1.petition.petitionId = model.petition.petitionId and  model1.isDeleted ='N' " );
 		if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 			sb.append(" and  model.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}

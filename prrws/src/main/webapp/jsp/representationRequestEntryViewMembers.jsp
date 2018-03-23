@@ -933,6 +933,9 @@ var wurl = windowUrl.substr(0,(windowUrl.indexOf("/representationRequestEntryVie
 	
 var allDeptIds = [];	
 function getDepartmntsDetails(){
+	$("#departmntId").html("");
+	$("#departmntId").empty();
+	$("#departmntId").trigger('chosen:updated');
 	var selStatusId = $("#statusId").val();
 	var statusIds = [];
 	if(selStatusId != null && selStatusId.length >0){
@@ -960,7 +963,7 @@ function getDepartmntsDetails(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#departmntId").empty();
+		//$("#departmntId").empty();
 		
 		var paraDepts =[];
 		if(deptId != 'null' && deptId.length > 0){
