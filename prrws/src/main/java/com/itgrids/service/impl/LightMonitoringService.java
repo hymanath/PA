@@ -96,12 +96,15 @@ public class LightMonitoringService  implements ILightMonitoring{
 			String URL = "http://greenlightt.monitormymeter.com/api/RestRealtimeAPI/GetRealtimeStatusByVillages";
 			String differenceVendorURL = "http://182.18.173.26:8080/apgovt/panchayatVillageData.php";
 			String differenceVendoranotherNewURL = "http://182.73.107.178:8081/slm/api/eastgodavari/";
+			String differenceVendorNewURL = "http://apservice.flowcentric.co.in:8080/pan_service/panchayatVillageData.php";
 			
 			resultData = getLightMonitoringDataInRequiredFormat("AP_GOVT",URL);
 			stausVO = saveLightsMonitoringData(resultData, 2l);
 			List<LightMonitoringVO> esslDataList = getLightMonitoringDataInRequiredFormat("AP_EESL",URL);
 			List<LightMonitoringVO> esslDiffVndrDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendorURL);
 			List<LightMonitoringVO> esslDiffVndrnewDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendoranotherNewURL);
+			List<LightMonitoringVO> esslNewDataList = getLightMonitoringDataInRequiredFormat("differenceVendor",differenceVendorNewURL);
+			
 			resultData.clear();
 			if (esslDataList != null) {
 				resultData.addAll(esslDataList);
@@ -112,6 +115,10 @@ public class LightMonitoringService  implements ILightMonitoring{
 			if (esslDiffVndrnewDataList != null) {
 				resultData.addAll(esslDiffVndrnewDataList);
 			}
+			if (esslNewDataList != null) {
+				resultData.addAll(esslNewDataList);
+			}
+			
 			stausVO = saveLightsMonitoringData(resultData, 1l);
 			
 		} catch (Exception e) {
