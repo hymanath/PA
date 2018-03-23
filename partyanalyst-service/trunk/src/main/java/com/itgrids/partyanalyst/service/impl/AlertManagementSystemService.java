@@ -16809,7 +16809,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			
 			JalavaniAlertResultVO praposalVO = new JalavaniAlertResultVO();
 			praposalVO.setStatusId(13l);
-			praposalVO.setStatus("Praposal");
+			praposalVO.setStatus("Proposal");
 			finishedVO.getVoList().add(praposalVO);
 			
 			JalavaniAlertResultVO rejoinderVO = new JalavaniAlertResultVO();
