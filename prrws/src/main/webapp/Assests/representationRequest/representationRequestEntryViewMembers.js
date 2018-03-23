@@ -3,9 +3,7 @@ var workIdsArr=[];
 var selectedWorkIdsArr=[];
 var selectedDeptIdsArr=[];
 var colorCode=["","#FF5733","","#01B0B6","#0701B6","#C70039","#B6B001","#B6B001","#17B601"];
-var currentFromDate=moment().subtract(7, 'year').format("DD-MM-YYYY");
-//var currentFromDate=moment().format("DD-MM-YYYY");
-var currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
+
 //getting Dynamic Browser URL
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/cadreDetailsAction")));
@@ -66,32 +64,7 @@ function hideAndShowSelectBox(){
 	$("#referralNameDiv").hide();
 	//$("#petitionId").prop("checked",false);
 }
-$("#dateRangePicker").daterangepicker({
-		opens: 'left',
-		startDate: currentFromDate,
-		endDate: currentToDate,
-		locale: {
-		  format: 'DD-MM-YYYY'
-		},
-		ranges: {
-		   'All':[moment().subtract(7,"year").format("DD-MM-YYYY"), moment().add(38,"year").format("DD-MM-YYYY")],
-		   'Today' : [moment(), moment()],
-		   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-		   'This Month': [moment().startOf('month'), moment()],
-		   'This Year': [moment().startOf('Year'), moment()],
-		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
-		   
-		}
-	});
-	
-	var dates= $("#dateRangePicker").val();
-	var pickerDates = currentFromDate+' - '+currentToDate
-	if(dates == pickerDates)
-	{
-		$("#dateRangePicker").val('All');
-	}
+
 
 	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
