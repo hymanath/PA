@@ -860,10 +860,15 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 			selectAllName: true,
 			allSelectedText: 'All Constituencies selected',
 			onChange: function() {
-				constituencies=$('#wordCloudConstituency').val();
+				for(var i in $('#wordCloudConstituency').val()){
+					constituencies=$('#wordCloudConstituency').val()[i].toUpperCase();
+				}
+				
 			},
 			onSelectAll: function() {
-				constituencies=$('#wordCloudConstituency').val();
+				for(var i in $('#wordCloudConstituency').val()){
+					constituencies=$('#wordCloudConstituency').val()[i].toUpperCase();
+				}
 	        }
 		});
 	}else if(levelTypeId == "wordCloudDepartmentNames"){
