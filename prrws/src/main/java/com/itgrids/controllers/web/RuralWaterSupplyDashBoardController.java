@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.AddressVO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
+import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
@@ -581,6 +582,16 @@ public class RuralWaterSupplyDashBoardController {
 			 return rWSNICService.getOnClickNotGroundedWorkDetails(inputVO,"");
 	  } catch (Exception e) {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
+	  }
+	 return null;
+	}
+	
+	@PostMapping("/getRwsProgramsCodeAndName")
+	public @ResponseBody List<GrantVO> getRwsProgramsCodeAndName(@RequestBody InputVO inputVO) {
+	  try {
+			 return rWSNICService.getRwsProgramsCodeAndName(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getRwsProgramsCodeAndName - getRwsProgramsCodeAndName controller", e);
 	  }
 	 return null;
 	}

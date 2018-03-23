@@ -35,6 +35,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -72,10 +73,12 @@ import com.itgrids.dao.impl.NregaComponentServiceDAO;
 import com.itgrids.dto.AmsVO;
 import com.itgrids.dto.BasicVO;
 import com.itgrids.dto.EmailAttributesVO;
+import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.KeyValueVO;
+import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregaLocationOverviewVO;
@@ -5032,5 +5035,29 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 		}
 		return finalList;
 	}
-
+	
+	/*
+	 * Author : Harika,
+	 * Description : getRwsProgramsCodeAndName,
+	 * Date : 23/03/2018
+	 */
+	
+	public List<GrantVO> getRwsProgramsCodeAndName(InputVO inputVO){
+		List<GrantVO> returnList = new  ArrayList<GrantVO>(0);
+		try{
+			List<Object[]> objList = rwsWorkDAO.getRwsProgramsCodeAndName();
+			if(objList != null && !objList.isEmpty()){
+				for (Object[] param : objList) {
+					GrantVO vo= new GrantVO();
+					vo.setProgramCode(Long.valueOf(param[0] != null ? param[0].toString():"0"));
+					vo.setProgramName(param[1] !=null ? param[1].toString():"");
+					
+					returnList.add(vo);
+					}
+				}
+			}catch (Exception e) {
+				LOG.error("Exception raised at setDataToList  in RWSNICService service", e);
+			}
+			return returnList;
+		}
  }
