@@ -292,10 +292,10 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 												</span>
 												<input type="text"  class="form-control" id="dateRangePicker"/>
 											</div>
-										</div>-->
+										</div>
 										<div class="col-sm-2 pull-right">	
 											<button type="button" class="btn btn-success getLocWiseDetailsCls form-control">Submit</button>
-										</div>
+										</div>-->
 									</div>
 								</div>
 								<div class="pad_5">

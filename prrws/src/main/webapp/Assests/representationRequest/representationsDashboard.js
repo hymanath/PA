@@ -1334,9 +1334,6 @@ var json = {
 		
 	});	
 }
-$(document).on("change","#statusLocId",function(){
-	getSubjectsBySearchType("subject","subjectId",0,0);
-});
 function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,divId){
 	var str='';
 	var selStatusId = $("#statusLocId").val();
@@ -1363,13 +1360,13 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 					str+='<th>DISTRICT</th>';
 					str+='<th>CONSTITUENCY</th>';
 				}
-				str+='<th>TOTAL&nbsp;REPRESENTATIONS</th>';
+				str+='<th>TOTAL&nbsp;REPR</th>';
 				str+='<th>TOTAL&nbsp;WORKS</th>';
-				str+='<th>WITH&nbsp;COST&nbsp;REPRESENTATIONS</th>';
-				str+='<th>WITH&nbsp;COST&nbsp;WORKS</th>';
-				str+='<th>ESTIMATED&nbsp;COST</th>';
-				str+='<th>WITHOUT&nbsp;COST&nbsp;REPRESENTATIONS</th>';
-				str+='<th>WITHOUT&nbsp;COST&nbsp;WORKS</th>';
+				str+='<th>WITH&nbsp;COST&nbsp;<br>REPR</th>';
+				str+='<th>WITH&nbsp;COST&nbsp;<br>WORKS</th>';
+				str+='<th>EST&nbsp;COST</th>';
+				str+='<th>WITHOUT&nbsp;<br>COST&nbsp;REPR</th>';
+				str+='<th>WITHOUT&nbsp;<br>COST&nbsp;WORKS</th>';
 				
 				if(locationtype == "district"){
 					;
@@ -1387,13 +1384,13 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 				for(var i in result){
 					str+='<tr>';
 						if(locationtype == "district"){
-							str+='<td>'+result[i].locationName+'</td>';
+							str+='<td class="text-capital">'+result[i].locationName+'</td>';
 							distId=result[i].locationId;
 						}else{
 							constId=result[i].locationId;
 							distId=result[i].id;
-							str+='<td>'+result[i].name+'</td>';
-							str+='<td> <a  title=" Click here to get '+result[i].locationName+' constituency page." href="'+wurl+'/constituencyWiseWorkStatus?distId='+distId+'&constId='+constId+'&deptId='+selDptId+'" target="_blank">'+result[i].locationName+'</a></td>';
+							str+='<td class="text-capital">'+result[i].name+'</td>';
+							str+='<td class="text-capital"> <a  title=" Click here to get '+result[i].locationName+' constituency page." href="'+wurl+'/constituencyWiseWorkStatus?distId='+distId+'&constId='+constId+'&deptId='+selDptId+'" target="_blank">'+result[i].locationName+'</a></td>';
 						}
 						
 						if(result[i].petitionIds.length !=null && result[i].petitionIds.length>0){
@@ -1513,7 +1510,9 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 }
 
 function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
+	$("#"+selBoxId).html("");
 	$("#"+selBoxId).empty();
+	$("#"+selBoxId).trigger('chosen:updated');
 	var selStatusId = $("#statusLocId").val();
 	//alert(statusId)
 	var statusIds = [];
@@ -1611,11 +1610,15 @@ function getStatusList(onLoadstatusId){
 		$("#statusLocId").trigger('chosen:updated');
   }); 
 }
-$(document).on("click",".getLocWiseDetailsCls",function(){
+$(document).on("change","#statusLocId",function(){
+	getSubjectsBySearchType("subject","subjectId",0,0);
 	getLocationWiseRepresentationsOverviewDetails("district","districtWiseLocationDetailsDivId");
 	getLocationWiseRepresentationsOverviewDetails("constituency","constituencyWiseLocationDetailsDivId");
 });
-
+$(document).on("change","#subjectId",function(){
+	getLocationWiseRepresentationsOverviewDetails("district","districtWiseLocationDetailsDivId");
+	getLocationWiseRepresentationsOverviewDetails("constituency","constituencyWiseLocationDetailsDivId");
+});
 $(document).on('click','.prntCls',function(){
 	
 	var locationId =$(this).attr('attr_id');
