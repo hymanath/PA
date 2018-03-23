@@ -7,6 +7,9 @@ var globallocationlevelIdType=1;
 var globallocationDistrictName='';
 var globallocationConsName='';
 var globallocationMandalName='';
+var globalDistrictId='';
+var globalConsId='';
+var globalMandalId='';
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
@@ -49,11 +52,91 @@ $("#dateRangePicker").daterangepicker({
 		onloadTaxCalls();
 	});
 onloadTaxCalls();
+function getLocationIdAndName(locationType,locationId,type){
+	
+	var json = {
+		locationType:locationType,
+		locationId : locationId
+	};
+	$.ajax({                
+		type:'POST',    
+		url: 'getLocationIdAndName',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildMenuLocationsDetails(result,locationType,type);
+		}else{
+			//$("#tableBuildDivId").html("No Data Available");
+		}
+	});
+}
+function buildMenuLocationsDetails(result,appendDivId,type){
+	for(var i in result){
+		if(appendDivId == "district" || appendDivId == "constituency" || appendDivId == "mandal"){
+			globallocationDistrictName = result[i].districtName;
+			globalDistrictId = result[i].districtId;
+		}
+		if(appendDivId == "constituency" || appendDivId == "mandal"){
+			globallocationConsName = result[i].constituencyName;
+			globalConsId = result[i].constituencyId;
+		}
+		if(appendDivId == "mandal"){
+			globallocationMandalName = result[i].tehsilName;
+			globalMandalId = result[i].tehsilId;
+		}
+	}
+	if(type != null && type !="build")
+		onloadTaxCalls();
+}	
+function getLocationIds(locationType,locationId){
+	
+	var json = {
+		locationType:locationType,
+		locationId : locationId
+	};
+	$.ajax({                
+		type:'POST',    
+		url: 'getLocationIdAndName',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildLocationIds(result,locationType);
+		}else{
+			//$("#tableBuildDivId").html("No Data Available");
+		}
+	});
+}
+function buildLocationIds(result,appendDivId){
+	for(var i in result){
+		if(appendDivId == "district" || appendDivId == "constituency" || appendDivId == "mandal"){
+			globallocationDistrictName = result[i].districtName;
+			globalDistrictId = result[i].districtId;
+		}
+		if(appendDivId == "constituency" || appendDivId == "mandal"){
+			globallocationConsName = result[i].constituencyName;
+			globalConsId = result[i].constituencyId;
+		}
+		if(appendDivId == "mandal"){
+			globallocationMandalName = result[i].constituencyName;
+			globalMandalId = result[i].constituencyId;
+		}
+	}
+}	
 function onloadTaxCalls(){
+	//alert(globallocationDistrictName)
 	getTaxesAndCategoryWiseOverViewDetails();
 	getTaxesIndicatorDetails();
 	getTaxesDefaultOverviewDetails();
-	
 		if(globallocationType == 2){
 			getAllSubLocationsTax(2,1,'',"district");
 		}else if(globallocationType == 3){
@@ -63,7 +146,7 @@ function onloadTaxCalls(){
 			$(".mandalCls").hide();
 			
 			$("#districtId").html('');
-			$("#districtId").append("<option value="+globallocationId+">"+globallocationDistrictName+" </option>");
+			$("#districtId").append("<option value="+globalDistrictId+">"+globallocationDistrictName+" </option>");
 			$("#districtId").trigger("chosen:updated");
 			//getAllSubLocationsTax(globallocationType,globallocationlevelIdType,"constituency","constituency");
 		}else if(globallocationType == 4){
@@ -73,31 +156,30 @@ function onloadTaxCalls(){
 			$(".mandalCls").hide();
 			
 			$("#districtId").html('');
-			$("#districtId").append("<option value="+globallocationId+">"+globallocationDistrictName+" </option>");
+			$("#districtId").append("<option value="+globalDistrictId+">"+globallocationDistrictName+" </option>");
 			$("#districtId").trigger("chosen:updated");
 			
 			$("#constituencyId").html('');
-			$("#constituencyId").append("<option value="+globallocationId+">"+globallocationConsName+" </option>");
+			$("#constituencyId").append("<option value="+globalConsId+">"+globallocationConsName+" </option>");
 			$("#constituencyId").trigger("chosen:updated");
 			
 			//getAllSubLocationsTax(globallocationType,globallocationlevelIdType,'',"mandal");
 		}else if(globallocationType == 5){
-			$(".locationLevelCls").val('assembly').trigger("chosen:updated");
-			
+			$(".locationLevelCls").val('mandal').trigger("chosen:updated");
 			$(".districtCls").show();
 			$(".constituencyCls").show();
 			$(".mandalCls").show();
 			
 			$("#districtId").html('');
-			$("#districtId").append("<option value="+globallocationId+">"+globallocationDistrictName+" </option>");
+			$("#districtId").append("<option value="+globalDistrictId+">"+globallocationDistrictName+" </option>");
 			$("#districtId").trigger("chosen:updated");
 			
 			$("#constituencyId").html('');
-			$("#constituencyId").append("<option value="+globallocationId+">"+globallocationConsName+" </option>");
+			$("#constituencyId").append("<option value="+globalConsId+">"+globallocationConsName+" </option>");
 			$("#constituencyId").trigger("chosen:updated");
 			
 			$("#mandalId").html('');
-			$("#mandalId").append("<option value="+globallocationId+">"+globallocationMandalName+" </option>");
+			$("#mandalId").append("<option value="+globalMandalId+">"+globallocationMandalName+" </option>");
 			$("#mandalId").trigger("chosen:updated");
 			
 			//getAllSubLocationsTax(globallocationType,globallocationlevelIdType,'',"mandal");
@@ -114,10 +196,6 @@ function onloadTaxCalls(){
 		}else if(globallocationType == 5){
 			getPanchyatTaxDashboardFilterWiseDetails(0,0,'','all','all','mandal',globallocationId,'','');
 		}
-		
-	
-	
-	
 }	
 
 function getTaxesAndCategoryWiseOverViewDetails(){
@@ -138,7 +216,7 @@ function getTaxesAndCategoryWiseOverViewDetails(){
 	}else if(globallocationType == 4){
 		locationType='assembly';
 		locationId = globallocationId;
-	}else if(globallocationType == 4){
+	}else if(globallocationType == 5){
 		locationType='mandal';
 		locationId = globallocationId;
 	}
@@ -437,7 +515,7 @@ function getTaxesIndicatorDetails(){
 	}else if(globallocationType == 4){
 		locationType='assembly';
 		locationId = globallocationId;
-	}else if(globallocationType == 4){
+	}else if(globallocationType == 5){
 		locationType='mandal';
 		locationId = globallocationId;
 	}
@@ -583,7 +661,7 @@ function getTaxesDefaultOverviewDetails(){
 	}else if(globallocationType == 4){
 		locationType='assembly';
 		locationId = globallocationId;
-	}else if(globallocationType == 4){
+	}else if(globallocationType == 5){
 		locationType='mandal';
 		locationId = globallocationId;
 	}
@@ -629,22 +707,54 @@ function buildDefaulterDetails(result){
 	}
 }
 $(document).on("change",".locationLevelCls",function(){
+	$("#districtId").html('');
+	//$("#districtId").trigger("chosen:updated");
+	$("#constituencyId").html('');
+	//$("#constituencyId").trigger("chosen:updated");
+	$("#mandalId").html('');
+	//$("#mandalId").trigger("chosen:updated");
 	var levelId = $(this).val();
 	if(levelId == 'district'){
 		$(".districtCls").show();
 		$(".constituencyCls").hide();
 		$(".mandalCls").hide();
-		getAllSubLocationsTax(2,1,"","district");//All Districts
+		if(globallocationType == 3){
+			getLocationIdAndName("district",globallocationId);
+			//getLocationIds("district",globallocationId);
+		}else if(globallocationType == 2){
+			getAllSubLocationsTax(2,1,"","district");//All Districts
+		}
 	}else if(levelId == 'assembly'){
 		$(".districtCls").show();
 		$(".constituencyCls").show();
 		$(".mandalCls").hide();
-		getAllSubLocationsTax(2,1,"","district");//All Districts
+		if(globallocationType == 3){
+			//getLocationIdAndName("district",globallocationId);
+			//getLocationIds("district",globallocationId);
+			getAllSubLocationsTax(3,globallocationId,"constituency","constituency");
+		}else if(globallocationType == 4){
+			getLocationIdAndName("constituency",globallocationId);
+			//getLocationIds("constituency",globallocationId);
+		}else if(globallocationType == 2){
+			getAllSubLocationsTax(2,1,"","district");//All Districts
+		}
+		//getAllSubLocationsTax(2,1,"","district");//All Districts
 	}else if(levelId == 'mandal'){
 		$(".districtCls").show();
 		$(".constituencyCls").show();
 		$(".mandalCls").show();
-		getAllSubLocationsTax(2,1,"","district");//All Districts
+		if(globallocationType == 3){
+			//getLocationIdAndName("district",globallocationId,"build");
+			//getLocationIds("district",globallocationId);
+			getAllSubLocationsTax(3,globallocationId,"constituency","constituency");
+		}else if(globallocationType == 4){
+			//getLocationIdAndName("constituency",globallocationId,"build");
+			//getLocationIds("district",globallocationId);
+			getAllSubLocationsTax(4,globallocationId,"","mandal");
+		}else if(globallocationType == 2){
+			getAllSubLocationsTax(2,1,"","district");//All Districts
+		}
+		//getAllSubLocationsTax(2,1,"","district");//All Districts
 	}/* else if(levelId == 'State'){
 		$(".districtCls").hide();
 		$(".constituencyCls").hide();
@@ -708,25 +818,10 @@ $(document).on("change",".defaulterCls",function(){
 			$('#taxId').prop('disabled', false).trigger("chosen:updated");
 			$('#feeId').prop('disabled', false).trigger("chosen:updated");
 		}
-		//$('.locationLevelCls').prop('disabled', true).trigger("chosen:updated");
-		//$('.locationLevelCls').val('0').trigger("chosen:updated");
-		//$(".districtCls").hide();
-		//$(".constituencyCls").hide();
-		//$(".mandalCls").hide();
 	}else{
 		$('#taxId').prop('disabled', false).trigger("chosen:updated");
 		$('#feeId').prop('disabled', false).trigger("chosen:updated");
-	//	$('#locationLevelCls').prop('disabled', true).trigger("chosen:updated");
-		//$('.locationLevelCls').val('0').trigger("chosen:updated");
-		//$(".districtCls").hide();
-		//$(".constituencyCls").hide();
-		//$(".mandalCls").hide();
 	}
-	/*if(!$(this).is(":checked") && !$(this).is(":checked")){
-		$('.locationLevelCls').prop('disabled', false).trigger("chosen:updated");
-		$('.locationLevelCls').val('0').trigger("chosen:updated");
-		
-	}*/
 });
 function getAllSubLocationsTax(levelId,levelValue,typeVal,appendDivId){
 	if(appendDivId == "district"){
@@ -830,6 +925,82 @@ $(document).on("click",".getDetailsCls",function(){
 
 function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVal,dataType,defaultersType,locationType,locationValue,taxTypeName,feeTypeName){
 	$("#tableBuildDivId").html(spinner);
+	var filterType;
+	var filterId;
+	var levelType = $(".locationLevelCls").val();
+	if(globallocationType != null && globallocationType == 3){
+		if(levelType != null && levelType == "district"){
+			locationType = "district";
+			locationValue =$("#districtId").val();
+			filterType = "district";
+			filterId = globallocationId;
+		}else if(levelType != null && levelType == "assembly"){
+			locationType = "assembly";
+			locationValue = $("#constituencyId").val();
+			if(locationValue == 0 || locationValue == 'null'){
+				locationValue =$("#districtId").val();
+				locationType = "district";
+			}
+			filterType = "district";
+			filterId = globallocationId;
+			//alert(filterId)
+		}else if(levelType != null && levelType == "mandal"){
+			locationType = "mandal";
+			locationValue = $("#mandalId").val();
+			if(locationValue == 0 || locationValue == 'null'){
+				locationValue = $("#constituencyId").val();
+				locationType = "assembly";
+			}if(locationValue == 0 || locationValue == 'null'){
+				locationValue =$("#districtId").val();
+				locationType = "district";
+			}
+			filterType = "district";
+			filterId = globallocationId;
+		}
+	}else if(globallocationType != null && globallocationType == 4){
+		if(levelType != null && levelType == "assembly"){
+			locationType = "assembly";
+			locationValue = $("#constituencyId").val();
+			filterType = "assembly";
+			filterId = globallocationId;
+		}else if(levelType != null && levelType == "mandal"){
+			locationType = "mandal";
+			locationValue = $("#mandalId").val();
+			if(locationValue == 0 || locationValue == 'null'){
+				locationValue = $("#constituencyId").val();
+				locationType = "assembly";
+			}
+			filterType = "assembly";
+			filterId = globallocationId;
+		}
+	}else if(globallocationType != null && globallocationType == 5){
+		if(levelType != null && levelType == "mandal"){
+			locationType = "mandal";
+			locationValue = $("#mandalId").val();
+			filterType = "mandal";
+			filterId = globallocationId;
+		}
+	}else{
+		//alert($("#districtId").val())
+		if(levelType != null && levelType == "district"){
+			locationType = "district";
+			locationValue = $("#districtId").val();
+			filterType = "state";
+			filterId = globallocationId;
+		}else if(levelType != null && levelType == "assembly"){
+			locationType = "assembly";
+			locationValue = $("#constituencyId").val();
+			filterType = "district";
+			filterId = $("#districtId").val();
+		}else if(levelType != null && levelType == "mandal"){
+			locationType = "mandal";
+			locationValue = $("#mandalId").val();
+			filterType = "assembly";
+			filterId = $("#constituencyId").val();
+		}
+	}
+	//alert(filterType)
+	
 	var json = {
 		taxTypeId :taxTypeId,
 		feeTypeId :feeTypeId,
@@ -839,7 +1010,9 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		locationType:locationType,
 		locationValue:locationValue,
 		fromDateStr : currentFromDate,
-		toDateStr : currentToDate
+		toDateStr : currentToDate,
+		filterType : filterType,
+		filterId : filterId
 	};
 	$.ajax({                
 		type:'POST',    
@@ -1646,16 +1819,29 @@ function buildPanchyatTaxDashboardFilterWiseDetails(result,taxTypeId,feeTypeId,t
 	
 }
 $(document).on("click",".menuDataCollapse",function(){
+	var locationType ;
+	var locationId ;
 		globallocationId = $(this).attr("attr_id");
 		globallocationType = $(this).attr("attr_levelidvalue");
 		globallocationlevelIdType = $(this).attr("attr_levelid");
 		if(globallocationType == 3){
-			globallocationDistrictName = $(this).attr("attr_name");
+			locationType = "district";
+			locationId = globallocationId;
 		}else if(globallocationType == 4){
-			globallocationConsName = $(this).attr("attr_name");
+			$(".locationLevelCls").html('');
+			$(".locationLevelCls").trigger("chosen:updated");
+			$(".locationLevelCls").append('<option value="assembly">Constituency</option>');
+			$(".locationLevelCls").append('<option value="mandal">Mandal</option>');
+			locationType = "constituency";
+			locationId = globallocationId;
 		}else if(globallocationType == 5){
-			globallocationMandalName = $(this).attr("attr_name");
+			$(".locationLevelCls").html('');
+			$(".locationLevelCls").trigger("chosen:updated");
+			$(".locationLevelCls").append('<option value="mandal">Mandal</option>');
+			locationType = "mandal";
+			locationId = globallocationId;
 		}
-		$("#selectedName").html($(this).html())
-		onloadTaxCalls();
+		$("#selectedName").html($(this).html());
+		getLocationIdAndName(locationType,locationId);
 });
+

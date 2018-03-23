@@ -2829,7 +2829,7 @@ function getMaterialAvailabilityStatusForFinancialYear(){
 	}).done(function(result){
 		if(result !=null && result.length > 0){
 			var availability = result[0].balanceMaterial;
-			$(".MaterialAvailabilityAllCls").html(availability); 
+			$(".MaterialAvailabilityAllCls").html(availability+" Cr"); 
 		}else{
 			$(".MaterialAvailabilityAllCls").html("0"); 
 		}
