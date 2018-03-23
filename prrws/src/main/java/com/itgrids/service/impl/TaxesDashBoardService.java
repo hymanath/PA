@@ -668,25 +668,25 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 				taxTypeId = inputVO.getFeeTypeId();
 			
 			if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Defaulters")){
-				url = "http://pris.ap.gov.in/api/taxes/taxstats.php?defaultersData=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"";
+				url = "http://pris.ap.gov.in/api/taxes/taxstats.php?defaultersData=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"";
 			}else if(inputVO.getDefaultersType() != null && inputVO.getDefaultersType().equalsIgnoreCase("Indicators")){
 				if(taxTypeId != null && taxTypeId > 0L){
 					if(inputVO.getIndicatorsId() != null && inputVO.getIndicatorsId() > 0L)
-						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"&usage_type="+inputVO.getIndicatorsId()+"";
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"&usage_type="+inputVO.getIndicatorsId()+"";
 					else
-						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
 				}
 				else{
 					if(inputVO.getIndicatorsId() != null && inputVO.getIndicatorsId() > 0L)
-						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"&usage_type="+inputVO.getIndicatorsId()+"";
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"&usage_type="+inputVO.getIndicatorsId()+"";
 					else
-						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+						url = "http://pris.ap.gov.in/api/taxes/taxstats.php?indicatorsOverview=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
 				}
 			}else{
 				if(taxTypeId != null && taxTypeId > 0L)
-					url = "http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+					url = "http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&taxtype="+taxTypeId+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
 				else
-					url = "http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
+					url = "http://pris.ap.gov.in/api/taxes/taxstats.php?taxStatistics=1&locationId="+inputVO.getLocationValue()+"&locationType="+inputVO.getLocationType()+"&filterType="+inputVO.getFilterType()+"&filterId="+inputVO.getFilterId()+"&fromDate="+inputVO.getFromDateStr()+"&toDate="+inputVO.getToDateStr()+"";
 			}
 		} catch (Exception e) {
 			LOG.error("Exception raised at getURLBasedOnFilter  in TaxesDashBoardService service", e);

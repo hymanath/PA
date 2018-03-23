@@ -15,8 +15,22 @@ public class panchayatTaxInputVO {
 	private Long locationValue;
 	private String fromDateStr;
 	private String toDateStr;
+	private String filterType;
+	private Long filterId;
 	
 	
+	public String getFilterType() {
+		return filterType;
+	}
+	public void setFilterType(String filterType) {
+		this.filterType = filterType;
+	}
+	public Long getFilterId() {
+		return filterId;
+	}
+	public void setFilterId(Long filterId) {
+		this.filterId = filterId;
+	}
 	public String getFromDateStr() {
 		return fromDateStr;
 	}
