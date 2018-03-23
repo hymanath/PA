@@ -824,13 +824,66 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 var userId = '${sessionScope.USER.userId}';
 var glDesignationId = '${sessionScope.USER.designationId}'
 var glDesignationName = '${sessionScope.USER.designation}';
+var searchBy= '${param.searchBy}';
+var desigId= '${param.desigId}';
+var statusId= '${param.statusId}';
+var deptId ='${param.deptId}';
+var subjId = '${param.subjId}';
+var refCanId ='${param.refCanId}';
+var briefleadId ='${param.leadId}';
+var gblOfficerId = '${param.officerId}';
+var statusName = '${param.statusName}';
+var distId = '${param.distId}';
+var constId = '${param.constId}';
+var fromDate = '${param.fromDate}';
+var toDate = '${param.toDate}';
 $("#hiddenDesignationName").html(glDesignationName);
 $("#hiddenDesignationId").val(glDesignationId);
+var currentToDate = "";
+var currentFromDate="";
+if((fromDate != null && fromDate != "") || (toDate != null && toDate != "")){
+	 currentFromDate=fromDate;
+	 currentToDate=toDate;
+}else{
+	currentFromDate=moment().subtract(7, 'year').format("DD-MM-YYYY");
+	currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
+}
 if(parseInt(userId) == 25 || parseInt(userId) == 26 || parseInt(userId) == 27 || parseInt(userId) == 28){
 	$('.specialFieldCls').remove();
 }
 </script>
 <script type="text/javascript">
+$("#dateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'All':[moment().subtract(7,"year").format("DD-MM-YYYY"), moment().add(38,"year").format("DD-MM-YYYY")],
+		   'Today' : [moment(), moment()],
+		   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		   'This Month': [moment().startOf('month'), moment()],
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		   
+		}
+	});
+	if((fromDate == null || fromDate == "") || (toDate == null || toDate == "")){
+		var dates= $("#dateRangePicker").val();
+		var pickerDates = currentFromDate+' - '+currentToDate
+		if(dates == pickerDates)
+		{
+			$("#dateRangePicker").val('All');
+		}
+	}else{
+		if(fromDate == "23-03-2011" && toDate =="23-03-2056"){
+			$("#dateRangePicker").val('All');
+		}
+	}
 $(document).on("click",".closeSecondModal",function(){
     setTimeout(function(){
       $("body").addClass("modal-open")
@@ -845,17 +898,7 @@ $(document).on("click",".closeSecondModal",function(){
 		$('#updatStatusChangeId').hide();
   }
   
-  var searchBy= '${param.searchBy}';
-  var desigId= '${param.desigId}';
-  var statusId= '${param.statusId}';
-  var deptId ='${param.deptId}';
- var subjId = '${param.subjId}';
- var refCanId ='${param.refCanId}';
- var briefleadId ='${param.leadId}';
- var gblOfficerId = '${param.officerId}';
- var statusName = '${param.statusName}';
-  var distId = '${param.distId}';
-   var constId = '${param.constId}';
+  
     if(deptId =='' || deptId =='null'){
 	deptId=0;
 	}

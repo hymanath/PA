@@ -295,7 +295,7 @@ function buildMyActionsDetails(result){
 																var convertToAmt = result.statusList[i].estimationCost*100000;
 																var crores = (convertToAmt/10000000).toFixed(2);
 																
-																str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].petitionIds.length+'</a> <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
+																str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].petitionIds.length+'</a> <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
 							
 																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.statusList[i].withCostPetitionsCount+'</h5>';
 																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.statusList[i].noCostPetitionsCount+'</h5>';
@@ -312,7 +312,7 @@ function buildMyActionsDetails(result){
 															str+='</div>';
 															str+='<div class="media-body">';
 																str+='<p>Works</p>';
-																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0" target="_blank">'+result.statusList[i].subWorkIds.length+'</a></h4>';
+																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].subWorkIds.length+'</a></h4>';
 																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.statusList[i].withCostWorksCount+'</h5>';
 																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.statusList[i].noCostWorksCount+'</h5>';
 															str+='</div>';
@@ -331,7 +331,7 @@ function buildMyActionsDetails(result){
 													for(var j in result.statusList[i].referrerList){
 														str+='<li class="petition_border">';
 															str+='<p class="text-center">'+result.statusList[i].referrerList[j].name.toUpperCase()+'</p>';
-															str+='<h5  class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].petitionIds.length+'</a> - <a title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].referrerList[j].subWorkIds.length+'</a></h5>';
+															str+='<h5  class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].referrerList[j].petitionIds.length+'</a> - <a title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.statusList[i].referrerList[j].id+'&statusId='+result.statusList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].referrerList[j].subWorkIds.length+'</a></h5>';
 															var convertToAmt = result.statusList[i].referrerList[j].estimationCost*100000;
 														    var crores = (convertToAmt/10000000).toFixed(2);
 															str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
@@ -354,7 +354,7 @@ function buildMyActionsDetails(result){
 											for(var j in result.statusList[i].subList){
 												str+='<li class="petition_border">';
 													str+='<p class="text-center">'+result.statusList[i].subList[j].name.toUpperCase()+'</p>';
-													str+='<h5 class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'" target="_blank">'+result.statusList[i].subList[j].subWorkIds.length+'</a></h5>';
+													str+='<h5 class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].subList[j].petitionIds.length+'</a> - <a title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=subject&subjId='+result.statusList[i].subList[j].id+'&statusId='+result.statusList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].subList[j].subWorkIds.length+'</a></h5>';
 													var convertToAmt = result.statusList[i].subList[j].estimationCost*100000;
 													var crores = (convertToAmt/10000000).toFixed(2);
 													str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
@@ -377,7 +377,7 @@ function buildMyActionsDetails(result){
 												str+='<li class="petition_border">';
 												
 													str+='<p class="text-center" style="font-size:11px"><b>'+result.statusList[i].deptList[j].name.toUpperCase()+'</b></p>';
-													str+='<h5 class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a data-toggle="tooltip" class="tooltipCls" data-placement="right" title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'" target="_blank">'+result.statusList[i].deptList[j].subWorkIds.length+'</a></h5>';
+													str+='<h5 class="text-center m_top5"><a title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].deptList[j].petitionIds.length+'</a> - <a data-toggle="tooltip" class="tooltipCls" data-placement="right" title="Works" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=department&desigId=0&statusId='+result.statusList[i].id+'&deptId='+result.statusList[i].deptList[j].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].deptList[j].subWorkIds.length+'</a></h5>';
 													var convertToAmt = result.statusList[i].deptList[j].estimationCost*100000;
 													var crores = (convertToAmt/10000000).toFixed(2);
 													str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
@@ -663,7 +663,7 @@ function buildLeadWiseOverviewDetails(result){
 						str+='<div class="col-sm-6">';
 							str+='<p>Representations</p>';
 							//str+='<h4 style="float:left; margin-right:5px;"><b>'+result[i].petitionIds.length+'</b></h4>';
-							str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0" target="_blank">'+result[i].petitionIds.length+'</a> </h4>';
+							str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].petitionIds.length+'</a> </h4>';
 							
 							var convertToAmt = result[i].estimationCost*100000;
 							var crores = (convertToAmt/10000000).toFixed(2);
@@ -672,7 +672,7 @@ function buildLeadWiseOverviewDetails(result){
 						str+='<div class="col-sm-6">';
 							str+='<p>Works</p>';
 							//str+='<h4><b>'+result[i].subWorkIds.length+'</b></h4>';
-							str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0" target="_blank">'+result[i].subWorkIds.length+'</a> </h4>';
+							str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].subWorkIds.length+'</a> </h4>';
 						str+='</div>';
 					str+='</div>';
 					
@@ -929,12 +929,12 @@ function getReferralWiseOverviewDetails(desigId){
 								str+='<td><h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p></td>';
 								
 								if(result.referrerList[i].petitionIds.length >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
 								if(result.referrerList[i].subWorkIds.length >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].subWorkIds.length+'</a></td>';
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.referrerList[i].subWorkIds.length+'</a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
@@ -950,13 +950,13 @@ function getReferralWiseOverviewDetails(desigId){
 										}
 										
 										if(result.referrerList[i].statusList[j].petitionIds.length >0){
-											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a></td>';
+											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.referrerList[i].statusList[j].petitionIds.length+'</a></td>';
 										}else{
 											str+='<td>-</td>';
 										}
 									
 									if(result.referrerList[i].statusList[j].subWorkIds.length >0){
-										str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'" target="_blank">'+result.referrerList[i].statusList[j].subWorkIds.length+'</a></td>';
+										str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&statusId='+statusIds+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.referrerList[i].statusList[j].subWorkIds.length+'</a></td>';
 									}else{
 										str+='<td>-</td>';
 									}
@@ -1211,12 +1211,12 @@ function tableBuildOfficerBlock(result){
 								str+='</td>';
 								
 								if(typeof(result[i].petitionIds) != "undefined" && result[i].petitionIds.length >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId=0" target="_blank">'+result[i].petitionIds.length+'</a></td>';
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].petitionIds.length+'</a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
 								if(typeof(result[i].subWorkCnt) != "undefined" && result[i].subWorkCnt >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId=0" target="_blank">'+result[i].subWorkCnt+'</a></td>';
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].subWorkCnt+'</a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
@@ -1240,13 +1240,13 @@ function tableBuildOfficerBlock(result){
 										 */
 									if(result[i].subList[j].id != 4 && result[i].subList[j].id != 5 ){
 										if(typeof(result[i].subList[j].petitionIds) != 'undefined' && result[i].subList[j].petitionIds.length >0){
-											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId='+result[i].subList[j].id+'&statusName='+result[i].subList[j].name+'" target="_blank">'+result[i].subList[j].petitionIds.length+'</a></td>';
+											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId='+result[i].subList[j].id+'&statusName='+result[i].subList[j].name+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].subList[j].petitionIds.length+'</a></td>';
 										}else{
 											str+='<td>-</td>';
 										}
 									
 										if(typeof(result[i].subList[j].subWorkCnt) != 'undefined' && result[i].subList[j].subWorkCnt>0){
-											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId='+result[i].subList[j].id+'&statusName='+result[i].subList[j].name+'" target="_blank">'+result[i].subList[j].subWorkCnt+'</a></td>';
+											str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=officer&officerId='+result[i].id+'&statusId='+result[i].subList[j].id+'&statusName='+result[i].subList[j].name+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].subList[j].subWorkCnt+'</a></td>';
 										}else{
 											str+='<td>-</td>';
 										}
@@ -1394,21 +1394,21 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 						}
 						
 						if(result[i].petitionIds.length !=null && result[i].petitionIds.length>0){
-							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].petitionIds.length+'</a></td>';
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].petitionIds.length+'</a></td>';
 						}else{
 							str+='<td> - </td>';
 						}
 						
 						if(result[i].withOutCostSubWorkIds !=null && result[i].subWorkIds !=null){
 							var totalWorks =result[i].subWorkIds.length+result[i].withOutCostSubWorkIds.length; 
-							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+totalWorks+'</a></td>';
+							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+totalWorks+'</a></td>';
 						}else{
 							str+='<td> - </td>';
 						}
 						if(result[i].petitionIds !=null && result[i].petitionIds.length>0 && result[i].withOutCostPetitionIds !=null){
 							var withCostRep = result[i].petitionIds.length-result[i].withOutCostPetitionIds.length;
 							if(withCostRep >0){
-								str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+withCostRep+'</a></td>';
+								str+='<td>'+withCostRep+'</td>';
 							}else{
 								str+='<td> - </td>';
 							}
@@ -1416,7 +1416,7 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 							str+='<td> - </td>';
 						}
 						if(result[i].subWorkIds !=null && result[i].subWorkIds.length>0){
-							str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy='+searchBy+'&distId='+distId+'&constId='+constId+'&deptId='+selDptId+'&subjId='+selSubjId+'&statusId='+selStatusId+'" target="_blank">'+result[i].subWorkIds.length+'</a></td>';
+							str+='<td>'+result[i].subWorkIds.length+'</td>';
 						}else{
 							str+='<td> - </td>';
 						}
