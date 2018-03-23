@@ -2968,7 +2968,7 @@ var json = {
 				str+='<div class="viewImageCss">';
 				if(scanCopyExt =="pdf"){
 					str+='<a class="fancyboxView" href="#inlineddd">';
-					str+='<div class="mouse-over">Expand</div>';
+					str+='<div class="mouse-over"> <a class="fancyboxView" target="_blank"  href="http://www.mydepartments.in/PRRWS/'+result.exceptionMsg+'"> Expand </a>  </div>';
 						str+='<object data="http://www.mydepartments.in/PRRWS/'+result.exceptionMsg+'" type="application/pdf" width="100%"height="100px;"></object>';
 						
 					str+='</a>';
@@ -2981,7 +2981,7 @@ var json = {
 					//$(".saveEnable").prop("disabled", false);
 				}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 					str+='<a class="fancyboxView" href="#inlineddds">';
-					str+='<div class="mouse-over">Expand</div>';
+					str+='<div class="mouse-over"> <a class="fancyboxView" target="_blank"  href="http://www.mydepartments.in/PRRWS/'+result.exceptionMsg+'"> Expand </a>  </div>';
 						str+='<img src="http://www.mydepartments.in/PRRWS/'+result.exceptionMsg+'"  width="100%" height="100px;"></img>';
 						
 					str+='</a>';
