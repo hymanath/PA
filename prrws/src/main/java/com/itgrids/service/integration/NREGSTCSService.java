@@ -9068,6 +9068,19 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
 	 	    				vo.setMaterialEntitlement(new BigDecimal(Double.valueOf(jObj.getString("WAGEEXPENDITURE"))*2/3).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 	 	    				vo.setBalanceMaterial(new BigDecimal(Double.valueOf(vo.getMaterialEntitlement()) - Double.valueOf(vo.getMaterialExpenditure())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    				//Covert Into Crores
+	 	    				if(inputVO.getSublocationType() != null && !(inputVO.getSublocationType().trim().equalsIgnoreCase("mandal") || inputVO.getSublocationType().trim().equalsIgnoreCase("panchayat"))){
+	 	    					vo.setWageExpenditure(cnvrtLakhsIntoCrores(vo.getWageExpenditure()));
+	 	    					vo.setMaterialExpenditure(cnvrtLakhsIntoCrores(vo.getMaterialExpenditure()));
+	 	    					vo.setTotalExpenditure(cnvrtLakhsIntoCrores(vo.getTotalExpenditure()));
+	 	    					String totalExper = String.valueOf(Double.valueOf(vo.getMaterialExpenditure())+Double.valueOf(vo.getWageExpenditure()));
+	 	    					if(vo.getMaterialExpenditure() != null && Double.valueOf(vo.getMaterialExpenditure()) > 0 && totalExper != null && Double.valueOf(totalExper) > 0)
+	 	    						vo.setMaterialExpenditurePerc(new BigDecimal(Double.valueOf(vo.getMaterialExpenditure())*100.0/Double.valueOf(totalExper)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+	 	    					else
+	 	    						vo.setMaterialExpenditurePerc("0.00");
+	 	    					vo.setMaterialEntitlement(cnvrtLakhsIntoCrores(vo.getMaterialEntitlement()));
+	 	    					vo.setBalanceMaterial(cnvrtLakhsIntoCrores(vo.getBalanceMaterial()));
+	 	    				}
 	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
@@ -9099,6 +9112,17 @@ public class NREGSTCSService implements INREGSTCSService{
 					 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
 					 	    				vo.setMaterialEntitlement(new BigDecimal(Double.valueOf(jObj.getString("WAGEEXPENDITURE"))*2/3).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 					 	    				vo.setBalanceMaterial(new BigDecimal(Double.valueOf(vo.getMaterialEntitlement()) - Double.valueOf(vo.getMaterialExpenditure())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+					 	    				//Conert Into Crores
+					 	    				vo.setWageExpenditure(cnvrtLakhsIntoCrores(vo.getWageExpenditure()));
+				 	    					vo.setMaterialExpenditure(cnvrtLakhsIntoCrores(vo.getMaterialExpenditure()));
+				 	    					vo.setTotalExpenditure(cnvrtLakhsIntoCrores(vo.getTotalExpenditure()));
+				 	    					String totalExper = String.valueOf(Double.valueOf(vo.getMaterialExpenditure())+Double.valueOf(vo.getWageExpenditure()));
+				 	    					if(vo.getMaterialExpenditure() != null && Double.valueOf(vo.getMaterialExpenditure()) > 0 && totalExper != null && Double.valueOf(totalExper) > 0)
+				 	    						vo.setMaterialExpenditurePerc(new BigDecimal(Double.valueOf(vo.getMaterialExpenditure())*100.0/Double.valueOf(totalExper)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    					else
+				 	    						vo.setMaterialExpenditurePerc("0.00");
+				 	    					vo.setMaterialEntitlement(cnvrtLakhsIntoCrores(vo.getMaterialEntitlement()));
+				 	    					vo.setBalanceMaterial(cnvrtLakhsIntoCrores(vo.getBalanceMaterial()));
 					 	    				returnList.get(0).getSubList().add(vo);
 				 	    				}
 				 	    			}
@@ -9128,6 +9152,18 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    				vo.setMaterialExpenditurePerc(jObj.getString("MATPERCENTAGE"));
 				 	    				vo.setMaterialEntitlement(new BigDecimal(Double.valueOf(jObj.getString("WAGEEXPENDITURE"))*2/3).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 				 	    				vo.setBalanceMaterial(new BigDecimal(Double.valueOf(vo.getMaterialEntitlement()) - Double.valueOf(vo.getMaterialExpenditure())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+				 	    				//Conert Into Crores
+				 	    				vo.setWageExpenditure(cnvrtLakhsIntoCrores(vo.getWageExpenditure()));
+			 	    					vo.setMaterialExpenditure(cnvrtLakhsIntoCrores(vo.getMaterialExpenditure()));
+			 	    					vo.setTotalExpenditure(cnvrtLakhsIntoCrores(vo.getTotalExpenditure()));
+			 	    					String totalExper = String.valueOf(Double.valueOf(vo.getMaterialExpenditure())+Double.valueOf(vo.getWageExpenditure()));
+			 	    					if(vo.getMaterialExpenditure() != null && Double.valueOf(vo.getMaterialExpenditure()) > 0 && totalExper != null && Double.valueOf(totalExper) > 0)
+			 	    						vo.setMaterialExpenditurePerc(new BigDecimal(Double.valueOf(vo.getMaterialExpenditure())*100.0/Double.valueOf(totalExper)).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
+			 	    					else
+			 	    						vo.setMaterialExpenditurePerc("0.00");
+			 	    					vo.setMaterialEntitlement(cnvrtLakhsIntoCrores(vo.getMaterialEntitlement()));
+			 	    					vo.setBalanceMaterial(cnvrtLakhsIntoCrores(vo.getBalanceMaterial()));
+				 	    				
 				 	    				returnList.get(0).getSubList().add(vo);
 			 	    				}
 			 	    			}
@@ -9248,6 +9284,18 @@ public class NREGSTCSService implements INREGSTCSService{
 			
 		}
 		return returnList;	
+	}
+	public String cnvrtLakhsIntoCrores(String value){
+		String returnVal = "0";
+		try {
+			if(value != null) {
+				returnVal = new BigDecimal(Double.valueOf(value)/100.00d).setScale(2, BigDecimal.ROUND_HALF_UP).toString();
+				//returnVal = returnVal + " CR";
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at cnvrtLakhsIntoCrores - NREGSTCSService service", e);
+		}
+		return returnVal.trim();
 	}
 	
 }

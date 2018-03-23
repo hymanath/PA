@@ -565,9 +565,9 @@ var $windowWidth = $(window).width();
 						theadArr = ["district","constituency","mandal",levelType,'Total','Senior Mate','Junior Mate','Mate'];
 				}	
 				if(divId == 'Material Availability'){
-					theadArr = [levelType,'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
+					theadArr = [levelType,'Wage Exp (CR)','Material Entitlement (CR)','Material Exp (CR)','Material %','Balance Material (CR)'];
 					if(levelType == "constituency")
-						theadArr = ["district",levelType,'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
+						theadArr = ["district",levelType,'Wage Exp (CR)','Material Entitlement (CR)','Material Exp (CR)','Material %','Balance Material (CR)'];
 					else if(levelType == "mandal")
 						theadArr = ["district","constituency",levelType,'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
 					else if(levelType == "panchayat")
@@ -1368,9 +1368,9 @@ function projectData(divId,levelId,locationId)
 					theadArr = ["district","constituency","mandal",dataArr[i],'Total','Senior Mate','Junior Mate','Mate'];
 			}	
 			if(divId == 'Material Availability'){
-				theadArr = [dataArr[i],'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
+				theadArr = [dataArr[i],'Wage Exp (CR)','Material Entitlement (CR)','Material Exp (CR)','Material %','Balance Material (CR)'];
 				if(dataArr[i] == "constituency")
-					theadArr = ["district",dataArr[i],'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
+					theadArr = ["district",dataArr[i],'Wage Exp (CR)','Material Entitlement (CR)','Material Exp (CR)','Material %','Balance Material (CR)'];
 				else if(dataArr[i] == "mandal")
 					theadArr = ["district","constituency",dataArr[i],'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
 				else if(dataArr[i] == "panchayat")
@@ -6763,7 +6763,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	} 
 	if(type == 'Material Availability' && result != null)
 	{
-		if(result[0].balanceMaterial != null && result[0].balanceMaterial > 0)
+		/* if(result[0].balanceMaterial != null && result[0].balanceMaterial > 0)
 			str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 18px;padding-bottom: 18px;">';
 		else
 			str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 18px;padding-bottom: 18px;">';
@@ -6825,6 +6825,64 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					str+='<div class="col-sm-6">';
 						str+='<p>State</p>';
 						str+='<h2 class="text-center">'+result[0].subList[1].balanceMaterial+'</h2>';
+					str+='</div>';
+				str+='</div>';
+			str+='</div>';
+		} */
+		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:15px 15px;padding-top: 12px;padding-bottom: 12px;">';
+			if(type.length > 12)
+			{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+			}else{
+				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+			}
+			str+='<small class="text-center">Availability</small>';
+			if(result[0].balanceMaterial != null && result[0].balanceMaterial.length > 0)
+			{
+				str+='<h1 class="text-center" style="font-size:29px"><i class="fa fa-inr"></i> '+result[0].balanceMaterial+'&nbsp;Cr</h1>';
+			}else{
+				str+='<h1 class="text-center">0</h1>';
+			}
+			str+='<div class="row">';
+				str+='<div class="col-sm-6 text-center pad_right0">';
+					str+='<label>Entitlement</label>';
+					if(result[0].materialEntitlement != null && result[0].materialEntitlement.length > 0)
+					{
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].materialEntitlement+'&nbsp;Cr</h4>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+					
+				str+='</div>';
+				str+='<div class="col-sm-6 text-center pad_left0">';
+					str+='<label>Expenditure</label>';
+					if(result[0].materialExpenditure != null && result[0].materialExpenditure.length > 0)
+					{
+						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].materialExpenditure+'&nbsp;Cr</h4>';
+					}else{
+						str+='<h4>0</h4>';
+					}
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		
+		if(levelId == 3 || levelId == "3"){
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - Total Pending</small>';
+				str+='<h2 class="text-center">'+result[0].subList[0].balanceMaterial+'</h2>';
+			str+='</div>';
+		}
+		else if(levelId == 4 || levelId == "4"){
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+				str+='<small class="panel-block-white-title text-capitalize text-center">Total Pending</small>';
+				str+='<div class="row">';
+					str+='<div class="col-sm-6">';
+						str+='<p>District</p>';
+						str+='<h2 class="text-center m_top10" style="font-size:16px">'+result[0].subList[0].balanceMaterial+'&nbsp;Cr</h2>';
+					str+='</div>';
+					str+='<div class="col-sm-6">';
+						str+='<p>State</p>';
+						str+='<h2 class="text-center m_top10" style="font-size:16px">'+result[0].subList[0].balanceMaterial+'&nbsp;Cr</h2>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
