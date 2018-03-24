@@ -60,7 +60,7 @@ onloadCalls();
 function onloadCalls(){
 	if(searchParams == null)
 	{
-		departmentBlockWiseDetails("promotions");
+		departmentBlockWiseDetails("eOffice");
 	}else{
 		departmentBlockWiseDetails(searchParams);
 	}
@@ -213,11 +213,11 @@ $(document).on('click','#droppedShowHideId',function(){
 function departmentBlockWiseDetails(divId)
 {
 	var levelWiseBlockArr='';
-	if(divId == "promotions"){
+	/*if(divId == "promotions"){
 		
 		levelWiseBlockArr=[{name:'Promotions',id:'1'}]//,{name:'Electronics',id:'2'},{name:'FinTech',id:'3'}];
 		
-	}else if(divId == "eOffice"){
+	}else*/ if(divId == "eOffice"){
 		
 		levelWiseBlockArr=[{name:'e Office',id:'4'}];
 		
@@ -288,7 +288,7 @@ function departmentBlockWiseDetails(divId)
 									collapse+='</div>';
 								collapse+='</div>';
 							}
-							if(divId == "promotions")
+							/*if(divId == "promotions")
 							{
 								collapse+='<div class="row">';
 									collapse+='<div class="col-sm-12">';
@@ -402,8 +402,8 @@ function departmentBlockWiseDetails(divId)
 											
 										collapse+='</div>';
 									collapse+='</div>';
-								collapse+='</div>'; */
-							}
+								collapse+='</div>'; 
+							}*/
 							if(divId == "cMeoDB")
 							{
 								collapse+='<div class="row">';	
