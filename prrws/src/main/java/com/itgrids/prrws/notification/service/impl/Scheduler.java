@@ -197,7 +197,8 @@ public class Scheduler {
 	}
 	
     
-	@Scheduled(cron ="0 0 0/2 * * ?")
+	 //@Scheduled(cron ="0 0 0/2 * * ?")
+	 @Scheduled(cron ="0 0/15 * ? * *")
 	public void runTheRfidSchedulerInEveryDay()	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
 		{	
