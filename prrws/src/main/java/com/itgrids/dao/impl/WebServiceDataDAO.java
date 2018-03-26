@@ -30,7 +30,6 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 			return (String)query.uniqueResult();
 		}
 	
-
 	public Long getLatestDataId() {
 		Query query = getSession().createQuery(" select model.webServiceDataId from WebServiceData model where model.webserviceId = 127 ");
 		return (Long)query.uniqueResult();
