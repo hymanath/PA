@@ -1380,6 +1380,9 @@
 						 <value>com.itgrids.partyanalyst.model.TourTypeCategory</value>
 						 <value>com.itgrids.partyanalyst.model.NominatedPostAccessMultiplePositionsDetails</value>
 						 <value>com.itgrids.partyanalyst.model.ItdpAppUserAccessLocation</value>
+						 <value>com.itgrids.partyanalyst.model.RwsIvrType</value>
+						 <value>com.itgrids.partyanalyst.model.RwsIvrSurvey</value>
+						 <value>com.itgrids.partyanalyst.model.RwsIvrAlertDetails</value>
 				  </list>
 			
 		</property>

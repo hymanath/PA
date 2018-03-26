@@ -4315,4 +4315,15 @@
 	 <bean id="itdpAppUserAccessLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.ItdpAppUserAccessLocationDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 
+	 <bean id="rwsIvrTypeDAO" class="com.itgrids.partyanalyst.dao.hibernate.RwsIvrTypeDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="rwsIvrSurveyDAO" class="com.itgrids.partyanalyst.dao.hibernate.RwsIvrSurveyDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="rwsIvrAlertDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.RwsIvrAlertDetailsDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 
 </beans>		
