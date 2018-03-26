@@ -1741,81 +1741,135 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 			str+='</div>';
 		str+='</div>';
 		
-		str+='<div class="row m_top10">'
-		str+='<div class="col-sm-12">'
-			str+='<div class="table-responsive">';
-			str+='<table class="table details-overview_petition_print">';
-				str+='<thead>';
-					str+='<tr>';
-						str+='<th>GIVEN&nbsp;DATE</th>';
-						str+='<th>ENDORS&nbsp;NO</th>';
-						str+='<th>WORK&nbsp;REF&nbsp;NO </th>';
-						str+='<th>LOCATION</th>';
-						str+='<th>WORK&nbsp;DESC</th>';
-						str+='<th>EST&nbsp;COST<br>(in Lakhs)</th>';
-						str+='<th>REF BY</th>';
-						str+='<th>ACTION MEMO</th>';
-						str+='<th>GO ISSUED </th>';
-						str+='<th>PENDING&nbsp;@</th>';
-						str+='<th>INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						for(var i in result){
-							
-							if(result[i].subWorksList != null && result[i].subWorksList.length>0){
-								for(var k in result[i].subWorksList){
-									str+='<tr>';
-									str+='<td>'+result[i].subWorksList[k].representationDate+'</td>';
-									str+='<td>'+result[i].subWorksList[k].endorsmentNo+'</td>';
-									str+='<td>'+result[i].subWorksList[k].workId+'</td>';
-									str+='<td>';
-									if(result[i].subWorksList[k].addressVO != null){
-										if(typeof result[i].subWorksList[k].addressVO.districtName != 'undefined' && result[i].subWorksList[k].addressVO.districtName .length>0)
-											str+='D:'+result[i].subWorksList[k].addressVO.districtName+'<br/>';
-										if(typeof result[i].subWorksList[k].addressVO.assemblyName != 'undefined'  && result[i].subWorksList[k].addressVO.assemblyName .length>0)
-											str+='A:'+result[i].subWorksList[k].addressVO.assemblyName+'<br/>';
-										if(typeof result[i].subWorksList[k].addressVO.tehsilName != 'undefined'  && result[i].subWorksList[k].addressVO.tehsilName .length>0)
-											str+='M:'+result[i].subWorksList[k].addressVO.tehsilName+'<br/>';
-										if(typeof result[i].subWorksList[k].addressVO.panchayatName != 'undefined'  && result[i].subWorksList[k].addressVO.panchayatName .length>0)
-											str+='P:'+result[i].subWorksList[k].addressVO.panchayatName+'';
-									}
-									str+='</td>';
-									str+='<td>'+result[i].subWorksList[k].workDescription+'</td>';
-									str+='<td>'+result[i].subWorksList[k].estimationCost+'</td>';
-									/*str+='<td>';
-									if(result[i].subWorksList[k].subList1 != null && result[i].subWorksList[k].subList1.length>0){
-										for(var j in result[i].subWorksList[k].subList1){
-											if(j >0)
-												str+=' ,';
-											str+=''+result[i].subWorksList[k].subList1[j].name+' ('+result[i].subWorksList[k].subList1[j].designation+')';
-										}
-									}
-									str+='</td>';
-									*/
-									str+='<td>';
-									if(result[i].subWorksList[k].subList2 != null && result[i].subWorksList[k].subList2.length>0){
-										for(var j in result[i].subWorksList[k].subList2){
-											if(j >0)
-												str+=' ,';
-											if(typeof result[i].subWorksList[k].subList2[j].designation != 'undefined' && result[i].subWorksList[k].subList2[j].designation.length>0)
-												str+=''+result[i].subWorksList[k].subList2[j].name+' ('+result[i].subWorksList[k].subList2[j].designation+')';
-										}
-									}
-									str+='</td>';
-									str+='<td>'+result[i].subWorksList[k].actionMemo+'</td>';
-									str+='<td>'+result[i].subWorksList[k].goRefNo+'</td>';
-									str+='<td>'+result[i].subWorksList[k].pendingAt+'</td>';
-									str+='<td></td>';
+		
+		if(result != null && result.length>0){
+			for(var s in result){
+				if(s==0)
+					str+='<h4 class="m_top20" style="color:#001061 !important;"><u>'+result[s].deptName.toUpperCase()+'  DEPARTMENT WISE WORKS DETAILS </u></h4>';
+				else
+					str+='<h4 class="m_top10" style="color:#001061 !important;"><u>'+result[s].deptName.toUpperCase()+'  DEPARTMENT WISE WORKS DETAILS </u></h4>';
+				
+				if(typeof result[s].totalWorksInDeptCount !='undefined' && result[s].totalWorksInDeptCount != null && result[s].totalWorksInDeptCount.length>0){
+					str+='(<span title="Total available works in '+result[s].deptName.toUpperCase()+' department.">'+result[s].totalWorksInDeptCount+'</span>)';
+				}
+				
+				
+			//	str+='<p style=" border-top:1px solid #001061; margin-top:3px;"></p>';
+				str+='<div class="row m_top5">'
+					str+='<div class="col-sm-12">'
+						str+='<div class="table-responsive">';
+						str+='<table class="table details-overview_petition_print">';
+							str+='<thead>';
+								str+='<tr>';
+									str+='<th style="width:70px; !important;">GIVEN&nbsp;DATE</th>';
+									str+='<th>ENDORS&nbsp;NO</th>';
+									str+='<th>WORK&nbsp;REF&nbsp;NO </th>';
+									str+='<th>LOCATION</th>';
+									str+='<th>WORK&nbsp;DESC</th>';
+									str+='<th>EST&nbsp;COST<br>(in Lakhs)</th>';
+									str+='<th>REF BY</th>';
+									str+='<th>ACTION MEMO</th>';
+									str+='<th>GO ISSUED </th>';
+									str+='<th>PENDING&nbsp;@</th>';
+									str+='<th>INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
 									str+='</tr>';
-								}
-							}
-						}
-					str+='</tbody>';
-			str+='</table>';
-			str+='</div>';
-		str+='</div>';
-		str+='</div>';
+								str+='</thead>';
+								str+='<tbody>';
+									for(var i in result[s].subWorksList){
+										if(typeof result[s].subWorksList[i] != 'undefined' && result[s].subWorksList[i] != null){
+											
+											//if(result[s].subWorksList[i].subWorksList != null && result[s].subWorksList[i].length>0){
+												console.log(s+" : "+i+" - "+result[s].subWorksList[i]);
+												for(var k in result[s].subWorksList[i].subWorksList){
+													console.log(result[s].subWorksList[i].subWorksList[k]);
+													//if(typeof result[s].subWorksList[i].subWorksList[k] != 'undefined' && result[s].subWorksList[i].subWorksList[k] != null){
+														str+='<tr>';
+														if(typeof result[s].subWorksList[i].subWorksList[k].representationDate != 'undefined' && result[s].subWorksList[i].subWorksList[k].representationDate != null)
+															str+='<td  style="width:70px; !important;">'+result[s].subWorksList[i].subWorksList[k].representationDate+'</td>';
+														else
+															str+='<td></td>';
+														
+														if(typeof result[s].subWorksList[i].subWorksList[k].endorsmentNo != 'undefined' && result[s].subWorksList[i].subWorksList[k].endorsmentNo != null)
+															str+='<td>'+result[s].subWorksList[i].subWorksList[k].endorsmentNo+'</td>';
+														else 
+															str+='<td></td>';
+													
+													
+														if(typeof result[s].subWorksList[i].subWorksList[k].workId != 'undefined' && result[s].subWorksList[i].subWorksList[k].workId != null)
+															str+='<td>'+result[s].subWorksList[i].subWorksList[k].workId+'</td>';
+														else 
+															str+='<td></td>';
+														
+														str+='<td>';
+														if(result[s].subWorksList[i].subWorksList[k].addressVO != null){
+															if(typeof result[s].subWorksList[i].subWorksList[k].addressVO.districtName != 'undefined' && result[s].subWorksList[i].subWorksList[k].addressVO.districtName .length>0)
+																str+='D:'+result[s].subWorksList[i].subWorksList[k].addressVO.districtName+'<br/>';
+															if(typeof result[s].subWorksList[i].subWorksList[k].addressVO.assemblyName != 'undefined'  && result[s].subWorksList[i].subWorksList[k].addressVO.assemblyName .length>0)
+																str+='A:'+result[s].subWorksList[i].subWorksList[k].addressVO.assemblyName+'<br/>';
+															if(typeof result[s].subWorksList[i].subWorksList[k].addressVO.tehsilName != 'undefined'  && result[s].subWorksList[i].subWorksList[k].addressVO.tehsilName .length>0)
+																str+='M:'+result[s].subWorksList[i].subWorksList[k].addressVO.tehsilName+'<br/>';
+															if(typeof result[s].subWorksList[i].subWorksList[k].addressVO.panchayatName != 'undefined'  && result[s].subWorksList[i].subWorksList[k].addressVO.panchayatName .length>0)
+																str+='P:'+result[s].subWorksList[i].subWorksList[k].addressVO.panchayatName+'';
+														}
+														str+='</td>';
+														
+														if(typeof result[s].subWorksList[i].subWorksList[k].workDescription != 'undefined' && result[s].subWorksList[i].subWorksList[k].workDescription != null)
+															str+='<td>'+result[s].subWorksList[i].subWorksList[k].workDescription+'</td>';
+														else 
+															str+='<td></td>';
+													
+													
+														if(typeof result[s].subWorksList[i].subWorksList[k].estimationCost != 'undefined' && result[s].subWorksList[i].subWorksList[k].estimationCost != null)
+															str+='<td>'+result[s].subWorksList[i].subWorksList[k].estimationCost+'</td>';
+														else 
+															str+='<td></td>';
+														
+														str+='<td>';
+														if(typeof result[s].subWorksList[i].subWorksList[k].subList2 != 'undefined' && result[s].subWorksList[i].subWorksList[k].subList2 != null && result[s].subWorksList[i].subWorksList[k].subList2.length>0){
+															for(var j in result[s].subWorksList[i].subWorksList[k].subList2){
+																if(j >0)
+																	str+=' ,';
+																if(typeof result[s].subWorksList[i].subWorksList[k].subList2[j].designation != 'undefined' && result[s].subWorksList[i].subWorksList[k].subList2[j].designation.length>0)
+																	str+=''+result[s].subWorksList[i].subWorksList[k].subList2[j].name+' ('+result[s].subWorksList[i].subWorksList[k].subList2[j].designation+')';
+															}
+														}else{
+															str+='<td></td>';
+														}
+														str+='</td>';
+														
+														if(typeof result[s].subWorksList[i].subWorksList[k].actionMemo != 'undefined' && result[s].subWorksList[i].subWorksList[k].actionMemo != null)
+															str+='<td>'+result[s].subWorksList[i].subWorksList[k].actionMemo+'</td>';
+														else 
+															str+='<td></td>';
+													
+													
+													if(typeof result[s].subWorksList[i].subWorksList[k].goRefNo != 'undefined' && result[s].subWorksList[i].subWorksList[k].goRefNo != null)
+														str+='<td>'+result[s].subWorksList[i].subWorksList[k].goRefNo+'</td>';
+													else 
+														str+='<td></td>';
+													
+													
+													if(typeof result[s].subWorksList[i].subWorksList[k].pendingAt != 'undefined' && result[s].subWorksList[i].subWorksList[k].pendingAt != null)
+														str+='<td>'+result[s].subWorksList[i].subWorksList[k].pendingAt+'</td>';
+													else 
+														str+='<td></td>';
+													
+														str+='<td></td>';
+														str+='</tr>';
+													//}
+												}
+											}
+										//}
+									}
+								str+='</tbody>';
+						str+='</table>';
+						str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				
+			}
+		}
+		
 		$('#pdfWiswPetitionsView').html(str);
 		
 		$('.printViewCls').trigger('click');
@@ -1971,4 +2025,4 @@ $(document).on('change','#departmntId',function(){
 
 		}
 
-})
+});

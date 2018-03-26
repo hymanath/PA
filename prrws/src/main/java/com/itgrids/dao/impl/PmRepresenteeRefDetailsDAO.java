@@ -675,8 +675,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" sub.pm_sub_work_details_id as pm_sub_work_details_id ,p.pm_status_id as pm_status_id, ");
 		sb.append(" st.state_id as state_id,dis.district_id as district_id,c.constituency_id as constituency_id,t.tehsil_id as tehsil_id, p1.panchayat_id as panchayat_id, ");
 		sb.append(" st.state_name as state_name,dis.district_name as district_name,c.name as cname ,t.tehsil_name as tehsil_name, p1.panchayat_name as panchayat_name, ");
-		sb.append(" sub.grievance_description as grievance_description ,sub.cost_estimation as cost_estimation,repd1.designation as repDesignation,rep.name as repname ,  ");
-		sb.append(" refd.designation as refDesignation,rcand.name as refName ,off.name as officerName ");
+		sb.append(" sub.grievance_description as grievance_description ,sub.cost_estimation as cost_estimation,repd1.designation as repDesignation,rep.name as repname ,  ");//21
+		sb.append(" refd.designation as refDesignation,rcand.name as refName ,off.name as officerName , ");//24
+		sb.append(" d.pm_department_id as pm_department_id, d.department as departmentName ");//25,26
 		sb.append(" from  ");
 		sb.append(" pm_sub_work_details sub  ");
 		sb.append(" LEFT JOIN pm_department d  on d.pm_department_id = sub.pm_department_id and d.is_deleted='N' ");

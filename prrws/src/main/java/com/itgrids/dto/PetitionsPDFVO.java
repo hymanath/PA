@@ -9,6 +9,9 @@ public class PetitionsPDFVO implements java.io.Serializable{
 	private String name;
 	private Long petitionId=0l;
 	private Long workId=0l;
+	private Long departmentId=0L;
+	private String deptName="";
+	private Long totalWorksInDeptCount=0L;
 	private String representationType="";
 	private String endorsmentNo="";
 	private String workDescription="";
@@ -240,6 +243,24 @@ public class PetitionsPDFVO implements java.io.Serializable{
 	}
 	public void setSubWorksList(List<PetitionsPDFVO> subWorksList) {
 		this.subWorksList = subWorksList;
+	}
+	public Long getDepartmentId() {
+		return departmentId;
+	}
+	public void setDepartmentId(Long departmentId) {
+		this.departmentId = departmentId;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public Long getTotalWorksInDeptCount() {
+		return totalWorksInDeptCount;
+	}
+	public void setTotalWorksInDeptCount(Long totalWorksInDeptCount) {
+		this.totalWorksInDeptCount = totalWorksInDeptCount;
 	}
 }
 	

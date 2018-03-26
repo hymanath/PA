@@ -183,6 +183,8 @@ public class LocationDetailsService implements ILocationDetailsService {
 					 objects = constituencyDAO.getConstituencyNamesByDistrictId(districtId);
 				 }else if(searchType.trim().equalsIgnoreCase("petitionsData")){
 					 ;//objects = constituencyDAO.getPetitionsConstituencyList(districtId,null,null);
+				 }else if(searchType.trim().equalsIgnoreCase("self") || searchType.trim().equalsIgnoreCase("represent")){
+					 objects = constituencyDAO.getConstituencyNamesByDistrictId(districtId);
 				 }else{
 					 objects = constituencyDAO.getPetitionsConstituencyList(districtId,searchType,searchId);
 				 }

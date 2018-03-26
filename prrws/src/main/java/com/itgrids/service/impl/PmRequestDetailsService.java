@@ -6905,10 +6905,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
  			 List<PetitionsPDFVO> returnList = new ArrayList<>();
  		try {
 				List<Object[]> petitonsDetailsList = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO);
-				Map<Long,Map<Long,PetitionsPDFVO>> petitionsMap = new HashMap<Long,Map<Long,PetitionsPDFVO>> (0);
+				Map<Long,Map<Long,Map<Long,PetitionsPDFVO>>> deptWisePetitionsMap = new HashMap<Long,Map<Long,Map<Long,PetitionsPDFVO>>> (0);
 				
-				
-								
 				Set<Long> petitionIdsList = new HashSet<>();
 				Set<Long> withCostWorkIds = new HashSet<>();
 				Double totalEstimationCost=0.0d;
@@ -6921,6 +6919,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				Double sanctionedCost=0.0d;
 				Double toBeSanctionedCost=0.0d;
 				Set<Long> withGOWorkIds = new HashSet<>();
+
 				
 				if(commonMethodsUtilService.isListOrSetValid(petitonsDetailsList)){
 					for (Object[] param : petitonsDetailsList) {
@@ -6959,6 +6958,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						String refName=commonMethodsUtilService.getStringValueForObject(param[23]);
 						
 						String pendingAtOfficerName=commonMethodsUtilService.getStringValueForObject(param[24]);
+						Long deptId = commonMethodsUtilService.getLongValueForObject(param[25]);
+						String deptName =commonMethodsUtilService.getStringValueForObject(param[26]);
 						
 						if(!workIdsList.contains(workId)){
 							totalEstimationCost = totalEstimationCost+(Double.valueOf(workCost));
@@ -6967,12 +6968,14 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							else
 								withoutCostWorkIds.add(workId);
 						}
-						petitionIdsList.add(petitionId);
-						workIdsList.add(workId);
 						
 						PetitionsPDFVO vo = new PetitionsPDFVO();
 						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
 						
+						Map<Long,Map<Long,PetitionsPDFVO>> petitionsMap = new HashMap<Long,Map<Long,PetitionsPDFVO>> (0);
+						if(deptWisePetitionsMap.get(deptId) != null){
+							petitionsMap = deptWisePetitionsMap.get(deptId);
+						}
 						if(petitionsMap.get(petitionId) != null){
 							worksMap = petitionsMap.get(petitionId);
 						}
@@ -6988,7 +6991,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setRepresentationType(repType);
 						vo.setNoOfWorksCount(noOfWorks);
 						vo.setStatusId(statusId);
-						
+						vo.setDepartmentId(deptId);
+						vo.setDeptName(deptName);
 						AddressVO addressVO = setAddressDetailsToResultView(null,param[8],param[9],param[10],param[11],null,param[12]);
 						if(addressVO!= null){
 							vo.setAddressVO(addressVO);
@@ -7044,6 +7048,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						worksMap.put(workId, vo);
 						petitionsMap.put(petitionId, worksMap);
+						if(!workIdsList.contains(workId)){
+							deptWisePetitionsMap.put(deptId, petitionsMap);
+						}
+						petitionIdsList.add(petitionId);
+						workIdsList.add(workId);
 					} 
 				}
 				
@@ -7081,64 +7090,71 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						
 						PetitionsPDFVO vo = null;
 						Map<Long,PetitionsPDFVO> worksMap = new HashMap<>(0);
-						
-						if(petitionsMap.get(petitionId) != null){
-							worksMap = petitionsMap.get(petitionId);
-						}
-						
-						if(workId != null && workId.longValue()>0L){
-							if(worksMap.get(workId) != null){
-								vo = worksMap.get(workId);
-							}
-							
-							if(vo != null){
-								if(reprotType.equalsIgnoreCase("ACTION COPY")){
-									vo.setActionMemo(refNo);
-									withMemoWorkIds.add(workId);
-								}if(GODocType != null && GODocType.trim().length()>0){
-									vo.setGoRefNo(refNo);
-									withGOWorkIds.add(workId);
-								}
-								
-								if(goDocTypeId != null && goDocTypeId.longValue()>0L){
-									if(!sanctionedWorkIds.contains(workId)){
-										
-										BigDecimal decmial2= new BigDecimal(sanctionedCost);
-										BigDecimal decmial1= new BigDecimal(vo.getEstimationCost());
-										BigDecimal totalCost1 = decmial2.add(decmial1);
-										
-										sanctionedCost = Double.valueOf(totalCost1.toString());
-										toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(decmial1.toString());
-									}
-									sanctionedWorkIds.add(workId);
-									toBeSanctionedWorkIds.remove(workId);
-								}
-							}
-						}else{
-							for (Long wrkId : worksMap.keySet()) {
-								if(worksMap.get(wrkId) != null){
-									vo = worksMap.get(wrkId);
-								}
-								if(vo != null){
-									if(reprotType.equalsIgnoreCase("ACTION COPY")){
-										vo.setActionMemo(refNo);
-										withMemoWorkIds.add(workId);
-									}if(GODocType != null && GODocType.trim().length()>0){
-										vo.setGoRefNo(refNo);
-										withGOWorkIds.add(workId);
+						if(commonMethodsUtilService.isMapValid(deptWisePetitionsMap)){
+							for (Long deptId : deptWisePetitionsMap.keySet()) {
+								Map<Long,Map<Long,PetitionsPDFVO>> petitionsMap  = deptWisePetitionsMap.get(deptId);
+								if(commonMethodsUtilService.isMapValid(petitionsMap)){	
+									
+									if(petitionsMap.get(petitionId) != null){
+										worksMap = petitionsMap.get(petitionId);
 									}
 									
-									if(goDocTypeId != null && goDocTypeId.longValue()>0L){
-										if(!sanctionedWorkIds.contains(workId)){
-											BigDecimal decmial2= new BigDecimal(sanctionedCost);
-											BigDecimal decmial1= new BigDecimal(vo.getEstimationCost());
-											BigDecimal totalCost1 = decmial2.add(decmial1);
-											
-											sanctionedCost = Double.valueOf(totalCost1.toString());
-											toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(decmial1.toString());
+									if(workId != null && workId.longValue()>0L){
+										if(worksMap.get(workId) != null){
+											vo = worksMap.get(workId);
 										}
-										sanctionedWorkIds.add(workId);
-										toBeSanctionedWorkIds.remove(workId);
+										
+										if(vo != null){
+											if(reprotType.equalsIgnoreCase("ACTION COPY")){
+												vo.setActionMemo(refNo);
+												withMemoWorkIds.add(workId);
+											}if(GODocType != null && GODocType.trim().length()>0){
+												vo.setGoRefNo(refNo);
+												withGOWorkIds.add(workId);
+											}
+											
+											if(goDocTypeId != null && goDocTypeId.longValue()>0L){
+												if(!sanctionedWorkIds.contains(workId)){
+													
+													BigDecimal decmial2= new BigDecimal(sanctionedCost);
+													BigDecimal decmial1= new BigDecimal(vo.getEstimationCost());
+													BigDecimal totalCost1 = decmial2.add(decmial1);
+													
+													sanctionedCost = Double.valueOf(totalCost1.toString());
+													toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(decmial1.toString());
+												}
+												sanctionedWorkIds.add(workId);
+												toBeSanctionedWorkIds.remove(workId);
+											}
+										}
+									}else{
+										for (Long wrkId : worksMap.keySet()) {
+											if(worksMap.get(wrkId) != null){
+												vo = worksMap.get(wrkId);
+											}
+											if(vo != null){
+												if(reprotType.equalsIgnoreCase("ACTION COPY")){
+													vo.setActionMemo(refNo);
+													withMemoWorkIds.add(workId);
+												}if(GODocType != null && GODocType.trim().length()>0){
+													vo.setGoRefNo(refNo);
+													withGOWorkIds.add(workId);
+												}
+												
+												if(goDocTypeId != null && goDocTypeId.longValue()>0L){
+													if(!sanctionedWorkIds.contains(workId)){
+														BigDecimal decmial2= new BigDecimal(sanctionedCost);
+														BigDecimal decmial1= new BigDecimal(vo.getEstimationCost());
+														BigDecimal totalCost1 = decmial2.add(decmial1);
+														
+														sanctionedCost = Double.valueOf(totalCost1.toString());
+														toBeSanctionedCost = toBeSanctionedCost - Double.valueOf(decmial1.toString());
+													}
+													sanctionedWorkIds.add(workId);
+													toBeSanctionedWorkIds.remove(workId);
+												}
+											}
+										}
 									}
 								}
 							}
@@ -7146,35 +7162,49 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 					}
 				}
 				
-				if(commonMethodsUtilService.isMapValid(petitionsMap)){
-					for (Long petitionId : petitionsMap.keySet()) {
-						if(commonMethodsUtilService.isMapValid(petitionsMap.get(petitionId))){
-							PetitionsPDFVO petitionVO = new PetitionsPDFVO();
-							petitionVO.setPetitionId(petitionId);
-							petitionVO.getSubWorksList().addAll(petitionsMap.get(petitionId).values());
-							returnList.add(petitionVO);
+				//Map<Long,Map<Long,Map<Long,PetitionsPDFVO>>> deptWisePetitionsMap = new HashMap<Long,Map<Long,Map<Long,PetitionsPDFVO>>> (0);
+				if(commonMethodsUtilService.isMapValid(deptWisePetitionsMap)){
+					for (Long deptId : deptWisePetitionsMap.keySet()) {
+						PetitionsPDFVO deptVO = new PetitionsPDFVO();
+						deptVO.setDepartmentId(deptId);
+						Map<Long,Map<Long,PetitionsPDFVO>> petitionsMap = deptWisePetitionsMap.get(deptId);
+						if(commonMethodsUtilService.isMapValid(petitionsMap)){	
+							for (Long petitionId : petitionsMap.keySet()) {
+								if(commonMethodsUtilService.isMapValid(petitionsMap.get(petitionId))){
+									PetitionsPDFVO petitionVO = new PetitionsPDFVO();
+									petitionVO.setPetitionId(petitionId);
+									petitionVO.getSubWorksList().addAll(petitionsMap.get(petitionId).values());
+									if(commonMethodsUtilService.isListOrSetValid(petitionVO.getSubWorksList())){
+										deptVO.setDeptName(petitionVO.getSubWorksList().get(0).getDeptName());
+										deptVO.setTotalWorksInDeptCount(deptVO.getTotalWorksInDeptCount()+Long.valueOf(String.valueOf(petitionVO.getSubWorksList().size())));
+									}
+									deptVO.getSubWorksList().add(petitionVO);
+								}
+							}
 						}
+						returnList.add(deptVO);
 					}
 					
-					if(commonMethodsUtilService.isListOrSetValid(returnList)){
-						PetitionsPDFVO firstVO = returnList.get(0);
-						if(firstVO != null){
-							
-							firstVO.setTotalCount(commonMethodsUtilService.isListOrSetValid(petitionIdsList)?Long.valueOf(String.valueOf(petitionIdsList.size())):0L);
-							firstVO.setNoOfWorksWithCost(commonMethodsUtilService.isListOrSetValid(withCostWorkIds)?Long.valueOf(String.valueOf(withCostWorkIds.size())):0L);
-							firstVO.setEstimationCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(totalEstimationCost));
-							firstVO.setSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(sanctionedWorkIds)?Long.valueOf(String.valueOf(sanctionedWorkIds.size())):0L);
-							firstVO.setToBeSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(toBeSanctionedWorkIds)?Long.valueOf(String.valueOf(toBeSanctionedWorkIds.size())):0L);
-							firstVO.setNoOfMemoIssuedCount(commonMethodsUtilService.isListOrSetValid(withMemoWorkIds)?Long.valueOf(String.valueOf(withMemoWorkIds.size())):0L);
-							
-							firstVO.setTotalWorksCount(commonMethodsUtilService.isListOrSetValid(workIdsList)?Long.valueOf(String.valueOf(workIdsList.size())):0L);
-							firstVO.setNoOfWorksWithoutCost(commonMethodsUtilService.isListOrSetValid(withoutCostWorkIds)?Long.valueOf(String.valueOf(withoutCostWorkIds.size())):0L);
-							firstVO.setSanctionedCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(sanctionedCost));
-							firstVO.setToBeSanctionedCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(toBeSanctionedCost));
-							firstVO.setNoOfGOIssuedCount(commonMethodsUtilService.isListOrSetValid(withGOWorkIds)?Long.valueOf(String.valueOf(withGOWorkIds.size())):0L);
+						if(commonMethodsUtilService.isListOrSetValid(returnList)){
+							PetitionsPDFVO firstVO = returnList.get(0);
+							if(firstVO != null){
+								
+								firstVO.setTotalCount(commonMethodsUtilService.isListOrSetValid(petitionIdsList)?Long.valueOf(String.valueOf(petitionIdsList.size())):0L);
+								firstVO.setNoOfWorksWithCost(commonMethodsUtilService.isListOrSetValid(withCostWorkIds)?Long.valueOf(String.valueOf(withCostWorkIds.size())):0L);
+								firstVO.setEstimationCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(totalEstimationCost));
+								firstVO.setSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(sanctionedWorkIds)?Long.valueOf(String.valueOf(sanctionedWorkIds.size())):0L);
+								firstVO.setToBeSanctionedWorksCount(commonMethodsUtilService.isListOrSetValid(toBeSanctionedWorkIds)?Long.valueOf(String.valueOf(toBeSanctionedWorkIds.size())):0L);
+								firstVO.setNoOfMemoIssuedCount(commonMethodsUtilService.isListOrSetValid(withMemoWorkIds)?Long.valueOf(String.valueOf(withMemoWorkIds.size())):0L);
+								
+								firstVO.setTotalWorksCount(commonMethodsUtilService.isListOrSetValid(workIdsList)?Long.valueOf(String.valueOf(workIdsList.size())):0L);
+								firstVO.setNoOfWorksWithoutCost(commonMethodsUtilService.isListOrSetValid(withoutCostWorkIds)?Long.valueOf(String.valueOf(withoutCostWorkIds.size())):0L);
+								firstVO.setSanctionedCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(sanctionedCost));
+								firstVO.setToBeSanctionedCost(commonMethodsUtilService.percentageMergeintoTwoDecimalPlaces(toBeSanctionedCost));
+								firstVO.setNoOfGOIssuedCount(commonMethodsUtilService.isListOrSetValid(withGOWorkIds)?Long.valueOf(String.valueOf(withGOWorkIds.size())):0L);
+							}
 						}
-					}
 				}
+				
 			} catch (Exception e) {
 				LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionsDetailsForPDFDocument() "+e.getMessage());
 			}
