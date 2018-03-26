@@ -72,6 +72,7 @@ import com.itgrids.partyanalyst.dao.IGovtProposalPropertyCategoryTrackingDAO;
 import com.itgrids.partyanalyst.dao.IGovtRejoinderActionDAO;
 import com.itgrids.partyanalyst.dao.IGovtSmsActionTypeDAO;
 import com.itgrids.partyanalyst.dao.INewsPaperDAO;
+import com.itgrids.partyanalyst.dao.IRwsIvrAlertDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeMemberDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
@@ -208,7 +209,7 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	private IAlertTypeDAO alertTypeDAO;
 	private IDistrictDAO districtDAO;
 	private ITehsilDAO tehsilDAO;
-	
+	private IRwsIvrAlertDetailsDAO rwsIvrAlertDetailsDAO;
 	//private IParliamentAssemblyDAO parliamentAssemblyDAO;
 	
 	
@@ -219,6 +220,13 @@ public class AlertManagementSystemService extends AlertService implements IAlert
 	
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
+	}
+	public IRwsIvrAlertDetailsDAO getRwsIvrAlertDetailsDAO() {
+		return rwsIvrAlertDetailsDAO;
+	}
+	public void setRwsIvrAlertDetailsDAO(
+			IRwsIvrAlertDetailsDAO rwsIvrAlertDetailsDAO) {
+		this.rwsIvrAlertDetailsDAO = rwsIvrAlertDetailsDAO;
 	}
 	public IDistrictDAO getDistrictDAO() {
 		return districtDAO;
@@ -17293,8 +17301,9 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				
 			//distId-0,distName-1,feedbackid-2,status-3,count-4
 			List<Object[]> feedBackIdsList = alertDAO.getjalavaniFeedbackSurveyDeatails(startDate,endDate);
+			
 			if(feedBackIdsList != null && feedBackIdsList.size() > 0){
-				for (Object[] obj : feedBackIdsList) {
+				for (Object[] obj : feedBackIdsList){
 					BasicVO matchedVO = getmatchedFeedbackStatusVO(finalVOList,(Long)obj[0]);
 					if(matchedVO == null){
 						matchedVO = new BasicVO();
@@ -17368,6 +17377,104 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					}
 				}
 			}
+			if(finalVOList !=null && finalVOList.size()>0){
+				for (BasicVO finalVo : finalVOList){
+					//0-locationId,1-locationName,2-feedbackStatusId,problemtypeId-3,satisifiedStatus-4,count-5,IvrType-6
+					List<Object[]> ivrdetailsObjList = rwsIvrAlertDetailsDAO.getJalavaniIvrDetailsSummary(startDate,endDate); 
+					if(ivrdetailsObjList !=null && ivrdetailsObjList.size()>0){
+						for (Object[] obj : ivrdetailsObjList) {
+							BasicVO matchedLocationVo = getmatchedFeedbackStatusVO(finalVOList,(Long)obj[0]);
+							if(matchedLocationVo !=null){
+								BasicVO matchedStatusVo = getmatchedFeedbackStatusVO(matchedLocationVo.getFeedbackStatusList(),(Long)obj[2]);
+								if(matchedStatusVo !=null){
+									BasicVO matchedTypeVO = getmatchedTypeVO(matchedStatusVo.getHamletVoterInfo(),(Long)obj[3]);
+									if(matchedTypeVO == null){
+										matchedTypeVO = new BasicVO();
+										matchedTypeVO.setType(obj[6].toString());
+										matchedTypeVO.setIvrStatus(obj[4].toString());
+										
+										if(obj[4].toString() !=null && obj[4].toString() == "Y"){
+											matchedTypeVO.setIvrCount((Long) obj[5]);
+										}else if(obj[4].toString() !=null && obj[4].toString() == "N"){
+											matchedTypeVO.setIvrCount((Long) obj[5]);
+										}
+										matchedStatusVo.getHamletVoterInfo().add(matchedTypeVO);
+									}else{
+										if(obj[4].toString() !=null && obj[4].toString() == "Y"){
+											matchedTypeVO.setIvrCount((Long) obj[5]);
+										}else if(obj[4].toString() !=null && obj[4].toString() == "N"){
+											matchedTypeVO.setIvrCount((Long) obj[5]);
+										}
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+			
+			if(finalVOList != null && finalVOList.size() > 0){
+				Long notSatisfiedPosCnt=0l,notSatisfiedNegCnt=0l,partiallySatisfiedPosCnt=0l,partiallySatisfiedNegCnt=0l,satisfiedPosCnt=0l,satisfiedNegCnt=0l;
+				for (BasicVO locationVo : finalVOList){
+					if(locationVo.getFeedbackStatusList() != null && locationVo.getFeedbackStatusList().size() >0){
+						for (BasicVO statusVo : locationVo.getFeedbackStatusList()) {
+							if(statusVo.getHamletVoterInfo() !=null && statusVo.getHamletVoterInfo().size()>0){
+								for (BasicVO typeVo : statusVo.getHamletVoterInfo()){
+									if(statusVo.getId()==2l){
+										if(typeVo.getIvrStatus().equalsIgnoreCase("Y")){
+											notSatisfiedPosCnt =notSatisfiedPosCnt+typeVo.getIvrCount();
+										}else if(typeVo.getIvrStatus().equalsIgnoreCase("N")){
+											notSatisfiedNegCnt =notSatisfiedNegCnt+typeVo.getIvrCount();
+										}
+									}else if(statusVo.getId()==3l){
+										if(typeVo.getIvrStatus().equalsIgnoreCase("Y")){
+											partiallySatisfiedPosCnt =partiallySatisfiedPosCnt+typeVo.getIvrCount();
+										}else if(typeVo.getIvrStatus().equalsIgnoreCase("N")){
+											partiallySatisfiedNegCnt =partiallySatisfiedNegCnt+typeVo.getIvrCount();
+										}
+									}else if(statusVo.getId()==1l){
+										if(typeVo.getIvrStatus().equalsIgnoreCase("Y")){
+											satisfiedPosCnt =satisfiedPosCnt+typeVo.getIvrCount();
+										}else if(typeVo.getIvrStatus().equalsIgnoreCase("N")){
+											satisfiedNegCnt =satisfiedNegCnt+typeVo.getIvrCount();
+										}
+									} 
+								}
+							}
+							
+							
+							
+						}
+					}
+				 }
+				
+				Long notSatisfiedTypeCnt=0l,partiallySatisifiedTypeCnt=0l,satisifesTypeCnt=0l;
+				finalVOList.get(0).setNotSatisfiedPosCount(notSatisfiedPosCnt);
+				finalVOList.get(0).setNotSatisfiedNegCount(notSatisfiedNegCnt);
+				
+				finalVOList.get(0).setPartiallySatisfiedPosCount(partiallySatisfiedPosCnt);
+				finalVOList.get(0).setPartiallySatisfiedNegCount(partiallySatisfiedNegCnt);
+				
+				finalVOList.get(0).setSatisfiedPosCount(satisfiedPosCnt);
+				finalVOList.get(0).setSatisfiedNegCount(satisfiedNegCnt);
+				
+				notSatisfiedTypeCnt = notSatisfiedPosCnt+notSatisfiedNegCnt;
+				partiallySatisifiedTypeCnt = partiallySatisfiedPosCnt+partiallySatisfiedNegCnt;
+				satisifesTypeCnt = satisfiedPosCnt+satisfiedNegCnt;
+				
+				if(notSatisfiedTypeCnt != null && notSatisfiedTypeCnt>0l){
+					finalVOList.get(0).setNotSatisfiedPosPerc(calculatePercantage(notSatisfiedPosCnt,notSatisfiedTypeCnt));
+					finalVOList.get(0).setNotSatisfiedNegPerc(calculatePercantage(notSatisfiedNegCnt,notSatisfiedTypeCnt));
+				}
+				if(partiallySatisifiedTypeCnt != null && partiallySatisifiedTypeCnt>0l){
+					finalVOList.get(0).setPartiallySatisfiedPosPerc(calculatePercantage(partiallySatisfiedPosCnt,partiallySatisifiedTypeCnt));
+					finalVOList.get(0).setPartiallySatisfiedNegPerc(calculatePercantage(partiallySatisfiedNegCnt,partiallySatisifiedTypeCnt));
+				}
+				if(satisifesTypeCnt != null && satisifesTypeCnt>0l){
+					finalVOList.get(0).setSatisfiedPosPerc(calculatePercantage(satisfiedPosCnt,satisifesTypeCnt));
+					finalVOList.get(0).setSatisfiedNegPerc(calculatePercantage(satisfiedPosCnt,satisifesTypeCnt));
+				}
+			}
 			
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniFeedBackDetailsInfo() method of AlertManagementSystemService",e);
@@ -17384,7 +17491,16 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return null;
 	}
-	
+	public BasicVO getmatchedTypeVO(List<BasicVO> finalVOList,Long typeId){
+		if(finalVOList != null && finalVOList.size() > 0){
+			for (BasicVO basicVO : finalVOList){
+				if(basicVO.getTypeId() != null && basicVO.getTypeId().equals(typeId)){
+					return basicVO;
+				}
+			}
+		}
+		return null;
+	}
 	public List<BasicVO> setFeedBackStatusTemplate(List<Object[]> feedbackStatusList){
 		List<BasicVO> voList = new ArrayList<BasicVO>(0);
 		if(feedbackStatusList !=null && feedbackStatusList.size() >0){
