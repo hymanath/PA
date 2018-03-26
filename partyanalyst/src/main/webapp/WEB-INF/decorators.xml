@@ -766,6 +766,7 @@
 		<pattern>/govtWordCloudAction*</pattern>
 		<pattern>/exceptionalReportsAction*</pattern>
 		<pattern>/consolidatedExceptionalReportsAction*</pattern>
+		<pattern>/PrintandElectronicMediaActivitiesAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">

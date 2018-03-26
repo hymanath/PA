@@ -89,10 +89,25 @@
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse hidden-xs" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
-          	<li class="birthdayHideShowCls"><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
+          	
+			<li class="quickLinkSettingsIcon"><span class="glyphicon glyphicon-th" data-toggle="tooltip" data-placement="bottom" title="Quick Links"></span></li>
+			 <li class="birthdayHideShowCls"><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
           </ul>
-        </div><!-- /.navbar-collapse -->
-      </div><!-- /.container-fluid -->
+			
+       
+	  
+	  <div class="quickLinkSettingsBody" style="display:none;">
+			<div class="row">
+				<div class="col-sm-12">
+				 <i class="glyphicon glyphicon-remove quicklinkSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;"></i>
+				 <h4 class="text-capital" style="font-weight:bold;">Quick Links</h4>
+				 <h5 class="m_top10"><a target="_blank" href="dalithTejamDashBoardAction.action"  style="font-size:14px;font-weight:bold;text-decoration:underline;">Dalitha Tejam Dashboard</a></h5>
+				 <h4 class="m_top10"><a target="_blank" href="http://mytdp.com/KAIZALA/committeeMemberInstallation"  style="font-size:14px;font-weight:bold;text-decoration:underline;">Kaizala Committee Memberes</a></h5>
+				 </div>
+			</div>
+		</div>
+	 </div><!-- /.navbar-collapse -->	
+	</div><!-- /.container-fluid -->	
     </nav>
     <div class="navbar navbar-default navbarProfile">
     	<div class="container">
@@ -1985,125 +2000,192 @@
 	<!-- Praja Sankalpam Yatra News  END --> 	
 	</div>
 	<div class="row">
-		<!-- EM Coverage Time start -->
-		<div class="col-md-6 col-xs-12 col-sm-12 EMCoverageTimeBlock" expand-block="EMCoverageTime">
-			<div class="panel panel-default panelNewCustom">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="EMCoverageTime">
-							<h4 class="panel-title text-capital" style="font-size:14px;">
-								<div>
-									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
-									<span id="EMCoverageTimeDivId">Electronic Media Coverage Time - </span> 
-									<small id="EMCoverageTimeHeadDate" class="text-muted" style="color:#3F3733"></small>
-								</div>
-							</h4>
+		
+		<!--Press Meet block Start-->
+			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
+			   <div class="panel panel-default panelNewCustom ">
+				  <div class="panel-heading">
+					 <div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
+						   <h4 class="panel-title text-capital" style="width:440px;">    
+							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
+							  PRESS MEET - <small id="pressMeetHeadDate" class="text-muted"></small>
+						   </h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
-							
-							<span class="EMCoverageSettingExpand pull-right">
-							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
-							 </span>
-							<span class="EmSettings pull-right" onClick="refreshEm();">
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
+							<span class="pressMeetIconRefresh pull-right">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
-							<span class="EMCoverageTimeIconExpand pull-right" expand-icon="EMCoverageTime">
-								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
+						   <span class="pressmeetIconExpand pull-right" expand-icon="pressmeet">
+						   <i class="glyphicon glyphicon-fullscreen"></i>
+						   </span>
+						</div>
+					 </div>
+				  </div>
+				  <div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
+					</div>
+					</div>
+					<div class="row">
+						<span class="input-group pull-right dateRangePickerCls m_top20">
+							<input type="text" id="dateRangePressmeetId" class="form-control" style="width:180px"/>
+							<span class="input-group-addon">
+								<i class="glyphicon glyphicon-calendar"></i>
 							</span>
-							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="EMCoverageTime" style="width:200px;">
-									<input type="text" id="dateRangeEMCoverageTimeId" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-							</span>
-							<div class="eMCoverageTimeSettingsBody" style="display:none;top:15px;">
-									<div class="row">
-										<div class="col-sm-12">
-										 <i class="glyphicon glyphicon-remove eMCoverageTimeSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;border-radius: 2px;border: 1px solid #ddd;padding: 2px;background-color: #ddd;"></i>
-											
+						</span>	
+					</div>	
+					 <div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeet">
+						   <div class="row">
+							  <div id="partyWisePressMeetDetails"></div>
+						   </div>
+						</div>
+						<div class="col-md-6 col-xs-12 col-sm-12 pressmeetHiddenBlock" expand-block-right="pressmeet">
+						   <div class="row">
+							  <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
+								 <h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
+							  </div>
+							  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
+								 <ul class="activeUlCls list-inline pressmeetSpokesCls">
+									<li id="pressmeetTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;Top </li>
+									<li id="pressmeetLowId"><i class="fa fa-arrow-down"></i>&nbsp;Poor</li>
+								 </ul>
+							  </div>
+							  <div id="spokesPersonWisepressmeetDetailsId" class="col-md-12 col-xs-12 col-sm-12">
+							  </div>
+						   </div>                  
+						</div>
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+							<div class="panel-group" id="pressmeetCollapse" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingonePressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseonePressMeet" aria-expanded="true" aria-controls="collapseonePressMeet">
+											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">scale based performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseonePressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingonePressMeet">
+										<div class="panel-body">
+										   <div class="row">
+											  <div id="scaleBasedPerformanceCohortId">
+											  </div>
+										   </div>
 										</div>
 									</div>
-									<div class="row m_top10">
-										<div class="col-sm-12">
-											<label class="radio-inline">
-											  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
-											</label>
-											<label class="radio-inline">
-											  <input type="radio" id="inlineCheckboxPartyEm" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
-											</label>
+								</div>
+								</div>
+								<div class="panel-group" id="pressmeetCollapse1" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingtwoPressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse1" href="#collapsetwoPressMeet" aria-expanded="true" aria-controls="collapsetwoPressMeet">
+											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapsetwoPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingtwoPressMeet">
+										<div class="panel-body">
+										   <div class="row">
+											  <div id="candidateOverAllPerformanceCohortId">
+											  </div>
+										   </div>
 										</div>
 									</div>
-									<div class="row m_top10">
-										<div class="col-sm-12">
-											<div id="participatedCheckDivId">
-												<label class="radio-inline">
-													<input type="checkbox" id="allParticipatedCheckBoxId" class="participatedCheckCls" value="all" checked><b style="padding-left:7px;">All</b>
-												</label>
-												<label class="radio-inline">
-													<input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
-												</label>
+								</div>
+								</div>
+								<div class="panel-group" id="pressmeetCollapse2" role="tablist" aria-multiselectable="true">
+							  <div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingsthreePressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse2" href="#collapsethreePressMeet" aria-expanded="false" aria-controls="collapsethree">
+										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
+										</a>
+									</div>
+									<div id="collapsethreePressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthreePressMeet">
+									  <div class="panel-body">
+										<div class="row">
+										
+										  <div class="col-md-12 col-xs-12 col-sm-12">
+										  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
+										   <li class="active" id="0"> Both Edition </li>
+										   <li id="1" > Main Edition </li>
+										  <li id="2"> District Edtion</li>
+										 
+										  </ul>
+										  </div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
+										</div>
+									  </div>
+									</div>
+								  </div> 
+								  </div>
+								<div class="panel-group" id="pressmeetCollapse3" role="tablist" aria-multiselectable="true">	
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingsFourPressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse3" href="#collapsesFourPressMeet" aria-expanded="false" aria-controls="collapsesFourPressMeet">
+										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Publication VS Party</span></h4>
+										</a>
+									</div>
+									<div id="collapsesFourPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsFourPressMeet">
+									  <div class="panel-body">
+										<div class="row">
+											<div class="col-md-12 col-xs-12 col-sm-12">
+											 <ul class=" activeUlCls publicationAndEdtionTypescls list-inline pull-right">
+											   <li class="active" id="0"> Both Edition </li>
+											   <li id="1" > Main Edition </li>
+											  <li id="2"> District Edtion</li>
+											</ul>
+											 </div>
+											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+												<div id="publicationAndPartyWiseDetailsId"></div>
+											</div>
+										</div>
+									  </div>
+									</div>
+								 </div>
+								 </div>
+								 <div class="panel-group" id="pressmeetCollapse4" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingfivePressMeet">
+										 <a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse4" href="#collapseFivesPressMeet" aria-expanded="false" aria-controls="collapseFivesPressMeet">
+										 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
+										 overall performance</span></h4>
+										 </a>
+									</div>
+									<div id="collapseFivesPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfivePressMeet">
+										<div class="panel-body">
+											<div class="row">
+												<div class="col-md-12 col-xs-12 col-sm-12">
+													<div id="designationWiseTotalPressMeetDetails"></div>
+											 
+												</div>
 											</div>
 										</div>
 									</div>
-									<div class="row m_top10">
-							  <div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
-								<div class="tab-content navTabsSettingsContent">
-									<div role="tabpanel" class="tab-pane active" id="coveragesEmn">
-										<div class="">
-											<ul class="settingsUlEmn1" id="emnNewsChannelsUlId1"></ul>
+								</div>
+								</div>
+								<div class="panel-group" id="pressmeetCollapse5" role="tablist" aria-multiselectable="true">
+								<div class="panel panel-default panelNew">
+									<div class="panel-heading" role="tab" id="headingEightPressMeet">
+										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse5" href="#collapseEightPressMeet" aria-expanded="true" aria-controls="collapseEightPressMeet">
+											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
+										</a>
+									</div>
+									<div id="collapseEightPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEightPressMeet">
+										<div class="panel-body">
+										   <div class="row">
+											  <div id="pressMeetCasteAnalysisDivId">
+											  </div>
+										   </div>
 										</div>
 									</div>
 								</div>
-							</div>
-							</div>
-							<div class="col-md-4">
-								<button type="button" class="btn btn-success filtersSubmitDivIdEmn1" style="display: none;" >Get Details</button>
-							</div>
-							</div>
-						</div>     
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="col-md-12 col-xs-12 col-sm-12">
-						<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
-					</div>
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top10" expand-block-inner="EMCoverageTime">
-							<div class="col-sm-5">
-								<label>Select Category</label>
-								<select class="form-control chosen-select" id="categoryEmId">
-									<option value="0">All</option>
-									<option value="1175">REACTION ON CENTRAL BUDGET - 2018</option>
-									<option value="757">SPECIAL STATUS</option>
-									<option value="1156">TELUGU DESAM -  DALITA TEJAM</option>
-									<option value="1109">JANMABOOMI - MAA URU 2018</option>
-									<option value="1051">Praja sankalpa yatra</option>
-									<option value="1050">Counter on praja sankalpa yatra</option>
-								</select>
-							</div>
-						</div>	
-					</div>
-					
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
-							<div class="row m_top10">
-								<div class="col-sm-12">
-									<div id="EMCoverageTimeSummaryDivId"></div>
 								</div>
 							</div>
 						</div>
-						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="EMCoverageTime" style="display: none;">
-								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right EMCoverageTimeBlocksIcon" title="Click here for more"></i>
-							</div>	
-							<div class="col-md-12 col-xs-12 col-sm-12 moreEMCoverageTimeBlocksDetailed m_top10"  expand-block-more="EMCoverageTime" style="display:none;">
-								<div id="EMCoverageTimeDayWiseDivId"></div>
-							</div>
-							
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- EM Coverage Time End -->
+					 </div>
+				  </div>
+			   </div>
+			
+			<!---PressMeet End--->
 		<!-- DEBATES PROGRAM BLOCK -->
 			<div class="col-md-6 col-xs-12 col-sm-12 debatesBlock" expand-block="debates">
 				<div class="panel panel-default panelNewCustom panel2">
@@ -2402,191 +2484,125 @@
 			<!-- DEBATES PROGRAM BLOCK END-->
 	</div>
 	<div class="row">
-		<!--Press Meet block Start-->
-			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
-			   <div class="panel panel-default panelNewCustom ">
-				  <div class="panel-heading">
-					 <div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="pressmeet">
-						   <h4 class="panel-title text-capital" style="width:440px;">    
-							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  PRESS MEET - <small id="pressMeetHeadDate" class="text-muted"></small>
-						   </h4>
+		<!-- EM Coverage Time start -->
+		<div class="col-md-6 col-xs-12 col-sm-12 EMCoverageTimeBlock" expand-block="EMCoverageTime">
+			<div class="panel panel-default panelNewCustom">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12" expand-block-heading="EMCoverageTime">
+							<h4 class="panel-title text-capital" style="font-size:14px;">
+								<div>
+									<img src="newCoreDashBoard/img/news.png" class="iconClass"/>
+									<span id="EMCoverageTimeDivId">Electronic Media Coverage Time - </span> 
+									<small id="EMCoverageTimeHeadDate" class="text-muted" style="color:#3F3733"></small>
+								</div>
+							</h4>
 						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="pressmeet">
-							<span class="pressMeetIconRefresh pull-right">
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="EMCoverageTime">
+							
+							<span class="EMCoverageSettingExpand pull-right">
+							   <i class="fa fa-gears"  data-toggle="tooltip" data-placement="top" title="Settings"></i>
+							 </span>
+							<span class="EmSettings pull-right" onClick="refreshEm();">
 								<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
 							</span> 
-						   <span class="pressmeetIconExpand pull-right" expand-icon="pressmeet">
-						   <i class="glyphicon glyphicon-fullscreen"></i>
-						   </span>
-						</div>
-					 </div>
-				  </div>
-				  <div class="panel-body">
-					<div class="row">
-						<div class="col-sm-12">
-							<h5 class="module_OwnerCss">Module Owner : Anil</h5>
-					</div>
-					</div>
-					<div class="row">
-						<span class="input-group pull-right dateRangePickerCls m_top20">
-							<input type="text" id="dateRangePressmeetId" class="form-control" style="width:180px"/>
-							<span class="input-group-addon">
-								<i class="glyphicon glyphicon-calendar"></i>
+							<span class="EMCoverageTimeIconExpand pull-right" expand-icon="EMCoverageTime">
+								<i class="glyphicon glyphicon-fullscreen" style="cursor:pointer;"></i>
 							</span>
-						</span>	
-					</div>	
-					 <div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 pressmeetBlock" expand-block-inner="pressmeet">
-						   <div class="row">
-							  <div id="partyWisePressMeetDetails"></div>
-						   </div>
-						</div>
-						<div class="col-md-6 col-xs-12 col-sm-12 pressmeetHiddenBlock" expand-block-right="pressmeet">
-						   <div class="row">
-							  <div class="col-md-6 col-xs-12 col-sm-6 m_top10">
-								 <h4 class="text-capital"><span class="headingColor ">Spokespersons</span></h4>
-							  </div>
-							  <div class="col-md-6 col-md-offset-6 col-xs-12 col-sm-6 col-sm-offset-6 m_top10">
-								 <ul class="activeUlCls list-inline pressmeetSpokesCls">
-									<li id="pressmeetTopId" class="active"><i class="fa fa-arrow-up"></i>&nbsp;Top </li>
-									<li id="pressmeetLowId"><i class="fa fa-arrow-down"></i>&nbsp;Poor</li>
-								 </ul>
-							  </div>
-							  <div id="spokesPersonWisepressmeetDetailsId" class="col-md-12 col-xs-12 col-sm-12">
-							  </div>
-						   </div>                  
-						</div>
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-							<div class="panel-group" id="pressmeetCollapse" role="tablist" aria-multiselectable="true">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingonePressMeet">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse" href="#collapseonePressMeet" aria-expanded="true" aria-controls="collapseonePressMeet">
-											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">scale based performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseonePressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingonePressMeet">
-										<div class="panel-body">
-										   <div class="row">
-											  <div id="scaleBasedPerformanceCohortId">
-											  </div>
-										   </div>
+							<span class="input-group pull-right dateRangePickerCls hide" expand-block-date="EMCoverageTime" style="width:200px;">
+									<input type="text" id="dateRangeEMCoverageTimeId" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+							</span>
+							<div class="eMCoverageTimeSettingsBody" style="display:none;top:15px;">
+									<div class="row">
+										<div class="col-sm-12">
+										 <i class="glyphicon glyphicon-remove eMCoverageTimeSettingsCloseBody" style="cursor: pointer; position: absolute; right: 6px; z-index: 99; top: -9px;border-radius: 2px;border: 1px solid #ddd;padding: 2px;background-color: #ddd;"></i>
+											
 										</div>
 									</div>
-								</div>
-								</div>
-								<div class="panel-group" id="pressmeetCollapse1" role="tablist" aria-multiselectable="true">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingtwoPressMeet">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse1" href="#collapsetwoPressMeet" aria-expanded="true" aria-controls="collapsetwoPressMeet">
-											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">candidate overall performance cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapsetwoPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingtwoPressMeet">
-										<div class="panel-body">
-										   <div class="row">
-											  <div id="candidateOverAllPerformanceCohortId">
-											  </div>
-										   </div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<label class="radio-inline">
+											  <input type="radio" id="inlineCheckbox1" class="EMCoverageTimeCls" name="optionsRadios"  value="candidate" checked><b>Candidate</b>
+											</label>
+											<label class="radio-inline">
+											  <input type="radio" id="inlineCheckboxPartyEm" class="EMCoverageTimeCls"  name="optionsRadios"  value="party"><b>Party</b>
+											</label>
 										</div>
 									</div>
-								</div>
-								</div>
-								<div class="panel-group" id="pressmeetCollapse2" role="tablist" aria-multiselectable="true">
-							  <div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingsthreePressMeet">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse2" href="#collapsethreePressMeet" aria-expanded="false" aria-controls="collapsethree">
-										   <h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Top 5 Performers</span></h4>
-										</a>
-									</div>
-									<div id="collapsethreePressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsthreePressMeet">
-									  <div class="panel-body">
-										<div class="row">
-										
-										  <div class="col-md-12 col-xs-12 col-sm-12">
-										  <ul class=" activeUlCls edtionTypescls list-inline pull-right">
-										   <li class="active" id="0"> Both Edition </li>
-										   <li id="1" > Main Edition </li>
-										  <li id="2"> District Edtion</li>
-										 
-										  </ul>
-										  </div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top20" id="candidatePressMeetPerformanceId"></div>
-										</div>
-									  </div>
-									</div>
-								  </div> 
-								  </div>
-								<div class="panel-group" id="pressmeetCollapse3" role="tablist" aria-multiselectable="true">	
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingsFourPressMeet">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse3" href="#collapsesFourPressMeet" aria-expanded="false" aria-controls="collapsesFourPressMeet">
-										   <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Publication VS Party</span></h4>
-										</a>
-									</div>
-									<div id="collapsesFourPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsFourPressMeet">
-									  <div class="panel-body">
-										<div class="row">
-											<div class="col-md-12 col-xs-12 col-sm-12">
-											 <ul class=" activeUlCls publicationAndEdtionTypescls list-inline pull-right">
-											   <li class="active" id="0"> Both Edition </li>
-											   <li id="1" > Main Edition </li>
-											  <li id="2"> District Edtion</li>
-											</ul>
-											 </div>
-											<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-												<div id="publicationAndPartyWiseDetailsId"></div>
-											</div>
-										</div>
-									  </div>
-									</div>
-								 </div>
-								 </div>
-								 <div class="panel-group" id="pressmeetCollapse4" role="tablist" aria-multiselectable="true">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingfivePressMeet">
-										 <a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse4" href="#collapseFivesPressMeet" aria-expanded="false" aria-controls="collapseFivesPressMeet">
-										 <h4><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Designation Wise
-										 overall performance</span></h4>
-										 </a>
-									</div>
-									<div id="collapseFivesPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingfivePressMeet">
-										<div class="panel-body">
-											<div class="row">
-												<div class="col-md-12 col-xs-12 col-sm-12">
-													<div id="designationWiseTotalPressMeetDetails"></div>
-											 
-												</div>
+									<div class="row m_top10">
+										<div class="col-sm-12">
+											<div id="participatedCheckDivId">
+												<label class="radio-inline">
+													<input type="checkbox" id="allParticipatedCheckBoxId" class="participatedCheckCls" value="all" checked><b style="padding-left:7px;">All</b>
+												</label>
+												<label class="radio-inline">
+													<input type="checkbox" id="participatedCheckBoxId" class="participatedCheckCls" value="Participated"><b style="padding-left:7px;">Participated</b>
+												</label>
 											</div>
 										</div>
 									</div>
-								</div>
-								</div>
-								<div class="panel-group" id="pressmeetCollapse5" role="tablist" aria-multiselectable="true">
-								<div class="panel panel-default panelNew">
-									<div class="panel-heading" role="tab" id="headingEightPressMeet">
-										<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#pressmeetCollapse5" href="#collapseEightPressMeet" aria-expanded="true" aria-controls="collapseEightPressMeet">
-											<h4 class="panel-title"><span class="headingColor responsiveWidth text-capitalize" style="display:block;width:330px;">Caste Group Cohort</span></h4>
-										</a>
-									</div>
-									<div id="collapseEightPressMeet" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingEightPressMeet">
-										<div class="panel-body">
-										   <div class="row">
-											  <div id="pressMeetCasteAnalysisDivId">
-											  </div>
-										   </div>
+									<div class="row m_top10">
+							  <div class="col-md-8 col-xs-12 col-sm-6 pad_left0 pad_right4">
+								<div class="tab-content navTabsSettingsContent">
+									<div role="tabpanel" class="tab-pane active" id="coveragesEmn">
+										<div class="">
+											<ul class="settingsUlEmn1" id="emnNewsChannelsUlId1"></ul>
 										</div>
 									</div>
 								</div>
+							</div>
+							</div>
+							<div class="col-md-4">
+								<button type="button" class="btn btn-success filtersSubmitDivIdEmn1" style="display: none;" >Get Details</button>
+							</div>
+							</div>
+						</div>     
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<h5 class="module_OwnerCss">Module Owner : K Rajesh</h5>
+					</div>
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock m_top10" expand-block-inner="EMCoverageTime">
+							<div class="col-sm-5">
+								<label>Select Category</label>
+								<select class="form-control chosen-select" id="categoryEmId">
+									<option value="0">All</option>
+									<option value="1175">REACTION ON CENTRAL BUDGET - 2018</option>
+									<option value="757">SPECIAL STATUS</option>
+									<option value="1156">TELUGU DESAM -  DALITA TEJAM</option>
+									<option value="1109">JANMABOOMI - MAA URU 2018</option>
+									<option value="1051">Praja sankalpa yatra</option>
+									<option value="1050">Counter on praja sankalpa yatra</option>
+								</select>
+							</div>
+						</div>	
+					</div>
+					
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 NewToursBlock">
+							<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="EMCoverageTimeSummaryDivId"></div>
 								</div>
 							</div>
 						</div>
-					 </div>
-				  </div>
-			   </div>
-			
-			<!---PressMeet End--->
+						<div class="col-xs-12 col-sm-12 col-md-12"  expand-block-right="EMCoverageTime" style="display: none;">
+								<i data-placement="top" data-toggle="tooltip" class="glyphicon glyphicon-option-horizontal pull-right EMCoverageTimeBlocksIcon" title="Click here for more"></i>
+							</div>	
+							<div class="col-md-12 col-xs-12 col-sm-12 moreEMCoverageTimeBlocksDetailed m_top10"  expand-block-more="EMCoverageTime" style="display:none;">
+								<div id="EMCoverageTimeDayWiseDivId"></div>
+							</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- EM Coverage Time End -->
 			<!-- tour New Jsp Code -->
 		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
 			<div class="panel panel-default panelNewCustom">
@@ -6483,6 +6499,7 @@ var globalImages;
 	  
 	  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking" || finalURL =="partyAndLeaderActivitiesAndPerformanceTracking#")
 	  {
+		$(".quickLinkSettingsIcon").hide(); 
 		$(".exceptionalReportsBlockCls").hide();    
 	    $("#mainHeadinId").html("KALA VENKATA RAO");
 		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.pressmeetBlock,.cadreInsuranceBlock").remove();
@@ -6506,6 +6523,7 @@ var globalImages;
 		getPartySpecialMeetingsMainTypeOverview(0);
 	  }else  if(finalURL =="partyLeadersDashboardAction" || finalURL =="partyLeadersDashboardAction#")//finalURL =="coreDashboardAction1"
 	  {
+		 $(".quickLinkSettingsIcon").hide(); 
 		 $(".exceptionalReportsBlockCls").hide(); 
 		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.pressmeetBlock,.cadreInsuranceBlock").remove();
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
@@ -6528,6 +6546,7 @@ var globalImages;
 		//getAlertDtlsBasedOnSelection('default');
 	  }else if(finalURL == "govtPartyCoreDashboardAction" || finalURL == "govtPartyCoreDashboardAction#")
 	  {
+		  $(".quickLinkSettingsIcon").hide();
 		  $(".exceptionalReportsBlockCls").hide();    
 		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.kaizalaBlock,.pressmeetBlock,.boothCommitteesBlock").remove();
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
@@ -6540,8 +6559,18 @@ var globalImages;
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
-	  }else if(finalURL =="dailyMonthlyPartyActivities" || finalURL =="dailyMonthlyPartyActivities#")
+	  }else if(finalURL =="PrintandElectronicMediaActivitiesAction" || finalURL =="PrintandElectronicMediaActivitiesAction#"){
+		   $(".quickLinkSettingsIcon").hide();
+		   $(".exceptionalReportsBlockCls").hide();
+			$(".cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.kaizalaBlock,.boothCommitteesBlock,.newsBlock,.electronicMediaBlock").remove();
+			$("#mainHeadinId").html("KALA VENKATA RAO");
+			preemeeetOnloadCalls();
+			//Debates
+			getPartyWiseTotalDebateDetails();      
+	  }
+	  else if(finalURL =="dailyMonthlyPartyActivities" || finalURL =="dailyMonthlyPartyActivities#")
 	  {
+		 $(".quickLinkSettingsIcon").show(); 
 		$(".exceptionalReportsBlockCls").show();  
 		$(".nominatedSideMenuCls").hide();
 		$(".newNominatedPostBlock").remove();
@@ -6618,6 +6647,7 @@ var globalImages;
 	  }
 	  else if(finalURL =="partyC0reDashboardAction" || finalURL =="partyC0reDashboardAction#")
 	  {
+		 $(".quickLinkSettingsIcon").show();
 		 $(".exceptionalReportsBlockCls").show();     
 		//ALL BLOCKS
 		$(".nominatedSideMenuCls").show();
@@ -6693,6 +6723,7 @@ var globalImages;
 	  }
 	  else{
 		  $(".exceptionalReportsBlockCls").show();    
+		  $(".quickLinkSettingsIcon").show();
 		   $("#mainHeadinId").html("KALA VENKATA RAO");
 			//ALL BLOCKS
 			preemeeetOnloadCalls();
@@ -6846,6 +6877,19 @@ function refreshMeeting(){
 function refreshMeetingStatus(){
 	getinsertDataInToPartyMeetingStatus();
 }
+$(document).on("click",".quickLinkSettingsIcon",function(e){
+	e.stopPropagation();
+	$(this).closest(".navbar-collapse").find(".quickLinkSettingsBody").show();
+});
+$(document).on("click",".quickLinkSettingsBody",function(e){
+	e.stopPropagation();
+});
+$(document).on("click",function(){
+	$(".quickLinkSettingsBody").hide();
+});
+$(document).on("click",".quicklinkSettingsCloseBody",function(){
+	$(this).closest(".quickLinkSettingsBody").hide();
+});
 </script> 
 <script>
 var tableToExcel = (function() {
