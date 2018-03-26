@@ -653,7 +653,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		try{
 			Long applicationId =0L;
 			String levelVal ="";
-			if(boardLevelId == 5l || boardLevelId == 6l){
+			if(boardLevelId == 5l || boardLevelId == 6l || boardLevelId == 7l || boardLevelId == 8l){
 				 levelVal =searchLevelValue.toString().substring(1);
 			}else{
 				levelVal =searchLevelValue.toString();
@@ -683,7 +683,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Object[]> list = null;
 			Object[] obj = null;
 			String levelVal ="";
-			if(boardLevlId == 5l || boardLevlId == 6l){
+			if(boardLevlId == 5l || boardLevlId == 6l || boardLevlId == 7l || boardLevlId == 8l ){
 				 levelVal =searchLevelValue.toString().substring(1);
 			}else{
 				levelVal =searchLevelValue.toString();
@@ -731,7 +731,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			List<Long> memberIds = new ArrayList<Long>();
 			Map<Long,IdNameVO> posCuntMap = new HashMap<Long, IdNameVO>();
 			String levelVal ="";
-			if(boardLevlId == 5l || boardLevlId == 6l){
+			if(boardLevlId == 5l || boardLevlId == 6l || boardLevlId == 7l || boardLevlId == 8l){
 				 levelVal =searchLevelValue.toString().substring(1);
 			}else{
 				levelVal =searchLevelValue.toString();
