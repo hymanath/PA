@@ -1538,6 +1538,7 @@ getAllDepartments();
 		ranges: {
 			'All':[moment().subtract(20, 'years').startOf('year').format("DD/MM/YYYY"), moment().add(10, 'years').endOf('year').format("DD/MM/YYYY")],
 			'Today' : [moment(), moment()],
+			'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
