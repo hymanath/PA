@@ -37,6 +37,7 @@ public class RwsIvrAlertDetails {
 	
 	private RwsIvrType rwsIvrType;
 	private Alert alert;
+	private RwsIvrSurvey rwsIvrSurvey;
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -54,7 +55,7 @@ public class RwsIvrAlertDetails {
 	public void setAlertId(Long alertId) {
 		this.alertId = alertId;
 	}
-	@Column(name = "rws_ivr_type_id")
+	@Column(name = "rws_ivr_survey_id")
 	public Long getRwsIvrSurveyId() {
 		return rwsIvrSurveyId;
 	}
@@ -104,7 +105,7 @@ public class RwsIvrAlertDetails {
 		this.insertedTime = insertedTime;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "rws_ivr_type_id", insertable = false, updatable = false)
+	@JoinColumn(name = "rws_ivr_type_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
 	public RwsIvrType getRwsIvrType() {
@@ -114,7 +115,7 @@ public class RwsIvrAlertDetails {
 		this.rwsIvrType = rwsIvrType;
 	}
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-	@JoinColumn(name = "alert_id", insertable = false, updatable = false)
+	@JoinColumn(name = "alert_id",insertable = false, updatable = false)
 	@LazyToOne(LazyToOneOption.NO_PROXY)
 	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
 	public Alert getAlert() {
@@ -129,6 +130,16 @@ public class RwsIvrAlertDetails {
 	}
 	public void setRwsIvrTypeId(Long rwsIvrTypeId) {
 		this.rwsIvrTypeId = rwsIvrTypeId;
+	}
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rws_ivr_survey_id",insertable = false, updatable = false)
+	@LazyToOne(LazyToOneOption.NO_PROXY)
+	@org.hibernate.annotations.NotFound(action = NotFoundAction.IGNORE)
+	public RwsIvrSurvey getRwsIvrSurvey() {
+		return rwsIvrSurvey;
+	}
+	public void setRwsIvrSurvey(RwsIvrSurvey rwsIvrSurvey) {
+		this.rwsIvrSurvey = rwsIvrSurvey;
 	}
 	
 }
