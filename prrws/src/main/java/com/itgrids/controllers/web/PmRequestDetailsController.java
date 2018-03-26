@@ -165,8 +165,8 @@ public class PmRequestDetailsController {
 			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
 				 deptIds= inputVO.getDeptIdsList();
 			}else if(inputVO.getDesignationIds()==null){
-			KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-			deptIds = deptVO.getDeptIdsList();
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
 			}
 	    	return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputVO, inputVO.getSearchLvlVals(),deptIds,inputVO.getDesignationIds(),inputVO.getType(),inputVO.getStatusIds());
 	    }
@@ -312,6 +312,10 @@ public class PmRequestDetailsController {
 			}else{
 				return null;
 			}
+			if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size()==0 || inputVO.getDeptIdsList().get(0).longValue()==0L){
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
+			}
 	    	return pmRequestDetailsService.getCompleteOrStatusOverviewDetails(userId,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDeptIdsList());
 	    }
 	    @RequestMapping(value ="/representationsDashboard", method = RequestMethod.GET)
@@ -387,6 +391,10 @@ public class PmRequestDetailsController {
 				userId = userVO.getUserId();
 			}else{
 				return null;
+			}
+			if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size()==0 || inputVO.getDeptIdsList().get(0).longValue()==0L){
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
 			}
 	       return pmRequestDetailsService.getLeadWiseOverviewDetails(userId,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDeptIdsList());
 	    }
@@ -503,6 +511,11 @@ public class PmRequestDetailsController {
 			}else{
 				return null;
 			}
+			if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size()==0 || inputVO.getDeptIdsList().get(0).longValue()==0L){
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				inputVO.setDeptIdsList(deptVO.getDeptIdsList());
+			}
+			
 	    	return pmRequestDetailsService.getReferralWiseOverviewDetails(inputVO);
 	    }
 	    @RequestMapping(value ="/getPetitionTrackingHistoryDetails",method = RequestMethod.POST)
@@ -626,9 +639,9 @@ public class PmRequestDetailsController {
 				}else{
 					return null;
 				}
-				if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size() ==0){
+				if(inputVO.getDeptIdsList() == null || inputVO.getDeptIdsList().size()==0 || inputVO.getDeptIdsList().get(0).longValue()==0L){
 					KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
-					inputVO.getDeptIdsList().addAll(deptVO.getDeptIdsList());
+					inputVO.setDeptIdsList(deptVO.getDeptIdsList());
 				}
 				
 				return locationDetailsService.getLocationWiseRepresentationsOverviewDetails(inputVO);
