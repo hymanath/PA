@@ -13,9 +13,9 @@ import java.util.Map;
 @SuppressWarnings("serial")
 public class BasicVO implements Serializable{
 
-	private Long id;
+	private Long id,typeId;
 	private Long count=0l;
-	private String name;
+	private String name,type,ivrStatus;
 	private String description;
 	private String mandalName;
 	private String casteName;
@@ -51,7 +51,7 @@ public class BasicVO implements Serializable{
 	private Long		  locationInfoId;
 	private ActivityAttendanceInfoVO activityAttendanceInfoVO = new ActivityAttendanceInfoVO();
 	private Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
-	private Long coveredCount;
+	private Long coveredCount,ivrCount=0l;
 	private Long day;
 	private Long totalResult=0L;
 	private String date;
@@ -59,9 +59,183 @@ public class BasicVO implements Serializable{
 	private List<BasicVO> feedbackStatusList = new ArrayList<BasicVO>(0);
 	private Long notSatisfiedCount=0l,partiallySatisfiedCount=0l,satisfiedCount=0l;
 	private Double notSatisfiedPerc=0.0,partiallySatsifyPerc=0.0,satisfiedPerc=0.0;
+	private Long notSatisfiedPosCount=0l,notSatisfiedNegCount=0l,partiallySatisfiedPosCount=0l,partiallySatisfiedNegCount=0l,
+			satisfiedPosCount=0l,satisfiedNegCount=0l;
+	private Double notSatisfiedPosPerc=0.0,notSatisfiedNegPerc=0.0,partiallySatisfiedPosPerc=0.0,partiallySatisfiedNegPerc=0.0,
+			satisfiedPosPerc=0.0,satisfiedNegPerc=0.0;
 	
 	public BasicVO(){}
 	
+	
+	public Double getNotSatisfiedPosPerc() {
+		return notSatisfiedPosPerc;
+	}
+
+
+
+	public void setNotSatisfiedPosPerc(Double notSatisfiedPosPerc) {
+		this.notSatisfiedPosPerc = notSatisfiedPosPerc;
+	}
+
+
+
+	public Double getNotSatisfiedNegPerc() {
+		return notSatisfiedNegPerc;
+	}
+
+
+
+	public void setNotSatisfiedNegPerc(Double notSatisfiedNegPerc) {
+		this.notSatisfiedNegPerc = notSatisfiedNegPerc;
+	}
+
+
+
+	public Double getPartiallySatisfiedPosPerc() {
+		return partiallySatisfiedPosPerc;
+	}
+
+
+
+	public void setPartiallySatisfiedPosPerc(Double partiallySatisfiedPosPerc) {
+		this.partiallySatisfiedPosPerc = partiallySatisfiedPosPerc;
+	}
+
+
+
+	public Double getPartiallySatisfiedNegPerc() {
+		return partiallySatisfiedNegPerc;
+	}
+
+
+
+	public void setPartiallySatisfiedNegPerc(Double partiallySatisfiedNegPerc) {
+		this.partiallySatisfiedNegPerc = partiallySatisfiedNegPerc;
+	}
+
+
+
+	public Double getSatisfiedPosPerc() {
+		return satisfiedPosPerc;
+	}
+
+
+
+	public void setSatisfiedPosPerc(Double satisfiedPosPerc) {
+		this.satisfiedPosPerc = satisfiedPosPerc;
+	}
+
+
+
+	public Double getSatisfiedNegPerc() {
+		return satisfiedNegPerc;
+	}
+
+
+
+	public void setSatisfiedNegPerc(Double satisfiedNegPerc) {
+		this.satisfiedNegPerc = satisfiedNegPerc;
+	}
+
+
+
+	public Long getNotSatisfiedPosCount() {
+		return notSatisfiedPosCount;
+	}
+
+
+
+	public void setNotSatisfiedPosCount(Long notSatisfiedPosCount) {
+		this.notSatisfiedPosCount = notSatisfiedPosCount;
+	}
+
+
+
+	public Long getNotSatisfiedNegCount() {
+		return notSatisfiedNegCount;
+	}
+
+
+
+	public void setNotSatisfiedNegCount(Long notSatisfiedNegCount) {
+		this.notSatisfiedNegCount = notSatisfiedNegCount;
+	}
+
+
+
+	public Long getPartiallySatisfiedPosCount() {
+		return partiallySatisfiedPosCount;
+	}
+
+
+
+	public void setPartiallySatisfiedPosCount(Long partiallySatisfiedPosCount) {
+		this.partiallySatisfiedPosCount = partiallySatisfiedPosCount;
+	}
+
+
+
+	public Long getPartiallySatisfiedNegCount() {
+		return partiallySatisfiedNegCount;
+	}
+
+
+
+	public void setPartiallySatisfiedNegCount(Long partiallySatisfiedNegCount) {
+		this.partiallySatisfiedNegCount = partiallySatisfiedNegCount;
+	}
+
+
+
+	public Long getSatisfiedPosCount() {
+		return satisfiedPosCount;
+	}
+
+
+
+	public void setSatisfiedPosCount(Long satisfiedPosCount) {
+		this.satisfiedPosCount = satisfiedPosCount;
+	}
+
+
+
+	public Long getSatisfiedNegCount() {
+		return satisfiedNegCount;
+	}
+
+
+
+	public void setSatisfiedNegCount(Long satisfiedNegCount) {
+		this.satisfiedNegCount = satisfiedNegCount;
+	}
+
+
+
+	public Long getIvrCount() {
+		return ivrCount;
+	}
+	public void setIvrCount(Long ivrCount) {
+		this.ivrCount = ivrCount;
+	}
+	public String getIvrStatus() {
+		return ivrStatus;
+	}
+
+	public void setIvrStatus(String ivrStatus) {
+		this.ivrStatus = ivrStatus;
+	}
+	public Long getTypeId() {
+		return typeId;
+	}
+	public void setTypeId(Long typeId) {
+		this.typeId = typeId;
+	}
+	public String getType() {
+		return type;
+	}
+	public void setType(String type) {
+		this.type = type;
+	}
 	public BasicVO(Long id,String name)
 	{
 		id= this.id;
