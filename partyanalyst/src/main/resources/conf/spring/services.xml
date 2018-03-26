@@ -4368,7 +4368,8 @@
 		<property name="alertTypeDAO" ref="alertTypeDAO" ></property>
 		<property name="districtDAO" ref="districtDAO" ></property>
 		<property name="tehsilDAO" ref="tehsilDAO" ></property>
-		<!-- <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" ></property>	 -->			
+		<!-- <property name="parliamentAssemblyDAO" ref="parliamentAssemblyDAO" ></property>	 -->	
+		<property name="rwsIvrAlertDetailsDAO" ref="rwsIvrAlertDetailsDAO" ></property>		
    </bean>
    <bean name="meekosamGrievanceService" class="com.itgrids.partyanalyst.service.impl.MeekosamGrievanceService">
    		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
