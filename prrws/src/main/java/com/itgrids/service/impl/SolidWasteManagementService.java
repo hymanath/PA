@@ -306,7 +306,6 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				.replaceAll("Notice:  Undefined index: districtId in /var/www/html/api/swm/index.php on line 68", "");
 
 		try {
-			// Long webserviceId = webServiceDataDAO.getLatestDataId();
 			WebServiceData model = new WebServiceData();
 			model.setWebserviceId(127L);
 			// model.setInputData(inputVO.getInputData());
@@ -341,7 +340,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String dateStr = sdf.format(fromDate);
 			WebResource webResource = commonMethodsUtilService.getWebResourceObject(
-					"http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&districtId=0&fromDate="
+					"http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&fromDate="
 							+ dateStr + "&toDate=" + dateStr + "");
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.get(ClientResponse.class);
@@ -377,6 +376,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				webserviceId =webServiceDataDAO.getMaxidforRFIDService(null);
 			}
 			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
+
 			if (rfidList != null && rfidList.length() > 0) {
 				String jsonData = rfidList;
 				if (jsonData != null && !jsonData.isEmpty()) {
@@ -478,7 +478,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 									? round(((solidWasteManagementVO.getAverageTime() * 100.00)
 											/ solidWasteManagementVO.getAverageTarget()), 2)
 									: 0.00);
-							}
+						}
 					}
 
 				}
@@ -498,7 +498,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		value = value * factor;
 		long tmp = Math.round(value);
 		return (double) tmp / factor;
-	}	
+	}
+
 	@Override
 	public List<SolidWasteManagementVO> getGpWiseRfidTrackingOverData(InputVO inputVO) throws ParseException {
 
@@ -558,16 +559,6 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 										gpWiseBlockList.add(blockVO);
 										gpMap.put(jObj.getLong("gpID"), gpWiseBlockList);
 									}
-
-									/*
-									 * SolidWasteManagementVO matchVO =
-									 * getMatchVO(gpWiseBlockList,
-									 * jObj.getLong("blockNo")); if (matchVO ==
-									 * null) { matchVO = new
-									 * SolidWasteManagementVO();
-									 * gpWiseBlockList.add(matchVO); }
-									 */
-
 									else {
 										SolidWasteManagementVO matchVO = new SolidWasteManagementVO();
 										matchVO.setTotalRfidTags(
@@ -598,17 +589,6 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 					}
 				}
 			}
-
-			/*
-			 * if (gpMap != null && gpMap.size() > 0) {
-			 * 
-			 * for (Long gpId : gpMap.keySet()) { List<SolidWasteManagementVO>
-			 * voList = gpMap.get(gpId); SolidWasteManagementVO mainvo = new
-			 * SolidWasteManagementVO(); mainvo.setGpID(gpId);
-			 * mainvo.getSubList().addAll(voList); finalList.add(mainvo);
-			 * 
-			 * }
-			 */
 			for (Entry<Long, List<SolidWasteManagementVO>> entry : gpMap.entrySet()) {
 				SolidWasteManagementVO mainvo = new SolidWasteManagementVO();
 				Long gpId = entry.getKey();
@@ -650,9 +630,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 						MainVO.setTrackingPer(MainVO.getTrackingPer() + subVO.getTrackingPer());
 						MainVO.setInTimePer(MainVO.getInTimePer() + subVO.getInTimePer());
 						MainVO.setOutTimePer(MainVO.getOutTimePer() + subVO.getOutTimePer());
-
 					}
-					
 
 				}
 			}
