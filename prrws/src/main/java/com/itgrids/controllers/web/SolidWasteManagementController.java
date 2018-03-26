@@ -1,12 +1,10 @@
 package com.itgrids.controllers.web;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,8 +17,6 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
 import com.itgrids.dto.WebServiceDataVO;
 import com.itgrids.service.ISolidWasteManagementService;
-
-//import com.itgrids.service.IBioMetricService;
 
 @EnableAutoConfiguration
 @Controller
@@ -95,7 +91,7 @@ public class SolidWasteManagementController {
 	   	}
 	   	return resultStatus;
 	   }*/
-	   @RequestMapping(value = "/saveRfidTrackingOverAllTargets", method = RequestMethod.POST)
+	   @RequestMapping(value = "/saveRfidTrackingOverAllTargets", method = RequestMethod.GET)
 	   public WebServiceDataVO saveRfidTrackingOverAllTargets(){
 		   WebServiceDataVO resultStatus = new WebServiceDataVO();
 		   try {
