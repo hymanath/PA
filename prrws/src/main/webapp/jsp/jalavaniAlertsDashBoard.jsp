@@ -35,7 +35,7 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj,RD&News</h4>
+					<h4 class="text-capital">Panchayat Raj,RD&RWS</h4>
 					<p>RWS - DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">

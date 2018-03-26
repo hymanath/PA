@@ -33,7 +33,8 @@ $("#dateRangePicker").daterangepicker({
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last Year': ['01-01-2017', moment()],
-		   'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
+		   'OverAll':['28-11-2016',moment()]
+		  // 'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
 		}
 	});
 	var dates= $("#dateRangePicker").val();
@@ -197,7 +198,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/print_media_alert_icon.png" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5 font_weight">PRINT&nbsp;MEDIA</h5>';
@@ -217,7 +218,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/electronic_media_alert_icon.png" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5 font_weight">ELECTRONIC MEDIA</h5>';
@@ -237,7 +238,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/social_media_alert_icon.png" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>SOCIAL MEDIA</b></h5>';
@@ -1138,18 +1139,20 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 							str+='<tr>';
 								
 								if(type =="district" || type =="state"){
-									str+='<td class="" style="text-align:left !important;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].districtName+'</td>';
 								}else if(type =="constituency"){
-									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
-									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;text-transform:uppercase">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].constiruenctName+'</td>';
 								}else if(type =="mandal"){
-									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
-									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
-									str+='<td class="" style="text-align:left !important;">'+result[i].mandalName+'</td>';
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;text-transform:uppercase">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].mandalName+'</td>';
 								}
-								
+								if(result[i].count != null && result[i].count > 0){
 								str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
-								
+								}else{
+								str+='<td class="" style="background-color:#c5e6f9;"><span>-</span></td>';
+								}
 								for(var j in result[i].voList){
 									for(var k in result[i].voList[j].voList){
 										if(result[i].voList[j].voList[k].count !=null && result[i].voList[j].voList[k].count>0){
@@ -1179,7 +1182,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 		$("#dataTable"+type).dataTable({
 			"paging":   false,
 			"info":     false,
-			"searching": true,
+			"searching": false,
 			"autoWidth": true,
 			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			/* "scrollX":        true,
@@ -1401,7 +1404,16 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 		str+='<div id="rightSideExpandView"></div>';
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
-	$("#dataTable").dataTable();
+	$("#dataTable").dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 25, 50,100, -1], [10, 25, 50,100, "All"]],
+			/* "scrollX":        true,
+			"scrollCollapse": false,
+			"fixedColumns":   {
+				"leftColumns": 1,
+			}, */
+		});
 	$('[data-toggle="tooltip"]').tooltip();
 	//getAlertData(alertId);
 }
