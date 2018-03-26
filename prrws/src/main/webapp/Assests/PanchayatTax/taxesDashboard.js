@@ -53,7 +53,7 @@ $("#dateRangePicker").daterangepicker({
 		onloadTaxCalls();
 	});
 onloadTaxCalls();
-function getLocationIdAndName(locationType,locationId,type){
+function getLocationIdAndName(locationType,locationId){
 	
 	var json = {
 		locationType:locationType,
@@ -70,13 +70,13 @@ function getLocationIdAndName(locationType,locationId,type){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildMenuLocationsDetails(result,locationType,type);
+			buildMenuLocationsDetails(result,locationType);
 		}else{
 			//$("#tableBuildDivId").html("No Data Available");
 		}
 	});
 }
-function buildMenuLocationsDetails(result,appendDivId,type){
+function buildMenuLocationsDetails(result,appendDivId){
 	for(var i in result){
 		if(appendDivId == "district" || appendDivId == "constituency" || appendDivId == "mandal"){
 			globallocationDistrictName = result[i].districtName;
@@ -91,7 +91,7 @@ function buildMenuLocationsDetails(result,appendDivId,type){
 			globalMandalId = result[i].tehsilId;
 		}
 	}
-	if(type != null && type !="build")
+	//if(type != null && type !="build")
 		onloadTaxCalls();
 }	
 function getLocationIds(locationType,locationId){
@@ -140,6 +140,9 @@ function onloadTaxCalls(){
 	getTaxesDefaultOverviewDetails();
 		if(globallocationType == 2){
 			getAllSubLocationsTax(2,1,'',"district");
+			$(".districtCls").show();
+			$(".constituencyCls").hide();
+			$(".mandalCls").hide();
 		}else if(globallocationType == 3){
 			$(".locationLevelCls").val('district').trigger("chosen:updated");
 			$(".districtCls").show();
@@ -708,12 +711,12 @@ function buildDefaulterDetails(result){
 	}
 }
 $(document).on("change",".locationLevelCls",function(){
-	$("#districtId").html('');
+	/* $("#districtId").html('');
 	//$("#districtId").trigger("chosen:updated");
 	$("#constituencyId").html('');
 	//$("#constituencyId").trigger("chosen:updated");
 	$("#mandalId").html('');
-	//$("#mandalId").trigger("chosen:updated");
+	//$("#mandalId").trigger("chosen:updated"); */
 	var levelId = $(this).val();
 	if(levelId == 'district'){
 		$(".districtCls").show();
@@ -756,7 +759,7 @@ $(document).on("change",".locationLevelCls",function(){
 			getAllSubLocationsTax(2,1,"","district");//All Districts
 		}
 		//getAllSubLocationsTax(2,1,"","district");//All Districts
-	}/* else if(levelId == 'State'){
+	} /* else if(levelId == 'State'){
 		$(".districtCls").hide();
 		$(".constituencyCls").hide();
 		$(".mandalCls").hide();
@@ -938,41 +941,41 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		}else if(levelType != null && levelType == "assembly"){
 			locationType = "assembly";
 			locationValue = $("#constituencyId").val();
-			if(locationValue == 0 || locationValue == 'null'){
-				locationValue =$("#districtId").val();
+			/* if(locationValue == 0 || locationValue == 'null'){
+				locationValue =globallocationId;
 				locationType = "district";
-			}
+			} */
 			filterType = "district";
 			filterId = globallocationId;
 			//alert(filterId)
 		}else if(levelType != null && levelType == "mandal"){
 			locationType = "mandal";
 			locationValue = $("#mandalId").val();
-			if(locationValue == 0 || locationValue == 'null'){
+			/* if(locationValue == 0 || locationValue == 'null'){
 				locationValue = $("#constituencyId").val();
 				locationType = "assembly";
 			}if(locationValue == 0 || locationValue == 'null'){
-				locationValue =$("#districtId").val();
+				locationValue =globallocationId;
 				locationType = "district";
-			}
+			} */
 			filterType = "district";
 			filterId = globallocationId;
 		}
 	}else if(globallocationType != null && globallocationType == 4){
 		if(levelType != null && levelType == "assembly"){
 			locationType = "assembly";
-			locationValue = $("#constituencyId").val();
-			filterType = "assembly";
-			filterId = globallocationId;
+			locationValue = globallocationId;
+			filterType = "district";
+			filterId = $("#districtId").val();//globallocationId;
 		}else if(levelType != null && levelType == "mandal"){
 			locationType = "mandal";
 			locationValue = $("#mandalId").val();
-			if(locationValue == 0 || locationValue == 'null'){
-				locationValue = $("#constituencyId").val();
+			/* if(locationValue == 0 || locationValue == 'null'){
+				locationValue = globallocationId;
 				locationType = "assembly";
-			}
+			} */
 			filterType = "assembly";
-			filterId = globallocationId;
+			filterId = $("#constituencyId").val();//globallocationId;
 		}
 	}else if(globallocationType != null && globallocationType == 5){
 		if(levelType != null && levelType == "mandal"){
@@ -996,8 +999,8 @@ function getPanchyatTaxDashboardFilterWiseDetails(taxTypeId,feeTypeId,yearTypeVa
 		}else if(levelType != null && levelType == "mandal"){
 			locationType = "mandal";
 			locationValue = $("#mandalId").val();
-			filterType = "assembly";
-			filterId = $("#constituencyId").val();
+			filterType = "district";
+			filterId = $("#districtId").val();
 		}
 	}
 	//alert(filterType)
@@ -1841,6 +1844,8 @@ $(document).on("click",".menuDataCollapse",function(){
 			$(".locationLevelCls").append('<option value="mandal">Mandal</option>');
 			locationType = "mandal";
 			locationId = globallocationId;
+		}else if(globallocationType == 2){
+			onloadTaxCalls();
 		}
 		$("#selectedName").html($(this).html());
 		getLocationIdAndName(locationType,locationId);
