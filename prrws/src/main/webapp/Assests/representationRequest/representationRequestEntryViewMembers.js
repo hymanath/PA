@@ -993,7 +993,7 @@ var deptIdsList = [];
 	if(deptIds != null && deptIds.length >0){
 		deptIdsList=deptIds;
 	}
-if(deptIdsList != null && deptIdsList.length==1){
+if(deptIdsList != null && deptIdsList.length>0){
 	for(var i in deptIdsList){
 		if(parseInt(deptIdsList[i])==0){
 			deptIdsList=[];
@@ -1408,7 +1408,7 @@ var deptIdsList = [];
 			deptIdsList.push(deptList[i]);
 		}
 	} 
-if(deptIdsList != null && deptIdsList.length==1){
+if(deptIdsList != null && deptIdsList.length>0){
 	for(var i in deptIdsList){
 		if(parseInt(deptIdsList[i])==0){
 			deptIdsList=[];
@@ -2076,7 +2076,7 @@ function getPetitionReferredMemberDetails(desigIds,selrefCanId,statusId){
 	if(deptIds != null && deptIds.length >0){
 		deptIdsList=deptIds;
 	}
-	if(deptIdsList != null && deptIdsList.length==1){
+	if(deptIdsList != null && deptIdsList.length>0){
 		for(var i in deptIdsList){
 			if(parseInt(deptIdsList[i])==0){
 				deptIdsList=[];
@@ -2176,7 +2176,7 @@ function updatePetitionStatusDetails(){
 		if(deptIds != null && deptIds.length >0){
 			deptIdsList=deptIds;
 		}
-	if(deptIdsList != null && deptIdsList.length==1){
+	if(deptIdsList != null && deptIdsList.length>0){
 		for(var i in deptIdsList){
 			if(parseInt(deptIdsList[i])==0){
 				deptIdsList=[];
@@ -2539,7 +2539,7 @@ function getSubjectsBySearchType(searchType,selBoxId,subjectId,statusId){
 		if(deptIds != null && deptIds.length >0){
 			deptIdsList=deptIds;
 		}
-	if(deptIdsList != null && deptIdsList.length==1){
+	if(deptIdsList != null && deptIdsList.length>0){
 		for(var i in deptIdsList){
 			if(parseInt(deptIdsList[i])==0){
 				deptIdsList=[];
@@ -3659,7 +3659,7 @@ function getChildOfficersByParentOfficerId(searchType,selBoxId,officerId,statusI
 			deptIdsList.push(deptList[i]);
 		}
 	} 
-if(deptIdsList != null && deptIdsList.length==1){
+if(deptIdsList != null && deptIdsList.length>0){
 	for(var i in deptIdsList){
 		if(parseInt(deptIdsList[i])==0){
 			deptIdsList=[];
