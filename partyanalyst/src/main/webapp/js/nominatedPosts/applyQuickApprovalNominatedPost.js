@@ -67,7 +67,7 @@ function getBoardLevels(id){
    if(result != null && result.length >0){
 		 $("#"+id).append('<option value="0">Select Post Level </option>');
      for(var i in result){
-		 if(result[i].id != 1 && result[i].id != 2 && result[i].id != 3 && result[i].id != 7)
+		 if(result[i].id != 1 && result[i].id != 2 )
 			$("#"+id).append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 	 }
    }
@@ -506,6 +506,7 @@ function getDepartments(){
 			if(searchLevelValue >0)
 				buildDepartments(postTypeId,boardLevelId,searchLevelValue);
 	   }else if(boardLevelId == 7){
+		   searchLevelValue = $('#nominatedPanchayatId').val();
 		  if(searchLevelValue >0)
 				buildDepartments(postTypeId,boardLevelId,searchLevelValue);
 	   }
@@ -580,7 +581,7 @@ function getDepartments(){
 	   }else if(boardLevelId == 5 || boardLevelId == 6){
 		   searchLevelValue = $('#nominatedMandlId').val();;
 	   }else if(boardLevelId == 7){
-		  ;
+		  searchLevelValue = $('#nominatedPanchayatId').val();
 	   }
 	  
 	   var depmtId = $("#depmtsId").val();
@@ -651,7 +652,7 @@ function getDepartments(){
 	   }else if(boardLevelId == 5 || boardLevelId == 6){
 		   searchLevelValue = $('#nominatedMandlId').val();;
 	   }else if(boardLevelId == 7){
-		  ;
+		  searchLevelValue = $('#nominatedPanchayatId').val();;
 	   }
 	   
 	   var boardId =  $("#deptBoardId").val();

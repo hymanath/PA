@@ -919,7 +919,8 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 		return;
 	}
 	var imageId = $('#filer_input').val();
-	if(imageId == null || imageId.length == 0){
+	
+	if(globalLocationLevelId <4 && (imageId == null || imageId.length == 0)){
 		alert("Please Select image.");
 		return;
 	} 
