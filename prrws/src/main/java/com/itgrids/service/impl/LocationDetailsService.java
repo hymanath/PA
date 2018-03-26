@@ -649,8 +649,8 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			 
 			/*KeyValueVO deptVO = getDeptIdsListBYUserIds(userId);
 			List<Long> deptIds = deptVO.getDeptIdsList();*/
-			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department") || inputVO.getFilterType().trim().equalsIgnoreCase("subject"))){
-				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getSubProgramIdsList(),inputVO.getStatusIds(),petitionIdsList);
+			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("pmOfficer") || inputVO.getFilterType().trim().equalsIgnoreCase("subject") || inputVO.getFilterType().trim().equalsIgnoreCase("lead"))){
+				districtObjs=pmSubWorkDetailsDAO.getAllDistricts(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getSubProgramIdsList(),inputVO.getStatusIds(),inputVO.getLeadIdsList(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referral")){
 				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
@@ -674,7 +674,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(InputVO  inputVO,List<Long> districtIds,List<Long> deptIds,List<Long> pmDesignationIds,String type,List<Long> statIds){
+	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(InputVO  inputVO,List<Long> districtIds,List<Long> deptIds,List<Long> pmDesignationIds,String type,List<Long> statIds,List<Long> subjectIds,List<Long> leadIdsList){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			Date fromDateStr = null;
@@ -689,8 +689,8 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			List<Object[]> conObjs=null;
-			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("department"))){
-				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds,petitionIdsList);
+			if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("work") || inputVO.getFilterType().trim().equalsIgnoreCase("pmOfficer") || inputVO.getFilterType().trim().equalsIgnoreCase("subject") ||  inputVO.getFilterType().trim().equalsIgnoreCase("lead"))){
+				conObjs=pmSubWorkDetailsDAO.getAllConstituenciesByDistricId(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds,petitionIdsList,subjectIds,leadIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referral")){
 				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds,petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
@@ -714,7 +714,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds,String fromDate,String toDate,List<Long> desigids,String desigType,List<Long> statIds,Long userId){
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds,String fromDate,String toDate,List<Long> desigids,String desigType,List<Long> statIds,Long userId,List<Long> subjectIdsLst,List<Long> leadIdsLst){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> conObjs=null;
@@ -728,8 +728,8 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
 			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			
-			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("department"))){
-				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
+			if(serchType !=null && (serchType.trim().equalsIgnoreCase("work") || serchType.trim().equalsIgnoreCase("pmOfficer")|| serchType.trim().equalsIgnoreCase("subject") ||  serchType.trim().equalsIgnoreCase("lead"))){
+				conObjs=pmSubWorkDetailsDAO.getAllMandalsByDistricId(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList,subjectIdsLst,leadIdsLst);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referral")){
 				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){

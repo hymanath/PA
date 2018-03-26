@@ -127,6 +127,7 @@ public class InputVO implements Serializable {
 	private List<String> districtNames = new ArrayList<String>();
 	private List<Long> searchDeptIdsList;
 	private Long designationId;
+	private List<Long> leadIdsList ;
 	
 	
 	public List<Long> getSearchDeptIdsList() {
@@ -817,6 +818,12 @@ public class InputVO implements Serializable {
 	}
 	public void setDesignationId(Long designationId) {
 		this.designationId = designationId;
+	}
+	public List<Long> getLeadIdsList() {
+		return leadIdsList;
+	}
+	public void setLeadIdsList(List<Long> leadIdsList) {
+		this.leadIdsList = leadIdsList;
 	}
 	
 	
