@@ -3947,4 +3947,13 @@ public class WebServiceHandler {
     		@PathParam("statusId") Long statusId){
 		return  webServiceHandlerService.getJalavaniAlertForClosedAndReopenDetails(startDateStr,endDateStr,statusId);
     }
+	@GET
+    @Path("/getJalavaniIvrWiseSummaryGraphDetailsInfo/{startDateStr}/{endDateStr}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<BasicVO> getJalavaniIvrWiseSummaryGraphDetailsInfo(
+    		@PathParam("startDateStr") String startDateStr,
+    		@PathParam("endDateStr") String endDateStr){
+		return  webServiceHandlerService.getJalavaniIvrWiseSummaryGraphDetailsInfo(startDateStr,endDateStr);
+    }
 }
