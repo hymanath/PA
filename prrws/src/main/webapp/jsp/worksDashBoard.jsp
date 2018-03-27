@@ -18,11 +18,10 @@
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
+<link rel="stylesheet" href="Assests/Plugins/Scroller/bootstrap-multiselect.css" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
-
 </head>
 <body>
-
 <header>
 	<nav>
 		<div class="container-fluid">
@@ -30,11 +29,11 @@
 				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj, RD & RWS</h4>
-					<p>Rural Water Supply - AP</p>
+				<div class="col-sm-10 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayat Raj</h4>
+					<p>Tax - DashBoard</p>
 				</div>
-				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -82,6 +81,22 @@
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
 														<p>Water Tank chlorination</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#483D8B">
+													<a href="vehicleTrackingDashboard">
+														<h3>VT</h3>
+                           								 <p>Vehicle Tracking</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#59bf82">
+													<a href="jalavaniAlertsDashBoard">
+														<h3>JALAVANI</h3>
+														 <p>Jalavani Alert Dashboard</p>
 													</a>
 												</div>
 											</div>
@@ -154,6 +169,22 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#FF1493">
+													<a href="panchayatTaxDashboard">
+														<h3>Taxes</h3>
+                           								 <p>Panchayat Raj Taxes</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#7B68EE">
+													<a href="eMeetingsDashboard">
+														<h3>E Meetings</h3>
+                           								 <p>Panchayat Raj eMeetings</p>
+													</a>
+												</div>
+											</div>
 											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#008000">
 													<a href="newsArticles?deptId=1699">
@@ -220,156 +251,119 @@
 						</div>
 					</div>
 				</div>
+			</div>
 		</div>
 	</nav>
-	<section class="navbar-section">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-2 border_right">
-					Note: All Amount in Lakhs
+	
+</header>
+<section class="" style="padding: 10px;background-color: #DFDFE0;">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3">
+				<h5 class="m_top10 font_weight">Note: Amount In Lakhs & Length in KMS</h5>
+			</div>
+			<div class="col-sm-3 pull-right">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
 				</div>
-				<div class="col-sm-4 col-md-3 border_right">
-					<div class="form-horizontal">
-						<div class="form-group form-group-sm">
-							<label class="col-sm-5 col-md-5 control-label" for="formGroupInputLarge">Financial Year: </label>
-							<div class="col-sm-6  col-md-6">
-								<select id="financialYearId" class="chosenSelect"></select>
-							</div>
-						</div>
+			</div>
+			<div class="col-sm-2 pull-right">
+				<!--<label>Scheme</label>-->
+				<select id="schemeDivId" class=""  data-placeholder="Select Schemes" multiple>
+				</select>
+			</div>
+			<div class="col-sm-2 pull-right">
+				<!--<label>Financial Year</label>-->
+				<select id="financialYearId" class="chosenSelect"></select>
+			</div>
+			
+			
+		</div>
+	</div>
+</section>
+<div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+	<div class="white-block" style="padding:15px;">
+		<div class="row">
+			<div class="col-sm-12">
+				<h4 class="font_weight" style="font-size: 17px;">WORKS - STATE LEVEL OVERVIEW</h4>
+			</div>
+		</div>
+		
+			<div class="row">
+				<div class="col-sm-6 m_top10">
+					<h5 class="font_weight">Works - PWS</span></h5>
+					<div class="pad_border m_top10">
+						<div class="chart2" id="habitationWorksPWS"></div>
 					</div>
 				</div>
-				<div class="col-sm-3">
-					<div class="input-group">
-						<span class="input-group-addon">
-							<i class="glyphicon glyphicon-calendar"></i>
-						</span>
-						<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
+				<div class="col-sm-6 m_top10">
+					<h5 class="font_weight">Works - CPWS</span></h5>
+					<div class="pad_border m_top10">
+						<div class="chart2" id="habitationWorksCPWS"></div>
 					</div>
 				</div>
 			</div>
+		
+		<div class="row m_top20">
+			<div class="col-sm-12">
+				<h4 class="font_weight" style="font-size: 17px;">EXCEEDED WORK DETAILS</h4>
+			</div>
 		</div>
-	</section>
-</header>
-<main>
-	<section>
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<h4>Works -  STATE LEVEL OVERVIEW</h4>
+		<div class="row">
+			<div class="col-sm-6 m_top10">
+				<div class="row">
+					<div class="col-sm-4">
+						<h5 class="font_weight" style="margin-top: 7px;">Ongoing Exceed Work Details</h5>
 					</div>
-					<div class="white-block" style="padding:10px;">	
+					<div class="col-sm-8">
 						<div class="row">
 							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;PWS</span></h5>
-								<div class="chart2" id="habitationWorksPWS" style="height:315px;"></div>
+								<label class="radio-inline m_top5">
+									<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
+								</label>
 							</div>
 							<div class="col-sm-6">
-								<h5 style="padding:5px"><span class="chartTitleAlign">Works&nbsp;&nbsp;-&nbsp;&nbsp;CPWS</span></h5>
-								<div class="chart2" id="habitationWorksCPWS" style="height:315px;"></div>
+								<label class="radio-inline m_top5">
+									<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" > All Exceeded Works
+								</label>
 							</div>
 						</div>
-						<div id="graphTable" style="display:none;"></div>
-						<div id="graphTable2" style="display:none;"></div>
 					</div>
 				</div>
+				<div class="pad_border m_top10">
+					<div class="chart2" id="ExceededTargetDetails"></div>
+				</div>
 			</div>
-				<div class="white-block" style="padding:10px;">	
-					<div class="row m_top10">
-						<div class="col-sm-12">
-							<div class="panel-group" id="accordionON">
-							  <div class="panel panel-default panel-black">
-								<div class="panel-heading" id="headingON">
-									<a role="button" class="panelCollapseIcon" data-toggle="collapse" data-parent="#accordionON" href="#collapseON" aria-expanded="true" aria-controls="collapseON">
-										<div class="row">
-											<div class="col-sm-3">
-												<h4 class="panel-title text-capital">Exceeded Works Details</h4>
-											</div>
-										</div>
-									</a>	
-								</div>
-								<div id="collapseON" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingON">
-									
-									<div class="panel-body">
-									
-										<div class="white-block" style="padding:10px;">
-											<div class="row">
-												<div class="col-sm-4 pull-right">
-													<div class="">
-														<label class="radio-inline m_top5">
-															<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
-														</label>
-														<label class="radio-inline m_top5">
-															<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" > All Exceeded Works
-														</label>
-																						
-													</div>
-												</div>	
-											</div><br/><br/>
-											<div class="row">
-												<div class="col-sm-3">
-													<div id="ExceededTargetDetailsTotal"></div>
-												</div>
-												<div class="col-sm-9">
-													<div id="ExceededTargetDetails"></div>
-												</div>
-											</div>
-										</div>
-								  </div>
-								</div>
-							  </div>
-						  </div>
-					  </div>
-				  </div>
-				  <div class="row m_top10">
+			<div class="col-sm-6 m_top10">
+				<div class="row">
 					<div class="col-sm-12">
-						  <div class="panel-group" id="accordionEX1">
-							  <div class="panel panel-default panel-black">
-								<div class="panel-heading" id="headingEX1">
-									<a role="button" class="panelCollapseIcon collapsed collapseClick" data-toggle="collapse" data-parent="#accordionEX1" href="#collapseEX1" aria-expanded="true" aria-controls="collapseEX1">
-										<h4 class="panel-title text-capital">Not Grounded Work Details</h4>
-									</a>	
-								</div>
-								<div id="collapseEX1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
-								  <div class="panel-body">
-										<div class="white-block" style="padding:10px;">
-											<div class="row">
-												<div class="col-sm-3">
-													<div id="ExceededNotGroundedTotal"></div>
-												</div>
-												<div class="col-sm-9">
-													<div id="NotGroundedTargetDetails"></div>
-												</div>
-											</div>
-										</div>
-								  </div>
-								</div>
-							  </div>
-						  </div>
-					  </div>
-				  </div>
-			</div>
-		</div>
-	</section>
-	<section>
-		<div class="container-fluid m_top20">
-			<div class="row" id="accordion">
-				<div class="col-sm-12">
-					<div id="stateBlockId"></div>
+						<h5 class="font_weight">Not Grounded Exceed Work Details</h5>
+					</div>
 				</div>
-				<div class="col-sm-12">
-					<div id="districtBlockId"></div>
-				</div>
-				<div class="col-sm-12">
-					<div id="constituencyBlockId"></div>
-				</div>
-				<div class="col-sm-12">
-					<div id="mandalBlockId"></div>
+				<div class="pad_border m_top20">
+					<div class="chart2" id="NotGroundedTargetDetails"></div>
 				</div>
 			</div>
 		</div>
-	</section>
-</main>
+		<div class="row m_top20">
+			<div class="col-sm-12">
+				<div id="stateBlockId"></div>
+			</div>
+			<div class="col-sm-12">
+				<div id="districtBlockId"></div>
+			</div>
+			<div class="col-sm-12">
+				<div id="constituencyBlockId"></div>
+			</div>
+			<div class="col-sm-12">
+				<div id="mandalBlockId"></div>
+			</div>
+		</div>
+	</div>
+</div>
 <div class="modal fade" id="modalDivId" tabindex="-1" role="dialog">
   <div class="modal-dialog" role="document" style="width: 95%;">
     <div class="modal-content modal-custom">
@@ -412,5 +406,6 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/ruralWaterSupply/worksDashBoard.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/bootstrap-multiselect.js"></script>
 </body>
 </html>
