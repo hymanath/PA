@@ -21,11 +21,13 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
 import com.itgrids.partyanalyst.dao.IActivityAttendanceAcceptanceDAO;
+import com.itgrids.partyanalyst.dao.IAssemblyLocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IAttendanceDAO;
 import com.itgrids.partyanalyst.dao.IBoothDAO;
 import com.itgrids.partyanalyst.dao.IConstituencyDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDelimitationConstituencyMandalDAO;
 import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
@@ -45,6 +47,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingTypeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPublicRepresentativeDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITabDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
@@ -72,6 +75,10 @@ import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.ActivityAttendanceAcceptance;
+import com.itgrids.partyanalyst.model.Constituency;
+import com.itgrids.partyanalyst.model.District;
+import com.itgrids.partyanalyst.model.LocalElectionBody;
+import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
@@ -80,6 +87,7 @@ import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteTracking;
 import com.itgrids.partyanalyst.model.TabDetails;
+import com.itgrids.partyanalyst.model.Tehsil;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
@@ -134,7 +142,9 @@ public class PartyMeetingService implements IPartyMeetingService{
 	private PartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
 	private IPartyMeetingSessionDAO partyMeetingSessionDAO;
 	private IUserGroupRelationDAO userGroupRelationDAO;
-	
+	private IRegionScopesDAO regionScopesDAO;
+	private IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO;
+	private IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO;
 	public void setPartyMeetingSessionDAO(
 			IPartyMeetingSessionDAO partyMeetingSessionDAO) {
 		this.partyMeetingSessionDAO = partyMeetingSessionDAO;
@@ -353,11 +363,6 @@ public class PartyMeetingService implements IPartyMeetingService{
 		this.partyMeetingMinuteDAO = partyMeetingMinuteDAO;
 	}
 	
-	public void setDelimitationConstituencyAssemblyDetailsDAO(
-			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
-		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
-	}
-	
 	public void setDateUtilService(DateUtilService dateUtilService) {
 		this.dateUtilService = dateUtilService;
 	}
@@ -379,6 +384,38 @@ public class PartyMeetingService implements IPartyMeetingService{
 	}
 	public void setUserGroupRelationDAO(IUserGroupRelationDAO userGroupRelationDAO) {
 		this.userGroupRelationDAO = userGroupRelationDAO;
+	}
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
+	}
+	
+	public IAssemblyLocalElectionBodyDAO getAssemblyLocalElectionBodyDAO() {
+		return assemblyLocalElectionBodyDAO;
+	}
+	public void setAssemblyLocalElectionBodyDAO(
+			IAssemblyLocalElectionBodyDAO assemblyLocalElectionBodyDAO) {
+		this.assemblyLocalElectionBodyDAO = assemblyLocalElectionBodyDAO;
+	}
+	
+	
+	public IDelimitationConstituencyMandalDAO getDelimitationConstituencyMandalDAO() {
+		return delimitationConstituencyMandalDAO;
+	}
+	public void setDelimitationConstituencyMandalDAO(
+			IDelimitationConstituencyMandalDAO delimitationConstituencyMandalDAO) {
+		this.delimitationConstituencyMandalDAO = delimitationConstituencyMandalDAO;
+	}
+	
+	public IDelimitationConstituencyAssemblyDetailsDAO getDelimitationConstituencyAssemblyDetailsDAO() {
+		return delimitationConstituencyAssemblyDetailsDAO;
+	}
+	public void setDelimitationConstituencyAssemblyDetailsDAO(
+			IDelimitationConstituencyAssemblyDetailsDAO delimitationConstituencyAssemblyDetailsDAO) {
+		this.delimitationConstituencyAssemblyDetailsDAO = delimitationConstituencyAssemblyDetailsDAO;
 	}
 	public PartyMeetingVO getPartyMeetingsForCadrePeople(Long tdpCadreId)
 	{
@@ -857,7 +894,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 	
 	public String updateMeetingPoint(final Long minuteId,final String minuteText,final Long updatedBy,final Long partyMeetingId,
 			final Long levelId,final Long levelValue,final String isActionable,final Long statusId,
-			final Long stateId,final Long districtId,final Long constituencyId,final Long tehsilId,final Long panchayatId,final Long isGovtParty){
+			final Long stateId,final Long districtId,final Long constituencyId,final Long tehsilId,final Long panchayatId,final Long isGovtParty,final Long priorityId,final String assignedType){
 			String updateStatusString="failed";
 		try {
 			LOG.info("Entered into updateMeetingPoint");
@@ -903,6 +940,50 @@ public class PartyMeetingService implements IPartyMeetingService{
 							pMMT.setPartyMeetingMinuteStatusId(statusId);							
 							
 							partyMeetingMinuteTrackingDAO.save(pMMT);
+							PartyMeetingMinute meetingMinute = partyMeetingMinuteDAO.get(minuteId);
+							if(meetingMinute != null){
+								// getting upper level assigned location
+								Long upperLevelLocationId = 0l;
+								Long upperLevelLocationValue = 0l;
+								if (assignedType != null && assignedType.equalsIgnoreCase("assignToUpperLevel")) {
+									  UserAddress assignedAddress = null;
+									  Long locationScopeId = 0l;
+									 if (meetingMinute.getAssignedAddressId() == null) { 
+										 //if first time mom has not assigned to any location, 
+										// then we are assigning to upper level location by creation scopeId. 
+										  
+										 assignedAddress = userAddressDAO.get(meetingMinute.getCreatedAddressId());
+										 locationScopeId = meetingMinute.getCreatedLocationScopeId();
+									 } else {
+										  //But if mom has already assigned then user want to assign once again to upper level location
+										  // of current assign location ,then we are taking assigned location scopeId and address 
+										  // by that we are assign to upper level of current assign location 
+										  
+										 locationScopeId = meetingMinute.getAssignedLocationScopeId();
+										 assignedAddress = userAddressDAO.get(meetingMinute.getAssignedAddressId());
+									 }
+									List<Long> uppderLevelLocationIds = regionScopesDAO.getUppderLevelLocationId(locationScopeId);
+									if (uppderLevelLocationIds != null && uppderLevelLocationIds.size() > 0) {
+										upperLevelLocationId = uppderLevelLocationIds.get(0);
+										upperLevelLocationValue = getUpperLevelLocationValue(upperLevelLocationId,assignedAddress); // getting upper level location value
+									}
+									
+								}
+								if((meetingMinute.getAssignedLocationScopeId() == null) || (upperLevelLocationId != null && upperLevelLocationId >0l)){
+									meetingMinute.setAssignedLocationScopeId(upperLevelLocationId > 0 ? upperLevelLocationId:null);
+								}
+								if((meetingMinute.getAssignedLocationValue() == null) || (upperLevelLocationValue != null && upperLevelLocationValue >0l) ){
+									meetingMinute.setAssignedLocationValue(upperLevelLocationValue > 0 ? upperLevelLocationValue:null);
+								}
+								//assigned Address
+								if (assignedType != null && assignedType.equalsIgnoreCase("assignToUpperLevel")) {
+								UserAddress assignedAddress = saveUserAddressByLevelIdAndLevelValue(upperLevelLocationId,upperLevelLocationValue);//saving user address and getting saved object
+								if (assignedAddress == null) {
+									throw new ArithmeticException();
+								}
+								meetingMinute.setAssignedAddressId(assignedAddress.getUserAddressId());
+								}
+							}
 							
 						}
 						
@@ -932,8 +1013,53 @@ public class PartyMeetingService implements IPartyMeetingService{
 					
 					pmm.setStatusId(statusId);
 					pmm.setIsActionable(isActionable);
+					pmm.setMomPriorityId(priorityId);
+					Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
+					pmm.setCreatedLocationScopeId(createdLevelId); 
+					pmm.setCreatedLocationValue(levelValue);
+					pmm.setCreatedAddressId(pmm.getUserAddressId());
+					// getting upper level assigned location
+					Long upperLevelLocationId = 0l;
+					Long upperLevelLocationValue = 0l;
+					if (assignedType != null && assignedType.equalsIgnoreCase("assignToUpperLevel")) {
+						  UserAddress assignedAddress = null;
+						  Long locationScopeId = 0l;
+						 if (pmm.getAssignedAddressId() == null) { 
+							 //if first time mom has not assigned to any location, 
+							// then we are assigning to upper level location by creation scopeId. 
+							  
+							 assignedAddress = userAddressDAO.get(pmm.getCreatedAddressId());
+							 locationScopeId = pmm.getCreatedLocationScopeId();
+						 } else {
+							  //But if mom has already assigned then user want to assign once again to upper level location
+							  // of current assign location ,then we are taking assigned location scopeId and address 
+							  // by that we are assign to upper level of current assign location 
+							  
+							 locationScopeId = pmm.getAssignedLocationScopeId();
+							 assignedAddress = userAddressDAO.get(pmm.getAssignedAddressId());
+						 }
+						List<Long> uppderLevelLocationIds = regionScopesDAO.getUppderLevelLocationId(locationScopeId);
+						if (uppderLevelLocationIds != null && uppderLevelLocationIds.size() > 0) {
+							upperLevelLocationId = uppderLevelLocationIds.get(0);
+							upperLevelLocationValue = getUpperLevelLocationValue(upperLevelLocationId,assignedAddress); // getting upper level location value
+						}
+						
+					}
+					if((pmm.getAssignedLocationScopeId() == null) || (upperLevelLocationId != null && upperLevelLocationId >0l)){
+						pmm.setAssignedLocationScopeId(upperLevelLocationId > 0 ? upperLevelLocationId:null);
+					}
+					if((pmm.getAssignedLocationValue() == null) || (upperLevelLocationValue != null && upperLevelLocationValue >0l) ){
+						pmm.setAssignedLocationValue(upperLevelLocationValue > 0 ? upperLevelLocationValue:null);
+					}
+					//assigned Address
+					if (assignedType != null && assignedType.equalsIgnoreCase("assignToUpperLevel")) {
+					UserAddress assignedAddress = saveUserAddressByLevelIdAndLevelValue(upperLevelLocationId,upperLevelLocationValue);//saving user address and getting saved object
+					if (assignedAddress == null) {
+						throw new ArithmeticException();
+					}
+					pmm.setAssignedAddressId(assignedAddress.getUserAddressId());
+					}
 					
-										
 					PartyMeetingMinute returnPm = partyMeetingMinuteDAO.save(pmm);
 					
 					PartyMeetingMinuteTracking pmmt = new PartyMeetingMinuteTracking();					
@@ -1334,6 +1460,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 				partyMeetingVO.setPartyMeetingTypeId(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getPartyMeetingTypeId():0l);
 				partyMeetingVO.setPartyMeetingType(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getType():"");
 				partyMeetingVO.setMeetingLevelId(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getPartyMeetingLevelId():0l);
+				Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(partyMeetingVO.getMeetingLevelId());
+				partyMeetingVO.setMeetingLevelId(createdLevelId);
 				partyMeetingVO.setMeetingLevel(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getLevel():"");
 				partyMeetingVO.setLocationValue(partyMeetingDetails.getLocationValue()!=null?partyMeetingDetails.getLocationValue():0l);
 				if(partyMeetingDetails.getStartDate()!=null && partyMeetingDetails.getEndDate()!=null){
@@ -1357,12 +1485,24 @@ public class PartyMeetingService implements IPartyMeetingService{
 					subVO.setUpdatedBy(objects[6]!=null?objects[6].toString():"");
 					subVO.setInsertedTime(objects[7]!=null?objects[7].toString():"");
 					subVO.setUpdatedTime(objects[8]!=null?objects[8].toString():"");
-					
+					subVO.setCreatedLocationScopeId(commonMethodsUtilService.getLongValueForObject(objects[11]));
+					subVO.setCreatedAddresId(commonMethodsUtilService.getLongValueForObject(objects[12]));
+					subVO.setAssignedLocationScopeId(commonMethodsUtilService.getLongValueForObject(objects[13]));
+					subVO.setAssignedAddresId(commonMethodsUtilService.getLongValueForObject(objects[14]));
+					subVO.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[15]));
+					subVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[16]));
+					subVO.setCreatedLocation(getLocationName(subVO.getCreatedLocationScopeId(),userAddressDAO.get(subVO.getCreatedAddresId())));
+					if(subVO.getAssignedAddresId() != null && subVO.getAssignedAddresId()>0l)
+					subVO.setAssignedLocation(getLocationName(subVO.getAssignedLocationScopeId(),userAddressDAO.get(subVO.getAssignedAddresId())));
+					if((subVO.getAssignedLocationScopeId() != null && subVO.getAssignedLocationScopeId().longValue()>0l && subVO.getCreatedLocationScopeId().longValue() != subVO.getAssignedLocationScopeId().longValue() ) || (subVO.getStatusId().longValue() == 3l)){
+						subVO.setIsEditable("false");
+		            }
 					vo.add(subVO);
 					
 				}
 				partyMeetingVO.setMinutesDetails(vo);
 			}
+			
 		}catch (Exception e) {
 			LOG.error("Exception raised at getTheMinutePointsForAMeeting", e);
 		}
@@ -2491,6 +2631,10 @@ public class PartyMeetingService implements IPartyMeetingService{
 			
 			List<Object[]> qryrslt=null;
 			if(type.equalsIgnoreCase("momText")){
+				/*if(accessType != null && accessType.equalsIgnoreCase("STATE")){
+					accessType = "DISTRICT";
+					//valuesList = districtIds;
+				}*/
 				qryrslt = partyMeetingMinuteDAO.getMinuteDetailsForAMeeting(meetingId,accessType,valuesList);
 				
 				if(qryrslt != null && qryrslt.size()>0){
@@ -4272,7 +4416,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 		PMMinuteVO vo = null;
 	    try{
 	      
-	      //0.minuteId,1.minutePoint,2.isActionable,3.statusId,4.userAddress,5.partyMeetingId,6.locationLevel,7-momAtrSourceTypeId
+	      //0.minuteId,1.minutePoint,2.isActionable,3.statusId,4.userAddress,5.partyMeetingId,6.locationLevel,7-momAtrSourceTypeId,8-priorityId,9-assignAddresId
 	      List<Object[]> minuteObjList=partyMeetingMinuteDAO.getPartyMeetingMinuteRetrieveDetails(minuteId);
 	      
 	      if(minuteObjList !=null && minuteObjList.size()>0){
@@ -4286,7 +4430,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 	    		  vo.setUserAddressId(commonMethodsUtilService.getLongValueForObject(objects[4]));
 	    		  vo.setPartyMeetingId(commonMethodsUtilService.getLongValueForObject(objects[5]));
 	    		  vo.setLocationLevel(commonMethodsUtilService.getLongValueForObject(objects[6]));
-		      
+	    		  vo.setPriorityId(commonMethodsUtilService.getLongValueForObject(objects[8]));
+	    		  vo.setAssignAddresId(commonMethodsUtilService.getLongValueForObject(objects[9]));
 	    		  if(vo.getActionType() !=null && vo.getActionType().equalsIgnoreCase("Y")){
 	    			  if(vo.getUserAddressId() != null && vo.getUserAddressId() > 0l){
 	    				  List<Object[]> userDetailsList = userAddressDAO.getUserAddressDetailsByMinuteId(vo.getUserAddressId());
@@ -4798,4 +4943,214 @@ public class PartyMeetingService implements IPartyMeetingService{
 		}
 		return status;
 	}
+	private Long getUpperLevelLocationValue(Long upperLevelCommitteeId,UserAddress userAddress) {
+		Long uppderLevelLocationValue = 0l;
+		try {
+			
+			if (upperLevelCommitteeId != null && userAddress != null) {
+				
+				if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_MANDAL_LEVEl_ID)) {
+					uppderLevelLocationValue = userAddress.getTehsil().getTehsilId();
+				} else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_VILLAGE_LEVEl_ID)) {
+					uppderLevelLocationValue = userAddress.getPanchayatId();
+				}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_MUNCIPLITY_LEVEl_ID)) {
+					uppderLevelLocationValue = userAddress.getLocalElectionBody().getLocalElectionBodyId();
+				}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_WARD_LEVEl_ID)) {
+					uppderLevelLocationValue = userAddress.getWard().getConstituencyId();
+				}else if (upperLevelCommitteeId .equals(IConstants.DIVISION_COMMITTEE_LEVEL_ID)) {
+					uppderLevelLocationValue = userAddress.getWard().getConstituencyId();
+				}else if (upperLevelCommitteeId.equals(IConstants.STATE_LEVEl_ACCESS_ID)) {
+					uppderLevelLocationValue = userAddress.getState().getStateId();
+				}else if (upperLevelCommitteeId.equals(IConstants.DISTRICT_LEVEl_ACCESS_ID)) {
+					uppderLevelLocationValue = userAddress.getDistrict().getDistrictId();
+				}else if (upperLevelCommitteeId.equals( IConstants.REGIONSCOPE_ASSEMBLY_LEVEl_ACCESS_ID)) {
+					uppderLevelLocationValue = userAddress.getConstituency().getConstituencyId();
+				}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_COUNTRY_LEVEl_ID)) {
+					uppderLevelLocationValue = userAddress.getCountry().getCountryId();
+				}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_PARLIAMENT_LEVEl_ACCESS_ID)) {
+					uppderLevelLocationValue = userAddress.getParliamentConstituency().getConstituencyId();
+				}
+			}
+			
+		} catch (Exception e) {
+			LOG.error("Exception occurred at getUpperLevelLocationValue() of PartyMeetingMOMService class ",e);
+		}
+		return uppderLevelLocationValue;
+	}
+	public UserAddress saveUserAddressByLevelIdAndLevelValue(Long levelId,Long levelValue)
+	{
+		try{
+			UserAddress userAddress = null;
+			if(levelId == 2l){
+				userAddress = new UserAddress();
+				userAddress.setState(stateDAO.get(levelValue));
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 3l){
+				userAddress = new UserAddress();
+				District distinct = districtDAO.get(levelValue);
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 4l){
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 5l){//mandal
+				userAddress = new UserAddress();
+				Tehsil tehsil = tehsilDAO.get(levelValue);
+				District distinct = districtDAO.get(tehsil.getDistrict().getDistrictId());
+				List<Long> constituencyIds = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(levelValue);
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				  userAddress.setConstituency(constituencyDAO.get(constituencyIds.get(0)));
+				userAddress.setTehsil(tehsil);
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 6l){//panchayat
+				userAddress = new UserAddress();
+				Panchayat panchayat = panchayatDAO.get(levelValue);
+				
+				Tehsil tehsil = tehsilDAO.get(panchayat.getTehsil().getTehsilId());
+				District distinct = districtDAO.get(tehsil.getDistrict().getDistrictId());
+				List<Long> constituencyIds = delimitationConstituencyMandalDAO.getConstituencyIdByMandalID(tehsil.getTehsilId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				if(constituencyIds != null && constituencyIds.size() > 0)
+				  userAddress.setConstituency(constituencyDAO.get(constituencyIds.get(0)));
+				userAddress.setTehsil(tehsil);
+				userAddress.setPanchayatId(panchayat.getPanchayatId());
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 7l){//muncipality
+				userAddress = new UserAddress();
+				List<Long> constituencyIdsList = assemblyLocalElectionBodyDAO.getConstituencyIdByAssemblyLocalEleBodyId(levelValue);
+				Long constituencyId = Long.parseLong(constituencyIdsList.get(0).toString());
+				
+				Constituency constituency = constituencyDAO.get(constituencyId);
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+					
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(levelValue));
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			else if(levelId == 8l ){//ward
+				userAddress = new UserAddress();
+				Long localEleBodyId = constituencyDAO.get(levelValue).getLocalElectionBody().getLocalElectionBodyId();
+				
+				List<Long> constituencyIdsList = assemblyLocalElectionBodyDAO.getConstituencyIdByAssemblyLocalEleBodyId(localEleBodyId);
+				Long constituencyId = Long.parseLong(constituencyIdsList.get(0).toString());
+				Constituency constituency = constituencyDAO.get(constituencyId);
+				
+				District distinct = districtDAO.get(constituency.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(distinct.getState().getStateId()));
+				userAddress.setDistrict(distinct);
+				userAddress.setConstituency(constituency);
+				userAddress.setWard(constituencyDAO.get(levelValue));
+				userAddress.setLocalElectionBody(localElectionBodyDAO.get(localEleBodyId));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 10l){//Parliament
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				
+				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
+				userAddress.setParliamentConstituency(constituencyDAO.get(levelValue));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 11l){	//MPTC
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				
+				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
+				userAddress.setDistrict(districtDAO.get(constituency.getDistrict().getDistrictId()));
+				userAddress.setConstituency(constituency);
+				userAddress.setTehsil(tehsilDAO.get(constituency.getTehsil().getTehsilId()));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 12l){  //ZPTC
+				userAddress = new UserAddress();
+				Constituency constituency = constituencyDAO.get(levelValue);
+				
+				userAddress.setState(stateDAO.get(constituency.getState().getStateId()));
+				userAddress.setDistrict(districtDAO.get(constituency.getDistrict().getDistrictId()));
+				userAddress.setConstituency(constituency);
+				userAddress.setTehsil(tehsilDAO.get(constituency.getTehsil().getTehsilId()));
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			else if(levelId == 13l || levelId == 14l){  //Corporation||GMC
+				userAddress = new UserAddress();
+				LocalElectionBody localElectionBody = localElectionBodyDAO.get(levelValue);
+				District district = districtDAO.get(localElectionBody.getDistrict().getDistrictId());
+				
+				userAddress.setState(stateDAO.get(district.getState().getStateId()));
+				userAddress.setDistrict(district);
+				userAddress.setLocalElectionBody(localElectionBody);
+				
+				userAddress = userAddressDAO.save(userAddress);
+			}
+			
+			return userAddress;
+			
+		}catch (Exception e) {
+			LOG.error(" Exception Occured in saveUserAddress() method, Exception - ",e);
+		}
+		return null;
+	}
+	private String getLocationName(Long upperLevelCommitteeId,UserAddress userAddress) {
+	   	String  locationName = "";
+	   	
+	   	try {
+	   		
+	   		if (upperLevelCommitteeId != null && userAddress != null) {
+	   			
+	   			if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_MANDAL_LEVEl_ID)) {
+	   				locationName = userAddress.getTehsil().getTehsilName() + "Mandal";
+	   			} else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_VILLAGE_LEVEl_ID)) {
+	   				locationName = userAddress.getPanchayat().getPanchayatName()+ " Village";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_MUNCIPLITY_LEVEl_ID)) {
+	   				locationName = userAddress.getLocalElectionBody().getName() + "Local Election Body";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_WARD_LEVEl_ID)) {
+	   				locationName = userAddress.getWard().getName() + " Ward";
+	   			}else if (upperLevelCommitteeId .equals(IConstants.DIVISION_COMMITTEE_LEVEL_ID)) {
+	   				locationName = userAddress.getWard().getName() + " Division";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.STATE_LEVEl_ACCESS_ID)) {
+	   				
+	   				locationName = userAddress.getState().getStateName()+ " State";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.DISTRICT_LEVEl_ACCESS_ID)) {
+	   				locationName = userAddress.getDistrict().getDistrictName()+ " District";
+	   			}else if (upperLevelCommitteeId.equals( IConstants.REGIONSCOPE_ASSEMBLY_LEVEl_ACCESS_ID)) {
+	   				locationName = userAddress.getConstituency().getName()+ " Constituency";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_COUNTRY_LEVEl_ID)) {
+	   				locationName = userAddress.getCountry().getCountryName()+ " Country";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_PARLIAMENT_LEVEl_ACCESS_ID)) {
+	   				locationName = userAddress.getParliamentConstituency().getName()+ " Parliament ";
+	   			}
+	   		}
+	   		
+	   	} catch (Exception e) {
+	   		LOG.error("Exception occurred at getLocationName() of PartyMeetingMOMService class ",e);
+	   	}
+	   	return locationName;
+	   }
 }

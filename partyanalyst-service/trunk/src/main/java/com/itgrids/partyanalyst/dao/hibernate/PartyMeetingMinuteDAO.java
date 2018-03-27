@@ -36,7 +36,8 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,model.insertedBy.userId,model.insertedBy.firstName," +
 				"model.updatedBy.userId,model.updatedBy.firstName,model.insertedTime," +
-				"model.updatedTime,model.partyMeeting.meetingName,momAtrSourceType.sourceType " +
+				"model.updatedTime,model.partyMeeting.meetingName,momAtrSourceType.sourceType,model.createdLocationScopeId," +
+				" model.createdAddressId,model.assignedLocationScopeId,model.assignedAddressId,model.statusId,model.partyMeetingMinuteStatus.status " +
 				" from PartyMeetingMinute model " +
 				" left join model.momAtrSourceType momAtrSourceType " +
 				" where " +
@@ -148,7 +149,7 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		StringBuilder str = new StringBuilder();
 		
 		str.append(" SELECT model.partyMeetingMinuteId,model.minutePoint,model.isActionable,model.statusId," +
-				" model.userAddressId,model.partyMeetingId,model.locationLevel,model.momAtrSourceTypeId " +
+				" model.userAddressId,model.partyMeetingId,model.locationLevel,model.momAtrSourceTypeId,model.momPriorityId,model.assignedAddressId " +
 				" FROM PartyMeetingMinute model " +
 				" WHERE model.isDeleted = 'N'" +
 				" and model.partyMeetingMinuteId =:minuteId ");
@@ -830,5 +831,19 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			query.setParameter("userAccessLevelId", userAccessLevelId);
 		}
 		return query.list();
+	}
+	public Date getPartMeetingMonthYear(Long partyMeetingId){
+		StringBuilder queryStr = new StringBuilder();
+		queryStr.append(" select model.insertedTime from PartyMeetingMinute model where "
+				+ " model.partyMeeting.isActive='Y' and model.isDeleted='N' ");
+		if(partyMeetingId != null && partyMeetingId.longValue()>0l){
+			queryStr.append(" and model.partyMeeting.partyMeetingId =:partyMeetingId ");
+		}
+		queryStr.append(" group by month(model.insertedTime),year(model.insertedTime) ");
+		Query query = getSession().createQuery(queryStr.toString());
+		if(partyMeetingId != null && partyMeetingId.longValue()>0l){
+			query.setParameter("partyMeetingId", partyMeetingId);
+		}
+		return (Date)query.uniqueResult();
 	}
 }

@@ -2,6 +2,7 @@ package com.itgrids.partyanalyst.service.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.Format;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -1311,4 +1312,76 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
 		   }
 		  return momPriorityMap;
 	  }
+   public MomDashbaordOverViewDtlsVO getMomPointsDashboardOverviewDtls(Long userLevel,List<Long> accessValues,Long partyMeetingId) {
+		 MomDashbaordOverViewDtlsVO resultVO = new MomDashbaordOverViewDtlsVO();
+		  try {
+			  Map<Long,MomDashbaordOverViewDtlsVO> momPriorityMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
+			  Map<Long,MomDashbaordOverViewDtlsVO> momStatusMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
+			   Date meetingMonthYear = partyMeetingMinuteDAO.getPartMeetingMonthYear(partyMeetingId);
+			   Long userAccessLevel = regionScopesDAO.getMeetingLevelOfCreatedLocationId(userLevel); 
+			   Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			   String meetingDateStr = formatter.format(meetingMonthYear);
+			  Integer[] monthYearArr = getMeetingMontYear(meetingDateStr);
+			  List<Object[]> momPriorityObjList = partyMeetingMinuteDAO.getPartyMeetingMomDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "momPriorityWise");
+			    momPriorityMap = getMomStatusAndPriorityWiseCountDetails(momPriorityObjList,momPriorityMap);
+			  List<Object[]> momAssignPriorityObjList = partyMeetingMinuteDAO.getPartyMeetingMomAssignDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "momPriorityWise");
+			  if(momAssignPriorityObjList != null && momAssignPriorityObjList.size()>0){
+			     momPriorityMap = getMomStatusAndPriorityWiseCountDetails(momAssignPriorityObjList,momPriorityMap);
+			  }
+			  //resultVO.setSubList1(getMomStatusPriorityWiseCountDetails(momPriorityObjList));
+			  if(momPriorityMap != null && momPriorityMap.size()>0l){
+			      resultVO.getSubList1().addAll(momPriorityMap.values());
+			  }
+			  List<Object[]> momStatusObjList = partyMeetingMinuteDAO.getPartyMeetingMomDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "statusWise");
+			    momStatusMap = getMomStatusAndPriorityWiseCountDetails(momStatusObjList,momStatusMap);
+			  List<Object[]> momAssignStatusObjList = partyMeetingMinuteDAO.getPartyMeetingMomAssignDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "statusWise");
+			  if(momAssignStatusObjList != null && momAssignStatusObjList.size()>0){
+			     momStatusMap = getMomStatusAndPriorityWiseCountDetails(momAssignStatusObjList,momStatusMap);
+			  }
+			     if(momStatusMap != null && momStatusMap.size()>0l){
+			       resultVO.getSubList2().addAll(momStatusMap.values());
+			     }
+			  //resultVO.setSubList2(getMomStatusPriorityWiseCountDetails(momStatusObjList));
+			  
+			  Long momCreatedByYourLocationCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "");
+			  Long momAtYourLocationOnlyCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "atYourLocationOnly");
+			  Long assignedToOtherCount = partyMeetingMinuteDAO.getMomCreatedByYourLocation(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "assignedToOther");
+			  Long assignedToYourLocationCount = partyMeetingMinuteDAO.getMomAssignedToYourLocation(userAccessLevel, accessValues,monthYearArr[0], monthYearArr[1]);
+			  
+			  //setting into final VO
+			  resultVO.setMomCreatedByYourLocation(momCreatedByYourLocationCount);
+			  resultVO.setMomAtYourLocationOnly(momCreatedByYourLocationCount+assignedToYourLocationCount);
+			  resultVO.setAssignedToOther(assignedToOtherCount);
+			  resultVO.setAssignedToYourLocation(assignedToYourLocationCount);
+		
+			  
+			  resultVO.setTotalMomInYourLocation(momCreatedByYourLocationCount+assignedToYourLocationCount);
+			  Long momYourLocationOnly =0l;
+			  if(resultVO.getAssignedToOther() != null){
+				  momYourLocationOnly = resultVO.getMomAtYourLocationOnly()-resultVO.getAssignedToOther();
+			  }
+			  if(momYourLocationOnly != null)
+			    resultVO.setMomAtYourLocationOnly(momYourLocationOnly);
+			  if (resultVO.getSubList2() != null && resultVO.getSubList2().size() > 0) {
+				  //resultVO.setTotalMomInYourLocation(resultVO.getSubList2().get(0).getTotalMomInYourLocation());
+				  resultVO.getSubList2().get(0).setTotalMomInYourLocation(momCreatedByYourLocationCount+assignedToYourLocationCount);
+			  }
+			  
+		  } catch (Exception e) {
+			  LOG.error("Exception occurred at getMomDashboardOverviewDtls() of PartyMeetingMOMService class ",e);
+		  }
+		  return resultVO;
+	 }
+   public Integer[] getMeetingMontYear(String monthYear) {
+		Integer[] monthYearArr = new Integer[2];
+		 try {
+			 if (monthYear != null && monthYear.trim().length() > 0) {
+				 monthYearArr[0] = Integer.valueOf(monthYear.split("-")[1]);
+				 monthYearArr[1] = Integer.valueOf(monthYear.split("-")[0]);
+			 }
+		 } catch (Exception e) {
+			 LOG.error("Exception occurred at getMeetingMontYear() of PartyMeetingMOMService class ",e);
+		 }
+		 return monthYearArr;
+	}
 }
