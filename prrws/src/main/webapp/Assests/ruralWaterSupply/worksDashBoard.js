@@ -1,6 +1,6 @@
  //Angular Start  getAlertsOfCategoryByStatusWise()
 var month =moment().format("M");
-	var glStartDate = "01-04-"+moment().subtract(30, 'years').format("YYYY");
+	var glStartDate = "01-04-"+moment().subtract(4, 'years').format("YYYY");
 	var	glEndDate = "01-04-"+moment().format("YYYY");
 	var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
 					 {name:'Key Performance',id:'performance',img:'key_performance.png'},
