@@ -3267,6 +3267,7 @@
 		<property name="tdpCadreEnrollmentYearDAO" ref="tdpCadreEnrollmentYearDAO" />
 		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
 		<property name="partyMeetingStatusDAO" ref="partyMeetingStatusDAO" />
+		<property name="regionScopesDAO" ref="regionScopesDAO" />
 	</bean>
 	
 	<bean name="attendanceService" class="com.itgrids.partyanalyst.service.impl.AttendanceService">
@@ -3331,6 +3332,9 @@
 		<property name="partyMeetingUpdationDocumentsDAO" ref="partyMeetingUpdationDocumentsDAO" />
 	    <property name="partyMeetingSessionDAO" ref="partyMeetingSessionDAO" />
 	    <property name="userGroupRelationDAO" ref="userGroupRelationDAO" />
+	    <property name="regionScopesDAO" ref="regionScopesDAO" />
+	    <property name="assemblyLocalElectionBodyDAO" ref="assemblyLocalElectionBodyDAO" />
+	    <property name="delimitationConstituencyMandalDAO" ref="delimitationConstituencyMandalDAO" />
 	</bean>
 	
 	<bean name="partyMeetingDashboardService" class="com.itgrids.partyanalyst.service.impl.PartyMeetingDashboardService">
@@ -4814,6 +4818,9 @@
    	 	<bean name="biometricAttendanceService" class="com.itgrids.partyanalyst.service.impl.BiometricAttendanceService">
    	 		<property name="biometricDeviceLogDAO" ref="biometricDeviceLogDAO"></property>
    	 		<property name="biometricDeviceLogTrackDAO" ref="biometricDeviceLogTrackDAO"></property>
+    	</bean>
+    	<bean name="areaInchargeDashBoardService" class="com.itgrids.partyanalyst.service.impl.AreaInchargeDashBoardService">
+   	 		
     	</bean>
    	 	
 </beans>			

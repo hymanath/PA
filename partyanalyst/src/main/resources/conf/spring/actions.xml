@@ -1618,6 +1618,7 @@
 	</bean>
 	<bean id="partyMeetingAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingAction" singleton="false"> 
 		<property name="partyMeetingService" ref="partyMeetingService" />
+		<property name="partyMeetingMOMService" ref="partyMeetingMOMService" />
 	</bean>
 	<bean id="partyMeetingsDashBoardAction" class="com.itgrids.partyanalyst.web.action.PartyMeetingsDashBoardAction" singleton="false"> 
 		<property name="partyMeetingDashboardService" ref="partyMeetingDashboardService" />
@@ -1839,6 +1840,9 @@
 	</bean>
 	<bean id="dalithTejamDashBoardAction" class="com.itgrids.partyanalyst.web.action.DalithaTejamDashBoardAction" singleton="false">
 		 <property name="dalithaTejamDashBoardService" ref="dalithaTejamDashBoardService" /> 
+	</bean>
+	<bean id="areaInchargeDashBoardAction" class="com.itgrids.partyanalyst.web.action.AreaInchargeDashBoardAction" singleton="false">
+		 <property name="areaInchargeDashBoardAction" ref="areaInchargeDashBoardAction" /> 
 	</bean>
 	
 </beans>	

@@ -129,8 +129,24 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											<table class="table table-bordered">
 												<tr>
 													<td>
-														<h4 class="m_0 text-center">Total Minute Points </h4>
+													    <h4 class="m_0 text-center">Total Minute Points</h4>
+														<h2 class="m_0 text-center"><span id="momTotalCount">0</span></h2>
+													</td>
+													<td>
+														<h4 class="m_0 text-center">Created Minute Points </h4>
 														<h2 class="m_0 text-center"><span id="minitePointsCount">0</span></h2>
+													</td>
+													<td>
+														<h4 class="m_0 text-center">Solved Minute Points </h4>
+														<h2 class="m_0 text-center"><span id="momSolvedCount">0</span></h2>
+													 </td>
+													 <td>
+														<h4 class="m_0 text-center">Assigned Minute Points</h4>
+														<h2 class="m_0 text-center"><span id="momAssignedCount">0</span></h2>
+													</td>
+													<td>
+														<h4 class="m_0 text-center">Assigned To Others Points</h4>
+														<h2 class="m_0 text-center"><span id="momAssignedOthersCount">0</span></h2>
 													</td>
 													<td>
 														<h4 class="m_0 text-center">Total Documents Uploaded </h4>
@@ -378,6 +394,30 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						<option value="2">Party</option>
 					</select>
 				</div>
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<label>Select Minute Status</label>
+					<select class="form-control" id="momStatusId">
+						<option value="0">Select Status</option>
+						<option value="1">Created</option>
+						<option value="2">In Progress</option>
+						<option value="3">Completed</option>
+					</select>
+				</div>
+				<div class="col-md-4 col-xs-12 col-sm-6">
+					<label>Select Mom Priority</label>
+					<select class="form-control" id="momPriorityId">
+						<option value="0">Select Priority</option>
+						<option value="1">High</option>
+						<option value="2">Medium</option>
+						<option value="3">Low</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;" id="momAssignCheckedId">
+				<input id="checkBox" type="checkbox"  name="momAssignCls" value="3" >
+                <label for="subscribeNews">Assignee Request to Next level</label>
 			</div>
 		</div>
 	  </div>
@@ -562,12 +602,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#villWardDivId").val("");
 			$("#isGovtPartySelId").val(0);
 			$("#saveBtnMeetMin").html("Save");
+			$("#momAssignCheckedId").hide();
 			
 	 }); 	
 	 
  $(document).on('click', '.conformDel', function(){
 		$("#deletedmsg").modal("show");
-		  
+		 var assigned = $(this).attr("attr_type");
 		var attrId4 = $(this).attr("attr_div_count");
 		$("#deletedMinMsg").attr("attr_div_count",attrId4);
 		 
@@ -576,7 +617,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		 
 		var attrId3 = $(this).attr("attr_minuteId");
 		$("#deletedMinMsg").attr("attr_minuteId",attrId3);
-		 
+		 $("#deletedMinMsg").attr("attr_type",assigned);
 		 
 	 });//deletedmsgAtr
 	 
@@ -584,6 +625,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     $(document).on('click', '#deletedMinMsg', function(){
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Deleted Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var divId = $(this).attr("attr_txt");
+		var assigned = $(this).attr("attr_type");
 		var divCount = $(this).attr("attr_div_count");
         $("#"+divId).remove();
         //$("#save"+divCount).remove(); 
@@ -607,7 +649,12 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			reslt = "Minute Deleted Successfully"
 			$("#mintupdatealertmag").html(reslt);
 			$('#alertmintsave').modal('show');
-			updateMinCount("delete");
+			if(assigned == "assigned"){
+				updateMinCount("assigned");
+			}else{
+			  updateMinCount("delete");
+			}
+			
 		   }
 		});
 		
@@ -616,6 +663,13 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
    function updateMinCount(type){
 		if(type=="delete"){
 			$("#minitePointsCount").text(parseInt($("#minitePointsCount").text())-1);
+			$("#momTotalCount").text(parseInt($("#momTotalCount").text())-1);
+			$("#momSolvedCount").text(parseInt($("#momSolvedCount").text())-1);
+		}else if(type=="assigned"){
+			$("#momAssignedOthersCount").text(parseInt($("#momAssignedOthersCount").text())-1);
+			$("#minitePointsCount").text(parseInt($("#minitePointsCount").text())-1);
+			$("#momTotalCount").text(parseInt($("#momTotalCount").text())-1);
+			//$("#momSolvedCount").text(parseInt($("#momSolvedCount").text())-1);
 		}else{
 			$("#minitePointsCount").text(type);
 		}
@@ -821,7 +875,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		   if(result!=null){
 			   $("#meetingType").html(result.partyMeetingType+" - "+result.name);
 			   $("#location").html(result.locationName);
-			   
+			   getMomDashboardOverviewDtls(result.meetingLevelId,result.locationValue,partyMeetingID);
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
 				   $("#miniteDocsCount").html(result.minutesDocuments.length);
 				   var str='';
@@ -895,12 +949,24 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				    mainDivCount=i;
 					str+='<ul class="list-group" id="list'+mainDivCount+'">';
 				   for(var i in result.minutesDetails){
+					   var assignedLocation ='';
+					   var type ='';
+					   if(result.minutesDetails[i].assignedLocation == null){
+						   assignedLocation ='';
+						   type ='';
+					   }else if(result.minutesDetails[i].assignedLocation != null){
+						   assignedLocation = result.minutesDetails[i].assignedLocation;
+						   type = "assigned";
+					   }
 					  	 mainDivCount=i;
+						 var deleteStatus;
 						str+='<li class="list-group-item " id="list'+mainDivCount+'">';
-						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</p>';
+						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'<br> created by:'+result.minutesDetails[i].createdLocation+'<br> assigned To: '+assignedLocation+',&nbsp;Status: '+result.minutesDetails[i].status+'</p>';
 						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   str+=' <button class="btn btn-default updatedMeetMin" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'"  title="Edit"   ><i class="glyphicon glyphicon-edit"></i></button>';
+				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_type ="'+type+'" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					   if(result.minutesDetails[i].isEditable == null){
+					      str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
+					     }
 					   str+=' </div>';
 						str+=' </li>';
 						
@@ -1089,13 +1155,28 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			}
 				
 		}
+		var statusId =$("#momStatusId").val();
+		if(statusId == 0){
+			$("#momError").text(" Please Select Status");
+			return;
+		}
+		var priorityId =$("#momPriorityId").val();
+		if(priorityId == 0){
+			$("#momError").text(" Please Select Priority");
+			return;
+		}
+		var assignedType ="";
+		var checkedValue = $("input[type='checkbox']").val();
+		if($('[type="checkbox"]').is(":checked")){
+			assignedType = "assignToUpperLevel";
+        }
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
 			minuteId : minuteId,
 			minuteText : minuteText,
 			partyMeetingId : partyMeetingId,//global var
-			statusId : 1,
+			statusId : statusId,
 			stateId:stateId,
 			districtId:districtId,
 			constituencyId:constituencyId,
@@ -1104,7 +1185,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			isActionable:isActionable,
 			levelId:levelId,
 			levelValue:levelValue,
-			isGovtParty:$("#isGovtPartySelId").val()
+			isGovtParty:$("#isGovtPartySelId").val(),
+			priorityId : priorityId,
+			assignedType : assignedType
 		}
 		$("#loadingImgMinitSaveId").show();
 		$.ajax({
@@ -1118,7 +1201,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			//$( "#dialogMOM" ).dialog('close');
 			
 		   if(result=="success"){
-				rebuildMinutes(partyMeetingId,minuteId)
+				rebuildMinutes(partyMeetingId,minuteId,levelId,levelValue)
 		   }else{
 				reslt = "Please Try Again"
 				$("#mintupdatealertmag").html(reslt);
@@ -1131,7 +1214,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 	
 	});
 	
-	function rebuildMinutes(partyMeetingId,minuteId){
+	function rebuildMinutes(partyMeetingId,minuteId,levelId,levelValue){
+		
 		var jsObj={		
 			partyMeetingId : partyMeetingId//global var
 		}
@@ -1144,15 +1228,28 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			if(result != null && result.minutesDetails!=null && result.minutesDetails.length>0){
 			   minutesFiles = result.minutesDetails.length;
 			   updateMinCount(minutesFiles);
+			    getMomDashboardOverviewDtls(levelId,levelValue,partyMeetingId);
 			   var str='';
+			   
 			   for(var i in result.minutesDetails){
+				    var assignedLocation ='';
+					   var type ='';
+					   if(result.minutesDetails[i].assignedLocation == null){
+						   assignedLocation ='';
+						   type ='';
+					   }else if(result.minutesDetails[i].assignedLocation != null){
+						   assignedLocation = result.minutesDetails[i].assignedLocation;
+						   type = "assigned";
+					   }
 				   mainDivCount=i;
 					str+='<li class="list-group-item " id="list'+mainDivCount+'">';
 					 //str+='<div class=" m_top10" id="list'+mainDivCount+'">';
-					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'</span>';
+					 str+='<span id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'<br> created by:'+result.minutesDetails[i].createdLocation+'<br> assigned To: '+assignedLocation+',&nbsp;Status: '+result.minutesDetails[i].status+'</span>';
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-					 str+=' <button class="btn btn-default ToolTipDiv conformDel" data-toggle="tooltip" data-placement="top" title="Delete" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					 str+=' <button class="btn btn-default ToolTipDiv conformDel" data-toggle="tooltip" data-placement="top" title="Delete" attr_type ="'+type+'" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					 if(result.minutesDetails[i].isEditable == null){
 					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
+					 }
 					 str+=' </div>';
 					 str+=' </li>';
 				}
@@ -1799,6 +1896,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#meetingLevelSelectDivId").show();
 			$(".locationDivCls").hide();
 			$(".locationDivCls select").find('option').not(':first').remove();
+			$("#momAssignCheckedId").show();
+			$(':checkbox').prop('checked', true).removeAttr('checked');
+			//$("#momStatusId").val(0);
+			//$("#momPriorityId").val(0);
 		}
 	});
 	
@@ -2050,6 +2151,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					if(res.actionType =='N'){
 						$('#meetingTypeGeneralRadioId').prop('checked', true);
 					}
+					if(res.statusId != null)
+						$("#momStatusId").val(res.statusId);
+					else
+						$("#momStatusId").val(0);
 					
 					if(res.actionType == "Y"){
 						$("#meetingTypeActionableRadioId").trigger( "click" );
@@ -2159,7 +2264,41 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 				}
 			});	
 	 }
-	
+	 function getMomDashboardOverviewDtls(levelId,levelValue,partyMeetingId){
+      var accessValues =[];
+      if(levelValue != null && levelValue != ""){
+		  accessValues.push(levelValue);
+	  }	
+		var jsObj={
+			accessValues : accessValues,
+			userAccessLevelId:levelId,
+			partyMeetingId : partyMeetingId
+			//monthYear :""
+		}
+		$.ajax({
+			type:'GET',
+			url:'getMomDashboardOverviewDtlsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+				 $("#momTotalCount").html(result.totalMomInYourLocation);
+				 $("#minitePointsCount").html(result.momCreatedByYourLocation);
+				 $("#momSolvedCount").html(result.momAtYourLocationOnly);
+				 $("#momAssignedOthersCount").html(result.assignedToOther);
+				 $("#momAssignedCount").html(result.assignedToYourLocation);
+			}
+		});
+	}
+	$(document).on("change","#momStatusId",function(){
+		var statusId = $("#momStatusId").val();
+		if(statusId == 3){
+			$("#momAssignCheckedId").hide();
+		}else{
+			$("#momAssignCheckedId").show();
+		}
+		
+	});
 </script>
 </body>
 </html>
