@@ -17679,4 +17679,138 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return finalAlertVOs;
 	}
+	public List<BasicVO> getJalavaniIvrWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr){
+		List<BasicVO> finalVOList = new ArrayList<BasicVO>(0);
+		try {
+			Date startDate = null;Date endDate = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(startDateStr != null && endDateStr != null){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr );
+			}
+			List<Object[]> dateAndMonthObjList =null;
+			String dayWise="dayWise";
+			String monthWise="monthWise";
+			
+			List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getjalavaniFeedBackStatus();
+			
+			List<String> datesList = dateUtilService.getDaysBetweenDatesStringFormat(startDate, endDate);
+			if(datesList !=null && datesList.size() <= 31l){
+				for (String string : datesList) {
+					BasicVO vo = new BasicVO();
+						vo.setDate(string);
+						vo.setFeedbackStatusList(setFeedBackStatusTemplate(feedbackStatusList));
+					finalVOList.add(vo);
+				}
+				dateAndMonthObjList = rwsIvrAlertDetailsDAO.getJalavaniIvrSummaryGraphDetailsInfo(startDate, endDate,dayWise);
+				setFeedBackIvrGraphdata(finalVOList,dateAndMonthObjList,dayWise);
+			}else{
+				 
+				dateAndMonthObjList = rwsIvrAlertDetailsDAO.getJalavaniIvrSummaryGraphDetailsInfo(startDate, endDate,monthWise);
+				setFeedBackIvrGraphdata(finalVOList,dateAndMonthObjList,monthWise);
+			}
+			
+			if(finalVOList !=null && finalVOList.size() >0){
+				for (BasicVO vo :finalVOList){
+					if(vo.getFeedbackStatusList() != null && vo.getFeedbackStatusList().size() >0){
+						for (BasicVO feedbackVO : vo.getFeedbackStatusList()) {
+							if(feedbackVO.getHamletVoterInfo() != null && feedbackVO.getHamletVoterInfo().size() > 0){
+								for (BasicVO probVO : feedbackVO.getHamletVoterInfo()) {
+									Long total= (probVO.getSatisfiedCount() != null ? probVO.getSatisfiedCount():0l)+(probVO.getNotSatisfiedCount()!=null?probVO.getNotSatisfiedCount():0l);
+									if(total != null && total > 0l){
+										probVO.setSatisfiedPerc(caclPercantage(probVO.getSatisfiedCount(),total));
+										probVO.setNotSatisfiedPerc(caclPercantage(probVO.getNotSatisfiedCount(),total));
+									}
+									}
+								}
+							}
+						}
+					}
+				}
+			
+		}catch (Exception e){
+			LOG.error("Error occured getJalavaniStatusWiseSummaryGraphDetailsInfo() method of AlertManagementSystemService",e);
+		}
+		return finalVOList;
+	}
+public void setFeedBackIvrGraphdata(List<BasicVO> finalVoList,List<Object[]> monthObjList,String type){
+		
+		if(type !=null && type.equalsIgnoreCase("dayWise")){
+			//feedbackstatusId-0,rwsIvrTypeId-1,rwsIvrName-3,ivrSatisfiedStatus-2,count-4,date-5
+			if(monthObjList != null && monthObjList.size() > 0){
+				for (Object[] obj : monthObjList) {
+					BasicVO matchedVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[5].toString());
+					if(matchedVO != null){
+						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedVO.getFeedbackStatusList(),(Long)obj[0]);
+						if(matchedStatusVO != null){
+							BasicVO matchedTypeVO = getmatchedTypeVO(matchedStatusVO.getHamletVoterInfo(),(Long)obj[1]);
+							if(matchedTypeVO == null){
+								matchedTypeVO=new BasicVO();
+								matchedTypeVO.setTypeId((Long)obj[1]);
+								matchedTypeVO.setType(obj[3].toString());
+								if(obj[2].toString() !=null && obj[2].toString().equalsIgnoreCase("Y")){
+									matchedTypeVO.setIvrPosStatus(obj[2].toString());
+									matchedTypeVO.setSatisfiedCount((Long) obj[4]);
+								}else if(obj[2].toString() !=null && obj[2].toString().equalsIgnoreCase("N")){
+									matchedTypeVO.setIvrNegStatus(obj[2].toString());
+									matchedTypeVO.setNotSatisfiedCount((Long) obj[4]);
+								}
+								matchedStatusVO.getHamletVoterInfo().add(matchedTypeVO);
+							}
+						}
+					}
+				}
+			}
+		}else if(type !=null && type.equalsIgnoreCase("monthWise")){
+			//feedbackstatusId-0,rwsIvrTypeId-1,rwsIvrName-2,ivrSatisfiedStatus-3,count-4,month5,year-6
+			if(monthObjList != null && monthObjList.size() > 0){
+				List<Object[]> feedbackStatusList = alertFeedbackStatusDAO.getjalavaniFeedBackStatus();
+				for (Object[] obj : monthObjList){
+					BasicVO matchedMonthVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[5].toString()+"-"+obj[6].toString());
+					if(matchedMonthVO == null){
+						matchedMonthVO = new BasicVO();
+						matchedMonthVO.setDate(obj[5].toString()+"-"+obj[6].toString());
+						matchedMonthVO.setFeedbackStatusList(setFeedBackStatusTemplate(feedbackStatusList));
+						
+						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedMonthVO.getFeedbackStatusList(),(Long)obj[0]);
+							if(matchedStatusVO != null){
+								BasicVO matchedTypeVO = getmatchedTypeVO(matchedStatusVO.getHamletVoterInfo(),(Long)obj[1]);
+								if(matchedTypeVO == null){
+									matchedTypeVO=new BasicVO();
+									matchedTypeVO.setTypeId((Long)obj[1]);
+									matchedTypeVO.setType(obj[3].toString());
+									if(obj[2].toString() !=null && obj[2].toString().equalsIgnoreCase("Y")){
+										matchedTypeVO.setIvrPosStatus(obj[2].toString());
+										matchedTypeVO.setSatisfiedCount((Long) obj[4]);
+									}else if(obj[2].toString() !=null && obj[2].toString().equalsIgnoreCase("N")){
+										matchedTypeVO.setIvrNegStatus(obj[2].toString());
+										matchedTypeVO.setNotSatisfiedCount((Long) obj[4]);
+									}	
+								}
+								matchedStatusVO.getHamletVoterInfo().add(matchedTypeVO);
+							}
+							finalVoList.add(matchedMonthVO);
+					}else{
+						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedMonthVO.getFeedbackStatusList(),(Long)obj[0]);
+						if(matchedStatusVO != null){
+							BasicVO matchedTypeVO = getmatchedTypeVO(matchedStatusVO.getHamletVoterInfo(),(Long)obj[1]);
+							if(matchedTypeVO == null){
+								matchedTypeVO=new BasicVO();
+								matchedTypeVO.setTypeId((Long)obj[1]);
+								matchedTypeVO.setType(obj[3].toString());
+								if(obj[2].toString() !=null && obj[2].toString().equalsIgnoreCase("Y")){
+									matchedTypeVO.setIvrPosStatus(obj[2].toString());
+									matchedTypeVO.setSatisfiedCount((Long) obj[4]);
+								}else if(obj[2].toString() !=null && obj[2].toString().equalsIgnoreCase("N")){
+									matchedTypeVO.setIvrNegStatus(obj[2].toString());
+									matchedTypeVO.setNotSatisfiedCount((Long) obj[4]);
+								}	
+							}
+							matchedStatusVO.getHamletVoterInfo().add(matchedTypeVO);
+						}
+					}
+				}
+			}
+		}
+	}
 }
