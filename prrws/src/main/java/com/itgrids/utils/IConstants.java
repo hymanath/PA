@@ -102,4 +102,13 @@ public interface IConstants {
     public static final String INSERT_SOURCE_LIVE = "LIVE";
     public static final String INSERT_SOURCE_JOB = "JOB";
     
+	public static final String WORK_ADMIN_SANC = "adminSanctioned";
+	public static final String WORK_TECH_SANCTIONED = "techSanctioned";
+	public static final String WORK_ENTRUST = "entrusted";
+	public static final String WORK_GROUNDED = "ongoing";
+	
+	public static final String WORK_COMPLETION = "Completed";
+    public static final String WORK_COMMISSIONED = "Commissioned";
+	public static final String WORK_UNDER_PROCESS = "Grounded";
+	public static final String WORK_NOTGROUNDED = "Not Grounded";    
 }
