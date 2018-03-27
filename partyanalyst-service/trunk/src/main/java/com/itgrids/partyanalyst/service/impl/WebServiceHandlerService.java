@@ -5982,4 +5982,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
+	public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId){
+		List<AlertCoreDashBoardVO> alertVoList = new ArrayList<AlertCoreDashBoardVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavaniAlertForClosedAndReopenDetails(startDateStr,endDateStr,statusId);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniAlertForClosedAndReopenDetails  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
 }

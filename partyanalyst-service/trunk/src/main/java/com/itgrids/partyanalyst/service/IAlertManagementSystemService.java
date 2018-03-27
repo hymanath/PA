@@ -271,5 +271,6 @@ public interface IAlertManagementSystemService {
 	 public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(String startDateStr,String endDateStr,Long feedbackId,Long districtId);
 	 public List<BasicVO> getJalavaniFeedBackDetailsInfo(String startDateStr,String endDateStr);
 	 public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
+	 public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId);
 }        
 
