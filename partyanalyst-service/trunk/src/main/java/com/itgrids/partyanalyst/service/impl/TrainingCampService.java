@@ -4802,7 +4802,8 @@ class TrainingCampService implements ITrainingCampService{
 					subVO.setAssignedAddresId(commonMethodsUtilService.getLongValueForObject(objects[14]));
 					subVO.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[15]));
 					subVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[16]));
-					subVO.setCreatedLocation(getLocationName(subVO.getCreatedLocationScopeId(),userAddressDAO.get(subVO.getCreatedAddresId())));
+					if(subVO.getCreatedLocationScopeId() != null && subVO.getCreatedLocationScopeId().longValue()>0l)
+					 subVO.setCreatedLocation(getLocationName(subVO.getCreatedLocationScopeId(),userAddressDAO.get(subVO.getCreatedAddresId())));
 					if(subVO.getAssignedAddresId() != null && subVO.getAssignedAddresId()>0l)
 					subVO.setAssignedLocation(getLocationName(subVO.getAssignedLocationScopeId(),userAddressDAO.get(subVO.getAssignedAddresId())));
 					if((subVO.getAssignedLocationScopeId() != null && subVO.getAssignedLocationScopeId().longValue()>0l && subVO.getCreatedLocationScopeId().longValue() != subVO.getAssignedLocationScopeId().longValue() ) || (subVO.getStatusId().longValue() == 3l)){

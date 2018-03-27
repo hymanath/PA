@@ -1491,6 +1491,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 					subVO.setAssignedAddresId(commonMethodsUtilService.getLongValueForObject(objects[14]));
 					subVO.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[15]));
 					subVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[16]));
+					if(subVO.getCreatedLocationScopeId() != null && subVO.getCreatedLocationScopeId().longValue()>0l)
 					subVO.setCreatedLocation(getLocationName(subVO.getCreatedLocationScopeId(),userAddressDAO.get(subVO.getCreatedAddresId())));
 					if(subVO.getAssignedAddresId() != null && subVO.getAssignedAddresId()>0l)
 					subVO.setAssignedLocation(getLocationName(subVO.getAssignedLocationScopeId(),userAddressDAO.get(subVO.getAssignedAddresId())));
