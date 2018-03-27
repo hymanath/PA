@@ -646,4 +646,13 @@ public class PmRequestDetailsController {
 				
 				return locationDetailsService.getLocationWiseRepresentationsOverviewDetails(inputVO);
 		    }
+	     
+		     @RequestMapping(value ="/pmPriorityUpdation", method = RequestMethod.GET)
+		     public String pmPriorityUpdation(ModelMap model,HttpServletRequest request) {
+		     /* UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+		      if (uservo==null){
+		        return "petitionsLoginPage";
+		      }*/
+		     return "pmPriorityUpdation";
+		     }
 }
