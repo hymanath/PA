@@ -95,8 +95,11 @@ public class Scheduler {
 			input.setToDateStr("31-12-2027");
 			input.setLocationType("state");
 			input.setStatusList(statusList);
-			
-			String result = rwsWorksSchedulerService.getWorksDataInsertion(input);
+			String result =null;
+			boolean adminWorksInsertion = rwsWorksSchedulerService.getWorkDetails();
+			if(adminWorksInsertion){
+				result = rwsWorksSchedulerService.getWorksDataInsertion(input);
+			}
 			if(result.toString().equalsIgnoreCase("success")){
 				String dropResult = rwsWorksSchedulerService.getWorksDataDeletion();
 				if(dropResult.trim().equalsIgnoreCase("success")){
@@ -126,7 +129,7 @@ public class Scheduler {
 			return;
 	}
 	
-	@Scheduled(cron ="0 0 0/2 * * ?")
+	@Scheduled(cron ="0 0 0/4 * * ?")
 	public void runTheSchedulerForENCEvryTwoHrs()
 	{
 		if(IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER))
@@ -134,6 +137,10 @@ public class Scheduler {
 			LOG.error("Cron Job For E&D Started");
 			rwsWorksSchedulerService.getEncworkDataInsertion();
 			LOG.error("Cron Job For E&D Completed");
+			
+			LOG.error("data insert for habs-works started");
+			rwsWorksSchedulerService.insertENCWorkHabs();
+			LOG.error("data insert for habs-works completed");
 		}
 		else 
 			return;
