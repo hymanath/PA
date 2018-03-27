@@ -1,5 +1,7 @@
 package com.itgrids.dao.impl;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -25,6 +27,11 @@ public class RwsTehsilDAO extends GenericDaoHibernate<RwsTehsil, Long> implement
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("mandalId", mandalId);
 		 return (String) query.uniqueResult();
+	}
+	@Override
+	public List<Object[]> getAllmandals() {
+		Query query = getSession().createQuery(" select model.tehsilCode,model.tehsilName from RwsTehsil model");
+		 return query.list();
 	}
 
 }

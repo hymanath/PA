@@ -1,5 +1,7 @@
 package com.itgrids.dao.impl;
 
+import java.util.List;
+
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -25,5 +27,10 @@ public class RwsDistrictDAO extends GenericDaoHibernate<RwsDistrict, Long>implem
 		Query query = getSession().createQuery(sb.toString());
 		query.setParameter("districtId", districtId);
 		 return (String) query.uniqueResult();
+	}
+	@Override
+	public List<Object[]> getAllDistricts() {
+		Query query = getSession().createQuery("select distinct model.districtCode,model.districtName from RwsDistrict model");
+		 return  query.list();
 	}
 }
