@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> REPRESENTATIONS DASHBOARD DETAILS </title>
+<title> PM PRIORITY UPDATION </title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -92,34 +92,39 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 			<div class="row m_top10 dispalyNone">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
-						<div class="row">
+						<div class="row m_top10">
 							<div class="col-sm-2 " id="deptsDivId">
+								<label>DEPARTMENT</label>
 								<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId1" multiple>
 								</select>
 							</div>
 							<div class="col-sm-2" id="districtCandDiv">
+								<label>DISTRICT</label>
 								<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId1" multiple>
 									<!--<option value="0">All</option>-->
 								</select>
 								<!--<div class="error_colorCls" id="districtCandErrDiv"></div>-->
 							</div>
 							<div class="col-sm-2" id="constituencyCanDiv">
+								<label>CONSTITUENCY</label>
 								<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId1" multiple>
 									<!--<option value="0">All</option>-->
 								</select>
 								<!--<div class="error_colorCls" id="constituencyCanErrDiv"></div>-->
 							</div>
 							<div class="col-sm-2">
+								<label>STATUS</label>
 								<select class="chosen-select form-control" id="statusLocId1" data-placeholder="All" multiple>
 									<!--<option value="0">All</option>-->
 								</select>
 							</div>
 							<div class="col-sm-2">
+								<label>SUBJECT</label>
 								<select class="chosen-select form-control" id="subjectId1" data-placeholder="All" multiple>
 									<!--<option value="0">All</option>-->
 								</select>
 							</div>
-							<div class="col-sm-2">	
+							<div class="col-sm-2 m_top20">	
 								<div class="input-group inline-block">
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
@@ -210,6 +215,7 @@ $("#dateRangePicker").daterangepicker({
 onloadcalls();
 function onloadcalls()
 {
+	$("#constituencyCanId1").chosen();
 	getDepartmntsDetails();
 	getStatusList();
 	getSubjectsBySearchType();
@@ -251,17 +257,8 @@ function getDepartmntsDetails(){
 
 
 function getStatusList(){
-	 $("#statusLocId1").html('');
+	$("#statusLocId1").html('');
 	var selStatusId = $("#statusLocId1").val();
-	/* var statusIds = [];
-	if(selStatusId != null && selStatusId.length >0){
-		statusIds=selStatusId;
-	}else if(onLoadstatusId.length >0){
-		var statusList = onLoadstatusId.split(',');
-		for(var i=0;i<=statusList.length-1;i++){
-			statusIds.push(statusList[i]);
-		}
-	} */
 	var json = {
 		statusIds :statusIds
 	}
@@ -328,7 +325,7 @@ var statusIds = [];
 if(selStatusId != null && selStatusId.length >0){
 	statusIds=selStatusId;
 }
-var subjArr = [];
+/* var subjArr = [];
 var subjIds =$("#subjectId1").val();
 if(subjIds != null && subjIds !=0){
 	subjArr=subjIds;
@@ -350,7 +347,7 @@ if(constituencyId != null && constituencyId.length > 0){
 	searchLevelValue = [];
 	searchLevelId=4;
 	searchLevelValue=constituencyId;
-}
+} */
 		
   locationIDsArr.push(111);
   
@@ -382,55 +379,12 @@ if(constituencyId != null && constituencyId.length > 0){
   function buildPetitionDetailsForPDF(result){
 	var str='';
 	str+='<div class="petition_print_heading m_top10">';
-		/* str+='<div class="row">';
-			str+='<h4 class="font_weight text-center">'+assemblyName.toUpperCase()+' CONSTITUENCY, '+districtName.toUpperCase()+' DISTRICT </h4>';
-		str+='</div>'; */
-	/*str+='</div>';
-	str+='<div class="row m_top10">'
-		str+='<div class="col-sm-12">'
-			str+='<div class="table-responsive">';
-			str+='<table class="table details-overview_petition_print">';
-				str+='<thead>';
-					str+='<tr>';
-						str+='<th>WORK ID</th>';
-						str+='<th>CONSTITUENCY</th>';
-						str+='<th>MANDAL </th>';
-						str+='<th>PANCHAYAT</th>';
-						str+='<th>DESCRIPTION</th>';
-						str+='<th>ESTIMATED COST (in Lakhs)</th>';
-						str+='<th>REFFERED BY </th>';
-						str+='<th>DESIGNATION</th>';
-						str+='<th>PRIORITY</th>';
-						str+='</tr>';
-					str+='</thead>';
-					str+='<tbody>';
-						for(var i in result){
-							
-							if(result[i].subWorksList != null && result[i].subWorksList.length>0){
-								for(var k in result[i].subWorksList){
-									str+='<tr>';
-										str+='<td>'+result[i].subWorksList[k].workId+'</td>';
-										str+='<td>'+result[i].subWorksList[k].assemblyName+'</td>';
-										str+='<td>'+result[i].subWorksList[k].tehsilName+'</td>';
-										str+='<td>'+result[i].subWorksList[k].panchayatName+'</td>';
-										str+='<td>'+result[i].subWorksList[k].workDescription+'</td>';
-										str+='<td>'+result[i].subWorksList[k].estimationCost+'</td>';
-										str+='<td>'+result[i].subWorksList[k].refferrersName+'</td>';
-										str+='<td>'+result[i].subWorksList[k].goRefNo+'</td>';
-										str+='<td><input type="text" class="form-control Priority_Cls"></td>';
-									str+='</tr>';
-								}
-							}
-						}
-					str+='</tbody>';
-			str+='</table>';
-			str+='</div>';
-		str+='</div>';
-		str+='</div>';*/
 		var assemblyName=" KAVALI ";
 		var str='';
 		str+='<div class="row">';
-			str+='<button class="btn btn-md btn-success printViewCls pull-right dispalyNone" attr_divId="printableArea">Print</button>';
+			str+='<div class="col-sm-12">';
+				str+='<button class="btn btn-md btn-success printViewCls pull-right dispalyNone" attr_divId="printableArea">Print</button>';
+			str+='</div>';	
 		str+='</div>';
 		
 		str+='<div class="petition_print_heading m_top10">';
@@ -553,7 +507,7 @@ if(constituencyId != null && constituencyId.length > 0){
 									str+='<td></td>';
 								*/
 							
-									str+='<td> <input type="text" class="prirotyCls" id="PriorityId" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" /></td>';
+									str+='<td> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" /></td>';
 									str+='</tr>';
 								//}
 							}
@@ -613,18 +567,9 @@ $(document).on("change","#districtCandId1",function()
 	getConstituenciesBySearchTypeAndDistrict($(this).val());
 });	
 
+
 function getConstituenciesBySearchTypeAndDistrict(distictId){
 	
-	/* var json = {
-		 filterType :searchType,
-		 searchLvlVals: distictId,
-		 fromDate :currentFromDate,
-		 toDate : currentToDate,
-		 deptIdsList:deptIds,
-		 designationIds:desigIds,
-		 type:desigType,
-		 statusIds:statusIds
-		}   */ 
 	var json = {
 		filterType :"representee",
 		 searchLvlVals: distictId,
@@ -656,40 +601,6 @@ function getConstituenciesBySearchTypeAndDistrict(distictId){
 		$("#constituencyCanId1").trigger('chosen:updated');
 	});	
 }
-
-/* 	getConstituencyBySearchType();
- function getConstituencyBySearchType(){
-
- var json = {
-			deptIdsList	:[],
-			designationIds:	null,
-			filterType : "representee",
-			fromDate : 26-03-2011,
-			searchLvlVals :	[],
-			statusIds :	[],
-			toDate	: 26-03-2056,
-			type : []	
-		}           
-	$.ajax({              
-		type:'POST',    
-		url: 'getDistrictBySearchType',
-		dataType: 'json',
-		data : JSON.stringify(json),
-		beforeSend :   function(xhr){
-			xhr.setRequestHeader("Accept", "application/json");
-			xhr.setRequestHeader("Content-Type", "application/json");
-		}
-	}).done(function(result){
-		if(result !=null && result.length >0){
-			for(var i in result){
-				$("#constituencyCanId1").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
-			}
-		}
-		$("#constituencyCanId1").chosen();
-		$("#constituencyCanId1").trigger('chosen:updated');
-		
-	});	 
-}*/
 
 function updatePriorityDetailsforPetitionsWorks(){
    var formData = new FormData();
