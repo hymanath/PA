@@ -38,4 +38,10 @@ public class RwsConstituencyDAO extends GenericDaoHibernate<RwsConstituency, Lon
 		query.setParameterList("constituencyIdList", constituencyIdList);
 		return query.list();
 	}
+
+	@Override
+	public List<Object[]> getAllconstituencies() {
+		Query query = getSession().createQuery("select distinct model.constituencyCode, model.constituencyName from RwsConstituency model");
+		return query.list();
+	}
 }
