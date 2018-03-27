@@ -515,7 +515,12 @@ public class RuralWaterSupplyDashBoardController {
 	public @ResponseBody String getWorksDataInsertionService(@RequestBody InputVO inputVO) {
 	  try {
 		  	String dropResult = null;
-			String result = rwsWorksSchedulerService.getWorksDataInsertion(inputVO);
+			//String result = rwsWorksSchedulerService.getWorksDataInsertion(inputVO);
+			String result =null;
+			boolean adminWorksInsertion = rwsWorksSchedulerService.getWorkDetails();
+			if(adminWorksInsertion){
+				result = rwsWorksSchedulerService.getWorksDataInsertion(inputVO);
+			}
 			if(result.toString().equalsIgnoreCase("success")){
 				dropResult = rwsWorksSchedulerService.getWorksDataDeletion();
 				if(dropResult.trim().equalsIgnoreCase("success")){
@@ -584,6 +589,29 @@ public class RuralWaterSupplyDashBoardController {
 			LOG.error("Exception raised at getExceededWorkDetailsLocationWise - getExceededWorkDetailsLocationWise controller", e);
 	  }
 	 return null;
+	}
+	
+	@PostMapping("/getLocationWiseSchemeWiseWorkDetails")
+	public @ResponseBody List<WorksVO> getLocationWiseSchemeWiseWorkDetails(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getLocationWiseSchemeWiseWorkDetails(inputVO);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getSchemeWiseWorkDetails - RuralWaterSupplyDashBoardController controller",
+					e);
+		}
+		return null;
+	}
+	
+	@PostMapping("/getLocattionWiseOnclickWorkDetails")
+	public @ResponseBody List<RwsClickVO> getLocattionWiseOnclickWorkDetails(@RequestBody InputVO vo){
+		try {
+			return rWSNICService.getLocattionWiseOnclickWorkDetails(vo);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getOnclickWorkDetails - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
 	}
 	
 	@PostMapping("/getRwsProgramsCodeAndName")
