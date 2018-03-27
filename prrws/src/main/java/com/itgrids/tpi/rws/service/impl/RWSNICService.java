@@ -35,6 +35,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import javax.swing.Icon;
 import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 import org.apache.log4j.Logger;
@@ -4643,8 +4644,7 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 				fromDate = sdf.parse("01-04-"+inputVO.getYear());
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
-			
-			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),null,null,null,null);
+			List<Object[]> worksdata = rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),null,null,null,null,inputVO.getSchemeIdStr());
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 				for (Object[] param : worksdata) {
 					//0-workId,1-WorkName,2-status,3-assetType,4-adminDate,5-groundDate,6-targetrDate,7-completionDate
@@ -4718,8 +4718,8 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 				fromDate = sdf.parse("01-04-"+inputVO.getYear());
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
-			
-			List<Object[]> worksdata =  rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
+			List<Object[]> worksdata =  rwsWorkDAO.getWorksData(fromDate,toDate,inputVO.getStatus(),inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue(),
+										inputVO.getSchemeIdStr());
 			
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
@@ -4939,7 +4939,7 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
 			
-			List<Object[]> notGroundedWorkList = rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate,"","","","");
+			List<Object[]> notGroundedWorkList = rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate,"","","","",inputVO.getSchemeIdStr());
 			for (Object[] param : notGroundedWorkList) {
 
 				//0-workId,1-workName,2-workStatus,3-assesttype,4-admindate,5-diff,6-dcode, 7-dname,8-ccode,9-cname,10-mcode,
@@ -4990,7 +4990,7 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 				fromDate = sdf.parse("01-04-"+toYear);
 			}
 			//List<Object[]> notGroundedWorkList = rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate);
-			List<Object[]> worksdata =  rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue());
+			List<Object[]> worksdata =  rwsWorkDAO.getnotGroundedWorkList(fromDate,toDate,inputVO.getAssetType(),inputVO.getLocationType(),inputVO.getLocationIdStr(),inputVO.getDistrictValue(),inputVO.getSchemeIdStr());
 			
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
@@ -5060,4 +5060,198 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 			}
 			return returnList;
 		}
+	@Override
+	public List<WorksVO> getLocationWiseSchemeWiseWorkDetails(InputVO inputVO) {
+		List<WorksVO> finalList = new ArrayList<WorksVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() >0){
+				inputVO.setStartDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
+				Long year = Long.valueOf(inputVO.getYear());
+				Long priviousYear = year-1;
+				inputVO.setStartDate(sdf.parse("01-04-"+ priviousYear));
+				inputVO.setEndDate(sdf.parse("01-04-"+year));
+				
+			}
+			Map<Long,WorksVO> locationMap = getLocationTemplate(inputVO.getLocationType());
+			List<Object[]> objList = new ArrayList<>(0);
+
+			List<Object[]>  workadminSancObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_ADMIN_SANC);
+			List<Object[]>  worktechSancObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_TECH_SANCTIONED);
+			List<Object[]>  workentrustObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_ENTRUST );
+			List<Object[]>  workOngoingObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_GROUNDED);
+			List<Object[]>  workNotgroundedObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_NOTGROUNDED);
+			List<Object[]>  workUnderProcessObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_UNDER_PROCESS);
+			List<Object[]>  workCompletedObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_COMPLETION );
+			List<Object[]>  workCommissionedObjLst = rwsWorkDAO.getLocationWiseSchemeWiseAdminWorkDetails(inputVO, IConstants.WORK_COMMISSIONED);
+			//List<Object[]>  workonStatusObjLst = rwsWorkDAO.getLocationWiseSchemeWiseWorkDetails(inputVO);
+			
+			objList.addAll(workadminSancObjLst);
+			objList.addAll(worktechSancObjLst);
+			objList.addAll(workentrustObjLst);
+			objList.addAll(workOngoingObjLst);
+			//objList.addAll(workonStatusObjLst);
+			objList.addAll(workNotgroundedObjLst);
+			objList.addAll(workUnderProcessObjLst);
+			objList.addAll(workCompletedObjLst);
+			objList.addAll(workCommissionedObjLst);
+			
+			for (Object[] objects : objList) {
+				WorksVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				if(locationVo != null){
+					WorksVO matchedVo = getMatchedStatusWorkVO(locationVo.getSubList(),commonMethodsUtilService.getStringValueForObject(objects[2]));
+					if(matchedVo !=null){
+						
+						if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_ADMIN_SANC) ){
+							matchedVo.setAdminSanctionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED) ){
+							matchedVo.setTechnicalSanctionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_ENTRUST) ){
+							matchedVo.setEntrustedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_GROUNDED) ){
+							matchedVo.setGroundedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS) ){
+							matchedVo.setUndrProcessCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_COMPLETION) ){
+							matchedVo.setCompletedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_COMMISSIONED) ){
+							matchedVo.setCommissionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_NOTGROUNDED) ){
+							matchedVo.setNotgroundedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						}
+					}
+				}
+			}
+			finalList.addAll(locationMap.values());
+		}catch(Exception e){
+			LOG.error("exception occured in getLocationWiseSchemeWiseWorkDetails() method",e);	
+		}
+		return finalList;
+	}
+
+	private WorksVO getMatchedStatusWorkVO(List<WorksVO> subList, String assetType) {
+		try{
+			if(subList != null && subList.size() > 0){
+				for (WorksVO statusVO : subList) {
+					if(statusVO.getAssetType().equalsIgnoreCase(assetType))
+						return statusVO;
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("exception occured in getMatchedStatusWorkVO() method",e);	
+		}
+		
+		return null;
+	}
+
+	private Map<Long, WorksVO> getLocationTemplate(String locationType) {
+		Map<Long,WorksVO> locationMap =new HashMap<Long,WorksVO>();
+		try{
+			List<Object[]> locationObjList = null;
+			List<WorksVO> statusList =getstatusTemplateList();
+			if(locationType.equalsIgnoreCase("state")){
+				WorksVO vo = new WorksVO();
+				vo.setLocationId(1l);vo.setLocationName("Andra Pradesh");
+				vo.getSubList().addAll(statusList);
+				locationMap.put(1l, vo);
+			}else if(locationType.equalsIgnoreCase("district")){
+				locationObjList = rwsDistrictDAO.getAllDistricts();
+			}else if(locationType.equalsIgnoreCase("constituency")){
+				locationObjList = rwsConstituencyDAO.getAllconstituencies();
+			}else if(locationType.equalsIgnoreCase("mandal")){
+				locationObjList = rwsTehsilDAO.getAllmandals();
+			}
+			if(locationObjList !=null && locationObjList.size()>0){
+				for (Object[] objects : locationObjList) {
+					WorksVO vo = locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					if(vo == null){
+						vo = new WorksVO();
+						vo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
+						vo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+						vo.getSubList().addAll(statusList);
+						locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), vo);
+					}
+					
+				}
+			}
+		}catch (Exception e) {
+			LOG.error("exception occured in getLocationTemplate() of getLocationWiseSchemeWiseWorkDetails() method",e);	
+		}
+		return locationMap;
+	}
+
+	private List<WorksVO> getstatusTemplateList() {
+		 List<WorksVO>  statusList= new ArrayList<WorksVO>();
+		try{
+			WorksVO PwsVo = new WorksVO();
+			PwsVo.setAssetType("PWS");
+			statusList.add(PwsVo);
+			
+			WorksVO cpwsVo = new WorksVO();
+			cpwsVo.setAssetType("CPWS");
+			statusList.add(cpwsVo);
+		}catch (Exception e) {
+			LOG.error("exception occured in getstatusTemplateList() of getLocationWiseSchemeWiseWorkDetails() method",e);	
+		}
+		return statusList;
+	}
+
+	@Override
+	public List<RwsClickVO> getLocattionWiseOnclickWorkDetails(InputVO vo) {
+		List<RwsClickVO> finlaList= new ArrayList<RwsClickVO>();
+		
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			SimpleDateFormat sff = new SimpleDateFormat("yyyy-MM-dd");
+			if(vo.getFromDateStr() != null && vo.getFromDateStr().length() > 0 && vo.getToDateStr() != null && vo.getToDateStr().length() >0){
+				vo.setStartDate(sdf.parse(vo.getFromDateStr()));
+				vo.setEndDate(sdf.parse(vo.getToDateStr()));
+			}else if(vo.getYear() != null && vo.getYear().length() > 0){
+				Long year = Long.valueOf(vo.getYear());
+				Long priviousYear = year-1;
+				vo.setStartDate(sdf.parse("01-04-"+ priviousYear));
+				vo.setEndDate(sdf.parse("01-04-"+year));
+				
+			}
+			
+			List<String> dbStatuses = new ArrayList<String>();
+			dbStatuses.add("Not Grounded".toLowerCase());dbStatuses.add("Grounded".toLowerCase());dbStatuses.add("Commissioned".toLowerCase());dbStatuses.add("Completed".toLowerCase());
+			
+			List<Object[]> worksObjList=rwsWorkDAO.getstatustWiseWorks(vo,dbStatuses);
+			for (Object[] param : worksObjList) {
+				RwsClickVO rwsClickVo = new RwsClickVO();
+				rwsClickVo.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[0]));
+				rwsClickVo.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[1]));
+				rwsClickVo.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[2]));
+				rwsClickVo.setMandalName(commonMethodsUtilService.getStringValueForObject(param[3]));
+				rwsClickVo.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[4]));
+				rwsClickVo.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[5]));
+				rwsClickVo.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[6]));
+				rwsClickVo.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[7]));
+				rwsClickVo.setWorkId(commonMethodsUtilService.getStringValueForObject(param[8]));
+				rwsClickVo.setSacntionedAmount(commonMethodsUtilService.getStringValueForObject(param[9]));
+				rwsClickVo.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[9]));
+				rwsClickVo.setWorkName(commonMethodsUtilService.getStringValueForObject(param[10]));
+				rwsClickVo.setProgramName(commonMethodsUtilService.getStringValueForObject(param[11]));
+				if(commonMethodsUtilService.getStringValueForObject(param[12]) !=null && commonMethodsUtilService.getStringValueForObject(param[12]).length()>0){
+					rwsClickVo.setAdminDate(sff.format(sff.parse(commonMethodsUtilService.getStringValueForObject(param[12]))));
+				}if(commonMethodsUtilService.getStringValueForObject(param[13]) !=null && commonMethodsUtilService.getStringValueForObject(param[13]).length()>0){
+					rwsClickVo.setTargetDate(sff.format(sff.parse(commonMethodsUtilService.getStringValueForObject(param[13]))));
+				}if(commonMethodsUtilService.getStringValueForObject(param[14]) !=null && commonMethodsUtilService.getStringValueForObject(param[14]).length()>0){
+					rwsClickVo.setGroundingDate(sff.format(sff.parse(commonMethodsUtilService.getStringValueForObject(param[14]))));
+				}if(commonMethodsUtilService.getStringValueForObject(param[15]) !=null && commonMethodsUtilService.getStringValueForObject(param[15]).length()>0){
+					rwsClickVo.setCompletionDate(sff.format(sff.parse(commonMethodsUtilService.getStringValueForObject(param[15]))));
+				}
+				
+				finlaList.add(rwsClickVo);
+			}
+			
+		}catch(Exception e){
+			LOG.error("exception occured in getstatusTemplateList() of getLocationWiseSchemeWiseWorkDetails() method",e);	
+		}
+		return finlaList;
+	}
+
  }
