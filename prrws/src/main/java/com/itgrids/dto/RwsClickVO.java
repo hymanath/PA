@@ -40,6 +40,7 @@ public class RwsClickVO implements Serializable{
 	private String targetDate="";
 	private String groundingDate="";
 	private String adminDate="";
+	private String programName;
 	
 	public Long getPanchayatId() {
 		return panchayatId;
@@ -235,6 +236,12 @@ public class RwsClickVO implements Serializable{
 	}
 	public void setAdminDate(String adminDate) {
 		this.adminDate = adminDate;
+	}
+	public String getProgramName() {
+		return programName;
+	}
+	public void setProgramName(String programName) {
+		this.programName = programName;
 	}
 	
 	

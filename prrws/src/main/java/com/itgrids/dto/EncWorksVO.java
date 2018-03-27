@@ -24,6 +24,24 @@ public class EncWorksVO {
 	private Long NotGroundedExceededCount=0l;
 	private Long ongoingExceededCount=0l;
 	private Long completedExceededCount=0l;
+	private String districtName;
+	private Long districtId;
+	private Long panchayathId;
+	private String panchaythName;
+	private String habCode;
+	private String habName;
+	private String adminDate;
+	private String targetDate;
+	private String completedDate;
+	private String groundedDate;
+	private Long sanctionedAmount;
+	private String workId;
+	private String workName;
+	private Long grantId;
+	private String grantName;
+	private Long subGrantId;
+	private String subGrantName;
+		
 	
 	
 	public Long getLocationId() {
@@ -148,6 +166,108 @@ public class EncWorksVO {
 	}
 	public void setCompletedExceededCount(Long completedExceededCount) {
 		this.completedExceededCount = completedExceededCount;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getPanchayathId() {
+		return panchayathId;
+	}
+	public void setPanchayathId(Long panchayathId) {
+		this.panchayathId = panchayathId;
+	}
+	public String getPanchaythName() {
+		return panchaythName;
+	}
+	public void setPanchaythName(String panchaythName) {
+		this.panchaythName = panchaythName;
+	}
+	public String getHabCode() {
+		return habCode;
+	}
+	public void setHabCode(String habCode) {
+		this.habCode = habCode;
+	}
+	public String getHabName() {
+		return habName;
+	}
+	public void setHabName(String habName) {
+		this.habName = habName;
+	}
+	public String getAdminDate() {
+		return adminDate;
+	}
+	public void setAdminDate(String adminDate) {
+		this.adminDate = adminDate;
+	}
+	public String getTargetDate() {
+		return targetDate;
+	}
+	public void setTargetDate(String targetDate) {
+		this.targetDate = targetDate;
+	}
+	public String getCompletedDate() {
+		return completedDate;
+	}
+	public void setCompletedDate(String completedDate) {
+		this.completedDate = completedDate;
+	}
+	public String getGroundedDate() {
+		return groundedDate;
+	}
+	public void setGroundedDate(String groundedDate) {
+		this.groundedDate = groundedDate;
+	}
+	public Long getSanctionedAmount() {
+		return sanctionedAmount;
+	}
+	public void setSanctionedAmount(Long sanctionedAmount) {
+		this.sanctionedAmount = sanctionedAmount;
+	}
+	public String getWorkId() {
+		return workId;
+	}
+	public void setWorkId(String workId) {
+		this.workId = workId;
+	}
+	public String getWorkName() {
+		return workName;
+	}
+	public void setWorkName(String workName) {
+		this.workName = workName;
+	}
+	public Long getGrantId() {
+		return grantId;
+	}
+	public void setGrantId(Long grantId) {
+		this.grantId = grantId;
+	}
+	public String getGrantName() {
+		return grantName;
+	}
+	public void setGrantName(String grantName) {
+		this.grantName = grantName;
+	}
+	public Long getSubGrantId() {
+		return subGrantId;
+	}
+	public void setSubGrantId(Long subGrantId) {
+		this.subGrantId = subGrantId;
+	}
+	public String getSubGrantName() {
+		return subGrantName;
+	}
+	public void setSubGrantName(String subGrantName) {
+		this.subGrantName = subGrantName;
 	}
 	
 	
