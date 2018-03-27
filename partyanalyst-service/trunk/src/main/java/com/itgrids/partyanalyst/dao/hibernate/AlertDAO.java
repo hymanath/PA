@@ -12041,26 +12041,26 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
           if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
            //feedbackstatusId-0,status-1,count-2,date-3
         	  str.append("select model.alertFeedbackStatusId,model.alertFeedbackStatus.status," +
-        	  		" count(model.alertFeedbackStatusId),date(model.createdTime) ");
+        	  		" count(model.alertFeedbackStatusId),date(model.updatedTime) ");
         	  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
         	  //feedbackstatusId-0,status-1,count-2,Month-3,year-4
         	  str.append("select model.alertFeedbackStatusId,model.alertFeedbackStatus.status," +
         	  		" count(model.alertFeedbackStatusId)," +
-        	  		" month(model.createdTime),year(model.createdTime)  ");
+        	  		" month(model.updatedTime),year(model.updatedTime)  ");
           }
           
           str.append(" from Alert model where model.isDeleted='N' and model.alertFeedbackStatus.isDeleted='N'" +
           		" and model.govtDepartmentId =:govtDeptId ");
          
           if(fromDate !=null && toDate !=null){
-            str.append(" and date(model.createdTime) between :fromDate and :toDate ");
+            str.append(" and date(model.updatedTime) between :fromDate and :toDate ");
           }
           
           if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
-            str.append(" group by model.alertFeedbackStatusId,date(model.createdTime) ");  
+            str.append(" group by model.alertFeedbackStatusId,date(model.updatedTime) ");  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
-            str.append(" group by model.alertFeedbackStatusId,month(model.createdTime),year(model.createdTime) order by month(model.createdTime),year(model.createdTime) ");
+            str.append(" group by model.alertFeedbackStatusId,month(model.updatedTime),year(model.updatedTime) order by month(model.updatedTime),year(model.updatedTime) ");
           }
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
