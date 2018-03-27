@@ -12071,4 +12071,29 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
           }
         return  query.list();
       }
+	@SuppressWarnings("unchecked")
+	public List<Long> getJalavaniAlertForClosedAndReopenDetails(Date fromDate,Date toDate,Long statusId){
+        StringBuilder str = new StringBuilder();
+        	//0-locationId,1-locationName,2-feedbackStatusId,problemtypeId-3,satisifiedStatus-4,count-5
+        str.append(" select distinct model.alertId ");
+      
+        str.append(" from Alert model " +
+        		" where  model.isDeleted ='N' and " +
+        		" model.govtDepartmentId =:govtDeptId  ");
+        
+	        if(fromDate !=null && toDate !=null){
+	        	str.append(" and date(model.createdTime) between :fromDate and :toDate ");
+	        }
+        str.append( " and model.alertStatusId =:statusId ");
+        
+        Query query = getSession().createQuery(str.toString());
+          query.setParameter("govtDeptId",49l);
+          query.setParameter("statusId",statusId);
+          
+          if(fromDate !=null && toDate !=null){
+            query.setDate("fromDate",fromDate);
+            query.setDate("toDate",toDate);
+          }
+        return  query.list();
+      }
 }
