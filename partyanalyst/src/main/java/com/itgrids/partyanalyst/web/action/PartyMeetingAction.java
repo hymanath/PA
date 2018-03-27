@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.MeetingTrackingVO;
+import com.itgrids.partyanalyst.dto.MomDashbaordOverViewDtlsVO;
 import com.itgrids.partyanalyst.dto.PMMinuteVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingStatusVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingSummaryVO;
@@ -19,6 +20,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingWSVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
+import com.itgrids.partyanalyst.service.IPartyMeetingMOMService;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -41,8 +43,8 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 	private List<PartyMeetingVO> partyMeetingVOList;
 	private List<PartyMeetingStatusVO> meetingStatusVOs;
 	private List<PMMinuteVO> pmMinutelist;
-	
-	
+	private MomDashbaordOverViewDtlsVO overViewDetails;
+	private IPartyMeetingMOMService partyMeetingMOMService;
 	
 	public List<PMMinuteVO> getPmMinutelist() {
 		return pmMinutelist;
@@ -166,6 +168,24 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		this.meetingStatusVOs = meetingStatusVOs;
 	}
 	
+	
+	public MomDashbaordOverViewDtlsVO getOverViewDetails() {
+		return overViewDetails;
+	}
+
+	public void setOverViewDetails(MomDashbaordOverViewDtlsVO overViewDetails) {
+		this.overViewDetails = overViewDetails;
+	}
+
+	public IPartyMeetingMOMService getPartyMeetingMOMService() {
+		return partyMeetingMOMService;
+	}
+
+	public void setPartyMeetingMOMService(
+			IPartyMeetingMOMService partyMeetingMOMService) {
+		this.partyMeetingMOMService = partyMeetingMOMService;
+	}
+
 	public String getPartyMeetingsOverViewForCadre()
 	{
 		try {
@@ -215,9 +235,10 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 				loggedUser = regVo.getRegistrationID();
 			}
 			
+			
 			status = partyMeetingService.updateMeetingPoint(minuteId,minuteText,loggedUser,jObj.getLong("partyMeetingId"),jObj.getLong("levelId"),jObj.getLong("levelValue"),
 					jObj.getString("isActionable"),jObj.getLong("statusId"),
-					jObj.getLong("stateId"),jObj.getLong("districtId"),jObj.getLong("constituencyId"),jObj.getLong("tehsilId"),jObj.getLong("panchayatId"),jObj.getLong("isGovtParty"));
+					jObj.getLong("stateId"),jObj.getLong("districtId"),jObj.getLong("constituencyId"),jObj.getLong("tehsilId"),jObj.getLong("panchayatId"),jObj.getLong("isGovtParty"),jObj.getLong("priorityId"),jObj.getString("assignedType"));
 		} catch (Exception e) {
 			LOG.error("Exception raise at updateMeetingPoint", e);
 		}
@@ -709,4 +730,29 @@ public class PartyMeetingAction extends ActionSupport  implements ServletRequest
 		}
 		return Action.SUCCESS;
 	} 
+	public String getMomDashboardOverviewDtls(){
+		try{
+			
+			RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId=0l;
+			if(regVO!=null){
+				userId = regVO.getRegistrationID();
+			}
+			jObj = new JSONObject(getTask());
+			JSONArray accessValuesArr = jObj.getJSONArray("accessValues");  
+			List<Long> locationIdList = new ArrayList<Long>();
+			if(accessValuesArr != null && accessValuesArr.length() > 0){
+				for (int i = 0; i < accessValuesArr.length(); i++){
+					locationIdList.add(Long.parseLong(accessValuesArr.getString(i)));          
+				}  
+			}
+			//String monthYear = jObj.has("monthYear") ? jObj.getString("monthYear") : null;
+			overViewDetails = partyMeetingMOMService.getMomPointsDashboardOverviewDtls(jObj.getLong("userAccessLevelId"),locationIdList,jObj.getLong("partyMeetingId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getMomDashboardOverviewDtls Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 }

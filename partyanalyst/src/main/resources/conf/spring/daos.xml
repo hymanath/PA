@@ -4325,5 +4325,13 @@
 	 <bean id="rwsIvrAlertDetailsDAO" class="com.itgrids.partyanalyst.dao.hibernate.RwsIvrAlertDetailsDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
-	 
+	 <bean id="areaInchargeEnrollmentDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaInchargeEnrollmentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="areaInchargeLocationDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaInchargeLocationDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
+	 <bean id="areaInchargeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaInchargeMemberDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		

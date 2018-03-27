@@ -18983,5 +18983,10 @@
 			<param name="root">idAndNameVOList</param>
 		</result>
 	</action>
+	<action name="getMomDashboardOverviewDtlsAction" class="partyMeetingAction" method="getMomDashboardOverviewDtls">
+		<result type="json" name="success">
+			<param name="root">overViewDetails</param>
+		</result>
+	</action>
  </package>
 </struts>

@@ -1383,6 +1383,9 @@
 						 <value>com.itgrids.partyanalyst.model.RwsIvrType</value>
 						 <value>com.itgrids.partyanalyst.model.RwsIvrSurvey</value>
 						 <value>com.itgrids.partyanalyst.model.RwsIvrAlertDetails</value>
+						 <value>com.itgrids.partyanalyst.model.AreaInchargeEnrollment</value>
+						 <value>com.itgrids.partyanalyst.model.AreaInchargeLocation</value>
+						 <value>com.itgrids.partyanalyst.model.AreaInchargeMember</value>
 				  </list>
 			
 		</property>
