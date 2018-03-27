@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.itgrids.dto.EncTargetsVO;
 import com.itgrids.dto.EncVO;
 import com.itgrids.dto.EncWorksVO;
+import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.service.IPrENCService;
@@ -98,6 +99,7 @@ public class PrENCController {
 		String result = "false";
 		try {
 			result = rwsWorksSchedulerService.getEncworkDataInsertion();
+			rwsWorksSchedulerService.insertENCWorkHabs();
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
@@ -116,6 +118,7 @@ public class PrENCController {
 		return returnList;
 
 	}
+	
 	@PostMapping("/getLocationWiseWorksgraphInformation")
 	public @ResponseBody EncWorksVO  getLocationWiseWorksgraphInformation(@RequestBody InputVO inputVO){
 		EncWorksVO returnList = null;
@@ -139,5 +142,65 @@ public class PrENCController {
 		}
 		return returnList;
 	}
+	
+	@PostMapping("/getLocationWiseEncWorksInformation")
+	public @ResponseBody List<EncWorksVO>  getLocationWiseEncWorksInformation(@RequestBody InputVO inputVO){
+		List<EncWorksVO> returnList = null;
+		try {
+			returnList = prENCService.getLocationWiseEncWorksInformation(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
+		}
+		return returnList;
+	}
+	
+	@PostMapping("/getLocationWiseEncWorksdetails")
+	public @ResponseBody List<EncWorksVO>  getLocationWiseEncWorksDetails(@RequestBody InputVO inputVO){
+		List<EncWorksVO> returnList = null;
+		try {
+			returnList = prENCService.getLocationWiseEncWorksDetails(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getNtrJalaSiriAbstract - PrENCController", e);
+		}
+		return returnList;
+	}
+
+	@PostMapping("/getOnclickExceededEncWorks")
+	public @ResponseBody List<IdNameVO>  getOnclickExceededEncWorks(@RequestBody InputVO inputVO){
+		List<IdNameVO> returnList = null;
+		try {
+			returnList = prENCService.getOnclickExceededEncWorks(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
+		}
+		return returnList;
+
+	}
+	
+	@PostMapping("/getOnclickNotGroundedExceededEncWorks")
+	public @ResponseBody List<IdNameVO>  getOnclickNotGroundedExceededEncWorks(@RequestBody InputVO inputVO){
+		List<IdNameVO> returnList = null;
+		try {
+			returnList = prENCService.getOnclickNotGroundedExceededEncWorks(inputVO);
+			
+		} catch (Exception e) {
+			LOG.error("Exception raised at getEncTargetsAchievement - PrENCController", e);
+		}
+		return returnList;
+
+	}
+	@PostMapping("/getPRProgramsCodeAndName")
+	public @ResponseBody List<GrantVO> getPRProgramsCodeAndName(@RequestBody InputVO inputVO) {
+	  try {
+			 return prENCService.getPRProgramsCodeAndName(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getRwsProgramsCodeAndName - getRwsProgramsCodeAndName controller", e);
+	  }
+	 return null;
+	}
+	
 }
 	
