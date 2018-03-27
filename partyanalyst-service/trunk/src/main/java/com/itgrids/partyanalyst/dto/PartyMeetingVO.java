@@ -99,7 +99,15 @@ public class PartyMeetingVO implements java.io.Serializable{
 	private List<String> lateTimeList = new ArrayList<String>(0);
 	private List<String> cadreWithComments = new ArrayList<String>(0);
 	    
-	
+	private String createdLocation;
+	private String assignedLocation;
+	private Long createdLocationScopeId;
+	private Long assignedLocationScopeId;
+	private Long createdAddresId;
+	private Long assignedAddresId;
+	private Long statusId;
+	private String isEditable;
+	private String Status;
 	public Long getMomFilesCount() {
 		return momFilesCount;
 	}
@@ -654,6 +662,60 @@ public class PartyMeetingVO implements java.io.Serializable{
 	}
 	public void setCadreWithComments(List<String> cadreWithComments) {
 		this.cadreWithComments = cadreWithComments;
+	}
+	public String getCreatedLocation() {
+		return createdLocation;
+	}
+	public void setCreatedLocation(String createdLocation) {
+		this.createdLocation = createdLocation;
+	}
+	public String getAssignedLocation() {
+		return assignedLocation;
+	}
+	public void setAssignedLocation(String assignedLocation) {
+		this.assignedLocation = assignedLocation;
+	}
+	public Long getCreatedLocationScopeId() {
+		return createdLocationScopeId;
+	}
+	public void setCreatedLocationScopeId(Long createdLocationScopeId) {
+		this.createdLocationScopeId = createdLocationScopeId;
+	}
+	public Long getAssignedLocationScopeId() {
+		return assignedLocationScopeId;
+	}
+	public void setAssignedLocationScopeId(Long assignedLocationScopeId) {
+		this.assignedLocationScopeId = assignedLocationScopeId;
+	}
+	public Long getCreatedAddresId() {
+		return createdAddresId;
+	}
+	public void setCreatedAddresId(Long createdAddresId) {
+		this.createdAddresId = createdAddresId;
+	}
+	public Long getAssignedAddresId() {
+		return assignedAddresId;
+	}
+	public void setAssignedAddresId(Long assignedAddresId) {
+		this.assignedAddresId = assignedAddresId;
+	}
+	public Long getStatusId() {
+		return statusId;
+	}
+	public void setStatusId(Long statusId) {
+		this.statusId = statusId;
+	}
+	public String getIsEditable() {
+		return isEditable;
+	}
+	public void setIsEditable(String isEditable) {
+		this.isEditable = isEditable;
+	}
+	public String getStatus() {
+		return Status;
+	}
+	public void setStatus(String status) {
+		Status = status;
 	}
 
 	

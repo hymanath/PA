@@ -57,6 +57,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUpdationDocumentsDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingUserDAO;
+import com.itgrids.partyanalyst.dao.IRegionScopesDAO;
 import com.itgrids.partyanalyst.dao.IScheduleInviteeStatusDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreCandidateDAO;
@@ -151,6 +152,7 @@ import com.itgrids.partyanalyst.model.TrainingCampSchedule;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInvitee;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeCaller;
 import com.itgrids.partyanalyst.model.TrainingCampScheduleInviteeTrack;
+import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.ICadreCommitteeService;
 import com.itgrids.partyanalyst.service.ICadreDetailsUtils;
 import com.itgrids.partyanalyst.service.IPartyMeetingService;
@@ -243,7 +245,7 @@ class TrainingCampService implements ITrainingCampService{
 	private IPartyMeetingUpdationDocumentsDAO partyMeetingUpdationDocumentsDAO;
 	private IPartyMeetingStatusDAO partyMeetingStatusDAO;
 	private IBoothDAO boothDAO;
-	
+	private IRegionScopesDAO regionScopesDAO;
 	public IPartyMeetingStatusDAO getPartyMeetingStatusDAO() {
 		return partyMeetingStatusDAO;
 	}
@@ -766,6 +768,15 @@ class TrainingCampService implements ITrainingCampService{
 
 	public void setTdpCommitteeLevelDAO(ITdpCommitteeLevelDAO tdpCommitteeLevelDAO) {
 		this.tdpCommitteeLevelDAO = tdpCommitteeLevelDAO;
+	}
+
+	
+	public IRegionScopesDAO getRegionScopesDAO() {
+		return regionScopesDAO;
+	}
+
+	public void setRegionScopesDAO(IRegionScopesDAO regionScopesDAO) {
+		this.regionScopesDAO = regionScopesDAO;
 	}
 
 	public List<BasicVO> getAllPrograms()
@@ -4751,6 +4762,8 @@ class TrainingCampService implements ITrainingCampService{
 				partyMeetingVO.setPartyMeetingTypeId(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getPartyMeetingTypeId():0l);
 				partyMeetingVO.setPartyMeetingType(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getType():"");
 				partyMeetingVO.setMeetingLevelId(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getPartyMeetingLevelId():0l);
+				//Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(partyMeetingVO.getMeetingLevelId());
+				//partyMeetingVO.setMeetingLevelId(createdLevelId);
 				partyMeetingVO.setMeetingLevel(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getLevel():"");
 				partyMeetingVO.setLocationValue(partyMeetingDetails.getLocationValue()!=null?partyMeetingDetails.getLocationValue():0l);
 				if(partyMeetingDetails.getStartDate()!=null && partyMeetingDetails.getEndDate()!=null){
@@ -4783,7 +4796,18 @@ class TrainingCampService implements ITrainingCampService{
 					subVO.setUpdatedBy(objects[6]!=null?objects[6].toString():"");
 					subVO.setInsertedTime(objects[7]!=null?objects[7].toString():"");
 					subVO.setUpdatedTime(objects[8]!=null?objects[8].toString():"");
-					
+					subVO.setCreatedLocationScopeId(commonMethodsUtilService.getLongValueForObject(objects[11]));
+					subVO.setCreatedAddresId(commonMethodsUtilService.getLongValueForObject(objects[12]));
+					subVO.setAssignedLocationScopeId(commonMethodsUtilService.getLongValueForObject(objects[13]));
+					subVO.setAssignedAddresId(commonMethodsUtilService.getLongValueForObject(objects[14]));
+					subVO.setStatusId(commonMethodsUtilService.getLongValueForObject(objects[15]));
+					subVO.setStatus(commonMethodsUtilService.getStringValueForObject(objects[16]));
+					subVO.setCreatedLocation(getLocationName(subVO.getCreatedLocationScopeId(),userAddressDAO.get(subVO.getCreatedAddresId())));
+					if(subVO.getAssignedAddresId() != null && subVO.getAssignedAddresId()>0l)
+					subVO.setAssignedLocation(getLocationName(subVO.getAssignedLocationScopeId(),userAddressDAO.get(subVO.getAssignedAddresId())));
+					if((subVO.getAssignedLocationScopeId() != null && subVO.getAssignedLocationScopeId().longValue()>0l && subVO.getCreatedLocationScopeId().longValue() != subVO.getAssignedLocationScopeId().longValue() ) || (subVO.getStatusId().longValue() == 3l)){
+						subVO.setIsEditable("false");
+		            }
 					vo.add(subVO);
 					
 				}
@@ -13009,6 +13033,10 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 				
 				List<Object[]> qryrslt=null;
 				if(type.equalsIgnoreCase("momText")){
+					/*if(accessType != null && accessType.equalsIgnoreCase("STATE")){
+						accessType = "DISTRICT";
+						valuesList = districtIds;
+					}*/
 					qryrslt = partyMeetingMinuteDAO.getMinuteDetailsForMeetingsList(partymeetingIdsList,accessType,valuesList);
 					
 					if(qryrslt != null && qryrslt.size()>0){
@@ -13648,4 +13676,40 @@ public void setBatchesCountForProgWiseNew(Map<String,TrainingCampVO> finalMap,St
 		 batchVo.setBatchName(commonMethodsUtilService.getStringValueForObject(param[5]));
 		 return batchVo;
 	}
+	private String getLocationName(Long upperLevelCommitteeId,UserAddress userAddress) {
+	   	String  locationName = "";
+	   	
+	   	try {
+	   		
+	   		if (upperLevelCommitteeId != null && userAddress != null) {
+	   			
+	   			if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_MANDAL_LEVEl_ID)) {
+	   				locationName = userAddress.getTehsil().getTehsilName() + "Mandal";
+	   			} else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_VILLAGE_LEVEl_ID)) {
+	   				locationName = userAddress.getPanchayat().getPanchayatName()+ " Village";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_MUNCIPLITY_LEVEl_ID)) {
+	   				locationName = userAddress.getLocalElectionBody().getName() + "Local Election Body";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_WARD_LEVEl_ID)) {
+	   				locationName = userAddress.getWard().getName() + " Ward";
+	   			}else if (upperLevelCommitteeId .equals(IConstants.DIVISION_COMMITTEE_LEVEL_ID)) {
+	   				locationName = userAddress.getWard().getName() + " Division";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.STATE_LEVEl_ACCESS_ID)) {
+	   				
+	   				locationName = userAddress.getState().getStateName()+ " State";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.DISTRICT_LEVEl_ACCESS_ID)) {
+	   				locationName = userAddress.getDistrict().getDistrictName()+ " District";
+	   			}else if (upperLevelCommitteeId.equals( IConstants.REGIONSCOPE_ASSEMBLY_LEVEl_ACCESS_ID)) {
+	   				locationName = userAddress.getConstituency().getName()+ " Constituency";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_COUNTRY_LEVEl_ID)) {
+	   				locationName = userAddress.getCountry().getCountryName()+ " Country";
+	   			}else if (upperLevelCommitteeId.equals(IConstants.REGIONSCOPE_PARLIAMENT_LEVEl_ACCESS_ID)) {
+	   				locationName = userAddress.getParliamentConstituency().getName()+ " Parliament ";
+	   			}
+	   		}
+	   		
+	   	} catch (Exception e) {
+	   		LOG.error("Exception occurred at getLocationName() of PartyMeetingMOMService class ",e);
+	   	}
+	   	return locationName;
+	   }
 }

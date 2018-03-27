@@ -47,6 +47,8 @@ public class PMMinuteVO implements Serializable{
 	
 	private Long count=0l;
 	private Long isGovtParty=0l;
+	private Long priorityId;
+	private Long assignAddresId;
 	
 	public Long getWardId() {
 		return wardId;
@@ -239,6 +241,18 @@ public class PMMinuteVO implements Serializable{
 	}
 	public void setIsGovtParty(Long isGovtParty) {
 		this.isGovtParty = isGovtParty;
+	}
+	public Long getPriorityId() {
+		return priorityId;
+	}
+	public void setPriorityId(Long priorityId) {
+		this.priorityId = priorityId;
+	}
+	public Long getAssignAddresId() {
+		return assignAddresId;
+	}
+	public void setAssignAddresId(Long assignAddresId) {
+		this.assignAddresId = assignAddresId;
 	}
 	
 }
