@@ -23,7 +23,22 @@ public class WorksVO {
 	private Double percentageFour = 0.0d;
     private String workStatus;
     private List<WorksVO> subList = new ArrayList<WorksVO>();
+    private Long locationId;
+    private String locationName;
+    private Long parentLocationId;
+    private String ParentLocationName;
+    private Long districtId;
+    private String districtName;
 
+    private Long AdminSanctionedCount = 0l;
+    private Long technicalSanctionedCount = 0l;
+    private Long entrustedCount = 0l;
+    private Long groundedCount = 0l;
+    private Long undrProcessCount = 0l;
+    private Long completedCount = 0l;
+    private Long commissionedCount = 0l;
+    private Long notgroundedCount = 0l;
+    
 		
 	public String getAssetType() {
 		return assetType;
@@ -122,8 +137,90 @@ public class WorksVO {
 	public void setSubList(List<WorksVO> subList) {
 		this.subList = subList;
 	}
-	
-	
+	public Long getLocationId() {
+		return locationId;
+	}
+	public void setLocationId(Long locationId) {
+		this.locationId = locationId;
+	}
+	public String getLocationName() {
+		return locationName;
+	}
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+	public Long getParentLocationId() {
+		return parentLocationId;
+	}
+	public void setParentLocationId(Long parentLocationId) {
+		this.parentLocationId = parentLocationId;
+	}
+	public String getParentLocationName() {
+		return ParentLocationName;
+	}
+	public void setParentLocationName(String parentLocationName) {
+		ParentLocationName = parentLocationName;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public Long getAdminSanctionedCount() {
+		return AdminSanctionedCount;
+	}
+	public void setAdminSanctionedCount(Long adminSanctionedCount) {
+		AdminSanctionedCount = adminSanctionedCount;
+	}
+	public Long getTechnicalSanctionedCount() {
+		return technicalSanctionedCount;
+	}
+	public void setTechnicalSanctionedCount(Long technicalSanctionedCount) {
+		this.technicalSanctionedCount = technicalSanctionedCount;
+	}
+	public Long getEntrustedCount() {
+		return entrustedCount;
+	}
+	public void setEntrustedCount(Long entrustedCount) {
+		this.entrustedCount = entrustedCount;
+	}
+	public Long getGroundedCount() {
+		return groundedCount;
+	}
+	public void setGroundedCount(Long groundedCount) {
+		this.groundedCount = groundedCount;
+	}
+	public Long getUndrProcessCount() {
+		return undrProcessCount;
+	}
+	public void setUndrProcessCount(Long undrProcessCount) {
+		this.undrProcessCount = undrProcessCount;
+	}
+	public Long getCompletedCount() {
+		return completedCount;
+	}
+	public void setCompletedCount(Long completedCount) {
+		this.completedCount = completedCount;
+	}
+	public Long getCommissionedCount() {
+		return commissionedCount;
+	}
+	public void setCommissionedCount(Long commissionedCount) {
+		this.commissionedCount = commissionedCount;
+	}
+	public Long getNotgroundedCount() {
+		return notgroundedCount;
+	}
+	public void setNotgroundedCount(Long notgroundedCount) {
+		this.notgroundedCount = notgroundedCount;
+	}
 	
 	
 }

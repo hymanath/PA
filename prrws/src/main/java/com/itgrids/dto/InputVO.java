@@ -2,6 +2,7 @@ package com.itgrids.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -11,7 +12,7 @@ public class InputVO implements Serializable {
 	private List<Long> financialYrIdList;
 	private List<Long> deptIdsList;
 	private List<Long> sourceIdsList;
-	private List<Long> schemeIdsList;
+	private List<Long> schemeIdsList = new ArrayList<Long>(0);
 	private List<Long> briefLeadIdsList;
 	private Long deptId;
 	private Long sourceId;
@@ -127,8 +128,10 @@ public class InputVO implements Serializable {
 	private List<String> districtNames = new ArrayList<String>();
 	private List<Long> searchDeptIdsList;
 	private Long designationId;
+	private Date startDate;
+	private Date endDate;
 	private List<Long> leadIdsList ;
-	
+	private List<String> schemeIdStr;
 	
 	public List<Long> getSearchDeptIdsList() {
 		return searchDeptIdsList;
@@ -819,11 +822,29 @@ public class InputVO implements Serializable {
 	public void setDesignationId(Long designationId) {
 		this.designationId = designationId;
 	}
+	public Date getStartDate() {
+		return startDate;
+	}
+	public void setStartDate(Date startDate) {
+		this.startDate = startDate;
+	}
+	public Date getEndDate() {
+		return endDate;
+	}
+	public void setEndDate(Date endDate) {
+		this.endDate = endDate;
+	}
 	public List<Long> getLeadIdsList() {
 		return leadIdsList;
 	}
 	public void setLeadIdsList(List<Long> leadIdsList) {
 		this.leadIdsList = leadIdsList;
+	}
+	public List<String> getSchemeIdStr() {
+		return schemeIdStr;
+	}
+	public void setSchemeIdStr(List<String> schemeIdStr) {
+		this.schemeIdStr = schemeIdStr;
 	}
 	
 	
