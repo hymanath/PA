@@ -9976,4 +9976,35 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   return query.list();
 	   }
 
+	   public List<Object[]> getAreaInchargeDetails(Long voterId,String mobileNo,Long memberShipId){
+			StringBuilder sb = new StringBuilder();
+			sb.append(" select tdpCadre.tdpCadreId, tdpCadre.firstname,tdpCadre.relativename," +
+					" tdpCadre.age, tdpCadre.gender, tdpCadre.houseNo," +
+					" address.tehsil.tehsilId,address.tehsil.tehsilName," +
+					" tdpCadre.casteState.caste.casteName,tdpCadre.image " +
+					" from  TdpCadre tdpCadre  " +
+					" left join tdpCadre.userAddress address " +
+					"  where  tdpCadre.isDeleted ='N' ");
+			if(voterId != null && voterId.longValue()>0l){
+				sb.append(" and tdpCadre.voterId =:voterId  ");	
+			}
+	        if(mobileNo != null && !mobileNo.isEmpty()){
+	        	sb.append(" and tdpCadre.mobileNo =:mobileNo ");	
+	        }
+	        if(memberShipId != null && memberShipId.longValue()>0l){
+	        	sb.append(" and tdpCadre.memberShipNo =:memberShipId ");	
+	        }
+	        Query query = getSession().createQuery(sb.toString());
+	        if(voterId != null && voterId.longValue()>0l){
+	        	query.setParameter("voterId", voterId);
+			}
+	        if(mobileNo != null && !mobileNo.isEmpty()){
+	        	query.setParameter("mobileNo", mobileNo);
+	        }
+	        if(memberShipId != null && memberShipId.longValue()>0l){
+	        	query.setParameter("memberShipId", memberShipId);
+	        }
+			return query.list();
+			
+		}
 }
