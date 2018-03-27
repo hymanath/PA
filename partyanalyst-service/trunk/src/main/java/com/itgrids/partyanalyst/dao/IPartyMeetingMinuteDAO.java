@@ -30,4 +30,5 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Object[]> getPartyMeetingMomAssignDtls(Long userAccessLevelId,
 			List<Long> userAccessLevelValues, Integer monthId, Integer yearId,
 			String type);
+	public Date getPartMeetingMonthYear(Long partyMeetingId);
 }
