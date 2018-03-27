@@ -16,15 +16,17 @@ public class EncWorks {
 	private Long encWorkId;
 	private Long workId;
 	private String workName;
-	private Long schemeId;
-	private String schemeName;
-	private Double agreementAmount;
-	private Long technicalsancAmount;
-	private Date agrementDate;
+	private String workStatus;
+	private Long grantid;
+	private String grantName;
+	private Long subGrantId;
+	private String subGrantName;
+	private Long sanctionedAmount;
 	private Date adminSanctionDate;
+	private Date techSanctionDate;
+	private Date entrustedDate;
 	private Date groundedDate;
 	private Date completionDate;
-	private Date techSanctionDate;
 	private Date targetDate;
 	private Long mandalId;
 	private String mandalName;
@@ -32,11 +34,6 @@ public class EncWorks {
 	private String ditrictName;
 	private Long assemblyId;
 	private String assemblyName;
-	private Long habCode;
-	private String habName;
-	private Long parlimentId;
-	private String parlimentName;
-	private String workStatus;
 	
 	@Id
 	@Column(name="enc_works_id")
@@ -64,45 +61,52 @@ public class EncWorks {
 		this.workName = workName;
 	}
 	
-	@Column(name="scheme_id")
-	public Long getSchemeId() {
-		return schemeId;
+	@Column(name="grant_id")
+	public Long getGrantid() {
+		return grantid;
 	}
-	public void setSchemeId(Long schemeId) {
-		this.schemeId = schemeId;
+	public void setGrantid(Long grantid) {
+		this.grantid = grantid;
 	}
-	
-	@Column(name="scheme_name")
-	public String getSchemeName() {
-		return schemeName;
+	@Column(name="sub_grant_id")
+	public Long getSubGrantId() {
+		return subGrantId;
 	}
-	public void setSchemeName(String schemeName) {
-		this.schemeName = schemeName;
-	}
-	
-	@Column(name="agreement_amount")
-	public Double getAgreementAmount() {
-		return agreementAmount;
-	}
-	public void setAgreementAmount(Double agreementAmount) {
-		this.agreementAmount = agreementAmount;
+	public void setSubGrantId(Long subGrantId) {
+		this.subGrantId = subGrantId;
 	}
 	
-	@Column(name="technical_sanc_amount")
-	public Long getTechnicalsancAmount() {
-		return technicalsancAmount;
+	@Column(name="sub_grant_name")
+	public String getSubGrantName() {
+		return subGrantName;
 	}
-	public void setTechnicalsancAmount(Long technicalsancAmount) {
-		this.technicalsancAmount = technicalsancAmount;
-	}
-	
-	@Column(name="agrement_date")
-	public Date getAgrementDate() {
-		return agrementDate;
+	public void setSubGrantName(String subGrantName) {
+		this.subGrantName = subGrantName;
 	}
 	
-	public void setAgrementDate(Date agrementDate) {
-		this.agrementDate = agrementDate;
+	@Column(name="grant_name")
+	public String getGrantName() {
+		return grantName;
+	}
+	public void setGrantName(String grantName) {
+		this.grantName = grantName;
+	}
+		
+	@Column(name="sanctioned_amount")
+	public Long getSanctionedAmount() {
+		return sanctionedAmount;
+	}
+	public void setSanctionedAmount(Long sanctionedAmount) {
+		this.sanctionedAmount = sanctionedAmount;
+	}
+	
+	@Column(name="entrusted_date")
+	public Date getEntrustedDate() {
+		return entrustedDate;
+	}
+	
+	public void setEntrustedDate(Date entrustedDate) {
+		this.entrustedDate = entrustedDate;
 	}
 	
 	@Column(name="admin_sanction_date")
@@ -191,37 +195,6 @@ public class EncWorks {
 		this.assemblyName = assemblyName;
 	}
 	
-	@Column(name="hab_code")
-	public Long getHabCode() {
-		return habCode;
-	}
-	public void setHabCode(Long habCode) {
-		this.habCode = habCode;
-	}
-	
-	@Column(name="hab_name")
-	public String getHabName() {
-		return habName;
-	}
-	public void setHabName(String habName) {
-		this.habName = habName;
-	}
-	
-	@Column(name="parliment_id")
-	public Long getParlimentId() {
-		return parlimentId;
-	}
-	public void setParlimentId(Long parlimentId) {
-		this.parlimentId = parlimentId;
-	}
-	
-	@Column(name="parliment_name")
-	public String getParlimentName() {
-		return parlimentName;
-	}
-	public void setParlimentName(String parlimentName) {
-		this.parlimentName = parlimentName;
-	}
 	@Column(name="work_status")
 	public String getWorkStatus() {
 		return workStatus;
