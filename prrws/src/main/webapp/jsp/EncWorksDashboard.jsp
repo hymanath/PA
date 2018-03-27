@@ -14,15 +14,14 @@
 <link href="Assests/Plugins/Scroller/jquery.mCustomScrollbar.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/getorgchart/getorgchart.css" type="text/css" rel="stylesheet"/>
+<link rel="stylesheet" href="Assests/Plugins/Scroller/bootstrap-multiselect.css" type="text/css">
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
-
 </head>
 <body>
-
 <header>
 	<nav>
 		<div class="container-fluid">
@@ -30,11 +29,11 @@
 				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayati Raj & RD & RWS</h4>
-					<p>PRED - AP</p>
+				<div class="col-sm-10 m_top10 col-xs-9">
+					<h4 class="text-capital">Panchayat Raj</h4>
+					<p>Tax - DashBoard</p>
 				</div>
-				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -82,6 +81,22 @@
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
 														<p>Water Tank chlorination</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#483D8B">
+													<a href="vehicleTrackingDashboard">
+														<h3>VT</h3>
+                           								 <p>Vehicle Tracking</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#59bf82">
+													<a href="jalavaniAlertsDashBoard">
+														<h3>JALAVANI</h3>
+														 <p>Jalavani Alert Dashboard</p>
 													</a>
 												</div>
 											</div>
@@ -154,6 +169,22 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#FF1493">
+													<a href="panchayatTaxDashboard">
+														<h3>Taxes</h3>
+                           								 <p>Panchayat Raj Taxes</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#7B68EE">
+													<a href="eMeetingsDashboard">
+														<h3>E Meetings</h3>
+                           								 <p>Panchayat Raj eMeetings</p>
+													</a>
+												</div>
+											</div>
 											<div class="col-sm-12 m_top10">
 												<div class="menu-block" style="background-color:#008000">
 													<a href="newsArticles?deptId=1699">
@@ -220,85 +251,117 @@
 						</div>
 					</div>
 				</div>
+			</div>
 		</div>
 	</nav>
-	<section class="navbar-section">
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-sm-3">
-					Note: Population In Thousands &
-						  Length in KMS
-				</div>
-				
-			</div>
-		</div>
-	</section>
+	
 </header>
-<main>
-	<section>
-		<div class="container-fluid">
+<section class="" style="padding: 10px;background-color: #DFDFE0;">
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3">
+				<h5 class="m_top10 font_weight">Note: Amount In Lakhs & Length in KMS</h5>
+			</div>
+			<div class="col-sm-3 pull-right">
+				<div class="input-group">
+					<span class="input-group-addon">
+						<i class="glyphicon glyphicon-calendar"></i>
+					</span>
+					<input type="text" class="form-control" id="dateRangePickerAUM" style="width: 200px;"/>
+				</div>
+			</div>
+			<div class="col-sm-2 pull-right">
+				<!--<label>Scheme</label>-->
+				<select id="schemeDivId" class=""  data-placeholder="Select Schemes" multiple>
+				</select>
+			</div>
+			<div class="col-sm-2 pull-right">
+				<!--<label>Financial Year</label>-->
+				<select id="financialYearId" class="chosenSelect"></select>
+			</div>
+			
+			
+		</div>
+	</div>
+</section>
+<div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
+	<div class="white-block" style="padding:15px;">
+		<div class="row">
+			<div class="col-sm-12">
+				<h4 class="font_weight" style="font-size: 17px;">WORKS - STATE LEVEL OVERVIEW</h4>
+			</div>
+		</div>
+		<div class="pad_border m_top10">
 			<div class="row">
 				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<h4>WORKS -  STATE LEVEL OVERVIEW</h4>
-					</div>
-					<div class="white-block" style="padding:10px;">	
-						<div class="row">
-							<div class="col-sm-6">
-								<h4 style="padding:5px"><span class="chartTitleAlign">WORKS DETAILS</span></h4><br/>
-								<div class="chart2" id="enclocationWiseChart" style="height:315px;"></div>
-							</div>
-							<div class="col-sm-6">
-								<h4 style="padding:5px;" ><span class="chartTitleAlign">EXCEEDED WORK DETAILS</span></h4><br/>
-								<div class="chart2" id="ExceededWorkDetailsGraph" style="height:315px;"></div>
-								
-							</div>
-							
-							
-						
-						</div>
-						
-						<div id="graphTable" style="display:none;"></div>
-						<div id="graphTable2" style="display:none;"></div>
-					</div>
-				</div>
-				<div class="col-sm-12">
-					<div class="white-block" style="padding:10px;background-color: #ececec;border-bottom-style:inset;">
-						<div class="row">
-							<div class="col-sm-3">
-								<h4>TARGETS AND ACHIEVEMENTS</h4>
-							</div>
-						</div>
-						
-					</div>
-					<div class="white-block" style="padding:10px;">
-						
-						<div class="row">	
-							<div class="col-sm-3">
-								<h4 style="padding:5px"><span class="chartTitleAlign">FINANCIAL YEAR DETAILS</span></h4><br/>
-								<div class="chart2 m_top20" id="TargetNAcheievementDetailsTotal" style="height:315px;"></div>
-							</div>
-							<div class="col-sm-8">
-								<h4 style="padding:5px"><span class="chartTitleAlign">QUARTER WISE DETAILS</span></h4><br/>
-								<div class="chart2 m_top20" id="quaterWiseTargetAchievement" style="height:315px;"></div>
-							</div>
-					</div>
+					<div class="chart2" id="enclocationWiseChart"></div>
 				</div>
 			</div>
 		</div>
-	</section>
-	<section>
-		<div class="container-fluid m_top20">
-			<div class="row" id="accordion">
-				<div class="col-sm-12">
-					<div id="levelWiseOverviewId"></div>
+		<div class="row m_top20">
+			<div class="col-sm-12">
+				<h4 class="font_weight" style="font-size: 17px;">EXCEEDED WORK DETAILS</h4>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6 m_top10">
+				<div class="row">
+					<div class="col-sm-4">
+						<h5 class="font_weight" style="margin-top: 7px;">Ongoing Exceed Work Details</h5>
+					</div>
+					<div class="col-sm-8">
+						<div class="row">
+							<div class="col-sm-6">
+								<label class="radio-inline m_top5">
+									<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
+								</label>
+							</div>
+							<div class="col-sm-6">
+								<label class="radio-inline m_top5">
+									<input type="radio"  class="exceedWorkTypeCls"  name="optradio1" value="" > All Exceeded Works
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="pad_border m_top10">
+					<div class="chart2" id="ExceededWorkDetailsGraph"></div>
+				</div>
+			</div>
+			<div class="col-sm-6 m_top10">
+				<div class="row">
+					<div class="col-sm-12">
+						<h5 class="font_weight">Not Grounded Exceed Work Details</h5>
+					</div>
+				</div>
+				<div class="pad_border m_top20">
+					<div class="chart2" id="NotGroundedExceededWorkDetailsGraph"></div>
 				</div>
 			</div>
 		</div>
-	</section>
-</main>
-
-
+		<div class="row m_top20">
+			<div class="col-sm-12">
+				<div id="levelWiseOverviewId"></div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="modalHablitationDivId" tabindex="-1" role="dialog">
+<div class="modal-dialog" role="document" style="width: 95%;">
+	<div class="modal-content modal-custom">
+		<div class="modal-header">
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:#fff">&times;</span></button>
+			<h4 class="modal-title" id="modalHabliHeadingId">Modal title</h4>
+		</div>
+		<div class="modal-body">
+		
+			<div id="modalSchemsTable"></div>
+			<div id="modalSchemsExceedTable"></div>
+		
+		</div>
+	</div><!-- /.modal-content -->
+</div><!-- /.modal-dialog -->
+</div>
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/moment.js" type="text/javascript"></script>
@@ -315,6 +378,7 @@
 <script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/encDashBoard/EncWorksDashboard.js" type="text/javascript"></script>
+<script type="text/javascript" src="Assests/Plugins/Scroller/bootstrap-multiselect.js"></script>
 </body>
 </html>
 </html>
