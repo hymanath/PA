@@ -20,4 +20,5 @@ public interface IPartyMeetingMOMService {
 	public MomDetailsVO getMomCompletedDetails(Long partyMeetingMOMId,Long userLocationId,Long userLocationValue);
 	public MomDashbaordOverViewDtlsVO getMomDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,String monthYear);
 	public List<MomDetailsVO> getMomDetailsBySelectedType(Long userAccessLevel,List<Long> accessValues,String monthYear,String type);
+	public MomDashbaordOverViewDtlsVO getMomPointsDashboardOverviewDtls(Long userAccessLevel,List<Long> accessValues,Long partyMeetingId);
 }
