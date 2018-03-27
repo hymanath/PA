@@ -328,5 +328,6 @@ public interface IWebServiceHandlerService {
 	public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(String startDateStr,String endDateStr,Long FeedbackStatusId,Long districtId);
 	public List<BasicVO> getJalavaniFeedBackDetailsInfo(String startDateStr,String endDateStr);
 	public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
+	public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId);
 }
 
