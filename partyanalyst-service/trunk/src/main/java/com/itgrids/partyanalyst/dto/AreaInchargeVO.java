@@ -1,0 +1,144 @@
+package com.itgrids.partyanalyst.dto;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+public class AreaInchargeVO implements Serializable{
+	
+	private Long id;
+	private String name;
+	private String relativeName;
+	private Long age;
+	private String gender;
+	private String address;
+	private String caste;
+	private String houseNo;
+	private Long tehsilId;
+	private String tehsilName;
+    private String isActive;
+    private String image;
+    private List<AreaInchargeVO>  assignBoothList = new ArrayList<AreaInchargeVO>();
+    private List<AreaInchargeVO>  unAssignBoothList = new ArrayList<AreaInchargeVO>();
+    private Long panchayatId;
+    private String panchayatName;
+    private Long total=0l;
+    private Long assignedCount =0l;
+    private Long unAssignedCount =0l;
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id = id;
+	}
+	public String getName() {
+		return name;
+	}
+	public void setName(String name) {
+		this.name = name;
+	}
+	public String getRelativeName() {
+		return relativeName;
+	}
+	public void setRelativeName(String relativeName) {
+		this.relativeName = relativeName;
+	}
+	public Long getAge() {
+		return age;
+	}
+	public void setAge(Long age) {
+		this.age = age;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getCaste() {
+		return caste;
+	}
+	public void setCaste(String caste) {
+		this.caste = caste;
+	}
+	public String getHouseNo() {
+		return houseNo;
+	}
+	public void setHouseNo(String houseNo) {
+		this.houseNo = houseNo;
+	}
+	public Long getTehsilId() {
+		return tehsilId;
+	}
+	public void setTehsilId(Long tehsilId) {
+		this.tehsilId = tehsilId;
+	}
+	public String getTehsilName() {
+		return tehsilName;
+	}
+	public void setTehsilName(String tehsilName) {
+		this.tehsilName = tehsilName;
+	}
+	public String getIsActive() {
+		return isActive;
+	}
+	public void setIsActive(String isActive) {
+		this.isActive = isActive;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public List<AreaInchargeVO> getAssignBoothList() {
+		return assignBoothList;
+	}
+	public void setAssignBoothList(List<AreaInchargeVO> assignBoothList) {
+		this.assignBoothList = assignBoothList;
+	}
+	public List<AreaInchargeVO> getUnAssignBoothList() {
+		return unAssignBoothList;
+	}
+	public void setUnAssignBoothList(List<AreaInchargeVO> unAssignBoothList) {
+		this.unAssignBoothList = unAssignBoothList;
+	}
+	public Long getPanchayatId() {
+		return panchayatId;
+	}
+	public void setPanchayatId(Long panchayatId) {
+		this.panchayatId = panchayatId;
+	}
+	public String getPanchayatName() {
+		return panchayatName;
+	}
+	public void setPanchayatName(String panchayatName) {
+		this.panchayatName = panchayatName;
+	}
+	public Long getTotal() {
+		return total;
+	}
+	public void setTotal(Long total) {
+		this.total = total;
+	}
+	public Long getAssignedCount() {
+		return assignedCount;
+	}
+	public void setAssignedCount(Long assignedCount) {
+		this.assignedCount = assignedCount;
+	}
+	public Long getUnAssignedCount() {
+		return unAssignedCount;
+	}
+	public void setUnAssignedCount(Long unAssignedCount) {
+		this.unAssignedCount = unAssignedCount;
+	}
+	
+	
+}
