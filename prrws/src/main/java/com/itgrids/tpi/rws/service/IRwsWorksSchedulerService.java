@@ -10,4 +10,8 @@ public interface IRwsWorksSchedulerService {
 	public String getEncworkDataInsertion();
 
 	public String getWorksDataDeletion();
+
+	public boolean getWorkDetails();
+
+	public void insertENCWorkHabs();
 }
