@@ -15,7 +15,7 @@ public class BasicVO implements Serializable{
 
 	private Long id,typeId;
 	private Long count=0l;
-	private String name,type,ivrStatus;
+	private String name,type,ivrPosStatus,ivrNegStatus;
 	private String description;
 	private String mandalName;
 	private String casteName;
@@ -51,7 +51,7 @@ public class BasicVO implements Serializable{
 	private Long		  locationInfoId;
 	private ActivityAttendanceInfoVO activityAttendanceInfoVO = new ActivityAttendanceInfoVO();
 	private Map<String,Long> dayWiseMap = new LinkedHashMap<String, Long>();
-	private Long coveredCount,ivrCount=0l;
+	private Long coveredCount,ivrSatisifiedCount=0l,ivrNotSatisifiedCnt=0l;
 	private Long day;
 	private Long totalResult=0L;
 	private String date;
@@ -67,6 +67,46 @@ public class BasicVO implements Serializable{
 	public BasicVO(){}
 	
 	
+	public String getIvrPosStatus() {
+		return ivrPosStatus;
+	}
+
+
+	public void setIvrPosStatus(String ivrPosStatus) {
+		this.ivrPosStatus = ivrPosStatus;
+	}
+
+
+	public String getIvrNegStatus() {
+		return ivrNegStatus;
+	}
+
+
+	public void setIvrNegStatus(String ivrNegStatus) {
+		this.ivrNegStatus = ivrNegStatus;
+	}
+
+
+	public Long getIvrSatisifiedCount() {
+		return ivrSatisifiedCount;
+	}
+
+
+	public void setIvrSatisifiedCount(Long ivrSatisifiedCount) {
+		this.ivrSatisifiedCount = ivrSatisifiedCount;
+	}
+
+
+	public Long getIvrNotSatisifiedCnt() {
+		return ivrNotSatisifiedCnt;
+	}
+
+
+	public void setIvrNotSatisifiedCnt(Long ivrNotSatisifiedCnt) {
+		this.ivrNotSatisifiedCnt = ivrNotSatisifiedCnt;
+	}
+
+
 	public Double getNotSatisfiedPosPerc() {
 		return notSatisfiedPosPerc;
 	}
@@ -209,21 +249,6 @@ public class BasicVO implements Serializable{
 		this.satisfiedNegCount = satisfiedNegCount;
 	}
 
-
-
-	public Long getIvrCount() {
-		return ivrCount;
-	}
-	public void setIvrCount(Long ivrCount) {
-		this.ivrCount = ivrCount;
-	}
-	public String getIvrStatus() {
-		return ivrStatus;
-	}
-
-	public void setIvrStatus(String ivrStatus) {
-		this.ivrStatus = ivrStatus;
-	}
 	public Long getTypeId() {
 		return typeId;
 	}
