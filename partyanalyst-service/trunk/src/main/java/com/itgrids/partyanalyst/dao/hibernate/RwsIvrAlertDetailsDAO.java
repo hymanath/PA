@@ -22,12 +22,14 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
         			" model.alert.alertFeedbackStatusId,model.rwsIvrTypeId," +
             		" model.ivrSatisfiedStatus,count(model.alertId),model.rwsIvrType.rwsIvrName ");
         
-        if(fromDate !=null && toDate !=null){
-        	str.append(" and date(model.insertedTime) between :fromDate and :toDate ");
-        }
+      
         str.append(" from RwsIvrAlertDetails model " +
         		" where model.isDeleted ='N' and model.alert.isDeleted ='N' and " +
-        		" model.alert.govtDepartmentId =:govtDeptId and model.rwsIvrType.isDeleted ='N' ");
+        		" model.alert.govtDepartmentId =:govtDeptId and model.rwsIvrType.isDeleted ='N' and model.alert.alertFeedbackStatusId is not null");
+        
+	        if(fromDate !=null && toDate !=null){
+	        	str.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+	        }
         
          str.append(" group by model.alert.userAddress.district.districtId,model.alert.alertFeedbackStatusId," +
         			" model.ivrSatisfiedStatus,model.rwsIvrTypeId ");
