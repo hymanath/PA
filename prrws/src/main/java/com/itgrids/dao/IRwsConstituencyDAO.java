@@ -11,4 +11,5 @@ public interface IRwsConstituencyDAO extends GenericDao<RwsConstituency, Long> {
 
 	public String getRwsCode(Long constituencyId);
 	public List<Object[]> getConstituencyList(Set<String> constituencyIdList);
+	public List<Object[]> getAllconstituencies();
 }
