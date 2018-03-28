@@ -44,7 +44,7 @@ public interface INominatedPostFinalDAO extends GenericDao<NominatedPostFinal, L
 	public List<Object[]> getNominatedCandidateGroupByPositionAndAgeGroup(Long positionId,Long boardLevelId,Long deptId,Long boardId,Long castegroupId,Long positionStatusId,Long stateId,Long locationId, String locationLevelName);
 
 	 public Object[] getShortListedPositionCntPositionAndLocationWise(Long positionId,Long boardLevelId,Long stateId);
-	 public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId);
+	 public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,Long boardLevelId);
 	 public int updateApplicationStatusToFinalReview(Long userId,List<Long> finalIds);
 	 public List<Long> getApplicationFinalModels(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues);
 	 public  List<NominatedPostFinal>  getNominatedPostApplicationDetailsByApplciationId(Long nominatedPostApplicationId);

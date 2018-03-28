@@ -1536,7 +1536,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		return query.list();
 	}
 	
-	public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId){
+	public List<Object[]> getWishListCount(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,Long boardLevelId){
 		 StringBuilder queryStr = new StringBuilder();
 	       
 	       queryStr.append(" select ");
@@ -1553,14 +1553,29 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.isPrefered = 'Y' " +
 				" and model.applicationStatus.applicationStatusId = 6 and model.isExpired = 'N' ");
 	       
-	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l && boardLevelId != null && boardLevelId<7l){
 	    	   if(LocationLevelId.longValue() != 5L)
 	    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
 	    	   else
 	    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+	       }else{
+	    	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
 	       }
-	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+	       
+	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0 && boardLevelId != null && boardLevelId<7l){
 	    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+	       }else{
+	    	   if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+	    		   if(LocationLevelId != null && LocationLevelId.longValue() == 5l){
+			    	   queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId in (:lctnLevelValueList)");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() == 6l){
+			    	   queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in (:lctnLevelValueList)");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() == 7l){
+			    	   queryStr.append(" and model.nominatedPostMember.address.panchayatId in (:lctnLevelValueList)");
+			       }else if(LocationLevelId != null && LocationLevelId.longValue() == 8l){
+			    	   queryStr.append(" and model.nominatedPostMember.ward.constituencyId in (:lctnLevelValueList)");
+			       }
+		       }  
 	       }
 	       if(departmentId != null && departmentId.longValue() > 0){
 	    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
@@ -1575,7 +1590,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	       
 	       Query query = getSession().createQuery(queryStr.toString());
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	   if(LocationLevelId.longValue() != 5L)
+	    	   if(LocationLevelId.longValue() != 5L  && boardLevelId != null && boardLevelId<7l)
 	    		   query.setParameter("LocationLevelId", LocationLevelId);
 	       }
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
