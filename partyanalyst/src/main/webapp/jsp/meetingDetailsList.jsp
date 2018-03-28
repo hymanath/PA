@@ -320,7 +320,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     </div>
   </div>
 </div>
-<div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="mintModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="z-index:9999">
   <div class="modal-dialog" style="width: 80%">
     <div class="modal-content">
       <div class="modal-header" style="background-color:#DDD">
@@ -420,8 +420,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			
 		
 		<div class="row">
+		<h4 style="font-weight:bold;"> UPLOAD MOM DOCUMENTS</h4>
+          <div class="" id="mintueDocumentDivId"></div>
 			<div class="col-md-12" style="margin-top:10px;">
-				<label>Upload MOM Files</label>
+				<!--<label>Upload MOM Files</label>-->
 				<form id="uploadMinutesDocs" name="uploadMinutesDocs" class="uploadBox" >
 					<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
 					<div id="ExtraFiles"></div>
@@ -437,7 +439,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;" id="momAssignCheckedId">
 				<input id="checkBox" type="checkbox"  name="momAssignCls" value="3" >
-                <label for="subscribeNews">Assignee Request to Next level</label>
+                <label for="subscribeNews">Assign to Next level</label>
 			</div>
 		</div>
 	  </div>
@@ -627,6 +629,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			var levelvalue =$(this).attr("attr_levelValue");
 			 $(".saveMinute").attr("attr_levelId",levelId);
 			 $(".saveMinute").attr("attr_levelValue",levelvalue);
+			 $("#momPriorityId").val(0);
+			 $("#momStatusId").val(1);
 			
 	 }); 	
 	 
@@ -1864,7 +1868,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		str+=' <div class="modal-footer pad-0 bt">';
 		str+='<div class="row">';
 		str+='<div class="mtop-5">';
-		str+='<button type="button" class="btn btn-primary btn-xs mleft_190 pull-left" data-dismiss="modal" style="margin-top: -11px;">Close</button>';
+		str+='<button type="button"  id="closeId" class="btn btn-primary btn-xs mleft_190 pull-left" data-dismiss="modal" style="margin-top: -11px;">Close</button>';
 		str+='</div>';
 		str+='</div>';
 		str+='</div>';
@@ -1949,7 +1953,6 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$(".locationDivCls select").find('option').not(':first').remove();
 			$("#momAssignCheckedId").show();
 			$(':checkbox').prop('checked', true).removeAttr('checked');
-			$("#momStatusId").val(1);
 		}
 	});
 	
@@ -2205,6 +2208,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						$("#momStatusId").val(res.statusId);
 					else
 						$("#momStatusId").val(0);
+					if(res.priorityId != null)
+						$("#momPriorityId").val(res.priorityId);
+					else
+						$("#momPriorityId").val(0);
 					
 					if(res.actionType == "Y"){
 						$("#meetingTypeActionableRadioId").trigger( "click" );
@@ -2349,6 +2356,12 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		}
 		
 	});
+$(document).on("click","#closeId",function(){
+  setTimeout(function(){
+    $('body').addClass("modal-open");
+  }, 1000);                     
+});
+
 </script>
 </body>
 </html>

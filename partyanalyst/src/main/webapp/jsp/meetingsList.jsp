@@ -1268,7 +1268,12 @@ var jsonGlob = "";
 						str+='<td> <a class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'" >'+result[i].conductedDate.split(' ')[0]+'</a></td>';
 					}else{
 						//str+='<td> <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
-						str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">Enter Date</i></a></td>';
+						if(result[i].isConducted !=null && result[i].isConducted == 'Y'){
+							str+='<td> <a><i class="editConductedDateBtn" style="cursor:pointer" attr_conductedDate="" attr_meetingId='+result[i].partyMeetingId+' id="conductedDateId'+i+'">Enter Date</i></a></td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						
 					}
 					
 					if(result[i].remarks !=null && result[i].remarks !=""){
@@ -2050,6 +2055,9 @@ function updateConductedStatus(meetingId,status){
 		url:"updateConductedStatusAction.action",
 		data:{task:JSON.stringify(jsObj)}
 	}).done(function(result){
+		setTimeout(function(){
+					$("#viewMeetings").trigger( "click" );
+				},500); 
 		getLevelWiseMeetingDetails();
 	});	
 }
@@ -2089,6 +2097,9 @@ function updateConductedDate(dateValue){
 			 setTimeout(function(){ 
 					$("#editConductedBtnModal").modal('hide');
 			 }, 1000);
+			 setTimeout(function(){
+					$("#viewMeetings").trigger( "click" );
+				},500); 
 		}else{
 			$("#errorId").css("color", "red");
 			$("#errorId").html("some problem occured while updating.");
