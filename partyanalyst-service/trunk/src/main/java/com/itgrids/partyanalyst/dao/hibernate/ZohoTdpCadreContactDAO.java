@@ -39,4 +39,16 @@ public class ZohoTdpCadreContactDAO extends GenericDaoHibernate<ZohoTdpCadreCont
 		query.setParameterList("zohoContactIds", zohoContactIds);
 		return query.list();
 	}
+	
+	public List<Object[]> getAlertCadreTypeInfo(String membershipId){
+		Query query = getSession().createQuery(" select model.tdpCadreId,model.tdpCadre.memberShipNo,model1.alertCadreType.alertCadreTypeId," +
+				" model1.alertCadreType.typeName,model1.isAlertCreate " +
+				" from ZohoTdpCadreContact model,AlertCadreTypeRelation model1 " +
+				" where model.tdpCadreId = model1.tdpCadreId " +
+				" and model.isValid='Y' " +
+				" and model.tdpCadre.isDeleted ='N'" +
+				" and model.tdpCadre.memberShipNo =:membershipId ");
+		query.setParameter("membershipId", membershipId.trim());
+		return query.list();
+	} 
 }
