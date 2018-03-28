@@ -275,6 +275,23 @@
 </header>
 <main style="margin-top:5px;background-color:#fff;padding-bottom:20px;">
 <div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-1 pull-right m_top10">
+				<img class="dataLoadingsPdfImgcls0" src="Assests/images/loading.gif" style="width: 25px; height: 20px;display:none;">
+			</div>
+		<div class="col-sm-2 pull-right">
+			<div class="row">
+				<div class="col-sm-6 m_top10"><h5 class="pdfGeneratePrintEMCls" attr_pdf_type="positive" attr_pdf_dept_id="0"  style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i> Positive</h5></div>
+				<div class="col-sm-6 m_top10"><h5 class="pdfGeneratePrintEMCls" attr_pdf_type="positive" attr_pdf_dept_id="0"  style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i> Negative</h5></div>
+			</div>
+		</div>
+		<div class="col-sm-4 pull-right m_top10">
+			<ul class="list-inline pull-right switch-btn-News">
+				<li class="active" attr_type="print">Print Media</li>
+				<li class="" attr_type="electronic">Electronic Media</li>
+			</ul>
+		</div>
+	</div>
 	<div class="row m_top20" id="newsDiv" style="display:none;">
 		<div class="col-sm-6">
 			<div class="white_block">
