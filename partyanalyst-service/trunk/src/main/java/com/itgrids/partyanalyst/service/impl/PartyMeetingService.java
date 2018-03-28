@@ -919,10 +919,14 @@ public class PartyMeetingService implements IPartyMeetingService{
 						pmmh.setUpdatedTime(pmm.getUpdatedTime());
 						pmmh.setMomAtrSourceTypeId(pmm.getMomAtrSourceTypeId());						
 						partyMeetingMinuteHistoryDAO.save(pmmh);
-						
+						Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
 						UserAddress returnUA =null;
-						if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
+						/*if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
 							 returnUA = setUserAddress(stateId,districtId,constituencyId,tehsilId,panchayatId);
+						}*/
+						//party_meeting_level
+						if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
+						   returnUA = saveUserAddressByLevelIdAndLevelValue(createdLevelId,levelValue);//saving user address and getting saved object
 						}
 						
 						Integer updateStatus =null;
@@ -999,22 +1003,27 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmm.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					pmm.setMomAtrSourceTypeId(isGovtParty != null && isGovtParty> 0l ? isGovtParty:null);
 					pmm.setIsDeleted("N");
-					
+					Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
 					if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
 						if(levelId !=null && levelId>0l)
-								pmm.setLocationLevel(levelId);
+								pmm.setLocationLevel(createdLevelId);
 						if(levelValue !=null && levelValue >0l)
 								pmm.setLocationValue(levelValue);
-						
+						/*
 						UserAddress returnUA = setUserAddress(stateId,districtId,constituencyId,tehsilId,panchayatId);					
-						pmm.setUserAddressId(returnUA.getUserAddressId());
+						pmm.setUserAddressId(returnUA.getUserAddressId());*/
+						UserAddress createLocationAddress = saveUserAddressByLevelIdAndLevelValue(pmm.getLocationLevel(),pmm.getLocationValue());//saving user address and getting saved object
+						if (createLocationAddress == null) {
+							throw new ArithmeticException();
+						}
+						pmm.setUserAddressId(createLocationAddress.getUserAddressId());
 						
 					}
 					
 					pmm.setStatusId(statusId);
 					pmm.setIsActionable(isActionable);
 					pmm.setMomPriorityId(priorityId);
-					Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
+					//Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
 					pmm.setCreatedLocationScopeId(createdLevelId); 
 					pmm.setCreatedLocationValue(levelValue);
 					pmm.setCreatedAddressId(pmm.getUserAddressId());
@@ -1135,8 +1144,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmmh.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
 					pmmh.setPartyMeetingId(pmm.getPartyMeetingId());
 					pmmh.setMinutePoint(pmm.getMinutePoint());
+					if(pmm.getInsertedBy().getUserId() != null){
 					pmmh.setInsertedById(pmm.getInsertedBy().getUserId());
+					}
+					if(pmm.getUpdatedBy().getUserId() != null){
 					pmmh.setUpdatedById(pmm.getUpdatedBy().getUserId());
+					}
 					pmmh.setInsertedTime(pmm.getInsertedTime());
 					pmmh.setUpdatedTime(pmm.getUpdatedTime());
 					

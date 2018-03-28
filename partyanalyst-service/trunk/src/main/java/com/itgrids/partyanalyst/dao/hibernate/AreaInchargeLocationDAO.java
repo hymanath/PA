@@ -25,7 +25,7 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 	}*/
 	public Long getLocationIdsOfBooths(Long boothId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select AIL.AreaInchargeLocationId from  AreaInchargeLocation AIL  where  " );
+		sb.append(" select AIL.areaInchargeLocationId from  AreaInchargeLocation AIL  where  " );
 		if(boothId != null && boothId.longValue()>0l){
 			sb.append(" AIL.address.booth.boothId =:boothId "); 
 		}
@@ -37,16 +37,22 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		
 	}
 	
-	public List<Object[]> getAssignedAndUnAssignedBooths(){
+	public List<Object[]> getAssignedAndUnAssignedBooths(String status){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select AIL.areaInchargeLocationId,AIL.isAssinged," +
+		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged," +
 				" AIL.address.panchayat.panchayatId,panchayat.panchayatName," +
 				" tehsil.tehsilId,AIL.address.tehsil.tehsilName  " +
 				" from  AreaInchargeLocation AIL " +
 				" left join AIL.address.panchayat panchayat " +
 				" left join AIL.address.tehsil tehsil  " +
 				" " );
+		if(status != null && !status.isEmpty()){
+			sb.append(" where AIL.isAssinged =:status ");
+		}
 		Query query = getSession().createQuery(sb.toString());
+		if(status != null && !status.isEmpty()){
+			query.setParameter("status", status);
+		}
 		return query.list();
 	}
 	
