@@ -913,6 +913,9 @@
 					<value>com.itgrids.partyanalyst.model.AlertAssigned</value> 
 					<value>com.itgrids.partyanalyst.model.AlertIssueCategory</value>
 					<value>com.itgrids.partyanalyst.model.AlertIssueCategoryRelation</value>
+					<value>com.itgrids.partyanalyst.model.AlertCadreType</value>
+					<value>com.itgrids.partyanalyst.model.AlertCadreTypeRelation</value>
+					
 					
 				   <!-- Alert End-->
 				   
