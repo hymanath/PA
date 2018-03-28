@@ -4655,6 +4655,7 @@
     		 <property name="dateUtilService" ref="dateUtilService" />
     		 <property name="otpDetailsDAO" ref="otpDetailsDAO" />
     		 <property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
+    		 <property name="zohoTdpCadreContactDAO" ref="zohoTdpCadreContactDAO" />
     	 </bean>
     	 
     	 <bean name="zohoWebServiceHandlerService" class="com.itgrids.partyanalyst.service.impl.ZohoWebServiceHandlerService" >
