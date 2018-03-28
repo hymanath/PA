@@ -3,6 +3,7 @@ var wurl = url.substr(0,(url.indexOf(".com")+4));
 if(wurl.length == 3)
 	wurl = url.substr(0,(url.indexOf(".in")+3));
 
+//var wurl="http://mytdp.com"
 	var glStartDate = moment().format("DD-MM-YYYY");
 	var glEndDate = moment().format("DD-MM-YYYY");
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
@@ -46,7 +47,9 @@ if(wurl.length == 3)
 		if(globalDeptId !="0"){
 			$("#newsDiv").hide();
 		$(".removecss").removeClass("active")
-		$(".addcss").addClass("active")
+		$(".addcss").addClass("active");
+		$(".switch-btn-News li").removeClass("active");
+		$(".switch-btn-News li:nth-child(1)").addClass("active");
 		getDepartmentWiSeBlockDetails("PrintMediadepartment","printMedia","department");
 		}else if(globalDeptId =="0"){
 			$("#newsDiv").show();
@@ -60,6 +63,11 @@ if(wurl.length == 3)
 		}
 		
 	}
+	$(document).on("click",".switch-btn-News li",function(){
+		$(this).closest("ul").find("li").removeClass("active");
+		$(this).addClass("active");
+	});	
+	
 	$(document).on("click",".switch-btn li",function(){
 		$(this).closest("ul").find("li").removeClass("active");
 		$(this).addClass("active");
@@ -717,17 +725,50 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 				collapse+='<div class="row m_top20">';
 					collapse+='<div class="col-sm-12">';
 					if(type == "PrintMediadepartment"){
-						collapse+='<div class="row pull-right" style="margin:5px;">';
-							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
+						collapse+='<div class="row">';
+							collapse+='<div class="col-sm-2 pull-right">';
+									collapse+='<div class="row">';
+										
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
+										
+									collapse+='</div>';
+									
+								collapse+='</div>';
+								collapse+='<div class="col-sm-1 pull-right">';
+									collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px;margin-left: 50px;display:none">';
+								collapse+='</div>';
+							collapse+='</div>';
+							/* collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
+							
 							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
 							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
-						collapse+='</div>';
+						collapse+='</div>'; */
 					}else{
-						collapse+='<div class="row pull-right" style="margin:5px;">';
+						collapse+='<div class="row">';
+							collapse+='<div class="col-sm-2 pull-right">';
+									collapse+='<div class="row">';
+										
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
+										
+									collapse+='</div>';
+									
+								collapse+='</div>';
+								collapse+='<div class="col-sm-1 pull-right">';
+									collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px;margin-left: 50px;display:none">';
+								collapse+='</div>';
+							collapse+='</div>';
+							
+						/* collapse+='<div class="row pull-right" style="margin:5px;">';
 							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
 							collapse+='<button type="button" class="btn btn-success pdfEMNCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
 							collapse+='<button type="button" class="btn btn-danger pdfEMNCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
-						collapse+='</div>';
+						collapse+='</div>'; */
 					}
 					collapse+='<div class="white_block">';
 								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
@@ -791,20 +832,43 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 		}else{
 			collapse+='<div class="row m_top20">';
 			collapse+='<div class="col-sm-12">';
+			collapse+='<div class="white_block">';
 				if(type == "PrintMediadepartment"){
-						collapse+='<div class="row pull-right" style="margin:5px;">';
-							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
-							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
-							collapse+='<button type="button" class="btn btn-danger pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
-						collapse+='</div>';
+						collapse+='<div class="row">';
+							collapse+='<div class="col-sm-2 pull-right">';
+									collapse+='<div class="row">';
+										
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
+										
+									collapse+='</div>';
+									
+								collapse+='</div>';
+								collapse+='<div class="col-sm-1 pull-right">';
+									collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px;margin-left: 50px;display:none">';
+								collapse+='</div>';
+								
+							collapse+='</div>';
 					}else{
-						collapse+='<div class="row pull-right" style="margin:5px;">';
-							collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
-							collapse+='<button type="button" class="btn btn-success pdfEMNCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
-							collapse+='<button type="button" class="btn btn-danger pdfEMNCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
-						collapse+='</div>';
+						collapse+='<div class="row">';
+							collapse+='<div class="col-sm-2 pull-right">';
+									collapse+='<div class="row">';
+										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
+										
+										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
+										
+									collapse+='</div>';
+									
+								collapse+='</div>';
+								collapse+='<div class="col-sm-1 pull-right">';
+									collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px;margin-left: 50px;display:none">';
+								collapse+='</div>';
+								
+							collapse+='</div>';
 					}
-				collapse+='<div class="white_block">';
+				
 				collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
 							collapse+='<div class="row m_top10 departmentWiseTotalCls" id="departmentDivId'+result[i].organizationId+'">';
 								collapse+='<div class="col-sm-6">';
@@ -1141,6 +1205,28 @@ function getArtilcesForStateForEMN(stateId,deptId,benefitId){
 function getArtilcesForDistrictFOrEMN(districtId,deptId,benefitId){
 	window.open('electronicMediaBulletinsCD.action?organizationId='+deptId+'&benefitId='+benefitId+'&categoryId='+districtId+'&sdat='+glStartDate+'&edat='+glEndDate+'&type=districtdata&&orgType=Y&stIdx=0&edIdx=6&callFrom=districtData');
 }
+$(document).on("click",".pdfGeneratePrintEMCls",function(){
+	var benefitId=0;
+	var attrType = $(this).attr("attr_pdf_type");
+	var pdfDeptId = $(this).attr("attr_pdf_dept_id");
+	if(attrType =="positive"){
+		benefitId=1;
+	}else if(attrType =="negative"){
+		benefitId=2;
+	}
+	var type='';
+	$(".switch-btn-News li" ).each(function( index ) {
+	  if($(this).hasClass('active')){
+		  type = $(this).attr("attr_type")
+	  }
+	});
+	if(type=="print"){
+		getDepartmentWiseNewsSummaryForPrintMedia(benefitId,pdfDeptId);
+	}else{
+		getDepartmentWiseNewsSummaryForEMN(benefitId,pdfDeptId);
+	}
+	
+});
 $(document).on("click",".pdfGenerateCls",function(){
 	var benefitId=0;
 	var attrType = $(this).attr("attr_pdf_type");
