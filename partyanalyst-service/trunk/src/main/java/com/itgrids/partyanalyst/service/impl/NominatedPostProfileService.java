@@ -5428,7 +5428,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 				//Map<Long,Long> memberwisePostsCountMap = new HashMap<Long, Long>(0);
-			  if(LocationLevelId.equals(5l)){
+			  if(LocationLevelId.equals(5l) || LocationLevelId.equals(7l)){
 				    if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 			          for (Long manTowDivId : lctnLevelValueList) {
 			        	  
@@ -5445,30 +5445,30 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			          }
 			        }
 			        if(mandalList !=null && mandalList.size()>0){
-			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId,status);
-			        	 List<Object[]> mandalWishList = nominatedPostFinalDAO.getWishListCount(5l, mandalList, departmentId, boardId);
+			        	 List<Object[]> mandalObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(5l, mandalList, departmentId, boardId,status,LocationLevelId);
+			        	 List<Object[]> mandalWishList = nominatedPostFinalDAO.getWishListCount(5l, mandalList, departmentId, boardId,LocationLevelId);
 					     finalMap = setDataToMapForFinalReview(mandalObjList,finalMap,movedPostsStatusDetailsMap,status);
 					     if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					    	 setWishListCountToVO(mandalWishList,finalMap);
 			        }
 			        if(townList != null && townList.size() > 0){
-			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId,status);
+			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId,status,LocationLevelId);
 					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap,movedPostsStatusDetailsMap,status);
-					      List<Object[]> townWishList = nominatedPostFinalDAO.getWishListCount(6l, townList, departmentId, boardId);  
+					      List<Object[]> townWishList = nominatedPostFinalDAO.getWishListCount(6l, townList, departmentId, boardId,LocationLevelId);  
 					      if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					    	  setWishListCountToVO(townWishList,finalMap);
 			        }
 			        if(divisonList != null && divisonList.size()>0){
-			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId,status);
+			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId,status,LocationLevelId);
 					        finalMap = setDataToMapForFinalReview(divObjList,finalMap,movedPostsStatusDetailsMap,status);
-					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, divisonList, departmentId, boardId); 
+					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, divisonList, departmentId, boardId,LocationLevelId); 
 					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					        	setWishListCountToVO(divWishList,finalMap);
 			        }
 			  }else{
-				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId,status);
+				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId,status,LocationLevelId);
 				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap,movedPostsStatusDetailsMap,status);
-				  List<Object[]> returnWishList = nominatedPostFinalDAO.getWishListCount(LocationLevelId, lctnLevelValueList, departmentId, boardId);
+				  List<Object[]> returnWishList = nominatedPostFinalDAO.getWishListCount(LocationLevelId, lctnLevelValueList, departmentId, boardId,LocationLevelId);
 				  if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					  setWishListCountToVO(returnWishList,finalMap);
 			  }
@@ -5496,7 +5496,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						  }
 					}
 				   
-				  if(LocationLevelId.equals(5l)){
+				  if(LocationLevelId.equals(5l)  || LocationLevelId.equals(7l)){
 				        if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 				          for (Long manTowDivId : lctnLevelValueList) {
 				        	  
@@ -5513,19 +5513,19 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				          }
 				        }
 				        if(mandalList !=null && mandalList.size()>0){
-				        	 List<Object[]> mandalObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(5l, mandalList, departmentId, boardId);
+				        	 List<Object[]> mandalObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(5l, mandalList, departmentId, boardId,LocationLevelId);
 				        	 setOpenCntToResultLst(mandalObjList,fnlCnddtCuntLst);
 				        }
 				        if(townList != null && townList.size() > 0){
-				        	List<Object[]> townObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(6l, townList, departmentId, boardId);
+				        	List<Object[]> townObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(6l, townList, departmentId, boardId,LocationLevelId);
 				        	setOpenCntToResultLst(townObjList,fnlCnddtCuntLst);
 					    }
 				        if(divisonList != null && divisonList.size()>0){
-				        	 List<Object[]> divObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(7l, divisonList, departmentId, boardId);
+				        	 List<Object[]> divObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(7l, divisonList, departmentId, boardId,LocationLevelId);
 				        	 setOpenCntToResultLst(divObjList,fnlCnddtCuntLst);
 					    }
 				}else{
-					  List<Object[]> rtrnOpenCntOblLst = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(LocationLevelId,lctnLevelValueList, departmentId, boardId);
+					  List<Object[]> rtrnOpenCntOblLst = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(LocationLevelId,lctnLevelValueList, departmentId, boardId,LocationLevelId);
 					  setOpenCntToResultLst(rtrnOpenCntOblLst,fnlCnddtCuntLst);
 				}
 			 }
@@ -8013,25 +8013,64 @@ public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Lon
 public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,List<Long> locationValues,Long departmentId,Long boardId,Long positionId){
 	NominatedPostDashboardVO resultVO = new NominatedPostDashboardVO();
 	try{
-		List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(locationLevelId,locationValues,departmentId,boardId,positionId);
-			if(rtrnObjLst != null && rtrnObjLst.size() > 0){
-				for(Object[] param:rtrnObjLst){
-					Long nominatedPostStatusId = commonMethodsUtilService.getLongValueForObject(param[0]);
-					Long postCnt = commonMethodsUtilService.getLongValueForObject(param[1]);
-					if(nominatedPostStatusId == 1l || nominatedPostStatusId == 2l){//statusId: 1-Open,2-Final Review
-					 resultVO.setOpenPostCnt(resultVO.getOpenPostCnt()+postCnt);		
-					}else if(nominatedPostStatusId == 3l || nominatedPostStatusId == 4l){//statusId: 3-Confirmed,4-GO Issued
-					 resultVO.setFinalizedAndGoPassedCnt(resultVO.getFinalizedAndGoPassedCnt()+postCnt);	
-					}
-					resultVO.setTotalCnt(resultVO.getTotalCnt()+postCnt);
-				}
+		 List<Long> mandalList = new ArrayList<Long>();
+		  List<Long> townList = new ArrayList<Long>();
+		  List<Long> divisonList = new ArrayList<Long>();	
+		if(locationLevelId != null && (locationLevelId.longValue() ==5l || locationLevelId == 7l)){
+		if(locationValues !=null && locationValues.size()>0){
+	          for (Long manTowDivId : locationValues) {
+	        	  
+	            String mtdId = manTowDivId.toString();
+	            char temp = mtdId.charAt(0);
+	            Long firstChar=Long.parseLong(temp+"");
+	            if(firstChar==4l){
+	              mandalList.add(Long.parseLong(mtdId.substring(1)));
+	            }else if(firstChar==5l){
+	              townList.add(Long.parseLong(mtdId.substring(1)));
+	            }else if(firstChar==6l){
+	              divisonList.add(Long.parseLong(mtdId.substring(1)));
+	            }            
+	          }
+	        }
+			if(mandalList != null && mandalList.size() >0){
+				List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(5l,mandalList,departmentId,boardId,positionId,locationLevelId);
+				setNominatedPostDetails(rtrnObjLst,resultVO);
+			}else if(mandalList != null && mandalList.size() >0){
+				List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(6l,townList,departmentId,boardId,positionId,locationLevelId);
+				setNominatedPostDetails(rtrnObjLst,resultVO);
+			}else if(mandalList != null && mandalList.size() >0){
+				List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(7l,divisonList,departmentId,boardId,positionId,locationLevelId);
+				setNominatedPostDetails(rtrnObjLst,resultVO);
 			}
+		}else{
+			List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(locationLevelId,locationValues,departmentId,boardId,positionId,locationLevelId);
+			setNominatedPostDetails(rtrnObjLst,resultVO);
+		}
+		
 	}catch(Exception e){
 		LOG.error("Exception Occured in getNominatedPostDetails()", e);
 	}
 	return resultVO;
 }
 
+public void setNominatedPostDetails(List<Object[]> rtrnObjLst,NominatedPostDashboardVO resultVO){
+	try {
+		if(rtrnObjLst != null && rtrnObjLst.size() > 0){
+			for(Object[] param:rtrnObjLst){
+				Long nominatedPostStatusId = commonMethodsUtilService.getLongValueForObject(param[0]);
+				Long postCnt = commonMethodsUtilService.getLongValueForObject(param[1]);
+				if(nominatedPostStatusId == 1l || nominatedPostStatusId == 2l){//statusId: 1-Open,2-Final Review
+				 resultVO.setOpenPostCnt(resultVO.getOpenPostCnt()+postCnt);		
+				}else if(nominatedPostStatusId == 3l || nominatedPostStatusId == 4l){//statusId: 3-Confirmed,4-GO Issued
+				 resultVO.setFinalizedAndGoPassedCnt(resultVO.getFinalizedAndGoPassedCnt()+postCnt);	
+				}
+				resultVO.setTotalCnt(resultVO.getTotalCnt()+postCnt);
+			}
+		}
+	} catch (Exception e) {
+		LOG.error("Exception Occured in setNominatedPostDetails()", e);
+	}
+}
 public List<IdAndNameVO> getApplicationDocuments(Long tdpCadreId, String searchType, Long nominateCandId, Long applicationId,Long statusId,String applicationType){
 	List<IdAndNameVO> retrurnList = new ArrayList<IdAndNameVO>();
 	try{

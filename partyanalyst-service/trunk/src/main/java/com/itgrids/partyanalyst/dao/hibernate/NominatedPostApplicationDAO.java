@@ -1042,7 +1042,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		return query.list();
 	}
- public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status){
+ public List<Object[]> getFinalReviewCandidateCountLocationWise(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId,String status,Long boardLevelId){
 		
 		       StringBuilder queryStr = new StringBuilder();
 		       if(status != null && (status.equalsIgnoreCase("TOTAL") || status.equalsIgnoreCase("goPassed")))
@@ -1072,19 +1072,32 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			    	   queryStr.append(" and model.nominatedPostStatusId = 4 ");
 			      // else if(status != null && status.equalsIgnoreCase("total"))
 			    	  // queryStr.append(" and model.nominationPostCandidateId is null ");
-			       
+			       if(boardLevelId != null && boardLevelId.longValue() >=7l){
+			    	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
+			    	   if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+				    		   if(LocationLevelId != null && LocationLevelId.longValue() == 5l){
+						    	   queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId in (:lctnLevelValueList)");
+						       }else if(LocationLevelId != null && LocationLevelId.longValue() == 6l){
+						    	   queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in (:lctnLevelValueList)");
+						       }else if(LocationLevelId != null && LocationLevelId.longValue() == 7l){
+						    	   queryStr.append(" and model.nominatedPostMember.address.panchayatId in (:lctnLevelValueList)");
+						       }
+					       }  
+			       }else{
 			        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 		    	 	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
 		    	    }
+			        if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+				    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+				       }
+			       }
 			      /* if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 			    	   if(LocationLevelId.longValue() != 5L)
 			    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
 			    	   else
 			    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
 			       }*/
-			       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
-			    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
-			       }
+			       
 			       if(departmentId != null && departmentId.longValue() > 0){
 			    	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
 			    	   
@@ -1101,10 +1114,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			       }
 			       
 			       Query query = getSession().createQuery(queryStr.toString());
-			       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-			    	  // if(LocationLevelId.longValue() != 5L)
-			    		   query.setParameter("LocationLevelId", LocationLevelId);
+			       
+			       if(LocationLevelId != null && LocationLevelId.longValue() > 0l && boardLevelId != null && boardLevelId.longValue() <7l) {
+					    	 query.setParameter("LocationLevelId", LocationLevelId);
 			       }
+			      
 			       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 			    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
 			       }
@@ -1144,22 +1158,40 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				    	   queryStr.append(" and model.applicationStatusId = 5 ");
 				       else if(status != null && status.equalsIgnoreCase("goPassed"))
 				    	   queryStr.append(" and model.applicationStatusId = 7 ");
+				        /*if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+			    	 	   queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+			    	    }*/
+				       if(boardLevelId != null && boardLevelId.longValue() >=7){
+				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+				    	   if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+					    		   if(LocationLevelId != null && LocationLevelId.longValue() == 5l){
+							    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.address.tehsil.tehsilId in (:lctnLevelValueList)");
+							       }else if(LocationLevelId != null && LocationLevelId.longValue() == 6l){
+							    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in (:lctnLevelValueList)");
+							       }else if(LocationLevelId != null && LocationLevelId.longValue() == 7l){
+							    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.address.panchayatId in (:lctnLevelValueList)");
+							       }
+						       }  
+				       }else{
 				        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 			    	 	   queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
 			    	    }
+				        if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+					    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.locationValue in (:lctnLevelValueList)");
+					       }
+				       }
 				      /* if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
 				    	   if(LocationLevelId.longValue() != 5L)
 				    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
 				    	   else
 				    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
 				       }*/
-				       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
+				      /* if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.locationValue in (:lctnLevelValueList)");
-				       }
+				       }*/
 				       if(departmentId != null && departmentId.longValue() > 0){
 				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId=:departmentId ");
-				    	   
-				       }
+				    	}
 				       if(boardId != null && boardId.longValue() > 0){
 				    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.nominatedPostPosition.board.boardId=:boardId ");
 				       }
@@ -1172,9 +1204,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				       }
 				       
 				       Query query = getSession().createQuery(queryStr.toString());
-				       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-				    	  // if(LocationLevelId.longValue() != 5L)
-				    		   query.setParameter("LocationLevelId", LocationLevelId);
+				       if(boardLevelId != null && boardLevelId.longValue() >=7){
+				    	   query.setParameter("LocationLevelId", boardLevelId);
+				       }else{
+				    	   if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+						    	 query.setParameter("LocationLevelId", LocationLevelId);
+						   }
 				       }
 				       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 				    	   query.setParameterList("lctnLevelValueList", lctnLevelValueList);
