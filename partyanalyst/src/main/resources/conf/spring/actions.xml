@@ -1842,8 +1842,9 @@
 		 <property name="dalithaTejamDashBoardService" ref="dalithaTejamDashBoardService" /> 
 	</bean>
 	<bean id="areaInchargeDashBoardAction" class="com.itgrids.partyanalyst.web.action.AreaInchargeDashBoardAction" singleton="false">
-		 <property name="areaInchargeDashBoardAction" ref="areaInchargeDashBoardAction" /> 
+		 <property name="areaInchargeDashBoardService" ref="areaInchargeDashBoardService" /> 
 	</bean>
+	
 	
 </beans>	
 	

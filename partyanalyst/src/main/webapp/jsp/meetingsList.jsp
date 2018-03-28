@@ -1313,7 +1313,11 @@ var jsonGlob = "";
 					
 					
 					//str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
+					if((result[i].conductedDate !=null && result[i].conductedDate !="") && (result[i].isConducted !=null && result[i].isConducted == 'Y')){
 					str+='<td><i class="glyphicon glyphicon-edit" style="cursor:pointer" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');" data-toggle="tooltip" data-placement="top" title="Click here to update MOM/ATR"></i></td>';
+					}else{
+						str+='<td>-</td>';
+					}
 				}
 				str+='</tbody>';
 				str+='</table>';

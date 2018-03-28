@@ -121,7 +121,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
                         <div class="panel-body">
                             <div class="row">
                                 <div class="col-md-12 col-xs-12 col-sm-12 ">
-                                    <div class="panel panel-default">
+                                    <div class="panel panel-default" style="border: 1px solid #ddd !important;">
                                         <div class="panel-heading" style="background-color:#DDD">
                                             <h4 class="panel-title text-bold">Meeting Minutes</h4>
                                         </div>
@@ -129,28 +129,28 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											<table class="table table-bordered">
 												<tr>
 													<td>
-													    <h4 class="m_0 text-center">Total Minute Points</h4>
-														<h2 class="m_0 text-center"><span id="momTotalCount">0</span></h2>
+													    <h5 class="m_0 text-center">Total Mom Actions</h5>
+														<h3 class="m_0 text-center"><span id="momTotalCount">0</span></h3>
 													</td>
 													<td>
-														<h4 class="m_0 text-center">Created Minute Points </h4>
-														<h2 class="m_0 text-center"><span id="minitePointsCount">0</span></h2>
+														<h5 class="m_0 text-center">Created Mom Actions</h5>
+														<h3 class="m_0 text-center"><span id="minitePointsCount">0</span></h3>
 													</td>
-													<td>
-														<h4 class="m_0 text-center">Solved Minute Points </h4>
-														<h2 class="m_0 text-center"><span id="momSolvedCount">0</span></h2>
-													 </td>
+													<!--<td>
+														<h5 class="m_0 text-center">Solved Minute Points </h5>
+														<h3 class="m_0 text-center"><span id="momSolvedCount">0</span></h3>
+													 </td>-->
 													 <td>
-														<h4 class="m_0 text-center">Assigned Minute Points</h4>
-														<h2 class="m_0 text-center"><span id="momAssignedCount">0</span></h2>
+														<h5 class="m_0 text-center">Others Assigned Mom Actions</h5>
+														<h3 class="m_0 text-center"><span id="momAssignedCount">0</span></h3>
 													</td>
 													<td>
-														<h4 class="m_0 text-center">Assigned To Others Points</h4>
-														<h2 class="m_0 text-center"><span id="momAssignedOthersCount">0</span></h2>
+														<h5 class="m_0 text-center">Assigned Next level Mom Actions</h5>
+														<h3 class="m_0 text-center"><span id="momAssignedOthersCount">0</span></h3>
 													</td>
 													<td>
-														<h4 class="m_0 text-center">Total Documents Uploaded </h4>
-														<h2 class="m_0 text-center"><span id="miniteDocsCount">0</span></h2>
+														<h5 class="m_0 text-center">Total Documents Uploaded </h5>
+														<h3 class="m_0 text-center"><span id="miniteDocsCount">0</span></h3>
 													</td>
 												</tr>
 											</table>
@@ -183,7 +183,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 													</span>
                                                 </div>
                                            
-                                            <button class="btn btn-primary btn-xs pull-right addMeetMint" style="border-radius:1px;">ADD</button>
+                                            <button class="btn btn-primary btn-xs pull-right addMeetMint" style="border-radius:1px;">ADD MOM ACTION POINT</button>
 											<br/><br/>
 											
 												  
@@ -197,7 +197,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 											</div>
 											
 											
-                                            <div class="row">
+                                           <!-- <div class="row">
 												<h4 style="font-weight:bold;"> UPLOAD MOM DOCUMENTS</h4>
 												<div class="" id="mintueDocumentDivId"></div>
                                                 <div class="col-md-12">
@@ -211,12 +211,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 													<button class="btn btn-primary btn-xs pull-right m_top20 "   title="Add one more file" id="addFiles"><i class="glyphicon glyphicon-plus"></i></button>
                                                     <p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
                                                 </div>
-                                            </div>
+                                            </div>-->
 											<!-- meeting docs -->
 											
 												 
 											<div class="row">
-												<h4 style="font-weight:bold;"> UPLOAD MEETING RELATED PHOTOS AND DOCUMENTS</h4>
+												<div class="col-md-12">
+												<h5 > UPLOAD MEETING RELATED PHOTOS AND DOCUMENTS</h5>
+												</div>
 												<div class="" id="meetingDocumentDivId"></div>
                                                 <div class="col-md-12">
                                                     <form id="uploadMeetingDocs" name="uploadMeetingDocs" class="uploadBox">
@@ -323,7 +325,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
     <div class="modal-content">
       <div class="modal-header" style="background-color:#DDD">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" >MOM Points</h4>
+        <h4 class="modal-title" >MOM Action Points</h4>
       </div>
 	  <div class="modal-body">
 		<div class="row">
@@ -343,35 +345,37 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					<input type="radio" name="meetingTypeSelectRadio" id="meetingTypeActionableRadioId" class="meetingTypeSelectRadioCls" value="Y"/>Actionable
 				</label>
 			</div>
+		</div>
 			<div id="allSelectBoxesDivId" style="display:none;">
-				<div class="col-md-4 col-xs-12 col-sm-3" id="meetingLevelSelectDivId" style="display:none;">
+			<div class="row">
+				<!--<div class="col-md-4 col-xs-12 col-sm-3" id="meetingLevelSelectDivId" style="display:none;">
 					<label>Minute Level</label>
 					<span id="meetingLocationErrorMessage" style="color: red;"></span>
 						<select class="form-control" id="meetingLocationLevel"></select>
 					<img src='./images/icons/search.gif' class="offset7"  id="searchDataImgForMeetingsList" style="width:20px;height:20px;display:none;"/>
-				</div>	
+				</div>-->	
 				
-				<div class="col-md-4 col-xs-12 col-sm-4 locationDivCls" id="stateDivId" style="display:none;">
+				<!--<div class="col-md-4 col-xs-12 col-sm-4 locationDivCls" id="stateDivId" style="display:none;">
 					<label>State</label>
 					<span id="stateErrorMSgShow" style="color: red;"></span>
 					<select class="form-control locationSelectBoxCls" id="statesDivId">
 						<option value="0">Select State</option>
 					</select>
-				</div>
-				<div class="col-md-4 col-xs-12 col-sm-6 locationDivCls" id="districtDivId" style="display:none;">
+				</div>-->
+				<!--<div class="col-md-4 col-xs-12 col-sm-6 locationDivCls" id="districtDivId" style="display:none;">
 					<label>District</label>
 					<span id="districtErrorMSgShow" style="color: red;"></span>
 					<select class="form-control locationSelectBoxCls" id="districtId">
 						<option>Select District</option>
 					</select>
-				</div>
-				<div class="col-md-4 col-xs-12 col-sm-6 locationDivCls" id="constituencyDivId" style="display:none;">
+				</div>-->
+				<!--<div class="col-md-4 col-xs-12 col-sm-6 locationDivCls" id="constituencyDivId" style="display:none;">
 					<label>Constituency</label>
 					<span id="ConsErrorMSgShow" style="color: red;"></span>
 					<select class="form-control locationSelectBoxCls" id="constituencyId" name="constBox">
 						<option>Select Constituency</option>
 					</select>
-				</div>
+				</div>-->
 				<div class="col-md-4 col-xs-12 col-sm-6 locationDivCls" id="manTwnDivId" style="display:none;">
 					<label>Mandal/Town/Division</label>
 					<span id="ManErrorMSgShow" style="color: red;"></span>
@@ -387,9 +391,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					</select>
 				</div>
 				<div class="col-md-4 col-xs-12 col-sm-6">
-					<label>MOM Source Type</label>
+					<label>MOM Action Type</label>
 					<select class="form-control" id="isGovtPartySelId">
-						<option value="0">Select Source Type</option>
+						<option value="0">Select Action Type</option>
 						<option value="1">Govt</option>
 						<option value="2">Party</option>
 					</select>
@@ -412,7 +416,23 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 						<option value="3">Low</option>
 					</select>
 				</div>
+			</div>	
+			
+		
+		<div class="row">
+			<div class="col-md-12" style="margin-top:10px;">
+				<label>Upload MOM Files</label>
+				<form id="uploadMinutesDocs" name="uploadMinutesDocs" class="uploadBox" >
+					<input type="file" class="m_top10 fileCls" name="imageForDisplay" id="fileDivId0" style="width: 225px;margin-left:15px;"/>
+					<div id="ExtraFiles"></div>
+					<input type= "button" value="Upload Minutes Files" style="margin-left:15px;margin-top:10px;background-color:#666;border-color:#666" class="btn btn-primary btn-sm" id="uploadMinutesDocsId"></input>
+					<input type="hidden" name="partyMeeting" id="partyMeetingId"/>
+					<input type="hidden" name="partyMeetingType" value="MINUTE"/>
+				</form>
+				<button class="btn btn-primary btn-xs pull-right m_top20 "   title="Add one more file" id="addFiles"><i class="glyphicon glyphicon-plus"></i></button>
+				<p class="m_0 font-10 pull-right">Note: Multiple files upload. Allowed Types: PDF,Word,Excel,Jpg,JPEG,PNG</p>
 			</div>
+		</div>
 		</div>
 		<div class="row">
 			<div class="col-md-12 col-xs-12 col-sm-12" style="display:none;" id="momAssignCheckedId">
@@ -603,6 +623,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#isGovtPartySelId").val(0);
 			$("#saveBtnMeetMin").html("Save");
 			$("#momAssignCheckedId").hide();
+			var levelId=$(this).attr("attr_levelId");
+			var levelvalue =$(this).attr("attr_levelValue");
+			 $(".saveMinute").attr("attr_levelId",levelId);
+			 $(".saveMinute").attr("attr_levelValue",levelvalue);
 			
 	 }); 	
 	 
@@ -876,6 +900,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			   $("#meetingType").html(result.partyMeetingType+" - "+result.name);
 			   $("#location").html(result.locationName);
 			   getMomDashboardOverviewDtls(result.meetingLevelId,result.locationValue,partyMeetingID);
+			   $(".addMeetMint").attr("attr_levelId",result.meetingLevelId);
+			   $(".addMeetMint").attr("attr_levelValue",result.locationValue);
 			   if(result.minutesDocuments!=null && result.minutesDocuments.length>0){
 				   $("#miniteDocsCount").html(result.minutesDocuments.length);
 				   var str='';
@@ -960,15 +986,34 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					   }
 					  	 mainDivCount=i;
 						 var deleteStatus;
-						str+='<li class="list-group-item " id="list'+mainDivCount+'">';
-						str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'<br> created by:'+result.minutesDetails[i].createdLocation+'<br> assigned To: '+assignedLocation+',&nbsp;Status: '+result.minutesDetails[i].status+'</p>';
-						str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
-				       str+=' <button class="btn btn-default conformDel"  title="Delete" attr_type ="'+type+'" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
-					   if(result.minutesDetails[i].isEditable == null){
+						 str+='<li class="list-group-item" id="list'+mainDivCount+'" >';
+							str+='<div id="minutes'+mainDivCount+'" class="updatedMeetMintValue" onclick=enableSaveOption("'+mainDivCount+'");>';
+							str+='<h5 style="margin-top:0px;margin-bottom:0px;"><span style="font-weight:bold;">MOM Description</span><span class="col-sm-offset-6" style="position: relative;top: -5px;font-weight: bold;text-transform: uppercase;">'+result.minutesDetails[i].status+'</span></h5>';
+							str+='<p style="margin-top:10px;">'+result.minutesDetails[i].minutePoint+'</p>';
+							str+='<h5 style="margin-top:10px;margin-bottom:0px;"><span style="font-weight:bold;">Created By:  </span>'+result.minutesDetails[i].createdLocation+'</h5>';
+							if(assignedLocation !=null && assignedLocation.trim().length>0){
+								str+='<h5 style="margin-top:10px;margin-bottom:0px;"><span style="font-weight:bold;">Assigned To:  </span>'+assignedLocation+'</h5>';
+							}else{
+								str+='<h5 style="margin-top:10px;margin-bottom:0px;"><span style="font-weight:bold;">Assigned To:  </span> - </h5>';
+							}
+							str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
+							str+='<button class="btn btn-default conformDel"  title="Delete" attr_type ="'+type+'" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+								if(result.minutesDetails[i].isEditable == null){
+									str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_levelId ="'+result.meetingLevelId+'" attr_levelValue ="'+result.locationValue+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
+							 }
+							str+=' </div>';	
+						 str+='</div>';
+						 str+='</li>';
+						 
+						//str+='<li class="list-group-item" id="list'+mainDivCount+'">';
+						//str+='<p id="minutes'+mainDivCount+'" class="updatedMeetMintValue" style="margin-bottom: 0px; margin-top: 11px;" onclick=enableSaveOption("'+mainDivCount+'");>'+result.minutesDetails[i].minutePoint+'<br> created by:'+result.minutesDetails[i].createdLocation+'<br> assigned To: '+assignedLocation+',&nbsp;Status: '+result.minutesDetails[i].status+'</p>';
+						//str+='<div class="btn-group btn-group-sm pull-right" role="group" style="display: inline-block;position: absolute;right: 0;top: 0;">';
+				      // str+='<button class="btn btn-default conformDel"  title="Delete" attr_type ="'+type+'" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
+					   /* if(result.minutesDetails[i].isEditable == null){
 					      str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
 					     }
 					   str+=' </div>';
-						str+=' </li>';
+						str+=' </li>'; */
 						
 							
 				   }
@@ -1029,10 +1074,14 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		$("#mintModal").modal("show");
 		$("#momError").text("");
 		var minuteId = $(this).attr("attr_minuteId");
+		var levelId =$(this).attr("attr_levelId");
+		var levelValue =$(this).attr("attr_levelValue");
+		
 		$("#saveBtnMeetMin").attr("attr_minuteId",minuteId);
+		$("#saveBtnMeetMin").attr("attr_levelId",levelId);
+		$("#saveBtnMeetMin").attr("attr_levelValue",levelValue);
 		
 		$("#allSelectBoxesDivId").hide();
-		
 		$("#saveBtnMeetMin").html("Update");
 		
 		getPartyMeetingMinuteRetrieveDetails(minuteId);
@@ -1059,10 +1108,10 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		
 		if(isActionable =="Y"){	
 			levelId = $("#meetingLocationLevel").val();
-			if(levelId == "undefined" || levelId === undefined || levelId <= 0){
+			/* if(levelId == "undefined" || levelId === undefined || levelId <= 0){
 				$("#momError").text(" Please Select Minute Level ");
 				return;
-			}
+			} */
 			
 			stateId = $("#statesDivId").val()!= "undefined" && $("#statesDivId").val() !== undefined && $("#statesDivId").val() > 0?$("#statesDivId").val():0;
 			districtId = $("#districtId").val()!= "undefined" && $("#districtId").val() !== undefined && $("#districtId").val() > 0?$("#districtId").val():0;
@@ -1088,22 +1137,22 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			return;
 		}
 		 if($("#meetingLocationLevel").val()== 1){
-			if(stateId == 0){
+			/* if(stateId == 0){
 				$("#momError").text(" Please Select State");
 				return;
-			}
+			} */
 		}
 		else if($("#meetingLocationLevel").val()== 2 ){
-			if(stateId == 0){
+			/* if(stateId == 0){
 				$("#momError").text(" Please Select State");
 				return;
 			}
 			else if(districtId == 0){
 				$("#momError").text(" Please Select District ");
 				return;
-			}
+			} */
 		}else if($("#meetingLocationLevel").val()== 3){
-			if(stateId == 0){
+			/* if(stateId == 0){
 				$("#momError").text(" Please Select State");
 				return;
 			}
@@ -1114,9 +1163,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			else if(constituencyId == 0){
 				$("#momError").text(" Please Select constituency");
 				return;
-			}
+			} */
 		}else if($("#meetingLocationLevel").val()== 4 || $("#meetingLocationLevel").val()== 5 || $("#meetingLocationLevel").val()== 6){
-			if(stateId == 0){
+			/* if(stateId == 0){
 				$("#momError").text(" Please Select State");
 				return;
 			}
@@ -1131,9 +1180,9 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			else if(mandalId == 0){
 				$("#momError").text(" Please Select Mandal/Town/Division");
 				return;
-			}
+			} */
 		}else if($("#meetingLocationLevel").val()== 7 || $("#meetingLocationLevel").val()== 8){
-			if(stateId == 0){
+			/* if(stateId == 0){
 				$("#momError").text(" Please Select State");
 				return;
 			}
@@ -1152,7 +1201,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			else if( panchayatId == 0){
 				$("#momError").text(" Please Select Village/Ward");
 				return;
-			}
+			} */
 				
 		}
 		var statusId =$("#momStatusId").val();
@@ -1170,6 +1219,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		if($('[type="checkbox"]').is(":checked")){
 			assignedType = "assignToUpperLevel";
         }
+		var levelId = $(this).attr("attr_levelId");
+		var levelValue = $(this).attr("attr_levelValue");
 		$.blockUI({ message: "<div style='padding:10px; background-color:#ccc;'><h5> Saving Minutes Please Wait..</h5>",css : { width : "auto",left:"40%"}});
 		var minuteId = $(this).attr("attr_minuteid");
 		var jsObj={		
@@ -1248,7 +1299,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 					 str+='<div class="btn-group btn-group-sm pull-right" style="display: inline-block;position: absolute;right: 0;top: 0;">';
 					 str+=' <button class="btn btn-default ToolTipDiv conformDel" data-toggle="tooltip" data-placement="top" title="Delete" attr_type ="'+type+'" attr_txt="minutes'+mainDivCount+'" attr_div_count="'+mainDivCount+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'"><i class="glyphicon glyphicon-trash"></i></button>';
 					 if(result.minutesDetails[i].isEditable == null){
-					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
+					 str+=' <button class="btn btn-default updatedMeetMin ToolTipDiv " attr_levelId ="'+levelId+'" attr_levelValue ="'+levelValue+'" attr_minuteId="'+result.minutesDetails[i].partyMeetingMinuteId+'" id="save'+mainDivCount+'" attr_txt="minutes'+mainDivCount+'" data-toggle="tooltip" data-placement="top" title="Edit" ><i class="glyphicon glyphicon-edit"></i></button>';
 					 }
 					 str+=' </div>';
 					 str+=' </li>';
@@ -1898,8 +1949,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$(".locationDivCls select").find('option').not(':first').remove();
 			$("#momAssignCheckedId").show();
 			$(':checkbox').prop('checked', true).removeAttr('checked');
-			//$("#momStatusId").val(0);
-			//$("#momPriorityId").val(0);
+			$("#momStatusId").val(1);
 		}
 	});
 	
