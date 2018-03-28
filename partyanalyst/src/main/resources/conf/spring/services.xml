@@ -4820,7 +4820,11 @@
    	 		<property name="biometricDeviceLogTrackDAO" ref="biometricDeviceLogTrackDAO"></property>
     	</bean>
     	<bean name="areaInchargeDashBoardService" class="com.itgrids.partyanalyst.service.impl.AreaInchargeDashBoardService">
-   	 		
+   	 		<property name="commonMethodsUtilService" ref="commonMethodsUtilService"></property>
+   	 		<property name="areaInchargeMemberDAO" ref="areaInchargeMemberDAO"></property>
+   	 		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
+   	 		<property name="areaInchargeLocationDAO" ref="areaInchargeLocationDAO"></property>
+   	 		<property name="transactionTemplate" ref="transactionTemplate"></property>
     	</bean>
    	 	
 </beans>			

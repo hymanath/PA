@@ -18988,5 +18988,25 @@
 			<param name="root">overViewDetails</param>
 		</result>
 	</action>
+	<action name="getAreaInchargeDetailsAction" class="areaInchargeDashBoardAction" method="getAreaInchargeDetails">
+		<result type="json" name="success">
+			<param name="root">inchargeVO</param>
+		</result>
+	</action>
+	<action name="savingAssigningBoothsAction" class="areaInchargeDashBoardAction" method="savingAssigningBooths">
+		<result type="json" name="success">
+			<param name="root">resultStatus</param>
+		</result>
+	</action>
+	<action name="getAssignedAndUnAssignedBoothsAction" class="areaInchargeDashBoardAction" method="getAssignedAndUnAssignedBooths">
+		<result type="json" name="success">
+			<param name="root">inchargeVO</param>
+		</result>
+	</action>
+	<action name="editAssignedInchargeDetailsAction" class="areaInchargeDashBoardAction" method="editAssignedInchargeDetails">
+		<result type="json" name="success">
+			<param name="root">inchargeVO</param>
+		</result>
+	</action>
  </package>
 </struts>
