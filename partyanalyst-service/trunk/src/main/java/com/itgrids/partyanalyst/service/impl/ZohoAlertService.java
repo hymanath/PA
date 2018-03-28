@@ -5,7 +5,6 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.StringWriter;
 import java.security.Key;
 import java.security.PrivateKey;
@@ -34,6 +33,7 @@ import org.w3c.dom.Element;
 
 import com.itgrids.partyanalyst.dao.IOtpDetailsDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IZohoTdpCadreContactDAO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.OtpDetails;
 import com.itgrids.partyanalyst.saml.SamlSignatureUtil;
@@ -55,18 +55,22 @@ public class ZohoAlertService implements IZohoAlertService {
 	private DateUtilService dateUtilService;
 	private IOtpDetailsDAO otpDetailsDAO; 
 	private CommonMethodsUtilService commonMethodsUtilService ;
+	
+	private IZohoTdpCadreContactDAO zohoTdpCadreContactDAO;
+
+	
+	public void setZohoTdpCadreContactDAO(
+			IZohoTdpCadreContactDAO zohoTdpCadreContactDAO) {
+		this.zohoTdpCadreContactDAO = zohoTdpCadreContactDAO;
+	}
 
 	public void setTdpCadreDAO(ITdpCadreDAO tdpCadreDAO) {
 		this.tdpCadreDAO = tdpCadreDAO;
 	}
 
-	
-
 	public void setSmsCountrySmsService(ISmsService smsCountrySmsService) {
 		this.smsCountrySmsService = smsCountrySmsService;
 	}
-
-
 
 	public DateUtilService getDateUtilService() {
 		return dateUtilService;
@@ -238,8 +242,23 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						otpVerification.setIsValid('N');
 						otpVerification.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 						otpVerification = otpDetailsDAO.save(otpVerification);
-						status.put("memberShipId",jobj.getString("memberShipId"));
-						status.put("status", "success");
+						
+						status = setOTPConfirmationDetails(jobj.getString("memberShipId"),status);
+						
+						/*try {
+							ResultStatus samlResult = sendSamlResponseToZoho(jobj.getString("memberShipId"));
+							
+							status = setCadreTypeDetailsOfSamlLogin(jobj.getString("memberShipId"),status);
+							
+							if(status !=null && status.has("status") && status.getString("status").trim().equalsIgnoreCase("success")){
+								status.put("samlResponse", samlResult.getMessage() !=null && !samlResult.getMessage().trim().isEmpty()?
+										samlResult.getMessage().trim():"");
+							}
+							
+						} catch (Exception e) {
+							LOG.error("Exception raised in sendSamlResponseToZoho in checkOTPDetails method of ZohoAlertService Class ", e);
+						}*/
+						
 						return 	status;
 					}
 					else{
@@ -261,6 +280,58 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 			LOG.error("Exception Occured in checkOTPDetails() in ZohoAlertService class.",e);
 		}
 		return status;
+	}
+	
+	public JSONObject setOTPConfirmationDetails(String membershipId,JSONObject status){
+		try {
+			ResultStatus samlResult = sendSamlResponseToZoho(membershipId);
+			
+			status = setCadreTypeDetailsOfSamlLogin(membershipId,status);
+			
+			if(status !=null && status.has("status") && status.getString("status").trim().equalsIgnoreCase("success")){
+				status.put("samlResponse", samlResult.getMessage() !=null && !samlResult.getMessage().trim().isEmpty()?
+						samlResult.getMessage().trim():"");
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setOTPConfirmationDetails() in ZohoAlertService class.",e);
+		}
+		return status;
+	}
+	
+	public JSONObject setCadreTypeDetailsOfSamlLogin(String membershipId,JSONObject statusJson){
+		try {
+			if(membershipId !=null && !membershipId.trim().isEmpty())			
+			{
+				//tdpCadreId,memberShipNo,alertCadreTypeId,typeName,isalertCreate
+				List<Object[]> cadreTypeInfoObj = zohoTdpCadreContactDAO.getAlertCadreTypeInfo(membershipId);
+				if(cadreTypeInfoObj !=null && cadreTypeInfoObj.size()>0){
+					for (Object[] objects : cadreTypeInfoObj) {
+						if(objects[2] !=null){
+							if((Long)objects[2] == 3l){ // stake holders
+								statusJson.put("isAssignee", "true");
+								statusJson.put("isAgent", "true");
+								return statusJson;
+							}else if((Long)objects[2] ==4l){ // assignees
+								statusJson.put("isAssignee", "true");
+								statusJson.put("isAgent", "false");
+							}else{ // ProgramCommittee && InfoCenter
+								statusJson.put("isAssignee", "false");
+								statusJson.put("isAgent", "true");
+							}
+							statusJson.put("isAllowedToAddAlert", objects[4] !=null && objects[4].toString().trim().equalsIgnoreCase("Y")?"true":"false");
+						}
+					}
+					statusJson.put("membershipId", membershipId);
+					statusJson.put("status", "success");
+				}else{
+					statusJson.put("membershipId", "");
+					statusJson.put("status", "failed");
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in setCadreTypeDetailsOfSamlLogin() in ZohoAlertService class.",e);
+		}
+		return statusJson;
 	}
 
 	public String generateJwtForZoho(String userToken) {
@@ -646,7 +717,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 	        Element subject = doc.createElement("saml:Subject");
 	        Element nameId  =doc.createElement("saml:NameID");
 	        nameId.setAttribute("Format","urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress");
-	        nameId.appendChild(doc.createTextNode("03171668@mytdp.com"));// Need to Change
+	        nameId.appendChild(doc.createTextNode(memberShipId+"@mytdp.com"));
 	        subject.appendChild(nameId);
 	        
 	        Element subjectConfirmation = doc.createElement("saml:SubjectConfirmation");
