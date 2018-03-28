@@ -178,7 +178,7 @@ function levelWiseOverview(statusType)
 					collapse+='<div class="panel-body">';
 						collapse+='<div class="row">';
 							collapse+='<div class="col-sm-12">';
-								collapse+='<ul class="list-inline switch-btn workWiseDetailsCls pull-right">';
+								collapse+='<ul class="list-inline switch-btn workWiseDetailsCls">';
 									collapse+='<li attr_type="works" attr_location_type="'+levelWiseOverviewArr[i]+'" attr_status="'+statusType+'" class="f_14">OverAll Works</li>';
 									if(statusType =="ongoing"){
 										collapse+='<li class="active f_14" attr_type="exceed" attr_location_type="'+levelWiseOverviewArr[i]+'" attr_status="'+statusType+'" >OnGoing-Exceeded Works</li>';
