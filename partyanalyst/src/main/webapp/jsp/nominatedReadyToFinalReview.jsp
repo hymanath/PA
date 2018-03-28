@@ -712,7 +712,9 @@ $(".hidemanTowDivCls").hide();
 if(boardLevelId == 4){
 $(".hidemanTowDivCls").hide();
 }
-if(boardLevelId != null && boardLevelId >= 5){
+if(boardLevelId != null && boardLevelId > 6){
+getBoardLevelId(7,stateId);		
+}else if(boardLevelId != null && (boardLevelId == 5 || boardLevelId == 6)){
 getBoardLevelId(5,stateId);		
 }else{
 getBoardLevelId(boardLevelId,stateId);		

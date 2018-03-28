@@ -307,11 +307,11 @@ function buildCandidateReviewRslt(result,statusstr){
   $('[data-toggle="tooltip"]').tooltip()
   $('.deptDtlsCls').tooltip();
   // Hiding Get Post Functionality in the case of manal
-   if(globalLocationLevelId == 5){
+   /* if(globalLocationLevelId == 5){
 	$(".nominatedPstCls").hide();     
    }else{
 	$(".nominatedPstCls").show();        
-   }
+   } */
   //setHeight()
 }
 function buildCandidateBoardRslt(result,departmentId,status){
@@ -391,11 +391,11 @@ function buildCandidateBoardRslt(result,departmentId,status){
 	  $('[data-toggle="tooltip"]').tooltip()
 	})
 	// Hiding Get Post Functionality in the case of manal
-   if(globalLocationLevelId == 5){
+   /* if(globalLocationLevelId == 5){
 	$(".nominatedPstCls").hide();     
    }else{
 	$(".nominatedPstCls").show();        
-   }
+   } */
   //setHeight()
 }
 function buildCandidatePositionRslt(result,departmentId,boardId,status){
@@ -465,11 +465,11 @@ var str = '';
 	})
   setHeight();
   // Hiding Get Post Functionality in the case of manal
-   if(globalLocationLevelId == 5){
+   /* if(globalLocationLevelId == 5){
 	$(".nominatedPstCls").hide();     
    }else{
 	$(".nominatedPstCls").show();        
-   }
+   } */
 }
    /* Hiding Getting Post Details in the case of Mandal Level */
 var glFinalyeDeptId=0;
