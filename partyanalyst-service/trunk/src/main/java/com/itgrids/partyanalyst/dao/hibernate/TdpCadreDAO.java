@@ -9980,10 +9980,10 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select tdpCadre.tdpCadreId, tdpCadre.firstname,tdpCadre.relativename," +
 					" tdpCadre.age, tdpCadre.gender, tdpCadre.houseNo," +
-					" address.tehsil.tehsilId,address.tehsil.tehsilName," +
+					" tdpCadre.userAddress.tehsil.tehsilId,tdpCadre.userAddress.tehsil.tehsilName," +
 					" tdpCadre.casteState.caste.casteName,tdpCadre.image " +
 					" from  TdpCadre tdpCadre  " +
-					" left join tdpCadre.userAddress address " +
+					//" left join tdpCadre.userAddress address " +
 					"  where  tdpCadre.isDeleted ='N' ");
 			if(voterId != null && !voterId.isEmpty()){
 				sb.append(" and tdpCadre.voterId =:voterId  ");	
@@ -10001,8 +10001,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	        if(mobileNo != null && !mobileNo.isEmpty()){
 	        	query.setParameter("mobileNo", mobileNo);
 	        }
-	        if(memberShipId != null && !
-	        		memberShipId.isEmpty()){
+	        if(memberShipId != null && !memberShipId.isEmpty()){
 	        	query.setParameter("memberShipId", memberShipId);
 	        }
 			return query.list();

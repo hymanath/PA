@@ -51,7 +51,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select AIM.isActive from  AreaInchargeMember AIM  where AIM.isDeleted ='N' " );
 		if(cadreId != null && cadreId.longValue()>0l){
-			sb.append(" AIM.tdpCadre.tdpCadreId =:cadreId "); 
+			sb.append(" and AIM.tdpCadre.tdpCadreId =:cadreId "); 
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(cadreId != null && cadreId.longValue()>0l){
