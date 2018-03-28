@@ -17,6 +17,7 @@
 <link href="dist/NominatedPost/Slick/slick.css" rel="stylesheet" type="text/css"/>
 <link href="dist/NominatedPost/Slick/slick-theme.css" rel="stylesheet" type="text/css"/>
 <link href="dist/scroll/jquery.mCustomScrollbar.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" type="text/css" href="styles/simplePagination-1/simplePagination.css"/>
 <style type="text/css">
     .onoffswitch {
         position: relative; width: 69px;
@@ -63,6 +64,11 @@
     .onoffswitch-checkbox:checked + .onoffswitch-label .onoffswitch-switch {
         right: 0px; 
     }
+	.popUpDetailsClickCls{
+	cursor:pointer;
+	text-decoration:underline;
+	font-weight:bold;
+}
 </style>
 </head>
 <body>
@@ -531,7 +537,66 @@
         </div>
     </div>
 </div>
-
+<!-- Graphs click modal start  -->
+<div class="modal fade" id="openModalDiv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
+	<div class="modal-dialog" role="document" style="width:95%">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#CCCCCC">
+				<div class="row" >
+					<div class="col-md-8">
+						<h4 class="theme-title-color text-capital" id="TitleId" >Title</h4>
+						<p id="subTitleId"></p>
+					</div>
+					<div class="col-sm-3 pull-right">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">        
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="openPostDetailsModalDivId"></div>
+					</div>  
+				</div>
+				<div class="row paginationCls">
+					<div class="col-md-12 m_top20">
+						<div class="paginationId"></div>
+					</div>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal fade" id="departmentPostModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="z-index:9999;">
+	<div class="modal-dialog" role="document" style="width:90%;margin:auto">
+		<div class="modal-content">
+			<div class="modal-header" style="background-color:#CCCCCC">
+				<div class="row" >
+					<div class="col-md-8">
+						<h3 class="modal-title text-capitalize" id="deptHeadingId" >Title</h3>
+					</div>
+					<div class="col-sm-3 pull-right">
+						<button type="button" class="close closeShowPdfCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+			</div>
+			<div class="modal-body">        
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="departmentDetailsModalDivId"></div>
+					</div>  
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default closeShowPdfCls" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- Graphs click modal end  -->
 <div class="modal fade" id="nominatedCandadteModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
 		<div class="modal-content">
@@ -562,6 +627,7 @@
 <script src="dist/NominatedPost/Amcharts/amcharts.js"></script>
 <script type="text/javascript" src="js/nominatedPosts/nominatedPostMainDashboard.js"></script>
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 <script type="text/javascript">
 
 $('.chosenSelect').chosen();
