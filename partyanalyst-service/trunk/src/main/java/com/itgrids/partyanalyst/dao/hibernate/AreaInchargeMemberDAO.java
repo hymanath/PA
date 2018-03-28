@@ -74,5 +74,20 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		}
 		return query.list();
 	}
-	
+	//0-areaInchargeLoc,1-cadreId,2-cadreName,3-house
+	public List<Long> getAssignedInchargeBooths(Long cadreId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct AIM.areaInchargeLocationId "+
+				" from  AreaInchargeMember AIM   where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
+		if(cadreId != null && cadreId.longValue()>0l){
+			sb.append(" AIM.tdpCadre.tdpCadreId =:cadreId "); 
+		}
+		sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
+		Query query = getSession().createQuery(sb.toString());
+		if(cadreId != null && cadreId.longValue()>0l){
+			query.setParameter("cadreId", cadreId);
+		}
+		return query.list();
+		
+	}
 }

@@ -9490,7 +9490,7 @@ public Map<String,PartyMeetingsVO> getLvelWiseUpdationCount(Date startDate,Date 
 			if(commonMethodsUtilService.isListOrSetValid(invitteeList)){
 				for(Object[] obj :invitteeList){
 					totalInviteeList.add(commonMethodsUtilService.getLongValueForObject(obj[2]));
-					remarksMap.put(commonMethodsUtilService.getLongValueForObject(obj[0]), commonMethodsUtilService.getStringValueForObject(obj[5]));
+					remarksMap.put(commonMethodsUtilService.getLongValueForObject(obj[2]), commonMethodsUtilService.getStringValueForObject(obj[5]));
 				}
 			}
 			
@@ -9611,6 +9611,7 @@ public Map<String,PartyMeetingsVO> getLvelWiseUpdationCount(Date startDate,Date 
     						String image = commonMethodsUtilService.getStringValueForObject(param[4]);
     						
     						IdNameVO cadreVO = new IdNameVO();
+    						cadreVO.setRemark(remarksMap.get(tdpCadreId));
     						cadreVO.setId(tdpCadreId);
     						cadreVO.setName(cadreName);
     						cadreVO.setMembershipNo(membershiId);

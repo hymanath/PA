@@ -25,6 +25,7 @@ public class AreaInchargeVO implements Serializable{
     private Long total=0l;
     private Long assignedCount =0l;
     private Long unAssignedCount =0l;
+    private List<Long> assignBoothIds = new ArrayList<Long>();
 	public Long getId() {
 		return id;
 	}
@@ -139,6 +140,12 @@ public class AreaInchargeVO implements Serializable{
 	public void setUnAssignedCount(Long unAssignedCount) {
 		this.unAssignedCount = unAssignedCount;
 	}
+	public List<Long> getAssignBoothIds() {
+		return assignBoothIds;
+	}
+	public void setAssignBoothIds(List<Long> assignBoothIds) {
+		this.assignBoothIds = assignBoothIds;
+	}
 	
-	
+
 }

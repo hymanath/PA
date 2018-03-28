@@ -34,12 +34,13 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 	public List<Object[]> getMinuteDetailsForAMeeting(Long partyMeetingId,String accessType,List<Long> accessValues)
 	{
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,model.insertedBy.userId,model.insertedBy.firstName," +
-				"model.updatedBy.userId,model.updatedBy.firstName,model.insertedTime," +
+		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,insertedBy.userId,insertedBy.firstName," +
+				"updatedBy.userId,updatedBy.firstName,model.insertedTime," +
 				"model.updatedTime,model.partyMeeting.meetingName,momAtrSourceType.sourceType,model.createdLocationScopeId," +
-				" model.createdAddressId,model.assignedLocationScopeId,model.assignedAddressId,model.statusId,model.partyMeetingMinuteStatus.status " +
+				" model.createdAddressId,model.assignedLocationScopeId,address.userAddressId,model.statusId,model.partyMeetingMinuteStatus.status " +
 				" from PartyMeetingMinute model " +
-				" left join model.momAtrSourceType momAtrSourceType " +
+				" left join model.momAtrSourceType momAtrSourceType left join model.assignedAddress address " +
+				" left join model.insertedBy insertedBy left join model.updatedBy updatedBy " +
 				" where " +
 				"  model.partyMeeting.partyMeetingId=:partyMeetingId and model.isDeleted='N' ");
 		
@@ -163,10 +164,10 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 	
 	public List<Object[]> getMinuteDetailsForMeetingsList(List<Long> partymeetingIdsList,String accessType,List<Long> accessValues){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,model.insertedBy.userId,model.insertedBy.firstName," +
-				"model.updatedBy.userId,model.updatedBy.firstName,model.insertedTime," +
+		queryStr.append(" select model.partyMeetingMinuteId,model.partyMeeting.partyMeetingId,model.minutePoint,insertedBy.userId,insertedBy.firstName," +
+				"updatedBy.userId,updatedBy.firstName,model.insertedTime," +
 				"model.updatedTime,model.partyMeeting.meetingName,momAtrSourceType.sourceType " +
-				" from PartyMeetingMinute model " +
+				" from PartyMeetingMinute model left join model.insertedBy insertedBy left join model.updatedBy updatedBy " +
 				" left join model.momAtrSourceType momAtrSourceType " +
 				" where " +
 				"  model.partyMeeting.partyMeetingId in (:partymeetingIdsList) and model.isDeleted='N' ");
