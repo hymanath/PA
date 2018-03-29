@@ -88,12 +88,17 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 			<div class="row m_top10 dispalyNone">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
-						<div class="row m_top10">
-							<div class="col-sm-2 " id="deptsDivId">
-								<label>DEPARTMENT</label>
-								<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId1" multiple>
-								</select>
+						<div class="row m_top10">	
+							<div class="col-sm-3 pull-right">	
+								<div class="input-group inline-block">
+									<span class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+									</span>
+									<input type="text"  class="form-control" id="dateRangePicker"/>
+								</div>
 							</div>
+						</div>	
+						<div class="row m_top20">
 							<div class="col-sm-2" id="districtCandDiv">
 								<label>DISTRICT</label>
 								<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId1" multiple>
@@ -114,28 +119,29 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 									<!--<option value="0">All</option>-->
 								</select>
 							</div>
+							<div class="col-sm-2 " id="deptsDivId">
+								<label>DEPARTMENT</label>
+								<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId1" multiple>
+								</select>
+							</div>
 							<div class="col-sm-2">
 								<label>SUBJECT</label>
 								<select class="chosen-select form-control" id="subjectId1" data-placeholder="All" multiple>
 									<!--<option value="0">All</option>-->
 								</select>
 							</div>
-							<div class="col-sm-2 m_top20">	
-								<div class="input-group inline-block">
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
-									</span>
-									<input type="text"  class="form-control" id="dateRangePicker"/>
-								</div>
+							<div class="col-sm-2">
+								<label>SUB SUBJECT</label>
+								<select class="chosen-select form-control" id="SubSubjectId" data-placeholder="All" multiple>
+									<!--<option value="0">All</option>-->
+								</select>
 							</div>
 						</div>
-						
-					</div>
-				</div>
-				
-				<div class="col-sm-12">
-					<div class="col-sm-2 m_top20 pull-right">	
-						<input type="button"  class="btn btn-success btn-mini btn-xs" onclick="getPetitionsDetails();" value="GET DETAILs" />
+						<div class="row">
+							<div class="col-sm-2 m_top20 pull-right">	
+								<button type="button"  class="btn btn-success btn-mini btn-xs form-control font_weight" onclick="getPetitionsDetails();"/>GET DETAILS</button>
+							</div>
+						</div>
 					</div>
 				</div>
 				
@@ -226,6 +232,7 @@ function onloadcalls()
 	getDepartmntsDetails();
 	getStatusList();
 	getSubjectsBySearchType();
+	getSubSubjectsBySearchType();
 	getDistrictBySearchType();
 	
 }
@@ -326,6 +333,41 @@ function getSubjectsBySearchType(){
 	});	
 }
 
+function getSubSubjectsBySearchType(){
+	$("#statusLocId").html("");
+	$("#statusLocId").html("<option value='0' selected> All Subject </option>");
+	$("#SubSubjectId").chosen();
+		$("#SubSubjectId").trigger('chosen:updated');
+	var json = {
+		 reportType :'subject',
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 statusIds:statusIds,
+		 assetType:"0",
+		 deptIdsList :[]
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getSubjectsBySearchType',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#statusLocId").html("");
+		$("#statusLocId").html("<option value='0' selected> All Subject </option>");
+		 if(result !=null && result.length >0){
+			for(var i in result){
+				$("#SubSubjectId").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+			}
+		}
+		$("#SubSubjectId").chosen();
+		$("#SubSubjectId").trigger('chosen:updated');
+	});	
+}
+
 var statusIds = [];
 function getPetitionsDetails(){
 	$("#pdfWiswPetitionsView").html(spinner);
@@ -378,6 +420,20 @@ function getPetitionsDetails(){
 		}
 	}
 	
+	/* var SubSubjArr = [];
+	var SubSubjIds =$("#SubSubjectId").val();
+	if(SubSubjIds != null && SubSubjIds !=0){
+		SubSubjArr=SubSubjIds;
+	}
+	
+	if(SubSubjArr != null && SubSubjArr.length>0){
+		for(var i in SubSubjArr){
+			if(parseInt(SubSubjArr[i])==0){
+				SubSubjArr=[];
+			}
+		}
+	} */
+	
 	var subjArr = [];
 	var subjIds =$("#subjectId1").val();
 	if(subjIds != null && subjIds !=0){
@@ -424,11 +480,7 @@ function getPetitionsDetails(){
 	str+='<div class="petition_print_heading m_top10">';
 		var assemblyName=" KAVALI ";
 		var str='';
-		str+='<div class="row">';
-			str+='<div class="col-sm-12">';
-				str+='<button class="btn btn-md btn-success printViewCls pull-right dispalyNone" attr_divId="printableArea">Print</button>';
-			str+='</div>';	
-		str+='</div>';
+		
 		
 		str+='<div class="petition_print_heading m_top10">';
 			str+='<div class="row">';
@@ -534,7 +586,7 @@ function getPetitionsDetails(){
 					str+='</div>';
 				str+='</div>';
 		}
-		str+='<button type="button" class="btn btn-success m_top10 pull-right" onclick="updatePriorityDetailsforPetitionsWorks()">SUBMIT DETAILS</button>';
+		str+='<button type="button" class="btn btn-success m_top10" onclick="updatePriorityDetailsforPetitionsWorks()" style="position:fixed; bottom:10px; left:46%;">SUBMIT DETAILS</button>';
 		$('#pdfWiswPetitionsView').html(str);
 		
 		$("#worksDetailsTab").dataTable({
@@ -720,7 +772,7 @@ function updatePriorityDetailsforPetitionsWorks(){
    }
 }
 
-$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1",function()
+$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1,#SubSubjectId",function()
 {
 	$("#pdfWiswPetitionsView").html('');
 });	
