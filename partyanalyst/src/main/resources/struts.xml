@@ -19008,5 +19008,15 @@
 			<param name="root">inchargeVO</param>
 		</result>
 	</action>
+	 <action name="deleteAreaInchargeAssignBoothsAction" class="areaInchargeDashBoardAction" method="deleteAreaInchargeAssignBooths">
+		<result type="json" name="success">
+			<param name="root">result</param> 
+		</result>
+	</action> 
+	<action name="removeAreaInchargeAction" class="areaInchargeDashBoardAction" method="removeAreaIncharge">
+		<result type="json" name="success">
+			<param name="root">result</param> 
+		</result>
+	</action> 
  </package>
 </struts>
