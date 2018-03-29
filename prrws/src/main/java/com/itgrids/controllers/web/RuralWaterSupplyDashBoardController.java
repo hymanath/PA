@@ -623,4 +623,15 @@ public class RuralWaterSupplyDashBoardController {
 	  }
 	 return null;
 	}
+	
+	@PostMapping("/getAllWorksByScheme")
+	public @ResponseBody List<WorksVO> getAllWorksByScheme(@RequestBody InputVO inputVO) {
+		try {
+			return rWSNICService.getAllWorksByScheme(inputVO);
+
+		} catch (Exception e) {
+			LOG.error("Exception raised at getAllWorksByScheme - RuralWaterSupplyDashBoardController controller",e);
+		}
+		return null;
+	}
 }

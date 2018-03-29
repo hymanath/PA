@@ -35,8 +35,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.swing.Icon;
-import javax.swing.text.StyledEditorKit.ForegroundAction;
 
 import org.apache.log4j.Logger;
 import org.codehaus.jettison.json.JSONArray;
@@ -79,7 +77,6 @@ import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KPIVO;
 import com.itgrids.dto.KeyValueVO;
-import com.itgrids.dto.LocationAddressVO;
 import com.itgrids.dto.LocationVO;
 import com.itgrids.dto.NregaConsolidatedInputVO;
 import com.itgrids.dto.NregaLocationOverviewVO;
@@ -5252,6 +5249,77 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 			LOG.error("exception occured in getstatusTemplateList() of getLocationWiseSchemeWiseWorkDetails() method",e);	
 		}
 		return finlaList;
+	}
+
+	@Override
+	public List<WorksVO> getAllWorksByScheme(InputVO inputVO){
+		List<WorksVO> finalList = new ArrayList<WorksVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() >0){
+				inputVO.setStartDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
+				Long year = Long.valueOf(inputVO.getYear());
+				Long priviousYear = year-1;
+				inputVO.setStartDate(sdf.parse("01-04-"+ priviousYear));
+				inputVO.setEndDate(sdf.parse("01-04-"+year));
+				
+			}
+			Map<Long,WorksVO> locationMap = new HashMap<Long,WorksVO>();
+			List<Object[]> objList = new ArrayList<>(0);
+			
+			List<Object[]>  workadminSancObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_ADMIN_SANC);
+			List<Object[]>  worktechSancObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_TECH_SANCTIONED);
+			List<Object[]>  workentrustObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_ENTRUST );
+			List<Object[]>  workOngoingObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_GROUNDED);
+			List<Object[]>  workNotgroundedObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_NOTGROUNDED);
+			List<Object[]>  workUnderProcessObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_UNDER_PROCESS);
+			List<Object[]>  workCompletedObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_COMPLETION );
+			List<Object[]>  workCommissionedObjLst = rwsWorkDAO.getAllWorksByScheme(inputVO, IConstants.WORK_COMMISSIONED);
+			
+			objList.addAll(workadminSancObjLst);
+			objList.addAll(worktechSancObjLst);
+			objList.addAll(workentrustObjLst);
+			objList.addAll(workOngoingObjLst);
+			objList.addAll(workNotgroundedObjLst);
+			objList.addAll(workUnderProcessObjLst);
+			objList.addAll(workCompletedObjLst);
+			objList.addAll(workCommissionedObjLst);
+			
+			for (Object[] objects : objList) {
+				WorksVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				if(locationVo == null){
+					locationVo = new WorksVO();
+					locationVo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					locationVo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationVo);
+					
+				}
+				if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_ADMIN_SANC) ){
+					locationVo.setAdminSanctionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED) ){
+					locationVo.setTechnicalSanctionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_ENTRUST) ){
+					locationVo.setEntrustedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_GROUNDED) ){
+					locationVo.setGroundedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS) ){
+					locationVo.setUndrProcessCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_COMPLETION) ){
+					locationVo.setCompletedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_COMMISSIONED) ){
+					locationVo.setCommissionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]).equalsIgnoreCase(IConstants.WORK_NOTGROUNDED) ){
+					locationVo.setNotgroundedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
+			}
+			finalList.addAll(locationMap.values());
+			
+		}catch(Exception e){
+			LOG.error("exception occured in  getAllWorksByScheme() method",e);
+		}
+		return finalList;
 	}
 
  }

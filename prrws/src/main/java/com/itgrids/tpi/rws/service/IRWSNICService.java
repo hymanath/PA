@@ -72,4 +72,5 @@ public interface IRWSNICService {
 	public List<WorksVO> getLocationWiseSchemeWiseWorkDetails(InputVO inputVO);
 	public List<RwsClickVO> getLocattionWiseOnclickWorkDetails(InputVO vo);
 	public List<GrantVO> getRwsProgramsCodeAndName(InputVO inputVO);
+	public List<WorksVO> getAllWorksByScheme(InputVO inputVO);
 }
