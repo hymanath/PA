@@ -19018,5 +19018,15 @@
 			<param name="root">result</param> 
 		</result>
 	</action> 
+	<action name="getAreaInchargeAssignedBoothDetailsAction" class="areaInchargeDashBoardAction" method="getAreaInchargeAssignedBoothDetails">
+		<result type="json" name="success">
+			<param name="root">inchargeList</param>
+		</result>
+	</action>
+	<action name="getAreaInchargesStatusWiseCountAction" class="areaInchargeDashBoardAction" method="getAreaInchargesStatusWiseCount">
+		<result type="json" name="success">
+			<param name="root">inchargeVO</param>
+		</result>
+	</action>
  </package>
 </struts>

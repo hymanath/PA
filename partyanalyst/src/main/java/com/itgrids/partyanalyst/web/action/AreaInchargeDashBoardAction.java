@@ -29,6 +29,7 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 	private String task;
 	private ResultStatus resultStatus;
 	private AreaInchargeVO inchargeVO;
+	private List<AreaInchargeVO> inchargeList;
 	private IAreaInchargeDashBoardService areaInchargeDashBoardService;
 	private String result;
 	
@@ -109,6 +110,106 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		this.request = request;
 	}
 	
+	public List<AreaInchargeVO> getInchargeList() {
+		return inchargeList;
+	}
+
+	public void setInchargeList(List<AreaInchargeVO> inchargeList) {
+		this.inchargeList = inchargeList;
+	}
+
+	public String getAreaInchargeDetails(){
+		try{
+			
+			/*RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
+			Long userId=0l;
+			if(regVO!=null){
+				userId = regVO.getRegistrationID();
+			}*/
+			jObj = new JSONObject(getTask());
+			inchargeVO = areaInchargeDashBoardService.getAreaInchargeDetails(jObj.getString("voterId"),jObj.getString("mobileNo"),jObj.getString("memberShipId"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAreaInchargeDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	
+	public String savingAssigningBooths(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			JSONArray boothIdsArr = jObj.getJSONArray("boothIds");  
+			List<Long> boothIdsList = new ArrayList<Long>();
+			if(boothIdsArr != null && boothIdsArr.length() > 0){
+				for (int i = 0; i < boothIdsArr.length(); i++){
+					boothIdsList.add(Long.parseLong(boothIdsArr.getString(i)));          
+				}  
+			}
+			resultStatus = areaInchargeDashBoardService.savingAssigningBooths(jObj.getLong("cadreId"),boothIdsList);
+			
+		}catch (Exception e) {
+			LOG.error("Entered into savingAssigningBooths Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getAssignedAndUnAssignedBooths(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			inchargeVO = areaInchargeDashBoardService.getAssignedAndUnAssignedBooths(jObj.getLong("levelId"),jObj.getLong("levelValue"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAssignedAndUnAssignedBooths Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String editAssignedInchargeDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			/*JSONArray boothIdsArr = jObj.getJSONArray("boothIds");  
+			List<Long> boothIdsList = new ArrayList<Long>();
+			if(boothIdsArr != null && boothIdsArr.length() > 0){
+				for (int i = 0; i < boothIdsArr.length(); i++){
+					boothIdsList.add(Long.parseLong(boothIdsArr.getString(i)));          
+				}  
+			}*/
+			inchargeVO = areaInchargeDashBoardService.editAssignedInchargeDetails(jObj.getLong("cadreId"),jObj.getLong("levelId"),jObj.getLong("levelValue"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into editAssignedInchargeDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getAreaInchargeAssignedBoothDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			inchargeList = areaInchargeDashBoardService.getAreaInchargeAssignedBoothDetails(jObj.getLong("levelId"),jObj.getLong("levelValue"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAreaInchargeAssignedBoothDetails Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
+	public String getAreaInchargesStatusWiseCount(){
+		try{
+			
+			jObj = new JSONObject(getTask());
+			inchargeVO = areaInchargeDashBoardService.getAreaInchargesStatusWiseCount(jObj.getLong("levelId"),jObj.getLong("levelValue"));
+			
+		}catch (Exception e) {
+			LOG.error("Entered into getAreaInchargesStatusWiseCount Action",e);
+		}
+		
+		return Action.SUCCESS;
+	}
 	public String deleteAreaInchargeAssignBooths(){
 		try{
 			LOG.info("Entered into deleteAreaInchargeAssignBooths");
@@ -132,5 +233,5 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 			LOG.error("Exception in removeAreaIncharge method,e ");
 		}
 		return Action.SUCCESS;
-	}
+	}	
 }
