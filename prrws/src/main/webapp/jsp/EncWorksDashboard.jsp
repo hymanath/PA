@@ -31,7 +31,7 @@
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayat Raj</h4>
-					<p>Tax - DashBoard</p>
+					<p>ENC Works- DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -286,6 +286,22 @@
 </section>
 <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
 	<div class="white-block" style="padding:15px;">
+		<div class="panel-group" id="accordionEX1">
+			<div class="panel panel-default panel-black">
+				<div class="panel-heading" id="headingEX1">
+					<a role="button" class="panelCollapseIcon collapsed collapseClick" data-toggle="collapse" data-parent="#accordionEX1" href="#collapseEX1" aria-expanded="true" aria-controls="collapseEX1">
+						<h4 class="panel-title text-capital">Scheme wise STATE LEVEL OVERVIEW</h4>
+					</a>	
+				</div>
+				<div id="collapseEX1" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading1">
+					<div class="row">
+						<div class="col-sm-12 m_top10">
+							<div id="encSchemesTableDivId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
 		<div class="row">
 			<div class="col-sm-12">
 				<h4 class="font_weight" style="font-size: 17px;">WORKS - STATE LEVEL OVERVIEW</h4>
@@ -313,7 +329,7 @@
 						<div class="row">
 							<div class="col-sm-6">
 								<label class="radio-inline m_top5">
-									<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing"checked> OnGoing Exceeded Works
+									<input type="radio" class="exceedWorkTypeCls"  name="optradio1" value="ongoing" checked> OnGoing Exceeded Works
 								</label>
 							</div>
 							<div class="col-sm-6">
@@ -356,7 +372,8 @@
 		<div class="modal-body">
 		
 			<div id="modalSchemsTable"></div>
-			<div id="modalSchemsExceedTable"></div>
+			<div id="modalExceededTable"></div>
+			<div id="modalNotGroundedExceededTable"></div>
 		
 		</div>
 	</div><!-- /.modal-content -->
