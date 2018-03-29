@@ -1163,11 +1163,11 @@ function getPositionAndApplicationDetailsCntLocationWise(positionId,locationLeve
       }).done(function(result){
 		  $('#statusDetailsId').trigger('click');
 		  if(result!=null){
-			  buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId);
+			  buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,positionId);
 		  }
     });			
 }
-function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId){
+function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLevelId,collapseHrefId,postionHighChartId,appHighChartId,positionId){
 	var positionRslt = result.positionList;
 	var applicationRslt = result.applicationList;
 	if(positionRslt != null && positionRslt.length > 0){
@@ -1178,9 +1178,9 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 					str+='<div id="'+postionHighChartId+'" style="height:180px;margin-bottom: 20px;"></div>';
 					str+='<ul class="positionsUl" style="margin-top:20px !imortant;">';
 						str+='<li class="total"><span class="statusBox"></span>TOTAL POSTS<span class="count pull-right">'+positionRslt[0].totalPostsCnt+'</span></li>';
-						str+='<li class="openPosts"><span class="statusBox"></span>OPEN POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="open" attr_department_name="" attr_board_statusIds="0">'+positionRslt[0].openPostCnt+'</span></li>';
-						str+='<li class="finalized"><span class="statusBox"></span>FINALIZED POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="goIssued" attr_department_name="" attr_board_statusIds="3">'+positionRslt[0].confirmCntCnt+'</span></li>';
-						str+='<li class="goIssued"><span class="statusBox"></span>G.O ISSUED<span class="count pull-right popUpDetailsClickCls" attr_department_id="0" style="cursor:pointer;" attr_boardLevelId="'+locationLevelId+'" attr_type="goIssued" attr_department_name="" attr_board_statusIds="4">'+positionRslt[0].goIssuedCnt+'</span></li>';
+						str+='<li class="openPosts"><span class="statusBox"></span>OPEN POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="open" attr_department_name="" attr_board_statusIds="0" attr_position_id="'+positionId+'">'+positionRslt[0].openPostCnt+'</span></li>';
+						str+='<li class="finalized"><span class="statusBox"></span>FINALIZED POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="goIssued" attr_department_name="" attr_board_statusIds="3" attr_position_id="'+positionId+'">'+positionRslt[0].confirmCntCnt+'</span></li>';
+						str+='<li class="goIssued"><span class="statusBox"></span>G.O ISSUED<span class="count pull-right popUpDetailsClickCls" attr_department_id="0" style="cursor:pointer;" attr_boardLevelId="'+locationLevelId+'" attr_type="goIssued" attr_department_name="" attr_board_statusIds="4" attr_position_id="'+positionId+'">'+positionRslt[0].goIssuedCnt+'</span></li>';
 					str+='</ul>';
 				str+='</div>';
 				str+='<div class="col-md-6 col-xs-12 col-sm-6">';
@@ -3086,7 +3086,7 @@ $(document).on('change','#corporationId',function(){
   getDepartmentWisePositionList();
 });
 
-function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
+function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type,positionId){
 	if(type == "open"){
 		$("#openPostDetailsModalDivId").html(spinner);
 	}
@@ -3101,7 +3101,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       "locationTypeId"		:0,
       "year"				:"",
       "boardLevelId"		:boardLevelId,
-	  deptId				:parseInt(deptId)
+	  deptId				:parseInt(deptId),
+	  positionId 			:positionId
 	  }
     $.ajax({   
       type:'GET',
@@ -3217,19 +3218,20 @@ $(document).on("click",".popUpDetailsClickCls",function(){
 		var type =  $(this).attr("attr_type");
 		var departmentName =  $(this).attr("attr_department_name");
 		var statusIds =  $(this).attr("attr_board_statusIds");
+		var positionId =$(this).attr("attr_position_id");
 		if(type == "open"){
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName+  "  Open Posts Details");
 			$("#subTitleId").html("");
 			$(".paginationCls").html("");
-			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
+			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type,positionId);
 		}else if(type == "goIssued"){
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName + "  G.O Issued Positions");
 			$("#subTitleId").html("");
-			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10);
+			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10,positionId);
 		}else if(type == "department"){
 			$("#departmentPostModal").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
@@ -3237,10 +3239,10 @@ $(document).on("click",".popUpDetailsClickCls",function(){
 			$("#deptHeadingId").html(departmentName+" Details");
 			$("#subTitleId").html("");
 			$(".paginationCls").html("");
-			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type);
+			getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type,positionId);
 		}
 });
-function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex){
+function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex,positionId){
 	  $("#openPostDetailsModalDivId").html(spinner)
 	  
 	  var statusIds=[];
@@ -3257,7 +3259,8 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex)
       boardLevelId		:boardLevelId, 
 	  statusIds			:statusIds, // 3-complered 4 goIsuued
 	  startIndex:startIndex,
-	  endIndex:endIndex
+	  endIndex:endIndex,
+	  positionId:positionId
      
     }
     $.ajax({   
@@ -3267,14 +3270,14 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex)
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null && result.length>0){
-			return LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId);
+			return LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId,positionId);
 		}else{
 			$(".paginationId").html("");
 			$("#openPostDetailsModalDivId").html("No Data Available");
 		}
 		
     });
-	function LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId){
+	function LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId,positionId){
 		if(startIndex == 0){
 			totalPosCount=result[0].postCount;
 		}
@@ -3322,9 +3325,8 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex)
 				hrefTextPrefix: '#pages-',
 				onPageClick: function(pageNumber) { 
 					var num=(pageNumber-1)*10;
-					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10);
+					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10,positionId);
 				}
-				
 			});
 		//}
 		$("#openPostDetailsModalDivId").html(str);		

@@ -1170,8 +1170,9 @@ public String getElectionInformationLocationWise(){
 	     try{
 	       jObj = new JSONObject(getTask());
 	        List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr"));  
-	        nominatedPostDetailsVOList = nominatedPostLocationDashboardService.getDepartmentWisePostAndApplicationDetails(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
-	        		jObj.getLong("deptId"));
+	        nominatedPostDetailsVOList = nominatedPostLocationDashboardService.getDepartmentWisePostAndApplicationDetails(locationValues,jObj.getString("fromDateStr"),
+	        		jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
+	        		jObj.getLong("deptId"),jObj.getLong("positionId"));
 	     }catch(Exception e){
 	       LOG.error("Exception raised at getDepartmentWisePostAndApplicationDetails() of LocationDashboardAction{}", e);
 	     }
@@ -1185,7 +1186,10 @@ public String getElectionInformationLocationWise(){
 	        List<Long> statusList = convertJsonStringList(jObj.getJSONArray("statusIds")); 
 	        Long startIndex = jObj.getLong("startIndex");
 	        Long endIndex = jObj.getLong("endIndex");
-	        nominatedPostCandList = nominatedPostLocationDashboardService.getLevelWiseGoIssuedPostions(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),statusList,startIndex,endIndex);
+	        Long positionId = jObj.getLong("positionId");
+	        nominatedPostCandList = nominatedPostLocationDashboardService.getLevelWiseGoIssuedPostions(locationValues,
+	        		jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),
+	        		jObj.getString("year"),jObj.getLong("boardLevelId"),statusList,startIndex,endIndex,positionId);
 	     }catch(Exception e){
 	       LOG.error("Exception raised at getLevelWiseGoIssuedPostions() of LocationDashboardAction{}", e);
 	     }
