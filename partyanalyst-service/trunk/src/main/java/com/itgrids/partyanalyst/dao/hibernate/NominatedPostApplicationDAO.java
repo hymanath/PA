@@ -2671,7 +2671,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	}
 	
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getDepartmentWiseApplicationDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId){
+	 public List<Object[]> getDepartmentWiseApplicationDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId,Long positionid){
 	 	 StringBuilder sb = new StringBuilder();
 	 	 sb.append(" select ");
 	 	 
@@ -2688,7 +2688,8 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 	 		   " from NominatedPostApplication nominatedPostApplication " +
 	 	 		   " where  nominatedPostApplication.isDeleted = 'N' " +
 	 			   " and nominatedPostApplication.isExpired = 'N' " +
-	 			   " and nominatedPostApplication.nominatedPostMember.isDeleted = 'N' ");
+	 			   " and nominatedPostApplication.nominatedPostMember.isDeleted = 'N' " +
+	 			   " and nominatedPostApplication.nominatedPostMember.nominatedPostPosition.isDeleted = 'N' ");
 	 	 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
  			if (locationTypeId == 2) {
@@ -2714,6 +2715,9 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 	 sb.append(" and nominatedPostApplication.applicationStatus.applicationStatusId not in  (2,4,8,9) ");
 	 	if(deptId != null && deptId.longValue() >0l){
 	 		 sb.append(" and nominatedPostApplication.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
+	 	 }
+	 	if(positionid != null && positionid.longValue() >0l){
+	 		 sb.append(" and nominatedPostApplication.nominatedPostMember.nominatedPostPosition.position.positionId = :positionid  ");
 	 	 }
 	 	 if(startDate != null && endDate != null){
 	 		 sb.append(" and (date(nominatedPostApplication.updatedTime) between :startDate and :endDate) ");
@@ -2743,7 +2747,9 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
 	 		  query.setParameterList("locationValues", locationValues);
 	 	  }
-	 	
+	 	if(positionid != null && positionid.longValue() >0l){
+	 		query.setParameter("positionid", positionid);
+	 	}
 	 	 if(year !=null && !year.trim().isEmpty()){
 	 		query.setParameter("year", Integer.parseInt(year));
 	 	 }

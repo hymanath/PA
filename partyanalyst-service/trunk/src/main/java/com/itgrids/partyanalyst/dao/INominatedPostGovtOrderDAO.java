@@ -13,8 +13,10 @@ public interface INominatedPostGovtOrderDAO extends GenericDao<NominatedPostGovt
 	public List<Long> getExpiredNominatedPostIdsLsit(Date currentDate);
 	public int updateApplicationExpiredByPostIds(List<Long> nominatedPostIdsLsist, Date currentDate,Long userId);
 	public List<Long> getNominatedPostGovtOrderByPostId(Long postId);
-	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Long startIndex,Long endIndex);
-	public List<Object[]> getLevelWiseGoIssuedDate(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Set<Long> nominatedPostIds);
+	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,
+			Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Long startIndex,Long endIndex,Long positionId);
+	public List<Object[]> getLevelWiseGoIssuedDate(List<Long> locationValues,Date startDate, Date endDate
+			,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Set<Long> nominatedPostIds,Long positionId);
 	public List<Object[]> getNominatedPostExpireDetails(List<Long> locationValues, Date startDate, Date endDate,Long locationTypeId, String year, Long boardLevelId,Long deptId);
 	public List<Object[]> getNominatedPostStateWiseExpireDetails(Date startDate, Date endDate);
 	//delete
