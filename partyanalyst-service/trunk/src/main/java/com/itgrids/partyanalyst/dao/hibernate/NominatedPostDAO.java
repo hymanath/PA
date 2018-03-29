@@ -1079,7 +1079,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		          
 		    queryStr.append("select model.nominatedPostStatus.nominatedPostStatusId,model.nominatedPostStatus.status,count(distinct model.nominatedPostId) from NominatedPost model " +
 		    		       " where " +
-		    		       " model.isExpired='N' and model.isDeleted='N' ");
+		    		       " model.isExpired='N' and model.isDeleted='N'" +
+		    		       " and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
 		    
            if(positionId != null && positionId.longValue() > 0){
         	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
@@ -2887,7 +2888,7 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			 return query.list();
 		 }
 	 @SuppressWarnings("unchecked")
-	 public List<Object[]> getDepartmentWisePostDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId){
+	 public List<Object[]> getDepartmentWisePostDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId,Long positionId){
 	 	 StringBuilder sb = new StringBuilder();
 	 	 sb.append(" select ");
 	 	if(deptId != null && deptId.longValue() >0l){
@@ -2903,7 +2904,8 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	 		   " from NominatedPost nominatedPost  " +
 	 	 		   " where nominatedPost.isDeleted = 'N' " +
 	 			   " and nominatedPost.isExpired = 'N' " +
-	 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' ");
+	 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' " +
+	 			   " and nominatedPost.nominatedPostMember.nominatedPostPosition.isDeleted = 'N' ");
 	 	 
 	 	if (locationTypeId != null && locationValues != null && locationValues.size()>0) {
  			if (locationTypeId == 2) {
@@ -2926,6 +2928,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			}		
 		}
 	 	
+	 	if(positionId != null && positionId.longValue()>0){
+	 		sb.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId  ");
+	 	}
 	 	if(deptId != null && deptId.longValue() >0l){
 	 		 sb.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.departments.departmentId = :deptId  ");
 	 	 }
@@ -2952,7 +2957,9 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0 ){
 	 		  query.setParameterList("locationValues", locationValues);
 	 	  }
-	 	
+	 	if(positionId != null && positionId.longValue()>0){
+	 		query.setParameter("positionId", positionId);
+	 	}
 	 	 if(year !=null && !year.trim().isEmpty()){
 	 		query.setParameter("year", Integer.parseInt(year));
 	 	 }

@@ -68,7 +68,8 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 		
 		return query.list();
 	}
-	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Long startIndex,Long endIndex){
+	public List<Object[]> getLevelWiseGoIssuedPostions(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId
+			,List<Long> statusIds,Long startIndex,Long endIndex,Long positionId){
 	 	 StringBuilder sb = new StringBuilder();
 	 	 sb.append(" select" +
 	 	 		   " nominationPostCandidate.nominationPostCandidateId," +//0
@@ -92,7 +93,8 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 		   " where " +
 	 			   " model.isDeleted = 'N' " +
 	 			   " and model.isExpired = 'N' " +
-	 			   " and model.nominatedPostMember.isDeleted = 'N' ");
+	 			   " and model.nominatedPostMember.isDeleted = 'N'" +
+	 			   " and model.nominatedPostMember.nominatedPostPosition.isDeleted = 'N'  ");
 	 	 
 	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 	 		 	/*if(locationTypeId == 2l){
@@ -112,14 +114,17 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	    }else if(locationTypeId == 8l){
 	         	sb.append(" and model.nominatedPostMember.address.ward.constituencyId in(:locationValues) ");	        
 	       }
-	 	        
-	 	 }
+	 	}
 	 	 if(startDate != null && endDate != null){
 	 		 sb.append(" and (date(model.updatedTime) between :startDate and :endDate) ");
 	 	 }
 	 	 if(year != null && !year.trim().isEmpty()){
 	 		 sb.append(" and year(model.updatedTime) = :year ");   
 	 	 }
+	 	 
+	 	if(positionId != null && positionId.longValue() > 0L){
+	 		sb.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId = :positionId ");
+	 	}
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
     		  sb.append(" and model.nominatedPostMember.boardLevelId =:boardLevelId ");
@@ -167,10 +172,14 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	if(statusIds != null && statusIds.size()>0){
 	 		query.setParameterList("statusIds", statusIds);
 	 	}
+	 	if(positionId != null && positionId.longValue() > 0L){
+	 		query.setParameter("positionId", positionId);
+	 	}
 	 	 return query.list();
 	  }
 	
-	public List<Object[]> getLevelWiseGoIssuedDate(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,List<Long> statusIds,Set<Long> nominatedPostIds){
+	public List<Object[]> getLevelWiseGoIssuedDate(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId
+			,String year,Long boardLevelId,List<Long> statusIds,Set<Long> nominatedPostIds,Long positionId){
 	 	 StringBuilder sb = new StringBuilder();
 	 	 sb.append(" select" +
 	 	 		   "  date(model.govtOrder.toDate)," +//0
@@ -181,7 +190,8 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 			   " nominatedPost.isDeleted = 'N' " +
 	 			   " and nominatedPost.isExpired = 'N' " +
 	 			   " and nominatedPost.nominatedPostMember.isDeleted = 'N' " +
-	 			   " and model.isDeleted = 'N' and model.isExpired = 'N' and model.govtOrder.isDeleted ='N' ");
+	 			   " and model.isDeleted = 'N' and model.isExpired = 'N' and model.govtOrder.isDeleted ='N'" +
+	 			   " and nominatedPost.nominatedPostMember.nominatedPostPosition.isDeleted ='N'  ");
 	 	 
 	 	 if(locationTypeId != null && locationTypeId.longValue() > 0l && locationValues != null && locationValues.size() > 0){	
 	 		 	if(locationTypeId == 2l){
@@ -211,7 +221,10 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	 }
 	 	 
 	 	 if(nominatedPostIds != null && nominatedPostIds.size() > 0){
-	 		sb.append(" and model.nominatedPost.nominatedPostId  in (:nominatedPostIds) ");
+	 		sb.append(" and nominatedPost.nominatedPostId  in (:nominatedPostIds) ");
+	 	 }
+	 	 if(positionId != null && positionId.longValue()>0l){
+	 		sb.append(" and nominatedPost.nominatedPostMember.nominatedPostPosition.position.positionId =:positionId ");
 	 	 }
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
    	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
@@ -259,6 +272,9 @@ public class NominatedPostGovtOrderDAO extends GenericDaoHibernate<NominatedPost
 	 	if(statusIds != null && statusIds.size()>0){
 	 		query.setParameterList("statusIds", statusIds);
 	 	}
+	 	 if(positionId != null && positionId.longValue()>0l){
+	 		query.setParameter("positionId", positionId);
+	 	 }
 	 	 return query.list();
 	  }
 	public List<Object[]> getNominatedPostExpireDetails(List<Long> locationValues, Date startDate, Date endDate,Long locationTypeId, String year, Long boardLevelId,Long deptId){

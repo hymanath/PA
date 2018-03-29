@@ -204,7 +204,8 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	 * @author Hymavathi 
 	 *  @since 5-OCT-2017
 	 */
-	public List<NominatedPostDetailsVO> getDepartmentWisePostAndApplicationDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId){
+	public List<NominatedPostDetailsVO> getDepartmentWisePostAndApplicationDetails(List<Long> locationValues,String fromDateStr, String toDateStr,
+			Long locationTypeId,String year,Long boardLevelId,Long deptId,Long positionId){
 		List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
 		try{
 			
@@ -217,8 +218,8 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				endDate = sdf.parse(toDateStr);
 			}
 			Map<Long,NominatedPostDetailsVO> deptMap = new HashMap<Long,NominatedPostDetailsVO>();
-			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
-			List<Object[]> applicationList = nominatedPostApplicationDAO.getDepartmentWiseApplicationDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
+			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId,positionId);
+			List<Object[]> applicationList = nominatedPostApplicationDAO.getDepartmentWiseApplicationDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId,positionId);
 			if(commonMethodsUtilService.isListOrSetValid(postsList)){
 				for (Object[] param : postsList) {
 					NominatedPostDetailsVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
@@ -274,7 +275,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 	 *  @since 6-OCT-2017
 	 */
 	public List<NominatedPostCandidateDtlsVO> getLevelWiseGoIssuedPostions(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLvlId
-			,List<Long> statusIds,Long startIndex,Long endIndex){
+			,List<Long> statusIds,Long startIndex,Long endIndex,Long positionId){
 		List<NominatedPostCandidateDtlsVO> finalList = new CopyOnWriteArrayList<NominatedPostCandidateDtlsVO>();
 		try{
 			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
@@ -286,8 +287,8 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 				endDate = sdf.parse(toDateStr);
 			}
 			Map<Long,NominatedPostCandidateDtlsVO> candidatesMap = new TreeMap<Long,NominatedPostCandidateDtlsVO> ();
-			List<Object[]> pageNationCount = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds, null, null);
-			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds, startIndex, endIndex);
+			List<Object[]> pageNationCount = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds, null, null,positionId);
+			List<Object[]> candList = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedPostions(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds, startIndex, endIndex,positionId);
 			if(commonMethodsUtilService.isListOrSetValid(candList)){
 				for (Object[] param : candList) {
 					NominatedPostCandidateDtlsVO vo = new NominatedPostCandidateDtlsVO();
@@ -316,7 +317,7 @@ public class NominatedPostLocationDashboardService implements INominatedPostLoca
 			if(pageNationCount != null && finalList != null && pageNationCount.size() >0 && finalList.size() >0){
 				finalList.get(0).setPostCount(Long.valueOf(pageNationCount.size()));
 			}
-			List<Object[]> goIssuedExpiredDates = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedDate(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds,candidatesMap.keySet());
+			List<Object[]> goIssuedExpiredDates = nominatedPostGovtOrderDAO.getLevelWiseGoIssuedDate(locationValues,startDate, endDate,locationTypeId,year,boardLvlId,statusIds,candidatesMap.keySet(),positionId);
 			if(commonMethodsUtilService.isListOrSetValid(candList)){
 				for (Object[] param : goIssuedExpiredDates) {
 					NominatedPostCandidateDtlsVO vo =candidatesMap.get(commonMethodsUtilService.getLongValueForObject(param[1]));

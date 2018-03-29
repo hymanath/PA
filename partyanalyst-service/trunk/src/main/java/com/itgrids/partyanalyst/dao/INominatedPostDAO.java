@@ -78,7 +78,7 @@ public interface INominatedPostDAO extends GenericDao<NominatedPost, Long>{
 	 public List<Object[]> getAreaWiseDashboardCandidatesCountView(List<Long> locationValues,Long searchLevelId,List<Long> statusIds,String type,Date startDate,Date endDate,String year);
 	 public List<Object[]> getNominatedPositionWiseCandidates(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long startIndex,Long endIndex);
 	 public List<Object[]> getNominatedPostLocationStatusWiseCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId);
-	 public List<Object[]> getDepartmentWisePostDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId);
+	 public List<Object[]> getDepartmentWisePostDetails(List<Long> locationValues,Date startDate, Date endDate,Long locationTypeId,String year,Long boardLevelId,Long deptId,Long positionId);
 	 public List<Object[]> getNominatedPostLocationStatusBasedWiseCount(Set<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId);
 	 public List<Object[]> getNominatedPostLocationWiseBoardLevelCount(List<Long> locationValuesList,Date startDate,Date endDate,Long locationType,Long boardLevelId,String type);
 	 public List<Object[]> getNominatedPostStateWiseCount(Date startDate,Date endDate);

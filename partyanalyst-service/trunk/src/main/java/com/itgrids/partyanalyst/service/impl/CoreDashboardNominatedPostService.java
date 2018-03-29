@@ -313,7 +313,7 @@ public class CoreDashboardNominatedPostService implements ICoreDashboardNominate
 				levelValues= tehsilDAO.getAllTehsilIds(locationValues);
 			}
 			Map<Long,NominatedPostDetailsVO> deptMap = new HashMap<Long,NominatedPostDetailsVO>();
-			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(new ArrayList<Long>(locationValuesSet), startDate, endDate, userAccessLevelId, year, boardLevelId, deptId);
+			List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(new ArrayList<Long>(locationValuesSet), startDate, endDate, userAccessLevelId, year, boardLevelId, deptId,null);
 			//List<Object[]> applicationList = nominatedPostApplicationDAO.getDepartmentWiseApplicationDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
 			if(commonMethodsUtilService.isListOrSetValid(postsList)){
 				for (Object[] param : postsList) {
