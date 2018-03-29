@@ -202,5 +202,14 @@ public class PrENCController {
 	 return null;
 	}
 	
+	@PostMapping("/gettAllEncWorksByScheme")
+	public @ResponseBody List<EncWorksVO> gettAllEncWorksByScheme(@RequestBody InputVO inputVO) {
+	  try {
+			 return prENCService.gettAllEncWorksByScheme(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getRwsProgramsCodeAndName - getRwsProgramsCodeAndName controller", e);
+	  }
+	 return null;
+	}
 }
 	
