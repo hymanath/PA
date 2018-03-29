@@ -104,7 +104,7 @@
 												<option value="3">District</option>
 												<option value="4">Constituency</option>
 												<option value="5">Mandal/Muncipality</option>
-												<option value="6">Village/Ward</option>
+												<option value="7">Village/Ward</option>
 											</select>
 										</div>
 											
