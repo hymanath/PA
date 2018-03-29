@@ -61,6 +61,11 @@ if(wurl.length == 3)
 		$(".addcss").addClass("active")
 		getDepartmentWiSeBlockDetails("PrintMediadepartment","printMedia","department");
 		}
+		if(globalDeptId =="0"){
+			$(".mainDepartmentPDf").show();
+		}else{
+			$(".mainDepartmentPDf").hide();
+		}
 		
 	}
 	$(document).on("click",".switch-btn-News li",function(){
@@ -726,21 +731,28 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 					collapse+='<div class="col-sm-12">';
 					if(type == "PrintMediadepartment"){
 						collapse+='<div class="row">';
-							collapse+='<div class="col-sm-2 pull-right">';
-									collapse+='<div class="row">';
+							collapse+='<div class="col-sm-3 pull-right">';
+									
+									collapse+='<ul class="list-inline pull-right">';
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfGenerateCls" style="background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;">Download&nbsp;+ve&nbsp;Pdf</button> </div></li>';
+									
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfGenerateCls" style="background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;">Download&nbsp;-ve&nbsp;Pdf</button> </div></li>';
+									collapse+='</ul>';
+									/* collapse+='<div class="row">';
 										
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
 										
-									collapse+='</div>';
+									collapse+='</div>'; */
 									
 								collapse+='</div>';
 								collapse+='<div class="col-sm-1 pull-right">';
 									collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px;margin-left: 50px;display:none">';
 								collapse+='</div>';
 							collapse+='</div>';
+							
 							/* collapse+='<img class="dataLoadingsPdfImgcls'+result[i].organizationId+'" src="Assests/images/loading.gif" style="width: 25px; height: 20px; margin-left: 100px; margin-top: 8px;display:none">';
 							
 							collapse+='<button type="button" class="btn btn-success pdfGenerateCls" title="Click here to get the news report" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'">Positive</button> ';
@@ -748,15 +760,23 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 						collapse+='</div>'; */
 					}else{
 						collapse+='<div class="row">';
-							collapse+='<div class="col-sm-2 pull-right">';
-									collapse+='<div class="row">';
+							collapse+='<div class="col-sm-3 pull-right">';
+								
+									collapse+='<ul class="list-inline pull-right">';
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfEMNCls" style="background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;">Download&nbsp;+ve&nbsp;Pdf</button> </div></li>';
+									
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfEMNCls" style="background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;">Download&nbsp;-ve&nbsp;Pdf</button> </div></li>';
+									collapse+='</ul>';
+									
+									
+									/* collapse+='<div class="row">';
 										
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
 										
-									collapse+='</div>';
+									collapse+='</div>'; */
 									
 								collapse+='</div>';
 								collapse+='<div class="col-sm-1 pull-right">';
@@ -835,15 +855,23 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			collapse+='<div class="white_block">';
 				if(type == "PrintMediadepartment"){
 						collapse+='<div class="row">';
-							collapse+='<div class="col-sm-2 pull-right">';
-									collapse+='<div class="row">';
+							collapse+='<div class="col-sm-3 pull-right">';
+							
+									
+									collapse+='<ul class="list-inline  pull-right">';
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfGenerateCls" style="background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;">Download&nbsp;+ve&nbsp;Pdf</button> </div></li>';
+									
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfGenerateCls" style="background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;">Download&nbsp;-ve&nbsp;Pdf</button> </div></li>';
+									collapse+='</ul>';
+									
+									/* collapse+='<div class="row">';
 										
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfGenerateCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
 										
-									collapse+='</div>';
+									collapse+='</div>'; */
 									
 								collapse+='</div>';
 								collapse+='<div class="col-sm-1 pull-right">';
@@ -853,13 +881,21 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 							collapse+='</div>';
 					}else{
 						collapse+='<div class="row">';
-							collapse+='<div class="col-sm-2 pull-right">';
-									collapse+='<div class="row">';
+							collapse+='<div class="col-sm-3 pull-right">';
+							
+									
+									collapse+='<ul class="list-inline  pull-right">';
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfEMNCls" style="background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;">Download&nbsp;+ve&nbsp;Pdf</button> </div></li>';
+									
+									collapse+='<li><div class="btn-group " style=""> <button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>  </button> <button attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" type="button" class="btn btn-default btn-sm pdfEMNCls" style="background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;">Download&nbsp;-ve&nbsp;Pdf</button> </div></li>';
+									collapse+='</ul>';
+									
+									/* collapse+='<div class="row">';
 										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="positive" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i>&nbsp;Positive</h5></div>';
 										
 										collapse+='<div class="col-sm-6"><h5 class="pdfEMNCls" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'" style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;font-size: 13px;"><i class="fa fa-arrow-down" aria-hidden="true"></i>Negative</h5></div>';
 										
-									collapse+='</div>';
+									collapse+='</div>'; */
 									
 								collapse+='</div>';
 								collapse+='<div class="col-sm-1 pull-right">';
