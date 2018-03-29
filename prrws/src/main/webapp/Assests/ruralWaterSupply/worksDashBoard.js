@@ -65,6 +65,7 @@ var month =moment().format("M");
 		//getExceededTargetWorksDetails();
 		getExceedWorkDetailsLocationWise("",'state',"","","","","","onGoing");
 		getNotGroundedWorkDetailsLocationWise("graph",'state',"","","","","","not grounded");
+		gettAllRwsWorksByScheme();
 	}
 	function getSelectedType(){
 		for(var i in levelNamesArr){
@@ -830,26 +831,38 @@ $(window,document).on('resize', function(){
 							if(GLtbodyArr[0] !=null && GLtbodyArr[0].subList !=null && GLtbodyArr[0].subList.length>0){
 								for(var j in GLtbodyArr[0].subList){
 										if(GLtbodyArr[0].subList[j].assetType == 'PWS' || GLtbodyArr[0].subList[j].assetType == "CPWS"){
-											tableView+='<th colspan="9">'+GLtbodyArr[0].subList[j].assetType+'</th>';
+											tableView+='<th colspan="15">'+GLtbodyArr[0].subList[j].assetType+'</th>';
 										}
 									
 								}
 							}
 							tableView+='</tr>';
 							tableView+='<tr>';
-								tableView+='<th>OnGoing</th>';
+								tableView+='<th>admin Sanctioned</th>';
+								tableView+='<th>Techincal Sancationed</th>';
+								tableView+='<th>%</th>';
+								tableView+='<th>entrusted</th>';
+								tableView+='<th>%</th>';
 								tableView+='<th>Grounded</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Not Grounded</th>';
+								tableView+='<th>%</th>';
+								tableView+='<th>underProcess</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Completed</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Commissioned</th>';
 								tableView+='<th>%</th>';
-								tableView+='<th>OnGoing</th>';
+								tableView+='<th>admin Sanctioned</th>';
+								tableView+='<th>Techincal Sancationed</th>';
+								tableView+='<th>%</th>';
+								tableView+='<th>entrusted</th>';
+								tableView+='<th>%</th>';
 								tableView+='<th>Grounded</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Not Grounded</th>';
+								tableView+='<th>%</th>';
+								tableView+='<th>underProcess</th>';
 								tableView+='<th>%</th>';
 								tableView+='<th>Completed</th>';
 								tableView+='<th>%</th>';
@@ -970,6 +983,26 @@ $(window,document).on('resize', function(){
 												}else{
 													tableView+='<td> - </td>';
 												}
+												if(GLtbodyArr[i].subList[j].technicalSanctionedCount !=null && GLtbodyArr[i].subList[j].technicalSanctionedCount>0){
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].subList[j].technicalSanctionedCount+'" attr_type = "adminSanctioned" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].subList[j].technicalSanctionedCount+'</td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												if(GLtbodyArr[i].subList[j].adminSanctionedCount !=null && GLtbodyArr[i].subList[j].adminSanctionedCount>0){
+													tableView+='<td><small style="color:#0FBE08">'+(parseFloat(GLtbodyArr[i].subList[j].technicalSanctionedCount/GLtbodyArr[i].subList[j].adminSanctionedCount)*100).toFixed(1)+'</small></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												if(GLtbodyArr[i].subList[j].entrustedCount !=null && GLtbodyArr[i].subList[j].entrustedCount>0){
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].subList[j].entrustedCount+'" attr_type = "adminSanctioned" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].subList[j].entrustedCount+'</td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												if(GLtbodyArr[i].subList[j].adminSanctionedCount !=null && GLtbodyArr[i].subList[j].adminSanctionedCount>0){
+													tableView+='<td><small style="color:#0FBE08">'+(parseFloat(GLtbodyArr[i].subList[j].entrustedCount/GLtbodyArr[i].subList[j].adminSanctionedCount)*100).toFixed(1)+'</small></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
 												if(GLtbodyArr[i].subList[j].groundedCount !=null && GLtbodyArr[i].subList[j].groundedCount>0){
 													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].subList[j].groundedCount+'" attr_type = "grounded" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].subList[j].groundedCount+'</td>';
 												}else{
@@ -989,7 +1022,17 @@ $(window,document).on('resize', function(){
 													tableView+='<td><small style="color:#0FBE08">'+(parseFloat(GLtbodyArr[i].subList[j].notgroundedCount/GLtbodyArr[i].subList[j].adminSanctionedCount)*100).toFixed(1)+'</small></td>';
 												}else{
 													tableView+='<td> - </td>';
-												}	
+												}
+												if(GLtbodyArr[i].subList[j].undrProcessCount !=null && GLtbodyArr[i].subList[j].undrProcessCount>0){
+													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'"attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'"attr_total_count = "'+GLtbodyArr[i].subList[j].undrProcessCount+'" attr_type = "adminSanctioned" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].subList[j].undrProcessCount+'</td>';
+												}else{
+													tableView+='<td> - </td>';
+												}
+												if(GLtbodyArr[i].subList[j].adminSanctionedCount !=null && GLtbodyArr[i].subList[j].adminSanctionedCount>0){
+													tableView+='<td><small style="color:#0FBE08">'+(parseFloat(GLtbodyArr[i].subList[j].undrProcessCount/GLtbodyArr[i].subList[j].adminSanctionedCount)*100).toFixed(1)+'</small></td>';
+												}else{
+													tableView+='<td> - </td>';
+												}												
 												if(GLtbodyArr[i].subList[j].completedCount !=null && GLtbodyArr[i].subList[j].completedCount>0){
 													tableView+='<td class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'"attr_filter_value="'+GLtbodyArr[i].goNumber+'" attr_district_val="'+GLtbodyArr[i].districtId+'" attr_total_count = "'+GLtbodyArr[i].subList[j].adminSanctionedCount+'" attr_type = "completed" attr_location_name= "'+GLtbodyArr[i].locationName+'" style="cursor:pointer;text-decoration:underline">'+GLtbodyArr[i].subList[j].completedCount+'</td>';
 												}else{
@@ -1612,6 +1655,7 @@ $(document).on("click",".schemsClickView",function(){
 	var districtVal=$(this).attr("attr_district_val");
 	var locationName=$(this).attr("attr_location_name");
 	
+alert(districtVal);
 	if(workStatus == "exccedSchemes"){
 		$("#modalHablitationDivId").modal('show');
 		$("#modalSchemsTable").html('');
@@ -2733,3 +2777,95 @@ function buildOnClickNotGroubnWorkDetails(result,exceededDuration){
 $(".collapseClick").click(function(){
 		getNotGroundedWorkDetailsLocationWise("graph",'state',"","","","","","not grounded");
 });
+
+function gettAllRwsWorksByScheme(){
+	
+	$("#encSchemesTableDivId").html(spinner);
+	var yearVal="";
+	var financialVal =$("#financialYearId").val();
+	if(financialVal != 0){
+		 yearVal=financialVal;
+	}
+	
+	var json = {
+		year:yearVal,
+		fromDateStr:glStartDate,
+		toDateStr:glEndDate,
+	}
+	
+	$.ajax({                
+		type:'POST',    
+		url: 'getAllWorksByScheme',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildgettAllRwsWorksBySchemeDetails(result);
+		}else{
+			
+			$("#encSchemesTableDivId").html('No Data Available');
+		}
+		
+	});
+}
+
+function buildgettAllRwsWorksBySchemeDetails(result){
+	var tableView='';
+	tableView+='<div class="table-responsive">';
+	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
+		tableView+='<thead>';
+		tableView+='<tr>';
+			tableView+='<th>GRANT&nbsp;NAME</th>';
+			tableView+='<th>ADMIN SANCTIONED</th>';
+			tableView+='<th>TECHNICALLY SANCTIONED</th>';
+			tableView+='<th>ENTRUSTED</th>';
+			tableView+='<th>NOT GROUNDED</th>';
+			tableView+='<th>GROUNDED</th>';
+			tableView+='<th>UNDER PROCESS</th>';
+			tableView+='<th>COMPLETED</th>';
+			tableView+='<th>COMISSIONED</th>';
+				
+		tableView+='</tr>';
+			
+		tableView+='</thead>';
+		tableView+='<tbody>';
+		for(var i in result){
+			tableView+='<tr>';
+					tableView+='<td>'+result[i].locationName+'</td>';
+					tableView+='<td>'+result[i].adminSanctionedCount+'</td>';
+					tableView+='<td>'+result[i].technicalSanctionedCount+'</td>';
+					tableView+='<td>'+result[i].entrustedCount+'</td>';
+					tableView+='<td>'+result[i].notgroundedCount+'</td>';
+					tableView+='<td>'+result[i].groundedCount+'</td>';
+					tableView+='<td>'+result[i].undrProcessCount+'</td>';
+					tableView+='<td>'+result[i].completedCount+'</td>';
+					tableView+='<td>'+result[i].commissionedCount+'</td>';
+				tableView+='</tr>';
+		}
+		tableView+='</tbody>';
+	tableView+='</table>';
+	tableView+='</div>';
+	$("#encSchemesTableDivId").html(tableView);
+	$("#dataTableSchems1").dataTable({
+		"order": [ 0, 'desc' ],
+		"iDisplayLength" : 5,
+		"aLengthMenu": [[5, 10, 15, -1], [5, 10, 15, "All"]],
+		"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+			{
+				extend:    'csvHtml5',
+				text:      '<i class="fa fa-file-text-o"></i>',
+				titleAttr: 'CSV',
+				title:	   'Rws Works',
+				filename:  'Rws Works'+''+moment().format("DD/MMMM/YYYY  HH:MM"),
+			}
+		]
+	});
+	
+}
