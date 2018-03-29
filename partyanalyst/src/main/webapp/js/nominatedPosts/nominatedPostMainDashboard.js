@@ -26,6 +26,13 @@ var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div
 		$( ".overviewUlCls li:nth-child(1) a" ).trigger("click");	
 		}
 	});
+	
+	$(document).on("click",".closeShowPdfCls",function(){
+		$("#openModalDiv").modal('show');
+		setTimeout(function(){
+			$('body').addClass("modal-open");
+		}, 500);                     
+	});
 $(document).ready(function(){
 	$("#chartdiv").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
 	getLocationWiseCastePositionCount("overall",2,globalStateId,postionId,0);
@@ -3150,7 +3157,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type,pos
 					for(var i in result){
 						str+='<tr>';
 							if(type =="open"){
-								str+='<td attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+boardLevelId+'" class="popUpDetailsClickCls" attr_type="department" style="color: #337ab7;font-weight:normaltext-decoration:none;">'+result[i].name+'</td>';
+								str+='<td attr_department_name="'+result[i].name+'" attr_department_id="'+result[i].id+'" attr_boardLevelId="'+boardLevelId+'" class="popUpDetailsClickCls" attr_type="department" style="color: #337ab7;font-weight:normal;text-decoration:none;" attr_board_statusIds="0" attr_position_id="'+positionId+'">'+result[i].name+'</td>';
 							}else{
 								str+='<td>'+result[i].name+'</td>';
 							}
@@ -3196,7 +3203,7 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type,pos
 		str+='</div>';
 		if(type == "open"){
 			$("#openPostDetailsModalDivId").html(str);
-				$("#dataTableOpenPostId").dataTable({
+			$("#dataTableOpenPostId").dataTable({
 				"iDisplayLength": 15,
 				"aaSorting": [],
 				"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
@@ -3272,7 +3279,7 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex,
 		if(result !=null && result.length>0){
 			return LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId,positionId);
 		}else{
-			$(".paginationId").html("");
+			$(".paginationCls").html("");
 			$("#openPostDetailsModalDivId").html("No Data Available");
 		}
 		
@@ -3317,8 +3324,17 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex,
 				str+='</tbody>';
 			str+='</table>';
 		str+='</div>';
-		//if(startIndex == 0 && totalPosCount > 10){
-			$(".paginationId").pagination({
+		//
+		$("#openPostDetailsModalDivId").html(str);		
+		$("#dataTablegoIssuedPostId").dataTable({
+			"sDom": '<"top">f<"bottom"><"clear"ilp>',
+			"scrollCollapse": false,
+			"paging":         false,
+			"searching": true
+        });  
+		if(startIndex == 0 && totalPosCount > 10){
+			
+			$(".paginationCls").pagination({
 				items: totalPosCount,
 				itemsOnPage: 10,
 				cssStyle: 'light-theme',
@@ -3328,7 +3344,6 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex,
 					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10,positionId);
 				}
 			});
-		//}
-		$("#openPostDetailsModalDivId").html(str);		
+		}
 	}
   }

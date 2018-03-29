@@ -558,11 +558,7 @@
 						<div id="openPostDetailsModalDivId"></div>
 					</div>  
 				</div>
-				<div class="row paginationCls">
-					<div class="col-md-12 m_top20">
-						<div class="paginationId"></div>
-					</div>
-				</div>
+				<div class="row paginationCls"></div>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
