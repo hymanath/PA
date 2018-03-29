@@ -6001,7 +6001,7 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 			
 			Set<Long> applicationIds = new LinkedHashSet<Long>();
 			
-			if(levelValue != null && levelValue.longValue() >0l && levelId != null && levelId == 5l){
+			if(levelValue != null && levelValue.longValue() >0l && levelId != null && (levelId == 5l || levelId == 7l)){
 				levelValue = Long.parseLong(levelValue.toString().substring(1));
 			}else{
 				levelValue = levelValue;
