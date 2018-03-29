@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
+import org.apache.struts2.ServletActionContext;
 import org.apache.struts2.dispatcher.multipart.MultiPartRequestWrapper;
 import org.apache.struts2.interceptor.ServletRequestAware;
 import org.json.JSONArray;
@@ -1244,6 +1245,11 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			else
 				registrationId = 1L;
 			
+			request = ServletActionContext.getRequest();
+			String url = request.getRequestURL().toString();
+			url = url.substring(url.lastIndexOf("/")+1,url.indexOf(".action"));
+			session.setAttribute("URL",url);
+			
 			userDataVO = coreDashboardService.getUserBasicDetails(registrationId);
 			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();
 			userDataVO.setDeptIdList(diptIdList);
@@ -1259,6 +1265,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			 if (enrollementList != null && enrollementList.size() > 0) {
 				 alertOverviewVO.setEnrollementIdList(enrollementList);
 			 }
+			 
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
 		}
@@ -1280,6 +1287,11 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			}
 			else
 				registrationId = 1L;
+			
+			request = ServletActionContext.getRequest();
+			String url = request.getRequestURL().toString();
+			url = url.substring(url.lastIndexOf("/")+1,url.indexOf(".action"));
+			session.setAttribute("URL",url);
 			
 			userDataVO = coreDashboardService.getUserBasicDetails(registrationId);
 			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();
@@ -1325,6 +1337,11 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 			
 			if(noaccess)
 				return "error";
+			
+			request = ServletActionContext.getRequest();
+			String url = request.getRequestURL().toString();
+			url = url.substring(url.lastIndexOf("/")+1,url.indexOf(".action"));
+			session.setAttribute("URL",url);
 			
 			userDataVO = coreDashboardService.getUserBasicDetails(registrationId);
 			List<Long> diptIdList = attendanceCoreDashBoardService.getDeptIds();

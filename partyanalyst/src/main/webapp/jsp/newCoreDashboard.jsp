@@ -5,6 +5,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>Core DashBoard</title>
+<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
 <link href="newCoreDashBoard/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="newCoreDashBoard/css/custom.css" rel="stylesheet" type="text/css">      
 <link href="newCoreDashBoard/css/responsive.css" rel="stylesheet" type="text/css">
@@ -85,8 +86,8 @@
             <span class="logoText">TDP PARTY</span>
           </a>
         </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
+		<!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse hidden-xs" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav navbar-right">
           	
@@ -106,10 +107,11 @@
 				 </div>
 			</div>
 		</div>
-	 </div><!-- /.navbar-collapse -->	
+	 </div><!-- /.navbar-collapse -->
+	</c:if>	
 	</div><!-- /.container-fluid -->	
     </nav>
-    <div class="navbar navbar-default navbarProfile">
+	<div class="navbar navbar-default navbarProfile">
     	<div class="container">
         	<div class="row">
             	<div class="col-md-3 col-xs-12 col-sm-3">
@@ -143,12 +145,14 @@
 						<li class="active" >
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="1" class="stateCls">AP</a>
                         </li>
+						<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 						<li class="exceptionalReportsBlockCls">
                         	<label class="m_top10"><a target="_blank" href="exceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Exceptional Reports</a></label>
                         </li>
 						<li class="exceptionalReportsBlockCls">
-                        	<label class="m_top10"><a target="_blank" href="consolidatedExceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Consolidated view of Exceptional Reports</a></label>
+                        	<label class="m_top10"><a target="_blank" href="consolidatedExceptionalReportsAction.action"  style="font-size:14px;font-weight:bold;color:green;text-decoration:underline;">Consolidated view</a></label>
                         </li>
+						</c:if>
 						<!--<li>
                         	<a  style="cursor:pointer;text-decoration:none;" attr_state_id="36" class="stateCls">TS</a>
 							<a>TS</a>
@@ -160,6 +164,7 @@
         </div>
     </div>
 </header>
+<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 <div class="rightNavigationMenu">
 	<div class="backgroundBlock hidden-xs"></div>
 	<ul class="hidden-xs">
@@ -195,6 +200,7 @@
 	<i class="glyphicon glyphicon-chevron-up"></i>
 	Top
 </div>
+</c:if>
 <!-- Error Msg For Committee  Start--->
 	<div class="modal fade alerttop" id="committeeErrMsg" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" style="z-index:9999">
 		<div class="modal-dialog modal-sm">
@@ -214,6 +220,7 @@
 	</div>
 	<!-- Error Msg For Committee End --->
 <div class="container m_top20">
+<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 	<div class="row">
 		<!-- Alerts Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 alertsBlock" expand-block="alerts">
@@ -890,7 +897,10 @@
 		<!-- Training End-->
 			
 	</div>
+	 </c:if>
+	
 	<div class="row">
+	 <c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 		 <!-----------News Letters Start----------->
 		<div class="col-md-6 col-xs-12 col-sm-12 wordCloudBlock" expand-block="newsLetters">
 			<div class="panel panel-default panelNewCustom">
@@ -1068,8 +1078,10 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<!--------News Letters End----------->
 		<!-- NEWS BLOCK Start-->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction') || (sessionScope.URL == 'partyLeadersDashboardAction') || (sessionScope.URL == 'partyAndLeaderActivitiesAndPerformanceTracking')}">
 		<div class="col-md-6 col-xs-12 col-sm-12 newsBlock" expand-block="news">
 			<div class="panel panel-default panelNewCustom panel2">
 				<div class="panel-heading">
@@ -1602,8 +1614,10 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<!-- NEWS BLOCK END-->
 	</div>
+	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 	<div class="row">
 		<!-- Electronic Media Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 electronicMediaBlock" expand-block="electronic">
@@ -1999,8 +2013,9 @@
 		</div> 
 	<!-- Praja Sankalpam Yatra News  END --> 	
 	</div>
+	</c:if>
+	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')  || (sessionScope.URL == 'PrintandElectronicMediaActivitiesAction')}">
 	<div class="row">
-		
 		<!--Press Meet block Start-->
 			<div class="col-md-6 col-xs-12 col-sm-12 pressmeetBlock" expand-block="pressmeet">
 			   <div class="panel panel-default panelNewCustom ">
@@ -2483,8 +2498,10 @@
 			
 			<!-- DEBATES PROGRAM BLOCK END-->
 	</div>
+	</c:if>
 	<div class="row">
 		<!-- EM Coverage Time start -->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 		<div class="col-md-6 col-xs-12 col-sm-12 EMCoverageTimeBlock" expand-block="EMCoverageTime">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2602,8 +2619,10 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<!-- EM Coverage Time End -->
 			<!-- tour New Jsp Code -->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')  || (sessionScope.URL == 'partyLeadersDashboardAction') || (sessionScope.URL == 'partyAndLeaderActivitiesAndPerformanceTracking')}">	
 		<div class="col-md-6 col-xs-12 col-sm-12 NewToursBlock" expand-block="tours">
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2673,10 +2692,12 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<!-- TOURS END -->  
 	</div>
 	<div class="row">
 		<!--Meetings Start -->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')  || (sessionScope.URL == 'partyLeadersDashboardAction') || (sessionScope.URL == 'partyAndLeaderActivitiesAndPerformanceTracking')}">
 		<div class="col-md-6 col-xs-12 col-sm-12 meetingsBlock" expand-block="meetings">  
 			<div class="panel panel-default panelNewCustom">
 				<div class="panel-heading">
@@ -2894,8 +2915,10 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<!--Meetings End-->
 		<!-- Committees Start-->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')  || (sessionScope.URL == 'partyAndLeaderActivitiesAndPerformanceTracking')}">
 		<div class="col-md-6 col-xs-12 col-sm-12 committeesBlock" expand-block="committees">
         	<div class="panel panel-default panelNewCustom panel1">
             	<div class="panel-heading">
@@ -3194,11 +3217,12 @@
                 </div>
             </div>
         </div>
+		</c:if>
 		<!-- Committees End-->
 		
 	</div>
 	<div class="row">
-		
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')  || (sessionScope.URL == 'partyLeadersDashboardAction') || (sessionScope.URL == 'partyAndLeaderActivitiesAndPerformanceTracking')}">
 		<!-- Kaizala  Start --> 
 		<div class="col-md-6 col-xs-12 col-sm-12 kaizalaBlock" expand-block="kaizala">
 			<div class="panel panel-default panelNewCustom">
@@ -3264,8 +3288,9 @@
 				</div>
 			</div>
 		</div>
+		</c:if>
 		<!-- Kaizala  END --> 	
-		
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 		<!--Events Start -->
 		<div class="col-md-6 col-xs-12 col-sm-12 eventsBlock" expand-block="events">
 			<div class="panel panel-default panelNewCustom">
@@ -3535,10 +3560,12 @@
 				</div>
 			</div>
 		</div>	
+		</c:if>
 		<!--Events End -->
 		
 	</div>
 	<div class="row">
+	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')  || (sessionScope.URL == 'partyLeadersDashboardAction') || (sessionScope.URL == 'partyAndLeaderActivitiesAndPerformanceTracking')}">
 		<!-- Booth Committees Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 boothCommitteesBlock" expand-block="boothCommittees">
         	<div class="panel panel-default panelNewCustom panel1">
@@ -3826,8 +3853,10 @@
                 </div>
             </div>
         </div>
+		</c:if>
 		<!-- Booth Committees End-->
 		<!-- Cadre Insurance Start-->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 			<div class="col-md-6 col-xs-12 col-sm-6 cadreInsuranceBlock" expand-block="cadreInsurance">
 				<div class="panel panel-default panelNewCustom">
 					<div class="panel-heading">
@@ -4278,8 +4307,10 @@
 					</div>
 				</div>
 			</div>
+			</c:if>
 			<!-- Cadre Insurance End-->
 	</div>
+	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 	<div class="row">
 		<!-- Cadre Registration -->	
 		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
@@ -4782,6 +4813,8 @@
 		</div>
 		<!-- Attendance End-->
 	</div>
+	</c:if>
+	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
 	<div class="row">
 		<!-- Nominated Post Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
@@ -4853,6 +4886,7 @@
 		</div>
 		<!-- Nominated Post End-->
 	</div>
+	</c:if>
 </div>
 	
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -5908,7 +5942,7 @@
 <!--global element for state level training program-->
 <input type = "hidden" id="hideProgramId" attr_prorgam_id_arr="" value=""></input>
 <!--<script src="newCoreDashBoard/js/angular.js" type="text/javascript"></script>-->
-<script src="newCoreDashBoard/js/jquery-1.11.3.js" type="text/javascript"></script>
+
 <script src="newCoreDashBoard/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jquery-ui.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/Plugins/RangeSlider/jQDateRangeSlider-withRuler-min.js" type="text/javascript"></script>
@@ -5929,6 +5963,9 @@
 <script src="dist/scroll/jquery.mousewheel.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script type="text/javascript" src="coreApi/js/bootstrap-multiselect.js"></script>
+<script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
+<script src="dist/scroll/jquery.mousewheel.js"></script>
+<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js" integrity="sha256-dsOXGNHAo/syFnazt+KTBsCQeRmlcW1XKL0bCK4Baec="
         crossorigin="anonymous"></script>
@@ -5964,17 +6001,13 @@
 <script src="newCoreDashBoard/js/kaizala.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeeting1.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
-<script src="dist/scroll/jquery.mCustomScrollbar.js"></script>
-<script src="dist/scroll/jquery.mousewheel.js"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script src="js/imageRendering.js" type="text/javascript"></script>
-<script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
-
 <script type="text/javascript">
- $(document).on("change","#categorySelId",function(){
+  $(document).on("change","#categorySelId",function(){
 		getPrintMediaOverAllPSYCounts("OverAll","printMedia",$(this).val());
 		getPrintMediaOrganizationWisePSYCounts("Party","printMedia",$(this).val())
 		getPrintMediaPublicationWisePSYCounts("Publication","printMedia",$(this).val())
@@ -5993,7 +6026,6 @@ $(document).on("click",".rightNavigationMenuRes",function(){
 	$(this).toggleClass("active");
 	$(".rightNavigationMenu ul,.backgroundBlock").toggleClass("hidden-xs");
 });
-//$(document).on("click","[expand-icon]",function(){
 $("[expand-icon]").click(function(){
 	var $this = $(this);
 	var blockName = $this.attr("expand-icon");
@@ -6394,115 +6426,89 @@ var globallocationValue;
 var globallocationName;
 var globalActivityScope;
 var globalImages;
- 
-	//url Based Conditions
-	  var windowUrl = window.location.href;
-	  var ignoreLoginsUrl = windowUrl.indexOf("/partyAndLeaderActivitiesAndPerformanceTracking");
-	  var ignoreLoginsUrl_1 = windowUrl.indexOf("/partyLeadersDashboardAction");
-	  var ignoreLoginUrl = windowUrl.indexOf("/dailyMonthlyPartyActivities");
-		
-  
-  
-	$(document).on('click','#alertSettingsId',function(){
-		$(".specialAlertDropDown").toggle();            
-	});      
-	//getting Dynamic Browser URL
-	var windowUrl = window.location.href;
-	var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
-	wurl = wurl.replace("/PartyAnalyst","");
-	$(document).on("click","#demoBtn",function(){
-		$("#attendanceModal").modal('show');
+$(document).on('click','#alertSettingsId',function(){
+	$(".specialAlertDropDown").toggle();            
+}); 
+//getting Dynamic Browser URL
+var windowUrl = window.location.href;
+var wurl = windowUrl.substr(0,(windowUrl.indexOf("/updateToursDetailsAction")));
+wurl = wurl.replace("/PartyAnalyst","");
+$(document).on("click","#demoBtn",function(){
+	$("#attendanceModal").modal('show');
+});
+//settings scroll
+$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
+$(".basicBoothCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
+DatePickerDropdown();
+function DatePickerDropdown(){
+	$(".thisWeek").find(".text-muted").html("("+moment().subtract(7, 'days').startOf('week').format("dddd") + "- today)")
+	$(".last7Days").html("("+moment().subtract(7, 'days').format("DD/MM/YY") + "-"+moment().format("DD/MM/YY")+")");
+	$(".lastWeekDate").html("("+moment().subtract(7, 'days').startOf('week').format("DD/MM/YY") + "-"+moment().subtract(7, 'days').endOf('week').format("DD/MM/YY")+")");
+	$(".thisMonth").html("("+moment().startOf('month').format("DD/MM/YY")+'-'+moment().endOf('month').format("DD/MM/YYYY")+")");
+	$(".lastMonth").html("("+moment().subtract(1,'month').startOf('month').format("DD/MM/YYYY")+'-'+moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY")+")");
+	$(".last28Days").html("("+moment().subtract(28,'days').format("DD/MM/YY")+'-'+moment().format("DD/MM/YY")+")");
+	$(".last30Days").html("("+moment().subtract(30,'days').format("DD/MM/YY")+'-'+moment().format("DD/MM/YY")+")");
+	$(".first28Days").html("("+moment().startOf('month').format("DD/MM/YYYY")+'-'+moment().startOf('month').add(28,'days').format("DD/MM/YY")+")");
+	$(".thisQuarter").html("("+moment().startOf('quarter').format('MMMM')+'-'+moment().endOf('quarter').format('MMMM')+")");
+	$(".lastQuarter").html("("+moment().subtract(1,'quarter').startOf('quarter').format('MMMM')+'-'+moment().subtract(1,'quarter').endOf('quarter').format('MMMM')+")");
+	$(".Last90Days").html("("+moment().subtract(90,'days').format('DD/MM/YY')+'-'+moment().format('DD/MM/YY')+")");
+	$(".lastYear").html("("+moment().subtract(1,'year').startOf('year').format('YYYY')+'-'+moment().subtract(1,'year').endOf('year').format('YYYY')+")");
+	$(".thisYear").html("("+moment().startOf('year').format('YYYY')+'-'+moment().endOf('year').format('YYYY')+")");
+	$(".last365Days").html("("+moment().subtract(365,'days').format('DD/MM/YY')+'-'+moment().format('DD/MM/YY')+")");
+	$(".calendarIcon").daterangepicker({opens:'left',parentEl:$(this).closest(".row")})
+	$(".calenarUl li:last-child").click(function(){
+	  $(this).closest(".list-inline").find(".calendarIcon").trigger("click");
+	  $(this).closest(".dropdown").removeClass("open")
 	});
-	
-	
-	//settings scroll
-	$(".basicCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
-	$(".basicBoothCommitteeDetailsDiv").mCustomScrollbar({setHeight:'300px'})
-	DatePickerDropdown();
-	function DatePickerDropdown()
-	{
-		$(".thisWeek").find(".text-muted").html("("+moment().subtract(7, 'days').startOf('week').format("dddd") + "- today)")
-		$(".last7Days").html("("+moment().subtract(7, 'days').format("DD/MM/YY") + "-"+moment().format("DD/MM/YY")+")");
-		$(".lastWeekDate").html("("+moment().subtract(7, 'days').startOf('week').format("DD/MM/YY") + "-"+moment().subtract(7, 'days').endOf('week').format("DD/MM/YY")+")");
-		$(".thisMonth").html("("+moment().startOf('month').format("DD/MM/YY")+'-'+moment().endOf('month').format("DD/MM/YYYY")+")");
-		$(".lastMonth").html("("+moment().subtract(1,'month').startOf('month').format("DD/MM/YYYY")+'-'+moment().subtract(1,'month').endOf('month').format("DD/MM/YYYY")+")");
-		$(".last28Days").html("("+moment().subtract(28,'days').format("DD/MM/YY")+'-'+moment().format("DD/MM/YY")+")");
-		$(".last30Days").html("("+moment().subtract(30,'days').format("DD/MM/YY")+'-'+moment().format("DD/MM/YY")+")");
-		$(".first28Days").html("("+moment().startOf('month').format("DD/MM/YYYY")+'-'+moment().startOf('month').add(28,'days').format("DD/MM/YY")+")");
-		$(".thisQuarter").html("("+moment().startOf('quarter').format('MMMM')+'-'+moment().endOf('quarter').format('MMMM')+")");
-		$(".lastQuarter").html("("+moment().subtract(1,'quarter').startOf('quarter').format('MMMM')+'-'+moment().subtract(1,'quarter').endOf('quarter').format('MMMM')+")");
-		$(".Last90Days").html("("+moment().subtract(90,'days').format('DD/MM/YY')+'-'+moment().format('DD/MM/YY')+")");
-		$(".lastYear").html("("+moment().subtract(1,'year').startOf('year').format('YYYY')+'-'+moment().subtract(1,'year').endOf('year').format('YYYY')+")");
-		$(".thisYear").html("("+moment().startOf('year').format('YYYY')+'-'+moment().endOf('year').format('YYYY')+")");
-		$(".last365Days").html("("+moment().subtract(365,'days').format('DD/MM/YY')+'-'+moment().format('DD/MM/YY')+")");
-		$(".calendarIcon").daterangepicker({opens:'left',parentEl:$(this).closest(".row")})
-		$(".calenarUl li:last-child").click(function(){
-		  $(this).closest(".list-inline").find(".calendarIcon").trigger("click");
-		  $(this).closest(".dropdown").removeClass("open")
-		});
-		$(document).on("click",".calenarUl li",function(){
-		  $(".calenarUl li").removeClass("active")
-		  $(this).addClass("active")
-		  var kk = $(this).html();
-		  $(document).find(".changeDate").html(kk);
-		});
-	}
-	
-/* New Design */
+	$(document).on("click",".calenarUl li",function(){
+	  $(".calenarUl li").removeClass("active")
+	  $(this).addClass("active")
+	  var kk = $(this).html();
+	  $(document).find(".changeDate").html(kk);
+	});
+}
+initialiseDatePicker();
+initialiseDatePickerForTrainingProgram();
+var loggedInUserId = '${sessionScope.USER.registrationID}';
+   
+   
+if(loggedInUserId == null || loggedInUserId == '')
+  loggedInUserId = 1;
+  
+var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
+var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
+var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
+var globalDeptIdsArr = ${requestScope.userDataVO.deptIdList};
+var loggedInUserAccessLevelValues = getLoggedInUserAccessLevelValues();
 
-      initialiseDatePicker();
-	  initialiseDatePickerForTrainingProgram();
-	  var loggedInUserId = '${sessionScope.USER.registrationID}';
-		   
-		   
-	  if(loggedInUserId == null || loggedInUserId == '')
-		  loggedInUserId = 1;
-		  
-	  var loggedInUserActivityMemberId = '${requestScope.userDataVO.activityMemberId}';
-	  var loggedInUserTypeId = '${requestScope.userDataVO.userTypeId}'; 
-	  var loggedInUserAccessLevelId  = '${requestScope.userDataVO.userAccessLevelId}';
-	  var globalDeptIdsArr = ${requestScope.userDataVO.deptIdList};
-	  var loggedInUserAccessLevelValues = getLoggedInUserAccessLevelValues();
-	  
-	  var globalActivityMemberId = loggedInUserActivityMemberId;
-	  var globalUserTypeId = loggedInUserTypeId;
-	  var globalUserAccessLevelId = loggedInUserAccessLevelId;
-	  var globalUserAccessLevelValues = loggedInUserAccessLevelValues;
-	  var globalselectedUserType='STATE';
-	  var globalState = 'AP';
-	  
-	  //This enrollementYearIds is used in alert block
-	  var enrollementYearIds = getTdpCadreEnrollementYearIds();
-	  var globalEnrollementyearIdArr = enrollementYearIds;
-	  
-	  
-	   var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
-	$(document).ready(function(){
-		//Main header remove
-		//$(".eventsheader").hide();
-		$('[data-toggle="tooltip"]').tooltip();
-		//stateLevelCampDetails();
-		getCadreEnrolmentYears();
-		
-	});
-	getLoggedInUserStructure();
-	onLoadCalls();
-	function onLoadCalls(){
-		getUserTypeWiseBoothCommitteesInchargeDetails();
-		
-		//news please dont remove
-		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
-	   var URLArr = windowUrl.split('/');
-		//console.log(URLArr[parseInt(URLArr.length) - 1].replace('.action',''));
-	   var finalURL = URLArr[parseInt(URLArr.length) - 1].replace('.action','');
-	
-	  
-	  if(finalURL =="partyAndLeaderActivitiesAndPerformanceTracking" || finalURL =="partyAndLeaderActivitiesAndPerformanceTracking#")
-	  {
-		$(".quickLinkSettingsIcon").hide(); 
-		$(".exceptionalReportsBlockCls").hide();    
-	    $("#mainHeadinId").html("KALA VENKATA RAO");
-		$(".alertsBlock,.debatesBlock,.electronicMediaBlock,.cadreBlock,.committeesBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.rightNavigationMenu,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.pressmeetBlock,.cadreInsuranceBlock").remove();
+var globalActivityMemberId = loggedInUserActivityMemberId;
+var globalUserTypeId = loggedInUserTypeId;
+var globalUserAccessLevelId = loggedInUserAccessLevelId;
+var globalUserAccessLevelValues = loggedInUserAccessLevelValues;
+var globalselectedUserType='STATE';
+var globalState = 'AP';
+
+//This enrollementYearIds is used in alert block
+var enrollementYearIds = getTdpCadreEnrollementYearIds();
+var globalEnrollementyearIdArr = enrollementYearIds;
+
+
+var globalBasicCommitteeIdsArray = []; //basicCommitteeIdsArray
+$(document).ready(function(){
+	//Main header remove
+	//$(".eventsheader").hide();
+	$('[data-toggle="tooltip"]').tooltip();
+	//stateLevelCampDetails();
+	getCadreEnrolmentYears();
+
+});
+getLoggedInUserStructure();
+onLoadCalls();
+function onLoadCalls(){
+	var sessionURL = '${sessionScope.URL}';
+	getUserTypeWiseBoothCommitteesInchargeDetails();
+	if(sessionURL == "partyAndLeaderActivitiesAndPerformanceTracking"){
+		$("#mainHeadinId").html("KALA VENKATA RAO");
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
@@ -6510,6 +6516,7 @@ var globalImages;
 		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
 		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
 		$(".specialMeetingSeeting").closest(".panelBlock").hide();
+		
 		onloadKaizalaCalls1();
 		getRescentArticleTime();
 		getToursBasicOverviewDtls();
@@ -6519,13 +6526,9 @@ var globalImages;
 		commonNewsBasicCalls();
 		getAllNewsPapers();
 		getBoothCadreEnrolmentYears();
-		
 		getPartySpecialMeetingsMainTypeOverview(0);
-	  }else  if(finalURL =="partyLeadersDashboardAction" || finalURL =="partyLeadersDashboardAction#")//finalURL =="coreDashboardAction1"
-	  {
-		 $(".quickLinkSettingsIcon").hide(); 
-		 $(".exceptionalReportsBlockCls").hide(); 
-		$(".debatesBlock,.electronicMediaBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.rightNavigationMenu,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.pressmeetBlock,.cadreInsuranceBlock").remove();
+		
+	}else if(sessionURL == "partyLeadersDashboardAction"){
 		$(".newsIconExpand").find("i").toggleClass("glyphicon-fullscreen").toggleClass("glyphicon-resize-small");
 		$(".newsBlock").toggleClass("col-md-6").toggleClass("col-md-12");
 		$(".newsHiddenBlock,.morenewsBlocksIcon,.editionWiseBlock").show();
@@ -6533,6 +6536,7 @@ var globalImages;
 		$(".newsHead").toggleClass('col-md-9 col-sm-9').toggleClass('col-md-8 col-sm-8');
 		$(".newsHead1").toggleClass('col-md-3 col-sm-3').toggleClass('col-md-4 col-sm-4');
 		$(".specialMeetingSeeting").closest(".panelBlock").hide();
+		
 		onloadKaizalaCalls1();
 		getRescentArticleTime();
 		getToursBasicOverviewDtls();
@@ -6544,11 +6548,8 @@ var globalImages;
 		getBoothCadreEnrolmentYears();
 		//getAlertOverviewDetails();
 		//getAlertDtlsBasedOnSelection('default');
-	  }else if(finalURL == "govtPartyCoreDashboardAction" || finalURL == "govtPartyCoreDashboardAction#")
-	  {
-		  $(".quickLinkSettingsIcon").hide();
-		  $(".exceptionalReportsBlockCls").hide();    
-		  $(".debatesBlock,.cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.kaizalaBlock,.pressmeetBlock,.boothCommitteesBlock").remove();
+		
+	}else if(sessionURL == "govtPartyCoreDashboardAction"){
 		$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
 		globalUserAccessLevelId = 2;
 		globalUserAccessLevelValues.push(1);
@@ -6559,22 +6560,13 @@ var globalImages;
 		getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
 		getAllTvChannels();
 		getRescentNewsBulletinTime();
-	  }else if(finalURL =="PrintandElectronicMediaActivitiesAction" || finalURL =="PrintandElectronicMediaActivitiesAction#"){
-		   $(".quickLinkSettingsIcon").hide();
-		   $(".exceptionalReportsBlockCls").hide();
-			$(".cadreBlock,.eventsBlock,.attendanceBlock,.trainingsBlock,.alertsBlock,.boothCommitteesBlock,.NewToursBlock,.meetingsBlock,.committeesBlock,.cadreInsuranceBlock,.rightNavigationMenu,.navbarProfile,.birthdayHideShowCls,.newNominatedPostBlock,.wordCloudBlock,.EMCoverageTimeBlock,.prajaSankaplaYatraBlock,.kaizalaBlock,.boothCommitteesBlock,.newsBlock,.electronicMediaBlock").remove();
-			$("#mainHeadinId").html("KALA VENKATA RAO");
-			preemeeetOnloadCalls();
-			//Debates
-			getPartyWiseTotalDebateDetails();      
-	  }
-	  else if(finalURL =="dailyMonthlyPartyActivities" || finalURL =="dailyMonthlyPartyActivities#")
-	  {
-		 $(".quickLinkSettingsIcon").show(); 
-		$(".exceptionalReportsBlockCls").show();  
+	}else if(sessionURL == "PrintandElectronicMediaActivitiesAction"){
+		$("#mainHeadinId").html("KALA VENKATA RAO");
+		preemeeetOnloadCalls();
+		//Debates
+		getPartyWiseTotalDebateDetails(); 
+	}else if(sessionURL == "dailyMonthlyPartyActivities"){
 		$(".nominatedSideMenuCls").hide();
-		$(".newNominatedPostBlock").remove();
-		//ALL BLOCKS
 		$("#mainHeadinId").html("KALA VENKATA RAO");
 		
 		preemeeetOnloadCalls();
@@ -6643,13 +6635,7 @@ var globalImages;
 		//onloadPrajaSankaplaYatraCalls();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
-		
-	  }
-	  else if(finalURL =="partyC0reDashboardAction" || finalURL =="partyC0reDashboardAction#")
-	  {
-		 $(".quickLinkSettingsIcon").show();
-		 $(".exceptionalReportsBlockCls").show();     
-		//ALL BLOCKS
+	}else if(sessionURL == "partyC0reDashboardAction"){
 		$(".nominatedSideMenuCls").show();
 		$("#mainHeadinId").html("KALA VENKATA RAO");
 		getRescentArticleTime();	
@@ -6719,76 +6705,10 @@ var globalImages;
 		//onloadPrajaSankaplaYatraCalls();
 		var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
 		$("#attendanceId").html('TODAY ('+datStr+')');
-		
-	  }
-	  else{
-		  $(".exceptionalReportsBlockCls").show();    
-		  $(".quickLinkSettingsIcon").show();
-		   $("#mainHeadinId").html("KALA VENKATA RAO");
-			//ALL BLOCKS
-			preemeeetOnloadCalls();
-			onLoadEmCoverageTimeCalls();
-			onloadPrajaSankaplaYatraCalls();
-			onloadKaizalaCalls1();
-			getBoothCadreEnrolmentYears();
-			getRescentArticleTime();		
-			//committeeBasicCall();
-			
-			//training program call
-			/*var idStr = $("#hideProgramId").attr("attr_prorgam_id_arr");
-			var programIdArr = [];
-			var arr = idStr.split(","); 
-			for(var i in arr){
-				programIdArr.push(arr[i]);
-			} 
-			console.log($("#hideProgramId").attr("attr_prorgam_id_arr"));      
-			stateLevelCampDetails();
-			stateLevelCampDetailsRepresentativeWise(programIdArr);
-			getStateLevelCampCount(programIdArr); */   
-			getTrainingCampBasicDetailsCntOverview();
-            getTrainingCampBasicDetailsCntOverviewTrainingCampCenterWise();			
-			//getTrainingCampProgramOverviewDtls();   
-			//Meeting
-			getPartyMeetingTypeByPartyMeetingMainType();
-			getStateLevelMeetingsByMeetingType();
-			getSpecialMeetingsByMeetingType();
-			//events
-			getEventBasicCntDtls();
-			//news please dont remove
-			$("#currentViewing").html(" TODAY ( "+moment().format('DD-MM-YYYY')+" )");
-			//getNewsBasicCounts();
-			commonNewsBasicCalls();
-			getAllNewsPapers();
-			//getPaperWiseNewsBasicCounts();
-			//Debates
-			getPartyWiseTotalDebateDetails();      
-			//cadreRegistration
-			cadreRegistrationBasicCall(globalActivityMemberId);
-			//getAllItsSubUserTypeIdsByParentUserTypeIdForCadreRegistration(globalUserTypeId); 
-			/* Tours Default Call */
-		   // getToursBasicOverviewCountDetails();     
-			//getDesigWiseMemberDtls();  
-			/*New Tours implementation Default Call */
-			getToursBasicOverviewDtls();
-			/*Electronic Media Calls*/
-			getMediaProgramsOnParty(globalUserAccessLevelId,globalUserAccessLevelValues);		
-			getAllTvChannels();
-			getRescentNewsBulletinTime();
-			/* Alert Default Call */
-			//getAlertOverviewDetails();
-			getAlertDtlsBasedOnSelection('default');
-			/* Activities Default Call */
-			getActivitiesDetails();
-			getAttendanceOverViewForPartyOffice();
-			getAttendanceOverViewForPartyOfficeWise();
-			getSettingActivities();
-			//getSettingEvents();
-			//onloadPrajaSankaplaYatraCalls();
-			var datStr = changeDateFormat($("#dateRangeIdForAttendance").val());
-			$("#attendanceId").html('TODAY ('+datStr+')');
-	  }
 	}
-	$(document).on("click",".userStructureClass",function(){
+	
+}	
+$(document).on("click",".userStructureClass",function(){
 		$("#directChildActivityMemberDiv").html('');
 		$("#topPoorPerformanceDiv").html('');
 		$("#topPoorLocationsDiv").html(''); 
@@ -6889,6 +6809,9 @@ $(document).on("click",function(){
 });
 $(document).on("click",".quicklinkSettingsCloseBody",function(){
 	$(this).closest(".quickLinkSettingsBody").hide();
+});
+$("body").on("contextmenu",function(e){
+	return false;
 });
 </script> 
 <script>
