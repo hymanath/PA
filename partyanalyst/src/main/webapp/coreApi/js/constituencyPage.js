@@ -6312,7 +6312,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       "locationTypeId"		:locationLevelId,
       "year"				:"",
       "boardLevelId"		:boardLevelId,
-	  deptId				:parseInt(deptId)
+	  deptId				:parseInt(deptId),
+	  positionId:0
 	  }
     $.ajax({   
       type:'GET',
@@ -6441,7 +6442,8 @@ function getDepartmentWisePostAndApplicationDetails(deptId,boardLevelId,type){
       boardLevelId		:boardLevelId, 
 	  statusIds			:statusIds, // 3-complered 4 goIsuued
 	  startIndex:startIndex,
-	  endIndex:endIndex
+	  endIndex:endIndex,
+	  positionId:0
      
     }
     $.ajax({   
