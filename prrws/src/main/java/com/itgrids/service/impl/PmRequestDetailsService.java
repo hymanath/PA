@@ -70,6 +70,7 @@ import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionFileVO;
 import com.itgrids.dto.PetitionHistoryVO;
 import com.itgrids.dto.PetitionMemberVO;
+import com.itgrids.dto.PetitionPriorityVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.dto.PetitionsPDFVO;
@@ -7209,5 +7210,31 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				LOG.error("Exception Occured in PmRequestDetailsService @ getPetitionsDetailsForPDFDocument() "+e.getMessage());
 			}
  			 return returnList;
+ 		}
+ 		
+ 		public ResultStatus updatePriorityDetailsforPetitionsWorks(PetitionPriorityVO priorityVO){
+ 			ResultStatus resultStatus = new ResultStatus();
+ 			try {
+ 				int updatedRecorsCount=0;
+ 				resultStatus.setResultCode(0);
+ 				resultStatus.setCount(Long.valueOf(String.valueOf(updatedRecorsCount)));
+				resultStatus.setExceptionMsg("success");
+ 				if(priorityVO.getUserId() != null && priorityVO.getUserId().longValue()>0L){
+					if(priorityVO != null && commonMethodsUtilService.isListOrSetValid(priorityVO.getWorksList())){
+						for (PetitionPriorityVO workVO : priorityVO.getWorksList()) {
+							int tempCount = pmSubWorkDetailsDAO.updatePetitionSubWorkPriorityDetails(workVO,dateUtilService.getCurrentDateAndTime());
+							updatedRecorsCount=updatedRecorsCount+tempCount;
+						}
+					}
+					resultStatus.setResultCode(0);
+					resultStatus.setCount(Long.valueOf(String.valueOf(updatedRecorsCount)));
+					resultStatus.setExceptionMsg("success");
+ 				}
+			} catch (Exception e) {
+				LOG.error("Exception Occured in PmRequestDetailsService @ updatePriorityDetailsforPetitionsWorks() "+e.getMessage());
+				resultStatus.setResultCode(1);
+				resultStatus.setExceptionMsg("failure");
+			}
+ 			return resultStatus;
  		}
 }

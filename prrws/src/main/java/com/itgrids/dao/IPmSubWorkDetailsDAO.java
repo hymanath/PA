@@ -7,6 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PetitionPriorityVO;
 import com.itgrids.model.PmSubWorkDetails;
 
 public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long> {
@@ -32,5 +33,5 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public String getMaxEndirseNoAndValidatingEndorseNo(String endorseNo);
 	public List<Object[]> getChildOfficersByParentOfficerId(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,List<Long> pmOfficerid,Set<Long> petitionIdsList,Set<Long> pmOffcrDesigids);
 	public List<Object[]> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO,Date fromDate,Date toDate);
-	
+	public int updatePetitionSubWorkPriorityDetails(PetitionPriorityVO priorityVO,Date dateTime);
 }

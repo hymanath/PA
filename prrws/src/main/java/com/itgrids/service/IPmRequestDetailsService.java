@@ -8,6 +8,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
+import com.itgrids.dto.PetitionPriorityVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.dto.PetitionsPDFVO;
@@ -53,4 +54,5 @@ public interface IPmRequestDetailsService {
 	public Map<Long,String> getRefCandidateDepartments(List<Long> refCandIds);
 	public List<PmOfficerVO> getPmOfficerWisePetitionDetails(InputVO inputVO);
 	public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(PetitionsInputVO inputVO);
+	public ResultStatus updatePriorityDetailsforPetitionsWorks(PetitionPriorityVO priorityVO);
 }

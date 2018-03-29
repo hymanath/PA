@@ -28,6 +28,7 @@ public class ResultStatus implements Serializable{
     private Long tabPrimaryKey;
     private String uniqueKey;
     private Long serverPrimaryKey;
+    private Long count=0L;
     
     public ResultStatus(){}
     public ResultStatus(int resultCode,String message){
@@ -108,6 +109,11 @@ public class ResultStatus implements Serializable{
 	public void setResultState(Long resultState) {
 		this.resultState = resultState;
 	}
-    
+	public Long getCount() {
+		return count;
+	}
+	public void setCount(Long count) {
+		this.count = count;
+	}
     
 }

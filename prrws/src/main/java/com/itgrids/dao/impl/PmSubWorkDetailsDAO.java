@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IPmSubWorkDetailsDAO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.PetitionPriorityVO;
 import com.itgrids.model.PmSubWorkDetails;
 
 @Repository
@@ -758,5 +759,17 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			query.setParameter("toDate", toDate);
 		}
 		return query.list();
+	}
+	
+	public int updatePetitionSubWorkPriorityDetails(PetitionPriorityVO priorityVO,Date updateTime){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" update PmSubWorkDetails model set  model.priority=:priority ,model.updatedTime =:updateTime,model.updatedUserId =:userId  "
+				+ " where model.pmSubWorkDetailsId  = :subWorkDetailsId) ");
+		Query query =getSession().createQuery(sb.toString());
+		query.setParameter("subWorkDetailsId", priorityVO.getWorkId());
+		query.setParameter("updateTime", updateTime);
+		query.setParameter("userId", priorityVO.getUserId());
+		query.setParameter("priority", priorityVO.getPriority());
+		return query.executeUpdate();
 	}
 }

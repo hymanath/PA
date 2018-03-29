@@ -18,6 +18,7 @@ import javax.persistence.Table;
 public class PmSubWorkDetails {
 
 	private Long pmSubWorkDetailsId;
+	private Long refPmSubWorkDetailsId;
 	private Long petitionId;
 	private String costEstimation;
 	private Long pmDepartmentId;
@@ -56,6 +57,7 @@ public class PmSubWorkDetails {
 	private Long updatedUserId;
 	private Date endorsmentDate;
 	private String tempEndorsNo; 
+	private Long priority;
 	
 	@Id
 	@Column(name="pm_sub_work_details_id")
@@ -345,6 +347,21 @@ public class PmSubWorkDetails {
 		this.tempEndorsNo = tempEndorsNo;
 	}
 	
+	@Column(name="priority")
+	public Long getPriority() {
+		return priority;
+	}
+	public void setPriority(Long priority) {
+		this.priority = priority;
+	}
 	
+	
+	@Column(name="ref_pm_sub_work_details_id")
+	public Long getRefPmSubWorkDetailsId() {
+		return refPmSubWorkDetailsId;
+	}
+	public void setRefPmSubWorkDetailsId(Long refPmSubWorkDetailsId) {
+		this.refPmSubWorkDetailsId = refPmSubWorkDetailsId;
+	}
 	
 }

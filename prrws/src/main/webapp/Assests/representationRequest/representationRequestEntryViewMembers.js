@@ -3801,3 +3801,81 @@ if(deptIdsList != null && deptIdsList.length>0){
 		}  
 	});	
 }
+
+function updatePriorityDetailsforPetitionsWorks(){
+	 var formData = new FormData();
+	 var i=0;
+	 var priorityArr =[];
+	 var worksArr=[];
+	 var hasDuplicate=false;
+	/* $('.priorityCls').each(function(){
+		var attr_workId = $(this).attr('attr_workId');
+		var attr_priority_id = $(this).attr('attr_priority_id');
+		var priority = $(this).val();
+		if(priorityArr != null && priorityArr.length>0){
+			for(var i in priorityArr){
+				if(parseInt(priorityArr[i])==parseInt(i)){
+					hasDuplicate=true;
+					break;
+				}
+			}
+		}
+		formData.append("priorityVO.worksList["+i+"].workId",attr_workId);
+		formData.append("priorityVO.worksList["+i+"].petitionId",attr_priority_id);
+		formData.append("priorityVO.worksList["+i+"].priority",priority);
+		priorityArr.push(priority);
+	 });
+	 
+	 if(hasDuplicate){
+			alert("Duplicate priority numbers not allowed.Please check once.");
+		 return;
+	 }*/
+	 
+	
+	var obj={
+		"workId":1774,
+		"petitionId":1778,
+		"priority":2
+	}
+	worksArr.push(obj);
+	
+	var json = {
+       worksList:worksArr
+    };
+	
+	 if(!hasDuplicate){
+		$("#prioritySubmitButtonId").attr("disabled",true);	
+	
+		$.ajax({              
+			type:'POST',    
+			url: 'updatePriorityDetailsforPetitionWorks',
+			dataType: 'json',
+			data : JSON.stringify(json),
+			beforeSend :   function(xhr){
+			  xhr.setRequestHeader("Accept", "application/json");
+			  xhr.setRequestHeader("Content-Type", "application/json");
+			}
+		  }).done(function(result){
+			
+				$("#savingDetailsSpinner").html('');
+					if(result!=null){
+					  if(result.exceptionMsg == "SUCCESS"){
+						 setTimeout(function () {
+							$("#ajaxcallImageId").html("<center><h4 style='color: green;'> Updated Successfully... </h4></center>");
+							alert("Work(s) details updated successfully");
+						}, 5000);
+					  }else{
+						  $('#endorsWorksId').show();
+						  $("#endorsWorksId").attr("disabled",false);
+					  }
+					}else{
+						
+						$("#endorsWorksId").attr("disabled",false);
+						$('#endorsWorksId').show();
+					}
+			}
+		);
+	 }
+}
+
+updatePriorityDetailsforPetitionsWorks();
