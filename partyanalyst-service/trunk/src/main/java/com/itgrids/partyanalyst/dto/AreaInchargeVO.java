@@ -2,7 +2,9 @@ package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class AreaInchargeVO implements Serializable{
 	
@@ -26,6 +28,12 @@ public class AreaInchargeVO implements Serializable{
     private Long assignedCount =0l;
     private Long unAssignedCount =0l;
     private List<Long> assignBoothIds = new ArrayList<Long>();
+    private Set<Long> assignIds =new HashSet<Long>();
+    private String memberShipNo;
+    private String mobileNo;
+    private Double assignPer=0.0;
+    private Double pendingPers=0.0;
+    private Long inchargeCount =0l;
 	public Long getId() {
 		return id;
 	}
@@ -145,6 +153,42 @@ public class AreaInchargeVO implements Serializable{
 	}
 	public void setAssignBoothIds(List<Long> assignBoothIds) {
 		this.assignBoothIds = assignBoothIds;
+	}
+	public String getMemberShipNo() {
+		return memberShipNo;
+	}
+	public void setMemberShipNo(String memberShipNo) {
+		this.memberShipNo = memberShipNo;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+	public Double getAssignPer() {
+		return assignPer;
+	}
+	public void setAssignPer(Double assignPer) {
+		this.assignPer = assignPer;
+	}
+	public Double getPendingPers() {
+		return pendingPers;
+	}
+	public void setPendingPers(Double pendingPers) {
+		this.pendingPers = pendingPers;
+	}
+	public Long getInchargeCount() {
+		return inchargeCount;
+	}
+	public void setInchargeCount(Long inchargeCount) {
+		this.inchargeCount = inchargeCount;
+	}
+	public Set<Long> getAssignIds() {
+		return assignIds;
+	}
+	public void setAssignIds(Set<Long> assignIds) {
+		this.assignIds = assignIds;
 	}
 	
 
