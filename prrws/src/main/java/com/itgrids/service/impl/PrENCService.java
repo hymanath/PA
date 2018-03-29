@@ -675,12 +675,18 @@ public class PrENCService implements IPrENCService {
 			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
 				fromDate = sdf.parse(inputVO.getFromDateStr());
 				toDate= sdf.parse(inputVO.getToDateStr());
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
+				Long year = Long.valueOf(inputVO.getYear());
+				Long nextyear = year+1;
+				fromDate =sdf.parse("01-04-"+ year);
+				toDate=sdf.parse("01-04-"+nextyear);
+				
 			}
 			List<Object[]> worksdata = null;
 			convertStringListToLong(inputVO);
-			worksdata = encWorksDAO.getWorksData(fromDate,toDate,"Grounded",inputVO.getSchemeIdsList());
+			worksdata = encWorksDAO.getWorksData(fromDate,toDate,"Grounded",inputVO.getSchemeIdsList(),null,null);
 			if(inputVO.getStatus() !=null && !inputVO.getStatus().equalsIgnoreCase("ongoing") ){
-				List<Object[]> worksdatatemp = encWorksDAO.getWorksData(fromDate,toDate,"completed",inputVO.getSchemeIdsList());
+				List<Object[]> worksdatatemp = encWorksDAO.getWorksData(fromDate,toDate,"completed",inputVO.getSchemeIdsList(),null,null);
 				if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 					worksdata.addAll(worksdatatemp);
 				}else{
@@ -991,9 +997,15 @@ public class PrENCService implements IPrENCService {
 			if(inputVO.getFromDateStr()!= null && inputVO.getToDateStr()!=null && inputVO.getFromDateStr().length()>0 && inputVO.getToDateStr().length()>0){
 				fromDate = sdf.parse(inputVO.getFromDateStr());
 				toDate= sdf.parse(inputVO.getToDateStr());
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
+				Long year = Long.valueOf(inputVO.getYear());
+				Long nextyear = year+1;
+				fromDate =sdf.parse("01-04-"+ year);
+				toDate=sdf.parse("01-04-"+nextyear);
+				
 			}
 			convertStringListToLong(inputVO);
-			List<Object[]> worksdata = encWorksDAO.getWorksData(fromDate,toDate,"not Grounded",inputVO.getSchemeIdsList());
+			List<Object[]> worksdata = encWorksDAO.getWorksData(fromDate,toDate,"not Grounded",inputVO.getSchemeIdsList(),null,null);
 			
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
 			
@@ -1049,9 +1061,9 @@ public class PrENCService implements IPrENCService {
 				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
 			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				Long year = Long.valueOf(inputVO.getYear());
-				Long priviousYear = year-1;
-				inputVO.setStartDate(sdf.parse("01-04-"+ priviousYear));
-				inputVO.setEndDate(sdf.parse("01-04-"+year));
+				Long nextyear = year+1;
+				inputVO.setStartDate(sdf.parse("01-04-"+ year));
+				inputVO.setEndDate(sdf.parse("01-04-"+nextyear));
 				
 			}
 			convertStringListToLong(inputVO);
@@ -1117,9 +1129,9 @@ public class PrENCService implements IPrENCService {
 				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
 			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				Long year = Long.valueOf(inputVO.getYear());
-				Long priviousYear = year-1;
-				inputVO.setStartDate(sdf.parse("01-04-"+ priviousYear));
-				inputVO.setEndDate(sdf.parse("01-04-"+year));
+				Long nextYear = year+1;
+				inputVO.setStartDate(sdf.parse("01-04-"+year));
+				inputVO.setEndDate(sdf.parse("01-04-"+nextYear));
 				
 			}
 			convertStringListToLong(inputVO);
@@ -1168,17 +1180,17 @@ public class PrENCService implements IPrENCService {
 				toDate= sdf.parse(inputVO.getToDateStr());
 			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				Long year = Long.valueOf(inputVO.getYear());
-				Long priviousYear = year-1;
+				Long nextYear = year+1;
 				
-				fromDate =sdf.parse("01-04-"+ priviousYear);
-				toDate=sdf.parse("01-04-"+year);
+				fromDate =sdf.parse("01-04-"+ year);
+				toDate=sdf.parse("01-04-"+nextYear);
 				
 			}
 			convertStringListToLong(inputVO);
 			List<Object[]> worksdata = null;
-			worksdata = encWorksDAO.getWorksData(fromDate,toDate,"Grounded",inputVO.getSchemeIdsList());
+			worksdata = encWorksDAO.getWorksData(fromDate,toDate,"Grounded",inputVO.getSchemeIdsList(),inputVO.getLocationType(),inputVO.getLocationValue());
 			if(inputVO.getStatus() !=null && !inputVO.getStatus().equalsIgnoreCase("ongoing")){
-				List<Object[]> worksdatatemp = encWorksDAO.getWorksData(fromDate,toDate,"completed",inputVO.getSchemeIdsList());
+				List<Object[]> worksdatatemp = encWorksDAO.getWorksData(fromDate,toDate,"completed",inputVO.getSchemeIdsList(),inputVO.getLocationType(),inputVO.getLocationValue());
 				if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 					worksdata.addAll(worksdatatemp);
 				}else{
@@ -1258,14 +1270,14 @@ public class PrENCService implements IPrENCService {
 				toDate= sdf.parse(inputVO.getToDateStr());
 			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
 				Long year = Long.valueOf(inputVO.getYear());
-				Long priviousYear = year-1;
+				Long nextYear = year+1;
 				
-				fromDate =sdf.parse("01-04-"+ priviousYear);
-				toDate=sdf.parse("01-04-"+year);
+				fromDate =sdf.parse("01-04-"+ year);
+				toDate=sdf.parse("01-04-"+nextYear);
 				
 			}
 			convertStringListToLong(inputVO);
-			List<Object[]> worksdata = encWorksDAO.getWorksData(fromDate,toDate,"not Grounded",inputVO.getSchemeIdsList());
+			List<Object[]> worksdata = encWorksDAO.getWorksData(fromDate,toDate,"not Grounded",inputVO.getSchemeIdsList(),inputVO.getLocationType(),inputVO.getLocationValue());
 			
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
@@ -1323,13 +1335,17 @@ public class PrENCService implements IPrENCService {
 		return finalList;
 	}
 
+	@SuppressWarnings("static-access")
 	private void convertStringListToLong(InputVO inputVO) {
 		try{
 			List<Long> schemeIds = new ArrayList<Long>();
-			for (String id : inputVO.getSchemeIdStr()) {
-				schemeIds.add(Long.valueOf(id));
+			if(commonMethodsUtilService.isListOrSetValid(inputVO.getSchemeIdStr())){
+				for (String id : inputVO.getSchemeIdStr()) {
+					schemeIds.add(Long.valueOf(id));
+				}
+				inputVO.getSchemeIdsList().addAll(schemeIds);
 			}
-			inputVO.getSchemeIdsList().addAll(schemeIds);
+			
 		}catch (Exception e) {
 			LOG.error("Exception raised at PrEncService - convertStringListToLong", e);
 		}
@@ -1356,4 +1372,71 @@ public class PrENCService implements IPrENCService {
 		return returnList;
 	}
    
+	@Override
+	public List<EncWorksVO> gettAllEncWorksByScheme(InputVO inputVO) {
+		List<EncWorksVO> finalList= new ArrayList<EncWorksVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() >0){
+				inputVO.setStartDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
+				Long year = Long.valueOf(inputVO.getYear());
+				Long nextyear = year+1;
+				inputVO.setStartDate(sdf.parse("01-04-"+ year));
+				inputVO.setEndDate(sdf.parse("01-04-"+nextyear));
+				
+			}
+			convertStringListToLong(inputVO);
+			List<Object[]> objList = new ArrayList<Object[]>(0);
+
+			List<Object[]>  workAdminsancObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_ADMIN_SANC);
+			List<Object[]>  workTechSancObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_TECH_SANCTIONED);
+			List<Object[]>  workEntrustObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_ENTRUST);
+			List<Object[]>  workOngoingObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_GROUNDED);
+			
+			List<Object[]>  workCompletedObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_COMPLETION);
+			List<Object[]>  workunderProcessObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_UNDER_PROCESS);
+			List<Object[]>  workNotGroundingObjLst = encWorksDAO.getAllSchemeWiseWorkDetails(inputVO, IConstants.WORK_NOTGROUNDED );
+
+			objList.addAll(workAdminsancObjLst);
+			objList.addAll(workTechSancObjLst);
+			objList.addAll(workEntrustObjLst);
+			objList.addAll(workOngoingObjLst);
+
+			objList.addAll(workCompletedObjLst);
+			objList.addAll(workunderProcessObjLst);
+			objList.addAll(workNotGroundingObjLst);
+			Map<Long, EncWorksVO> locationMap = new HashMap<Long, EncWorksVO>();
+			for (Object[] objects : objList) {
+				EncWorksVO locationCountVO= locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				if(locationCountVO ==null){
+					locationCountVO = new EncWorksVO();
+					locationCountVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					locationCountVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationCountVO);
+				}
+				if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_ADMIN_SANC)){
+					locationCountVO.setAdminSanctionCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
+					locationCountVO.setTechnicallySanctionedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_ENTRUST)){
+					locationCountVO.setTotalWorksEntrusted(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
+					locationCountVO.setGroundedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
+					locationCountVO.setNotGrounded(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
+					locationCountVO.setUnderProcessCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_COMPLETION)){
+					locationCountVO.setCompletedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
+				
+			}
+			finalList.addAll(locationMap.values());
+		}catch(Exception e){
+			LOG.error("Exception raised at PrEncService - getLocationWiseEncWorksInformation", e);
+		}
+		return finalList;
+	}
 }
