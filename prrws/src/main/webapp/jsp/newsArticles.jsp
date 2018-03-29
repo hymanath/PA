@@ -275,15 +275,25 @@
 </header>
 <main style="margin-top:5px;background-color:#fff;padding-bottom:20px;">
 <div class="container-fluid">
-	<div class="row">
+	<div class="row mainDepartmentPDf">
 		<div class="col-sm-1 pull-right m_top10">
 				<img class="dataLoadingsPdfImgcls0" src="Assests/images/loading.gif" style="width: 25px; height: 20px;display:none;">
 			</div>
-		<div class="col-sm-2 pull-right">
-			<div class="row">
-				<div class="col-sm-6 m_top10"><h5 class="pdfGeneratePrintEMCls" attr_pdf_type="positive" attr_pdf_dept_id="0"  style="background-color:#5cb85c;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i> Positive</h5></div>
-				<div class="col-sm-6 m_top10"><h5 class="pdfGeneratePrintEMCls" attr_pdf_type="positive" attr_pdf_dept_id="0"  style="background-color:#d9534f;padding:5px;color:#fff;border-radius:3px;cursor:pointer;"><i class="fa fa-arrow-down" aria-hidden="true"></i> Negative</h5></div>
-			</div>
+		<div class="col-sm-3 pull-right">
+				<ul class="list-inline m_top10 pull-right">
+					<li>
+						<div class="btn-group " style="">
+							<button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span></button>
+							<button attr_pdf_type="positive" attr_pdf_dept_id="0" type="button" class="btn btn-default btn-sm pdfGeneratePrintEMCls" style="background-color: rgb(92, 184, 92); color: rgb(255, 255, 255);padding:5px;">Download&nbsp;+ve&nbsp;Pdf</button>
+						</div>
+					</li>
+					<li>
+						<div class="btn-group " style="">
+							<button type="button" class="btn btn-default btn-sm"  style="border-top-right-radius: 1px; border-top-left-radius: 4px ! important; border-bottom-left-radius: 4px; border-bottom-right-radius: 1px; background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;"> <span class="fa fa-download"aria-hidden="true" ></span>
+							</button> <button attr_pdf_type="negative" attr_pdf_dept_id="0" type="button" class="btn btn-default btn-sm pdfGeneratePrintEMCls" style="background-color: #d9534f; color: rgb(255, 255, 255);padding:5px;">Download&nbsp;-ve&nbsp;Pdf</button>
+						</div>
+					</li>
+				</ul>
 		</div>
 		<div class="col-sm-4 pull-right m_top10">
 			<ul class="list-inline pull-right switch-btn-News">
