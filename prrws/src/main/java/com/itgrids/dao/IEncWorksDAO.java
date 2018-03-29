@@ -13,7 +13,7 @@ public interface IEncWorksDAO extends GenericDao<EncWorks,Long>{
 
 	public List<Long> getAllDistinctWorkIds();
 
-	public List<Object[]> getWorksData(Date fromDate, Date toDate, String status, List<Long> schemeIds );
+	public List<Object[]> getWorksData(Date fromDate, Date toDate, String status, List<Long> schemeIds, String locationType, Long LocationValue );
 
 	public EncWorks findOneByworkId(Long workId);
 
@@ -28,5 +28,7 @@ public interface IEncWorksDAO extends GenericDao<EncWorks,Long>{
 	public List<Object[]> getSchemeWiseOnclickWorkDetails(InputVO inputVO);
 
 	public List<Object[]> getPRProgramsCodeAndName();
+
+	List<Object[]> getAllSchemeWiseWorkDetails(InputVO inputVO, String StatusType);
 
 }
