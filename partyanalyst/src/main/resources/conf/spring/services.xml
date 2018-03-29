@@ -4826,6 +4826,7 @@
    	 		<property name="tdpCadreDAO" ref="tdpCadreDAO"></property>
    	 		<property name="areaInchargeLocationDAO" ref="areaInchargeLocationDAO"></property>
    	 		<property name="transactionTemplate" ref="transactionTemplate"></property>
+   	 		<property name="cadreDetailsService" ref="cadreDetailsService"></property>
     	</bean>
    	 	
 </beans>			
