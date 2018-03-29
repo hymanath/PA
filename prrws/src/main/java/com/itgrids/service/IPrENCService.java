@@ -35,4 +35,6 @@ public interface IPrENCService {
 
 	public List<GrantVO> getPRProgramsCodeAndName(InputVO inputVO);
 
+	public List<EncWorksVO> gettAllEncWorksByScheme(InputVO inputVO);
+
 }
