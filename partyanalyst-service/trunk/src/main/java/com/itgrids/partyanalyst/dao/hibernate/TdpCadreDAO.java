@@ -10015,13 +10015,14 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			
 		}
 	   public Object[] editAssignedInchargeDetails(Long tdpCadreId){
-			StringBuilder sb = new StringBuilder();
-			sb.append(" select distinct tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
-					" tdpCadre.age, tdpCadre.gender, tdpCadre.houseNo," +
-					" address.tehsil.tehsilId,address.tehsil.tehsilName," +
+		   StringBuilder sb = new StringBuilder();
+			sb.append(" select tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
+					" tdpCadre.age,tdpCadre.gender," +
+					" tdpCadre.houseNo," +
+					" tdpCadre.userAddress.tehsil.tehsilId,tdpCadre.userAddress.tehsil.tehsilName," +
 					" tdpCadre.casteState.caste.casteName,tdpCadre.image " +
 					" from  TdpCadre tdpCadre  " +
-					" left join tdpCadre.userAddress address " +
+					" left join tdpCadre.userAddress address   " +
 					"  where  tdpCadre.isDeleted ='N' ");
 			if(tdpCadreId != null && tdpCadreId.longValue()>0l){
 				sb.append(" and tdpCadre.tdpCadreId =:tdpCadreId  ");	
@@ -10032,5 +10033,5 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			}
 			return (Object[])query.uniqueResult();
 			
-		}
+		}	  
 }

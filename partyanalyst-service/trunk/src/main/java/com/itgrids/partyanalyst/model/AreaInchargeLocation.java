@@ -1,5 +1,7 @@
 package com.itgrids.partyanalyst.model;
 
+import java.util.Date;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -30,8 +32,8 @@ public class AreaInchargeLocation {
     private String isAssinged;
     private String createdBy;
     private String updatedBy;
-    private String insertedTime;
-    private String updatedTime;
+    private Date insertedTime;
+    private Date updatedTime;
     private String isDeleted;
     
     @Id
@@ -124,19 +126,20 @@ public class AreaInchargeLocation {
 		this.updatedBy = updatedBy;
 	}
 	@Column(name = "inserted_time")
-	public String getInsertedTime() {
+	public Date getInsertedTime() {
 		return insertedTime;
 	}
-	public void setInsertedTime(String insertedTime) {
+	public void setInsertedTime(Date insertedTime) {
 		this.insertedTime = insertedTime;
 	}
 	@Column(name = "updated_time")
-	public String getUpdatedTime() {
+	public Date getUpdatedTime() {
 		return updatedTime;
 	}
-	public void setUpdatedTime(String updatedTime) {
+	public void setUpdatedTime(Date updatedTime) {
 		this.updatedTime = updatedTime;
 	}
+	
 	@Column(name = "is_deleted")
 	public String getIsDeleted() {
 		return isDeleted;

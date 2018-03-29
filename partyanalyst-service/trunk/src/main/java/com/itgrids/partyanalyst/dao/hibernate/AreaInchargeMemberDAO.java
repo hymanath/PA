@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -66,7 +67,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		sb.append(" select AIM.areaInchargeLocationId,tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.houseNo " +
 				"from  AreaInchargeMember AIM left join AIM.tdpCadre tdpCadre  where AIM.isDeleted ='N' " );
 		if(status != null && !status.isEmpty()){
-			sb.append(" AIM.isActive =:status "); 
+			sb.append(" and AIM.isActive =:status "); 
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(status != null && !status.isEmpty()){
@@ -80,7 +81,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		sb.append(" select distinct AIM.areaInchargeLocationId "+
 				" from  AreaInchargeMember AIM   where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
 		if(cadreId != null && cadreId.longValue()>0l){
-			sb.append(" AIM.tdpCadre.tdpCadreId =:cadreId "); 
+			sb.append("  and AIM.tdpCadre.tdpCadreId =:cadreId "); 
 		}
 		sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
 		Query query = getSession().createQuery(sb.toString());
@@ -119,5 +120,41 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 			queObject.setLong("cadreId",cadreId);
 			}
 		return queObject.executeUpdate();
+	}
+	public List<Object[]> getAreaInchargeAssignedBoothDetails(Long levelId,Long levelValue){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
+				" tdpCadre.age,tdpCadre.gender,tdpCadre.memberShipNo,tdpCadre.mobileNo," +
+				" AIM.areaInchargeLocationId,tdpCadre.image "+
+				" from  AreaInchargeMember AIM left join AIM.tdpCadre tdpCadre  where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
+		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			sb.append("  and AIM.areaInchargeLocation.address.district.districtId =:levelValue "); 
+		}else if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			sb.append("  and AIM.areaInchargeLocation.address.constituency.constituencyId =:levelValue "); 
+		}
+		//sb.append(" group by tdpCadre.tdpCadreId ");
+		Query query = getSession().createQuery(sb.toString());
+		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			query.setParameter("levelValue", levelValue);
+		}else if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			query.setParameter("levelValue", levelValue);
+		}
+		return query.list();
+		
+	}
+	public Long getInchargeMembers(Set<Long> assignIds){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select count(distinct AIM.tdpCadre.tdpCadreId )"+
+				" from  AreaInchargeMember AIM   where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
+		if(assignIds != null && assignIds.size()>0){
+			sb.append("  and AIM.areaInchargeLocationId in(:assignIds)"); 
+		}
+		//sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
+		Query query = getSession().createQuery(sb.toString());
+		if(assignIds != null && assignIds.size()>0){
+			query.setParameterList("assignIds", assignIds);
+		}
+		return (Long)query.uniqueResult();
+		
 	}
 }

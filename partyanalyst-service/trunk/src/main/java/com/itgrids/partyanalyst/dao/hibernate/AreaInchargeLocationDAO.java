@@ -37,23 +37,46 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		
 	}
 	
-	public List<Object[]> getAssignedAndUnAssignedBooths(String status){
+	public List<Object[]> getAssignedAndUnAssignedBooths(Long levelId,Long levelValue){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged," +
-				" AIL.address.panchayat.panchayatId,panchayat.panchayatName," +
-				" tehsil.tehsilId,AIL.address.tehsil.tehsilName  " +
+				" panchayat.panchayatId,panchayat.panchayatName," +
+				" tehsil.tehsilId,tehsil.tehsilName  " +
 				" from  AreaInchargeLocation AIL " +
 				" left join AIL.address.panchayat panchayat " +
 				" left join AIL.address.tehsil tehsil  " +
 				" " );
-		if(status != null && !status.isEmpty()){
-			sb.append(" where AIL.isAssinged =:status ");
+		if(levelId != null && levelValue != null && levelValue .longValue() >0l && levelId.longValue() == 3l){
+			sb.append(" where AIL.address.district.districtId =:levelValue ");
+		}else if(levelId != null && levelValue != null && levelValue .longValue() >0l && levelId.longValue() == 4l){
+			sb.append(" where AIL.address.constituency.constituencyId =:levelValue "); 
 		}
+		sb.append(" group by AIL.areaInchargeLocationId order by AIL.areaInchargeLocationId ");
 		Query query = getSession().createQuery(sb.toString());
-		if(status != null && !status.isEmpty()){
-			query.setParameter("status", status);
+		if(levelId != null && levelValue != null && levelValue .longValue() >0l && levelId.longValue() == 3l){
+			query.setParameter("levelValue", levelValue);
+		}else if(levelId != null && levelValue != null && levelValue .longValue() >0l && levelId.longValue() == 4l){
+			query.setParameter("levelValue", levelValue);
 		}
 		return query.list();
+	}
+	public List<Object[]> getAreaInchargesStatusWiseCount(Long levelId,Long levelValue){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged from  AreaInchargeLocation AIL where  ");
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			sb.append(" AIL.address.district.districtId =:levelValue "); 
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			sb.append(" AIL.address.constituency.constituencyId =:levelValue "); 
+		}
+		//sb.append(" group by AIL.areaInchargeLocationId order by AIL.areaInchargeLocationId ");
+		Query query = getSession().createQuery(sb.toString());
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			query.setParameter("levelValue", levelValue);
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			query.setParameter("levelValue", levelValue);
+		}
+		return query.list();
+		
 	}
 	
 }

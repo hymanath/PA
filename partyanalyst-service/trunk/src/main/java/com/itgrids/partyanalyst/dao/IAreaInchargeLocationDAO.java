@@ -10,5 +10,6 @@ public interface IAreaInchargeLocationDAO extends GenericDao<AreaInchargeLocatio
 
 	//public int getLocationIdsOfBooths(List<Long> boothIds);
 	public Long getLocationIdsOfBooths(Long boothId);
-	public List<Object[]> getAssignedAndUnAssignedBooths(String status);
+	public List<Object[]> getAssignedAndUnAssignedBooths(Long levelId,Long levelValue);
+	public List<Object[]> getAreaInchargesStatusWiseCount(Long levelId,Long levelValue);
 }

@@ -1,6 +1,11 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 import org.springframework.transaction.TransactionStatus;
@@ -15,6 +20,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AreaInchargeLocation;
 import com.itgrids.partyanalyst.model.AreaInchargeMember;
 import com.itgrids.partyanalyst.service.IAreaInchargeDashBoardService;
+import com.itgrids.partyanalyst.service.ICadreDetailsService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -29,6 +35,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
     private ResultStatus status;
 	private TransactionTemplate     transactionTemplate;
 	private IAreaInchargeLocationDAO areaInchargeLocationDAO;
+	private ICadreDetailsService cadreDetailsService;
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -82,6 +89,14 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		this.areaInchargeLocationDAO = areaInchargeLocationDAO;
 	}
 
+	public ICadreDetailsService getCadreDetailsService() {
+		return cadreDetailsService;
+	}
+
+	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
+		this.cadreDetailsService = cadreDetailsService;
+	}
+
 	public AreaInchargeVO getAreaInchargeDetails(String voterIdNO,String mobileNo,String memberShipId){
 		AreaInchargeVO inchargeVo = new AreaInchargeVO();
 		try{
@@ -128,6 +143,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 						AreaInchargeLocation modal = areaInchargeLocationDAO.get(param);
 						modal.setIsAssinged("Y");
 						modal.setIsDeleted("N");
+						modal.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 						AreaInchargeMember AIM = new AreaInchargeMember();
 						AIM.setAreaInchargeLocationId(param);
 						AIM.setIsActive("Y");
@@ -153,25 +169,13 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		
 	}
 
-	public AreaInchargeVO getAssignedAndUnAssignedBooths(){
+	public AreaInchargeVO getAssignedAndUnAssignedBooths(Long levelId,Long levelValue){
 		AreaInchargeVO finalVO = new AreaInchargeVO();
 		try{
-			Long total = 0l,count =0l;
-			//0-inchargeLocationId,1-isAssigned,2-panchayatId,3-panchaytName,4-tehsilId,5-tehsilName
-			List<Object[]> unAssignedList = areaInchargeLocationDAO.getAssignedAndUnAssignedBooths("N");
-			if(unAssignedList != null && unAssignedList.size()>0){
-				for(Object[] param : unAssignedList ){
-						settingAssignedAndUnAssignedList(param,finalVO,"unAssigned",count,total);
-				}
-			}	
-			List<Object[]> assignedList = areaInchargeLocationDAO.getAssignedAndUnAssignedBooths("Y");
-			if(assignedList != null && assignedList.size()>0){
-				for(Object[] param : assignedList ){
-					settingAssignedAndUnAssignedList(param,finalVO,"assigned",count,total);
-					
-				}
-			}
-			
+			//0-inchargeLocationId,1-isAssigned,2-panchayatId,3-panchaytName,4-tehsilId,5-tehsilName	
+			List<Object[]> totalList = areaInchargeLocationDAO.getAssignedAndUnAssignedBooths(levelId,levelValue);
+				settingAssignedAndUnAssignedList(totalList,finalVO);	
+				
 			//0-inchargeLocationId,1-cadreId,2-cadreName,3-houseNo
 			List<Object[]> assignedCadreList = areaInchargeMemberDAO.getAssignedCadreList("Y");
 			if(assignedCadreList != null && assignedCadreList.size()>0){
@@ -191,22 +195,33 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		}
 		return finalVO;
 	}
-	public void settingAssignedAndUnAssignedList(Object[] param,AreaInchargeVO finalVO,String status,Long count,Long total){
+	public void settingAssignedAndUnAssignedList(List<Object[]> unAssignedList,AreaInchargeVO finalVO){
 		try{
+			Long total = 0l,assignCount =0l,unAssignedCount =0l;
+			//0-inchargeLocationId,1-isAssigned,2-panchayatId,3-panchaytName,4-tehsilId,5-tehsilName
+		if(unAssignedList != null && unAssignedList.size()>0){
+		 for(Object[] param : unAssignedList){
+			 String status = commonMethodsUtilService.getStringValueForObject(param[1]);
 			AreaInchargeVO assignVO = new AreaInchargeVO();
 			assignVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 			assignVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[4]));
 			assignVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[5]));
 			assignVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[2]));
 			assignVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[3]));
-			if(status != null && status.equalsIgnoreCase("unAssigned ")){
+			if(status != null && status.equalsIgnoreCase("N")){
 				finalVO.getUnAssignBoothList().add(assignVO);
-				finalVO.setUnAssignedCount(count+1);
-			}else if(status != null && status.equalsIgnoreCase("assigned")){
+				unAssignedCount = unAssignedCount+1l;
+				finalVO.setUnAssignedCount(unAssignedCount);
+			}else if(status != null && status.equalsIgnoreCase("Y")){
 				finalVO.getAssignBoothList().add(assignVO);
-				finalVO.setAssignedCount(count+1);
+				assignCount = assignCount+1l;
+				finalVO.setAssignedCount(assignCount);
 			}
-			finalVO.setTotal(total+1);
+			total = total+1l;
+			finalVO.setTotal(total);
+			
+			}
+		}
 			
 		}catch(Exception e){
 			LOG.error("Exception occurred at settingAssignedAndUnAssignedList() of AreaInchargeDashBoardService class ",e);
@@ -230,7 +245,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		}
 		return null;
 	}
-	public AreaInchargeVO editAssignedInchargeDetails(Long tdpCadreId,List<Long> boothIds){
+	public AreaInchargeVO editAssignedInchargeDetails(Long tdpCadreId,Long levelId,Long levelValue){
 		AreaInchargeVO inchargeVo = new AreaInchargeVO();
 		try{
 			//1-first name,2-relativeName,3-age,4-gender,5-houseNo,6-tehsilId,7-tehsilName,8-casteName,9-image
@@ -252,23 +267,14 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 				if(assignBooths != null && assignBooths.size()>0){
 					inchargeVo.setAssignBoothIds(assignBooths);
 				}
-				Long count=0l,total=0l;
-				List<Object[]> unAssignedList = areaInchargeLocationDAO.getAssignedAndUnAssignedBooths("N");
-				if(unAssignedList != null && unAssignedList.size()>0){
-					for(Object[] param : unAssignedList ){
-						settingAssignedAndUnAssignedList(param,inchargeVo,"unAssigned",count,total);
-					}
-				}
-				if(boothIds != null && boothIds.size()>0){
-					assignBooths.addAll(boothIds);
-					inchargeVo.setAssignBoothIds(assignBooths);
-				}
+				List<Object[]> totalList = areaInchargeLocationDAO.getAssignedAndUnAssignedBooths(levelId,levelValue);
+					settingAssignedAndUnAssignedList(totalList,inchargeVo);	
 		}catch(Exception e){
 			LOG.error("Exception occurred at editAssignedInchargeDetails() of AreaInchargeDashBoardService class ",e);
 		}
 		return inchargeVo;
 	}
-public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
+	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		String result = null;
 		int status=areaInchargeMemberDAO.deleteAreaInchargeAssignBooths(candidateId,boothId);
 		try{
@@ -282,7 +288,7 @@ public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		return result;
 		
 	}
-public String removeAreaIncharge(Long cadreId){
+  public String removeAreaIncharge(Long cadreId){
 	String result = null;
 	int status=areaInchargeMemberDAO.removeAreaIncharge(cadreId);
 	try{
@@ -295,5 +301,91 @@ public String removeAreaIncharge(Long cadreId){
 	}
 	return result;
 }
+	public List<AreaInchargeVO> getAreaInchargeAssignedBoothDetails(Long levelId,Long levelValue){
+		List<AreaInchargeVO> finalList = new ArrayList<AreaInchargeVO>();
+		try{
+			Map<Long,AreaInchargeVO> inchargeMap= new HashMap<Long,AreaInchargeVO>();
+			Set<Long> assignedBooths = new HashSet<Long>();
+			//0-tdpCadreId,1-name,2-relativename,3-age,4-gender,5-memberShipNo,6-mobileNo,7-locationId,8-image
+			List<Object[]> inchargeDetails= areaInchargeMemberDAO.getAreaInchargeAssignedBoothDetails(levelId,levelValue);
+			if(inchargeDetails != null && inchargeDetails.size()>0){
+				for(Object[] param : inchargeDetails){
+					AreaInchargeVO inchargeVo = inchargeMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+					if(inchargeVo != null){
+						  assignedBooths.add(commonMethodsUtilService.getLongValueForObject(param[7]));
+						  inchargeVo.setAssignIds(assignedBooths);
+					}else{
+					  inchargeVo = new AreaInchargeVO();
+					  inchargeVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					  inchargeVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					  inchargeVo.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[2]));
+					  inchargeVo.setAge(commonMethodsUtilService.getLongValueForObject(param[3]));
+					  inchargeVo.setGender(commonMethodsUtilService.getStringValueForObject(param[4]));
+					  inchargeVo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[5]));
+					  inchargeVo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[6]));
+					  assignedBooths.add(commonMethodsUtilService.getLongValueForObject(param[7]));
+					  inchargeVo.setAssignIds(assignedBooths);
+					  inchargeVo.setImage(commonMethodsUtilService.getStringValueForObject(param[8]));
+					  inchargeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), inchargeVo);
+					}
+				}
+			}
+			if(inchargeMap != null && inchargeMap.size()>0){
+				finalList.addAll(inchargeMap.values());
+			}
+			
+			
+		}catch(Exception e){
+			LOG.error("Exception occurred at getAreaInchargeDetails() of AreaInchargeDashBoardService class ",e);
+		}
+		return finalList;
+		
+	}
 	
+	public AreaInchargeVO getAreaInchargesStatusWiseCount(Long levelId,Long levelValue){
+		AreaInchargeVO finalVo =new AreaInchargeVO();
+		try{
+			//0-locationId,1-inActive
+			List<Object[]> totalList = areaInchargeLocationDAO.getAreaInchargesStatusWiseCount(levelId,levelValue);
+			  finalVo = settingAssignedAndUnAssignedCount(totalList,finalVo);
+			if(finalVo != null){
+				finalVo.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(finalVo.getTotal(), finalVo.getAssignedCount())));
+				finalVo.setPendingPers(Double.parseDouble(cadreDetailsService.calculatePercentage(finalVo.getTotal(), finalVo.getUnAssignedCount())));
+			}
+		}catch(Exception e){
+			LOG.error("Exception occurred at getAreaInchargesStatusWiseCount() of AreaInchargeDashBoardService class ",e);
+		}
+		return finalVo;
+		
+	}
+	public AreaInchargeVO settingAssignedAndUnAssignedCount(List<Object[]> totalList,AreaInchargeVO finalVo){
+		try{
+			Long total=0l,assignCount=0l,unAssignCount =0l;
+			Set<Long> assignIds = new HashSet<Long>();
+			if(totalList != null && totalList.size()>0){
+				for(Object[] param : totalList){
+					String status=commonMethodsUtilService.getStringValueForObject(param[1]);
+					if(status != null && status.equalsIgnoreCase("Y")){
+						assignCount=assignCount+1l;
+						finalVo.setAssignedCount(assignCount);
+						assignIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+					}else if(status != null && status.equalsIgnoreCase("N")){
+						unAssignCount=unAssignCount+1l;
+						finalVo.setUnAssignedCount(unAssignCount);
+					}
+					total=total+1l;
+					finalVo.setTotal(total);
+				}
+				
+			}
+			 Long inchargeCount = areaInchargeMemberDAO.getInchargeMembers(assignIds);
+			 if(inchargeCount != null && inchargeCount.longValue()>0l){
+				 finalVo.setInchargeCount(inchargeCount);
+			 }
+			
+		}catch(Exception e){
+			LOG.error("Exception occurred at settingAssignedAndUnAssignedCount() of AreaInchargeDashBoardService class ",e);
+		}
+		return finalVo;
+	}
 }
