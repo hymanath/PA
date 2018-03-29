@@ -30,7 +30,17 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 	private ResultStatus resultStatus;
 	private AreaInchargeVO inchargeVO;
 	private IAreaInchargeDashBoardService areaInchargeDashBoardService;
+	private String result;
 	
+	
+	public String getResult() {
+		return result;
+	}
+
+	public void setResult(String result) {
+		this.result = result;
+	}
+
 	public ResultStatus getResultStatus() {
 		return resultStatus;
 	}
@@ -98,72 +108,29 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 	public void setServletRequest(HttpServletRequest request) {
 		this.request = request;
 	}
-	public String getAreaInchargeDetails(){
-		try{
-			
-			/*RegistrationVO regVO =(RegistrationVO) request.getSession().getAttribute("USER");
-			Long userId=0l;
-			if(regVO!=null){
-				userId = regVO.getRegistrationID();
-			}*/
-			jObj = new JSONObject(getTask());
-			inchargeVO = areaInchargeDashBoardService.getAreaInchargeDetails(jObj.getString("voterId"),jObj.getString("mobileNo"),jObj.getString("memberShipId"));
-			
-		}catch (Exception e) {
-			LOG.error("Entered into getAreaInchargeDetails Action",e);
-		}
-		
-		return Action.SUCCESS;
-	}
 	
-	public String savingAssigningBooths(){
+	public String deleteAreaInchargeAssignBooths(){
 		try{
+			LOG.info("Entered into deleteAreaInchargeAssignBooths");
+				jObj = new JSONObject(getTask());
+			Long candidateId = jObj.getLong("candidateId");
+			Long boothId = jObj.getLong("boothId");
 			
-			jObj = new JSONObject(getTask());
-			JSONArray boothIdsArr = jObj.getJSONArray("boothIds");  
-			List<Long> boothIdsList = new ArrayList<Long>();
-			if(boothIdsArr != null && boothIdsArr.length() > 0){
-				for (int i = 0; i < boothIdsArr.length(); i++){
-					boothIdsList.add(Long.parseLong(boothIdsArr.getString(i)));          
-				}  
-			}
-			resultStatus = areaInchargeDashBoardService.savingAssigningBooths(jObj.getLong("cadreId"),boothIdsList);
-			
-		}catch (Exception e) {
-			LOG.error("Entered into savingAssigningBooths Action",e);
+			result = areaInchargeDashBoardService.deleteAreaInchargeAssignBooths(candidateId,boothId);	
+		}catch(Exception e){
+			LOG.error("Exception in deleteAreaInchargeAssignBooths method,e ");
 		}
-		
 		return Action.SUCCESS;
 	}
-	public String getAssignedAndUnAssignedBooths(){
+	public String removeAreaIncharge(){
 		try{
-			
-			jObj = new JSONObject(getTask());
-			inchargeVO = areaInchargeDashBoardService.getAssignedAndUnAssignedBooths();
-			
-		}catch (Exception e) {
-			LOG.error("Entered into getAssignedAndUnAssignedBooths Action",e);
+		LOG.info("Entered into removeAreaIncharge");
+		jObj = new JSONObject(getTask());
+		Long cadreId = jObj.getLong("candidateId");
+		result=areaInchargeDashBoardService.removeAreaIncharge(cadreId);
+		}catch(Exception e){
+			LOG.error("Exception in removeAreaIncharge method,e ");
 		}
-		
-		return Action.SUCCESS;
-	}
-	public String editAssignedInchargeDetails(){
-		try{
-			
-			jObj = new JSONObject(getTask());
-			JSONArray boothIdsArr = jObj.getJSONArray("boothIds");  
-			List<Long> boothIdsList = new ArrayList<Long>();
-			if(boothIdsArr != null && boothIdsArr.length() > 0){
-				for (int i = 0; i < boothIdsArr.length(); i++){
-					boothIdsList.add(Long.parseLong(boothIdsArr.getString(i)));          
-				}  
-			}
-			inchargeVO = areaInchargeDashBoardService.editAssignedInchargeDetails(jObj.getLong("cadreId"),boothIdsList);
-			
-		}catch (Exception e) {
-			LOG.error("Entered into editAssignedInchargeDetails Action",e);
-		}
-		
 		return Action.SUCCESS;
 	}
 }
