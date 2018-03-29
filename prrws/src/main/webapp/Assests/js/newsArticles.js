@@ -729,6 +729,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 			if(result[i].organizationId == globalDeptId){
 				collapse+='<div class="row m_top20">';
 					collapse+='<div class="col-sm-12">';
+					collapse+='<div class="white_block">';
 					if(type == "PrintMediadepartment"){
 						collapse+='<div class="row">';
 							collapse+='<div class="col-sm-3 pull-right">';
@@ -790,7 +791,7 @@ function buildDepartmentWiSeBlockDetails(result,type,divId,typeVal){
 							collapse+='<button type="button" class="btn btn-danger pdfEMNCls"  title="Click here to get the news report" attr_pdf_type="negative" attr_pdf_dept_id="'+result[i].organizationId+'">Negative</button>';
 						collapse+='</div>'; */
 					}
-					collapse+='<div class="white_block">';
+					
 								collapse+='<h4 class="panel-title text-capital font_weight">'+result[i].organization+'</h4>';
 									collapse+='<div class="row m_top10 departmentWiseTotalCls" id="departmentDivId'+result[i].organizationId+'">';
 										collapse+='<div class="col-sm-6">';
