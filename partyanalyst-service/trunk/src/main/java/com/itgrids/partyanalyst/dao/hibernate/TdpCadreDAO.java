@@ -6677,7 +6677,7 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			str.append(" select distinct model.tdpCadreId ,model.firstname,model.mobileNo," );
 			if(inputVo.getDesignationIds().contains(12l) || inputVo.getDesignationIds().contains(16l) || inputVo.getDesignationIds().contains(1l)
 					|| inputVo.getDesignationIds().contains(11l) || inputVo.getDesignationIds().contains(26l) || inputVo.getDesignationIds().contains(31l)
-					|| inputVo.getDesignationIds().contains(32l))//MLC
+					|| inputVo.getDesignationIds().contains(32l) || inputVo.getDesignationIds().contains(36l))//MLC
 				str.append("'',");
 			else
 				str.append("model2.userAddress.constituency.name,");
@@ -6699,10 +6699,12 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			{
 					if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)//State
 					{
-						if(locationVo.getStateId() == 1)
+						if(!inputVo.getDesignationIds().contains(36l) && locationVo.getStateId() == 1)
 							str.append("and model2.userAddress.district.districtId > 10  and model2.userAddress.district.districtId <=23");
-							if(locationVo.getStateId() == 36)
+						else if(!inputVo.getDesignationIds().contains(36l) && locationVo.getStateId() == 36)
 								str.append("and model2.userAddress.district.districtId >= 1  and model2.userAddress.district.districtId < 11");
+						else if(inputVo.getDesignationIds().contains(36l)  && locationVo.getStateId() > 0l)
+							str.append("and model2.userAddress.state.stateId = :stateId ");
 					}
 					if(locationVo.getDistrictIdsList() != null && locationVo.getDistrictIdsList().size() > 0)//District
 					{
@@ -6737,6 +6739,11 @@ public List<Object[]> getBoothWiseGenderCadres(List<Long> Ids,Long constituencyI
 			Query query = getSession().createQuery(str.toString());
 			if(inputVo.getDesignationIds() !=null && inputVo.getDesignationIds().size()>0){
 				query.setParameterList("roles", inputVo.getDesignationIds());
+			}
+			if(locationVo.getStateIdsList() != null && locationVo.getStateIdsList().size() > 0)//State
+			{
+				if(inputVo.getDesignationIds().contains(36l)  && locationVo.getStateId() > 0l)
+				 query.setParameter("stateId", locationVo.getStateId());
 			}
 			if(locationVo != null)
 			{

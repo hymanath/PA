@@ -5846,9 +5846,9 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 								
 								String mtdId = manTowDivId.toString();
 								char temp = mtdId.charAt(0);								
-								if(temp==4l){
+								if(temp=='4'){
 									mandalList.add(Long.parseLong(mtdId.substring(1)));									
-								}else if(temp==5l){
+								}else if(temp=='5'){
 									townList.add(Long.parseLong(mtdId.substring(1)));									
 								}					
 							}
