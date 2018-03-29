@@ -84,11 +84,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 <main>
 	<section>
 		<div class="container-fluid">
-			<div class="row dispalyNone">
-				<div class="col-sm-12">
-					<h4 class="pull-right">Note: All amounts in Crores</h4>
-				</div>
-			</div>
+			
 			<div class="row m_top10 dispalyNone">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
@@ -133,8 +129,16 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 								</div>
 							</div>
 						</div>
+						
 					</div>
 				</div>
+				
+				<div class="col-sm-12">
+					<div class="col-sm-2 m_top20 pull-right">	
+						<input type="button"  class="btn btn-success btn-mini btn-xs" onclick="getPetitionsDetails();" value="GET DETAILs" />
+					</div>
+				</div>
+				
 			</div>
 			<div id="printableArea"  class="displayBlock">
 				<div class="white-block pad_10" id="printcontent">
@@ -174,6 +178,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <!--<script src="Assests/representationRequest/representationsDashboard.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var currentToDate = "";
 var currentFromDate="";
 	currentFromDate=moment().subtract(7, 'year').format("DD-MM-YYYY");
@@ -210,23 +215,26 @@ $("#dateRangePicker").daterangepicker({
 		locationLevelRefresh();
 		$("#petitionSubWorkRadioDivId").hide();
 		//$("#workId").prop("checked",true);
+		
 	});
 
 onloadcalls();
 function onloadcalls()
 {
 	$("#constituencyCanId1").chosen();
+	getConstituenciesBySearchTypeAndDistrict([]);
 	getDepartmntsDetails();
 	getStatusList();
 	getSubjectsBySearchType();
 	getDistrictBySearchType();
+	
 }
 
 function getDepartmntsDetails(){
  var json = {
 		 reportType :"department",
-		 fromDate :"",
-		 toDate : "",
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 departmentId:0,
 		 statusId:""
 		}           
@@ -272,7 +280,6 @@ function getStatusList(){
       xhr.setRequestHeader("Content-Type", "application/json");
     }
   }).done(function(result){
-   
 		if(result !=null && result.length >0){
 			//$("#statusLocId").html("<option value='0' selected>All Status</option>");
 			for(var i in result){
@@ -285,12 +292,16 @@ function getStatusList(){
 }
 
 function getSubjectsBySearchType(){
+	$("#statusLocId").html("");
+	$("#statusLocId").html("<option value='0' selected> All Subject </option>");
+	$("#subjectId1").chosen();
+		$("#subjectId1").trigger('chosen:updated');
 	var json = {
-		 //reportType :searchType,
-		 fromDate : 27-03-2011,
-		 toDate : 27-03-2056,
+		 reportType :'subject',
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
 		 statusIds:statusIds,
-		 assetType:"district",
+		 assetType:"0",
 		 deptIdsList :[]
 		}           
 	$.ajax({              
@@ -303,9 +314,11 @@ function getSubjectsBySearchType(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
+		$("#statusLocId").html("");
+		$("#statusLocId").html("<option value='0' selected> All Subject </option>");
 		 if(result !=null && result.length >0){
 			for(var i in result){
-				$("#statusLocId1").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+				$("#subjectId1").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
 		}
 		$("#subjectId1").chosen();
@@ -313,67 +326,97 @@ function getSubjectsBySearchType(){
 	});	
 }
 
-
-
-var locationId;
-var districtName;
-var constituencyName;
-var assemblyName;
-var locationIDsArr =[];
-var selStatusId = $("#statusLocId1").val();
 var statusIds = [];
-if(selStatusId != null && selStatusId.length >0){
-	statusIds=selStatusId;
-}
-/* var subjArr = [];
-var subjIds =$("#subjectId1").val();
-if(subjIds != null && subjIds !=0){
-	subjArr=subjIds;
-}
-var departmentIdMainList =[];
-var deptIds =  $("#departmntId1").val();
-
-if(deptIds != null && deptIds.length >0){
-	departmentIdMainList=deptIds;
-}
-var districtId=$("#districtCandId1").val();
-if(districtId != null && districtId.length > 0){
-	searchLevelValue = [];
-	searchLevelValue=districtId;
-	searchLevelId=3;
-}
-var constituencyId=$("#constituencyCanId1").val();
-if(constituencyId != null && constituencyId.length > 0){
-	searchLevelValue = [];
-	searchLevelId=4;
-	searchLevelValue=constituencyId;
-} */
+function getPetitionsDetails(){
+	$("#pdfWiswPetitionsView").html(spinner);
+	var locationId;
+	var districtName;
+	var constituencyName;
+	var assemblyName;
+	var locationIDsArr =[];
+	var selStatusId = $("#statusLocId1").val();
+	
+	var constituencyId=$("#constituencyCanId1").val();
+	if(constituencyId != null && constituencyId.length > 0){
+		locationIDsArr=constituencyId;
+	}
 		
-  locationIDsArr.push(111);
-  
-  var json = {
-        constituencyIdsList: locationIDsArr, 
-        deptIdsList: [],
-        statusIdsList: [],
-        subjectIdsList: [],
-        subSubjectIdsList: []
-    };
-  console.log(json);
-  $.ajax({              
-    type:'POST',    
-    url: 'getPetitionDetailsForPDFDocument',
-    dataType: 'json',
-    data : JSON.stringify(json),
-    beforeSend :   function(xhr){
-      xhr.setRequestHeader("Accept", "application/json");
-      xhr.setRequestHeader("Content-Type", "application/json");
-    }
-  }).done(function(result){
-    $('#loadingId'+locationId+'').html('');
-    if(result != null){
-      buildPetitionDetailsForPDF(result);
-    }
-  });
+	if(locationIDsArr != null && locationIDsArr.length>0){
+		for(var i in locationIDsArr){
+			if(parseInt(locationIDsArr[i])==0){
+				locationIDsArr=[];
+			}
+		}
+	}
+	
+	var departmentIdMainList =[];
+	var deptIds =  $("#departmntId1").val();
+
+	if(deptIds != null && deptIds.length >0){
+		departmentIdMainList=deptIds;
+	}
+	
+	if(departmentIdMainList != null && departmentIdMainList.length>0){
+		for(var i in departmentIdMainList){
+			if(parseInt(departmentIdMainList[i])==0){
+				departmentIdMainList=[];
+			}
+		}
+	}
+	
+	var statusArr = [];
+	statusIds =$("#statusLocId1").val();
+	if(statusIds != null && statusIds !=0){
+		statusArr=statusIds;
+	}
+	
+	if(statusArr != null && statusArr.length>0){
+		for(var i in statusArr){
+			if(parseInt(statusArr[i])==0){
+				statusArr=[];
+			}
+		}
+	}
+	
+	var subjArr = [];
+	var subjIds =$("#subjectId1").val();
+	if(subjIds != null && subjIds !=0){
+		subjArr=subjIds;
+	}
+	
+	if(subjArr != null && subjArr.length>0){
+		for(var i in subjArr){
+			if(parseInt(subjArr[i])==0){
+				subjArr=[];
+			}
+		}
+	}
+	
+	  var json = {
+			constituencyIdsList: locationIDsArr, 
+			deptIdsList: departmentIdMainList,
+			statusIdsList: statusArr,
+			subjectIdsList: subjArr,
+			subSubjectIdsList: []
+		};
+	 
+	  $.ajax({              
+		type:'POST',    
+		url: 'getPetitionDetailsForPDFDocument',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+		  xhr.setRequestHeader("Accept", "application/json");
+		  xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	  }).done(function(result){
+		$('#loadingId'+locationId+'').html('');
+		if(result != null){
+		  buildPetitionDetailsForPDF(result);
+		}
+	  });
+}
+
 
   
   function buildPetitionDetailsForPDF(result){
@@ -397,7 +440,7 @@ if(constituencyId != null && constituencyId.length > 0){
 		str+='<div class="row m_top5">'
 					str+='<div class="col-sm-12">'
 						str+='<div class="table-responsive">';
-						str+='<table class="table details-overview_petition_print">';
+						str+='<table class="table details-overview_petition_print" id="worksDetailsTab" >';
 							str+='<thead>';
 								str+='<tr>';
 									//str+='<th style="width:70px; !important;">GIVEN&nbsp;DATE</th>';
@@ -475,39 +518,7 @@ if(constituencyId != null && constituencyId.length > 0){
 										str+='<td>'+result[s].subWorksList[i].subWorksList[k].estimationCost+'</td>';
 									else 
 										str+='<td></td>';
-									/*
-									str+='<td>';
-									if(typeof result[s].subWorksList[i].subWorksList[k].subList2 != 'undefined' && result[s].subWorksList[i].subWorksList[k].subList2 != null && result[s].subWorksList[i].subWorksList[k].subList2.length>0){
-										for(var j in result[s].subWorksList[i].subWorksList[k].subList2){
-											if(j >0)
-												str+=' ,';
-											if(typeof result[s].subWorksList[i].subWorksList[k].subList2[j].designation != 'undefined' && result[s].subWorksList[i].subWorksList[k].subList2[j].designation.length>0)
-												str+=''+result[s].subWorksList[i].subWorksList[k].subList2[j].name+' ('+result[s].subWorksList[i].subWorksList[k].subList2[j].designation+')';
-										}
-									}else{
-										str+='<td></td>';
-									}
-									str+='</td>';
-									
-									if(typeof result[s].subWorksList[i].subWorksList[k].actionMemo != 'undefined' && result[s].subWorksList[i].subWorksList[k].actionMemo != null)
-										str+='<td>'+result[s].subWorksList[i].subWorksList[k].actionMemo+'</td>';
-									else 
-										str+='<td></td>';
-								
-								
-								if(typeof result[s].subWorksList[i].subWorksList[k].goRefNo != 'undefined' && result[s].subWorksList[i].subWorksList[k].goRefNo != null)
-									str+='<td>'+result[s].subWorksList[i].subWorksList[k].goRefNo+'</td>';
-								else 
-									str+='<td></td>';
-								
-								
-								if(typeof result[s].subWorksList[i].subWorksList[k].pendingAt != 'undefined' && result[s].subWorksList[i].subWorksList[k].pendingAt != null)
-									str+='<td>'+result[s].subWorksList[i].subWorksList[k].pendingAt+'</td>';
-								else 
-									str+='<td></td>';
-								*/
-							
-									str+='<td> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" /></td>';
+									str+='<td> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="Please enter priority"/></td>';
 									str+='</tr>';
 								//}
 							}
@@ -523,17 +534,45 @@ if(constituencyId != null && constituencyId.length > 0){
 					str+='</div>';
 				str+='</div>';
 		}
-		
-		
 		str+='<button type="button" class="btn btn-success m_top10 pull-right" onclick="updatePriorityDetailsforPetitionsWorks()">SUBMIT DETAILS</button>';
 		$('#pdfWiswPetitionsView').html(str);
 		
-		$(".prirotyCls").keypress(function (e) {
+		$("#worksDetailsTab").dataTable({
+		"paging":   true,
+		"info":     true,
+		"searching": true,
+		"autoWidth": true,
+		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
+		/*"iDisplayLength": 500,
+		"aaSorting": [[ 0, "desc" ]],
+		"aLengthMenu": [[500,200,100 -1], [ 500,200,100, "All"]],
+		*/
+		"iDisplayLength": 50,
+		"aaSorting": ["7"],
+		"aLengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]],
+		
+		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+		"<'row'<'col-sm-12'tr>>" +
+		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+		buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
+					titleAttr: 'CSV',
+					exportOptions: {
+						columns: ':visible'
+					}
+				}
+			]
+	}); 
+	/*
+	$(".prirotyCls").keypress(function (e) {
 		if (e.which != 8 && e.which != 0 && (e.which < 48 || e.which > 57)) {
 			$(".error_Mgscls").show();
                return false;
 		}
 	   });
+		*/
 		
 		//$('.printViewCls').trigger('click');
  }
@@ -571,15 +610,16 @@ $(document).on("change","#districtCandId1",function()
 function getConstituenciesBySearchTypeAndDistrict(distictId){
 	
 	var json = {
-		filterType :"representee",
+		filterType :"work",
 		 searchLvlVals: distictId,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 deptIdsList:[],
-		 designationIds:null,
+		 designationIds:[],
 		 type:'',
 		 statusIds:[]
-	}  		
+	}  	
+
 	$.ajax({              
 		type:'POST',    
 		url: 'getConstituenciesBySearchTypeAndDistrict',
@@ -679,6 +719,12 @@ function updatePriorityDetailsforPetitionsWorks(){
     );
    }
 }
+
+$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1",function()
+{
+	$("#pdfWiswPetitionsView").html('');
+});	
+
 </script>
 </body>
 </html>

@@ -15,6 +15,7 @@ import com.itgrids.dao.IPmRepresenteeRefDetailsDAO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.model.PmRepresenteeRefDetails;
+import com.itgrids.utils.IConstants;
 @Repository
 public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresenteeRefDetails, Long> implements IPmRepresenteeRefDetailsDAO {
 	@Autowired
@@ -701,7 +702,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" LEFT JOIN pm_dept_designation dd on o.pm_dept_designation_id  =dd.pm_dept_designation_id and dd.is_deleted='N' ");
 		sb.append(" LEFT JOIN pm_officer_designation pod on dd.pm_officer_designation_id = pod.pm_officer_designation_id  ");
 		sb.append(" LEFT JOIN pm_officer off on o.pm_officer_id = off.pm_officer_id   ");
-		sb.append(" where  ");
+		sb.append(" where  sub.pm_status_id not in (:PETITION_COMPLETED_IDS) and " +
+				" sub.pm_brief_lead_id not in (:PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS) and " +
+				" sub.pm_brief_lead_id not in (:PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS) and  ");
 		sb.append(" p.petition_id = sub.petition_id and  ");
 		sb.append(" sub.pm_department_id = d.pm_department_id and  ");
 		sb.append(" p.is_deleted='N' and sub.is_deleted='N' and  ");
@@ -763,6 +766,18 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			query.setParameter("startDate", inputVO.getFromDate());
 			query.setParameter("endDate", inputVO.getEndDate());
 		}
+		
+		if( IConstants.PETITION_COMPLETED_IDS != null &&  IConstants.PETITION_COMPLETED_IDS.size()>0){
+			query.setParameterList("PETITION_COMPLETED_IDS", IConstants.PETITION_COMPLETED_IDS);
+		}
+		
+		if( IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS != null &&  IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.size()>0){
+			query.setParameterList("PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS", IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS);
+		}
+		if( IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS != null &&  IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS.size()>0){
+			query.setParameterList("PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS", IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS);
+		}
+		
 		return query.list();
 	}
 }

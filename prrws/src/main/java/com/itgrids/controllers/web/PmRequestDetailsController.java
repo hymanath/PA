@@ -23,6 +23,7 @@ import com.itgrids.dto.InputVO;
 import com.itgrids.dto.KeyValueVO;
 import com.itgrids.dto.MenuVO;
 import com.itgrids.dto.PetitionHistoryVO;
+import com.itgrids.dto.PetitionPriorityVO;
 import com.itgrids.dto.PetitionTrackingVO;
 import com.itgrids.dto.PetitionsInputVO;
 import com.itgrids.dto.PetitionsPDFVO;
@@ -626,6 +627,20 @@ public class PmRequestDetailsController {
 		    	return pmRequestDetailsService.getPetitionsDetailsForPDFDocument(inputVO);
 		    }
 	     
+	   //public ResultStatus updatePriorityDetailsforPetitionsWorks(PetitionPriorityVO priorityVO)
+	     @RequestMapping(value ="/updatePriorityDetailsforPetitionWorks",method = RequestMethod.POST)
+		    public @ResponseBody ResultStatus updatePriorityDetailsforPetitionWorks(@RequestBody PetitionPriorityVO priorityVO,HttpServletRequest request ) {
+		    	HttpSession session=request.getSession();
+				UserVO userVO = (UserVO) session.getAttribute("USER"); 
+				Long userId =null;
+				if(userVO != null){
+					userId = userVO.getUserId();
+				}else{
+					return null;
+				}
+				 priorityVO.setUserId(userId);
+				return pmRequestDetailsService.updatePriorityDetailsforPetitionsWorks(priorityVO);
+		    }
 	     
 	    // public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(InputVO inputVO,Set<Long> petitionIdsList)
 	     
@@ -649,10 +664,10 @@ public class PmRequestDetailsController {
 	     
 		     @RequestMapping(value ="/pmPriorityUpdation", method = RequestMethod.GET)
 		     public String pmPriorityUpdation(ModelMap model,HttpServletRequest request) {
-		     /* UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
+		      UserVO uservo = (UserVO) request.getSession().getAttribute("USER");
 		      if (uservo==null){
 		        return "petitionsLoginPage";
-		      }*/
+		      }
 		     return "pmPriorityUpdation";
 		     }
 }
