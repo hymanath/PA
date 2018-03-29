@@ -27,6 +27,8 @@ public interface IRwsWorkDAO extends GenericDao<RwsWork, Long>{
 	public List<Object[]> getLocationWiseSchemeWiseAdminWorkDetails(InputVO inputVO, String sanctionedType);
 
 	public List<Object[]> getstatustWiseWorks(InputVO vo, List<String> dbStatuses);
+	
+	public List<Object[]> getAllWorksByScheme(InputVO inputVO, String sanctionedType);
 
 
 }

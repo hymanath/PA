@@ -328,6 +328,49 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		}
 		return query.list();
 	}
+	
+	@Override
+	public List<Object[]> getAllWorksByScheme(InputVO inputVO, String sanctionedType) {
+		
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select count(model.rwsWorkId),'"+sanctionedType+"',model.programCode,model.programName ");
+		sb.append(" from RwsWork model where model.isActive='Y' ");
+		
+	
+		if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_ADMIN_SANC)){
+			sb.append(" and  model.adminDate is not null  ");  
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_ENTRUST)){
+			sb.append(" and  model.entrustedDate is not null ");  
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
+			sb.append(" and  model.technicalSanctionDate is not null ");  
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_GROUNDED)){ // ongoing
+			sb.append(" and  model.groundedDate is not null ");  
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
+			sb.append(" and model.groundedDate is null ");
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
+			sb.append(" and model.completedDate is null and model.groundedDate is not null ");
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_COMPLETION)){
+			sb.append(" and model.completedDate is not null and model.commissionedDate is null ");
+		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_COMMISSIONED)){
+			sb.append(" and model.completedDate is not null and model.commissionedDate is not null ");
+		}
+		if(inputVO.getStartDate() != null && inputVO.getEndDate()!=null){
+			sb.append("and  date(model.adminDate) between :fromDate and :toDate ");
+		}
+		
+		sb.append(" group by model.programCode,model.programName ");
+		
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		if(inputVO.getStartDate() != null && inputVO.getEndDate()!=null){
+			query.setDate("fromDate", inputVO.getStartDate());
+			query.setDate("toDate", inputVO.getEndDate());
+		}  
+		
+		return query.list();
+	}
 
 
 }
