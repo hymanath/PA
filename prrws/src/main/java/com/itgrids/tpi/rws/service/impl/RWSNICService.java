@@ -5057,6 +5057,7 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 			}
 			return returnList;
 		}
+	@SuppressWarnings("static-access")
 	@Override
 	public List<WorksVO> getLocationWiseSchemeWiseWorkDetails(InputVO inputVO) {
 		List<WorksVO> finalList = new ArrayList<WorksVO>();
@@ -5097,6 +5098,10 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 			
 			for (Object[] objects : objList) {
 				WorksVO locationVo =locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[3]));
+				if(!commonMethodsUtilService.isListOrSetValid(locationVo.getSubList())){
+					List<WorksVO> statusList =getstatusTemplateList();
+					locationVo.getSubList().addAll(statusList);
+				}
 				if(locationVo != null){
 					WorksVO matchedVo = getMatchedStatusWorkVO(locationVo.getSubList(),commonMethodsUtilService.getStringValueForObject(objects[2]));
 					if(matchedVo !=null){
@@ -5147,11 +5152,10 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 		Map<Long,WorksVO> locationMap =new HashMap<Long,WorksVO>();
 		try{
 			List<Object[]> locationObjList = null;
-			List<WorksVO> statusList =getstatusTemplateList();
 			if(locationType.equalsIgnoreCase("state")){
 				WorksVO vo = new WorksVO();
-				vo.setLocationId(1l);vo.setLocationName("Andra Pradesh");
-				vo.getSubList().addAll(statusList);
+				vo.setLocationId(1l);
+				vo.setLocationName("Andra Pradesh");
 				locationMap.put(1l, vo);
 			}else if(locationType.equalsIgnoreCase("district")){
 				locationObjList = rwsDistrictDAO.getAllDistricts();
@@ -5167,7 +5171,6 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 						vo = new WorksVO();
 						vo.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[0]));
 						vo.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-						vo.getSubList().addAll(statusList);
 						locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[0]), vo);
 					}
 					
