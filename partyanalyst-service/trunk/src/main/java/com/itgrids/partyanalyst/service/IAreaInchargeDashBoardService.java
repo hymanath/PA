@@ -13,5 +13,7 @@ public interface IAreaInchargeDashBoardService {
 	public ResultStatus savingAssigningBooths(final Long cadreId, final List<Long> boothIds);
 	public AreaInchargeVO getAssignedAndUnAssignedBooths();
 	public AreaInchargeVO editAssignedInchargeDetails(Long tdpCadreId,List<Long> boothIds);
+	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId);
+	public String removeAreaIncharge(Long candidateId);
 	
 }
