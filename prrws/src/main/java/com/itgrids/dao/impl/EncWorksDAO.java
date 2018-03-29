@@ -31,7 +31,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 	}
 
 	@Override
-	public List<Object[]> getWorksData(Date fromDate,Date toDate, String status,List<Long> schemeIds) {
+	public List<Object[]> getWorksData(Date fromDate,Date toDate, String status,List<Long> schemeIds,String locationType,Long locationValue) {
 		// 0-workid, 1-workName,2-schemeId,3-schemeName , 4-agrementAmount,5-mandalId,6-mandalName,7-districtId,8-districtName,9-constituencyId,10-constituencyname
 		//11-targetDate,12-status,13-groundedDate 14-completionDate, 15-no of days
 		StringBuilder sb = new StringBuilder();
@@ -55,6 +55,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		if(status.equalsIgnoreCase("Grounded") || status.equalsIgnoreCase("Completed")){
 			sb.append(" and model.work_status <>'Not Grounded'");
 		}
+		
 		if(status.equalsIgnoreCase("Grounded")){
 			sb.append(" and completion_date is null and grounded_date is not null ");
 		}else if(status.equalsIgnoreCase("Completed")){
@@ -62,11 +63,22 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}else if(status.equalsIgnoreCase("Not Grounded")){
 			sb.append(" and model.entrusted_date is not null and model.grounded_date is null ");
 		}
+		
 		if(schemeIds !=null && schemeIds.size()>0){
 			sb.append(" and model.grant_id in(:schemeIds) ");
 		}
+		
 		if(fromDate!= null && toDate!=null){
 			sb.append(" and model.admin_sanction_date between :fromDate and :toDate ");
+		}
+		if(locationType!= null && locationType.length()>0 && locationValue !=null && locationValue>0  ){
+			if(locationType.equalsIgnoreCase("district")){
+				sb.append(" and model.district_id =:locationValue");
+			}else if(locationType.equalsIgnoreCase("constituency")){
+				sb.append(" and model.assembly_id =:locationValue");
+			}else if(locationType.equalsIgnoreCase("mandal")){
+				sb.append(" and model.mandal_id=:locationValue");
+			}
 		}
 		Query query= getSession().createSQLQuery(sb.toString())
 				.addScalar("workId").addScalar("workName")
@@ -86,6 +98,9 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}
 		if(schemeIds !=null && schemeIds.size()>0){
 			query.setParameterList("schemeIds", schemeIds);
+		}
+		if(locationType!= null && locationType.length()>0 && locationValue !=null && locationValue>0 && !locationType.equalsIgnoreCase("state")){
+			query.setParameter("locationValue", locationValue);
 		}
 		return query.list();
 	}
@@ -243,7 +258,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 			sb.append(" and mandal_id=:locationValue ");
 		}
 		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
-			sb.append(" and model.grant_id in(:schemeIds) ");
+			sb.append(" and ew.grant_id in(:schemeIds) ");
 		}
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("workId").addScalar("workName")
@@ -276,5 +291,41 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		 return query.list();
 	}
 	
+	@Override
+	public List<Object[]> getAllSchemeWiseWorkDetails(InputVO inputVO, String StatusType) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select count(model.encWorkId),'"+StatusType+"', model.grantid,model.grantName ");
+		
+		sb.append(" from EncWorks model ");
+		if((inputVO.getStartDate() !=null && inputVO.getEndDate() !=null )|| StatusType !=null ){
+			sb.append(" where ");
+			
+		}
+		if( inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
+			sb.append(" adminSanctionDate between :startdate and  :endDate ");
+		}
+		if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
+			sb.append(" and techSanctionDate is not null ");
+		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_ENTRUST)){
+			sb.append(" and entrustedDate is not null ");
+		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
+			sb.append(" and groundedDate is not null ");
+		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
+			sb.append(" and entrustedDate is not null and groundedDate is null ");
+		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
+			sb.append(" and completionDate is null and groundedDate is not null ");
+		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_COMPLETION)){
+			sb.append(" and completionDate is not null  ");
+		}
+			sb.append(" group by model.grantid ");
+	
+		Query query = getSession().createQuery(sb.toString());
+		if( inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
+			query.setDate("startdate", inputVO.getStartDate());
+			query.setDate("endDate", inputVO.getEndDate());
+		}
+		return query.list();
+	}
 
 }
