@@ -307,6 +307,10 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 				if(cadreTypeInfoObj !=null && cadreTypeInfoObj.size()>0){
 					for (Object[] objects : cadreTypeInfoObj) {
 						if(objects[2] !=null){
+							
+							statusJson.put("membershipId", membershipId);
+							statusJson.put("status", "success");
+							
 							if((Long)objects[2] == 3l){ // stake holders
 								statusJson.put("isAssignee", "true");
 								statusJson.put("isAgent", "true");
@@ -321,8 +325,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 							statusJson.put("isAllowedToAddAlert", objects[4] !=null && objects[4].toString().trim().equalsIgnoreCase("Y")?"true":"false");
 						}
 					}
-					statusJson.put("membershipId", membershipId);
-					statusJson.put("status", "success");
+					
 				}else{
 					statusJson.put("membershipId", "");
 					statusJson.put("status", "failed");
