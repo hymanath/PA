@@ -97,11 +97,11 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		this.cadreDetailsService = cadreDetailsService;
 	}
 
-	public AreaInchargeVO getAreaInchargeDetails(String voterIdNO,String mobileNo,String memberShipId){
+	public AreaInchargeVO getAreaInchargeDetails(Long voterId,String mobileNo,String memberShipId){
 		AreaInchargeVO inchargeVo = new AreaInchargeVO();
 		try{
 			//1-first name,2-relativeName,3-age,4-gender,5-houseNo,6-tehsilId,7-tehsilName,8-casteName,9-image
-			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterIdNO,mobileNo,memberShipId);
+			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterId,mobileNo,memberShipId);
 			
 			if(inchargeDetails != null && inchargeDetails.size()>0){
 				for(Object[] param: inchargeDetails){
@@ -345,7 +345,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	public AreaInchargeVO getAreaInchargesStatusWiseCount(Long levelId,Long levelValue){
 		AreaInchargeVO finalVo =new AreaInchargeVO();
 		try{
-			//0-locationId,1-inActive
+			//0-locationId,1-inActive,2-locationName
 			List<Object[]> totalList = areaInchargeLocationDAO.getAreaInchargesStatusWiseCount(levelId,levelValue);
 			  finalVo = settingAssignedAndUnAssignedCount(totalList,finalVo);
 			if(finalVo != null){
@@ -373,6 +373,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 						unAssignCount=unAssignCount+1l;
 						finalVo.setUnAssignedCount(unAssignCount);
 					}
+					finalVo.setName(commonMethodsUtilService.getStringValueForObject(param[2]));
 					total=total+1l;
 					finalVo.setTotal(total);
 				}
