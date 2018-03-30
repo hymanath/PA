@@ -281,28 +281,15 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		int status=areaInchargeMemberDAO.deleteAreaInchargeAssignBooths(candidateId,boothId);
 		try{
 			if(status >0){
-				result ="success";
+				result = "success";
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			result ="failure";
+			result = "failure";
 		}
 		return result;
 		
 	}
-  public String removeAreaIncharge(Long cadreId){
-	String result = null;
-	int status=areaInchargeMemberDAO.removeAreaIncharge(cadreId);
-	try{
-		if(status >0){
-			result ="success";
-		}
-	}catch(Exception e){
-		e.printStackTrace();
-		result ="failure";
-	}
-	return result;
-}
 	public List<AreaInchargeVO> getAreaInchargeAssignedBoothDetails(Long levelId,Long levelValue){
 		List<AreaInchargeVO> finalList = new ArrayList<AreaInchargeVO>();
 		try{
