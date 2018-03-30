@@ -239,8 +239,12 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}
 		if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
 			sb.append(" and ew.tech_sanction_date is not null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notTechSanctioned")){
+			sb.append(" and ew.tech_sanction_date is null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_ENTRUST)){
 			sb.append(" and ew.entrusted_date is not null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notEntrusted")){
+			sb.append(" and ew.entrusted_date is null  ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
 			sb.append(" and ew.grounded_date is not null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
