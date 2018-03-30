@@ -1055,7 +1055,18 @@ $(window,document).on('resize', function(){
 												}	
 											}
 										}
-									}
+									}else{
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+											tableView+='<td> - </td>';tableView+='<td> - </td>';tableView+='<td> - </td>';
+										}
 									tableView+='</tr>';
 								}else if(blockType == "exceededOverview"){
 									tableView+='<tr>';
