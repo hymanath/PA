@@ -817,7 +817,7 @@ public class PrENCService implements IPrENCService {
 			} else if (locationType != null && locationType.trim().equalsIgnoreCase("constituency")){
 				locationIdStr = workDtlsVO.getConstituencyCode();
 			} else if (locationType != null && locationType.trim().equalsIgnoreCase("mandal")){
-				locationIdStr = workDtlsVO.getDistrictCode().concat(workDtlsVO.getMandalCode());
+				locationIdStr =workDtlsVO.getMandalCode();
 			}
 		} catch (Exception e) {
 			LOG.error("Exception occured at getLocationIdByLocationType() in RWSNICService class",e);
