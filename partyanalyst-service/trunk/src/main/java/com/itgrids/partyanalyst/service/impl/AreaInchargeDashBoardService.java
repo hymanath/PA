@@ -97,14 +97,15 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		this.cadreDetailsService = cadreDetailsService;
 	}
 
-	public AreaInchargeVO getAreaInchargeDetails(Long voterId,String mobileNo,String memberShipId){
-		AreaInchargeVO inchargeVo = new AreaInchargeVO();
+	public List<AreaInchargeVO> getAreaInchargeDetails(Long voterId,String mobileNo,String memberShipId){
+		List<AreaInchargeVO> finalList = new ArrayList<AreaInchargeVO>();
 		try{
 			//1-first name,2-relativeName,3-age,4-gender,5-houseNo,6-tehsilId,7-tehsilName,8-casteName,9-image
 			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterId,mobileNo,memberShipId);
 			
 			if(inchargeDetails != null && inchargeDetails.size()>0){
 				for(Object[] param: inchargeDetails){
+					AreaInchargeVO inchargeVo = new AreaInchargeVO();
 					inchargeVo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					inchargeVo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					inchargeVo.setRelativeName(commonMethodsUtilService.getStringValueForObject(param[2]));
@@ -115,20 +116,21 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 					inchargeVo.setAddress(inchargeVo.getHouseNo()+" "+inchargeVo.getTehsilName());
 					inchargeVo.setCaste(commonMethodsUtilService.getStringValueForObject(param[8]));
 					inchargeVo.setImage(commonMethodsUtilService.getStringValueForObject(param[9]));
+					List<String> isActive = areaInchargeMemberDAO.getActiveOrInActiveInchageDetails(inchargeVo.getId());
+					if(isActive.contains("Y")){
+						inchargeVo.setIsActive("Y");
+					}else{
+						inchargeVo.setIsActive("N");
+					}
+					finalList.add(inchargeVo);
 				}
-			}
-			String isActive = areaInchargeMemberDAO.getActiveOrInActiveInchageDetails(inchargeVo.getId());
-			if(isActive != null && isActive.equalsIgnoreCase("Y")){
-				inchargeVo.setIsActive(isActive);
-			}else{
-				inchargeVo.setIsActive("N");
 			}
 			
 		}catch(Exception e){
 			LOG.error("Exception occurred at getAreaInchargeDetails() of AreaInchargeDashBoardService class ",e);
 		}
 		
-		return inchargeVo;
+		return finalList;
 		
 	}
 	
@@ -323,6 +325,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 					  inchargeVo.setGender(commonMethodsUtilService.getStringValueForObject(param[4]));
 					  inchargeVo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 					  inchargeVo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[6]));
+					  assignedBooths.clear();
 					  assignedBooths.add(commonMethodsUtilService.getLongValueForObject(param[7]));
 					  inchargeVo.setAssignIds(assignedBooths);
 					  inchargeVo.setImage(commonMethodsUtilService.getStringValueForObject(param[8]));

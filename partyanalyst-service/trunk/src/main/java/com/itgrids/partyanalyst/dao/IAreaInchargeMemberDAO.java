@@ -8,7 +8,7 @@ import org.appfuse.dao.GenericDao;
 import com.itgrids.partyanalyst.model.AreaInchargeMember;
 
 public interface IAreaInchargeMemberDAO extends GenericDao<AreaInchargeMember, Long>{
-	public String getActiveOrInActiveInchageDetails(Long cadreId);
+	public List<String> getActiveOrInActiveInchageDetails(Long cadreId);
 	public List<Object[]> getAssignedCadreList(String status);
 	public List<Long> getAssignedInchargeBooths(Long cadreId);
 	public int deleteAreaInchargeAssignBooths(Long candidateId,Long boothId);
