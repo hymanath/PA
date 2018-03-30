@@ -6961,6 +6961,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						String pendingAtOfficerName=commonMethodsUtilService.getStringValueForObject(param[24]);
 						Long deptId = commonMethodsUtilService.getLongValueForObject(param[25]);
 						String deptName =commonMethodsUtilService.getStringValueForObject(param[26]);
+						Long priority = commonMethodsUtilService.getLongValueForObject(param[27]);
 						
 						if(!workIdsList.contains(workId)){
 							totalEstimationCost = totalEstimationCost+(Double.valueOf(workCost));
@@ -7006,6 +7007,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						vo.setWorkDescription(desc);
 						vo.setEstimationCost(workCost);
 						vo.setPendingAt(pendingAtOfficerName);
+						vo.setPriority(priority);
 						
 						boolean isRepDetailsMapped = false;
 						boolean isRefDetailsMapped = false;
@@ -7222,6 +7224,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
  				if(priorityVO.getUserId() != null && priorityVO.getUserId().longValue()>0L){
 					if(priorityVO != null && commonMethodsUtilService.isListOrSetValid(priorityVO.getWorksList())){
 						for (PetitionPriorityVO workVO : priorityVO.getWorksList()) {
+							workVO.setUserId(priorityVO.getUserId());
 							int tempCount = pmSubWorkDetailsDAO.updatePetitionSubWorkPriorityDetails(workVO,dateUtilService.getCurrentDateAndTime());
 							updatedRecorsCount=updatedRecorsCount+tempCount;
 						}

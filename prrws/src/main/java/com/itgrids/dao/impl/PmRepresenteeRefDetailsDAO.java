@@ -678,7 +678,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" st.state_name as state_name,dis.district_name as district_name,c.name as cname ,t.tehsil_name as tehsil_name, p1.panchayat_name as panchayat_name, ");
 		sb.append(" sub.grievance_description as grievance_description ,sub.cost_estimation as cost_estimation,repd1.designation as repDesignation,rep.name as repname ,  ");//21
 		sb.append(" refd.designation as refDesignation,rcand.name as refName ,off.name as officerName , ");//24
-		sb.append(" d.pm_department_id as pm_department_id, d.department as departmentName ");//25,26
+		sb.append(" d.pm_department_id as pm_department_id, d.department as departmentName,sub.priority as priority ");//25,26,27
 		sb.append(" from  ");
 		sb.append(" pm_sub_work_details sub  ");
 		sb.append(" LEFT JOIN pm_department d  on d.pm_department_id = sub.pm_department_id and d.is_deleted='N' ");
