@@ -29,6 +29,7 @@ import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.service.IPrENCService;
 import com.itgrids.service.IWebserviceHandlerService;
 import com.itgrids.service.integration.external.WebServiceUtilService;
@@ -37,8 +38,6 @@ import com.itgrids.utils.DateUtilService;
 import com.itgrids.utils.IConstants;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
-
-import sun.awt.SunHints.LCDContrastKey;
 
 @Service
 @Transactional
@@ -1123,7 +1122,7 @@ public class PrENCService implements IPrENCService {
 	public List<EncWorksVO> getLocationWiseEncWorksDetails(InputVO inputVO) {
 		List<EncWorksVO> finalList= new ArrayList<EncWorksVO>();
 		try{
-			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() >0){
 				inputVO.setStartDate(sdf.parse(inputVO.getFromDateStr()));
 				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
@@ -1134,34 +1133,44 @@ public class PrENCService implements IPrENCService {
 				inputVO.setEndDate(sdf.parse("01-04-"+nextYear));
 				
 			}
+			Map<String,EncWorksVO> workMap = new HashMap<String,EncWorksVO>();
 			convertStringListToLong(inputVO);
 			List<Object[]>  workAdminsancObjLst = encWorksDAO.getSchemeWiseOnclickWorkDetails(inputVO);
 						
 			for (Object[] objects : workAdminsancObjLst) {
-				EncWorksVO vo = new EncWorksVO();
-				vo.setWorkId(commonMethodsUtilService.getStringValueForObject(objects[0]));
-				vo.setWorkName(commonMethodsUtilService.getStringValueForObject(objects[1]));
-				vo.setSanctionedAmount(commonMethodsUtilService.getLongValueForObject(objects[2]));
-				vo.setGrantId(commonMethodsUtilService.getLongValueForObject(objects[3]));
-				vo.setGrantName(commonMethodsUtilService.getStringValueForObject(objects[4]));
-				vo.setSubGrantId(commonMethodsUtilService.getLongValueForObject(objects[5]));
-				vo.setSubGrantName(commonMethodsUtilService.getStringValueForObject(objects[6]));
-				vo.setAdminDate(commonMethodsUtilService.getStringValueForObject(objects[7]));
-				vo.setTargetDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
-				vo.setGroundedDate(commonMethodsUtilService.getStringValueForObject(objects[9]));
-				vo.setCompletedDate(commonMethodsUtilService.getStringValueForObject(objects[10]));
-				vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[11]));
-				vo.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[12]));
-				vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[13]));
-				vo.setConstituencyname(commonMethodsUtilService.getStringValueForObject(objects[14]));
-				vo.setMandalCode(commonMethodsUtilService.getLongValueForObject(objects[15]));
-				vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[16]));
-				vo.setPanchayathId(commonMethodsUtilService.getLongValueForObject(objects[17]));
-				vo.setPanchaythName(commonMethodsUtilService.getStringValueForObject(objects[18]));
-				vo.setHabCode(commonMethodsUtilService.getStringValueForObject(objects[19]));
-				vo.setHabName(commonMethodsUtilService.getStringValueForObject(objects[20]));
-				finalList.add(vo);
+				EncWorksVO vo =workMap.get(commonMethodsUtilService.getStringValueForObject(objects[0]));
+				if(vo ==null){
+					vo = new EncWorksVO();
+					vo.setWorkId(commonMethodsUtilService.getStringValueForObject(objects[0]));
+					vo.setWorkName(commonMethodsUtilService.getStringValueForObject(objects[1]));
+					vo.setSanctionedAmount(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					vo.setGrantId(commonMethodsUtilService.getLongValueForObject(objects[3]));
+					vo.setGrantName(commonMethodsUtilService.getStringValueForObject(objects[4]));
+					vo.setSubGrantId(commonMethodsUtilService.getLongValueForObject(objects[5]));
+					vo.setSubGrantName(commonMethodsUtilService.getStringValueForObject(objects[6]));
+					vo.setAdminDate(commonMethodsUtilService.getStringValueForObject(objects[7]));
+					vo.setTargetDate(commonMethodsUtilService.getStringValueForObject(objects[8]));
+					vo.setGroundedDate(commonMethodsUtilService.getStringValueForObject(objects[9]));
+					vo.setCompletedDate(commonMethodsUtilService.getStringValueForObject(objects[10]));
+					vo.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[11]));
+					vo.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[12]));
+					vo.setConstituencyId(commonMethodsUtilService.getLongValueForObject(objects[13]));
+					vo.setConstituencyname(commonMethodsUtilService.getStringValueForObject(objects[14]));
+					vo.setMandalCode(commonMethodsUtilService.getLongValueForObject(objects[15]));
+					vo.setMandalName(commonMethodsUtilService.getStringValueForObject(objects[16]));
+					vo.setPanchayathId(commonMethodsUtilService.getLongValueForObject(objects[17]));
+					vo.setPanchaythName(commonMethodsUtilService.getStringValueForObject(objects[18]));
+					vo.setHabCode(commonMethodsUtilService.getStringValueForObject(objects[19]));
+					vo.setHabName(commonMethodsUtilService.getStringValueForObject(objects[20]));
+					workMap.put(commonMethodsUtilService.getStringValueForObject(objects[0]), vo);
+				}else{
+					String habCode=vo.getHabCode()+", \n"+commonMethodsUtilService.getStringValueForObject(objects[19]).trim();
+					String habName =vo.getHabName().trim()+", \n"+commonMethodsUtilService.getStringValueForObject(objects[20]).trim();
+					vo.setHabCode(habCode);vo.setHabName(habName);
+				}
+				
 			}
+			finalList.addAll(workMap.values());
 		}catch (Exception e) {
 			LOG.error("Exception raised at PrEncService - getLocationWiseEncWorksDetails", e);
 		}
@@ -1200,49 +1209,71 @@ public class PrENCService implements IPrENCService {
 			}
 			
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
+			Map<String,IdNameVO> workMap = new HashMap<String,IdNameVO>();
 			
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 				// 0-workid, 1-workName,2-schemeId,3-schemeName, 4-agrementAmount,5-mandalId,6-mandalName,7-districtId,8-districtName,9-constituencyId,10-constituencyname
 				//11-targetDate,12-status,13-groundedDate/completionDate, 15-no of days
 				for (Object[] param : worksdata) {
-					IdNameVO workDetailsVO = new IdNameVO();
-					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
-					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
-					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
-					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[7]));
-					workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
-					workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[9]));
-					workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
-					workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[5]));
-					workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[6]));
-					workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[4]));
-					workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[11]));
-					workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[12]));
-					workDetailsVO.setGroundedDate(commonMethodsUtilService.getStringValueForObject(param[13]));
-					workDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[17]));
-					workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[18]));
-					
-					
-					if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("Grounded")){
-						workDetailsVO.setCompletionDate(currentDate);
-					}else if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("completed") && 
-							commonMethodsUtilService.getStringValueForObject(param[14]) != null){
-						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[14]));
+					IdNameVO workDetailsVO = workMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
+					if(workDetailsVO == null){
+						workDetailsVO = new IdNameVO();
+						workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+						workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
+						workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[7]));
+						workDetailsVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[8]));
+						workDetailsVO.setConstituencyCode(commonMethodsUtilService.getStringValueForObject(param[9]));
+						workDetailsVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[10]));
+						workDetailsVO.setMandalCode(commonMethodsUtilService.getStringValueForObject(param[5]));
+						workDetailsVO.setMandalName(commonMethodsUtilService.getStringValueForObject(param[6]));
+						workDetailsVO.setSanctionedAmount(commonMethodsUtilService.getDoubleValueForObject(param[4]));
+						workDetailsVO.setTargetDate(commonMethodsUtilService.getStringValueForObject(param[11]));
+						workDetailsVO.setWorkStatus(commonMethodsUtilService.getStringValueForObject(param[12]));
+						workDetailsVO.setGroundedDate(commonMethodsUtilService.getStringValueForObject(param[13]));
+						workDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[17]));
+						workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[18]));
+						
+						
+						if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("Grounded")){
+							workDetailsVO.setCompletionDate(currentDate);
+						}else if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("completed") && 
+								commonMethodsUtilService.getStringValueForObject(param[14]) != null){
+							workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[14]));
+						}
+						
+						workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[15]));
+	                    workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
+	                  
+						// calculating noOfDays between two difference date
+						
+	                /*    if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
+	                    	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
+	                    		finalList.add(workDetailsVO);
+	                    	}
+	                    }else{
+	                    	workList.add(workDetailsVO);
+	                    }*/
+	                    workMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), workDetailsVO);
+					}else{
+						String habCode=workDetailsVO.getHabitationCode()+", \n"+commonMethodsUtilService.getStringValueForObject(param[17]).trim();
+						String habName =workDetailsVO.getHabitationName().trim()+", \n"+commonMethodsUtilService.getStringValueForObject(param[18]).trim();
+						workDetailsVO.setHabitationCode(habCode);workDetailsVO.setHabitationName(habName);
 					}
 					
-					workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[15]));
-                    workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
-                  
-					// calculating noOfDays between two difference date
-					
-                    if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
-                    	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
-                    		finalList.add(workDetailsVO);
-                    	}
-                    }else{
-                    	workList.add(workDetailsVO);
-                    }
+				}
+			}
+			for (String workId : workMap.keySet()) {
+				IdNameVO workDetailsVO = workMap.get(workId);
+				if(workDetailsVO !=null){
+					 if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
+	                    	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
+	                    		finalList.add(workDetailsVO);
+	                    	}
+	                    }else{
+	                    	workList.add(workDetailsVO);
+	                    }
 				}
 			}
 			if (commonMethodsUtilService.isListOrSetValid(workList)) {
@@ -1281,10 +1312,12 @@ public class PrENCService implements IPrENCService {
 			
 			String currentDate = new DateUtilService().getCurrentDateInStringFormatYYYYMMDD();
 			List<IdNameVO> workList = new ArrayList<IdNameVO>();
+			Map<String,IdNameVO> workMap = new HashMap<String,IdNameVO>();
 			if(commonMethodsUtilService.isListOrSetValid(worksdata)){
 				
 				for (Object[] param : worksdata) {
-					IdNameVO workDetailsVO = new IdNameVO();
+					IdNameVO workDetailsVO = workMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
+					if(workDetailsVO == null){
 					
 					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
 					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
@@ -1302,26 +1335,30 @@ public class PrENCService implements IPrENCService {
 					workDetailsVO.setHabitationCode(commonMethodsUtilService.getStringValueForObject(param[17]));
 					workDetailsVO.setHabitationName(commonMethodsUtilService.getStringValueForObject(param[18]));
 
-					
-					if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("Grounded")){
-						workDetailsVO.setCompletionDate(currentDate);
-					}else if(commonMethodsUtilService.getStringValueForObject(param[12]).trim().equalsIgnoreCase("completed") && 
-							commonMethodsUtilService.getStringValueForObject(param[14]) != null){
-						workDetailsVO.setCompletionDate(commonMethodsUtilService.getStringValueForObject(param[14]));
-					}
-					
 					workDetailsVO.setNoOfDays(commonMethodsUtilService.getLongValueForObject(param[15]));
                     workDetailsVO.setName(getRangeLevelNameBasedOnDays(workDetailsVO.getNoOfDays()));
-					
-                    if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
+                    
+                    workMap.put(commonMethodsUtilService.getStringValueForObject(param[0]), workDetailsVO);
+				}else{
+					String habCode=workDetailsVO.getHabitationCode()+", \n"+commonMethodsUtilService.getStringValueForObject(param[17]).trim();
+					String habName =workDetailsVO.getHabitationName().trim()+", \n"+commonMethodsUtilService.getStringValueForObject(param[18]).trim();
+					workDetailsVO.setHabitationCode(habCode);workDetailsVO.setHabitationName(habName);
+				}
+				
+			}
+		}
+		for (String workId : workMap.keySet()) {
+			IdNameVO workDetailsVO = workMap.get(workId);
+			if(workDetailsVO !=null){
+				 if(inputVO.getExceededDuration().isEmpty() || inputVO.getExceededDuration().length() <= 0){
                     	if(workDetailsVO.getName()!=null && !workDetailsVO.getName().isEmpty() && workDetailsVO.getName().length()>0){
                     		finalList.add(workDetailsVO);
                     	}
                     }else{
                     	workList.add(workDetailsVO);
                     }
-				}
 			}
+		}
 			if (commonMethodsUtilService.isListOrSetValid(workList)) {
 				for (IdNameVO VO : workList) {
 					if(VO.getName().equalsIgnoreCase(inputVO.getExceededDuration())){
@@ -1438,5 +1475,45 @@ public class PrENCService implements IPrENCService {
 			LOG.error("Exception raised at PrEncService - getLocationWiseEncWorksInformation", e);
 		}
 		return finalList;
+	}
+
+	@Override
+	public List<KeyValueVO> getConstituenciesForDistrict(InputVO inputVo){
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			List<Object[]> constituencies = constituencyDAO.getPrEncConstituencies(inputVo.getLocationId());
+			
+			if(constituencies != null && constituencies.size() > 0){
+				for (Object[] objects : constituencies) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getConstituenciesForDistrict() method, Exception - ",e);
+		}
+		return voList;
+	}
+
+	@Override
+	public List<KeyValueVO> getPrEncDistricts(InputVO inputVO) {
+		
+		List<KeyValueVO> voList = new ArrayList<KeyValueVO>(0);
+		try {
+			List<Object[]> constituencies = districtDAO.getEncDistricts();
+			if(constituencies != null && constituencies.size() > 0){
+				for (Object[] objects : constituencies) {
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey((Long)objects[0]);
+					vo.setValue(objects[1].toString());
+					voList.add(vo);
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception Occured in getConstituenciesForDistrict() method, Exception - ",e);
+		}
+		return voList;
 	}
 }
