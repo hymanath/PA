@@ -93,31 +93,19 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 	}
 	public int deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" update AreaInchargeMember model set model.isActive='N',model.isDeleted='Y' ");
-		if(candidateId !=null && candidateId.longValue()>0l){
+		sb.append(" update AreaInchargeMember model set model.isActive = 'N',model.isDeleted = 'Y' ");
+		if(candidateId != null && candidateId.longValue()>0l){
 			sb.append(" where model.tdpCadreId =:candidateId ");
 		}
-		if(boothId !=null && boothId.longValue()>0l){
+		if(boothId != null && boothId.longValue()>0l && boothId != 0){
 			sb.append("and model.areaInchargeLocationId =:boothId");
 		}
 		Query queObject = getSession().createQuery(sb.toString());
-		if(candidateId!=null && candidateId.longValue()>0l){
+		if(candidateId != null && candidateId.longValue()>0l){
 		queObject.setLong("candidateId",candidateId);
 		}
-		if(boothId!=null && boothId.longValue()>0l){
+		if(boothId != null && boothId.longValue()>0l && boothId != 0){
 			queObject.setLong("boothId",boothId);
-			}
-		return queObject.executeUpdate();
-	}
-	public int removeAreaIncharge(Long cadreId){
-		StringBuilder sb = new StringBuilder();
-		sb.append(" update AreaInchargeMember model set model.isActive='N',model.isDeleted='Y' ");
-		if(cadreId !=null && cadreId.longValue()>0l){
-			sb.append(" where model.tdpCadreId =:cadreId ");
-		}
-		Query queObject = getSession().createQuery(sb.toString());
-		if(cadreId!=null && cadreId.longValue()>0l){
-			queObject.setLong("cadreId",cadreId);
 			}
 		return queObject.executeUpdate();
 	}

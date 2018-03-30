@@ -14,7 +14,6 @@ public interface IAreaInchargeDashBoardService {
 	public AreaInchargeVO getAssignedAndUnAssignedBooths(Long levelId,Long levelValue);
 	public AreaInchargeVO editAssignedInchargeDetails(Long tdpCadreId,Long levelId,Long levelValue);
 	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId);
-	public String removeAreaIncharge(Long candidateId);
 	public List<AreaInchargeVO> getAreaInchargeAssignedBoothDetails(Long levelId,Long levelValue);
 	public AreaInchargeVO getAreaInchargesStatusWiseCount(Long levelId,Long levelValue);
 	
