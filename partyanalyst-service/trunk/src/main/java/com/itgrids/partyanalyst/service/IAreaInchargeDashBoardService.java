@@ -9,7 +9,7 @@ import com.itgrids.partyanalyst.dto.ResultStatus;
 
 
 public interface IAreaInchargeDashBoardService {
-	public AreaInchargeVO getAreaInchargeDetails(String voterId,String mobileNo,String memberShipId);
+	public AreaInchargeVO getAreaInchargeDetails(Long voterId,String mobileNo,String memberShipId);
 	public ResultStatus savingAssigningBooths(final Long cadreId, final List<Long> boothIds);
 	public AreaInchargeVO getAssignedAndUnAssignedBooths(Long levelId,Long levelValue);
 	public AreaInchargeVO editAssignedInchargeDetails(Long tdpCadreId,Long levelId,Long levelValue);

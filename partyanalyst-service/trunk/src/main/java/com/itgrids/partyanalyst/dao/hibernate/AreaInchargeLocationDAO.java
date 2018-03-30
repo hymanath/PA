@@ -62,7 +62,13 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 	}
 	public List<Object[]> getAreaInchargesStatusWiseCount(Long levelId,Long levelValue){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged from  AreaInchargeLocation AIL where  ");
+		  sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged " );
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+		  sb.append(",AIL.address.constituency.name " );
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			sb.append(" ,AIL.address.district.districtName ");
+		}
+		  sb.append("from  AreaInchargeLocation AIL where ");
 		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
 			sb.append(" AIL.address.district.districtId =:levelValue "); 
 		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
