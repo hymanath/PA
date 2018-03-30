@@ -80,7 +80,7 @@ function getAllFiniancialYears(){
 				$("#financialYearId").append("<option value="+result[i].financialYear+">"+result[i].financialYear+"</option>");
 				
 			}
-			$("#financialYearId").val('0');
+			$("#financialYearId").val('2000-2050');
 		}
 		
 		$("#financialYearId").chosen();
