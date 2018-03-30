@@ -8,6 +8,7 @@ import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
 
 public interface IPrENCService {
 
@@ -36,5 +37,9 @@ public interface IPrENCService {
 	public List<GrantVO> getPRProgramsCodeAndName(InputVO inputVO);
 
 	public List<EncWorksVO> gettAllEncWorksByScheme(InputVO inputVO);
+
+	public List<KeyValueVO> getPrEncDistricts(InputVO inputVO);
+
+	public List<KeyValueVO> getConstituenciesForDistrict(InputVO inputVo);
 
 }
