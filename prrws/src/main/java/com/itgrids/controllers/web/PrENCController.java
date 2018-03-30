@@ -19,6 +19,7 @@ import com.itgrids.dto.EncWorksVO;
 import com.itgrids.dto.GrantVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InputVO;
+import com.itgrids.dto.KeyValueVO;
 import com.itgrids.service.IPrENCService;
 import com.itgrids.tpi.rws.service.IRwsWorksSchedulerService;
 
@@ -211,5 +212,28 @@ public class PrENCController {
 	  }
 	 return null;
 	}
+	
+	
+	@PostMapping("/getPrEncDistricts")
+	public @ResponseBody List<KeyValueVO> getPrEncDistricts(@RequestBody InputVO inputVO) {
+	  try {
+			 return prENCService.getPrEncDistricts(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getRwsProgramsCodeAndName - getRwsProgramsCodeAndName controller", e);
+	  }
+	 return null;
+	}
+	
+	@PostMapping("/getPrEncConstituencyByDistrict")
+	public @ResponseBody List<KeyValueVO> getPrEncConstituencyByDistrict(@RequestBody InputVO inputVO) {
+	  try {
+			 return prENCService.getConstituenciesForDistrict(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getRwsProgramsCodeAndName - getRwsProgramsCodeAndName controller", e);
+	  }
+	 return null;
+	}
+	
+	
 }
 	
