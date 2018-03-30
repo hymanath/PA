@@ -1666,7 +1666,6 @@ $(document).on("click",".schemsClickView",function(){
 	var districtVal=$(this).attr("attr_district_val");
 	var locationName=$(this).attr("attr_location_name");
 	
-alert(districtVal);
 	if(workStatus == "exccedSchemes"){
 		$("#modalHablitationDivId").modal('show');
 		$("#modalSchemsTable").html('');
@@ -2324,7 +2323,7 @@ function getOnClickExceedWorkDetails(assetType,locationType,exceededDuration,loc
 function buildOnclickWorkSchemsExccedDetails(result,exceededDuration){
 	var tableView='';
 	tableView+='<div class="table-responsive">';
-	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
+	tableView+='<table class="table table-bordered" id="dataTableSchems13">';
 		tableView+='<thead>';
 		tableView+='<tr>';
 				tableView+='<th class="text-capital">Work CODE</th>';
@@ -2378,7 +2377,7 @@ function buildOnclickWorkSchemsExccedDetails(result,exceededDuration){
 	tableView+='</table>';
 	tableView+='</div>';
 	$("#modalSchemsExceedTable").html(tableView);
-	$("#dataTableSchems1").dataTable({
+	$("#dataTableSchems13").dataTable({
 		"order": [ 0, 'desc' ],
 		"iDisplayLength" : 15,
 		"aLengthMenu": [[15, 30, 50, -1], [15,30,50, "All"]],
@@ -2710,7 +2709,7 @@ function getOnClickNotGroubnWorkDetails(assetType,locationType,exceededDuration,
 function buildOnClickNotGroubnWorkDetails(result,exceededDuration){
 	var tableView='';
 	tableView+='<div class="table-responsive">';
-	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
+	tableView+='<table class="table table-bordered" id="dataTableSchems12">';
 		tableView+='<thead>';
 		tableView+='<tr>';
 				tableView+='<th class="text-capital">Work CODE</th>';
@@ -2755,7 +2754,7 @@ function buildOnClickNotGroubnWorkDetails(result,exceededDuration){
 	tableView+='</table>';
 	tableView+='</div>';
 	$("#modalSchemsExceedTable").html(tableView);
-	$("#dataTableSchems1").dataTable({
+	$("#dataTableSchems12").dataTable({
 		"order": [ 0, 'desc' ],
 		"iDisplayLength" : 15,
 		"aLengthMenu": [[15, 30, 50, -1], [15,30,50, "All"]],
