@@ -48,17 +48,17 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		
 	}
 	
-	public String getActiveOrInActiveInchageDetails(Long cadreId){
+	public List<String> getActiveOrInActiveInchageDetails(Long cadreId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select AIM.isActive from  AreaInchargeMember AIM  where AIM.isDeleted ='N' " );
+		sb.append(" select AIM.isActive from  AreaInchargeMember AIM " );
 		if(cadreId != null && cadreId.longValue()>0l){
-			sb.append(" and AIM.tdpCadre.tdpCadreId =:cadreId "); 
+			sb.append(" where AIM.tdpCadre.tdpCadreId =:cadreId "); 
 		}
 		Query query = getSession().createQuery(sb.toString());
 		if(cadreId != null && cadreId.longValue()>0l){
 			query.setParameter("cadreId", cadreId);
 		}
-		return (String)query.uniqueResult();
+		return query.list();
 		
 	}
 	
