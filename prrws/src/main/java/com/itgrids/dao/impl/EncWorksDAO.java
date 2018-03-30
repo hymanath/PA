@@ -44,11 +44,11 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 				+ " model.target_date as targetDate, model.work_status as workStatus");
 		
 		if(status.equalsIgnoreCase("Grounded")){
-			sb.append(" ,model.grounded_date as groundedDate,model.completion_date as completionDate,datediff(model.target_date,current_date()) as difference ");
+			sb.append(" ,model.grounded_date as groundedDate,model.completion_date as completionDate,datediff(current_date(),model.target_date) as difference ");
 		}else if(status.equalsIgnoreCase("Completed")){
-			sb.append(" ,model.grounded_date as groundedDate,model.completion_date as completionDate,datediff(model.target_date,model.completion_date) as difference ");
+			sb.append(" ,model.grounded_date as groundedDate,model.completion_date as completionDate,datediff(model.completion_date,model.target_date) as difference ");
 		}else if(status.equalsIgnoreCase("Not Grounded")){
-			sb.append(" ,model.grounded_date as groundedDate,model.completion_date as completionDate,model.completion_date,datediff(model.target_date,current_date()) as difference ");
+			sb.append(" ,model.grounded_date as groundedDate,model.completion_date as completionDate,model.completion_date,datediff(current_date(),model.target_date) as difference ");
 		}
 		
 		sb.append(" ,model.entrusted_date as entrustedDate,EH.han_code as habCode ,EH.hab_name as habName from enc_works model,enc_hab_location EHL left join enc_habitation EH on EHL.habitation_code=EH.han_code  where EHL.enc_works_id=model.enc_works_id ");
