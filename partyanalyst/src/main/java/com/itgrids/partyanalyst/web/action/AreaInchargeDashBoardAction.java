@@ -127,7 +127,7 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 				userId = regVO.getRegistrationID();
 			}*/
 			jObj = new JSONObject(getTask());
-			inchargeVO = areaInchargeDashBoardService.getAreaInchargeDetails(jObj.getLong("voterId"),jObj.getString("mobileNo"),jObj.getString("memberShipId"));
+			inchargeList = areaInchargeDashBoardService.getAreaInchargeDetails(jObj.getLong("voterId"),jObj.getString("mobileNo"),jObj.getString("memberShipId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getAreaInchargeDetails Action",e);
