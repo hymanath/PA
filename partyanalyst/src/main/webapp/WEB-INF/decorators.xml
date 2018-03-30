@@ -767,6 +767,7 @@
 		<pattern>/exceptionalReportsAction*</pattern>
 		<pattern>/consolidatedExceptionalReportsAction*</pattern>
 		<pattern>/PrintandElectronicMediaActivitiesAction*</pattern>
+		<pattern>/areaInchargeDashBoardAction*</pattern>
 		 <!-- geoDemographics End -->
 	</decorator>
 	<decorator name="districtLayout" page="govtLayout.jsp">
