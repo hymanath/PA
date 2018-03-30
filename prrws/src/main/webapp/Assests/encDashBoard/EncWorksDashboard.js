@@ -72,15 +72,15 @@ function getAllFiniancialYears(){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#financialYearId").append("<option value='2000-2050'>All Financial Years</option>");
-		$("#financialYearId").append("<option value=2009-"+currentYear+">2009-"+currentYear+"</option>");
+		$("#financialYearId").append("<option value='2003-2050'>All Financial Years</option>");
+		$("#financialYearId").append("<option value=2014-"+currentYear+">2014-"+currentYear+"</option>");
 		if(result != null && result.length >0){
 			for(var i in result){
 				var value = result[i].financialYear.split('-');
 				$("#financialYearId").append("<option value="+result[i].financialYear+">"+result[i].financialYear+"</option>");
 				
 			}
-			$("#financialYearId").val('2000-2050');
+			$("#financialYearId").val('2014-'+currentYear);
 		}
 		
 		$("#financialYearId").chosen();
@@ -91,19 +91,8 @@ function getAllFiniancialYears(){
 $(document).on("change","#financialYearId",function(){
 	var split=$(this).val().split('-')
 	var yearId = $(this).val();
-	glStartDate="";
-	glEndDate="";
-	if(yearId == 0){
-		glStartDate="01-01-2009";
-		glEndDate="01-04-"+moment().year();
-	}else{
-		if(split[0] ==2009){
-			glStartDate="01-01-"+split[0];
-		}else{
-			glStartDate="01-04-"+split[0];
-		}
-		glEndDate="01-04-"+split[1];
-	}
+	glStartDate="01-04-"+split[0];
+	glEndDate="01-04-"+split[1];
 	onloadCalls();
 });
 $("#dateRangePickerAUM").daterangepicker({
@@ -140,7 +129,7 @@ $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	{
 	  $("#dateRangePickerAUM").val('2014 To Till Now');
 	}
-	$("#financialYearId").val(0);
+	$("#financialYearId").val('2003-2050');
 	$("#financialYearId").trigger('chosen:updated');
 		
 		 onloadCalls();
@@ -308,7 +297,11 @@ function locationwiseTableBlocks(result,blockId,locationTypes){
 					}
 									
 					table+='<th style="background-color:#def2f7">ADMIN SANCTIONED</th>';
+					table+='<th style="background-color:#def2f7">NOT TECHNICALLY SANCTIONED</th>';
+					table+='<th style="background-color:#def2f7">%</th>';
 					table+='<th style="background-color:#def2f7">TECHNICALLY SANCTIONED</th>';
+					table+='<th style="background-color:#def2f7">%</th>';
+					table+='<th style="background-color:#def2f7">NOT ENTRUSTED</th>';
 					table+='<th style="background-color:#def2f7">%</th>';
 					table+='<th style="background-color:#def2f7">ENTRUSTED</th>';
 					table+='<th style="background-color:#def2f7">%</th>';
@@ -324,12 +317,24 @@ function locationwiseTableBlocks(result,blockId,locationTypes){
 				table+='</thead>';
 				table+='<tbody>';
 				for(var i in result){
-					
+					var notTechSanctioned = result[i].adminSanctionCount-result[i].technicallySanctionedCount;
+					var notEntrusted = result[i].technicallySanctionedCount-result[i].totalWorksEntrusted;
 					table+='<tr>';
 						table+='<td style="background-color:#def2f7">'+result[i].locationName+'</td>';
 							if(result[i].adminSanctionCount !=null && result[i].adminSanctionCount !=0){
 							table+='<td class="schemsClickView"  attr_location_type="'+locationType+'" attr_filter_value="'+result[i].locationId+'"attr_total_count = "'+result[i].adminSanctionCount+'" attr_type = "adminSanctioned" attr_location_name="'+result[i].locationName+'" style=" background-color:#def2f7; cursor:pointer;text-decoration:underline">'+result[i].adminSanctionCount+'</td>';
 						}else{
+							table+='<td style="background-color:#def2f7">-</td>';
+						}
+						if(notTechSanctioned !=null && notTechSanctioned !=0){
+							table+='<td class="schemsClickView"  attr_location_type="'+locationType+'" attr_filter_value="'+result[i].locationId+'"attr_total_count = "'+notTechSanctioned+'" attr_type = "notTechSanctioned" attr_location_name="'+result[i].locationName+'" style=" background-color:#def2f7; cursor:pointer;text-decoration:underline">'+notTechSanctioned+'</td>';
+							if(result[i].adminSanctionCount !=null && result[i].adminSanctionCount >0){
+								table+='<td style="background-color:#def2f7">'+parseFloat((notTechSanctioned/result[i].adminSanctionCount)*100).toFixed(2)+'</td>';
+							}else{
+								table+='<td style="background-color:#def2f7">-</td>';
+							}
+						}else{
+							table+='<td style="background-color:#def2f7">-</td>';
 							table+='<td style="background-color:#def2f7">-</td>';
 						}
 						if(result[i].technicallySanctionedCount !=null && result[i].technicallySanctionedCount !=0){
@@ -344,7 +349,17 @@ function locationwiseTableBlocks(result,blockId,locationTypes){
 							table+='<td style="background-color:#def2f7">-</td>';
 							table+='<td style="background-color:#def2f7">-</td>';
 						}
-						
+						if(notEntrusted !=null && notEntrusted !=0){
+							table+='<td class="schemsClickView"  attr_location_type="'+locationType+'" attr_filter_value="'+result[i].locationId+'"attr_total_count = "'+notEntrusted+'" attr_type = "notEntrusted" attr_location_name="'+result[i].locationName+'" style=" background-color:#def2f7; cursor:pointer;text-decoration:underline">'+notEntrusted+'</td>';
+							if(result[i].adminSanctionCount !=null && result[i].adminSanctionCount >0){
+								table+='<td style="background-color:#def2f7">'+parseFloat((result[i].totalWorksEntrusted/notEntrusted)*100).toFixed(2)+'</td>';
+							}else{
+								table+='<td style="background-color:#def2f7">-</td>';
+							}
+						}else{
+							table+='<td style="background-color:#def2f7">-</td>';
+							table+='<td style="background-color:#def2f7">-</td>';
+						}
 						if(result[i].totalWorksEntrusted !=null && result[i].totalWorksEntrusted !=0){
 							table+='<td class="schemsClickView"  attr_location_type="'+locationType+'" attr_filter_value="'+result[i].locationId+'"attr_total_count = "'+result[i].totalWorksEntrusted+'" attr_type = "entrusted" attr_location_name="'+result[i].locationName+'" style=" background-color:#def2f7; cursor:pointer;text-decoration:underline">'+result[i].totalWorksEntrusted+'</td>';
 							if(result[i].adminSanctionCount !=null && result[i].adminSanctionCount >0){
@@ -423,18 +438,6 @@ function locationwiseTableBlocks(result,blockId,locationTypes){
 					titleAttr	: 'CSV',
 					title		:  "ENC WORKS DASHBOARD",
 					filename	:  blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-				},
-				{
-					extend		:'pdfHtml5',
-					text		:'<i class="fa fa-file-pdf-o"></i>',
-					titleAttr	:'PDF',
-					title		: "ENC WORKS DASHBOARD",
-					filename	: blockId+''+moment().format("DD/MMMM/YYYY  HH:MM"),
-					orientation	: "landscape",
-					pageSize	: 'A3',
-					customize	: function (doc) {
-								doc.content[1].table.widths = Array(doc.content[1].table.body[0].length + 1).join('*').split('');
-								}
 				}
 			]
 		});
@@ -448,9 +451,11 @@ function buildLocationWiseWorksGraph(result){
 	var grounded =result[0].groundedCount;
 	var dataArr =[];
 	dataArr.push({"name": 'Admin Sanctioned',"y": result[0].adminSanctionCount,color:'#5fc24f'});
+	dataArr.push({"name": 'Not Techincal Sancationed',y:  result[0].adminSanctionCount-result[0].technicallySanctionedCount,color:'#ed0e27'});
 	dataArr.push({"name": 'Techincal Sancationed',y: result[0].technicallySanctionedCount,color:'#418CF0'});
+	dataArr.push({"name": 'Not Entrusted',y: result[0].technicallySanctionedCount-result[0].totalWorksEntrusted,color:'#ed0e27'});
 	dataArr.push({"name": 'Entrusted',y: result[0].totalWorksEntrusted,color:'#FFBF00'});
-	dataArr.push({"name": 'Not Grounded',y: result[0].notGrounded,color:'#DF013A'});
+	dataArr.push({"name": 'Not Grounded',y: result[0].notGrounded,color:'#ed0e27'});
 	dataArr.push({"name": 'Grounded',y: result[0].groundedCount,color:'#ACFA58'});
 	dataArr.push({"name": 'UnderProcess',y: result[0].underProcessCount,color:'#FA5858'});
 	dataArr.push({"name": 'Completed',y:result[0].completedCount,color:'#009999'});
@@ -487,8 +492,8 @@ function buildLocationWiseWorksGraph(result){
 		
 		plotOptions: {
 				column: {
-					pointWidth: 30,
-					gridLineWidth: 25,
+					pointWidth: 35,
+					gridLineWidth: 30,
 					dataLabels: {
 						useHTML:true,
 						enabled: true,
@@ -1123,7 +1128,7 @@ function buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount){
 				tableView+='<th>DISTRICT</th>';
 				tableView+='<th>CONSTITUENCY</th>';
 				tableView+='<th>MANDAL</th>';
-				tableView+='<th>HABITATIONS NAME</th>';
+				tableView+='<th>HABITATIONS NAMES</th>';
 				tableView+='<th>SANCTIONED AMOUNT(In Lakhs)</th>';
 				if(workStatus !="not grounded"){
 				tableView+='<th>TARGET DATE</th>';
@@ -1308,7 +1313,7 @@ function buildOnclickExcededWorkSchemsDetails(result,status,workStatus,totalCoun
 				tableView+='<th>District</th>';
 				tableView+='<th>Constituency</th>';
 				tableView+='<th>Mandal</th>';
-				tableView+='<th>Habitation Name</th>';
+				tableView+='<th>Habitation Names</th>';
 				tableView+='<th>Sancationed Amount(In Lakhs)</th>';
 				tableView+='<th>Exceeded Days</th>';
 				tableView+='<th>Work Status</th>';
