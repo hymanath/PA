@@ -19023,5 +19023,8 @@
 			<param name="root">inchargeVO</param>
 		</result>
 	</action>
+	<action name="areaInchargeDashBoardAction" class="areaInchargeDashBoardAction" method="execute">
+		<result name="success">/jsp/areaInchargeDashBoard.jsp</result>
+	</action>
  </package>
 </struts>
