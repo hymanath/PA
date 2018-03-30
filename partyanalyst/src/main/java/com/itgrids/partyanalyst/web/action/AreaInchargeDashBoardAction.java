@@ -223,15 +223,4 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		}
 		return Action.SUCCESS;
 	}
-	public String removeAreaIncharge(){
-		try{
-		LOG.info("Entered into removeAreaIncharge");
-		jObj = new JSONObject(getTask());
-		Long cadreId = jObj.getLong("candidateId");
-		result=areaInchargeDashBoardService.removeAreaIncharge(cadreId);
-		}catch(Exception e){
-			LOG.error("Exception in removeAreaIncharge method,e ");
-		}
-		return Action.SUCCESS;
-	}	
 }
