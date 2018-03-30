@@ -60,17 +60,15 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&filterType="
 						+ inputVO.getFilterType() + "&filterId=" + inputVO.getFilterId()
-						+ "&subFilterType=assembly&subFilterId=" + inputVO.getSubFilterId() + "&fromDate="
-						+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate();
+						+ "&subFilterType=assembly&subFilterId=" + inputVO.getSubFilterId() +"&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("constituency"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=assembly&filterType=" + inputVO.getFilterType()
-						+ "&filterId=" + inputVO.getFilterId() + "&fromDate=" + inputVO.getFromDate() + "&toDate="
+						+ "&filterId=" + inputVO.getFilterId() + "&fromDate=1-06-2017&toDate="
 						+ inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
-						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate="
-						+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate();
+						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() +"&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
 
 			webResource = commonMethodsUtilService.getWebResourceObject(url.toString());
 			ClientResponse response = webResource.accept("application/json").type("application/json")
@@ -80,6 +78,11 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			} else {
 				String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
+					output = output.replaceAll("<br />", "");
+					output = output.replaceAll("<b>Warning</b>:  Division by zero in <b>/var/www/html/survey/api/swmapi.php</b> on line <b>326</b>", "");
+					output = output.replaceAll("<br />", "");
+					output = output.replaceAll("<b>Warning</b>:  Division by zero in <b>/var/www/html/survey/api/swmapi.php</b> on line <b>403</b>", "");
+					
 					JSONArray finalArray = new JSONArray(output);
 					if (finalArray != null && finalArray.length() > 0) {
 						for (int i = 0; i < finalArray.length(); i++) {
@@ -183,10 +186,10 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 		try {
 
+			
 			WebResource webResource = commonMethodsUtilService
-					.getWebResourceObject("http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
-							+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate="
-							+ inputVO.getFromDate() + "&toDate=" + inputVO.getToDate());
+		.getWebResourceObject("http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
+				+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate=1-06-2017&toDate=" + inputVO.getToDate());
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.get(ClientResponse.class);
 
@@ -195,7 +198,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			} else {
 				String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
-					JSONArray finalArray = new JSONArray(output);
+										JSONArray finalArray = new JSONArray(output);
 					if (finalArray != null && finalArray.length() > 0) {
 						for (int i = 0; i < finalArray.length(); i++) {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -291,7 +294,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				solidWasteManagementVO.setOutTime(solidWasteManagementVO.getOutTime() + rfidData.getOutTime());
 			}
 		} catch (JSONException e) {
-			LOG.error("Exception raised at getDrainsInfobyLocation - DrainsService service", e);
+			LOG.error("Exception raised at getSolidWasteManagementOverAllCounts - SolidWasteManagementService service", e);
 		}
 		return solidWasteManagementVO;
 	}
@@ -302,8 +305,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 		String jsonList = getRfidTrackingData();
 		jsonList = jsonList.replaceAll("\\<.*?\\>", "");
-		jsonList = jsonList
-				.replaceAll("Notice:  Undefined index: districtId in /var/www/html/api/swm/index.php on line 68", "");
+		jsonList = jsonList.replaceAll("Notice:  Undefined index: districtId in /var/www/html/api/swm/index.php on line 68", "");
 
 		try {
 			WebServiceData model = new WebServiceData();
