@@ -106,27 +106,29 @@
 				<div id="districtWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
-        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-			<div class="applicationsOverView">
-			<span class="bar_view" style="background-color: #3788B3;"></span>
-				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Constituency LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
-				<div id="assemblyWiseOverviewId"  style="margin-top: 15px"></div>
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT')}">
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="applicationsOverView">
+				<span class="bar_view" style="background-color: #3788B3;"></span>
+					<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Constituency LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
+					<div id="assemblyWiseOverviewId"  style="margin-top: 15px"></div>
+				</div>
 			</div>
-        </div>
-        <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-			<div class="applicationsOverView">
-			<span class="bar_view" style="background-color: #330099;"></span>
-				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Mandal/Muncipality/Corporation Level LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
-				<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
+			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="applicationsOverView">
+				<span class="bar_view" style="background-color: #330099;"></span>
+					<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Mandal/Muncipality/Corporation Level LEVEL</span> - <span class="font_15">Board/Corporation Overview</span></span>
+					<div id="mandalORMunciWiseOverviewId"  style="margin-top: 15px"></div>
+				</div>
 			</div>
-        </div>
-      <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
-			<div class="applicationsOverView">
-			<span class="bar_view" style="background-color: #330099;"></span>
-				<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Panchayat/Ward/Division Level </span> - <span class="font_15">Board/Corporation Overview</span></span>
-				<div id="villageORWardWiseOverviewId"  style="margin-top: 15px"></div>
+		  <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
+				<div class="applicationsOverView">
+				<span class="bar_view" style="background-color: #330099;"></span>
+					<span class="headingColor" style="padding:7px;"><span class="text-capital font_24">Panchayat/Ward/Division Level </span> - <span class="font_15">Board/Corporation Overview</span></span>
+					<div id="villageORWardWiseOverviewId"  style="margin-top: 15px"></div>
+				</div>
 			</div>
-        </div>
+		</c:if>
          <!-- 
 		 <div class="col-md-12 col-xs-12 col-sm-12">
         	<h4 class="headingColor"></h4>
