@@ -764,7 +764,7 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 	public int updatePetitionSubWorkPriorityDetails(PetitionPriorityVO priorityVO,Date updateTime){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" update PmSubWorkDetails model set  model.priority=:priority ,model.updatedTime =:updateTime,model.updatedUserId =:userId  "
-				+ " where model.pmSubWorkDetailsId  = :subWorkDetailsId) ");
+				+ " where model.pmSubWorkDetailsId  = :subWorkDetailsId ");
 		Query query =getSession().createQuery(sb.toString());
 		query.setParameter("subWorkDetailsId", priorityVO.getWorkId());
 		query.setParameter("updateTime", updateTime);

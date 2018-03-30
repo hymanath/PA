@@ -38,7 +38,7 @@ public class PetitionsPDFVO implements java.io.Serializable{
 	private Long totalWorksCount=0l;
 	private Long noOfWorksCount=0L;
 	private Long statusId=0L;
-	
+	private Long priority=0L;
 	private AddressVO addressVO = new AddressVO();
 	private List<PetitionsPDFVO>  subWorksList= new ArrayList<PetitionsPDFVO>(0);
 	
@@ -261,6 +261,12 @@ public class PetitionsPDFVO implements java.io.Serializable{
 	}
 	public void setTotalWorksInDeptCount(Long totalWorksInDeptCount) {
 		this.totalWorksInDeptCount = totalWorksInDeptCount;
+	}
+	public Long getPriority() {
+		return priority;
+	}
+	public void setPriority(Long priority) {
+		this.priority = priority;
 	}
 }
 	

@@ -5,7 +5,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title> PM PRIORITY UPDATION </title>
+<title> PETITION WORKS PRIORITY UPDATION </title>
 <link href="Assests/css/bootstrap.css" rel="stylesheet" type="text/css"/>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
@@ -570,8 +570,12 @@ function getPetitionsDetails(){
 										str+='<td>'+result[s].subWorksList[i].subWorksList[k].estimationCost+'</td>';
 									else 
 										str+='<td></td>';
-									str+='<td> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="Please enter priority"/></td>';
+									if(typeof result[s].subWorksList[i].subWorksList[k].priority != 'undefined' && parseInt(result[s].subWorksList[i].subWorksList[k].priority)>0)
+										str+='<td  style="text-align:center;" title="Please enter priority"> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="Please enter priority" value="'+result[s].subWorksList[i].subWorksList[k].priority+'" style="width:50px;text-align:center;"/></td>';
+									else
+										str+='<td  style="text-align:center;"  title="Please enter priority"> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="Please enter priority"  style="width:50px;text-align:center;"/></td>';
 									str+='</tr>';
+									
 								//}
 							}
 						}
@@ -700,40 +704,54 @@ function updatePriorityDetailsforPetitionsWorks(){
    var priorityArr =[];
    var worksArr=[];
    var hasDuplicate=false;
-  /* $('.priorityCls').each(function(){
-    var attr_workId = $(this).attr('attr_workId');
-    var attr_priority_id = $(this).attr('attr_priority_id');
+   $('.prirotyCls').each(function(){
+    var attr_workId = $(this).attr('attr_work_id');
+    var attr_priority_id = $(this).attr('attr_petition_id');
     var priority = $(this).val();
-    if(priorityArr != null && priorityArr.length>0){
-      for(var i in priorityArr){
-        if(parseInt(priorityArr[i])==parseInt(i)){
-          hasDuplicate=true;
-          break;
-        }
-      }
-    }
-    var obj={
-      "workId":attr_workId,
-      "petitionId":attr_priority_id,
-      "priority":priority
-    }
-    worksArr.push(obj);
-    priorityArr.push(priority);
+	
+		if(parseInt(priority) >0){
+			if(priorityArr != null && priorityArr.length>0){
+			  for(var i in priorityArr){
+				if(parseInt(priorityArr[i])==parseInt(priority)){
+				  hasDuplicate=true;
+				  break;
+				}
+			  }
+			}
+			var obj={
+			  "workId":attr_workId,
+			  "petitionId":attr_priority_id,
+			  "priority":priority
+			}
+			console.log(obj);
+			worksArr.push(obj);
+			priorityArr.push(priority);
+		}    
    });
    
+   if(worksArr == null || worksArr.length ==0){
+	 worksArr=[];
+	 priorityArr =[];
+      alert("Please enter atleast one work priority number.");
+     return;
+   }
    if(hasDuplicate){
      worksArr=[];
+	 priorityArr =[];
       alert("Duplicate priority numbers not allowed.Please check once.");
      return;
-   }*/
+   }
    
+ /*  worksArr=[];
   var obj={
     "workId":1774,
     "petitionId":1778,
     "priority":2
   }
-  worksArr.push(obj);
   
+  console.log(obj);
+  worksArr.push(obj);
+  */
   
   var json = {
        worksList:worksArr
@@ -754,7 +772,7 @@ function updatePriorityDetailsforPetitionsWorks(){
       }).done(function(result){
         $("#savingDetailsSpinner").html('');
         if(result!=null){
-          if(result.exceptionMsg == "SUCCESS"){
+          if(result.exceptionMsg == "SUCCESS" || result.exceptionMsg == "success"){
            setTimeout(function () {
             $("#ajaxcallImageId").html("<center><h4 style='color: green;'> Updated Successfully... </h4></center>");
             alert("Work(s) details updated successfully");
