@@ -169,6 +169,11 @@ var globalLevelId = '${param.lId}';
 var globalStateId = '${param.stId}'; 
 var globalStatus='${param.sts}';
 var globalLvlTxt='${param.levelTxt}';
+if(globalLvlTxt == "central"){
+	globalStateId =0;
+}else{
+	globalStateId = '${param.stId}'; 
+}
 var windowUrl = window.location.href;
 var wurl = windowUrl.substr(0,(windowUrl.indexOf("/nominatedPostManagementAction")));
 wurl = wurl.replace("/PartyAnalyst","");
