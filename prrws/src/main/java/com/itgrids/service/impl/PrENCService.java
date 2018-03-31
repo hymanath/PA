@@ -3,6 +3,8 @@ package com.itgrids.service.impl;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -1516,4 +1518,67 @@ public class PrENCService implements IPrENCService {
 		}
 		return voList;
 	}
+	
+	@Override
+	public List<EncWorksVO> getAmountWiseEncWorksCount(InputVO inputVO) {
+		List<EncWorksVO> finalList= new ArrayList<EncWorksVO>();
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yy");
+			if(inputVO.getFromDateStr() != null && inputVO.getFromDateStr().length() > 0 && inputVO.getToDateStr() != null && inputVO.getToDateStr().length() >0){
+				inputVO.setStartDate(sdf.parse(inputVO.getFromDateStr()));
+				inputVO.setEndDate(sdf.parse(inputVO.getToDateStr()));
+			}else if(inputVO.getYear() != null && inputVO.getYear().length() > 0){
+				Long year = Long.valueOf(inputVO.getYear());
+				Long nextyear = year+1;
+				inputVO.setStartDate(sdf.parse("01-04-"+ year));
+				inputVO.setEndDate(sdf.parse("01-04-"+nextyear));
+				
+			}
+			convertStringListToLong(inputVO);
+			List<Object[]> objList = new ArrayList<Object[]>(0);
+
+			List<Object[]>  workAdminsancObjLst = encWorksDAO.getAmountWiseSchemeCount(inputVO, "0-499999");
+			List<Object[]>  workTechSancObjLst = encWorksDAO.getAmountWiseSchemeCount(inputVO, "500000-999999");
+			List<Object[]>  workEntrustObjLst = encWorksDAO.getAmountWiseSchemeCount(inputVO, "1000000-4999999");
+			List<Object[]>  workOngoingObjLst = encWorksDAO.getAmountWiseSchemeCount(inputVO, "5000000-above");
+			
+			objList.addAll(workAdminsancObjLst);
+			objList.addAll(workTechSancObjLst);
+			objList.addAll(workEntrustObjLst);
+			objList.addAll(workOngoingObjLst);
+			
+			Map<String, EncWorksVO> amountMap= new HashMap<String, EncWorksVO>();
+
+			for (Object[] objects : objList) {
+				
+				EncWorksVO locationCountVO= amountMap.get(commonMethodsUtilService.getStringValueForObject(objects[1]).trim());
+				if(locationCountVO == null){
+					locationCountVO = new EncWorksVO();
+					locationCountVO.setWorkName(commonMethodsUtilService.getStringValueForObject(objects[1]).trim());
+					locationCountVO.setAdminSanctionCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+					amountMap.put(commonMethodsUtilService.getStringValueForObject(objects[1]).trim(), locationCountVO);
+				}else{
+					locationCountVO.setAdminSanctionCount(locationCountVO.getAdminSanctionCount()+commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
+								
+			}
+			finalList.addAll(amountMap.values());
+			Collections.sort(finalList, new Comparator<EncWorksVO>(){
+				public int compare(EncWorksVO obj2,EncWorksVO obj1) {
+					int returnVal =0;
+						String obj1name[] =obj2.getWorkName().split("-");
+						String obj2name[] =obj1.getWorkName().split("-");
+						Long value2 = Long.valueOf(obj1name[0]);
+						Long value1 = Long.valueOf(obj2name[0]);
+						returnVal = value2.compareTo(value1);
+					return returnVal;
+				}
+			});
+		}catch(Exception e){
+			LOG.error("Exception raised at PrEncService - getLocationWiseEncWorksInformation", e);
+		}
+		return finalList;
+	}
+	
+   
 }
