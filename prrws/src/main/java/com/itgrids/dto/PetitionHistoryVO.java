@@ -74,7 +74,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return officerDesig;
 	}
 	public void setOfficerDesig(String officerDesig) {
-		this.officerDesig = officerDesig;
+		this.officerDesig = officerDesig != null? officerDesig:"";
 	}
 	public List<KeyValueVO> getPetitionsFilesList() {
 		return petitionsFilesList;
@@ -123,7 +123,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return designation;
 	}
 	public void setDesignation(String designation) {
-		this.designation = designation;
+		this.designation = designation != null? designation:"";
 	}
 	public Long getWorkId() {
 		return workId;
@@ -142,7 +142,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return name;
 	}
 	public void setName(String name) {
-		this.name = name;
+		this.name = name != null? name:"";
 	}
 	public String getEndorsmentNo() {
 		return endorsmentNo;
@@ -184,13 +184,13 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return userName;
 	}
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.userName = userName != null? userName:"";
 	}
 	public String getOfficerName() {
 		return officerName;
 	}
 	public void setOfficerName(String officerName) {
-		this.officerName = officerName;
+		this.officerName = officerName != null? officerName:"";
 	}
 	public String getRemarks() {
 		return remarks;
@@ -226,7 +226,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return actionName;
 	}
 	public void setActionName(String actionName) {
-		this.actionName = actionName;
+		this.actionName = actionName != null? actionName:"";
 	}
 	public Long getDocumentId() {
 		return documentId;
@@ -256,7 +256,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return pmDepartment;
 	}
 	public void setPmDepartment(String pmDepartment) {
-		this.pmDepartment = pmDepartment;
+		this.pmDepartment = pmDepartment != null? pmDepartment:"";
 	}
 	public Long getPmOfficerId() {
 		return pmOfficerId;
@@ -268,7 +268,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return pmOfficerName;
 	}
 	public void setPmOfficerName(String pmOfficerName) {
-		this.pmOfficerName = pmOfficerName;
+		this.pmOfficerName = pmOfficerName != null? pmOfficerName:"";
 	}
 	public String getMobileNo() {
 		return mobileNo;
@@ -292,7 +292,7 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return pmDepartmentName;
 	}
 	public void setPmDepartmentName(String pmDepartmentName) {
-		this.pmDepartmentName = pmDepartmentName;
+		this.pmDepartmentName = pmDepartmentName != null? pmDepartmentName:"";
 	}
 	public String getInsertedDate() {
 		return insertedDate;
@@ -358,19 +358,19 @@ public class PetitionHistoryVO implements java.io.Serializable{
 		return assignedToDesignation;
 	}
 	public void setAssignedToDesignation(String assignedToDesignation) {
-		this.assignedToDesignation = assignedToDesignation;
+		this.assignedToDesignation =  assignedToDesignation != null? assignedToDesignation:"";
 	}
 	public String getAssignedToOfficerName() {
 		return assignedToOfficerName;
 	}
 	public void setAssignedToOfficerName(String assignedToOfficerName) {
-		this.assignedToOfficerName = assignedToOfficerName;
+		this.assignedToOfficerName = assignedToOfficerName != null? assignedToOfficerName:"";
 	}
 	public String getAssignedToOfficerMobile() {
 		return assignedToOfficerMobile;
 	}
 	public void setAssignedToOfficerMobile(String assignedToOfficerMobile) {
-		this.assignedToOfficerMobile = assignedToOfficerMobile;
+		this.assignedToOfficerMobile =  assignedToOfficerMobile != null? assignedToOfficerMobile:"";
 	}
 	public String getShortName() {
 		return shortName;
