@@ -276,7 +276,13 @@ function buildPetitionDetailsView(result){
 					str+='<span class="pending_color font_weight" style="font-size: 20px;"> <i class="fa fa-pause round_status_pending" aria-hidden="true" style="position: relative;top: -2px;"></i> Pending </span>';
 				else if(statusId == 8)
 					str+='<span class="completed_color font_weight" style="font-size: 20px;"> <i class="fa  fa-check " aria-hidden="true" style="position: relative;top: -2px;"></i>Completed</span>';
-				else if(statusId != 1 || statusId != 4 ||  statusId != 5 )// ! pendigin endorse/ ! next year/! not possible/! completed
+				else if(statusId == 4)
+					str+='<span class="completed_color font_weight" style="font-size: 15px;"> <i class="fa  fa-check " aria-hidden="true" style="position: relative;top: -2px;"></i>Look for Next Year</span>';
+				else if(statusId == 5)
+					str+='<span class="completed_color font_weight" style="font-size: 15px;"> <i class="fa  fa-check " aria-hidden="true" style="position: relative;top: -2px;"></i>Not Possible</span>';
+				else if(statusId == 9)
+					str+='<span class="completed_color font_weight" style="font-size: 15px;"> <i class="fa  fa-check " aria-hidden="true" style="position: relative;top: -2px;"></i>Partially Completed</span>';
+				else //if(statusId != 1 && statusId != 8 )// ! pendigin endorse/ ! next year/! not possible/! completed
 					str+='<span class="pending_color font_weight" style="font-size: 20px;"> <i class="fa fa-pause round_status_pending" aria-hidden="true" style="position: relative;top: -2px;"></i>In Progress</span>';
 			str+='</div>';
 			
@@ -357,13 +363,17 @@ function buildPetitionDetailsView(result){
 																	str+='<div class="col-sm-6">';
 																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > FORWARDED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' '+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+'</h5>';
 																	str+='</div>';
+															}else if(typeof(result.historyList[h].subList1[j].subList1[k].assignedToOfficerName) !='undefined' && result.historyList[h].subList1[j].subList1[k].assignedToOfficerName != null && result.historyList[h].subList1[j].subList1[k].assignedToOfficerName.length>0){
+																	str+='<div class="col-sm-6">';
+																		str+='<h5 class="pull-left"  ><u style="color:#1283C8" > FORWARDED TO</u> : '+result.historyList[h].subList1[j].subList1[k].assignedToOfficerName+' '+result.historyList[h].subList1[j].subList1[k].assignedToDesignation+'</h5>';
+																	str+='</div>';
 															}
 										var officerDesig = "";
 										var ofcrDesigId = result.historyList[h].subList1[j].subList1[k].pmOfficerDesgId ;
-										if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&  ofcrDesigId != 95
-										&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
+										//if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&  ofcrDesigId != 95
+										//&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
 												officerDesig = result.historyList[h].subList1[j].subList1[k].officerDesig;
-											}
+										//	}
 														str+='<div class="col-sm-3 pull-right">';
 															str+='<div class="pad_white_bg" style="padding:7px;border: 1px solid #1283C8;">';
 																str+='<h5 class="font_weight" style="color:#1283C8;text-transform:uppercase;"> FORWARDED BY&nbsp;:<br>'+result.historyList[h].subList1[j].subList1[k].designation+'</h5>';
@@ -3260,11 +3270,14 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 							  
 							  if(result.statusId == 1)
 									str+='<h4 class="pull-right pending_color font_weight" style="margin-bottom: 10px;"> Pending</h4>';
-								else if(result.statusId != null && parseInt(result.statusId)==2)
-									str+='<h4 class="pull-right pending_color font_weight" style="margin-bottom: 10px;"> In Progress</h4>';
-								else
+								else if(result.statusId != null && parseInt(result.statusId)==4)
+									str+='<h4 class="pull-right pending_color font_weight" style="margin-bottom: 10px;"> Look for Next Year </h4>';
+								else if(result.statusId != null && parseInt(result.statusId)==5)
+									str+='<h4 class="pull-right completed_color font_weight" style="margin-bottom: 10px;"> Not Possible </h4>';
+								else if(result.statusId != null && parseInt(result.statusId)==9)
+									str+='<h4 class="pull-right completed_color font_weight" style="margin-bottom: 10px;"> Partially Completed </h4>';
+								else if(result.statusId != null && parseInt(result.statusId)==8)
 									str+='<h4 class="pull-right completed_color font_weight" style="margin-bottom: 10px;"> Completed</h4>';
-								
 								str+='<h6>Petition Status</h6>';
 							  str+='</div>';
 							str+='</div>';  
@@ -3439,7 +3452,8 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 							}
 							if(typeof(result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation) !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation != null && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation.length>0)
 								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">FORWARDED TO </span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+'</h5>';
-							
+							else if(typeof(result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName) !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName != null && result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName.length>0)
+								str+='<h5 class="font_weight f_12 m_top10" style="margin-left: 20px;"><span style="color:#1283C8">FORWARDED TO </span>: '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToOfficerName+' '+result.petitionHistoryList[i].subList1[j].subList1[m].assignedToDesignation+'</h5>';
 								str+='<div class="row">';
 									str+='<div class="col-sm-12">';
 										if(typeof(result.petitionHistoryList[i].subList1[j].subList1[m].subList1) !='undefined' && result.petitionHistoryList[i].subList1[j].subList1[m].subList1 != null && result.petitionHistoryList[i].subList1[j].subList1[m].subList1.length>0){
@@ -3472,10 +3486,10 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 										}
 										var officerDesig = "";
 										var ofcrDesigId = result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId ;
-										if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&   ofcrDesigId != 95
-										&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
+										//if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&   ofcrDesigId != 95
+										//&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
 												officerDesig = "("+result.petitionHistoryList[i].subList1[j].subList1[m].officerDesig+")";
-											}
+										//	}
 										str+='<div class="col-sm-3 pull-right">';
 										str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
 											//str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">UPDATED BY </span>  : <br>'+result.petitionHistoryList[i].subList1[j].subList1[m].designation+''+ofcDesigLoca+'<br>('+result.petitionHistoryList[i].subList1[j].subList1[m].pmDepartmentName+')</h5>';
@@ -3627,10 +3641,10 @@ function buildPetitionAndWorkWiseHistoryDetails(result,isSubworkHistory){
 																			}
 																			var officerDesig="";
 											var ofcrDesigId =result.petitionHistoryList[i].subList1[j].subList1[m].pmOfficerDesgId ;
-												if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&  ofcrDesigId != 95
-										&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
+												//if(ofcrDesigId != 86 && ofcrDesigId != 23 && ofcrDesigId != 94 &&  ofcrDesigId != 95
+										//&& ofcrDesigId != 96 && ofcrDesigId != 97 && ofcrDesigId != 98){
 												officerDesig = result.petitionHistoryList[i].subList1[j].subList1[m].officerDesig;
-											}
+										//	}
 																			str+='<div class="col-sm-3 pull-right">';
 																					str+='<div style="background-color: #fff;padding:10px;border: 1px solid #ddd;">';
 																						str+='<h5 class="font_weight" style="text-transform:uppercase"><span style="color:#1283C8">FORWARDED BY </span>  : <br>'+result.subList1[j].subList1[k].subList1[l].subList1[m].designation+'</h5>';

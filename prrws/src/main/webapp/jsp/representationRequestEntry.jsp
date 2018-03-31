@@ -127,7 +127,7 @@
 											<div id="representDetailsDivId"></div>
 										</div>
 									</div>
-									
+									<input type="hidden" name="petitionTypeId" id="petitinsTypeId" />
 								</div>
 							</div>
 						</div>
@@ -139,7 +139,7 @@
 	</div>
 </main>
 <div class="modal fade" id="petitionBasicModal" tabindex="-1"  role="dialog" aria-labelledby="myModalLabel"> close
-	  <div class="modal-dialog" role="document" style="width:40%;margin-top:10%">
+	  <div class="modal-dialog" role="document" style="width:70%;margin-top:10%">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close modalCloseCls" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
@@ -147,14 +147,13 @@
 			 </div>
 		  <div class="modal-body">
 			<div class="row">
-				<div class="col-sm-4" style="display:none;">
-					<select class="form-control chosen-select m_top5 height45" id="petitionTypeId">
-						<option value="0">Select Petition Type</option>
-						<!--<option value="1">Works Related</option>
-						<option value="2">Transfers & Postings</option>
-						<option value="3">Others</option>-->
+				<div class="col-sm-4 m_top10" >
+					<select class="form-control chosen-select m_top5 height45" id="petitionTypId"  >
+						<option value="0">Select Representation Type</option>
+						<option value="1">Cost Related</option>
+						<option value="2">Non-Cost Related</option>
 					</select>
-					 <div class="m_top10 error_colorCls" id="desiganationIErrDivd"></div>
+					 <div class="m_top10 error_colorCls" id="petitionTypeIdErrDivd"></div>
 				</div>
 				<div class="col-sm-4">
 					<input   name=""   onkeyUp="checkIsNumber('noofWorks',this.value)" type="text" class="form-control m_top5 height45 isNumberCls" id="noofWorks" placeholder="Enter No Of Work">
