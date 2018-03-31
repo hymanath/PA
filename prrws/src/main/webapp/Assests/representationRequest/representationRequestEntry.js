@@ -6,7 +6,7 @@ var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div 
 */
 $(".tooltipCls").tooltip();
 
-var GlWrkTypeId = 0;
+var GlWrkTypeId = 2;
 var GlLocationLvelId = 0;
 var GlDistrctId = 0;
 var GlConsttuencyId = 0;
@@ -409,6 +409,7 @@ function getPanchayats(levelVal,counterId,typeVal,typeChange){
 }
 
 $(document).on("click","#basicBtnId",function(){
+	var workRelatedTypeId = $('#petitionTypId').val();
 	var works = $('#noofWorks').val();
 	var cost = $('#workCosts').val();
 	var typeVal ="self";
@@ -420,7 +421,12 @@ $(document).on("click","#basicBtnId",function(){
 
 	$("#workCostsErr").html("");
 	$("#noofWorksErr").html("");
+	$("#petitionTypeIdErrDivd").html("");
 	var isError=false;
+	if(workRelatedTypeId == undefined || workRelatedTypeId == "undefined" || workRelatedTypeId === undefined || workRelatedTypeId.trim() == '' || workRelatedTypeId == null || parseInt(workRelatedTypeId)==0){
+		$("#petitionTypeIdErrDivd").html("<h5 style='color:red;'>Please select representation type.</h5>");
+		isError=true;
+	}
 	if(works == undefined || works == "undefined" || works === undefined || works.trim() == '' || works == null){
 		$("#noofWorksErr").html("<h5 style='color:red;'>Enter no of works.</h5>");
 		isError=true;
@@ -3090,20 +3096,28 @@ function checkIsNumber(id,value){
 	 }
 }
 
-$(document).on("change","#petitionTypeId",function(){
+$(document).on("change","#petitionTypId",function(){
+	$("#workCostsErr").html("");
+	$("#noofWorksErr").html("");
+	$("#petitionTypeIdErrDivd").html("");
+	
 	var selectVal = $(this).val();
+	$('#petitinsTypeId').val(selectVal);
+	
 	if(selectVal == 2 || selectVal == 3){
 		$("#noofWorks").val(1);
 	}else{
 		$("#noofWorks").val("");
 	}
 });
+
 $(document).on("change",".OnchangeDeptCls",function(){
 	var outerCount=$(this).attr('attr_main_count');
 	$(".subSubjectReFreshCls"+outerCount).html('<option value="0">Select Sub Subject</option>');
 	$(".subSubjectReFreshCls"+outerCount).trigger('chosen:updated');
 	//reFreshValues(outerCount);
 });
+
 $(document).on("change",".subjctOnchangeCls",function(){
 	var outerCount=$(this).attr('attr_main_count');
 	$(".subSubjectReFreshCls"+outerCount).html('<option value="0">Select Sub Subject</option>');
@@ -3566,11 +3580,11 @@ $.ajax({
 	}
 }).done(function(result){
 	if(result !=null && result.length>0){
-			 $("#petitionTypeId").html('<option value="0">Select Designation</option>');
+			$("#petitionTypId").html('<option value="0">Select Representation Type</option>');
 			for(var i in result){
-				$("#petitionTypeId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
+				$("#petitionTypId").append('<option value="'+result[i].key+'">'+result[i].value+' </option>');
 			}
 		}
-		$("#petitionTypeId").trigger('chosen:updated');
+		$("#petitionTypId").trigger('chosen:updated');
 });	
 }
