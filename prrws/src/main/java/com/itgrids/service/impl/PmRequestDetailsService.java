@@ -862,6 +862,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							if(pmSubWorkDetails != null)
 								pmTrackingVO.setPmStatusId(pmSubWorkDetails.getPmStatusId());
 							
+							if(pmSubWorkDetails != null && pmSubWorkDetails.getRefPmSubWorkDetailsId() != null && pmSubWorkDetails.getRefPmSubWorkDetailsId().longValue()>0L)
+								petitionSubWorkLocationDetails.setRefPmSubWorkDetailsId(pmSubWorkDetails.getRefPmSubWorkDetailsId());
+							else
+								petitionSubWorkLocationDetails.setRefPmSubWorkDetailsId(dataVO.getWorkId());
 						}else{
 							petitionSubWorkLocationDetails.setPmStatusId(1L);// default pending endorsment
 						}
@@ -1154,6 +1158,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									pmTrackingVO.setPmStatusId(petition.getPmStatusId());
 									
 								}else{
+									petition.setPmPetitionTypeId(pmRequestVO.getPetitionTypeId());
 									petition.setEndorsmentDate(null);
 									petition.setEndorsmentNo(null);
 									petition.setPmStatusId(1L);// Pending Endorsment
@@ -5208,8 +5213,8 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 									}*/
 									if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L){
 										
-										endorsmentNo = pmSubWorkDetails.getWorkEndorsmentNo();
 										if(pmSubWorkDetails != null){
+											endorsmentNo = pmSubWorkDetails.getWorkEndorsmentNo();
 											if(pmSubWorkDetails.getPmStatusId() !=null && (!IConstants.PETITION_COMPLETED_IDS.contains(pmSubWorkDetails.getPmStatusId().longValue()))){
 												
 												if(pmSubWorkDetails != null){
@@ -5258,13 +5263,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													}
 													
 													if(inputVO.getStatusId().longValue() ==3L || inputVO.getStatusId().longValue() ==4L || inputVO.getStatusId().longValue() ==5L || inputVO.getStatusId().longValue() ==8L){
-														pmSubWorkDetails.setPmStatusId(8L);
+														pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());//pmSubWorkDetails.setPmStatusId(8L);
 													}
 														pmSubWorkDetailsDAO.save(pmSubWorkDetails);
 												}
 												
 												
-												if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L || inputVO.getStatusId().longValue() == 7L || inputVO.getActionType() != null ) ){
+												if(pmPetitionAssignedOfficer == null && inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && (inputVO.getStatusId().longValue() == 6L || inputVO.getStatusId().longValue() == 7L || inputVO.getActionType() != null ) ){
 													if(inputVO.getDeptDesigOffcrId() != null ){
 														pmPetitionAssignedOfficer = new PmPetitionAssignedOfficer();
 														if(inputVO.getStatusId().longValue()==3L && (inputVO.getDeptDesigOffcrId() == null || inputVO.getDeptDesigOffcrId().longValue()==0L)){
@@ -5319,7 +5324,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 																if(assignedByPmDepartmentDesignationOfficerId != null && assignedByPmDepartmentDesignationOfficerId.longValue() >0L )
 																	pmPetitionAssignedOfficer.setAssignedByPmDepartmentDesignationOfficerId(assignedByPmDepartmentDesignationOfficerId);
 															}
-															pmPetitionAssignedOfficer.setAssignedToPmDepartmentDesignationOfficerId(deptDesigId);
+															pmPetitionAssignedOfficer.setAssignedToPmDepartmentDesignationOfficerId(deptDesigOfficerId);
 															
 															pmPetitionAssignedOfficer.setActionType(inputVO.getActionType());
 															if( inputVO.getActionTypeId() != null && inputVO.getActionTypeId().longValue()>0L)
@@ -5396,10 +5401,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
 													//updatePetitionTracking(pmTrackingVO,updatedTime); // works wise tracking 
 													if(inputVO.getStatusId() != null && inputVO.getStatusId().longValue()>0L && !alreadyUpdaeted){
-														if(inputVO.getStatusId().longValue() ==4L && inputVO.getStatusId().longValue() ==5L && inputVO.getStatusId().longValue() ==8L)
-															pmTrackingVO.setPmStatusId(8L);
-														else
-															pmTrackingVO.setPmStatusId(2L);
+														if(inputVO.getStatusId().longValue() ==4L || inputVO.getStatusId().longValue() ==5L || inputVO.getStatusId().longValue() ==8L){
+															pmTrackingVO.setPmStatusId(inputVO.getStatusId());//pmTrackingVO.setPmStatusId(8L);
+														}else
+															pmTrackingVO.setPmStatusId(inputVO.getStatusId());
 															pmTrackingVO.setPmSubWorkDetailsId(null);// for peition tracking
 															updatePetitionTracking(pmTrackingVO,updatedTime);
 												}
@@ -5503,15 +5508,18 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 											if(pmPetitionAssignedOfficer != null)
 												pititionTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
 											updatePetitionTracking(pititionTrackingVO,updatedTime);// petition wise tracking 
+										}else{
+											if(inputVO.getStatusId().longValue() ==8L)
+												petition.setPmStatusId(9L);
 										}
 									}else if(inputVO.getStatusId().longValue() ==6L){
 										if(petition.getPmStatusId() != null && petition.getPmStatusId().longValue() !=2L){
-											petition.setPmStatusId(2L); // in progress
+											petition.setPmStatusId(inputVO.getStatusId()); // in progress
 											//petition.setPmStatusId(inputVO.getStatusId());
 											PetitionTrackingVO pititionTrackingVO = new PetitionTrackingVO();
 											pititionTrackingVO.setPmActionTypeId(inputVO.getActionTypeId());
 											pititionTrackingVO.setActionType(inputVO.getActionType());
-											pititionTrackingVO.setPmStatusId(2L);
+											pititionTrackingVO.setPmStatusId(inputVO.getStatusId());
 											pititionTrackingVO.setUserId(inputVO.getId());
 											pititionTrackingVO.setPetitionId(petitionId);
 											pititionTrackingVO.setRemarks(inputVO.getRemark());
@@ -6124,8 +6132,11 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 													timeVO.setInsertedUserId(hVO.getInsertedUserId());
 													timeVO.setUserName(hVO.getUserName());
 													if(workId != null && workId.longValue() ==0L){
-														timeVO.setStatusId(petitionStatusId);
-														timeVO.setStautus(pmStatusDAO.get(petitionStatusId).getStatus());
+														//timeVO.setStatusId(petitionStatusId);
+														//timeVO.setStautus(pmStatusDAO.get(petitionStatusId).getStatus());
+														
+														timeVO.setStatusId(hVO.getStatusId());
+														timeVO.setStautus(hVO.getStautus());
 													}else{
 														timeVO.setStatusId(hVO.getStatusId());
 														timeVO.setStautus(hVO.getStautus());
