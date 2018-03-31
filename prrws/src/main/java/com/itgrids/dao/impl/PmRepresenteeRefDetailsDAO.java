@@ -668,7 +668,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		return query.list();
 	}
 	
-	public List<Object[]> getPetitionsDetailsForPdf(PetitionsInputVO inputVO){
+	public List<Object[]> getPetitionsDetailsForPdf(PetitionsInputVO inputVO,Date fromDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" p.petition_id as petition_id,CONCAT('#',date(p.representation_date))as representation_date ,CONCAT('#',date(p.endorsment_date)) as endorsment_date, ");
@@ -713,14 +713,16 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" SELECT max(o1.pm_petition_assigned_officer_id) from pm_petition_assigned_officer o1 where o1.is_deleted='N' GROUP BY o1.petition_id ");
 		sb.append(" )   ");
 		
+		if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
+			sb.append(" and dis.district_id in(:districtIdsList ) ");
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			sb.append(" and c.constituency_id in (:constituencyIdsList)  ");
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
 			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
 		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
 			sb.append("  and  sub.pm_status_id in (:statusIdsList)   ");
-		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null)
-			sb.append(" and (date(sub.inserted_time) between :startDate and :endDate)  ");
+		if(fromDate != null &&  endDate != null)
+			sb.append(" and (date(sub.inserted_time) between :fromDate and :endDate)  ");
 		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
 			sb.append("  and  sub.pm_subject_id in (:subjectIdsList)   ");
 		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
@@ -752,6 +754,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				.addScalar("refDesignation", StandardBasicTypes.STRING)
 				.addScalar("refName", StandardBasicTypes.STRING)3
 				.addScalar("officerName", StandardBasicTypes.STRING);*/
+		if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
+			query.setParameterList("districtIdsList", inputVO.getDistrictIdsList());
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			query.setParameterList("constituencyIdsList", inputVO.getConstituencyIdsList());
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
@@ -762,9 +766,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			query.setParameterList("subjectIdsList", inputVO.getSubjectIdsList());
 		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
 			query.setParameterList("subSubjectIdsList", inputVO.getSubSubjectIdsList());
-		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null){
-			query.setParameter("startDate", inputVO.getFromDate());
-			query.setParameter("endDate", inputVO.getEndDate());
+		if(fromDate != null &&  endDate != null){
+			query.setParameter("fromDate", fromDate);
+			query.setParameter("endDate", endDate);
 		}
 		
 		if( IConstants.PETITION_COMPLETED_IDS != null &&  IConstants.PETITION_COMPLETED_IDS.size()>0){

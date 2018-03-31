@@ -6916,7 +6916,16 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
  		public List<PetitionsPDFVO> getPetitionsDetailsForPDFDocument(PetitionsInputVO inputVO){
  			 List<PetitionsPDFVO> returnList = new ArrayList<>();
  		try {
-				List<Object[]> petitonsDetailsList = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO);
+ 			
+ 			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			Date startDate = null;
+			Date endDate = null;
+			
+			if(inputVO.getFromDate() != null && inputVO.getEndDate() != null && !inputVO.getFromDate().isEmpty() && !inputVO.getEndDate().isEmpty()){
+				startDate = format.parse(inputVO.getFromDate());
+				endDate = format.parse(inputVO.getEndDate());
+			}
+				List<Object[]> petitonsDetailsList = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO,startDate,endDate);
 				Map<Long,Map<Long,Map<Long,PetitionsPDFVO>>> deptWisePetitionsMap = new HashMap<Long,Map<Long,Map<Long,PetitionsPDFVO>>> (0);
 				
 				Set<Long> petitionIdsList = new HashSet<>();
@@ -7073,7 +7082,7 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				toBeSanctionedWorkIds.addAll(workIdsList);
 				toBeSanctionedCost = totalEstimationCost;
 				
-				List<Object[]> documentsList = pmSubWorkCoveringLetterDAO.getDocumentsDetailsForPDFDocument(inputVO, null);
+				List<Object[]> documentsList = pmSubWorkCoveringLetterDAO.getDocumentsDetailsForPDFDocument(inputVO,startDate,endDate, null);
 				if(commonMethodsUtilService.isListOrSetValid(documentsList)){
 					for (Object[] param : documentsList) {
 						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
