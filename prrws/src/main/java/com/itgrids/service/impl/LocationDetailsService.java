@@ -674,6 +674,75 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
+	
+	public List<KeyValueVO> getDistrictBySearchTypeInsubject(InputVO inputVO){
+		List<KeyValueVO> disticList = new ArrayList<KeyValueVO>();
+		try {
+			LOG.info("Entered into LocationDetailsService of getDistrictBySearchTypeInsubject");
+			Date fromDateStr = null;
+			Date toDateStr = null;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			List<Object[]> districtObjs=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && inputVO.getFromDate().length() > 0 && inputVO.getToDate().length() > 0){
+				fromDateStr = dateFormat.parse(inputVO.getFromDate());
+				toDateStr = dateFormat.parse(inputVO.getToDate());
+			}
+			//Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null,inputVO);
+			// Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
+			if(inputVO.getFilterType() != null && inputVO.getFilterType().length() >0 && inputVO.getFilterType().equalsIgnoreCase("work")){
+				List<Object[]> districtSubjectList = pmSubWorkDetailsDAO.getAllDistrictsInSubjectWiseSearch(fromDateStr,toDateStr,inputVO.getDeptIdsList(),inputVO.getSubjectIdsLst(),inputVO.getSubSubjectIdsLst(),null);
+				if(districtSubjectList != null && districtSubjectList.size() >0){
+					for(Object[] objs : districtSubjectList){
+						KeyValueVO disticVO = new KeyValueVO();
+						disticVO.setId(commonMethodsUtilService.getLongValueForObject(objs[0]));
+						disticVO.setName(commonMethodsUtilService.getStringValueForObject(objs[1]));
+						disticList.add(disticVO);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised into LocationDetailsService of getDistrictBySearchTypeInsubject",e);
+		}
+		return disticList;
+		
+	}
+	public List<KeyValueVO>  getConstituencyBySearchTypeAndDistrictIdInSubSubject(InputVO inputVO){
+		List<KeyValueVO> resultList = new ArrayList<KeyValueVO>();
+		try {
+			LOG.info("Entered into LocationDetailsService of getConstituencyBySearchTypeAndDistrictIdInSubSubject ");
+			Date fromDateStr = null;
+			Date toDateStr = null;
+			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+			List<Object[]> districtObjs=null;
+			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && inputVO.getFromDate().length() > 0 && inputVO.getToDate().length() > 0){
+				fromDateStr = dateFormat.parse(inputVO.getFromDate());
+				toDateStr = dateFormat.parse(inputVO.getToDate());
+			}
+			//Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(inputVO.getLocationId(),null,inputVO);
+			// Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
+			if(inputVO.getFilterType() != null && inputVO.getFilterType().length() >0 && inputVO.getFilterType().equalsIgnoreCase("work")){
+				List<Object[]> constituencyObjesList = pmSubWorkDetailsDAO.getConstituencyBySearchTypeAndDistrictIdInSubSubject(fromDateStr,toDateStr,inputVO.getSearchLvlVals(),inputVO.getFilterType(),inputVO.getDeptIdsList(),inputVO.getSubjectIdsLst(),inputVO.getSubSubjectIdsLst(),null);
+				 if(constituencyObjesList != null && constituencyObjesList.size() >0){
+					 for(Object[] param : constituencyObjesList){
+						 KeyValueVO vo = new KeyValueVO();
+						 vo.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+						 vo.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+						 resultList.add(vo);
+						 
+					 }
+				 }
+				
+			}
+			
+		} catch (Exception e) {
+		   LOG.error("Exception raised into LocationDetailsService of getConstituencyBySearchTypeAndDistrictIdInSubSubject ",e);
+		}
+		return resultList;
+		
+	}
+	
 	public List<KeyValueVO> getConstituenciesBySearchTypeAndDistrictId(InputVO  inputVO,List<Long> districtIds,List<Long> deptIds,List<Long> pmDesignationIds,String type,List<Long> statIds,List<Long> subjectIds,List<Long> leadIdsList){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
@@ -875,11 +944,42 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				startDate = format.parse(fromDate);
 				endDate = format.parse(toDate);
 			}
-			Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
-			 Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			//Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
+			// Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
 			 
 			if(searchType !=null && searchType.trim().equalsIgnoreCase("subject")){
-				deptObjs=pmSubWorkDetailsDAO.getSubjectsForSearchPage(deptIds,startDate,endDate,statusIds,Long.valueOf(subjectId),petitionIdsList);
+				deptObjs=pmSubWorkDetailsDAO.getSubjectsForSearchPage(deptIds,startDate,endDate,statusIds,Long.valueOf(subjectId),null);
+			}
+			if(deptObjs != null && deptObjs.size() > 0){
+				for(Object[] param : deptObjs ){
+					KeyValueVO vo = new KeyValueVO();
+					vo.setKey(commonMethodsUtilService.getLongValueForObject(param[0]));
+					//String deptName = commonMethodsUtilService.toConvertStringToTitleCase(commonMethodsUtilService.getStringValueForObject(param[1]));
+					vo.setValue(commonMethodsUtilService.getStringValueForObject(param[1]));
+					finalList.add(vo);
+				}
+			}
+		}catch(Exception e){
+			LOG.error("Exception occured at getDepartmentsBySearchType() in LocationDetailsService class ", e);
+		}
+		return finalList;
+	}
+	public List<KeyValueVO> getSubSubjectsBySubjectId(String searchType,String fromDate,String toDate,List<Long> subSubjectIdsLst,List<Long> statusIds,List<Long> deptIdsLst,List<Long> subjectIdsLst,String assretType,Long userId){
+		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
+		try{
+			List<Object[]> deptObjs=null;
+			Date startDate = null;
+			Date endDate = null;
+			SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+			if(fromDate != null && toDate != null && !fromDate.isEmpty() && !toDate.isEmpty()){
+				startDate = format.parse(fromDate);
+				endDate = format.parse(toDate);
+			}
+			//Map<Long,List<Long>> assignedPetitionsMap =  pmRequestDetailsService.getAssignedPetitionforPetitionDeptDesignationOfficer(userId,null,null);
+			 //Set<Long> petitionIdsList = assignedPetitionsMap.keySet();
+			 
+			if(searchType !=null && searchType.trim().equalsIgnoreCase("subSubject")){
+				deptObjs=pmSubWorkDetailsDAO.getSubSubjectsBySubjectId(startDate,endDate,statusIds,subSubjectIdsLst,deptIdsLst,subjectIdsLst,null);
 			}
 			if(deptObjs != null && deptObjs.size() > 0){
 				for(Object[] param : deptObjs ){

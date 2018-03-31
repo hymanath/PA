@@ -151,6 +151,26 @@ public class PmRequestDetailsController {
 			}
 	    	return locationDetailsService.getDistrictBySearchType(inputVO,deptIds);
 	    }
+	    @RequestMapping(value ="/getDistrictBySearchTypeInsubject",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getDistrictBySearchTypeInsubject(@RequestBody InputVO inputVO ,HttpServletRequest request) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+				inputVO.setLocationId(userId);
+			}else{
+				return null;
+			}
+			List<Long> deptIds = null;
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				deptIds= inputVO.getDeptIdsList();
+			}else{
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
+	    	return locationDetailsService.getDistrictBySearchTypeInsubject(inputVO);
+	    }
 	    @RequestMapping(value ="/getConstituenciesBySearchTypeAndDistrict",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getConstituenciesBySearchTypeAndDistrict(@RequestBody InputVO inputVO,HttpServletRequest request ) {
 	    	HttpSession session=request.getSession();
@@ -170,6 +190,27 @@ public class PmRequestDetailsController {
 				deptIds = deptVO.getDeptIdsList();
 			}
 	    	return locationDetailsService.getConstituenciesBySearchTypeAndDistrictId(inputVO, inputVO.getSearchLvlVals(),deptIds,inputVO.getDesignationIds(),inputVO.getType(),inputVO.getStatusIds(),inputVO.getSubProgramIdsList(),inputVO.getLeadIdsList());
+	    }
+	    
+	    @RequestMapping(value ="/getConstituencyBySearchTypeAndDistrictIdInSubSubject",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getConstituencyBySearchTypeAndDistrictIdInSubSubject(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+				inputVO.setLocationId(userId);
+			}else{
+				return null;
+			}
+			List<Long> deptIds = null;
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				 deptIds= inputVO.getDeptIdsList();
+			}else if(inputVO.getDesignationIds()==null){
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
+	    	return locationDetailsService.getConstituencyBySearchTypeAndDistrictIdInSubSubject(inputVO);
 	    }
 	    @RequestMapping(value ="/getMandalsBySearchTypeAndConstituency",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getMandalsBySearchTypeAndConstituency(@RequestBody InputVO inputVO,HttpServletRequest request ) {
@@ -262,6 +303,27 @@ public class PmRequestDetailsController {
 			}
 			List<Long> statusIds = inputVO.getStatusIds();
 	    	return locationDetailsService.getSubjectsBySearchType(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),deptIds,statusIds,inputVO.getAssetType(),userId);
+	    }
+	    
+	    @RequestMapping(value ="/getSubSubjectsBySubjectId",method = RequestMethod.POST)
+	    public @ResponseBody List<KeyValueVO> getSubSubjectsBySubjectId(@RequestBody InputVO inputVO,HttpServletRequest request ) {
+	    	HttpSession session=request.getSession();
+			UserVO userVO = (UserVO) session.getAttribute("USER"); 
+			Long userId =null;
+			if(userVO != null){
+				userId = userVO.getUserId();
+			}else{
+				return null;
+			}
+			List<Long> deptIds = null;
+			if(inputVO.getDeptIdsList() != null && inputVO.getDeptIdsList().size() >0){
+				deptIds= inputVO.getDeptIdsList();
+			}else{
+				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
+				deptIds = deptVO.getDeptIdsList();
+			}
+			List<Long> statusIds = inputVO.getStatusIds();
+	    	return locationDetailsService.getSubSubjectsBySubjectId(inputVO.getReportType(),inputVO.getFromDate(),inputVO.getToDate(),inputVO.getSubSubjectIdsLst(),inputVO.getStatusIds(),inputVO.getDeptIdsList(),inputVO.getSubjectIdsLst(),inputVO.getAssetType(),userId);
 	    }
 	    @RequestMapping(value ="/getStatusList",method = RequestMethod.POST)
 	    public @ResponseBody List<RepresenteeViewVO> getStatusList(@RequestBody InputVO inputVO,HttpServletRequest request) {

@@ -130,6 +130,103 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		return query.list();
 	}
 	
+	public List<Object[]> getAllDistrictsInSubjectWiseSearch(Date fromDate,Date toDate,List<Long> deptIdsList,List<Long> subjectIdsLst,List<Long> subSubjectIdsLst,Set<Long> petitionIdsLst){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct model.locationAddress.district.districtId");
+		sb.append(",model.locationAddress.district.districtName  from PmSubWorkDetails model,PmRepresenteeRefDetails model1  " +
+				" where model1.pmRepresenteeDesignation.pmRepresentee.isDeleted='N' and  model.isDeleted='N' and model1.isDeleted='N' " +
+				" and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N'  ");
+		
+		if(deptIdsList != null && deptIdsList.size() >0){
+			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIdsList) ");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");
+		}
+		if(subjectIdsLst != null && subjectIdsLst.size() >0){
+			sb.append(" and model.pmSubject.pmSubjectId in (:subjectIdsLst) ");
+		}
+		if(subSubjectIdsLst != null && subSubjectIdsLst.size() >0){
+			sb.append(" and model.pmSubSubject.pmSubjectId in (:subSubjectIdsLst) ");
+		}
+		if(petitionIdsLst != null && petitionIdsLst.size() >0){
+			sb.append(" and model.petition.petitionId in (:petitionIdsList) ");
+		}
+		
+		sb.append(" order by model.locationAddress.district.districtName asc ");
+		
+		Query qry = getSession().createQuery(sb.toString());
+		
+		if(deptIdsList != null && deptIdsList.size() >0){
+			qry.setParameterList("deptIdsList", deptIdsList);
+		}
+		if(fromDate != null && toDate != null){
+			qry.setParameter("fromDate", fromDate);
+			qry.setParameter("toDate", toDate);
+		}
+		if(subjectIdsLst != null && subjectIdsLst.size() >0){
+			qry.setParameterList("subjectIdsLst", subjectIdsLst);
+		}
+		if(subSubjectIdsLst != null && subSubjectIdsLst.size() >0){
+			qry.setParameterList("subSubjectIdsLst", subSubjectIdsLst);
+		}
+		if(petitionIdsLst != null && petitionIdsLst.size() >0){
+			qry.setParameterList("petitionIdsLst", petitionIdsLst);
+		}
+		return qry.list();
+	}
+	public List<Object[]> getConstituencyBySearchTypeAndDistrictIdInSubSubject(Date fromDate,Date toDate,List<Long> districtIds,String filterType,List<Long> deptIdsList,List<Long> subjectIdsLst,List<Long> subSubjectIdsLst,Set<Long> petitionIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.locationAddress.constituency.constituencyId");
+		sb.append(",model.locationAddress.constituency.name ");
+		sb.append(" from PmSubWorkDetails model,PmRepresenteeRefDetails model1 where model1.pmRefCandidateDesignation.isDeleted='N' " +
+				 " and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId " +
+				" and model1.petition.isDeleted='N' ");
+		if(districtIds != null && districtIds.size() >0L ){ 
+			sb.append("and model.locationAddress.district.districtId in (:districtIds) ");
+		}
+		if(fromDate != null && toDate != null){
+			sb.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");
+		}
+		if(deptIdsList != null && deptIdsList.size() >0){
+			sb.append("and model.pmDepartment.pmDepartmentId in (:deptIdsList) ");
+		}
+		if(subjectIdsLst != null && subjectIdsLst.size() >0){
+			sb.append("and model.pmSubject.pmSubjectId in (:subjectIdsLst) ");
+		}
+		if(subSubjectIdsLst != null && subSubjectIdsLst.size() >0){
+			sb.append("and model.pmSubSubject.pmSubjectId in (:subSubjectIdsLst) ");
+		}
+		if(petitionIdsList != null && petitionIdsList.size() >0){
+			sb.append(" and model.petition.petitionId in (:petitionIdsList) ");
+		}
+		
+		sb.append(" order by model.locationAddress.constituency.name asc ");
+		
+		
+		Query qry = getSession().createQuery(sb.toString());
+		if(districtIds != null && districtIds.size() >0L ){ 
+			qry.setParameterList("districtIds", districtIds);
+		}
+		if(fromDate != null && toDate != null){
+			qry.setParameter("fromDate",fromDate);
+			qry.setParameter("toDate",toDate);	
+		}
+		if(deptIdsList != null && deptIdsList.size() >0){
+			qry.setParameterList("deptIdsList", deptIdsList);
+		}
+		if(subjectIdsLst != null && subjectIdsLst.size() >0){
+			qry.setParameterList("subjectIdsLst", subjectIdsLst);
+		}
+		if(subSubjectIdsLst != null && subSubjectIdsLst.size() >0){
+			qry.setParameterList("subSubjectIdsLst", subSubjectIdsLst);
+		}
+		if(petitionIdsList != null && petitionIdsList.size() >0){
+			qry.setParameterList("petitionIdsList", petitionIdsList);
+		}
+		
+		return qry.list();
+	}
 	public List<Object[]> getAllConstituenciesByDistricId(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type, List<Long> statIds,Set<Long> petitionIdsLst,List<Long> subjectIdsLst,List<Long> leadIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct model.locationAddress.constituency.constituencyId");
@@ -530,6 +627,54 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 			query.setParameterList("petitionIdsList", petitionIdsList);
 		}
 		return query.list();
+	}
+	
+	public List<Object[]> getSubSubjectsBySubjectId(Date fromDate,Date toDate,List<Long> statusIds,List<Long> subSubjectIdsLst,List<Long> deptIdsLst,List<Long> subjectIdsLst,Set<Long> petitionIdsList){
+		StringBuilder sb = new StringBuilder();
+		sb.append("select distinct model.pmSubSubject.pmSubjectId,model.pmSubSubject.subject"
+				+ " from PmSubWorkDetails model where model.isDeleted='N' and model.pmSubSubject.isDeleted = 'N' and model.petition.isDeleted='N'  ");
+		
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(model.insertedTime) between :fromDate and :toDate "); 
+		}
+		if(statusIds != null && statusIds.size() >0){
+			sb.append(" and model.pmStatus.pmStatusId in (:statusIds) ");
+		}
+		if(subjectIdsLst != null && subjectIdsLst.size() >0){
+			sb.append(" and model.pmSubject.pmSubjectId in(:subjectIdsLst) ");
+		}
+		if(subSubjectIdsLst != null && subSubjectIdsLst.size() >0){
+			sb.append(" and model.pmSubSubject.pmSubjectId in(:subSubjectIdsLst) ");
+		}
+		if(deptIdsLst != null && deptIdsLst.size()>0){
+			sb.append(" and model.pmDepartment.pmDepartmentId in (:deptIdsLst) ");
+		}
+		if(petitionIdsList != null && petitionIdsList.size() >0){
+			sb.append(" and  model.petition.petitionId in(:petitionIdsList) ");
+		}
+		
+		Query qry = getSession().createQuery(sb.toString());
+		if(fromDate != null && toDate != null){
+			qry.setParameter("fromDate", fromDate);
+			qry.setParameter("toDate", toDate);
+		}
+		
+		if(statusIds != null && statusIds.size() >0){
+			qry.setParameterList("statusIds", statusIds);
+		}
+		if(subjectIdsLst != null && subjectIdsLst.size() >0){
+			qry.setParameterList("subjectIdsLst",subjectIdsLst);
+		}
+		if(petitionIdsList != null && petitionIdsList.size() >0){
+			qry.setParameterList("petitionIdsList", petitionIdsList);
+		}
+		if(deptIdsLst != null && deptIdsLst.size()>0){
+			qry.setParameterList("deptIdsLst", deptIdsLst);
+		}
+		if(subSubjectIdsLst != null && subSubjectIdsLst.size() >0){
+			qry.setParameterList("subSubjectIdsLst", subSubjectIdsLst);
+		}
+		return qry.list();
 	}
 	
 	public List<Object[]> getReferralWiseOverviewDetails(InputVO inputVO,Date startDate,Date endDate,Set<Long> petitionsIdsList){

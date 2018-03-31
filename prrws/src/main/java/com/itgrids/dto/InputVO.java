@@ -132,6 +132,8 @@ public class InputVO implements Serializable {
 	private Date endDate;
 	private List<Long> leadIdsList ;
 	private List<String> schemeIdStr;
+	private List<Long> subjectIdsLst;
+	private List<Long> subSubjectIdsLst;
 	
 	public List<Long> getSearchDeptIdsList() {
 		return searchDeptIdsList;
@@ -845,6 +847,19 @@ public class InputVO implements Serializable {
 	}
 	public void setSchemeIdStr(List<String> schemeIdStr) {
 		this.schemeIdStr = schemeIdStr;
+	}
+	
+	public List<Long> getSubjectIdsLst() {
+		return subjectIdsLst;
+	}
+	public void setSubjectIdsLst(List<Long> subjectIdsLst) {
+		this.subjectIdsLst = subjectIdsLst;
+	}
+	public List<Long> getSubSubjectIdsLst() {
+		return subSubjectIdsLst;
+	}
+	public void setSubSubjectIdsLst(List<Long> subSubjectIdsLst) {
+		this.subSubjectIdsLst = subSubjectIdsLst;
 	}
 	
 	
