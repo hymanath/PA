@@ -515,7 +515,7 @@ $(document).on('change','#SubSubjectId',function(){
 			 }
 		 }
 	
-	getSubSubjectsBySubjectId(subSubjectIdLst);
+	//getSubSubjectsBySubjectId(subSubjectIdLst);
 	getDistrictBySearchTypeInsubject(subSubjectIdLst);
 	getConstituencyBySearchTypeAndDistrictIdInSubSubject(subSubjectIdLst)
 });
