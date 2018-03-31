@@ -34,4 +34,8 @@ public interface ILocationDetailsService {
 	public List<KeyValueVO> getSubjectsBySearchType(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusId,String subjectId,Long userId);
 	public List<KeyValueVO> getChildOfficersByParentOfficerId(String searchType,String fromDate,String toDate,List<Long> deptIds,List<Long> statusIds,List<Long> pmOfficerId,Long userId,List<Long> pmDeptDesigIds,Long officerDesigId);
 	public List<PmOfficerVO> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO);
+	
+	public List<KeyValueVO> getSubSubjectsBySubjectId(String searchType,String fromDate,String toDate,List<Long> subSubjectIdsLst,List<Long> statusIds,List<Long> subjectIdsLst,List<Long> deptIdsLst,String assertType,Long userId);
+	public List<KeyValueVO> getDistrictBySearchTypeInsubject(InputVO inputVO);
+	public List<KeyValueVO>  getConstituencyBySearchTypeAndDistrictIdInSubSubject(InputVO inputVO);
 }

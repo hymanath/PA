@@ -88,39 +88,19 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 			<div class="row m_top10 dispalyNone">
 				<div class="col-sm-12">
 					<div class="white-block petition_block">
-						<div class="row m_top10">
-							<div class="col-sm-2 " id="deptsDivId">
+						<div class="row m_top10">	
+						    <div class="col-sm-3 " id="deptsDivId">
 								<label>DEPARTMENT</label>
 								<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId1" multiple>
 								</select>
 							</div>
-							<div class="col-sm-2" id="districtCandDiv">
-								<label>DISTRICT</label>
-								<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId1" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-								<!--<div class="error_colorCls" id="districtCandErrDiv"></div>-->
-							</div>
-							<div class="col-sm-2" id="constituencyCanDiv">
-								<label>CONSTITUENCY</label>
-								<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId1" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-								<!--<div class="error_colorCls" id="constituencyCanErrDiv"></div>-->
-							</div>
-							<div class="col-sm-2">
+							<div class="col-sm-3">
 								<label>STATUS</label>
-								<select class="chosen-select form-control" id="statusLocId1" data-placeholder="All" multiple>
+								<select class="chosen-select form-control " id="statusLocId1" data-placeholder="All" multiple>
 									<!--<option value="0">All</option>-->
 								</select>
 							</div>
-							<div class="col-sm-2">
-								<label>SUBJECT</label>
-								<select class="chosen-select form-control" id="subjectId1" data-placeholder="All" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-							</div>
-							<div class="col-sm-2 m_top20">	
+							<div class="col-sm-4 pull-right">	
 								<div class="input-group inline-block">
 									<span class="input-group-addon">
 										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
@@ -128,6 +108,39 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 									<input type="text"  class="form-control" id="dateRangePicker"/>
 								</div>
 							</div>
+						</div>	
+						<div class="row m_top10">	
+							<div class="col-sm-3">
+								<label>SUBJECT</label>
+								<select class="chosen-select form-control" id="subjectId1" data-placeholder="All" multiple>
+									<!--<option value="0">All</option>-->
+								</select>
+							</div>
+							<div class="col-sm-3">
+								<label>SUB SUBJECT</label>
+								<select class="chosen-select form-control" id="SubSubjectId" data-placeholder="All" multiple>
+									<!--<option value="0">All</option>-->
+								</select>
+							</div>
+						
+						</div>
+						<div class="row m_top20">
+							<div class="col-sm-3" id="districtCandDiv">
+								<label>DISTRICT</label>
+								<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId1" multiple>
+									<!--<option value="0">All</option>-->
+								</select>
+								<!--<div class="error_colorCls" id="districtCandErrDiv"></div>-->
+							</div>
+							<div class="col-sm-3" id="constituencyCanDiv">
+								<label>CONSTITUENCY</label>
+								<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId1" multiple>
+									<!--<option value="0">All</option>-->
+								</select>
+								<!--<div class="error_colorCls" id="constituencyCanErrDiv"></div>-->
+							</div>
+							
+							
 						</div>
 						
 					</div>
@@ -178,6 +191,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 <script type="text/javascript" src="Assests/Plugins/pdfexpand_prrws/source/jquery.fancybox.js"></script>
 <!--<script src="Assests/representationRequest/representationsDashboard.js" type="text/javascript"></script>-->
 <script type="text/javascript">
+$(".chosen-select").chosen();
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var currentToDate = "";
 var currentFromDate="";
@@ -210,23 +224,38 @@ $("#dateRangePicker").daterangepicker({
 		if(picker.chosenLabel == 'All')
 		{
 			$("#dateRangePicker").val('All');
-			onloadcalls();
 		}
-		locationLevelRefresh();
-		$("#petitionSubWorkRadioDivId").hide();
-		//$("#workId").prop("checked",true);
+		locationlevels();
+		onloadcalls();
+		
 		
 	});
+	
+	function locationlevels(){
+	$("#subjectId1").html('<option value ="0">Select Subject</option>');
+	$("#subjectId1").trigger('chosen:updated');
+	
+	$("#SubSubjectId").html('<option value ="0">Select Sub Subject</option>');
+	$("#SubSubjectId").trigger('chosen:updated');
+	
+	$("#districtCandId1").html('<option value ="0">Select District</option>');
+	$("#districtCandId1").trigger('chosen:updated');
+	
+	$("#constituencyCanId1").html('<option value ="0">Select Constituency</option>');
+	$("#constituencyCanId1").trigger('chosen:updated');
+	}
 
 onloadcalls();
 function onloadcalls()
 {
-	$("#constituencyCanId1").chosen();
-	getConstituenciesBySearchTypeAndDistrict([]);
+	//$("#constituencyCanId1").chosen();
+	//getConstituenciesBySearchTypeAndDistrict([]);
 	getDepartmntsDetails();
 	getStatusList();
 	getSubjectsBySearchType();
-	getDistrictBySearchType();
+	getSubSubjectsBySubjectId();
+	getDistrictBySearchTypeInsubject();
+	getConstituencyBySearchTypeAndDistrictIdInSubSubject();
 	
 }
 
@@ -250,13 +279,14 @@ function getDepartmntsDetails(){
 	}).done(function(result){
 		
 		$("#departmntId1").empty();
-		$("#departmntId1").append("<option value='0' selected> ALL </option>");
+		if(result != null && result.length >0){
+			$("#departmntId1").append("<option value='0' selected> ALL </option>");
 		if(result !=null && result.length >0){
 			for(var i in result)
 				$("#departmntId1").append("<option value='"+result[i].key+"' >"+result[i].value+"</option>");
 			
 		}
-		$("#departmntId1").chosen();
+	}
 		$("#departmntId1").trigger('chosen:updated');
 	});	 
 }
@@ -286,23 +316,66 @@ function getStatusList(){
 				$("#statusLocId1").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
 			}
 		}
-		$("#statusLocId1").chosen();
+		//$("#statusLocId1").chosen();
 		$("#statusLocId1").trigger('chosen:updated');
   }); 
 }
 
-function getSubjectsBySearchType(){
+
+$(document).on('change','#departmntId1',function(){
+	var deptIdsLst =[];
+	$("#subjectId1").html('<option value ="0">Select Subject</option>');
+	$("#subjectId1").trigger('chosen:updated');
+	
+	$("#SubSubjectId").html('<option value ="0">Select Sub Subject</option>');
+	$("#SubSubjectId").trigger('chosen:updated');
+	
+	$("#districtCandId1").html('<option value ="0">Select District</option>');
+	$("#districtCandId1").trigger('chosen:updated');
+	
+	$("#constituencyCanId1").html('<option value ="0">Select Constituency</option>');
+	$("#constituencyCanId1").trigger('chosen:updated');
+	
+	
+		var depts =$("#departmntId1").val();
+		 if(depts != null && depts.length >0){
+			deptIdsLst=depts;
+		 }
+		 
+		 if(depts != null && depts.length>0){
+			 for(var i in depts){
+				 if(parseInt(depts[i])==0){
+				 deptIdsLst=[];
+				 }
+			 }
+		 }
+		 
+	//var departmentId = $("#departmntId1").val();
+	
+	getSubjectsBySearchType(deptIdsLst);
+	getSubSubjectsBySubjectId(deptIdsLst);
+	getDistrictBySearchTypeInsubject(deptIdsLst);
+	getConstituencyBySearchTypeAndDistrictIdInSubSubject(deptIdsLst);
+	
+	
+})
+function getSubjectsBySearchType(deptIdsLst){
 	$("#statusLocId").html("");
-	$("#statusLocId").html("<option value='0' selected> All Subject </option>");
-	$("#subjectId1").chosen();
-		$("#subjectId1").trigger('chosen:updated');
+	$("#statusLocId").html("<option value='0' > All  </option>");
+	$("#subjectId1").html('');
+		
+	var selStatusId = $("#statusLocId1").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}
 	var json = {
 		 reportType :'subject',
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 statusIds:statusIds,
 		 assetType:"0",
-		 deptIdsList :[]
+		 deptIdsList :deptIdsLst
 		}           
 	$.ajax({              
 		type:'POST',    
@@ -315,16 +388,137 @@ function getSubjectsBySearchType(){
 		}
 	}).done(function(result){
 		$("#statusLocId").html("");
-		$("#statusLocId").html("<option value='0' selected> All Subject </option>");
+		$("#subjectId1").html("<option value='0' > All </option>");
 		 if(result !=null && result.length >0){
 			for(var i in result){
 				$("#subjectId1").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
 		}
-		$("#subjectId1").chosen();
 		$("#subjectId1").trigger('chosen:updated');
+		
 	});	
 }
+
+$(document).on('change','#subjectId1',function(){
+	var subjectIdLst =[];
+	var subjectId =$("#subjectId1").val();
+		 if(subjectId != null && subjectId.length>0){
+				subjectIdLst=subjectId;
+		 }
+		 if(subjectId != null && subjectId.length>0){
+			 for(var i in subjectId){
+				 if(parseInt(subjectId[i])==0){
+					subjectIdLst=[];
+				 }
+			 }
+		 }
+	
+	getSubSubjectsBySubjectId(subjectIdLst);
+	getDistrictBySearchTypeInsubject(subjectIdLst);
+	getConstituencyBySearchTypeAndDistrictIdInSubSubject(subjectIdLst)
+});
+//getSubSubjectsBySearchType
+//url:getSubjectsBySearchType
+function getSubSubjectsBySubjectId(subjectIdLst){
+	$("#statusLocId").html("");
+	 $("#SubSubjectId").html("");
+	//$("#statusLocId").html("<option value='0' selected> All  </option>");
+
+		var deptIdsLst =[];
+		var subjectIds = [];
+		var subSubjectIds=[];
+		var selStatusId = $("#statusLocId1").val();
+	var statusIds = [];
+	if(selStatusId != null && selStatusId.length >0){
+		statusIds=selStatusId;
+	}
+	
+	 var depts =$("#departmntId1").val();
+		 if(depts != null && depts.length>0){
+			deptIdsLst=depts;
+		 }
+	 if(depts != null && depts.length>0){
+		 for(var i in depts){
+			 if(parseInt(depts[i])==0){
+			 deptIdsLst=[];
+			 }
+		  }
+	  }
+	  var subjctidVal = $("#subjectId1").val();
+	if(subjctidVal != null && subjctidVal.length>0){
+		subjectIds=subjctidVal;
+	}
+	if(subjctidVal != null && subjctidVal.length>0){
+		for(var i in subjctidVal){
+			if(parseInt(subjctidVal[i])==0){
+				subjectIds=[];
+			}
+		}
+	}
+	
+	var subSubjectIdVal = $("#SubSubjectId").val();
+	if(subSubjectIdVal != null && subSubjectIdVal.length>0){
+		subSubjectIds = subSubjectIdVal;
+	}
+	
+	if(subSubjectIdVal != null && subSubjectIdVal.length >0){
+		for(var i in subSubjectIdVal){
+			if(parseInt(subSubjectIdVal[i])==0){
+				subSubjectIds=[];
+			}
+		}
+	}
+	
+	var json = {
+		 reportType :'subSubject',
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 statusIds:statusIds,
+		 assetType:"0",
+		 deptIdsList :deptIdsLst,
+		 subjectIdsLst : subjectIds,
+		 subSubjectIdsLst : subSubjectIds
+		}           
+	$.ajax({              
+		type:'POST',    
+		url: 'getSubSubjectsBySubjectId',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#statusLocId").html("");
+		 if(result !=null && result.length >0){
+			 $("#SubSubjectId").html("<option value='0'> All </option>");
+			for(var i in result){
+				$("#SubSubjectId").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+			}
+		}
+
+		$("#SubSubjectId").trigger('chosen:updated');
+	});	
+}
+
+$(document).on('change','#SubSubjectId',function(){
+	var subSubjectIdLst =[];
+	var subSubjectId = $("#SubSubjectId").val();
+		 if(subSubjectId != null && subSubjectId.length>0){
+		 subSubjectIdLst=subSubjectId;
+		 }
+		 if(subSubjectId != null && subSubjectId.length>0){
+			 for(var i in subSubjectId){
+				 if(parseInt(subSubjectId[i])==0){
+				 subSubjectIdLst=[];
+				 }
+			 }
+		 }
+	
+	getSubSubjectsBySubjectId(subSubjectIdLst);
+	getDistrictBySearchTypeInsubject(subSubjectIdLst);
+	getConstituencyBySearchTypeAndDistrictIdInSubSubject(subSubjectIdLst)
+});
 
 var statusIds = [];
 function getPetitionsDetails(){
@@ -359,9 +553,9 @@ function getPetitionsDetails(){
 		departmentIdMainList=deptIds;
 	}
 	
-	if(departmentIdMainList != null && departmentIdMainList.length>0){
-		for(var i in departmentIdMainList){
-			if(parseInt(departmentIdMainList[i])==0){
+	if(deptIds != null && deptIds.length>0){
+		for(var i in deptIds){
+			if(parseInt(deptIds[i])==0){
 				departmentIdMainList=[];
 			}
 		}
@@ -369,13 +563,13 @@ function getPetitionsDetails(){
 	
 	var statusArr = [];
 	statusIds =$("#statusLocId1").val();
-	if(statusIds != null && statusIds !=0){
+	if(statusIds != null && statusIds.length>0){
 		statusArr=statusIds;
 	}
 	
-	if(statusArr != null && statusArr.length>0){
-		for(var i in statusArr){
-			if(parseInt(statusArr[i])==0){
+	if(statusIds != null && statusIds.length>0){
+		for(var i in statusIds){
+			if(parseInt(statusIds[i])==0){
 				statusArr=[];
 			}
 		}
@@ -383,24 +577,37 @@ function getPetitionsDetails(){
 	
 	var subjArr = [];
 	var subjIds =$("#subjectId1").val();
-	if(subjIds != null && subjIds !=0){
+	if(subjIds != null && subjIds .length>0){
 		subjArr=subjIds;
 	}
 	
-	if(subjArr != null && subjArr.length>0){
-		for(var i in subjArr){
-			if(parseInt(subjArr[i])==0){
+	if(subjIds != null && subjIds.length>0){
+		for(var i in subjIds){
+			if(parseInt(subjIds[i])==0){
 				subjArr=[];
 			}
 		}
 	}
 	
+	var subSubjectIdVal = $("#SubSubjectId").val();
+	var subSubjectIds=[];
+	if(subSubjectIdVal != null && subSubjectIdVal.length>0){
+		subSubjectIds = subSubjectIdVal;
+	}
+	
+	if(subSubjectIdVal != null && subSubjectIdVal.length >0){
+		for(var i in subSubjectIdVal){
+			if(parseInt(subSubjectIdVal[i])==0){
+				subSubjectIds=[];
+			}
+		}
+	}
 	  var json = {
 			constituencyIdsList: locationIDsArr, 
 			deptIdsList: departmentIdMainList,
 			statusIdsList: statusArr,
 			subjectIdsList: subjArr,
-			subSubjectIdsList: []
+			subSubjectIdsList: subSubjectIds
 		};
 	 
 	  $.ajax({              
@@ -583,14 +790,58 @@ function getPetitionsDetails(){
 		
 		//$('.printViewCls').trigger('click');
  }
- function getDistrictBySearchType(){
-
+ function getDistrictBySearchTypeInsubject(){
+	 $("#districtCandId1").html('');
+	 var deptIds = [];
+	 var subjectIds =[];
+	 var subSubjectIds = [];
+	 
+   var depts =$("#departmntId1").val();
+	if(depts != null && depts.length>0){
+		deptIds=depts;
+	}
+	if(depts != null && depts.length>0){
+		for(var i in depts){
+			if(parseInt(depts[i])==0){
+				deptIds=[];
+			}
+		}
+	}
+	var subjctidVal = $("#subjectId1").val();
+	if(subjctidVal != null && subjctidVal.length>0){
+		subjectIds=subjctidVal;
+	}
+	if(subjctidVal != null && subjctidVal.length>0){
+		for(var i in subjctidVal){
+			if(parseInt(subjctidVal[i])==0){
+				subjectIds=[];
+			}
+		}
+	}
+	
+	var subSubjectIdVal = $("#SubSubjectId").val();
+	if(subSubjectIdVal != null && subSubjectIdVal.length >0){
+		subSubjectIds = subSubjectIdVal;
+	}
+	if(subSubjectIdVal != null && subSubjectIdVal.length >0){
+		for(var i in subSubjectIdVal){
+			if(parseInt(subSubjectIdVal[i])==0){
+				subSubjectIds=[];
+			}
+		}
+	}
  var json = {
-		 filterType :"work"
+		 filterType :"work",
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 deptIdsList:deptIds,
+		 subjectIdsLst : subjectIds,
+		 subSubjectIdsLst : subSubjectIds
+		 
 		}           
 	$.ajax({              
 		type:'POST',    
-		url: 'getDistrictBySearchType',
+		url: 'getDistrictBySearchTypeInsubject',
 		dataType: 'json',
 		data : JSON.stringify(json),
 		beforeSend :   function(xhr){
@@ -599,20 +850,95 @@ function getPetitionsDetails(){
 		}
 	}).done(function(result){
 		if(result !=null && result.length >0){
+		 $("#districtCandId1").html("<option value='0'>Select District</option>");
 			for(var i in result){
-				$("#districtCandId1").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+				$("#districtCandId1").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");;
 			}
 		}
-		$("#districtCandId1").chosen();
+		//$("#districtCandId1").chosen();
 		$("#districtCandId1").trigger('chosen:updated');
 		
 	});	
 }
 $(document).on("change","#districtCandId1",function()
 {
-	getConstituenciesBySearchTypeAndDistrict($(this).val());
+	getConstituencyBySearchTypeAndDistrictIdInSubSubject($(this).val());
 });	
 
+function getConstituencyBySearchTypeAndDistrictIdInSubSubject(distictId){
+
+	var deptIds = [];
+	 var subjectIds =[];
+	 var subSubjectIds = [];
+	 
+   var depts =$("#departmntId1").val();
+	if(depts != null && depts.length >0){
+		deptIds=depts;
+	}
+	if(depts != null && depts.length>0){
+		for(var i in depts){
+			if(parseInt(depts[i])==0){
+				deptIds=[];
+			}
+		}
+	}
+	var subjctidVal = $("#subjectId1").val();
+	if(subjctidVal != null && subjctidVal.length >0){
+		subjectIds=subjctidVal;
+	}
+	if(subjctidVal != null && subjctidVal.length>0){
+		for(var i in subjctidVal){
+			if(parseInt(subjctidVal[i])==0){
+				subjectIds=[];
+			}
+		}
+	}
+	
+	var subSubjectIdVal = $("#SubSubjectId").val();
+	if(subSubjectIdVal != null && subSubjectIdVal.length >0){
+		subSubjectIds = subSubjectIdVal;
+	}
+	if(subSubjectIdVal != null && subSubjectIdVal.length >0){
+		for(var i in subSubjectIdVal){
+			if(parseInt(subSubjectIdVal[i])==0){
+				subSubjectIds=[];
+			}
+		}
+	}
+	
+	var json = {
+		 filterType :"work",
+		 searchLvlVals: distictId,
+		 fromDate :currentFromDate,
+		 toDate : currentToDate,
+		 deptIdsList:deptIds,
+		 subjectIdsLst : subjectIds,
+		 subSubjectIdsLst : subSubjectIds
+		 
+	}  	
+
+	$.ajax({              
+		type:'POST',    
+		url: 'getConstituencyBySearchTypeAndDistrictIdInSubSubject',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		$("#constituencyCanId1").empty();
+		if(result !=null && result.length >0){
+			 $("#constituencyCanId1").html("<option value='0'>Select Constituency</option>");
+			for(var i in result){
+				$("#constituencyCanId1").append("<option value='"+result[i].id+"'>"+result[i].name+"</option>");
+			}
+		}
+		
+		$("#constituencyCanId1").chosen();
+		$("#constituencyCanId1").trigger('chosen:updated');
+	});	
+}
 
 function getConstituenciesBySearchTypeAndDistrict(distictId){
 	

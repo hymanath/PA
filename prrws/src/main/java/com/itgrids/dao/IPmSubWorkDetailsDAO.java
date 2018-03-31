@@ -34,4 +34,8 @@ public interface IPmSubWorkDetailsDAO extends GenericDao<PmSubWorkDetails, Long>
 	public List<Object[]> getChildOfficersByParentOfficerId(List<Long> deptIds,Date fromDate,Date toDate,List<Long> statusIds,List<Long> pmOfficerid,Set<Long> petitionIdsList,Set<Long> pmOffcrDesigids);
 	public List<Object[]> getLocationWiseRepresentationsOverviewDetails(InputVO inputVO,Date fromDate,Date toDate);
 	public int updatePetitionSubWorkPriorityDetails(PetitionPriorityVO priorityVO,Date dateTime);
+
+	public List<Object[]> getSubSubjectsBySubjectId(Date fromDate,Date toDate,List<Long> statusIds,List<Long> subSubjectIdsLst,List<Long> deptIdsLst,List<Long> subjectIdsLst ,Set<Long> petitionIdsList);
+	public List<Object[]> getAllDistrictsInSubjectWiseSearch(Date fromDate,Date toDate,List<Long> deptIdsList,List<Long> subjectIdsLst,List<Long> subSubjectIdsLst,Set<Long> petitionIdsLst);
+	public List<Object[]> getConstituencyBySearchTypeAndDistrictIdInSubSubject(Date fromDate,Date toDate,List<Long> districtIds,String filterType,List<Long> deptIdsList,List<Long> subjectIdsLst,List<Long> subSubjectIdsLst,Set<Long> petitionIdsLst);
 }
