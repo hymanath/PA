@@ -42,4 +42,6 @@ public interface IPrENCService {
 
 	public List<KeyValueVO> getConstituenciesForDistrict(InputVO inputVo);
 
+	//public List<EncWorksVO> getAmountWiseEncWorksCount(InputVO inputVO);
+
 }
