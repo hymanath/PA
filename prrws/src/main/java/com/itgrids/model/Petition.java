@@ -21,6 +21,7 @@ public class Petition {
 	private Long petitionId;
 	private String endorsmentNo;
 	private Date representationDate;
+	private Long pmPetitionTypeId;
 	private Date endorsmentDate;
 	private String workName;
 	private String estimationCost;
@@ -42,6 +43,9 @@ public class Petition {
 	private String isOldData;
 	private String sanctionedAmount;
 	private String noOfKm; // no of kilo meetres -- for roads
+	
+	
+	private PmPetitionType pmPetitionType;
 	
 	@Id
 	@Column(name="petition_id")
@@ -210,4 +214,23 @@ public class Petition {
 	public void setNoOfKm(String noOfKm) {
 		this.noOfKm = noOfKm;
 	}
+	
+	@Column(name="pm_petition_type_id")
+	public Long getPmPetitionTypeId() {
+		return pmPetitionTypeId;
+	}
+	public void setPmPetitionTypeId(Long pmPetitionTypeId) {
+		this.pmPetitionTypeId = pmPetitionTypeId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "pm_petition_type_id", insertable = false, updatable = false)
+	public PmPetitionType getPmPetitionType() {
+		return pmPetitionType;
+	}
+	public void setPmPetitionType(PmPetitionType pmPetitionType) {
+		this.pmPetitionType = pmPetitionType;
+	}
+	
+	
 }
