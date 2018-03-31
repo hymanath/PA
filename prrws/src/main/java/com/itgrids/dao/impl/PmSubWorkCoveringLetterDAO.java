@@ -1,5 +1,6 @@
 package com.itgrids.dao.impl;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -75,7 +76,7 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		return null;			
 	}
 	
-	public List<Object[]> getDocumentsDetailsForPDFDocument(PetitionsInputVO inputVO,List<Long> petitionIdsList){
+	public List<Object[]> getDocumentsDetailsForPDFDocument(PetitionsInputVO inputVO,Date startDate,Date endDate,List<Long> petitionIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" sub.petition_id as petition_id, sub.work_endorsment_no as work_endorsment_no ,sub.pm_sub_work_details_id as pm_sub_work_details_id," +
@@ -94,14 +95,15 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 		sb.append(" sub.pm_department_id = d.pm_department_id and  ");
 		sb.append(" sub.is_deleted='N' and  ");
 		sb.append(" d.is_deleted='N' ");
-		
+		if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
+			sb.append(" and dis.district_id in(:districtIdsList)");
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			sb.append(" and c.constituency_id in (:constituencyIdsList)  ");
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
 			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
 		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
 			sb.append("  and  sub.pm_status_id in (:statusIdsList)   ");
-		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null)
+		if(startDate != null &&  endDate != null)
 			sb.append(" and (date(sub.inserted_time) between :startDate and :endDate)  ");
 		if( inputVO.getSubjectIdsList() != null &&  inputVO.getSubjectIdsList().size()>0)
 			sb.append("  and  sub.pm_subject_id in (:subjectIdsList)   ");
@@ -118,7 +120,8 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 				.addScalar("ref_no", StandardBasicTypes.STRING)
 				.addScalar("document_type_id", StandardBasicTypes.LONG)
 				.addScalar("pm_document_type", StandardBasicTypes.STRING);
-		
+		if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
+			query.setParameterList("districtIdsList", inputVO.getDistrictIdsList());
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			query.setParameterList("constituencyIdsList", inputVO.getConstituencyIdsList());
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
@@ -129,9 +132,9 @@ public class PmSubWorkCoveringLetterDAO extends GenericDaoHibernate<PmSubWorkCov
 			query.setParameterList("subjectIdsList", inputVO.getSubjectIdsList());
 		if( inputVO.getSubSubjectIdsList() != null &&  inputVO.getSubSubjectIdsList().size()>0)
 			query.setParameterList("subSubjectIdsList", inputVO.getSubSubjectIdsList());
-		if( inputVO.getFromDate() != null &&  inputVO.getEndDate() != null){
-			query.setParameter("startDate", inputVO.getFromDate());
-			query.setParameter("endDate", inputVO.getEndDate());
+		if(startDate != null &&  endDate != null){
+			query.setParameter("startDate", startDate);
+			query.setParameter("endDate", endDate);
 		}
 		return query.list();
 	}

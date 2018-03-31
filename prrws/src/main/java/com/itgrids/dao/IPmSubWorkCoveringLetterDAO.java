@@ -1,5 +1,6 @@
 package com.itgrids.dao;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -13,5 +14,5 @@ public interface IPmSubWorkCoveringLetterDAO extends GenericDao<PmSubWorkCoverin
 	public List<Object[]> getSubWorkWiseRequiredDocumentsDetailsByPetitionId(Long petiotionId);
 	public int disableExistingCoveringLettersForPetition(Long petitionId,String reporttype);
 	public List<Object[]> getAllTypeOfDocumentsForPetition(Set<Long> petiotionIds,String reportType);
-	public List<Object[]> getDocumentsDetailsForPDFDocument(PetitionsInputVO inputVO,List<Long> petitionIdsList);
+	public List<Object[]> getDocumentsDetailsForPDFDocument(PetitionsInputVO inputVO,Date startDate,Date endDate,List<Long> petitionIdsList);
 }

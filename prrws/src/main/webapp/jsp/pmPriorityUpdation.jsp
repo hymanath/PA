@@ -225,6 +225,7 @@ $("#dateRangePicker").daterangepicker({
 		{
 			$("#dateRangePicker").val('All');
 		}
+		$("#pdfWiswPetitionsView").html('');
 		locationlevels();
 		onloadcalls();
 		
@@ -388,8 +389,8 @@ function getSubjectsBySearchType(deptIdsLst){
 		}
 	}).done(function(result){
 		$("#statusLocId").html("");
-		$("#subjectId1").html("<option value='0' > All </option>");
 		 if(result !=null && result.length >0){
+			 $("#subjectId1").html("<option value='0' > All </option>");
 			for(var i in result){
 				$("#subjectId1").append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
 			}
@@ -415,10 +416,8 @@ $(document).on('change','#subjectId1',function(){
 	
 	getSubSubjectsBySubjectId(subjectIdLst);
 	getDistrictBySearchTypeInsubject(subjectIdLst);
-	getConstituencyBySearchTypeAndDistrictIdInSubSubject(subjectIdLst)
+	getConstituencyBySearchTypeAndDistrictIdInSubSubject(subjectIdLst);
 });
-//getSubSubjectsBySearchType
-//url:getSubjectsBySearchType
 function getSubSubjectsBySubjectId(subjectIdLst){
 	$("#statusLocId").html("");
 	 $("#SubSubjectId").html("");
@@ -514,33 +513,42 @@ $(document).on('change','#SubSubjectId',function(){
 				 }
 			 }
 		 }
-	
-	//getSubSubjectsBySubjectId(subSubjectIdLst);
 	getDistrictBySearchTypeInsubject(subSubjectIdLst);
 	getConstituencyBySearchTypeAndDistrictIdInSubSubject(subSubjectIdLst)
 });
 
 var statusIds = [];
 function getPetitionsDetails(){
-	$("#pdfWiswPetitionsView").html(spinner);
+	
 	var locationId;
 	var districtName;
 	var constituencyName;
 	var assemblyName;
 	var locationIDsArr =[];
+	var districtIdArr = [];
 	var selStatusId = $("#statusLocId1").val();
 	
+	var districtIdVal = $("#districtCandId1").val();
+	
+	if(districtIdVal != null && districtIdVal.length >0){
+		districtIdArr = districtIdVal;
+	}
+	 
+	if(districtIdVal != null && districtIdVal.length >0){
+		for(var i in districtIdVal){
+			if(parseInt(districtIdVal[i])==0){
+				districtIdArr = districtIdVal;
+			}
+		}
+	}
 	var constituencyId=$("#constituencyCanId1").val();
 	if(constituencyId != null && constituencyId.length > 0){
 		locationIDsArr=constituencyId;
-	}else{
-		alert("Please select atleast one constituency.");
-		return ;
 	}
 		
-	if(locationIDsArr != null && locationIDsArr.length>0){
-		for(var i in locationIDsArr){
-			if(parseInt(locationIDsArr[i])==0){
+	if(constituencyId != null && constituencyId.length>0){
+		for(var i in constituencyId){
+			if(parseInt(constituencyId[i])==0){
 				locationIDsArr=[];
 			}
 		}
@@ -607,9 +615,12 @@ function getPetitionsDetails(){
 			deptIdsList: departmentIdMainList,
 			statusIdsList: statusArr,
 			subjectIdsList: subjArr,
-			subSubjectIdsList: subSubjectIds
+			subSubjectIdsList: subSubjectIds,
+			districtIdsList: districtIdArr,
+			fromDate :currentFromDate,
+		    endDate : currentToDate
 		};
-	 
+	 $("#pdfWiswPetitionsView").html(spinner);
 	  $.ajax({              
 		type:'POST',    
 		url: 'getPetitionDetailsForPDFDocument',
