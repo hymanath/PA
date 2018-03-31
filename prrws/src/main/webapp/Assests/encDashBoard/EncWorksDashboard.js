@@ -1056,9 +1056,10 @@ $(document).on("click",".schemsClickView",function(){
 		$("#modalHablitationDivId").modal('show');
 			$("#modalExceededTable").html('');
 		$("#modalSchemsTable").html('');
+		$("#modalAmountSchemeTable").html('');
 		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+"("+workStatus+")&nbsp;&nbsp;Overview</h4>");
 		getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locationType);
-		
+		getAmountWiseEncWorksCount(workStatus,totalCount,locationValue,locationType);
 	}
 	
 });
@@ -1117,7 +1118,7 @@ function getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locatio
 
 function buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount){
 	var tableView='';
-	tableView+='<div class="table-responsive">';
+	tableView+='<div class="table-responsive m_top20">';
 	tableView+='<table class="table table-bordered" id="dataTableSchems">';
 		tableView+='<thead>';
 		tableView+='<tr>';
@@ -1452,5 +1453,104 @@ function buildgettAllEncWorksBySchemeDetails(result){
 			}
 		]
 	});
+	
+}
+
+function getAmountWiseEncWorksCount(workStatus,totalCount,locationValue,locationType){
+	var yearVal="";
+	var financialVal =$("#financialYearId").val();
+	if(financialVal != 0){
+		 yearVal=financialVal;
+	}
+	var schemeValArr=[];
+	var schemeVal =$("#schemeDivId").val();
+	if(schemeVal==null || schemeVal==""){
+		schemeValArr=[];
+	}else{
+		schemeValArr=schemeVal;
+	}
+	$("#modalAmountSchemeTable").html(spinner);
+	var yearVal="";
+	var financialVal =$("#financialYearId").val();
+	if(financialVal != 0){
+		 yearVal=financialVal;
+	}
+	var json = {
+		year:yearVal,
+		fromDateStr:glStartDate,
+		toDateStr:glEndDate,
+		workStatus:workStatus,
+		locationType:locationType,
+		locationValue:locationValue,
+		schemeIdStr:schemeValArr
+	}
+	
+	$.ajax({                
+		type:'POST',    
+		url: 'getAmountWiseEncWorksCount',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			buildAmountWiseEncWorks(result,status,workStatus,totalCount);
+		}else{
+			
+			$("#modalAmountSchemeTable").html('No Data Available');
+		}
+		
+	});
+}
+
+function buildAmountWiseEncWorks(result,status,workStatus,totalCount){
+	
+	var tableView='';
+	tableView+='<div class="table-responsive">';
+	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
+		tableView+='<thead>';
+		tableView+='<tr>';
+			tableView+='<th>AMOUNT&nbsp;RANGE</th>';
+			for(var i in result){
+				if(result[i].workName=="0-499999"){
+					tableView+='<td align="center">Less&nbsp;Than&nbsp;5,00,000</td>';
+					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
+				}else if(result[i].workName=="500000-999999"){
+					tableView+='<td align="center">5,00,000-10,00,000</td>';
+					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
+				}else if(result[i].workName=="1000000-4999999"){
+					tableView+='<td align="center">10,00,000-50,00,000</td>';
+					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
+				}else if(result[i].workName=="5000000-above"){
+					tableView+='<td align="center">50,00,000&nbsp;&&nbsp;Above</td>';
+					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
+				}
+		}
+		tableView+='</tr>';
+		tableView+='<tr>';
+			tableView+='<th>Works&nbsp;Count</th>';
+			for(var i in result){
+				if(result[i].workName=="0-499999"){
+					//tableView+='<td>Less&nbsp;Than&nbsp;5,00,000</td>';
+					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+				}else if(result[i].workName=="500000-999999"){
+					//tableView+='<td>5,00,000-10,00,000</td>';
+					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+				}else if(result[i].workName=="1000000-4999999"){
+					//tableView+='<td>10,00,000-50,00,000</td>';
+					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+				}else if(result[i].workName=="5000000-above"){
+					//tableView+='<td>50,00,000&nbsp;&&nbsp;Above</td>';
+					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+				}
+		}
+		tableView+='</tr>';
+		tableView+='</thead>';
+	tableView+='</table>';
+	tableView+='</div>';
+	$("#modalAmountSchemeTable").html(tableView);
+	
 	
 }
