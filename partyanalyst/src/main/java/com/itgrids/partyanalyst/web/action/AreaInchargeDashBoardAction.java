@@ -171,13 +171,6 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		try{
 			
 			jObj = new JSONObject(getTask());
-			/*JSONArray boothIdsArr = jObj.getJSONArray("boothIds");  
-			List<Long> boothIdsList = new ArrayList<Long>();
-			if(boothIdsArr != null && boothIdsArr.length() > 0){
-				for (int i = 0; i < boothIdsArr.length(); i++){
-					boothIdsList.add(Long.parseLong(boothIdsArr.getString(i)));          
-				}  
-			}*/
 			inchargeVO = areaInchargeDashBoardService.editAssignedInchargeDetails(jObj.getLong("cadreId"),jObj.getLong("levelId"),jObj.getLong("levelValue"));
 			
 		}catch (Exception e) {
@@ -209,6 +202,7 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		}
 		
 		return Action.SUCCESS;
+		
 	}
 	public String deleteAreaInchargeAssignBooths(){
 		try{
@@ -219,7 +213,8 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 			
 			result = areaInchargeDashBoardService.deleteAreaInchargeAssignBooths(candidateId,boothId);	
 		}catch(Exception e){
-			LOG.error("Exception in deleteAreaInchargeAssignBooths method,e ");
+			LOG.error("Exception in deleteAreaInchargeAssig" +
+					"nBooths method,e ");
 		}
 		return Action.SUCCESS;
 	}
