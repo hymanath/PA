@@ -1109,6 +1109,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 		var constituencyId=0;
 		var mandalId=0;
 		var panchayatId=0;
+		var priorityId=0;
 		
 		if(isActionable =="Y"){	
 			levelId = $("#meetingLocationLevel").val();
@@ -1134,6 +1135,11 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			}else if(stateId != null && stateId > 0){
 				levelValue = stateId;
 			}
+		 priorityId =$("#momPriorityId").val();
+		if(priorityId == 0){
+			$("#momError").text(" Please Select Priority");
+			return;
+		}
 		}	
 		
 		if(minuteText === undefined || minuteText == "undefined" || minuteText.trim().length==0){
@@ -1213,11 +1219,7 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			$("#momError").text(" Please Select Status");
 			return;
 		}
-		var priorityId =$("#momPriorityId").val();
-		if(priorityId == 0){
-			$("#momError").text(" Please Select Priority");
-			return;
-		}
+		
 		var assignedType ="";
 		var checkedValue = $("input[type='checkbox']").val();
 		if($('[type="checkbox"]').is(":checked")){
