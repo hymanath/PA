@@ -57,12 +57,16 @@ public class BasicVO implements Serializable{
 	private String date;
 	private List<EventDocumentVO> documentsVOList = new ArrayList<EventDocumentVO>(0);
 	private List<BasicVO> feedbackStatusList = new ArrayList<BasicVO>(0);
+	private Long postiveCount=0l,negativeCount=0l;
+	private Double positivePerc=0.00,negativePerc=0.00;
 	private Long notSatisfiedCount=0l,partiallySatisfiedCount=0l,satisfiedCount=0l;
 	private Double notSatisfiedPerc=0.0,partiallySatsifyPerc=0.0,satisfiedPerc=0.0;
-	private Long notSatisfiedPosCount=0l,notSatisfiedNegCount=0l,partiallySatisfiedPosCount=0l,partiallySatisfiedNegCount=0l,
-			satisfiedPosCount=0l,satisfiedNegCount=0l;
-	private Double notSatisfiedPosPerc=0.0,notSatisfiedNegPerc=0.0,partiallySatisfiedPosPerc=0.0,partiallySatisfiedNegPerc=0.0,
-			satisfiedPosPerc=0.0,satisfiedNegPerc=0.0;
+	private Long positiveAlertPositiveRespondentCount=0l;
+	private Long positiveAlertNegativeRespondentCount=0l;
+	private Long negativeAlertPositiveRespondentCount=0l;
+	private Long negativeAlertNegativeRespondentCount=0l;
+	//private Long notSatisfiedPosCount=0l,notSatisfiedNegCount=0l,partiallySatisfiedPosCount=0l,partiallySatisfiedNegCount=0l,satisfiedPosCount=0l,satisfiedNegCount=0l;
+	//private Double notSatisfiedPosPerc=0.0,notSatisfiedNegPerc=0.0,partiallySatisfiedPosPerc=0.0,partiallySatisfiedNegPerc=0.0,satisfiedPosPerc=0.0,satisfiedNegPerc=0.0;
 	
 	public BasicVO(){}
 	
@@ -107,7 +111,7 @@ public class BasicVO implements Serializable{
 	}
 
 
-	public Double getNotSatisfiedPosPerc() {
+	/*public Double getNotSatisfiedPosPerc() {
 		return notSatisfiedPosPerc;
 	}
 
@@ -247,7 +251,7 @@ public class BasicVO implements Serializable{
 
 	public void setSatisfiedNegCount(Long satisfiedNegCount) {
 		this.satisfiedNegCount = satisfiedNegCount;
-	}
+	}*/
 
 	public Long getTypeId() {
 		return typeId;
@@ -598,6 +602,46 @@ public class BasicVO implements Serializable{
 		this.documentsVOList = documentsVOList;
 	}
 
+
+	public Long getPostiveCount() {
+		return postiveCount;
+	}
+
+
+	public void setPostiveCount(Long postiveCount) {
+		this.postiveCount = postiveCount;
+	}
+
+
+	public Long getNegativeCount() {
+		return negativeCount;
+	}
+
+
+	public void setNegativeCount(Long negativeCount) {
+		this.negativeCount = negativeCount;
+	}
+
+
+	public Double getPositivePerc() {
+		return positivePerc;
+	}
+
+
+	public void setPositivePerc(Double positivePerc) {
+		this.positivePerc = positivePerc;
+	}
+
+
+	public Double getNegativePerc() {
+		return negativePerc;
+	}
+
+
+	public void setNegativePerc(Double negativePerc) {
+		this.negativePerc = negativePerc;
+	}
+
 	public Long getNotSatisfiedCount() {
 		return notSatisfiedCount;
 	}
@@ -621,5 +665,51 @@ public class BasicVO implements Serializable{
 	public void setSatisfiedCount(Long satisfiedCount) {
 		this.satisfiedCount = satisfiedCount;
 	}
-	
+
+
+	public Long getPositiveAlertPositiveRespondentCount() {
+		return positiveAlertPositiveRespondentCount;
+	}
+
+
+	public void setPositiveAlertPositiveRespondentCount(
+			Long positiveAlertPositiveRespondentCount) {
+		this.positiveAlertPositiveRespondentCount = positiveAlertPositiveRespondentCount;
+	}
+
+
+	public Long getPositiveAlertNegativeRespondentCount() {
+		return positiveAlertNegativeRespondentCount;
+	}
+
+
+	public void setPositiveAlertNegativeRespondentCount(
+			Long positiveAlertNegativeRespondentCount) {
+		this.positiveAlertNegativeRespondentCount = positiveAlertNegativeRespondentCount;
+	}
+
+
+	public Long getNegativeAlertPositiveRespondentCount() {
+		return negativeAlertPositiveRespondentCount;
+	}
+
+
+	public void setNegativeAlertPositiveRespondentCount(
+			Long negativeAlertPositiveRespondentCount) {
+		this.negativeAlertPositiveRespondentCount = negativeAlertPositiveRespondentCount;
+	}
+
+
+	public Long getNegativeAlertNegativeRespondentCount() {
+		return negativeAlertNegativeRespondentCount;
+	}
+
+
+	public void setNegativeAlertNegativeRespondentCount(
+			Long negativeAlertNegativeRespondentCount) {
+		this.negativeAlertNegativeRespondentCount = negativeAlertNegativeRespondentCount;
+	}
+
+
+
 }

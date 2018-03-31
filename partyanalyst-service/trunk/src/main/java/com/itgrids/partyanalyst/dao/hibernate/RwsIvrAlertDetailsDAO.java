@@ -20,19 +20,20 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
         	//0-locationId,1-locationName,2-feedbackStatusId,problemtypeId-3,satisifiedStatus-4,count-5
         	str.append(" select model.alert.userAddress.district.districtId,model.alert.userAddress.district.districtName," +
         			" model.alert.alertFeedbackStatusId,model.rwsIvrTypeId," +
-            		" model.ivrSatisfiedStatus,count(model.alertId),model.rwsIvrType.rwsIvrName ");
+            		" model.ivrSatisfiedStatus,count(distinct model.alertId),model.rwsIvrType.rwsIvrName,count(model1.ivrRespondentId),model1.rwsIvrStatus ");
         
       
-        str.append(" from RwsIvrAlertDetails model " +
-        		" where model.isDeleted ='N' and model.alert.isDeleted ='N' and " +
-        		" model.alert.govtDepartmentId =:govtDeptId and model.rwsIvrType.isDeleted ='N' and model.alert.alertFeedbackStatusId is not null");
+        str.append(" from RwsIvrAlertDetails model,RwsIvrAlertDetailsRespondent model1 " +
+        		" where model.rwsIvrAlertDetailsId = model1.rwsIvrAlertDetailsId and model1.isDeleted='N' " +
+        		" and model.isDeleted ='N' and model.alert.isDeleted ='N' and " +
+        		" model.alert.govtDepartmentId =:govtDeptId and model.rwsIvrType.isDeleted ='N' and model.alert.alertFeedbackStatusId is not null ");
         
 	        if(fromDate !=null && toDate !=null){
-	        	str.append(" and date(model.insertedTime) between :fromDate and :toDate ");
+	        	str.append(" and date(model.alert.createdTime) between :fromDate and :toDate ");
 	        }
         
          str.append(" group by model.alert.userAddress.district.districtId,model.alert.alertFeedbackStatusId," +
-        			" model.ivrSatisfiedStatus,model.rwsIvrTypeId ");
+        			" model.ivrSatisfiedStatus,model.rwsIvrTypeId,model1.rwsIvrStatus ");
        
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
@@ -69,9 +70,9 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
           }
           
           if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
-            str.append(" group by model.alert.alertFeedbackStatusId,date(model.alert.updatedTime),model.rwsIvrTypeId");  
+            str.append(" group by date(model.alert.updatedTime),model.rwsIvrTypeId");  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
-            str.append(" group by model.alert.alertFeedbackStatusId,month(model.alert.updatedTime),year(model.alert.updatedTime),model.rwsIvrTypeId order by month(model.alert.updatedTime),year(model.alert.updatedTime) ");
+            str.append(" group by month(model.alert.updatedTime),year(model.alert.updatedTime),model.rwsIvrTypeId order by month(model.alert.updatedTime),year(model.alert.updatedTime) ");
           }
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
@@ -79,6 +80,38 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
           if(fromDate !=null && toDate !=null){
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
+          }
+        return  query.list();
+      }
+	@SuppressWarnings("unchecked")
+	public List<Long> getJalavaniIvrSummaryWiseClick(Date fromDate,Date toDate,Long statusId,Long probTypeId){
+        StringBuilder str = new StringBuilder();
+        str.append(" select model.alertId ");
+      
+        str.append(" from RwsIvrAlertDetails model " +
+        		" where model.isDeleted ='N' and model.alert.isDeleted ='N' and " +
+        		" model.alert.govtDepartmentId =:govtDeptId and model.rwsIvrType.isDeleted ='N' and model.alert.alertFeedbackStatusId is not null");
+        
+	        if(fromDate !=null && toDate !=null){
+	        	str.append(" and date(model.alert.createdTime) between :fromDate and :toDate ");
+	        }
+	        if(statusId !=null && statusId.longValue() >0){
+	        	str.append(" and model.alert.alertFeedbackStatusId =:statusId ");
+	        }
+	        if(probTypeId !=null && probTypeId.longValue() >0){
+	        	str.append(" and model.rwsIvrTypeId =:probTypeId ");
+	        }
+        Query query = getSession().createQuery(str.toString());
+          query.setParameter("govtDeptId",49l);
+          	if(statusId !=null && statusId.longValue() >0){
+        	  query.setParameter("statusId",statusId);
+	        }
+	        if(probTypeId !=null && probTypeId.longValue() >0){
+	        	query.setParameter("probTypeId",probTypeId);
+	        }
+          if(fromDate !=null && toDate !=null){
+            query.setDate("fromDate",fromDate);
+            query.setDate("toDate",toDate);
           }
         return  query.list();
       }
