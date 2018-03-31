@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class PmRequestVO {
 	
 	private Long existingPetitionId;
+	private Long petitionTypeId;
 	private Long id;
 	private Long representeeId;
 	private String name;
@@ -275,5 +276,10 @@ public class PmRequestVO {
 	public void setBase64ImageList(List<String> base64ImageList) {
 		this.base64ImageList = base64ImageList;
 	}
-	
+	public Long getPetitionTypeId() {
+		return petitionTypeId;
+	}
+	public void setPetitionTypeId(Long petitionTypeId) {
+		this.petitionTypeId = petitionTypeId;
+	}
 }
