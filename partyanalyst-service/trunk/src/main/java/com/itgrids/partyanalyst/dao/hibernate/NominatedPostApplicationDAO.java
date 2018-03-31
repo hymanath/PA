@@ -31,10 +31,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" left join model.board board  " +
 				" WHERE   model.isDeleted ='N' and model.isExpired = 'N'  and model.applicationStatus.applicationStatusId not in (2,4,8)   ");
 				//" AND model.locationValue = :locationValue ");
-		if(boardLevelId.longValue() !=5L)
+		if(boardLevelId.longValue() <5L )
 			str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
-		else 
+		else if(boardLevelId.longValue() ==5L ) 
 			str.append(" and model.boardLevel.boardLevelId  in (5,6) ");
+		else if(boardLevelId.longValue() ==7L ) 
+			str.append(" and model.boardLevel.boardLevelId  in (7,8) ");
 		
 			if(searchLevelId != null && searchLevelId.longValue()>0L){
 				if((searchLevelId.longValue() == 1L))
@@ -130,7 +132,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		 if(positionId != null && positionId.longValue() > 0L)
 			 query.setParameter("positionId", positionId);
 		 
-		if(boardLevelId.longValue() !=5L)
+		if(boardLevelId.longValue() <5l)
 			query.setParameter("boardLevelId", boardLevelId);
 		
 		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
@@ -154,10 +156,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				 " model1.nominatedPostMember.nominatedPostPosition.isDeleted='N'  and model.isExpired = 'N' and model1.isExpired = 'N' "+
 				//" AND model.locationValue = :locationValue" +
 				" AND model1.applicationStatus.status = :status  ");
-		if(boardLevelId.longValue() !=5L)
+		if(boardLevelId.longValue() <5l)
 			str.append(" AND model.boardLevel.boardLevelId=:boardLevelId ");
-		else 
+		else if(boardLevelId.longValue() ==5l)
 			str.append(" AND model.boardLevel.boardLevelId in (5,6) ");
+		else if(boardLevelId.longValue() ==7l)
+			str.append(" AND model.boardLevel.boardLevelId in (7,8) ");
 		
 		if(searchLevelId != null && searchLevelId.longValue()>0L){
 			if((searchLevelId.longValue() == 1L))
@@ -256,7 +260,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			 query.setParameter("positionId", positionId);
 		 
 		 
-		if(boardLevelId.longValue() !=5L)
+		if(boardLevelId.longValue() <5l)
 			query.setParameter("boardLevelId", boardLevelId);
 		
 		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
@@ -282,10 +286,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" WHERE   model.isDeleted ='N'  and model.isExpired = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8)  " );
 				//" AND model.locationValue = :locationValue" );
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
-			if(boardLevelId.longValue() !=5L)
+			if(boardLevelId.longValue() <5l)
 				str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
-			else
+			else if(boardLevelId.longValue() ==5l)
 				str.append(" and model.boardLevel.boardLevelId in (5,6) ");
+			else if(boardLevelId.longValue() ==7l)
+				str.append(" AND model.boardLevel.boardLevelId in (7,8) ");
 		}
 		
 				if(searchLevelId != null && searchLevelId.longValue()>0L){
@@ -391,7 +397,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					 query.setParameter("positionId", positionId);
 				 
 				 
-				if(boardLevelId.longValue() !=5L)
+				if(boardLevelId.longValue() <5l)
 					query.setParameter("boardLevelId", boardLevelId);
 				if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
 					query.setParameter("locationValue", locationValue);						
@@ -411,10 +417,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 				" FROM NominatedPostApplication model left join model.position position left join model.departments department left join model.board board   " +
 				" WHERE   model.isDeleted ='N'  and model.isExpired = 'N' and model.applicationStatus.applicationStatusId not in (2,4,8)  " );
 				if(boardLevelId != null && boardLevelId.longValue()>0L){
-					if(boardLevelId.longValue() !=5L)
+					if(boardLevelId.longValue() <5l)
 						str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
-					else
+					else if(boardLevelId.longValue() ==5l)
 						str.append(" and model.boardLevel.boardLevelId in (5,6) ");
+					else if(boardLevelId.longValue() ==7l)
+						str.append(" and model.boardLevel.boardLevelId in (7,8) ");
 				}
 		
 				//" AND model.locationValue = :locationValue" );
@@ -522,7 +530,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 			 query.setParameter("positionId", positionId);
 		 
 		 
-		if(boardLevelId.longValue() !=5L)
+		if(boardLevelId.longValue() <5l)
 			query.setParameter("boardLevelId", boardLevelId);
 		if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.longValue() > 0l)
 			query.setParameter("locationValue", locationValue);						
@@ -554,10 +562,12 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 					" and NPA.departments.departmentId = :departmentId and NPA.isDeleted='N' ");
 		
 		if(levelId != null && levelId.longValue()>0L){
-			if(levelId.longValue() !=5L)
+			if(levelId.longValue() <5l)
 				sb.append(" and NPA.boardLevel.boardLevelId = :levelId ");
-			else
+			else if(levelId.longValue() ==5l)
 				sb.append(" and NPA.boardLevel.boardLevelId in (5,6) ");
+			else if(levelId.longValue() ==7l)
+				sb.append(" and NPA.boardLevel.boardLevelId in (7,8) ");
 		}
 		
 		if(type.equalsIgnoreCase("this") && boardId != null && positionId != null){
@@ -572,7 +582,7 @@ public class NominatedPostApplicationDAO extends GenericDaoHibernate<NominatedPo
 		
 		Query query = getSession().createQuery(sb.toString());
 		
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue()<5l)
 			query.setParameter("levelId", levelId);
 		
 		query.setParameter("levelValue", levelValue);
@@ -639,10 +649,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
 		queryStr.append(" and  model.applicationStatusId is not null  "); // any board any department scenario member will not available in overview appln count
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue() <5l)
 			queryStr.append("   and model.boardLevelId =:levelId ");
-		else
+		else if(levelId.longValue() ==5l)
 			queryStr.append("   and model.boardLevelId in (5,6) ");
+		else if(levelId.longValue() ==7l)
+			queryStr.append("   and model.boardLevelId in (7,8) ");
+		
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		queryStr.append(" and model.applicationStatusId = 1");//applied
@@ -659,12 +672,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append("" +
 				" and  model.isDeleted='N' and "+
 				" nominatedPostMember.isDeleted='N' and "+
-				" nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
+				" nominatedPostPosition.isDeleted='N' "+
 				
 				" group  by model.boardLevelId, nominatedPostMember.nominatedPostMemberId  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue() <5l)
 			query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
@@ -748,10 +761,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		}
 		queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_NOT_RUNNING_STATUS+")  ");
 		if(levelId != null && levelId.longValue()>0L){
-			if(levelId.longValue() != 5L)
+			if(levelId.longValue() <5l)
 				queryStr.append("   and model.boardLevelId =:levelId ");
-			else
+			else if(levelId.longValue() ==5l)
 				queryStr.append("   and model.boardLevelId in (5,6) ");
+			else if(levelId.longValue() ==7l)
+				queryStr.append("   and model.boardLevelId in (7,8) ");
 		}
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
@@ -773,7 +788,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		if(levelId != null && levelId.longValue()>0L)
-			if(levelId.longValue() != 5L)
+			if(levelId.longValue() <5l)
 				query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setDate("startDate", startDate);
@@ -1084,8 +1099,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 						       }
 					       }  
 			       }else{
-			        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+			        if(LocationLevelId != null && LocationLevelId.longValue() <5l){
 		    	 	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+		    	    }else if(LocationLevelId != null && LocationLevelId.longValue() ==5l){
+		    	    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+		    	    }else if(LocationLevelId != null && LocationLevelId.longValue() ==7l){
+		    	    	queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
 		    	    }
 			        if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 				    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
@@ -1115,7 +1134,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			       
 			       Query query = getSession().createQuery(queryStr.toString());
 			       
-			       if(LocationLevelId != null && LocationLevelId.longValue() > 0l && boardLevelId != null && boardLevelId.longValue() <7l) {
+			       if(LocationLevelId != null && LocationLevelId.longValue() > 0l && boardLevelId != null && boardLevelId.longValue() <5l) {
 					    	 query.setParameter("LocationLevelId", LocationLevelId);
 			       }
 			      
@@ -1173,8 +1192,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 							       }
 						       }  
 				       }else{
-				        if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+				        if(LocationLevelId != null && LocationLevelId.longValue() <5l){
 			    	 	   queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
+			    	    }else if(LocationLevelId != null && LocationLevelId.longValue() ==5l){
+			    	    	 queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+			    	    }else if(LocationLevelId != null && LocationLevelId.longValue() ==7l){
+			    	    	 queryStr.append(" and model.nominatedPost.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
 			    	    }
 				        if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 					    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.locationValue in (:lctnLevelValueList)");
@@ -1207,7 +1230,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				       if(boardLevelId != null && boardLevelId.longValue() >=7){
 				    	   query.setParameter("LocationLevelId", boardLevelId);
 				       }else{
-				    	   if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+				    	   if(LocationLevelId != null && LocationLevelId.longValue() <5l){
 						    	 query.setParameter("LocationLevelId", LocationLevelId);
 						   }
 				       }
@@ -1253,10 +1276,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	   	          	   " and model.isExpired = 'N' ");
 	   
 			      if(LocationLevelId != null && LocationLevelId > 0){
-			    	  if(LocationLevelId.longValue() != 5L)
+			    	  if(LocationLevelId.longValue() <5l)
 			    		 queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
-			    	  else
+			    	  else if(LocationLevelId.longValue() ==5l)
 				    	queryStr.append(" and model.boardLevel.boardLevelId in  (5,6) ");
+			    	  else if(LocationLevelId.longValue() ==7l)
+					    	queryStr.append(" and model.boardLevel.boardLevelId in  (7,8) ");
 			      }
 
 	             queryStr.append(" group by model.nominationPostCandidate.casteState.caste.casteId,model.position.positionId order by model.position.positionId ");
@@ -1264,7 +1289,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	             Query query = getSession().createQuery(queryStr.toString());
 	    
 	             if(LocationLevelId != null && LocationLevelId > 0){
-	            	 if(LocationLevelId.longValue() != 5L)
+	            	 if(LocationLevelId.longValue() <5l)
 	            		 query.setParameter("LocationLevelId", LocationLevelId);
 			    }
 	   return query.list();
@@ -1279,17 +1304,19 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	   	          	   " and model.isExpired = 'N' ");
 	   
 	             if(LocationLevelId != null && LocationLevelId > 0){
-	            	 if(LocationLevelId.longValue() != 5L)
+	            	 if(LocationLevelId.longValue() < 5L)
 	            		 queryStr.append(" and model.boardLevel.boardLevelId=:LocationLevelId ");
-	            	 else
+	            	 else if(LocationLevelId.longValue() == 5L)
 	            		 queryStr.append(" and model.boardLevel.boardLevelId in (5,6) ");
+	            	 else if(LocationLevelId.longValue() == 7L)
+	            		 queryStr.append(" and model.boardLevel.boardLevelId in (7,8) ");
 			      }
 
 	             queryStr.append("   group by model.nominationPostCandidate.casteState.caste.casteId,model.position.positionId order by model.position.positionId ");
        
 	             Query query = getSession().createQuery(queryStr.toString());
 	    
-	             if(LocationLevelId != null && LocationLevelId > 0){
+	             if(LocationLevelId != null && LocationLevelId.longValue() < 5l){
 			    	query.setParameter("LocationLevelId", LocationLevelId);
 			    }
 	   return query.list();
@@ -1330,10 +1357,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			   queryStr.append(" and model.position.positionId = :positionId");
 		   }
 		   if(boardLevelId != null && boardLevelId.longValue() > 0){
-			   if(boardLevelId.longValue() != 5L)
+			   if(boardLevelId.longValue() <5L)
 				   queryStr.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
-			   else
+			   else if(boardLevelId.longValue() ==5L)
 				   queryStr.append(" and model.boardLevel.boardLevelId in (5,6) ");
+			   else if(boardLevelId.longValue() ==7L)
+				   queryStr.append(" and model.boardLevel.boardLevelId in (7,8) ");
 		   }
 		   if(stateId != null && stateId.longValue() > 0){
  			   queryStr.append(" and model.address.state.stateId=:stateId");
@@ -1345,7 +1374,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		  if(positionId != null && positionId.longValue() > 0){
 		   query.setParameter("positionId", positionId);
 		   }  
-		   if(boardLevelId != null && boardLevelId.longValue() > 0 && boardLevelId.longValue() != 5L){
+		   if(boardLevelId != null && boardLevelId.longValue() > 0 && boardLevelId.longValue() <5l ){
 			query.setParameter("boardLevelId", boardLevelId);   
 		   }
 		   if(stateId != null && stateId.longValue() > 0){
@@ -1438,10 +1467,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 				" and model.isExpired = 'N'  ");	// for total 
 						
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
-			if(boardLevelId.longValue() != 5L)
+			if(boardLevelId.longValue() < 5L)
 				queryStr.append(" and model.nominatedPostMember.boardLevelId = :boardLevelId ");
-			else
+			else if(boardLevelId.longValue() == 5L)
 				queryStr.append(" and model.nominatedPostMember.boardLevelId in (5,6) ");
+			else if(boardLevelId.longValue() == 7L)
+				queryStr.append(" and model.nominatedPostMember.boardLevelId in (7,8) ");
 		}
 		queryStr.append(" and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") ");
 		
@@ -1465,7 +1496,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" order by model.nominatedPostMember.boardLevelId  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() != 5L)
+		if(boardLevelId != null && boardLevelId.longValue()>0L && boardLevelId.longValue() < 5L)
 			query.setParameter("boardLevelId", boardLevelId);
 		if(searchLevelValue != null && searchLevelValue.longValue()>0L)
 				query.setParameter("searchLevelValue", searchLevelValue);	
@@ -1528,10 +1559,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		    	
 		    }else{
 		    	
-		    	if(boardLevelId.longValue() !=5L)
+		    	if(boardLevelId.longValue() <5L)
 				      str.append(" and model.boardLevel.boardLevelId=:boardLevelId ");
-				    else 
+				    else if(boardLevelId.longValue() ==5L)
 				      str.append(" and model.boardLevel.boardLevelId  in (5,6) ");
+				    else if(boardLevelId.longValue() ==7L)
+					      str.append(" and model.boardLevel.boardLevelId  in (7,8) ");
 		    	
 		    	if(searchLevelId != null && searchLevelId.longValue()>0L){
 			        if((searchLevelId.longValue() == 1L))
@@ -1596,7 +1629,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
         	  }
         	  
           }else{
-        	  if(boardLevelId.longValue() !=5L)
+        	  if(boardLevelId.longValue() <5L)
     		      query.setParameter("boardLevelId", boardLevelId);
         	  if((searchLevelId.longValue() != 1L) && locationValue != null && locationValue.size() > 0)
     		      query.setParameterList("locationValue", locationValue);
@@ -1829,10 +1862,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    	   queryStr.append(" and NPS.nominatedPostStatusId = 4 ");
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	   if(LocationLevelId.longValue() != 5L)
+	    	   if(LocationLevelId.longValue() < 5L)
 	    		   queryStr.append(" and BL.boardLevelId=:LocationLevelId ");  
-	    	   else
+	    	   else if(LocationLevelId.longValue() == 5L)
 	    		   queryStr.append(" and BL.boardLevelId in (5,6) ");
+	    	   else if(LocationLevelId.longValue() == 7L)
+	    		   queryStr.append(" and BL.boardLevelId in (7,8) ");
 	       }
 	       
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
@@ -1862,7 +1897,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       Query query = getSession().createQuery(queryStr.toString());
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	   if(LocationLevelId.longValue() != 5L)
+	    	   if(LocationLevelId.longValue() < 5L)
 	    		   query.setParameter("LocationLevelId", LocationLevelId);
 	       }
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
@@ -1885,10 +1920,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" select model.applicationStatusId, count(distinct model.nominatedPostApplicationId)  from NominatedPostApplication model " +
 				" where model.isDeleted ='N'  and model.isExpired = 'N' ");
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
-			if(boardLevelId.longValue() != 5L)
+			if(boardLevelId.longValue() < 5L)
 				queryStr.append(" and model.boardLevelId=:boardLevelId ");
-			else
+			else if(boardLevelId.longValue() == 5L)
 				queryStr.append(" and model.boardLevelId in (5,6) ");
+			else if(boardLevelId.longValue() ==7L)
+				queryStr.append(" and model.boardLevelId in (7,8) ");
 		}
 		if(stateId != null && stateId>0L)
 			queryStr.append(" and model.address.state.stateId=:stateId ");
@@ -1898,7 +1935,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		queryStr.append(" group by model.applicationStatusId order by model.applicationStatusId ");
 		  Query query = getSession().createQuery(queryStr.toString());
 		  if(boardLevelId != null && boardLevelId.longValue()>0L){
-				if(boardLevelId.longValue() != 5L)
+				if(boardLevelId.longValue() < 5L)
 					 query.setParameter("boardLevelId", boardLevelId);
 			}
 		  
@@ -1975,10 +2012,12 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    	   queryStr.append(" and NPS.nominatedPostStatusId = 4 ");
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	   if(LocationLevelId.longValue() != 5L)
+	    	   if(LocationLevelId.longValue() < 5L)
 	    		   queryStr.append(" and BL.boardLevelId=:LocationLevelId ");  
-	    	   else
+	    	   else if(LocationLevelId.longValue() == 5L)
 	    		   queryStr.append(" and BL.boardLevelId in (5,6) ");
+	    	   else if(LocationLevelId.longValue() == 7L)
+	    		   queryStr.append(" and BL.boardLevelId in (7,8) ");
 	       }
 	       
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
@@ -2020,7 +2059,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	       Query query = getSession().createQuery(queryStr.toString());
 	       
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	   if(LocationLevelId.longValue() != 5L)
+	    	   if(LocationLevelId.longValue() < 5L)
 	    		   query.setParameter("LocationLevelId", LocationLevelId);
 	       }
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
@@ -2073,16 +2112,18 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		}
 		
 		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
-		queryStr.append(" and  model.nominatedPostMember.nominatedPostMemberId = model1.nominatedPostMember.nominatedPostMemberId and " +
+		queryStr.append(" and  nominatedPostMember.nominatedPostMemberId = model1.nominatedPostMember.nominatedPostMemberId and " +
 				" model.applicationStatusId is not null " +
 				" and model1.isDeleted='N' and "+
 				" model1.nominatedPostMember.isDeleted='N' and "+
 				" model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
 				"  ");
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue() < 5L)
 			queryStr.append("   and model.boardLevelId =:levelId ");
-		else
+		else if(levelId.longValue() == 5L)
 			queryStr.append("   and model.boardLevelId in (5,6) ");
+		else if(levelId.longValue() ==7L)
+			queryStr.append("   and model.boardLevelId in (7,8) ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		
@@ -2108,7 +2149,7 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 				"  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue() < 5L)
 			query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
@@ -2144,10 +2185,12 @@ public List<Object[]> getNominatedPostsAppliedApplcitionsDetalsNew(Long levelId,
 				" model1.nominatedPostMember.isDeleted='N' and "+
 				" model1.nominatedPostMember.nominatedPostPosition.isDeleted='N' "+
 				" ");
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue() < 5L)
 			queryStr.append("   and model.boardLevelId =:levelId ");
-		else
+		else if(levelId.longValue() == 5L)
 			queryStr.append("   and model.boardLevelId in (5,6) ");
+		else if(levelId.longValue() == 7L)
+			queryStr.append("   and model.boardLevelId in (7,8) ");
 		if(startDate != null && endDate != null)
 			queryStr.append(" and date(model.insertedTime) between :startDate and :endDate ");
 		
@@ -2173,7 +2216,7 @@ public List<Object[]> getNominatedPostsAppliedApplcitionsDetalsNew(Long levelId,
 				"  order by model.boardLevelId ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
-		if(levelId.longValue() != 5L)
+		if(levelId.longValue() < 5L)
 			query.setParameter("levelId", levelId);
 		if(startDate != null && endDate != null){
 			query.setParameter("startDate", startDate);
@@ -2726,7 +2769,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 		 sb.append(" and year(nominatedPostApplication.updatedTime) = :year ");   
 	 	 }
 	 	if(boardLevelId != null && boardLevelId.longValue() > 0L){
-     	   if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L)
+     	   if(boardLevelId.longValue() <5l)
      		  sb.append(" and nominatedPostApplication.nominatedPostMember.boardLevelId =:boardLevelId ");
      	   else if(boardLevelId.longValue() ==5L)
      		  sb.append(" and nominatedPostApplication.nominatedPostMember.boardLevelId in (5,6) ");
@@ -2757,7 +2800,7 @@ public List<Object[]> getAnyPositionDetailsByLevelId(Long boardLevelId){
 	 		 query.setDate("startDate",startDate);
 	 		 query.setDate("endDate",endDate);
 	 	 }
-	 	if(boardLevelId.longValue() !=5L && boardLevelId.longValue() !=7L && boardLevelId.longValue() > 0l)
+	 	if(boardLevelId.longValue() <5l && boardLevelId.longValue() > 0l)
 	 		query.setParameter("boardLevelId", boardLevelId);
 	 	if(deptId != null && deptId.longValue() >0l)
 	 		query.setParameter("deptId", deptId);

@@ -2562,6 +2562,11 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 							}
 						}
 				}
+			}else{
+				NominatedPostVO vo = applicationsStatusDtlsMap.get("READY TO SHORT LIST".trim());//""
+				if(vo != null){
+					vo.setTotalApplicationReceivedCnt((applciationCountMap.get(1L) !=null ? applciationCountMap.get(1L).longValue():0l));  // applied
+				}
 			}
 			
 			
@@ -5428,7 +5433,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 				}
 				
 				//Map<Long,Long> memberwisePostsCountMap = new HashMap<Long, Long>(0);
-			  if(LocationLevelId.equals(5l) || LocationLevelId.equals(7l)){
+			  if((LocationLevelId.equals(5l) || LocationLevelId.equals(7l)) && lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 				    if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 			          for (Long manTowDivId : lctnLevelValueList) {
 			        	  
@@ -5451,7 +5456,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					     if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					    	 setWishListCountToVO(mandalWishList,finalMap);
 			        }
-			        if(townList != null && townList.size() > 0){
+			       if(townList != null && townList.size() > 0){
 			        	List<Object[]> townObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(6l, townList, departmentId, boardId,status,LocationLevelId);
 					      finalMap =  setDataToMapForFinalReview(townObjList,finalMap,movedPostsStatusDetailsMap,status);
 					      List<Object[]> townWishList = nominatedPostFinalDAO.getWishListCount(6l, townList, departmentId, boardId,LocationLevelId);  
@@ -5464,7 +5469,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, divisonList, departmentId, boardId,LocationLevelId); 
 					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					        	setWishListCountToVO(divWishList,finalMap);
-			        }
+			       }
 			  }else{
 				  List<Object[]> rtrnObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, lctnLevelValueList, departmentId, boardId,status,LocationLevelId);
 				  finalMap = setDataToMapForFinalReview(rtrnObjList,finalMap,movedPostsStatusDetailsMap,status);
@@ -5496,7 +5501,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						  }
 					}
 				   
-				  if(LocationLevelId.equals(5l)  || LocationLevelId.equals(7l)){
+				  if((LocationLevelId.equals(5l)  || LocationLevelId.equals(7l)) && lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 				        if(lctnLevelValueList !=null && lctnLevelValueList.size()>0){
 				          for (Long manTowDivId : lctnLevelValueList) {
 				        	  
@@ -5589,9 +5594,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 		    				count = statusWiseMap.get("GO ISSUED / COMPLETED");
 		    			
 		    			count = count!= null?count:0L;
-		    			
+		    			if(count >0l)
+		    				vo.setTotalCount(vo.getTotalCount() +count);
+		    			else
+		    				vo.setTotalCount(vo.getTotalCount() +( obj[4] != null ? (Long)obj[4]:0l));
 		    			vo.setCount(vo.getCount() +count);
 		    		}else{
+		    			vo.setTotalCount(vo.getTotalCount() +( obj[4] != null ? (Long)obj[4]:0l));
 		    			vo.setCount(vo.getCount() +( obj[4] != null ? (Long)obj[4]:0l));
 		    		}
 				}
@@ -8016,7 +8025,7 @@ public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,Lis
 		 List<Long> mandalList = new ArrayList<Long>();
 		  List<Long> townList = new ArrayList<Long>();
 		  List<Long> divisonList = new ArrayList<Long>();	
-		if(locationLevelId != null && (locationLevelId.longValue() ==5l || locationLevelId == 7l)){
+		if(locationLevelId != null && (locationLevelId.longValue() ==5l || locationLevelId == 7l) && locationValues !=null && locationValues.size()>0 ){
 		if(locationValues !=null && locationValues.size()>0){
 	          for (Long manTowDivId : locationValues) {
 	        	  
@@ -8032,14 +8041,15 @@ public NominatedPostDashboardVO getNominatedPostDetails(Long locationLevelId,Lis
 	            }            
 	          }
 	        }
+		List<Object[]> rtrnObjLst =null;
 			if(mandalList != null && mandalList.size() >0){
-				List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(5l,mandalList,departmentId,boardId,positionId,locationLevelId);
+				rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(5l,mandalList,departmentId,boardId,positionId,locationLevelId);
 				setNominatedPostDetails(rtrnObjLst,resultVO);
 			}else if(mandalList != null && mandalList.size() >0){
-				List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(6l,townList,departmentId,boardId,positionId,locationLevelId);
+				 rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(6l,townList,departmentId,boardId,positionId,locationLevelId);
 				setNominatedPostDetails(rtrnObjLst,resultVO);
 			}else if(mandalList != null && mandalList.size() >0){
-				List<Object[]> rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(7l,divisonList,departmentId,boardId,positionId,locationLevelId);
+				rtrnObjLst = nominatedPostDAO.getNominatedPostDetails(7l,divisonList,departmentId,boardId,positionId,locationLevelId);
 				setNominatedPostDetails(rtrnObjLst,resultVO);
 			}
 		}else{
