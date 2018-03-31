@@ -35,8 +35,8 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9">
-					<h4 class="text-capital">Panchayat Raj,RD&RWS</h4>
-					<p>RWS - DashBoard</p>
+					<h4 class="text-capital">Panchayat Raj,RD&News</h4>
+					<p>jalavani DashBoard - DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -264,7 +264,26 @@
 <section class="navbar-section" style="padding: 10px;background-color: #fff;">
 		<div class="container-fluid">
 			<div class="row">
-			
+				
+				<div class="col-sm-1 pull-right m_top10">
+					<!--<ul class="list-inline">
+						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
+						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
+					</ul>-->
+					<i class="fa fa-bars menu-cls2 pull-right"></i>
+					<div class="menuCls-table2">
+						<div class="arrow_box_top1">
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="list-inline text-center">
+										<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
+										<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
+									</ul>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
 				<div class="col-sm-3  pull-right">
 					<div class="input-group">
 						<span class="input-group-addon">
@@ -360,7 +379,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-10">
-						<h4 style="font-weight:bold;">Time Series Wise Details</h4>
+						<h4 style="font-weight:bold;">Feed Back Details</h4>
 					</div>
 					<div class="col-sm-2">
 						<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:red;font-size:30px;">&times;</span></button>
@@ -369,6 +388,16 @@
 				<div class="row">
 					<div class="col-sm-12">
 						<div id="timeSeriesWisGraphDivId" style="height:300px;"></div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+							<h4 style="font-weight:bold;">IVR Details</h4>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="timeSeriesIVRGraphDivId" style="height:300px;"></div>
 					</div>
 				</div>
 				<div class="row">

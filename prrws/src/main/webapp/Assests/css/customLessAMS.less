@@ -2169,3 +2169,54 @@ h1,h2,h3,h4,h5,h6,p,ul,.form-group,.table
 		}
 	}
 }
+.menuCls-table2 {
+	position:absolute;
+	right:30px;
+	top: 40px;
+    width: 230px;
+	z-index:999;
+	display:none;
+	background-color:#fff;
+}
+.menu-cls2
+{
+	position: relative;
+    top: -3px;
+    right: 30px;
+    font-size: 21px !important;
+    cursor: pointer;
+	color:#AA8440;
+}
+
+.arrow_box_top1 {
+	position: relative;
+	background-color:@white_color;
+	border: 1px solid @white_color;
+	box-shadow:0px 0px 3px 3px rgba(0,0,0,0.4);
+	padding:10px;
+	&:before , &:after
+	{
+		bottom: 100%;
+		right: 10px;
+		border: solid transparent;
+		content: " ";
+		height: 0;
+		width: 0;
+		position: absolute;
+		pointer-events: none;
+	}
+	&:after
+	{
+		border-color: rgba(136, 183, 213, 0);
+		border-bottom-color: @white_color;
+		border-width: 15px;
+		margin-left: -15px;
+	}
+	&:before 
+	{
+		border-color: rgba(194, 225, 245, 0);
+		border-bottom-color: @white_color;
+		border-width: 16px;
+		margin-left: -16px;
+	}
+}
