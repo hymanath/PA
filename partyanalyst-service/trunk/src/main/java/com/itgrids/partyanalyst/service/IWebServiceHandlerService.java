@@ -330,6 +330,6 @@ public interface IWebServiceHandlerService {
 	public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
 	public List<BasicVO> getJalavaniIvrWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
 	public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId);
-	public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr);
+	public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId);
 }
 
