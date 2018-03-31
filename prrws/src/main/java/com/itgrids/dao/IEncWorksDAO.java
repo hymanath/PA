@@ -29,6 +29,8 @@ public interface IEncWorksDAO extends GenericDao<EncWorks,Long>{
 
 	public List<Object[]> getPRProgramsCodeAndName();
 
-	List<Object[]> getAllSchemeWiseWorkDetails(InputVO inputVO, String StatusType);
+	public List<Object[]> getAllSchemeWiseWorkDetails(InputVO inputVO, String StatusType);
+
+	public List<Object[]> getAmountWiseSchemeCount(InputVO inputVO, String AmountType);
 
 }
