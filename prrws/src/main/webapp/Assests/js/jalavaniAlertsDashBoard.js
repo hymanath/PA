@@ -33,8 +33,7 @@ $("#dateRangePicker").daterangepicker({
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last Year': ['01-01-2017', moment()],
-		   'OverAll':['28-11-2016',moment()]
-		  // 'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
+		   'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
 		}
 	});
 	var dates= $("#dateRangePicker").val();
@@ -198,7 +197,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/print_media_alert_icon.png" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5 font_weight">PRINT&nbsp;MEDIA</h5>';
@@ -218,7 +217,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/electronic_media_alert_icon.png" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5 font_weight">ELECTRONIC MEDIA</h5>';
@@ -238,7 +237,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/social_media_alert_icon.png" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>SOCIAL MEDIA</b></h5>';
@@ -720,7 +719,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		str+='</div>';
 		
 		if(searchType == "callcenter"){
-			str+='<h5 class="font_weight text-capital">Call Center Feedback</h5>';	
+			//str+='<h5 class="font_weight text-capital">Call Center Feedback</h5>';	
 			str+='<div style="padding:15px;background-color:#fff;" class="m_top10">';
 				str+='<div id="ivrStatusFeedBackDivId"></div>';
 			str+='</div>';
@@ -729,6 +728,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 	
 	$("#"+searchType+"DetailsDivId").html(str);
 	getJalavaniFeedBackDetailsInfo();
+	//getJalavaniAlertForClosedAndReopenDetails();
 	var mainArr=[];
 	var monthNameArr=[];
 	var statusNameArr=[];
@@ -1074,7 +1074,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	 
 	$.ajax({
 		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
@@ -1139,20 +1139,18 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 							str+='<tr>';
 								
 								if(type =="district" || type =="state"){
-									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].districtName+'</td>';
 								}else if(type =="constituency"){
-									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;text-transform:uppercase">'+result[i].districtName+'</td>';
-									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
 								}else if(type =="mandal"){
-									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;text-transform:uppercase">'+result[i].districtName+'</td>';
-									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].constiruenctName+'</td>';
-									str+='<td class="" style="text-align:left !important;text-transform:uppercase">'+result[i].mandalName+'</td>';
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;">'+result[i].mandalName+'</td>';
 								}
-								if(result[i].count != null && result[i].count > 0){
+								
 								str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
-								}else{
-								str+='<td class="" style="background-color:#c5e6f9;"><span>-</span></td>';
-								}
+								
 								for(var j in result[i].voList){
 									for(var k in result[i].voList[j].voList){
 										if(result[i].voList[j].voList[k].count !=null && result[i].voList[j].voList[k].count>0){
@@ -1182,7 +1180,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 		$("#dataTable"+type).dataTable({
 			"paging":   false,
 			"info":     false,
-			"searching": false,
+			"searching": true,
 			"autoWidth": true,
 			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
 			/* "scrollX":        true,
@@ -1250,11 +1248,11 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 	//district-5,mandal-8,status-id/CategotyID
 	
 	$.ajax({
-		url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
-		//url: "http://mytdp.com/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		//url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		url: "http://mytdp.com/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
 	}).then(function(result){
 		 if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
+			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount,"");
 		}else{
 			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
 		}
@@ -1262,7 +1260,7 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 	});	
 }
 
-function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
+function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockType)
 {
 	
 	var str='';
@@ -1283,7 +1281,10 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 						str+='<th><span class="channel-name">Ofcr Location</span></th>';
 						//str+='<th><span class="channel-name">Lag Days</span></th>';
 						//str+='<th>Subtask <i class="fa fa-level-down"></i></th>';
-						str+='<th></th>';
+						if(blockType !="closedReopen"){
+							str+='<th></th>';
+						}
+						
 					str+='</thead>';
 					str+='<tbody>';
 					for(var i in result)
@@ -1380,6 +1381,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 										str+='-';
 									}
 								str+='</td>'; */
+								if(blockType !="closedReopen"){
 								str+='<td>';
 									if(result[i].id != null && result[i].id > 0)
 									{
@@ -1392,6 +1394,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 									}
 									
 								str+='</td>';
+								}
 							str+='</tr>';
 						
 					}
@@ -1404,16 +1407,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount)
 		str+='<div id="rightSideExpandView"></div>';
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
-	$("#dataTable").dataTable({
-			"iDisplayLength": 10,
-			"aaSorting": [],
-			"aLengthMenu": [[10, 25, 50,100, -1], [10, 25, 50,100, "All"]],
-			/* "scrollX":        true,
-			"scrollCollapse": false,
-			"fixedColumns":   {
-				"leftColumns": 1,
-			}, */
-		});
+	$("#dataTable").dataTable();
 	$('[data-toggle="tooltip"]').tooltip();
 	//getAlertData(alertId);
 }
@@ -1559,7 +1553,7 @@ function viewAlertHistory(alertId){
 	$("#alertManagementPopupBody1").html(spinner)
 	$.ajax({
 		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
-		//url: "http://localhost:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
 	}).then(function(result){
 		if(result != null && result.length> 0)
 		{
@@ -1703,7 +1697,7 @@ function getStatusCompletionInfo(alertId){
 	$("#statusDtlsDiv").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getStatusCompletionInfo/"+alertId+"/0/0/0/0/0"
 	}).then(function(result){
 		$("#updateStatusChangeBody").html('');
 		$("#statusDtlsDiv").html('');
@@ -2007,7 +2001,7 @@ function getCommentsForAlert(alertId){
 	$("#alertGeneralComments").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/viewAlertHistory/"+alertId+"/task"
-		//url: "http://localhost:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/viewAlertHistory/"+alertId+"/task"
 	}).then(function(result){
 		
 		if(result != null && result.length > 0)
@@ -2156,7 +2150,7 @@ function getAlertData(alertId){
 	$("#alertDetails").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getAlertData/"+alertId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getAlertData/"+alertId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getAlertData/"+alertId
 	}).then(function(result){
 		$("#alertDetails").html('');
 		
@@ -2184,7 +2178,7 @@ function getGroupedArticlesInfo(articleId)
 	$.ajax({
 		  type : 'GET',      
 		  url: wurl+"/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
-		  //url: "http://localhost:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
+		  //url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getGroupedArticlesInfo/"+articleId+""
 	}).then(function(result){
 		//$("#alertDetails").append(str);
 	});
@@ -2355,7 +2349,7 @@ function getAlertCategoryByAlert(alertId){
 	$("#alertCategory").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getAlertCategoryByAlert/"+alertId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getAlertCategoryByAlert/"+alertId
 	}).then(function(result){
 		if(result != null)
 		{
@@ -2382,7 +2376,7 @@ function getSubTaskInfoForAlert(alertId){
 	$("#alertSubtask").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getSubTaskInfoForAlert/"+alertId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getSubTaskInfoForAlert/"+alertId
 	}).then(function(result){
 		$("#alertSubtask").html('');
 		if(result != null && result.length > 0)
@@ -2482,7 +2476,7 @@ function getDocumentsForAlerts(alertId){
 	$("#existingDocsDivId").html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getDocumentsForAlerts/"+alertId
-		//url: "http://192.168.11.146:8080/PartyAnalyst/WebService/getDocumentsForAlerts/"+alertId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getDocumentsForAlerts/"+alertId
 	}).then(function(result){
 		$("#existingDocsDivId").html('');
 		if(result != null && result.length > 0){
@@ -2506,7 +2500,7 @@ function getDepartmentsByAlert(alertId){
 	
 	$.ajax({
 		url: wurl+"/WebService/getDepartmentsByAlert/"+alertId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getDepartmentsByAlert/"+alertId
 	}).then(function(result){
 		var str='';
 		str+='<p class="m_top20">';
@@ -2524,7 +2518,7 @@ function getAssignedOfficersDetails(alertId){
 	
 	$.ajax({
 		url: wurl+"/WebService/getAssignedOfficersDetails/"+alertId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getAssignedOfficersDetails/"+alertId
 	}).then(function(result){
 		if(result != null && result.length > 0)
 		{
@@ -2684,7 +2678,7 @@ function getTotalArticledetails(articleId){
 	$.ajax({
 		  type : 'GET',      
 		  	url: wurl+"/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
-			//url: "http://localhost:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
+			//url: "http://192.168.11.173:8080/CommunityNewsPortal/webservice/getArticlesFullDetails/"+articleId+""
 	}).then(function(results){
 		var obj = ["","State","District","Constituency","Parliament","Mandal","Panchayat","Village","CORP-GMC","Ward","NATIONAL","INTERNATIONAL","MUNICIPALITY"];
 		var result = results[0];
@@ -2964,8 +2958,7 @@ function getJalavaniFeedBackDetailsInfo(){
 	 
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
-		
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniFeedBackDetailsInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavaniFeedBackDetailsInfo(result);
@@ -2977,32 +2970,116 @@ function getJalavaniFeedBackDetailsInfo(){
 
 function buildJalavaniFeedBackDetailsInfo(result){
 	var str='';
+		var globalStatushamletVoterInfo={"Completely Satisfied":"#0FBE08","Partially Satisfied":"#ec7b02","Not Satisfied":"#FF0909"}
 		str+='<div class="row">';
-				str+='<div class="col-sm-4">';
-					str+='<div class="bg_yash_border">';
-						str+='<h5 class="font_weight" style="color:#0FBE08;">COMPLETLY SATISIFIED</h5>';
-						str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].satisfiedCount+'" style="cursor:pointer;">'+result[0].satisfiedCount+'</span><small style="color:#0FBE08;"> ('+result[0].satisfiedPerc+'%)</small></h4>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="bg_yash_border">';
-						str+='<h5 class="font_weight" style="color:#ec7b02;">PARTIALLY SATISIFIED</h5>';
-						str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].partiallySatisfiedCount+'" style="cursor:pointer;">'+result[0].partiallySatisfiedCount+'</span><small style="color:#ec7b02;">( '+result[0].partiallySatsifyPerc+'%)</small></h4>';
-					str+='</div>';
-				str+='</div>';
-				str+='<div class="col-sm-4">';
-					str+='<div class="bg_yash_border">';
-						str+='<h5  class="font_weight" style="color:#FF0909;">NOT SATISIFIED</h5>';
-						str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].notSatisfiedCount+'" style="cursor:pointer;">'+result[0].notSatisfiedCount+'</span><small style="color:#FF0909;">( '+result[0].notSatisfiedPerc+'%)</small></h4>';
-					str+='</div>';
-				str+='</div>';
+			str+='<div class="col-sm-12 m_top10">';
+				str+='<h5 class="font_weight text-capital">Call Center Feedback</h5>';
 			str+='</div>';
+			for(var i in result[0].hamletVoterInfo){
+				
+				str+='<div class="col-sm-4 m_top10">';
+					str+='<div class="bg_yash_border">';
+						str+='<h5 class="font_weight" style="color:'+globalStatushamletVoterInfo[result[0].hamletVoterInfo[i].name]+';text-transform:uppercase;">'+result[0].hamletVoterInfo[i].name+'</h5>';
+						if(result[0].hamletVoterInfo[i].id==1){
+							str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].satisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].satisfiedCount+'</span><small style="color:#0FBE08;"> ('+result[0].hamletVoterInfo[i].satisfiedPerc+'%)</small></h4>';
+							
+						}else if(result[0].hamletVoterInfo[i].id==2){
+							str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].notSatisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].notSatisfiedCount+'</span><small style="color:#FF0909;">( '+result[0].hamletVoterInfo[i].notSatisfiedPerc+'%)</small></h4>';
+						
+						}else if(result[0].hamletVoterInfo[i].id==3){
+							str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'</span><small style="color:#ec7b02;">( '+result[0].hamletVoterInfo[i].partiallySatsifyPerc+'%)</small></h4>';
+						
+						}
+						str+='</div>'; 
+						str+='</div>'; 
+				}
+				str+='</div>'; 
+				
+		
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-12 m_top10">';
+				str+='<h5 class="font_weight text-capital">IVR RESPONSE</h5>';
+			str+='</div>';
+			for(var i in result[0].hamletVoterInfo){
+				if(result[0].hamletVoterInfo[i].name != "Not Satisfied"){
+					str+='<div class="col-sm-6 m_top10">';
+					str+='<div class="bg_yash_border">';
+						str+='<h5 class="font_weight" style="color:'+globalStatushamletVoterInfo[result[0].hamletVoterInfo[i].name]+';text-transform:uppercase;">'+result[0].hamletVoterInfo[i].name+'</h5>';
+						str+='<div class="row">';
+							str+='<div class="col-sm-12 m_top10">';
+								str+='<div class="table-responsive">';
+									str+='<table class="table table-bordered table_Ivr">';
+										str+='<thead>';	
+											str+='<tr>';
+												for(var j in result[0].hamletVoterInfo[i].hamletVoterInfo){
+													str+='<th colspan="2">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].name+'</th>';
+												}
+											str+='</tr>';
+											str+='<tr>';
+												for(var j in result[0].hamletVoterInfo[i].hamletVoterInfo){
+													str+='<th>+ve</th>';
+													str+='<th>-ve</th>';
+												}
+											str+='</tr>';
+										str+='</thead>';
+										str+='<tbody>';
+											str+='<tr>';
+												for(var j in result[0].hamletVoterInfo[i].hamletVoterInfo){
+													var positiveAlertPositiveRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].positiveAlertPositiveRespondentCount;
+													var positiveAlertNegativeRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].positiveAlertNegativeRespondentCount;
+													
+													var negativeAlertPositiveRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeAlertPositiveRespondentCount;
+													var negativeAlertNegativeRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeAlertNegativeRespondentCount;
+													
+													var cumilativePositiveResponders = positiveAlertPositiveRespondentCount + negativeAlertPositiveRespondentCount;
+													var cumilativeNegativeResponders = positiveAlertNegativeRespondentCount +negativeAlertNegativeRespondentCount;
+													
+													str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+positiveAlertPositiveRespondentCount+'  -veRspndnts : '+positiveAlertNegativeRespondentCount+'"></i></td>';
+													str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+negativeAlertPositiveRespondentCount+'  -veRspndnts : '+negativeAlertNegativeRespondentCount+'"></i></td>';
+													
+												}
+											str+='</tr>';
+											
+											str+='<tr>';
+											for(var j in result[0].hamletVoterInfo[i].hamletVoterInfo){
+													var positiveAlertPositiveRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].positiveAlertPositiveRespondentCount;
+													var positiveAlertNegativeRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].positiveAlertNegativeRespondentCount;
+													
+													var negativeAlertPositiveRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeAlertPositiveRespondentCount;
+													var negativeAlertNegativeRespondentCount=result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeAlertNegativeRespondentCount;
+													
+													var cumilativePositiveResponders = positiveAlertPositiveRespondentCount + negativeAlertPositiveRespondentCount;
+													var cumilativeNegativeResponders = positiveAlertNegativeRespondentCount +negativeAlertNegativeRespondentCount;
+													
+													str+='<td title="Respondants">'+cumilativePositiveResponders+'</td>';
+													str+='<td title="Respondants">'+cumilativeNegativeResponders+'</td>';
+													
+											}
+											str+='</tr>';
+											
+											
+										str+='</tbody>';
+									str+='</table>';
+								str+='</div>';
+							str+='</div>';
+					str+='</div>';
+				str+='</div>';
+				str+='</div>';
+				}
+			}
+			str+='</div>';
+			
+			
+			
 		
 		str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top10">';
 				str+='<button type="button" class="btn btn-success btn-sm timeSeriesWiseSummaryCls pull-right">Time Series Wise Summary</button>';
 			str+='</div>';
 		str+='</div>';
+		
+			var globalStatushamletVoterInfo1={"Completely Satisfied":"#6dd18b","Partially Satisfied":"#e59866","Not Satisfied":"#f35555"}
 			
 		str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10">';
@@ -3010,23 +3087,44 @@ function buildJalavaniFeedBackDetailsInfo(result){
 				str+='<table class="table table_custom_jalavani_status table-bordered" id="dataTabledefaulters">';
 					str+='<thead>';
 						str+='<tr>';
-						str+='<th>LOCATION</th>';
+						str+='<th rowspan="4">LOCATION</th>';
 						for(var i in result[0].feedbackStatusList){
 							if(result[0].feedbackStatusList[i].id==1){
-								str+='<th style="background-color:#6dd18b">'+result[0].feedbackStatusList[i].name+'</th>';
-								str+='<th style="background-color:#6dd18b">Perc(%)</th>';
-								
-							}else if(result[0].feedbackStatusList[i].id==2){
-								str+='<th style="background-color:#f35555">'+result[0].feedbackStatusList[i].name+'</th>';
-								str+='<th style="background-color:#f35555">Perc(%)</th>';
-							
+								str+='<th style="background-color:#6dd18b" rowspan="4">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#6dd18b" rowspan="4">Perc(%)</th>';
+								str+='<th style="background-color:#6dd18b" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
+							} else if(result[0].feedbackStatusList[i].id==2){
+								str+='<th style="background-color:#f35555" rowspan="4">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#f35555" rowspan="4">Perc(%)</th>';
+								//str+='<th style="background-color:#f35555" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
 							}else if(result[0].feedbackStatusList[i].id==3){
-								str+='<th style="background-color:#e59866">'+result[0].feedbackStatusList[i].name+'</th>';
-								str+='<th style="background-color:#e59866">Perc(%)</th>';
+								str+='<th style="background-color:#e59866" rowspan="4">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#e59866" rowspan="4">Perc(%)</th>';
+								str+='<th style="background-color:#e59866" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
 							
 							}
 							
 						}
+						str+='</tr>';
+						str+='<tr>';
+							for(var i in result[0].feedbackStatusList){
+								if(result[0].feedbackStatusList[i].id!=2){
+									for(var j in result[0].feedbackStatusList[i].hamletVoterInfo){
+										str+='<th colspan="2" style="background-color:'+globalStatushamletVoterInfo1[result[0].feedbackStatusList[i].name]+';text-transform:uppercase;">'+result[0].feedbackStatusList[i].hamletVoterInfo[j].name+'</th>';
+									}
+								}								
+							}
+						str+='</tr>';
+							str+='<tr>';
+							for(var i in result[0].feedbackStatusList){
+								if(result[0].feedbackStatusList[i].id !=2){
+									for(var j in result[0].feedbackStatusList[i].hamletVoterInfo){
+										str+='<th style="background-color:'+globalStatushamletVoterInfo1[result[0].feedbackStatusList[i].name]+';text-transform:uppercase;">+ve</th>';
+										str+='<th style="background-color:'+globalStatushamletVoterInfo1[result[0].feedbackStatusList[i].name]+';text-transform:uppercase;">-ve</th>';
+										
+									}
+								}
+							}
 						str+='</tr>';
 					str+='</thead>';
 					str+='<tbody>';
@@ -3039,38 +3137,71 @@ function buildJalavaniFeedBackDetailsInfo(result){
 								for(var j in result[i].feedbackStatusList){
 									if(result[i].feedbackStatusList[j].id==1){
 										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#6dd18b">'+result[i].feedbackStatusList[j].count+'</td>';
-									}else if(result[i].feedbackStatusList[j].id==2){
+									} else if(result[i].feedbackStatusList[j].id==2){
 										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#f35555" >'+result[i].feedbackStatusList[j].count+'</td>';
-									}else if(result[i].feedbackStatusList[j].id==3){
+									} else if(result[i].feedbackStatusList[j].id==3){
 										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#e59866">'+result[i].feedbackStatusList[j].count+'</td>';
 									}
 									
 									
 									if(result[i].feedbackStatusList[j].id==1){
 										str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].satisfiedPerc+'</td>';
-									}else if(result[i].feedbackStatusList[j].id==2){
+									} else if(result[i].feedbackStatusList[j].id==2){
 										str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].notSatisfiedPerc+'</td>';
-									}else if(result[i].feedbackStatusList[j].id==3){
+									} else if(result[i].feedbackStatusList[j].id==3){
 										str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].partiallySatsifyPerc+'</td>';
 									}
-									
+									if(result[i].feedbackStatusList[j].hamletVoterInfo !=null && result[i].feedbackStatusList[j].hamletVoterInfo.length>0){
+										for(var k in result[i].feedbackStatusList[j].hamletVoterInfo){
+											if(result[i].feedbackStatusList[j].id==1){
+												str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+											}/* else if(result[i].feedbackStatusList[j].id==2){
+												str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+											} */else if(result[i].feedbackStatusList[j].id==3){
+												str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+											}
+											
+										}
+									}else{
+										if(result[i].feedbackStatusList[j].id==1){
+											str+='<td style="background-color:#6dd18b"> - </td>';
+											str+='<td style="background-color:#6dd18b"> - </td>';
+											str+='<td style="background-color:#6dd18b"> - </td>';
+											str+='<td style="background-color:#6dd18b"> - </td>';
+										}/* else if(result[i].feedbackStatusList[j].id==2){
+											str+='<td style="background-color:#f35555"> - </td>';
+											str+='<td style="background-color:#f35555"> - </td>';
+											str+='<td style="background-color:#f35555"> - </td>';
+											str+='<td style="background-color:#f35555"> - </td>';
+										} */else if(result[i].feedbackStatusList[j].id==3){
+											str+='<td style="background-color:#e59866"> - </td>';
+											str+='<td style="background-color:#e59866"> - </td>';
+											str+='<td style="background-color:#e59866"> - </td>';
+											str+='<td style="background-color:#e59866"> - </td>';
+										}
+										
+									}
 									
 								}
 							str+='</tr>';
 						}
-					str+='</tbody>';
+					str+='</tbody>'; 
 				str+='</table>';
 			str+='</div>';
 		str+='</div>';
 		str+='</div>';
 	$("#ivrStatusFeedBackDivId").html(str);
-	$("#dataTabledefaulters").dataTable({
+	/* $("#dataTabledefaulters").dataTable({
 		"paging":   false,
 		"info":     false,
 		"searching":false,
 		"autoWidth": true,
 		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-	});
+	}); */
+	$('[data-toggle="tooltip"]').tooltip(); 
 }
 $(document).on("click",".feedbackStatusCls",function(){
 	var locationId = $(this).attr("attr_location_district_id");
@@ -3092,36 +3223,38 @@ $(document).on("click",".feedbackStatusCls",function(){
 function getJalavaniFeedBackNotSatisifiedAlertsInfo(feedBackStatusId,districtId,statusName,alertCount){
  
 	$.ajax({
-		url: wurl+"/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
+		//url: wurl+"/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
+		url: "http://192.168.11.176:8080/PartyAnalyst/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
 	}).then(function(result){
 		 if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount);
+			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount,"");
 		}else{
 			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
 		}
 	});	
 }
 
-function getJalavaniStatusWiseSummaryGraphDetailsInfo(){
+function getJalavaniStatusWiseSummaryGraphDetailsInfo(divId){
 	$('#timeSeriesWisGraphDivId').html(spinner);
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniStatusWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
-		//url: "http://localhost:8080/PartyAnalyst/WebService/getJalavaniStatusWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniStatusWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
 	}).then(function(result){
 		 if(result != null && result.length > 0){
-			buildJalavaniStatusWiseSummaryGraphDetailsInfo(result);
+			buildJalavaniStatusWiseSummaryGraphDetailsInfo(result,divId);
 		}else{
-			$("#timeSeriesWisGraphDivId").html('NO DATA AVAILABLE')
+			$("#"+divId).html('NO DATA AVAILABLE')
 		}
 	});	
 }
 $(document).on("click",".timeSeriesWiseSummaryCls",function(){
 	$("#timeSeriesWiseModalId").modal("show");
-	getJalavaniStatusWiseSummaryGraphDetailsInfo();
+	getJalavaniStatusWiseSummaryGraphDetailsInfo("timeSeriesWisGraphDivId");
+	getJalavaniIvrWiseSummaryGraphDetailsInfo("timeSeriesIVRGraphDivId");
+	
 });
 
-function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result){
+function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result,divId){
 	var categoryDateArr=[];
 	var compleSatisfyArr=[];
 	var partiallySatisfyArr=[];
@@ -3148,7 +3281,7 @@ function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result){
 		}
 	}
 	
-	$('#timeSeriesWisGraphDivId').highcharts({
+	$('#'+divId).highcharts({
 		chart: {
 			type: 'spline'
 		},
@@ -3208,4 +3341,136 @@ function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result){
 			color:'#f35555'
 		}]
 	});
+}
+$(document).on("click",".closedReopenAlertsCls",function(){
+	var statusId = $(this).attr("attr_statusId");
+	var statusName = $(this).attr("attr_statusName");
+	getJalavaniAlertForClosedAndReopenDetails(statusId,statusName);
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	$("#alertManagementPopupBody").html(spinner);
+});
+function getJalavaniAlertForClosedAndReopenDetails(statusId,statusName){
+	//$('#timeSeriesWisGraphDivId').html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
+	}).then(function(result){
+		if(result != null && result.length > 0){
+			buildAlertDtlsBasedOnStatusClick(result,statusName,"","");
+		}else{
+			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+		}
+	});	
+}
+function getJalavaniIvrWiseSummaryGraphDetailsInfo(divId){
+	$('#timeSeriesIVRGraphDivId').html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/getJalavaniIvrWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniIvrWiseSummaryGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+		if(result != null && result.length > 0){
+			//buildJalavaniStatusWiseSummaryGraphDetailsInfo(result,divId);
+			buildJalavaniIveGraph(result,divId);
+		}else{
+			$("#"+divId).html('NO DATA AVAILABLE')
+		}
+	});	
+}
+
+function buildJalavaniIveGraph(result,divId){
+	var categoriesArr=[],wpPosArr=[],wpNegArr=[],tpPosArr=[],tpNegArr=[];
+	
+	if(result != null && result.length > 0){
+		for(var i in result){
+			categoriesArr.push(result[i].date);
+			if(result[i].hamletVoterInfo != null && result[i].hamletVoterInfo.length > 0){
+				for(var j in result[i].hamletVoterInfo){
+					if(result[i].hamletVoterInfo[j].id == 1){
+						wpPosArr.push({y:result[i].hamletVoterInfo[j].postiveCount,"extra":result[i].hamletVoterInfo[j].positivePerc});
+						wpNegArr.push({y:result[i].hamletVoterInfo[j].negativeCount,"extra":result[i].hamletVoterInfo[j].negativePerc});
+					}else if(result[i].hamletVoterInfo[j].id == 2){
+						tpPosArr.push({y:result[i].hamletVoterInfo[j].postiveCount,"extra":result[i].hamletVoterInfo[j].positivePerc});
+						tpNegArr.push({y:result[i].hamletVoterInfo[j].negativeCount,"extra":result[i].hamletVoterInfo[j].negativePerc});
+					}
+				}
+			}
+		}
+	}
+	
+	$('#'+divId).highcharts({
+		colors:["green","red","green","red"],
+		chart: {
+			type: 'column'
+		},
+
+		title: {
+			text: ''
+		},
+
+		xAxis: {
+			categories: categoriesArr
+		},
+
+		yAxis: {
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: ''
+			}
+		},
+
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.x + '</b><br/>' +
+					'Total: ' + this.point.stackTotal+'<br/>'+
+					this.series.name + ': ' + this.y+"-"+this.point.extra+"%";
+					
+			}
+		},
+
+		plotOptions: {
+			column: {
+				stacking: 'normal'
+			}
+		},
+
+		series: [{
+			name: 'Water Prob - Satisfied',
+			data: wpPosArr,
+			stack: 'Water Problem'
+		}, {
+			name: 'Water Prob - Not Satisfied',
+			data: wpNegArr,
+			stack: 'Water Problem'
+		}, {
+			name: 'Tanker Prob - Satisfied',
+			data: tpPosArr,
+			stack: 'Tankers Problem'
+		}, {
+			name: 'Tanker Prob - Not Satisfied',
+			data: tpNegArr,
+			stack: 'Tankers Problem'
+		}]
+	});
+}
+$(document).on("click",".menu-cls2",function(e){
+	e.stopPropagation();
+	$(".menuCls-table2").toggle();
+});
+function getJalavaniIvrSummaryWiseClick(statusId,statusName){
+	//$('#timeSeriesWisGraphDivId').html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+probTypeId
+	}).then(function(result){
+		if(result != null && result.length > 0){
+			buildAlertDtlsBasedOnStatusClick(result,statusName,"","");
+		}else{
+			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+		}
+	});	
 }
