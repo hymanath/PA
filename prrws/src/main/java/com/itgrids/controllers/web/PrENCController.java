@@ -234,6 +234,15 @@ public class PrENCController {
 	 return null;
 	}
 	
+	@PostMapping("/getAmountWiseEncWorksCount")
+	public @ResponseBody List<EncWorksVO> getAmountWiseEncWorksCount(@RequestBody InputVO inputVO) {
+	  try {
+			 return prENCService.getAmountWiseEncWorksCount(inputVO);
+	  } catch (Exception e) {
+			LOG.error("Exception raised at getRwsProgramsCodeAndName - getRwsProgramsCodeAndName controller", e);
+	  }
+	 return null;
+	}
 	
 }
 	
