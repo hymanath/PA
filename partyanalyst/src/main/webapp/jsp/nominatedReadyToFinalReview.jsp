@@ -672,6 +672,8 @@ if(boardLevelId ==1){
 	globalLvlTxt = "constituency";
 }else if(boardLevelId ==5){
 	globalLvlTxt = "Mandal/Muncipality/Corporation";
+}else if(boardLevelId ==7){
+	globalLvlTxt = "Panchayat/Ward/Division";
 }
 
 var stateId = '${param.stId}';
