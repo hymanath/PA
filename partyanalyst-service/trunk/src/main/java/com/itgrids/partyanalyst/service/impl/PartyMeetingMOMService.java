@@ -1319,8 +1319,10 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
 			  Map<Long,MomDashbaordOverViewDtlsVO> momStatusMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
 			   Date meetingMonthYear = partyMeetingMinuteDAO.getPartMeetingMonthYear(partyMeetingId);
 			   Long userAccessLevel = regionScopesDAO.getMeetingLevelOfCreatedLocationId(userLevel); 
+			   String meetingDateStr =null;
 			   Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			   String meetingDateStr = formatter.format(meetingMonthYear);
+			   if(meetingMonthYear != null)
+			    meetingDateStr = formatter.format(meetingMonthYear);
 			  Integer[] monthYearArr = getMeetingMontYear(meetingDateStr);
 			  List<Object[]> momPriorityObjList = partyMeetingMinuteDAO.getPartyMeetingMomDtls(userAccessLevel, accessValues, monthYearArr[0], monthYearArr[1], "momPriorityWise");
 			    momPriorityMap = getMomStatusAndPriorityWiseCountDetails(momPriorityObjList,momPriorityMap);

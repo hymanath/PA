@@ -207,9 +207,9 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 			AreaInchargeVO assignVO = new AreaInchargeVO();
 			assignVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 			assignVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[4]));
-			assignVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[5]));
+			assignVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[5])+""+"Mandal");
 			assignVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[2]));
-			assignVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[3]));
+			assignVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[3])+""+"Panchayat");
 			if(status != null && status.equalsIgnoreCase("N")){
 				finalVO.getUnAssignBoothList().add(assignVO);
 				unAssignedCount = unAssignedCount+1l;
@@ -294,7 +294,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		List<AreaInchargeVO> finalList = new ArrayList<AreaInchargeVO>();
 		try{
 			Map<Long,AreaInchargeVO> inchargeMap= new HashMap<Long,AreaInchargeVO>();
-			Set<Long> assignedBooths = new HashSet<Long>();
+			Set<Long> assignedBooths = null;
 			//0-tdpCadreId,1-name,2-relativename,3-age,4-gender,5-memberShipNo,6-mobileNo,7-locationId,8-image
 			List<Object[]> inchargeDetails= areaInchargeMemberDAO.getAreaInchargeAssignedBoothDetails(levelId,levelValue);
 			if(inchargeDetails != null && inchargeDetails.size()>0){
@@ -312,7 +312,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 					  inchargeVo.setGender(commonMethodsUtilService.getStringValueForObject(param[4]));
 					  inchargeVo.setMemberShipNo(commonMethodsUtilService.getStringValueForObject(param[5]));
 					  inchargeVo.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[6]));
-					  assignedBooths.clear();
+					  assignedBooths = new HashSet<Long>();
 					  assignedBooths.add(commonMethodsUtilService.getLongValueForObject(param[7]));
 					  inchargeVo.setAssignIds(assignedBooths);
 					  inchargeVo.setImage(commonMethodsUtilService.getStringValueForObject(param[8]));
