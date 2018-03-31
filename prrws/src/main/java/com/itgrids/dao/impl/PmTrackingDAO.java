@@ -132,7 +132,7 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 			   // " left join pmDepartmentDesignationOfficer.pmDepartmentDesignation pmDepartmentDesignation " +
 			   // " left join pmDepartmentDesignation.pmOfficerDesignation pmOfficerDesignation " +
 		
-		   str.append(" where model.isDeleted='N' ");
+		   str.append(" where model.isDeleted='N' and model.pmStatusId != 2  ");
 			   if(petitionId != null && petitionId.longValue() >0l){
 				   str.append(" and model.petitionId =:petitionId ");
 			   }	  
