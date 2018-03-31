@@ -78,7 +78,9 @@ public class PartyMeetingMinuteDAO extends GenericDaoHibernate<PartyMeetingMinut
 		queryObject.setParameter("updatedBy", updatedBy);
 		queryObject.setParameter("updateTime", updateTime);
 		queryObject.setParameter("minuteId", minuteId);
+		if(isGovtParty != null && isGovtParty > 0l){
 		queryObject.setParameter("isGovtParty", isGovtParty);
+		}
 		queryObject.setParameter("isActionable", isActionable);
 		if(levelId !=null && levelId>0l){
 			queryObject.setParameter("levelId", levelId);
