@@ -2134,7 +2134,7 @@ function buildPetitionDetails(result){
 													str+='<div class="pull-right removeFileCls" attr_id="refDocument'+i+''+j+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove refer document"></i></div>';
 													if(scanCopyExt =="pdf"){
 														str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
-															str+='<div class="mouse-over">Expand</div>';
+															str+='<div class="mouse-over"> <a href="'+result.representeeDetailsList[i].fileNamesList[j].value+'" target="_blank"> Expand</a></div>';
 															str+='<object data="'+result.representeeDetailsList[i].fileNamesList[j].value+'" type="application/pdf" width="100%" height="100px;"></object>';
 														str+='</a>';
 														str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
@@ -2313,7 +2313,7 @@ function buildPetitionDetails(result){
 													
 													if(scanCopyExt =="pdf"){
 														str+='<a class="fancyboxView" href="#inline'+i+''+j+'">';
-															str+='<div class="mouse-over">Expand</div>';
+															str+='<div class="mouse-over"><a href="'+result.referDetailsList[i].fileNamesList[j].value+'" target="_blank"> Expand</a></div>';
 															str+='<object data="'+result.referDetailsList[i].fileNamesList[j].value+'" type="application/pdf" width="100%" height="100px;"></object>';
 														str+='</a>';
 														str+='<div id="inline'+i+''+j+'" style="width:100%;display: none;">';
@@ -2434,7 +2434,7 @@ function buildPetitionDetails(result){
 									str+='<div class="pull-right removeFileCls" attr_id="workDocument'+i+'" style="margin-right: 15px;cursor:pointer"><i class="glyphicon glyphicon-remove"  style="cursor:pointer;" title="Remove work document"></i></div>';
 									if(scanCopyExt =="pdf"){
 										str+='<a class="fancyboxView" href="#inlineMain'+i+''+j+'">';
-											str+='<div class="mouse-over">Expand</div>';
+											str+='<div class="mouse-over"><a href="'+result.fileList[i].value+'" target="_blank"> Expand</a></div>';
 											
 											str+='<object data="'+result.fileList[i].value+'" type="application/pdf" width="100%" height="100px;"></object>';
 										str+='</a>';
@@ -4086,7 +4086,7 @@ $(document).on("click",".saveRepresentRequestDetails",function(){
 			
 			if(flag == false){
 				$('#saveButtonId').show();
-				//return;
+				return;
 			}
 	}
 	
@@ -4303,7 +4303,7 @@ $(document).on("click",".docsViewCls",function(){
 						str+='<div class="viewImageCss">';
 						if(scanCopyExt =="pdf"){
 							str+='<a class="fancyboxView" href="#inline'+j+'">';
-							str+='<div class="mouse-over">Expand</div>';
+							str+='<div class="mouse-over"> <a href="'+docsList[j].value+'" target="_blank"> Expand</a></div>';
 								str+='<object data="'+docsList[j].value+'" type="application/pdf" width="100%"height="300px;"></object>';
 							str+='</a>';
 							str+='<div id="inline'+j+'" style="width:100%;display: none;">';
@@ -5062,7 +5062,7 @@ var json = {
 				str+='<div class="viewImageCss">';
 				if(scanCopyExt =="pdf"){
 					str+='<a class="fancyboxView" href="#inlineddd">';
-					str+='<div class="mouse-over">Expand</div>';
+					str+='<div class="mouse-over"> <a href="'+result.exceptionMsg+'" target="_blank"> Expand</a></div>';
 						str+='<object data="'+result.exceptionMsg+'" type="application/pdf" width="100%"height="100px;"></object>';
 						
 					str+='</a>';
