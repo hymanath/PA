@@ -370,7 +370,7 @@
 			<h4 class="modal-title" id="modalHabliHeadingId">Modal title</h4>
 		</div>
 		<div class="modal-body">
-		
+			<div id="modalAmountSchemeTable"></div>
 			<div id="modalSchemsTable"></div>
 			<div id="modalExceededTable"></div>
 			<div id="modalNotGroundedExceededTable"></div>
