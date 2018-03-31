@@ -4334,4 +4334,7 @@
 	 <bean id="areaInchargeMemberDAO" class="com.itgrids.partyanalyst.dao.hibernate.AreaInchargeMemberDAO">
 	  	<property name="sessionFactory" ref="sessionFactory" />
 	 </bean>
+	 <bean id="rwsIvrAlertDetailsRespondentDAO" class="com.itgrids.partyanalyst.dao.hibernate.RwsIvrAlertDetailsRespondentDAO">
+	  	<property name="sessionFactory" ref="sessionFactory" />
+	 </bean>
 </beans>		
