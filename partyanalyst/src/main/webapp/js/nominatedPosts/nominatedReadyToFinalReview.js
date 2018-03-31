@@ -55,7 +55,7 @@ function getDistrictsForStates(state,isFirst){
 				for(var i in result){
 					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 					globalDistrictArr.push(result[i].id);
-					globalLocationLevelValueArr = globalDistrictArr;
+					//globalLocationLevelValueArr = globalDistrictArr;
 				}
 			}
 		 	if(globalLocationLevelId == 3 && isFirst =="true"){
@@ -104,7 +104,7 @@ function getConstituenciesForDistricts(district,stateId,isFirst){
 				   }
 				   if(globalLocationLevelId == 4 && isFirst=="true"){
 					   globalLocationLevelValueArr =[];
-					   globalLocationLevelValueArr = globalAssmblyArr; 
+					   //globalLocationLevelValueArr = globalAssmblyArr; 
 					   getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 				   }
 			 }	
@@ -164,7 +164,7 @@ function getMandalVillageDetails(constituencyId,stateId,isFirst){
 			}
 			if(globalLocationLevelId >=5 && isFirst=="true"){
 			   globalLocationLevelValueArr =[];
-			   globalLocationLevelValueArr = globalMandalTownDivArr; 
+			  // globalLocationLevelValueArr = globalMandalTownDivArr; 
 			    getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 			  }
 		});
@@ -176,7 +176,7 @@ function getDistrictConstituencyAndMndlTwnDvsnLvlData(boardLevelId){
 	}else if(boardLevelId != null && boardLevelId == 4){
 		getFinalReviewCandidateCountLocationWise(boardLevelId,globalAssmblyArr,globalDepartmentId,0,"");	
 	}else if(boardLevelId != null && boardLevelId >= 5){
-	    getFinalReviewCandidateCountLocationWise(boardLevelId,globalMandalTownDivArr,globalDepartmentId,0,"");	
+	    getFinalReviewCandidateCountLocationWise(boardLevelId,[],globalDepartmentId,0,"");	
 	}
 }
 $(document).on("click","#submitBtnId",function(){
@@ -197,7 +197,7 @@ $(document).on("click","#submitBtnId",function(){
 	 if(districtId != null){
 	   locationLevelValueArr =[];
 		if(districtId == 0){
-			 locationLevelValueArr = globalDistrictArr;
+			 //locationLevelValueArr = globalDistrictArr;
 		 }else{
 			 locationLevelValueArr.push(districtId); 
 		 } 
@@ -205,7 +205,7 @@ $(document).on("click","#submitBtnId",function(){
 	 if(constituencyId != null){	 
 		 locationLevelValueArr =[];
 		 if(constituencyId == 0){
-			 locationLevelValueArr = globalAssmblyArr
+			 //locationLevelValueArr = globalAssmblyArr
 		 }else{
 			 locationLevelValueArr.push(constituencyId);
 		 } 
@@ -213,7 +213,7 @@ $(document).on("click","#submitBtnId",function(){
 	if(manTowDivId != null){
 		locationLevelValueArr =[];
 		if(manTowDivId == 0){
-			 locationLevelValueArr = globalMandalTownDivArr
+			 //locationLevelValueArr = globalMandalTownDivArr
 		 }else{
 			 locationLevelValueArr.push(manTowDivId);
 		 }
@@ -291,13 +291,13 @@ function buildCandidateReviewRslt(result,statusstr){
 		   if(status != "Total"){  
 		  str+='<li class="active"><a  id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" role="tab" data-toggle="tab"><div class="row"><div class="col-md-10 col-xs-12 col-sm-10"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span></div><div class="col-md-2 col-xs-12 col-sm-2"><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></div></div></a></li>';
 		   }else{//click here to get board details
-			   str+='<li class="active"><a role="tab" data-toggle="tab"><div class="row"><div class="col-md-10 col-xs-12 col-sm-10"><span data-toggle="tooltip" data-placement="top" title="" style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_report_type="Department" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Get post details."></i> </span></div><div class="col-md-2 col-xs-12 col-sm-2"><span class="label label-primary pull-right labelCustom deptHrfCls" id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" style="cursor:pointer;" title="Total Open Posts." data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></div></div></a></li>';
+			   str+='<li class="active"><a role="tab" data-toggle="tab"><div class="row"><div class="col-md-10 col-xs-12 col-sm-10"><span data-toggle="tooltip" data-placement="top" title="" style="font-weight:bold;font-size:12px;">'+result[i].name+' <span class="label label-primary labelCustom" title="Total Posts." data-toggle="tooltip" data-placement="top">('+result[i].totalCount+')</span><i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_report_type="Department" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" title="" data-original-title="Get post details."></i> </span></div><div class="col-md-2 col-xs-12 col-sm-2"><span class="label label-primary pull-right labelCustom deptHrfCls" id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" style="cursor:pointer;" title="Total Open Posts." data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></div></div></a></li>';
 		   }
 		 }else{
 			 if(status != "Total"){
 		 str+='<li><a id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'" role="tab" class="deptHrfCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" data-toggle="tab"><div class="row"><div class="col-md-10 col-xs-12 col-sm-10"><span data-toggle="tooltip" data-placement="top" title="click here to get board details" style="font-weight:bold;">'+result[i].name+'</span></div><div class="col-md-2 col-xs-12 col-sm-2"><span class="label label-primary pull-right labelCustom deptDtlsCls" data-toggle="modal" data-target="" attr_department_id="'+result[i].id+'" attr_board_id="0" attr_position_id="0" title="'+titleStr+'" data-toggle="tooltip" data-placement="top">'+result[i].count+'</span></div></div></a></li>';   
 		 }else{ 
-		  str+='<li><a role="tab" data-toggle="tab"><div class="row"><div class="col-md-10 col-xs-12 col-sm-10"><span data-toggle="tooltip" data-placement="top" style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" attr_report_type="Department" data-original-title="Get post details."></i></span></div><div class="col-md-2 col-xs-12 col-sm-2"><span class="label label-primary pull-right labelCustom deptHrfCls"  title="Total Open Posts." data-toggle="tooltip" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'"  style="cursor:pointer;" data-placement="top">'+result[i].count+'</span></div></div></a></li>';
+		  str+='<li><a role="tab" data-toggle="tab"><div class="row"><div class="col-md-10 col-xs-12 col-sm-10"><span data-toggle="tooltip" data-placement="top" style="font-weight:bold;font-size:12px;">'+result[i].name+'<span class="label label-primary labelCustom" title="Total Posts." data-toggle="tooltip" data-placement="top">('+result[i].totalCount+')</span> <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" attr_report_type="Department" data-original-title="Get post details."></i></span></div><div class="col-md-2 col-xs-12 col-sm-2"><span class="label label-primary pull-right labelCustom deptHrfCls"  title="Total Open Posts." data-toggle="tooltip" attr_dept_id="'+result[i].id+'" attr_department_name="'+result[i].name+'" id="departMntId'+i+'" href="#departments'+result[i].id+'" aria-controls="departments'+result[i].id+'"  style="cursor:pointer;" data-placement="top">'+result[i].count+'</span></div></div></a></li>';
 		 }
 		}
       }
@@ -339,7 +339,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 						   if(status != "Total"){
 							 str+='<span id="board'+i+'" href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'"  data-toggle="tooltip"  data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 						   }else{
-								str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
+								str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <span class="label label-primary labelCustom" role="tab"  title="Total Posts." data-toggle="tooltip" data-placement="top">('+result[i].totalCount+')</span><i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
 				            }
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
@@ -364,7 +364,7 @@ function buildCandidateBoardRslt(result,departmentId,status){
 							 if(status != "Total"){
 							 str+='<span id="board'+i+'" href="#board'+result[i].id+'" class="text-capitalize boardHrfCls" attr_board_id="'+result[i].id+'" attr_board_name="'+result[i].name+'" aria-controls="board'+result[i].id+'"  data-toggle="tooltip"  data-placement="top" title="click here to get positions details" style="font-weight:bold;cursor:pointer;">'+result[i].name+'</span>';
 						   }else{
-								str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+' <i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
+								str+='<span style="font-weight:bold;font-size:12px;">'+result[i].name+'<span class="label label-primary labelCustom" role="tab"  title="Total Posts." data-toggle="tooltip" data-placement="top">('+result[i].totalCount+')</span><i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_department_id="'+departmentId+'" attr_board_id="'+result[i].id+'" attr_report_type="Board" attr_board_name="'+result[i].name+'"  data-toggle="tooltip" data-placement="top" data-original-title="Get post details."></i></span>';
 				            }
 						str+='</div>';
 						str+='<div class="col-md-2 col-xs-12 col-sm-2">';
@@ -431,7 +431,7 @@ var str = '';
 							str+='<span class="label label-primary labelCustom pull-right" title="'+titleStr+'" data-toggle="tooltip" data-placement="top" style="cursor:pointer;">'+result[i].count+'</span>';
 					}else{
 								str+='<div class="positionsCls"  attr_position_name="'+result[i].name+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_position_id="'+result[i].id+'">';
-							    str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'<i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" data-toggle="tooltip" data-placement="top" attr_report_type="Position" data-original-title="Get post details." ></i> </span>';
+							    str+='<span style="font-weight:bold;cursor:pointer;">'+result[i].name+'<span class="label label-primary labelCustom" style="color:#333" title="Total Posts" data-toggle="tooltip" data-placement="top">('+result[i].totalCount+')</span><i style="cursor: pointer; font-size: 16px;" class="glyphicon glyphicon-info-sign nominatedPstCls" attr_position_id="'+result[i].id+'" attr_position_name="'+result[i].name+'" attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" data-toggle="tooltip" data-placement="top" attr_report_type="Position" data-original-title="Get post details." ></i> </span>';
 								str+='<span class="label label-primary labelCustom pull-right" style="color:#333" title="Total Open Posts" data-toggle="tooltip" data-placement="top"  style="cursor:pointer;">'+result[i].count+'</span>';
 									if(result[i].count > 0){
 										str+='<a href="javascript:{}" style="margin-left:10px;" class="btn appleNewPostBtn" attr_position_id="'+result[i].id+'"  attr_department_id="'+departmentId+'" attr_board_id="'+boardId+'" attr_level_id="'+globalLocationLevelId+'">Apply For Post</a>';
@@ -904,7 +904,7 @@ $(document).on("click",".wishListCls",function(){
 					   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
 						$("#wishListCountId").html(totalWishListCount);
 				   }
-				   getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,0,0," ");
+				   getFinalReviewCandidateCountLocationWise(globalLocationLevelId,[],0,0," ");
 				}
 			});
 		}
@@ -1238,7 +1238,7 @@ $(document).on("click",".deptHrfCls",function(){
 	 var deptName = $(this).attr("attr_department_name");
 	 globalDepartmentId = deptId;
 	 globalDepartmentName = deptName;
-	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,"department");
+	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,[],deptId,0,"department");
 	 var status = gblStatus;
 	// getFinalReviewCandidateCountLocationWise1(globalLocationLevelId,globalLocationLevelValueArr,deptId,0,status);
 });
@@ -1277,7 +1277,7 @@ $(document).on("click",".boardHrfCls",function(){
 	var boardId = $(this).attr("attr_board_id");
 	var boardName = $(this).attr("attr_board_name");
 	globalBoardName = boardName;
-	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,globalDepartmentId,boardId,"board");
+	 getFinalReviewCandidateCountLocationWise(globalLocationLevelId,[],globalDepartmentId,boardId,"board");
 });
 	
 	$(document).on("click",".assignGOBtnCls",function(){
