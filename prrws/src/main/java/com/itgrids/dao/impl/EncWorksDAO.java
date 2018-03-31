@@ -332,4 +332,81 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		return query.list();
 	}
 
+	@Override
+	public List<Object[]> getAmountWiseSchemeCount(InputVO inputVO, String AmountType) {
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(" select count(enc_works_id) as workCount,'"+AmountType+"' as amountRange");
+		if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("state")){
+			sb.append(" ,'1' as locationId,'Andra Pradesh' as locationName");
+		}else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("district")){
+			sb.append(" ,model.district_id as locationId,model.ditrict_name as locationName ");
+		}else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("constituency")){
+			sb.append(" ,model.assembly_id as locationId,model.assembly_name as locationName ");
+		}else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("mandal")){
+			sb.append(" ,model.mandal_id as locationId,model.mandal_name as locationName ");
+		}
+		sb.append(" from enc_works model ");
+		if(AmountType !=null && AmountType.length()>0){
+			if(AmountType.trim().contains("above")){
+				sb.append(" where model.sanctioned_amount >= :fromAmount");
+			}else{
+				sb.append(" where model.sanctioned_amount between :fromAmount and :toAmount");
+			}
+		}
+		
+		if( inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
+			sb.append(" and model.admin_sanction_date between :startDate and :endDate ");
+		}
+		if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
+			sb.append(" and model.tech_sanction_date is not null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notTechSanctioned")){
+			sb.append(" and model.tech_sanction_date is null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_ENTRUST)){
+			sb.append(" and model.entrusted_date is not null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notEntrusted")){
+			sb.append(" and model.entrusted_date is null  ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
+			sb.append(" and model.grounded_date is not null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
+			sb.append(" and model.entrusted_date is not null and model.grounded_date is null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
+			sb.append(" and model.completion_date is null and model.grounded_date is not null ");
+		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_COMPLETION)){
+			sb.append(" and model.completion_date is not null ");
+		}
+		if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("district") && inputVO.getLocationValue() !=null && inputVO.getLocationValue().longValue()>0){
+			sb.append(" and model.district_id =:locationValue");
+		}else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("constituency") && inputVO.getLocationValue() !=null && inputVO.getLocationValue().longValue()>0){
+			sb.append(" and model.assembly_id=:locationValue ");
+		}else if(inputVO.getLocationType() !=null && inputVO.getLocationType().equalsIgnoreCase("mandal") && inputVO.getLocationValue() !=null && inputVO.getLocationValue().longValue()>0){
+			sb.append(" and model.mandal_id=:locationValue ");
+		}
+		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
+			sb.append(" and model.grant_id in(:schemeIds) ");
+		}
+	
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("workCount").addScalar("amountRange")
+				.addScalar("locationId").addScalar("locationName");
+		
+		if(AmountType !=null && AmountType.length()>0){
+			String amount[] = AmountType.split("-");
+			if(amount[1].trim().equalsIgnoreCase("above")){
+				query.setParameter("fromAmount", amount[0]);
+			}else{
+				query.setParameter("fromAmount", amount[0]);
+				query.setParameter("toAmount", amount[1]);
+			}
+		} 
+		
+		if( inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
+			query.setDate("startDate", inputVO.getStartDate());
+			query.setDate("endDate", inputVO.getEndDate());
+		}
+		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
+			query.setParameterList("schemeIds", inputVO.getSchemeIdsList());
+		}
+		return query.list();
+	}
 }
