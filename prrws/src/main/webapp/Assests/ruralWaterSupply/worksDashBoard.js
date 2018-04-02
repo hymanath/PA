@@ -1,4 +1,4 @@
- //Angular Start  getAlertsOfCategoryByStatusWise()
+	//Angular Start  getAlertsOfCategoryByStatusWise()
 var month =moment().format("M");
 	var glStartDate = "01-04-"+moment().subtract(4, 'years').format("YYYY");
 	var	glEndDate = "01-04-"+moment().format("YYYY");
@@ -7,7 +7,6 @@ var month =moment().format("M");
 					 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
 					 {name:'Assests',id:'assestsId',img:'assets.png'},{name:'Water Source',id:'waterSourceId',img:'works.png'},{name:'Work Schemes',id:'schemeId',img:'schemes.png'}];
 
-	var blockArrClickArr = [{name:'HabitationClick',id:'modalHablitationTable'},{name:'KpiClick',id:'modalKpiTable'},{name:'JalavaniClick',id:'modalAlertTable'},{name:'IvrStatusClick',id:'modalIvrStatusTable'},{name:'AssetsClick',id:'modalAssetsTable'},{name:'WaterSourceClick',id:'modalWaterSourceTable'},{name:'WorkSchemsClick',id:'modalWorkSchemsTable'}];
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
 	var levelWiseSBArr = ['state','district','constituencies','mandal','panchayat'];
@@ -55,14 +54,10 @@ var month =moment().format("M");
 	function onloadCalls(){
 		globalStateLevelExceededTargetWorks='';
 		getSchemeWiseWorkDetails('graph','state',"","","","");
-		//getAllPrrwsDistricts("chosendistValconstituencyBlockId");
-		//getAllPrrwsDistricts("chosendistValmandalBlockId");
 		tabBlocks('stateBlockId','state');
 		tabBlocks('districtBlockId','district');
 		tabBlocks('constituencyBlockId','constituency');
 		tabBlocks('mandalBlockId','mandal');
-		responsiveTabs();
-		//getExceededTargetWorksDetails();
 		getExceedWorkDetailsLocationWise("",'state',"","","","","","onGoing");
 		getNotGroundedWorkDetailsLocationWise("graph",'state',"","","","","","not grounded");
 		gettAllRwsWorksByScheme();
@@ -684,11 +679,11 @@ function tabBlocks(blockId,blockName){
 	var tableId = '';
 	tabBlock+='<div class="panel panel-black panel-default">';
 		tabBlock+='<div class="panel-heading" id="heading'+blockId+'">';
-		if(blockId == "stateBlockId"){
-			tabBlock+='<a class="panelCollapseIcon collapseActiveStateCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+blockId+'" aria-expanded="true" aria-controls="collapse'+blockId+'">';
-			tabBlock+='<h4 class="panel-title text-capital">'+blockName+' level overview</h4>';
-			tabBlock+='</a>';
-		}else{
+		 if(blockId == "stateBlockId"){
+			 tabBlock+='<a class="panelCollapseIcon collapseActiveStateCls" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+blockId+'" aria-expanded="true" aria-controls="collapse'+blockId+'">';
+			 tabBlock+='<h4 class="panel-title text-capital">'+blockName+' level overview</h4>';
+			 tabBlock+='</a>';
+		 }else{
 			tabBlock+='<a class="panelCollapseIcon collapseActiveStateCls collapsed" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapse'+blockId+'" aria-expanded="true" aria-controls="collapse'+blockId+'">';
 			tabBlock+='<h4 class="panel-title text-capital">'+blockName+' level overview</h4>';
 			tabBlock+='</a>';
@@ -702,21 +697,18 @@ function tabBlocks(blockId,blockName){
 		}else{
 			tabBlock+='<div id="collapse'+blockId+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="heading'+blockId+'">';
 		}
-		
+		var statusType='';
+		$('.exceedWorkTypeCls').each(function(i, obj){
+			 if($(this).is(':checked')){
+				statusType = $(this).val();
+			 }
+		});
+		if(statusType == ""){
 			
-		
-				var statusType='';
-				$('.exceedWorkTypeCls').each(function(i, obj){
-					 if($(this).is(':checked')){
-						statusType = $(this).val();
-					 }
-				});
-				if(statusType == ""){
-					
-					$(".headingExceedId").html("All Exceeded Works")
-				}else{
-					$(".headingExceedId").html("OnGoing Exceeded Works")
-				}				
+			$(".headingExceedId").html("All Exceeded Works")
+		}else{
+			$(".headingExceedId").html("OnGoing Exceeded Works")
+		}				
 		tabBlock+='<div class="panel-body">';
 			tabBlock+='<div class="row">';
 				tabBlock+='<div class="col-sm-8">';
@@ -735,22 +727,17 @@ function tabBlocks(blockId,blockName){
 				tabBlock+='</div>';
 			tabBlock+='</div>';
 			
-			tabBlock+='<select class="form-control" role="tabListMobile">';
-			for(var i in blocksArr)
-			{
-				tabBlock+='<option  attr_block_name='+blockName+' attr_block_id='+blockId+' tab_id="'+blockId+''+blocksArr[i].id+'">'+blocksArr[i].name+'</option>';
-			}
-			tabBlock+='</select>';
+			
 			tabBlock+='<div class="tab-content">';
 				if(blockId == 'constituencyBlockId'){
 						tabBlock+='<div class="row">';
-							tabBlock+='<div class="col-sm-3"><div id="distVal'+blockId+'"></div></div>';
+						//	tabBlock+='<div class="col-sm-3"><div id="distVal'+blockId+'"></div></div>';
 							tabBlock+='<div class="col-sm-3"><div id="constVal'+blockId+'"></div></div>';
 						tabBlock+='</div>';
 				}else if(blockId == 'mandalBlockId'){
 						tabBlock+='<div class="row">';
-								tabBlock+='<div class="col-sm-3"><div id="distVal'+blockId+'"></div></div>';
-								tabBlock+='<div class="col-sm-3"><div id="constVal'+blockId+'"></div></div>';
+								///tabBlock+='<div class="col-sm-3"><div id="distVal'+blockId+'"></div></div>';
+								//tabBlock+='<div class="col-sm-3"><div id="constVal'+blockId+'"></div></div>';
 								tabBlock+='<div class="col-sm-3"><div id="mandalVal'+blockId+'"></div></div>';
 						tabBlock+='</div>';
 				}
@@ -771,14 +758,6 @@ function tabBlocks(blockId,blockName){
 	$("#"+blockId).html(tabBlock);
 	$(".overViewCls").hide();
 	
-	if(blockId == 'constituencyBlockId'){
-		selectBox('distVal'+blockId+'');
-		selectBox('constVal'+blockId+'');
-	}else if(blockId == 'mandalBlockId'){
-		selectBox('distVal'+blockId+'');
-		selectBox('constVal'+blockId+'');
-		selectBox('mandalVal'+blockId+'');
-	}
 	$("[role='tabCummulative'] li:nth-child(2)").trigger("click");
 }
 function selectBox(id){
@@ -795,10 +774,7 @@ function selectBox(id){
 	$("#"+id).html(selectBox);
 	$("#chosen"+id).chosen();
 }
-$(".chosenSelect").chosen({width:'100%'});
-$(window,document).on('resize', function(){
-	responsiveTabs();
-});
+
 	function buildTableForHabitationCoverage(result,locationType,divId,type,blockType){
 		
 		var GLtbodyArr=[];
@@ -1292,58 +1268,7 @@ $(window,document).on('resize', function(){
 		$("#chosenmandalValmandalBlockId").html('');
 		$("#chosenmandalValmandalBlockId").trigger("chosen:updated");
 	}
-	function responsiveTabs(){
-		var $this = $(this);
-		var $windowWidth = $(window).width();
-		if($windowWidth < 768)
-		{
-			$('[role="tabListMobile"]').show();
-			$('[role="tablist"]').hide();
-		}else{
-			$('[role="tabListMobile"]').hide();
-			$('[role="tablist"]').show();
-		}
-	}
-	//mobile
-	$(document).on("change","[role='tabListMobile']",function(){
-		
-		var id = $('option:selected', this).attr('tab_id');
-		$("#"+id).closest(".tab-content").find("[role='tabpanel']").removeClass("active");
-		$("#"+id).addClass("active");
-		var blockName = $('option:selected', this).attr('attr_block_name');
-		var blockId = $('option:selected', this).attr('attr_block_id');
-		if(blockName == "state"){
-			emptyCheckState();
-			 if(id == "stateBlockIdschemeId"){
-				getSchemeWiseWorkDetails('table','state',blocksArr,"","","","completeOverview");
-			}
-		}else if(blockName == "district"){
-			emptyCheckDistrict();
-			if(id == "districtBlockIdschemeId"){
-				getSchemeWiseWorkDetails('table','district',blocksArr,"","","","completeOverview");
-			}
-		}else if(blockName == "constituency"){
-			emptyCheckConstituency();
-			if(id == "constituencyBlockIdschemeId"){
-				getAllPrrwsDistricts("chosendistValconstituencyBlockId");
-				getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
-			}
-		}else if(blockName == "mandal"){
-			emptyCheckMandal();
-			if(id == "mandalBlockIdschemeId"){
-				getAllPrrwsDistricts("chosendistValmandalBlockId");
-				//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
-				getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
-			}
-		}
-	});
-	$("header").on("click",".menu-cls",function(e){
-		e.stopPropagation();
-		$(".menu-data-cls").toggle();
-	});
-	$(document).on("click",function(){
-		$(".menu-data-cls").hide();
-	});
+	
 	
 	function getLocationBasedOnSelection(locationType,filterType,filterValue,districtValue,divId){
 		var yearVal="";
@@ -2419,11 +2344,12 @@ $(document).on("click",".exceedWorkTypeCls",function(e){
 	}else{
 		$(".headingExceedId").html("OnGoing Exceeded Works")
 	}	
-	getExceedWorkDetailsLocationWise("",'state',"","","","","",statusType);
-	getExceedWorkDetailsLocationWise("table",'state',"","","","","",statusType);
-	getExceedWorkDetailsLocationWise("table",'district',"","","","","",statusType);
-	getExceedWorkDetailsLocationWise("table",'constituency',"","","","","",statusType);
-	getExceedWorkDetailsLocationWise("table",'mandal',"","","","","",statusType);
+	//getExceedWorkDetailsLocationWise(type,locationType,divId,filterType,filterValue,districtValue,blockType,statusType)
+	getExceedWorkDetailsLocationWise("",'state',blocksArr,"","","",'exceededOverview',statusType);
+	getExceedWorkDetailsLocationWise("table",'state',blocksArr,"","","",'exceededOverview',statusType);
+	getExceedWorkDetailsLocationWise("table",'district',blocksArr,"","","",'exceededOverview',statusType);
+	getExceedWorkDetailsLocationWise("table",'constituency',blocksArr,"","","",'exceededOverview',statusType);
+	getExceedWorkDetailsLocationWise("table",'mandal',blocksArr,"","","",'exceededOverview',statusType);
 });
 $(document).on("click",".checkboxTypeCls",function(e){
 	var blocksArr = ['state','district','constituency','mandal']
