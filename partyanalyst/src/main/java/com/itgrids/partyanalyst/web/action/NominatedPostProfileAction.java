@@ -1029,6 +1029,50 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 		}
 		return Action.SUCCESS;
 	}
+	
+	public String getPanchayatWardDivisionDetailsOfSubLocation(){
+		LOG.info("entered into getSubLevelForConstituency");
+		try {
+			
+			jObj = new JSONObject(getTask());
+			
+			/*Long stateId = jObj.getLong("stateId");
+			Long locationLevel = jObj.getLong("locationLevel");*/
+			
+			/*List<Long> distIds = new ArrayList<Long>();
+			JSONArray jsonArray1 = jObj.getJSONArray("districtId");
+			for (int i = 0; i < jsonArray1.length(); i++) {
+				Long distId1 = Long.valueOf(jsonArray1.get(i).toString());
+				distIds.add(distId1);
+			}*/
+			
+			/*List<Long> constiIds = new ArrayList<Long>();
+			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+			for (int i = 0; i < jsonArray2.length(); i++) {
+				Long constiId = Long.valueOf(jsonArray2.get(i).toString());
+				constiIds.add(constiId);
+			}*/
+			List<Long> mandals = new ArrayList<Long>();
+			List<Long> localBodys = new ArrayList<Long>();
+			JSONArray jsonArray3 = jObj.getJSONArray("mandalIds");
+			for (int i = 0; i < jsonArray3.length(); i++) {
+				if(jsonArray3.get(i).toString().substring(0,1).trim().equalsIgnoreCase("4")){
+					Long mandalId = Long.valueOf(jsonArray3.get(i).toString().substring(1).toString());
+					mandals.add(mandalId);
+				}else if(jsonArray3.get(i).toString().substring(0,1).trim().equalsIgnoreCase("5")){
+					Long localEleBdyId = Long.valueOf(jsonArray3.get(i).toString().substring(1).toString());
+					localBodys.add(localEleBdyId);
+				}
+				
+			}
+			
+			locations = cadreCommitteeService.getPanchayatWardDivisionDetailsOfSubLocation(null, mandals,localBodys);
+			
+		}catch (Exception e) {
+			LOG.error("Exception Occured in getSubLevelForConstituency() method, Exception - ",e);
+		}
+		return Action.SUCCESS;
+	}
 public String notCadresearch(){
 		
 		try {

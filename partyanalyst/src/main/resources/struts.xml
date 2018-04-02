@@ -13156,6 +13156,11 @@
 				<param name="root">locations</param>
 			</result>
 	</action>
+	<action name="getSubLevelForMandalTownDivisionAction" class="nominatedPostProfileAction" method="getPanchayatWardDivisionDetailsOfSubLocation">
+			<result type="json" name="success">
+				<param name="root">locations</param>
+			</result>
+	</action>
 	<action name="getNominatedPostPostionDetailsAction" class="nominatedPostProfileAction" method="getNominatedPostPostionDetails">
 		<result type="json" name="success">
 			<param name="root">nominatePostList</param>

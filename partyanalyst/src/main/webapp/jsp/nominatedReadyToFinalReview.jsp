@@ -147,6 +147,11 @@
 							<select class="form-control" id="manTowDivId">
 							</select>
 						</div>
+						<div class="col-md-3 col-xs-12 col-sm-12 hideVillageWardDivCls">
+							<label>Village/Ward</label>
+							<select class="form-control" id="villageWardId">
+							</select>
+						</div>
 						<div class="col-md-3 col-xs-12 col-sm-12">						
 							<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="submitBtnId"/>
 						</div>
@@ -705,14 +710,20 @@ if(boardLevelId == 1){
 if(boardLevelId == 2){
 $(".hideDistrictDivCls").hide();	
 $(".hideConstituencyDivCls").hide();
-$(".hidemanTowDivCls").hide();		
+$(".hidemanTowDivCls").hide();
+$(".hideVillageWardDivCls").hide();			
 }
 if(boardLevelId == 3){	
 $(".hideConstituencyDivCls").hide();
-$(".hidemanTowDivCls").hide();	
+$(".hidemanTowDivCls").hide();
+$(".hideVillageWardDivCls").hide();		
 }
 if(boardLevelId == 4){
 $(".hidemanTowDivCls").hide();
+$(".hideVillageWardDivCls").hide();	
+}
+if(boardLevelId ==5){
+$(".hideVillageWardDivCls").hide();	
 }
 if(boardLevelId != null && boardLevelId > 6){
 getBoardLevelId(7,stateId);		
