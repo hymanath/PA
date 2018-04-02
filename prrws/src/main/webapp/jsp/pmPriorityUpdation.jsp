@@ -1078,7 +1078,7 @@ function updatePriorityDetailsforPetitionsWorks(){
    }
 }
 
-$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1",function()
+$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1,#SubSubjectId",function()
 {
 	$("#pdfWiswPetitionsView").html('');
 });	

@@ -6944,6 +6944,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				if(commonMethodsUtilService.isListOrSetValid(petitonsDetailsList)){
 					for (Object[] param : petitonsDetailsList) {
+						Long pmBriefLeadId = commonMethodsUtilService.getLongValueForObject(param[28]);
+						if(IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.contains(pmBriefLeadId) || IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS.contains(pmBriefLeadId)){
+							continue;
+						}
 						
 						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
 						String reprDate=commonMethodsUtilService.getStringValueForObject(param[1]).replace("#", "");
