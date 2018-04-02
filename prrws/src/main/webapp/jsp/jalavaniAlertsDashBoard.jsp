@@ -34,9 +34,9 @@
 				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-10 m_top10 col-xs-9">
+				<div class="col-sm-10 m_top10 col-xs-9j">
 					<h4 class="text-capital">Panchayat Raj,RD&News</h4>
-					<p>jalavani DashBoard - DashBoard</p>
+					<p>Jalavani DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -270,26 +270,28 @@
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
 					</ul>-->
-					<i class="fa fa-bars menu-cls2 pull-right"></i>
+					<i class="glyphicon glyphicon-eye-open menu-cls2 pull-right" title="Click To Show Closed And Reopen Alerts"></i>
 					<div class="menuCls-table2">
 						<div class="arrow_box_top1">
 							<div class="row">
 								<div class="col-sm-12">
 									<ul class="list-inline text-center">
-										<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
-										<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
+										<li><h5 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h5></li>
+									</ul>
+									<ul class="list-inline text-center">
+										<li><h5 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h5></li>
 									</ul>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-3  pull-right">
+				<div class="col-sm-3" style="left:865px;">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
-						<input type="text" class="form-control" id="dateRangePicker" style="width: 200px;"/>
+						<input type="text" class="form-control" id="dateRangePicker" style="width: 230px;"/>
 					</div>
 				</div>
 			</div>
@@ -348,7 +350,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="modalHeadingTotal">Modal title</h4>
+				<h4 class="modal-title" id="modalHeadingTotal"></h4>
 			</div>
 			<div class="modal-body modal-insurance">
 				
