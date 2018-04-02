@@ -6000,10 +6000,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId){
+	public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId,Long districtId,String satisfiesStatus){
 		List<AlertCoreDashBoardVO> alertVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 		try{
-			alertVoList = alertManagementSystemService.getJalavaniIvrSummaryWiseClick(startDateStr,endDateStr,statusId,probTypeId);
+			alertVoList = alertManagementSystemService.getJalavaniIvrSummaryWiseClick(startDateStr,endDateStr,statusId,probTypeId,districtId,satisfiesStatus);
     	}catch(Exception e){
     		log.error("Exception raised in getJalavaniIvrSummaryWiseClick  method in WebServiceHandlerService1",e);
     	}

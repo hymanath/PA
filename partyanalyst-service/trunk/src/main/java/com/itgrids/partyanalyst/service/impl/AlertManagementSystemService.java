@@ -17970,7 +17970,7 @@ public void setFeedBackIvrGraphdata(List<BasicVO> finalVoList,List<Object[]> mon
 			}
 		}
 	}//method
-public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId){
+public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId,Long districtId,String satisfiedStatus){
 	List<AlertCoreDashBoardVO> finalAlertVOs = new ArrayList<AlertCoreDashBoardVO>(0);
 	try {
 		Date startDate = null;Date endDate = null;
@@ -17980,7 +17980,7 @@ public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDat
 			endDate = sdf.parse(endDateStr);
 		}
 		
-		List<Long> alertIdsList = rwsIvrAlertDetailsDAO.getJalavaniIvrSummaryWiseClick(startDate,endDate,statusId,statusId);
+		List<Long> alertIdsList = rwsIvrAlertDetailsDAO.getJalavaniIvrSummaryWiseClick(startDate,endDate,statusId,probTypeId,districtId,satisfiedStatus);
 		
 		List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdsList));
 	    setAlertDtls(finalAlertVOs, list);
