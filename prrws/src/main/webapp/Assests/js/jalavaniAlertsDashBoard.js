@@ -237,7 +237,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/social_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/Twitter-Facebook.jpg" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5"><b>SOCIAL MEDIA</b></h5>';
@@ -1262,10 +1262,15 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockType)
 {
-	
+	$("#modalHeadingTotal").html("");
 	var str='';
 	var alertId = '';
-	$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
+	if(statuscount !=null && statuscount >0){
+		$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
+	}else{
+		$("#modalHeadingTotal").html("Total "+statusName+' :');
+	}
+	
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10" expand-main="false">';
 			str+='<div class="classicView">';
@@ -2981,14 +2986,24 @@ function buildJalavaniFeedBackDetailsInfo(result){
 					str+='<div class="bg_yash_border">';
 						str+='<h5 class="font_weight" style="color:'+globalStatushamletVoterInfo[result[0].hamletVoterInfo[i].name]+';text-transform:uppercase;">'+result[0].hamletVoterInfo[i].name+'</h5>';
 						if(result[0].hamletVoterInfo[i].id==1){
-							str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].satisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].satisfiedCount+'</span><small style="color:#0FBE08;"> ('+result[0].hamletVoterInfo[i].satisfiedPerc+'%)</small></h4>';
-							
+							if(result[0].hamletVoterInfo[i].satisfiedCount !=null && result[0].hamletVoterInfo[i].satisfiedCount>0){
+								str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="1" attr_statusName="COMPLETLY SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].satisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].satisfiedCount+'</span><small style="color:#0FBE08;"> ('+result[0].hamletVoterInfo[i].satisfiedPerc+'%)</small></h4>';
+							}else{
+								str+='<h4 class="m_top10"><span>'+result[0].hamletVoterInfo[i].satisfiedCount+'</span><small style="color:#0FBE08;"> ('+result[0].hamletVoterInfo[i].satisfiedPerc+'%)</small></h4>';
+							}
 						}else if(result[0].hamletVoterInfo[i].id==2){
-							str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].notSatisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].notSatisfiedCount+'</span><small style="color:#FF0909;">( '+result[0].hamletVoterInfo[i].notSatisfiedPerc+'%)</small></h4>';
-						
+							if(result[0].hamletVoterInfo[i].notSatisfiedCount !=null && result[0].hamletVoterInfo[i].notSatisfiedCount >0){
+								str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="2" attr_statusName="NOT SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].notSatisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].notSatisfiedCount+'</span><small style="color:#FF0909;">( '+result[0].hamletVoterInfo[i].notSatisfiedPerc+'%)</small></h4>';
+							}else{
+								str+='<h4 class="m_top10"><span>'+result[0].hamletVoterInfo[i].notSatisfiedCount+'</span><small style="color:#FF0909;">( '+result[0].hamletVoterInfo[i].notSatisfiedPerc+'%)</small></h4>';
+							}
+							
 						}else if(result[0].hamletVoterInfo[i].id==3){
-							str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'</span><small style="color:#ec7b02;">( '+result[0].hamletVoterInfo[i].partiallySatsifyPerc+'%)</small></h4>';
-						
+							if(result[0].hamletVoterInfo[i].partiallySatisfiedCount !=null && result[0].hamletVoterInfo[i].partiallySatisfiedCount>0){
+								str+='<h4 class="m_top10"><span class="feedbackStatusCls" attr_location_district_id="0" attr_location_id="ivrStatus" attr_statusid="3" attr_statusName="PARTIALLY SATISIFIED" attr_alertCount="'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'</span><small style="color:#ec7b02;">( '+result[0].hamletVoterInfo[i].partiallySatsifyPerc+'%)</small></h4>';
+							}else{
+								str+='<h4 class="m_top10"><span>'+result[0].hamletVoterInfo[i].partiallySatisfiedCount+'</span><small style="color:#ec7b02;">( '+result[0].hamletVoterInfo[i].partiallySatsifyPerc+'%)</small></h4>';
+							}
 						}
 						str+='</div>'; 
 						str+='</div>'; 
@@ -3035,9 +3050,16 @@ function buildJalavaniFeedBackDetailsInfo(result){
 													var cumilativePositiveResponders = positiveAlertPositiveRespondentCount + negativeAlertPositiveRespondentCount;
 													var cumilativeNegativeResponders = positiveAlertNegativeRespondentCount +negativeAlertNegativeRespondentCount;
 													
-													str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+positiveAlertPositiveRespondentCount+'  -veRspndnts : '+positiveAlertNegativeRespondentCount+'"></i></td>';
-													str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+negativeAlertPositiveRespondentCount+'  -veRspndnts : '+negativeAlertNegativeRespondentCount+'"></i></td>';
-													
+													if(result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount !=null && result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount >0){
+														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'" attr_district_id="0" attr_satisfied_status="Y" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+positiveAlertPositiveRespondentCount+'  -veRspndnts : '+positiveAlertNegativeRespondentCount+'"></i></td>';
+													}else{
+														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+positiveAlertPositiveRespondentCount+'  -veRspndnts : '+positiveAlertNegativeRespondentCount+'"></i></td>';
+													}
+													if(result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount !=null && result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount>0){
+														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_district_id="0" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'" attr_satisfied_status="N" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+negativeAlertPositiveRespondentCount+'  -veRspndnts : '+negativeAlertNegativeRespondentCount+'"></i></td>';
+													}else{
+														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+negativeAlertPositiveRespondentCount+'  -veRspndnts : '+negativeAlertNegativeRespondentCount+'"></i></td>';
+													}
 												}
 											str+='</tr>';
 											
@@ -3052,9 +3074,13 @@ function buildJalavaniFeedBackDetailsInfo(result){
 													var cumilativePositiveResponders = positiveAlertPositiveRespondentCount + negativeAlertPositiveRespondentCount;
 													var cumilativeNegativeResponders = positiveAlertNegativeRespondentCount +negativeAlertNegativeRespondentCount;
 													
-													str+='<td title="Respondants">'+cumilativePositiveResponders+'</td>';
-													str+='<td title="Respondants">'+cumilativeNegativeResponders+'</td>';
+													totalResponderCount =cumilativePositiveResponders+cumilativeNegativeResponders;
 													
+													var postiveResponderPerc = (cumilativePositiveResponders*100/totalResponderCount).toFixed(2);
+													var negativeResponderPerc= (cumilativeNegativeResponders*100/totalResponderCount).toFixed(2);
+
+													str+='<td title="Respondants"><span title="Respondants :'+cumilativePositiveResponders+'" style="color:#0FBE08;" data-toggle="tooltip" >('+postiveResponderPerc+' %)</span></td>';
+													str+='<td title="Respondants"><span title="Respondants :'+cumilativeNegativeResponders+'" style="color:#FE3131;" data-toggle="tooltip">('+negativeResponderPerc+' %)</span></td>';
 											}
 											str+='</tr>';
 											
@@ -3090,17 +3116,17 @@ function buildJalavaniFeedBackDetailsInfo(result){
 						str+='<th rowspan="4">LOCATION</th>';
 						for(var i in result[0].feedbackStatusList){
 							if(result[0].feedbackStatusList[i].id==1){
-								str+='<th style="background-color:#6dd18b" rowspan="4">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#6dd18b" rowspan="4">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
 								str+='<th style="background-color:#6dd18b" rowspan="4">Perc(%)</th>';
-								str+='<th style="background-color:#6dd18b" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#6dd18b" colspan="4" >Ivr '+result[0].feedbackStatusList[i].name+'</th>';
 							} else if(result[0].feedbackStatusList[i].id==2){
-								str+='<th style="background-color:#f35555" rowspan="4">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#f35555" rowspan="4">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
 								str+='<th style="background-color:#f35555" rowspan="4">Perc(%)</th>';
 								//str+='<th style="background-color:#f35555" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
 							}else if(result[0].feedbackStatusList[i].id==3){
-								str+='<th style="background-color:#e59866" rowspan="4">'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#e59866" rowspan="4">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
 								str+='<th style="background-color:#e59866" rowspan="4">Perc(%)</th>';
-								str+='<th style="background-color:#e59866" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#e59866" colspan="4" >Ivr '+result[0].feedbackStatusList[i].name+'</th>';
 							
 							}
 							
@@ -3136,11 +3162,23 @@ function buildJalavaniFeedBackDetailsInfo(result){
 								str+='<td  style="text-align:left !important;">'+result[i].name+'</td>';
 								for(var j in result[i].feedbackStatusList){
 									if(result[i].feedbackStatusList[j].id==1){
-										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#6dd18b">'+result[i].feedbackStatusList[j].count+'</td>';
+										if(result[i].feedbackStatusList[j].count !=null && result[i].feedbackStatusList[j].count>0){
+											str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#6dd18b">'+result[i].feedbackStatusList[j].count+'</td>';
+										}else{
+											str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].count+'</td>';
+										}
 									} else if(result[i].feedbackStatusList[j].id==2){
-										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#f35555" >'+result[i].feedbackStatusList[j].count+'</td>';
+										if(result[i].feedbackStatusList[j].count !=null && result[i].feedbackStatusList[j].count>0){
+											str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#f35555">'+result[i].feedbackStatusList[j].count+'</td>';
+										}else{
+											str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].count+'</td>';
+										}
 									} else if(result[i].feedbackStatusList[j].id==3){
-										str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#e59866">'+result[i].feedbackStatusList[j].count+'</td>';
+										if(result[i].feedbackStatusList[j].count !=null && result[i].feedbackStatusList[j].count >0){
+											str+='<td class="feedbackStatusCls" attr_location_district_id="'+result[i].id+'" attr_location_id="ivrStatus" attr_statusid="'+result[i].feedbackStatusList[j].id+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_alertCount="'+result[i].feedbackStatusList[j].count+'" style="cursor:pointer;background-color:#e59866">'+result[i].feedbackStatusList[j].count+'</td>';
+										}else{
+											str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].count+'</td>';
+										}
 									}
 									
 									
@@ -3154,16 +3192,32 @@ function buildJalavaniFeedBackDetailsInfo(result){
 									if(result[i].feedbackStatusList[j].hamletVoterInfo !=null && result[i].feedbackStatusList[j].hamletVoterInfo.length>0){
 										for(var k in result[i].feedbackStatusList[j].hamletVoterInfo){
 											if(result[i].feedbackStatusList[j].id==1){
-												str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
-												str+='<td style="background-color:#6dd18b">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+												if(result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount !=null && result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount>0){
+													str+='<td class="statusWiseIvrCls"  attr_status_id="1" attr_probTypeId="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].id
+													+'" attr_alert_Count ="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_district_id="'+result[i].id+'" attr_satisfied_status="Y" style="background-color:#6dd18b;cursor:pointer;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												}else{
+													str+='<td style="background-color:#6dd18b;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												}
+												if(result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount !=null && result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount>0){
+													str+='<td class="statusWiseIvrCls"  attr_status_id="1" attr_probTypeId="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].id+'" attr_alert_Count ="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_district_id="'+result[i].id+'" attr_satisfied_status="N"  style="background-color:#6dd18b;cursor:pointer;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+												}else{
+													str+='<td style="background-color:#6dd18b;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+												}
 											}/* else if(result[i].feedbackStatusList[j].id==2){
 												str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
 												str+='<td style="background-color:#f35555">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
 											} */else if(result[i].feedbackStatusList[j].id==3){
-												str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
-												str+='<td style="background-color:#e59866">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+												if(result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount !=null && result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount>0){
+													str+='<td class="statusWiseIvrCls"  attr_status_id="3" attr_probTypeId="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].id+'" attr_alert_Count ="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'"  attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_district_id="'+result[i].id+'" attr_satisfied_status="Y"  style="background-color:#e59866;cursor:pointer;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												}else{
+													str+='<td style="background-color:#e59866;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].postiveCount+'</td>';
+												}
+												if(result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount !=null && result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount>0){
+													str+='<td class="statusWiseIvrCls"  attr_status_id="3" attr_probTypeId="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].id+'" attr_alert_Count ="'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'" attr_statusName="'+result[i].feedbackStatusList[j].name+'" attr_district_id="'+result[i].id+'" attr_satisfied_status="N"  style="background-color:#e59866;cursor:pointer;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+												}else{
+													str+='<td style="background-color:#e59866;">'+result[i].feedbackStatusList[j].hamletVoterInfo[k].negativeCount+'</td>';
+												}
 											}
-											
 										}
 									}else{
 										if(result[i].feedbackStatusList[j].id==1){
@@ -3223,8 +3277,8 @@ $(document).on("click",".feedbackStatusCls",function(){
 function getJalavaniFeedBackNotSatisifiedAlertsInfo(feedBackStatusId,districtId,statusName,alertCount){
  
 	$.ajax({
-		//url: wurl+"/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
-		url: "http://192.168.11.176:8080/PartyAnalyst/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
+		url: wurl+"/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
+		//url: "http://192.168.11.176:8080/PartyAnalyst/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
 	}).then(function(result){
 		 if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount,"");
@@ -3461,14 +3515,29 @@ $(document).on("click",".menu-cls2",function(e){
 	e.stopPropagation();
 	$(".menuCls-table2").toggle();
 });
-function getJalavaniIvrSummaryWiseClick(statusId,statusName){
-	//$('#timeSeriesWisGraphDivId').html(spinner);
+$(document).on("click",".statusWiseIvrCls",function(){
+	var statusId = $(this).attr("attr_status_id");
+	var probTypeId = $(this).attr("attr_probTypeId");
+	var statusName = $(this).attr("attr_statusName");
+	var districtId =$(this).attr("attr_district_id");
+	var satisfiedStatus =$(this).attr("attr_satisfied_status");
+	var alertCount =$(this).attr("attr_alert_Count");
+	getJalavaniIvrSummaryWiseClick(statusId,probTypeId,statusName,districtId,satisfiedStatus,alertCount);
+	$("#alertManagementPopup").modal({
+		show: true,
+		keyboard: false,
+		backdrop: 'static'
+	});
+	$("#alertManagementPopupBody").html(spinner);
+});
+
+function getJalavaniIvrSummaryWiseClick(statusId,probTypeId,statusName,districtId,satisfiedStatus,alertCount){
 	$.ajax({
-		url: wurl+"/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate
-		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+probTypeId
+		url: wurl+"/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+probTypeId+"/"+districtId+"/"+satisfiedStatus
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+probTypeId+"/"+districtId+"/"+satisfiedStatus
 	}).then(function(result){
 		if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,"","");
+			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount,"");
 		}else{
 			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
 		}
