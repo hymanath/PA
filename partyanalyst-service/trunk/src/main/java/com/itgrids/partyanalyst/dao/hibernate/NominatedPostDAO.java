@@ -1197,7 +1197,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Object[]> getTotalCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue,Long nominatedPostStatusId){
 		  
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count( model.nominatedPostId), model.nominatedPostMember.nominatedPostMemberId ");
+		queryStr.append(" select count( distinct model.nominatedPostId), model.nominatedPostMember.nominatedPostMemberId ");
 		queryStr.append(" from NominatedPost model   " );
 		queryStr.append(" where ");
 		queryStr.append(" model.isDeleted='N' and  model.nominatedPostMember.isDeleted ='N' and model.nominatedPostMember.nominatedPostPosition.isDeleted='N' ");	// for total 
@@ -1354,7 +1354,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Long> getTotalApplicationsDeptsCount(Long levelId){
 		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId   from NominatedPostApplication model " +
 				" where  model.isDeleted = 'N' and model.nominatedPostMember.boardLevelId =:levelId and model.nominatedPostMember.isDeleted='N' and " +
-				" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  order by  " +
+				" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") and model.nominatedPostMemberId is not null order by  " +
 				" model.nominatedPostMember.nominatedPostPosition.departmentId ");
 		query.setParameter("levelId", levelId);
 		return query.list();
@@ -1363,7 +1363,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Long> getTotalApplicationsDeptsCountforAnyBoards(Long levelId){
 		Query query= getSession().createQuery("select distinct model.departmentId   from NominatedPostApplication model " +
 				" where  model.isDeleted = 'N' and model.boardLevelId =:levelId  and model.isDeleted='N'   and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  " +
-				" order by  model.departmentId ");
+				" and  model.departmentId is not null order by  model.departmentId ");
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}
@@ -1382,7 +1382,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId , " +
 				" model.nominatedPostMember.nominatedPostPosition.boardId  from NominatedPostApplication model " +
 				" where model.isDeleted = 'N' and model.nominatedPostMember.boardLevelId =:levelId  " +
-				"  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") order by   " + 
+				"  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") and model.nominatedPostMemberId is not null  order by   " + 
 				" model.nominatedPostMember.nominatedPostPosition.departmentId, model.nominatedPostMember.nominatedPostPosition.boardId ");
 		query.setParameter("levelId", levelId);
 		return query.list();
@@ -1391,7 +1391,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	public List<Object[]> getTotalApplicationsCorpsIdsForAnyPostsCount(Long levelId){
 		Query query= getSession().createQuery("select distinct model.departmentId , " +
 				" model.boardId  from NominatedPostApplication model " +
-				" where model.isDeleted = 'N' and model.boardLevelId =:levelId  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  ");
+				" where model.isDeleted = 'N' and model.boardId is not null and model.boardLevelId =:levelId  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  ");
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}
