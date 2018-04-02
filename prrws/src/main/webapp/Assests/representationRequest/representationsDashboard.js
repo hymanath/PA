@@ -1668,16 +1668,19 @@ $(document).on('click','.prntCls',function(){
 			}
 		}
 	}
-
+/*
 	var fromDateArr = currentFromDate.split('-');
 	var toDateArr = currentToDate.split('-');
 	
 	var finalFromDateStr="";
 	var finalToDateStr="";
 	if(fromDateArr != null && fromDateArr.length == 3 && toDateArr != null && toDateArr.length == 3){
-		finalFromDateStr=fromDateArr[2]+'-'+fromDateArr[1]+'-'+fromDateArr[0];
-		finalToDateStr=toDateArr[2]+'-'+toDateArr[1]+'-'+toDateArr[0];
+		finalFromDateStr=fromDateArr[0]+'-'+fromDateArr[1]+'-'+fromDateArr[2];
+		finalToDateStr=toDateArr[0]+'-'+toDateArr[1]+'-'+toDateArr[1];
 	}
+	*/
+	
+	
 	$('#loadingId'+locationId+'').html(spinner);
 	var json = {
 			  constituencyIdsList: locationIDsArr, 
@@ -1685,8 +1688,8 @@ $(document).on('click','.prntCls',function(){
 			  statusIdsList: statusIds,
 			  subjectIdsList: subjArr,
 			  subSubjectIdsList: [],
-			  fromDate:finalFromDateStr,
-			  endDate:finalToDateStr
+			  fromDate:currentFromDate,
+			  endDate:currentToDate
 		};
 	
 	$.ajax({              
