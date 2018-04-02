@@ -2185,6 +2185,18 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 						}
 					}
 					
+				
+					if(commonMethodsUtilService.isListOrSetValid(remainingCorpsIdsList)){
+						remainingDeptIdsList.clear();
+						for (String deptCorpStr : remainingCorpsIdsList) {
+							if(deptCorpStr != null && deptCorpStr.contains("-")){
+								Long deptId = Long.valueOf(deptCorpStr.split("-")[0]);
+								if(!remainingDeptIdsList.contains(deptId))
+									remainingDeptIdsList.add(deptId);
+							}
+						}
+					}
+					
 					vo2.setTotalPositions(totalavailableCount);
 					vo2.setTotalCorp(Long.valueOf(String.valueOf(remainingCorpsIdsList.size())));
 					vo2.setTotalDept(Long.valueOf(String.valueOf(remainingDeptIdsList.size())));
