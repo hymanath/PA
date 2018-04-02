@@ -2570,7 +2570,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			}
 			
 			
-
+			/*
 			vo2 = applicationsStatusDtlsMap.get("APPLICATIONS NOT RECIEVED".trim());
 			if(vo2 != null){
 				if(levelId != null && levelId.longValue()>0L){
@@ -2591,7 +2591,7 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					}
 				}
 			}
-			
+			*/
 			if(commonMethodsUtilService.isMapValid(applicationsStatusDtlsMap)){
 				returnList = new ArrayList<NominatedPostVO>();
 				for (String status : applicationsStatusDtlsMap.keySet()) {
