@@ -1096,6 +1096,10 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 						    	   queryStr.append(" and model.nominatedPostMember.address.localElectionBody.localElectionBodyId in (:lctnLevelValueList)");
 						       }else if(LocationLevelId != null && LocationLevelId.longValue() == 7l){
 						    	   queryStr.append(" and model.nominatedPostMember.address.panchayatId in (:lctnLevelValueList)");
+						       }else if(LocationLevelId != null && LocationLevelId.longValue() == 8l){
+						    	   queryStr.append(" and model.nominatedPostMember.address.ward.constituencyId in (:lctnLevelValueList)");
+						       }else{
+						    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
 						       }
 					       }  
 			       }else{
@@ -1189,6 +1193,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 							    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.address.localElectionBody.localElectionBodyId in (:lctnLevelValueList)");
 							       }else if(LocationLevelId != null && LocationLevelId.longValue() == 7l){
 							    	   queryStr.append(" and model.nominatedPost.nominatedPostMember.address.panchayatId in (:lctnLevelValueList)");
+							       }else{
+							    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
 							       }
 						       }  
 				       }else{

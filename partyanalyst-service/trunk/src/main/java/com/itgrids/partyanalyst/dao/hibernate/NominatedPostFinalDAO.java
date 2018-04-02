@@ -1573,7 +1573,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			       }else if(LocationLevelId != null && LocationLevelId.longValue() == 7l){
 			    	   queryStr.append(" and model.nominatedPostMember.address.panchayatId in (:lctnLevelValueList)");
 			       }else if(LocationLevelId != null && LocationLevelId.longValue() == 8l){
-			    	   queryStr.append(" and model.nominatedPostMember.ward.constituencyId in (:lctnLevelValueList)");
+			    	   queryStr.append(" and model.nominatedPostMember.address.ward.constituencyId in (:lctnLevelValueList)");
+			       }else{
+			    	   queryStr.append(" and model.nominatedPostMember.locationValue in (:lctnLevelValueList)");
 			       }
 		       }  
 	       }

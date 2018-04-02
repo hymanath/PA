@@ -5380,6 +5380,9 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			  List<Long> mandalList = new ArrayList<Long>();
 			  List<Long> townList = new ArrayList<Long>();
 			  List<Long> divisonList = new ArrayList<Long>();			  
+			  List<Long> panchayatList = new ArrayList<Long>();
+			  List<Long> wardList = new ArrayList<Long>();	
+			  List<Long> locationVals = new ArrayList<Long>();	
 			  
 			  List<Long> statusList = nominatedPostStatusDAO.getStatusIdsList();
 				List<Object[]> levelWiseAvailablePostsList = nominatedPostDAO.getAvaiablePostDetails(LocationLevelId,null,null,statusList,null);
@@ -5446,7 +5449,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			              townList.add(Long.parseLong(mtdId.substring(1)));
 			            }else if(firstChar==6l){
 			              divisonList.add(Long.parseLong(mtdId.substring(1)));
-			            }            
+			            }else if(firstChar==7l){
+			            	panchayatList.add(Long.parseLong(mtdId.substring(1)));
+				        }else if(firstChar==8l){
+				             wardList.add(Long.parseLong(mtdId.substring(1)));
+				        }else{
+				        	locationVals.add(Long.parseLong(mtdId.substring(1)));
+				        }
 			          }
 			        }
 			        if(mandalList !=null && mandalList.size()>0){
@@ -5467,6 +5476,28 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, divisonList, departmentId, boardId,status,LocationLevelId);
 					        finalMap = setDataToMapForFinalReview(divObjList,finalMap,movedPostsStatusDetailsMap,status);
 					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, divisonList, departmentId, boardId,LocationLevelId); 
+					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					        	setWishListCountToVO(divWishList,finalMap);
+			       }
+			        if(panchayatList != null && panchayatList.size()>0){
+			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(7l, panchayatList, departmentId, boardId,status,LocationLevelId);
+					        finalMap = setDataToMapForFinalReview(divObjList,finalMap,movedPostsStatusDetailsMap,status);
+					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(7l, panchayatList, departmentId, boardId,LocationLevelId); 
+					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					        	setWishListCountToVO(divWishList,finalMap);
+			       }
+			        if(wardList != null && wardList.size()>0){
+			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(8l, wardList, departmentId, boardId,status,LocationLevelId);
+					        finalMap = setDataToMapForFinalReview(divObjList,finalMap,movedPostsStatusDetailsMap,status);
+					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(8l, wardList, departmentId, boardId,LocationLevelId); 
+					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
+					        	setWishListCountToVO(divWishList,finalMap);
+			       }
+			        
+			       if(locationVals != null && locationVals.size()>0){
+			        	 List<Object[]> divObjList = nominatedPostApplicationDAO.getFinalReviewCandidateCountLocationWise(LocationLevelId, locationVals, departmentId, boardId,status,LocationLevelId);
+					        finalMap = setDataToMapForFinalReview(divObjList,finalMap,movedPostsStatusDetailsMap,status);
+					        List<Object[]> divWishList = nominatedPostFinalDAO.getWishListCount(null, locationVals, departmentId, boardId,LocationLevelId); 
 					        if(departmentId != null && departmentId.longValue() > 0l && boardId != null && boardId.longValue() > 0l)
 					        	setWishListCountToVO(divWishList,finalMap);
 			       }
@@ -5514,7 +5545,13 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					              townList.add(Long.parseLong(mtdId.substring(1)));
 					            }else if(firstChar==6l){
 					              divisonList.add(Long.parseLong(mtdId.substring(1)));
-					            }            
+					            }else if(firstChar==7l){
+						          panchayatList.add(Long.parseLong(mtdId.substring(1)));
+						        }else if(firstChar==8l){
+						          wardList.add(Long.parseLong(mtdId.substring(1)));
+						        }else{
+						        	locationVals.add(Long.parseLong(mtdId.substring(1)));
+						        }              
 				          }
 				        }
 				        if(mandalList !=null && mandalList.size()>0){
@@ -5527,6 +5564,18 @@ public class NominatedPostProfileService implements INominatedPostProfileService
 					    }
 				        if(divisonList != null && divisonList.size()>0){
 				        	 List<Object[]> divObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(7l, divisonList, departmentId, boardId,LocationLevelId);
+				        	 setOpenCntToResultLst(divObjList,fnlCnddtCuntLst);
+					    }
+				        if(panchayatList != null && panchayatList.size() > 0){
+				        	List<Object[]> townObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(7l, panchayatList, departmentId, boardId,LocationLevelId);
+				        	setOpenCntToResultLst(townObjList,fnlCnddtCuntLst);
+					    }
+				        if(wardList != null && wardList.size()>0){
+				        	 List<Object[]> divObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(8l, wardList, departmentId, boardId,LocationLevelId);
+				        	 setOpenCntToResultLst(divObjList,fnlCnddtCuntLst);
+					    }
+				        if(locationVals != null && locationVals.size()>0){
+				        	 List<Object[]> divObjList = nominatedPostDAO.getNominatedOpenPostCntBasedOnDeptBoardAndPositionWise(null, locationVals, departmentId, boardId,LocationLevelId);
 				        	 setOpenCntToResultLst(divObjList,fnlCnddtCuntLst);
 					    }
 				}else{
