@@ -270,7 +270,7 @@
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
 					</ul>-->
-					<i class="glyphicon glyphicon-eye-open menu-cls2 pull-right" title="Click To Show Closed And Reopen Alerts"></i>
+					<i class="fa fa-info-circle menu-cls2 pull-right" title="Click To Show Closed And Reopen Alerts"></i>
 					<div class="menuCls-table2">
 						<div class="arrow_box_top1">
 							<div class="row">
