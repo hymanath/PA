@@ -8,6 +8,7 @@ var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
 var globalMCCMainDivName;
 var $windowWidth = $(window).width();
+var globalFinancialYear = "2017";
 //getAllDistricts();
 //function onLoadCalls()
 //{
@@ -257,6 +258,21 @@ var $windowWidth = $(window).width();
 		var locId = $("#selectedName").attr("attr_id");
 		var districtId = $("#selectedName").attr("attr_distid");
 		var locType = '';
+		
+		/*if($.datepicker.parseDate("yyyy-MM-dd",glStartDate) > $.datepicker.parseDate("yyyy-MM-dd","2018-03-31"))
+			alert(123);*/
+		var fromDatteee = new Date(glStartDate);
+		var lastFinaYearDatee = new Date("2018-03-31");
+		/*console.log(fromDatteee);
+		console.log(lastFinaYearDatee);
+		alert(fromDatteee > lastFinaYearDatee);*/
+		if(fromDatteee > lastFinaYearDatee)
+			globalFinancialYear = "2018";
+		else
+			globalFinancialYear = "2017";
+		
+		//alert(globalFinancialYear);
+		
 		if(levelId == 2)
 		{
 			locType = 'state'
@@ -274,6 +290,7 @@ var $windowWidth = $(window).width();
 		$("#projectOverviewBlock,#projectData").html('');
 		
 		buildNREGSProjectsOverview(overViewArr,'');
+		getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locType,locType,locId,"ConsolidatedView"+locType,districtId,'completed');
 		for(var i in overViewArr)
 		{
 			$("[overview-block='"+overViewArr[i]+"']").append(spinner);
@@ -653,7 +670,7 @@ function getNregaForestLevelData(divIdd,locationTypeNew,theadArr,menuLocationTyp
 	$("#"+divIdd).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -1639,7 +1656,7 @@ function getNregaPaymentsDeptWiseOverviewDtls(type,locType,locId,levelId,departm
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#projectOvervw"+type.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locType,
@@ -2497,7 +2514,7 @@ function getNREGSLabourBudgetOverview(projectDivId,menuLocationType,menuLocation
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
         toDate : glEndDate,
 		divType : globalDivName,
@@ -2527,7 +2544,7 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
 	$("#projectExp"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	$("#labourRadioDivId").show();
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
         toDate : glEndDate,
         locationType : menuLocationType,
@@ -2563,7 +2580,7 @@ function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLo
 		theadArr = ["district","constituency","mandal",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -4454,7 +4471,7 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 	}
 	if(globalDivName == 'FAperformance'){
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : '2017-05-30',
 			locationType: menuLocationType,
@@ -4466,7 +4483,7 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 		}
 	}else if(globalDivName == 'Farm Ponds'){
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -4479,7 +4496,7 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 		}
 	}else if(globalDivName == 'Timely Payment'){
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -4492,7 +4509,7 @@ function getNREGSConsCuntData(locationType,type,globalDivName,menuLocationType,m
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -4732,7 +4749,7 @@ function getLabourBudgetClickingOverview(menuLocationType,menuLocationId)
 {
 	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
         toDate : glEndDate,
         locationType : menuLocationType,
@@ -4766,7 +4783,7 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 		theadArr = ["district","constituency","mandal",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate 	: "2017-05-30",//glEndDate,'2017-05-30'
 		locationType: menuLocationType,
@@ -4849,7 +4866,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 	$("#"+divIdd).html(spinner);
 	if(globalDivName == "Farm Ponds"){
 	var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -4861,7 +4878,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -5213,7 +5230,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 	if(projectDivId == 'FAperformance')
 	{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : '2017-05-30',
 			divType : globalDivName,
@@ -5223,7 +5240,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 		}
 	}else if(projectDivId == 'Timely Payment'){
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 		    toDate : glEndDate,
 			divType : globalDivName,
@@ -5234,7 +5251,7 @@ function getNregasOverview(projectDivId,menuLocationType,menuLocationId,district
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 	        toDate : glEndDate,
 			divType : globalDivName,
@@ -5265,7 +5282,7 @@ function getNregasForestOverview(projectDivId,menuLocationType,menuLocationId,di
 	$("#projectOvervw"+projectDivId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType : menuLocationType,
@@ -5299,7 +5316,7 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 	if(globalDivName == 'FAperformance')
 	{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : '2017-05-30',
 			divType : globalDivName,
@@ -5309,7 +5326,7 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 		}
 	}else if(globalDivName == 'Timely Payment'){
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 		    toDate : glEndDate,
 			divType : globalDivName,
@@ -5320,7 +5337,7 @@ function getNregasPopupOverview(menuLocationType,menuLocationId)
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			divType : globalDivName,
@@ -5393,7 +5410,7 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 	if(divId == 'Timely Payment')
 	{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -5405,7 +5422,7 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -5498,7 +5515,7 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 		theadArr = ["district","constituency","mandal",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -5574,7 +5591,7 @@ function getNregaLevelsWiseDataFrHorticulture(divIdd,locationType,menuLocationTy
 		theadArr = ["district","constituency","mandal",locationType,'Target(in Acres)','Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -5679,7 +5696,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 		theadArr = ["district","constituency","mandal",locationType,'Target','Sanctioned Area (in Kms)','Pitting  Area (in Kms)','Planting  Area (in Kms)','Pitting Percentage','Achievement Percentage'];
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -5868,7 +5885,7 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 	}
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -6024,7 +6041,7 @@ function getNregaParliamentData()
 	//$("#"+divIdd).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: "state",
@@ -6052,7 +6069,7 @@ function getNREGSProjectsAbstractNew(type,locType,locId,blockName,levelId)
 {
 	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		type : type,
@@ -6079,7 +6096,7 @@ function getMaterialAvailabilityStatusForFinancialYear(divIdd,locationTypeNew,th
 	$("#nregsOverviewBodyId").html(spinner);
 	var districtId = $("#selectedName").attr("attr_distid");
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -6146,7 +6163,7 @@ function getWorkCompletionData(divIdd,locationTypeNew,theadArr,menuLocationType,
 	$("#nregsOverviewBodyId").html(spinner);
 	var districtId = $("#selectedName").attr("attr_distid");
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -6382,7 +6399,7 @@ function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,
 {
 	$("#nregsOverviewBodyId").html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		type : type,
@@ -6409,7 +6426,7 @@ function getNREGSForestProjectsAbstract(type,locType,locId,blockName,levelId)
 	$("#nregsOverviewBodyId").html(spinner);
 	var districtId = $("#selectedName").attr("attr_distId");
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		type : type,
@@ -6436,7 +6453,7 @@ function getNregaPaymentsAbsAndOverview(type,locType,locId,levelId,buildType)
 {
 	$("#projectOvervw"+type.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locType,
@@ -6545,7 +6562,7 @@ function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId,buildDa
 	if(buildDateType == 'onLoad' && type == 'FAperformance')
 	{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : '2017-05-30',
 			type : type,
@@ -6554,7 +6571,7 @@ function getNREGSAbstractDataByType(type,locType,locId,blockName,levelId,buildDa
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			type : type,
@@ -8108,7 +8125,7 @@ $(document).on("click",".cuntCls",function(){
 	modalRange=range;
 		$("#larBudExpHeadingId").html('No of Panchayaties Vs Expenditure In Lakhs('+range+')');
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locationType,
@@ -8152,7 +8169,7 @@ function getNregaLabourBudgetPanchatVsExpData(locationType,locationId,fromRange,
 	$("#LabBudgtPanExBodyId").html(spinner);
 	$("#larBudExpHeadingId").html('No of Panchayaties Vs Expenditure In Lakhs('+range+')');
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locationType,
@@ -8405,7 +8422,7 @@ $(document).on("click","[attr_radioBtn]",function(){
 	//$("#"+divIdd).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: "state",
@@ -8430,7 +8447,7 @@ $(document).on("click","[attr_radioBtn]",function(){
 function getNREGSProjectsAbstractNewFrConstituency(type,locType,locId,districtId,blockName,levelId)
 {
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		type : type,
@@ -8459,7 +8476,7 @@ function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,
 	if(type == 'FAperformance')
 	{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : '2017-05-30',
 			type : type,
@@ -8469,7 +8486,7 @@ function getNREGSAbstractDataByTypeFrConstituency(type,locType,locId,districtId,
 		}
 	}else{
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			type : type,
@@ -8572,7 +8589,7 @@ function getNregaPaymentsAbsAndOverviewDtls(type,locType,locId,levelId,buildType
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locType,
@@ -8620,7 +8637,7 @@ function getNregaDeptWisePaymentsDtlsLocationWise(divIdd,locationType,menuLocati
 		buildType = 'T'
 	}
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -8728,7 +8745,7 @@ function getNregaPaymentsDtlsLocationWise(divIdd,locationType,menuLocationType,m
 		
 	}
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -8827,7 +8844,7 @@ function getNregaOtherMCCLevelData(divIdd,locationTypeNew,theadArr,menuLocationT
 	$("#"+divIdd).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -9003,7 +9020,7 @@ function getNregaLevelsWiseDataFrCoffeePlantation(divIdd,locationType,theadArr,m
 		theadArr = ["district","constituency","mandal",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -9102,7 +9119,7 @@ function getNregaMCCNewComponetsLevelData(divIdd,locationTypeNew,theadArr,menuLo
 	$("#"+divIdd).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -9212,7 +9229,7 @@ function getNregaCovergancePROtherLevelData(divIdd,locationTypeNew,theadArr,menu
 	$("#"+divIdd).html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -9329,7 +9346,7 @@ function getNregasForestPopUpOverview(menuLocationType,menuLocationId)
 	$("#nregsOverviewBodyId").html(spinner);
 	
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType : menuLocationType,
@@ -9369,7 +9386,7 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 		locType = 'constituency'
 	}
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		groupName : projectDivId,
@@ -9486,7 +9503,7 @@ function getNregaOtherMCCAbstarctData(divIdd,locationTypeNew,theadArr,menuLocati
 	$("#"+divIdd).html(spinner);
 	var distrtId = $("#selectedName").attr("attr_distid");
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -9804,6 +9821,7 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 			var perDays1718 = 0.0;var wageExp1718 = 0.0;var matExp1718 = 0.0;var total1718 = 0.0;
 			
 			var perDays1617Perc = 0.0;var wageExp1617Perc = 0.0;var matExp1617Perc = 0.0;var total1617Perc = 0.0;
+			var perDays1718Perc = 0.0;var wageExp1718Perc = 0.0;var matExp1718Perc = 0.0;var total1718Perc = 0.0;
 			
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table table-bordered dataTable'+divIdd+'" style="width:100%">';
@@ -10324,10 +10342,27 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						else
 							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+total1617.toFixed(2)+'</b></td>';
 						
-						str+='<td style="font-size:16px;"><b>'+perDays1718.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+wageExp1718.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+matExp1718.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+total1718.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(perDays1718) >= parseFloat(perDays1617))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+perDays1718.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+perDays1718.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(wageExp1718) >= parseFloat(wageExp1617))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+wageExp1718.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+wageExp1718.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(matExp1718) >= parseFloat(matExp1617))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+matExp1718.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+matExp1718.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(total1718) >= parseFloat(total1617))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+total1718.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+total1718.toFixed(2)+'</b></td>';
+						
 						/*if(parseFloat(perDays1718) >= parseFloat(perDays1617))
 							str+='<td style="background-color:#FDFF00;">'+perDays1718.toFixed(2)+'</td>';
 						else
@@ -10350,6 +10385,10 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 					wageExp1617Perc = ((parseFloat(wageExp1617)/parseFloat(wageExp1516))*100.00)-100.00;
 					matExp1617Perc = ((parseFloat(matExp1617)/parseFloat(matExp1516))*100.00)-100.00;
 					total1617Perc = ((parseFloat(total1617)/parseFloat(total1516))*100.00)-100.00;
+					perDays1718Perc = ((parseFloat(perDays1718)/parseFloat(perDays1617))*100.00)-100.00;
+					wageExp1718Perc = ((parseFloat(wageExp1718)/parseFloat(wageExp1617))*100.00)-100.00;
+					matExp1718Perc = ((parseFloat(matExp1718)/parseFloat(matExp1617))*100.00)-100.00;
+					total1718Perc = ((parseFloat(total1718)/parseFloat(total1617))*100.00)-100.00;
 					
 					str+='<tr>';
 						str+='<td style="background-color:#3F8EC8;color:#FFFFFF;font-size:16px;"><b>Growth</b></td>';
@@ -10361,10 +10400,10 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						str+='<td style="font-size:16px;"><b>'+wageExp1617Perc.toFixed(2)+'</b></td>';
 						str+='<td style="font-size:16px;"><b>'+matExp1617Perc.toFixed(2)+'</b></td>';
 						str+='<td style="font-size:16px;"><b>'+total1617Perc.toFixed(2)+'</b></td>';
-						str+='<td></td>';
-						str+='<td></td>';
-						str+='<td></td>';
-						str+='<td></td>';
+						str+='<td style="font-size:16px;"><b>'+perDays1718Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1718Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1718Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1718Perc.toFixed(2)+'</b></td>';
 					str+='</tr>';
 					str+='</tbody>';
 					
@@ -10803,7 +10842,7 @@ function getDepartmentCommentsDetails(globalDivName,menuLocationType,menuLocatio
 	$("#larBudExpHeadingId").html(''+globalDivName+' Achievement Comparision  of '+color+' Color  Summary');
 	if(globalDivName == "Farm" || globalDivName == "Timely"){
 		var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,
@@ -10816,7 +10855,7 @@ function getDepartmentCommentsDetails(globalDivName,menuLocationType,menuLocatio
 		}
 	}else{
 	var json = {
-			year : "2017",
+			year : globalFinancialYear,
 			fromDate : glStartDate,
 			toDate : glEndDate,
 			locationType: menuLocationType,

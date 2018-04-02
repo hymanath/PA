@@ -7293,7 +7293,8 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
+						if(vo.getThisMonth() != null){
+							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getPerDays1718()) <= Double.valueOf(overAllPersonDaysIsLow)){
 								overAllPersonDaysIsLow = vo.getPerDays1718();
 								vo.setPersonDaysIsLow("17-18");
@@ -7330,7 +7331,8 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
+						if(vo.getThisMonth() != null){
+							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getWageExp1718()) <= Double.valueOf(overAllWageIsLow)){
 								overAllWageIsLow = vo.getWageExp1718();
 								vo.setWageIsLow("17-18");
@@ -7367,7 +7369,8 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
+						if(vo.getThisMonth() != null){
+							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getMatExp1718()) <= Double.valueOf(overAllMaterialIsLow)){
 								overAllMaterialIsLow = vo.getMatExp1718();
 								vo.setMaterialIsLow("17-18");
@@ -7404,7 +7407,8 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
+						if(vo.getThisMonth() != null){
+							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getTotal1718()) <= Double.valueOf(overAllTotalIsLow)){
 								overAllTotalIsLow = vo.getTotal1718();
 								vo.setTotalIsLow("17-18");
@@ -7429,7 +7433,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							nregsDataVO.setPerDays1617IsHigh("TRUE");
 						else
 							nregsDataVO.setPerDays1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+						if(nregsDataVO.getThisMonth() != null){
+							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getPerDays1718()) >= Double.valueOf(nregsDataVO.getPerDays1617()))
 								nregsDataVO.setPerDays1718IsHigh("TRUE");
 							else
@@ -7441,7 +7446,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							nregsDataVO.setWageExp1617IsHigh("TRUE");
 						else
 							nregsDataVO.setWageExp1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+						if(nregsDataVO.getThisMonth() != null){
+							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getWageExp1718()) >= Double.valueOf(nregsDataVO.getWageExp1617()))
 								nregsDataVO.setWageExp1718IsHigh("TRUE");
 							else
@@ -7453,7 +7459,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							nregsDataVO.setMatExp1617IsHigh("TRUE");
 						else
 							nregsDataVO.setMatExp1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+						if(nregsDataVO.getThisMonth() != null){
+							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getMatExp1718()) >= Double.valueOf(nregsDataVO.getMatExp1617()))
 								nregsDataVO.setMatExp1718IsHigh("TRUE");
 							else
@@ -7465,7 +7472,8 @@ public class NREGSTCSService implements INREGSTCSService{
 							nregsDataVO.setTotal1617IsHigh("TRUE");
 						else
 							nregsDataVO.setTotal1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
+						if(nregsDataVO.getThisMonth() != null){
+							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getTotal1718()) >= Double.valueOf(nregsDataVO.getTotal1617()))
 								nregsDataVO.setTotal1718IsHigh("TRUE");
 							else

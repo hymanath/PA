@@ -322,7 +322,7 @@ function getNregaPaymentsAbsAndOverviewConsolidated(type,locType,locId,levelId,b
 {
 	//$("#projectOvervw"+type.replace(/\s+/g, '')).html(spinnerConsolidated);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locType,
@@ -479,7 +479,7 @@ function getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,su
 	var districtId = $("#selectedName").attr("attr_distId");
 	$("#collapse"+divId).html(spinnerConsolidated);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locationType,
