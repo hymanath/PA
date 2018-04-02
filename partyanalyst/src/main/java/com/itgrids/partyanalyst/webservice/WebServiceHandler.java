@@ -3957,14 +3957,16 @@ public class WebServiceHandler {
 		return  webServiceHandlerService.getJalavaniIvrWiseSummaryGraphDetailsInfo(startDateStr,endDateStr);
     }
 	@GET
-    @Path("/getJalavaniIvrSummaryWiseClick/{startDateStr}/{endDateStr}/{statusId}/{probTypeId}")
+    @Path("/getJalavaniIvrSummaryWiseClick/{startDateStr}/{endDateStr}/{statusId}/{probTypeId}/{districtId}/{satisfiesStatus}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
     public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(
     		@PathParam("startDateStr") String startDateStr,
     		@PathParam("endDateStr") String endDateStr,
     		@PathParam("statusId") Long statusId,
-    		@PathParam("probTypeId") Long probTypeId){
-		return  webServiceHandlerService.getJalavaniIvrSummaryWiseClick(startDateStr,endDateStr,statusId,probTypeId);
+    		@PathParam("probTypeId") Long probTypeId,
+    		@PathParam("districtId") Long districtId,
+    		@PathParam("satisfiesStatus") String satisfiesStatus){
+		return  webServiceHandlerService.getJalavaniIvrSummaryWiseClick(startDateStr,endDateStr,statusId,probTypeId,districtId,satisfiesStatus);
     }
 }
