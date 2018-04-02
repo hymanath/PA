@@ -678,7 +678,7 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" st.state_name as state_name,dis.district_name as district_name,c.name as cname ,t.tehsil_name as tehsil_name, p1.panchayat_name as panchayat_name, ");
 		sb.append(" sub.grievance_description as grievance_description ,sub.cost_estimation as cost_estimation,repd1.designation as repDesignation,rep.name as repname ,  ");//21
 		sb.append(" refd.designation as refDesignation,rcand.name as refName ,off.name as officerName , ");//24
-		sb.append(" d.pm_department_id as pm_department_id, d.department as departmentName,sub.priority as priority ");//25,26,27
+		sb.append(" d.pm_department_id as pm_department_id, d.department as departmentName,sub.priority as priority, sub.pm_brief_lead_id as pm_brief_lead_id  ");//25,26,27,28
 		sb.append(" from  ");
 		sb.append(" pm_sub_work_details sub  ");
 		sb.append(" LEFT JOIN pm_department d  on d.pm_department_id = sub.pm_department_id and d.is_deleted='N' ");
@@ -702,9 +702,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" LEFT JOIN pm_dept_designation dd on o.pm_dept_designation_id  =dd.pm_dept_designation_id and dd.is_deleted='N' ");
 		sb.append(" LEFT JOIN pm_officer_designation pod on dd.pm_officer_designation_id = pod.pm_officer_designation_id  ");
 		sb.append(" LEFT JOIN pm_officer off on o.pm_officer_id = off.pm_officer_id   ");
-		sb.append(" where  sub.pm_status_id not in (:PETITION_COMPLETED_IDS) and " +
-				" sub.pm_brief_lead_id not in (:PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS) and " +
-				" sub.pm_brief_lead_id not in (:PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS) and  ");
+		sb.append(" where  sub.pm_status_id not in (:PETITION_COMPLETED_IDS) and " );
+			//	" sub.pm_brief_lead_id not in (:PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS) and " +
+			//	" sub.pm_brief_lead_id not in (:PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS) and  ");
 		sb.append(" p.petition_id = sub.petition_id and  ");
 		sb.append(" sub.pm_department_id = d.pm_department_id and  ");
 		sb.append(" p.is_deleted='N' and sub.is_deleted='N' and  ");
@@ -775,13 +775,13 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			query.setParameterList("PETITION_COMPLETED_IDS", IConstants.PETITION_COMPLETED_IDS);
 		}
 		
-		if( IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS != null &&  IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.size()>0){
+	/*	if( IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS != null &&  IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.size()>0){
 			query.setParameterList("PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS", IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS);
 		}
 		if( IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS != null &&  IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS.size()>0){
 			query.setParameterList("PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS", IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS);
 		}
-		
+		*/
 		return query.list();
 	}
 }
