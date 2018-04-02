@@ -10,5 +10,5 @@ import com.itgrids.partyanalyst.model.RwsIvrAlertDetails;
 public interface IRwsIvrAlertDetailsDAO extends GenericDao<RwsIvrAlertDetails, Long> {
 	public List<Object[]> getJalavaniIvrDetailsSummary(Date fromDate,Date toDate);
 	public List<Object[]> getJalavaniIvrSummaryGraphDetailsInfo(Date fromDate,Date toDate,String searchType);
-	public List<Long> getJalavaniIvrSummaryWiseClick(Date fromDate,Date toDate,Long statusid,Long probTypeid);
+	public List<Long> getJalavaniIvrSummaryWiseClick(Date fromDate,Date toDate,Long statusid,Long probTypeId,Long districtId,String satisfiedStatus);
 }

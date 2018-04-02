@@ -84,7 +84,7 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
         return  query.list();
       }
 	@SuppressWarnings("unchecked")
-	public List<Long> getJalavaniIvrSummaryWiseClick(Date fromDate,Date toDate,Long statusId,Long probTypeId){
+	public List<Long> getJalavaniIvrSummaryWiseClick(Date fromDate,Date toDate,Long statusId,Long probTypeId,Long districtId,String satisfiedStatus){
         StringBuilder str = new StringBuilder();
         str.append(" select model.alertId ");
       
@@ -101,6 +101,13 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
 	        if(probTypeId !=null && probTypeId.longValue() >0){
 	        	str.append(" and model.rwsIvrTypeId =:probTypeId ");
 	        }
+	        if(districtId !=null && districtId.longValue() >0){
+	        	str.append(" and model.alert.userAddress.district.districtId =:districtId ");
+	        }
+	        if(satisfiedStatus !=null && satisfiedStatus.trim() !=""){
+	        	str.append(" and model.ivrSatisfiedStatus =:satisfiedStatus ");
+	        }
+	        
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
           	if(statusId !=null && statusId.longValue() >0){
@@ -113,6 +120,12 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
             query.setDate("fromDate",fromDate);
             query.setDate("toDate",toDate);
           }
+          if(districtId !=null && districtId.longValue() >0){
+        	  query.setParameter("districtId",districtId);
+	      }
+	      if(satisfiedStatus !=null && satisfiedStatus.trim() !=""){
+	    	  query.setParameter("satisfiedStatus",satisfiedStatus);
+	      }
         return  query.list();
       }
 }
