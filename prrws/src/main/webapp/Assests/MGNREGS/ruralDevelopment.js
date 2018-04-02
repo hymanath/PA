@@ -3,6 +3,7 @@ $("#dateRangePickerMGNF").val('2017-04-01');
 $("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
 var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
+var globalFinancialYear = "2017";
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -23,7 +24,29 @@ $("#dateRangePickerMGNT").datetimepicker({
 	e.preventDefault();
 });*/
 $('#dateRangePickerMGNF').on('dp.change', function(e){ 
-	glStartDate = e.date.format("YYYY-MM")+"-31";
+	glStartDate = e.date.format("YYYY-MM")+"-01";
+	var levelId = $("#selectedName").attr("attr_levelId");
+	var locId = $("#selectedName").attr("attr_id");
+	var locType = '';
+	if(levelId == 2)
+	{
+		locType = 'state'
+	}else if(levelId == 3)
+	{
+		locType = 'district'
+	}
+	
+	var fromDatteee = new Date(glStartDate);
+	var lastFinaYearDatee = new Date("2018-03-31");
+	console.log(glStartDate);
+	console.log(fromDatteee);
+	console.log(lastFinaYearDatee);
+	alert(fromDatteee > lastFinaYearDatee)
+	if(fromDatteee > lastFinaYearDatee)
+		globalFinancialYear = "2018";
+	else
+		globalFinancialYear = "2017";
+	alert(globalFinancialYear);
 	for(var i in overViewArr)
 	{
 		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
@@ -33,7 +56,7 @@ $('#dateRangePickerMGNF').on('dp.change', function(e){
 			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
 		}else if(overViewArr[i] == 'Ntr Jalasiri')
 		{
-			getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract");
+			getNtrJalaSiriLvlWiseData("","state","",locType,locId,"Abstract");
 		}
 	}
 
@@ -41,6 +64,16 @@ $('#dateRangePickerMGNF').on('dp.change', function(e){
 });
 $('#dateRangePickerMGNT').on('dp.change', function(e){ 
 	glEndDate = e.date.format("YYYY-MM")+"-31";
+	var levelId = $("#selectedName").attr("attr_levelId");
+	var locId = $("#selectedName").attr("attr_id");
+	var locType = '';
+	if(levelId == 2)
+	{
+		locType = 'state'
+	}else if(levelId == 3)
+	{
+		locType = 'district'
+	}
 	for(var i in overViewArr)
 	{
 		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
@@ -50,7 +83,7 @@ $('#dateRangePickerMGNT').on('dp.change', function(e){
 			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
 		}else if(overViewArr[i] == 'Ntr Jalasiri')
 		{
-			getNtrJalaSiriLvlWiseData("","state","",menuLocationType,menuLocationId,"Abstract");
+			getNtrJalaSiriLvlWiseData("","state","",locType,locId,"Abstract");
 		}
 	}
 
@@ -336,7 +369,7 @@ function getNtrJalaSiriAbstract(type,locType,locId,blockName,levelId)
 {
 	//$("#overViewAbstract").html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType : "district",
@@ -754,7 +787,7 @@ function getRDOverview(divId,menuLocationType,menuLocationId)
 {
 	$("#projectOvervw"+divId.replace(/\s+/g, '')).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		divType : divId,
@@ -1035,7 +1068,7 @@ function getNtrJalaSiriOverview(divId)
 {
 	$("#projectOvervw"+divId.replace(/\s+/g, '')).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate
 	}
@@ -1358,7 +1391,7 @@ function getNregaLevelsWiseData(divIdd,locationTypeNew,theadArr,menuLocationType
 {
 	$("#"+divIdd).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: menuLocationType,
@@ -1569,7 +1602,7 @@ function getNtrJalaSiriLvlWiseData(divId,locationType,theadArr,menuLocationType,
 	var tableId = divId.replace(/\s+/g, '')+''+locationType;
 		$("#"+tableId).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType : locationType
@@ -1790,7 +1823,7 @@ function tableViewOld(blockId,theadArr,result,locationType)
 function getRDAbstractDataByType(type,locType,locId,blockName,levelId)
 {
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		type : type,
@@ -1818,7 +1851,7 @@ function getRDLevelsWiseData(divId,subLocationType,theadArr,locationTypeNew,menu
 	var tableId = divId.replace(/\s+/g, '')+''+subLocationType;
 	$("#"+tableId).html(spinner);
 	var json = {
-		year : "2017",
+		year : globalFinancialYear,
 		fromDate : glStartDate,
 		toDate : glEndDate,
 		locationType: locationTypeNew,
