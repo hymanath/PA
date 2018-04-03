@@ -265,7 +265,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				
-				<div class="col-sm-1 pull-right m_top10">
+				<div class="col-sm-1  m_top10 pull-right">
 					<!--<ul class="list-inline">
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
@@ -286,12 +286,12 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-3" style="left:865px;">
+				<div class="col-sm-2 pull-right">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
-						<input type="text" class="form-control" id="dateRangePicker" style="width: 230px;"/>
+						<input type="text" class="form-control" id="dateRangePicker" style="width: 200px;"/>
 					</div>
 				</div>
 			</div>
