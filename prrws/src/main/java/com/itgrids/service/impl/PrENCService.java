@@ -1052,6 +1052,7 @@ public class PrENCService implements IPrENCService {
 		return finalList;
 	}
 
+	@SuppressWarnings("static-access")
 	@Override
 	public List<EncWorksVO> getLocationWiseEncWorksInformation(InputVO inputVO) {
 		List<EncWorksVO> finalList= new ArrayList<EncWorksVO>();
@@ -1110,6 +1111,18 @@ public class PrENCService implements IPrENCService {
 					locationCountVO.setUnderProcessCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
 				}else if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_COMPLETION)){
 					locationCountVO.setCompletedCount(commonMethodsUtilService.getLongValueForObject(objects[0]));
+				}
+				
+			}
+			if(inputVO.getStatus() !=null && inputVO.getStatus().length()>0 && inputVO.getStatus().equalsIgnoreCase("ongoing")){
+				List<IdNameVO> exceeded = getExceededEncWorks(inputVO);
+				if(commonMethodsUtilService.isListOrSetValid(exceeded)){
+					Long total =exceeded.get(0).getCount();
+					 Long inTime = exceeded.get(0).getSubList().get(0).getOngoingPWSExceededCount();
+					 EncWorksVO locationCountVO= locationMap.get(1l);
+					 if(locationCountVO !=null){
+						 locationCountVO.setOngoingExceededCount(total-inTime);
+					 }
 				}
 				
 			}
@@ -1578,7 +1591,7 @@ public class PrENCService implements IPrENCService {
 				}
 			});
 		}catch(Exception e){
-			LOG.error("Exception raised at PrEncService - getLocationWiseEncWorksInformation", e);
+			LOG.error("Exception raised at PrEncService - getAmountWiseEncWorksCount", e);
 		}
 		return finalList;
 	}
