@@ -393,13 +393,18 @@ function getAssignedAndUnAssignedBooths(){
 			var xindex = 0;
 				str+='<table>';
 					str+='<tbody>';
-						
+						var panchayatName = "";
 						for(var i in result.assignBoothList){
 							if( xindex == 0)
 							{
 								str+='<tr>';
 							}
-							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls"  data-toogle="tooltip" title="Assigned To:'+result.assignBoothList[i].name+' Location: '+result.assignBoothList[i].panchayatName+','+result.assignBoothList[i].tehsilName+' Click For Assigned Booth" >'+result.assignBoothList[i].id+'</button></td>';
+							if(result.assignBoothList[i].panchayatName != null && result.assignBoothList[i].panchayatName != "Panchayat"){
+								panchayatName = result.assignBoothList[i].panchayatName;
+							}else{
+								panchayatName = "";
+							}
+							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls"  data-toogle="tooltip" title="Assigned To:'+result.assignBoothList[i].name+' Location: '+panchayatName+','+result.assignBoothList[i].tehsilName+' Click For Assigned Booth" >'+result.assignBoothList[i].id+'</button></td>';
 							xindex++;
 							if( xindex == 17){
 								str+='</tr>';
@@ -434,12 +439,18 @@ function getAssignedAndUnAssignedBooths(){
 			var xindex = 0;
 				str+='<table>';
 					str+='<tbody>';
+					var panchayatName = "";
 						for(var i in result.unAssignBoothList){
 							if( xindex == 0)
 							{
 								str+='<tr>';
 							}
-							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls" data-toogle="tooltip" title="Assigned To:'+result.unAssignBoothList[i].name+' Location: '+result.unAssignBoothList[i].panchayatName+','+result.unAssignBoothList[i].tehsilName+' Click For Assigned Booth">'+result.unAssignBoothList[i].id+'</button></td>';
+							if(result.unAssignBoothList[i].panchayatName != null && result.unAssignBoothList[i].panchayatName != "Panchayat"){
+								panchayatName = result.unAssignBoothList[i].panchayatName;
+							}else{
+								panchayatName = "";
+							}
+							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls" data-toogle="tooltip" title=" Location: '+result.unAssignBoothList[i].panchayatName+','+result.unAssignBoothList[i].tehsilName+' Click For Assigned Booth">'+result.unAssignBoothList[i].id+'</button></td>';
 							xindex++;
 							if( xindex == 17){
 								str+='</tr>';
@@ -480,7 +491,7 @@ function getAssignedAndUnAssignedBooths(){
 		  $("#btn"+$(this).attr('attr_count')).hide();
 	  }
   });
-  $(document).on("click",".submitBtnCls",function(){
+  $(document).on("click",".submitBtnCls,.applyChangesCls",function(){
 		var cadreId =$(this).attr('attr_cadre_id');
 		var boothIds=[];
 		$('.booths-btn-green').each(function()
@@ -501,7 +512,12 @@ function getAssignedAndUnAssignedBooths(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			
+			if(result != null && result.message == "SUCCESS"){
+				alert("Assigning Booths successfully");
+				getAreaInchargeAssignedBoothDetails();
+				getAreaInchargesStatusWiseCount();
+				$("#popupViewAreaIncDetModal").modal('hide');
+			}
 		});
 	}
 	$(document).on("click",".popupViewAreaIncDetUCls",function(){
@@ -559,7 +575,7 @@ function getAssignedAndUnAssignedBooths(){
 						str+='<h5><span style="color:#6A82C0; border-bottom:1px solid #6A82C0;">Remove from Area Incharge</span></h5>';
 					str+='</div>';
 					str+='<div class="media-body" style="width:0px;">';
-						str+='<h4 class="media-heading"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></h4>';
+						str+='<h4 class="media-heading"><i class="fa fa-trash fa-lg removeInchageCls" aria-hidden="true" attr_cadre_id="'+result.id+'"></i></h4>';
 					str+=' </div>';
 				str+='</div>';
 			str+='</div>';
@@ -601,8 +617,40 @@ function getAssignedAndUnAssignedBooths(){
 			str+='</div>';
 			
 		 str+='</div>';
-	 str+='</div>';
+	     str+='</div>';
+	       str+='<div class="row">';
+				    str+='<div class="col-sm-4 pull-right">';
+					str+='<button class="btn btn-success btn-sm pull-right applyChangesCls" attr_cadre_id ="'+result.id+'"  style="width: 150px;">Apply Changes</button>';
+				str+='</div>';
+				str+='</div>';
 		str+='</div>';	
 		$("#modalContentId").html(str);
 		$(".tooltipCls").tooltip();
 	}
+$(document).on("click",".removeInchageCls",function(){
+		var cadreId =$(this).attr("attr_cadre_id");
+		deleteAreaInchargeAssignBooths(cadreId,0);
+	});
+function deleteAreaInchargeAssignBooths(cadreId,boothId){
+  var jsObj={
+   candidateId:cadreId,
+   boothId:boothId
+  }
+  $.ajax({
+   type:'GET',
+   url: 'deleteAreaInchargeAssignBoothsAction.action',
+   data: {task:JSON.stringify(jsObj)}
+ }).done(function(result){
+	if(result != null && result == "success"){
+		if(confirm('Are you sure want to delete it? '))
+		{
+			$('.'+cadreId).remove();
+		}	
+		getAreaInchargeAssignedBoothDetails();
+		getAreaInchargesStatusWiseCount();
+		$("#popupViewAreaIncDetModal").modal('hide');
+ }
+			
+});
+} 
+
