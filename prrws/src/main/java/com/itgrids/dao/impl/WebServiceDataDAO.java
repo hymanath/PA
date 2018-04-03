@@ -20,9 +20,12 @@ public class WebServiceDataDAO extends GenericDaoHibernate<WebServiceData,Long> 
 	
 	@Override
 	public String getRfidTrackingOverAllTargetsData(Long id) {		
-		Query query = getSession().createQuery("select model.responceData from WebServiceData model where  "
-					+ " model.webServiceDataId in (:id)");
-			
+		StringBuilder sb=new StringBuilder();
+		sb.append("select model.responceData from WebServiceData model ");
+		if(id != null ){
+			sb.append(" where  model.webServiceDataId in (:id) ");
+		}
+		Query query = getSession().createQuery(sb.toString());			
 		if(id != null ){
 		query.setParameter("id", id);
 		}
