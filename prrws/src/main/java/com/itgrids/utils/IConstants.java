@@ -102,8 +102,7 @@ public interface IConstants {
     public static final Long WS_CALL_TYPE_DB_THEN_LIVE = 4L;
     public static final long WS_DATA_SAVE_INTERVAL = 15*60*1000;
     public static final String INSERT_SOURCE_LIVE = "LIVE";
-    public static final String INSERT_SOURCE_JOB = "JOB";
-    
+    public static final String INSERT_SOURCE_JOB = "JOB";    
 	public static final String WORK_ADMIN_SANC = "adminSanctioned";
 	public static final String WORK_TECH_SANCTIONED = "techSanctioned";
 	public static final String WORK_ENTRUST = "entrusted";
@@ -112,5 +111,16 @@ public interface IConstants {
 	public static final String WORK_COMPLETION = "Completed";
     public static final String WORK_COMMISSIONED = "Commissioned";
 	public static final String WORK_UNDER_PROCESS = "Grounded";
-	public static final String WORK_NOTGROUNDED = "Not Grounded";    
+	public static final String WORK_NOTGROUNDED = "Not Grounded";  
+	
+	//For Mail 
+	public static final String[] ATTENDANCE_REPORT_EMAIL_GROUP = {"a.dakavaram@itgrids.com,a.dakavaram@gmail.com,kamalakar@itgrids.com" };
+	public static final String LOCALFROMEMAILID = "itgrids.portal@gmail.com";// "partyanalyst04@gmail.com";
+	public static final String TOEMAILID = "kripton514@gmail.com";
+	public static final String SUBJECT = "Scheduler Notification";
+	public static final String YES = "Yes";
+	public static final String NO = "No";
 }
+
+
+
