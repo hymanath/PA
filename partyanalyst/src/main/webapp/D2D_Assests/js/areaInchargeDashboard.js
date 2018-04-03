@@ -163,7 +163,7 @@ function buildAreaInchargesStatusWiseCount(result){
 }
 
 function getAreaInchargeAssignedBoothDetails(){
-      
+			
     var jsObj={
         levelId :4,
         levelValue : 262
@@ -216,6 +216,11 @@ function getAreaInchargeAssignedBoothDetails(){
 														str+='<li>Age : <b>'+result[i].age+'</b></li>';
 														str+='<li>Gender : <b>'+result[i].gender+'</b></li>';
 													str+='</ul>';
+												str+='</div>';
+											str+='</div>';
+											str+='<div class="row">';
+												str+='<div class="col-sm-1 pull-right">';
+													str+='<span class="fa fa-edit popupViewAreaIncDetUCls"  attr_cadre_id="'+result[i].id+'"style="font-size:20px;">';
 												str+='</div>';
 											str+='</div>';
 											str+='<div class="row">';
@@ -340,10 +345,10 @@ function buildAreaInchargeDetails(result){
 									str+='<ul class="list-inline list_style">';
 									str+='<li class="text-center" style="font-size:14px;">';
 										str+='<label class="checkbox-inline">';
-										  str+='<input type="checkbox" name="inlineRadioOptions" id="inlineRadio11" value="'+result[i].isActive+'" class="makeInchargeCls">Make Area Incharge';
+										  str+='<input type="checkbox"  name="inlineRadioOptions" id="inlineRadio11" attr_count="'+i+'" value="'+result[i].isActive+'" class="makeInchargeCls">Make Area Incharge';
 										str+='</label>';
 									str+='</li>';
-									str+='<li><button type="button" class="btn btn-success btn-sm makeInchargeAssignedBoothsCls">Assigned Booths</button></li>';
+									str+='<li><button type="button" id="btn'+i+'" class="btn btn-success btn-sm makeInchargeAssignedBoothsCls" style="display:none;" attr_cadre_id="'+result[i].id+'">Assigned Booths</button></li>';
 									str+='</ul>';
 								}else{
 									str+='<h4 class="text-center font_weight" style="color:green;">Already Area Incharge</h4>';
@@ -394,7 +399,7 @@ function getAssignedAndUnAssignedBooths(){
 							{
 								str+='<tr>';
 							}
-							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls"  data-toogle="tooltip" title="Assigned To:'+result.assignBoothList[i].name+' Location: '+result.assignBoothList[i].panchayatName+','+result.assignBoothList[i].tehsilName+' Click For Assigned Booth">'+result.assignBoothList[i].id+'</button></td>';
+							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls"  data-toogle="tooltip" title="Assigned To:'+result.assignBoothList[i].name+' Location: '+result.assignBoothList[i].panchayatName+','+result.assignBoothList[i].tehsilName+' Click For Assigned Booth" >'+result.assignBoothList[i].id+'</button></td>';
 							xindex++;
 							if( xindex == 17){
 								str+='</tr>';
@@ -463,5 +468,141 @@ function getAssignedAndUnAssignedBooths(){
   });
    $(document).on("click",".makeInchargeAssignedBoothsCls",function(){
 		$(".assignedUnAssignedDivCls").show();
-		
+		$(".submitBtnCls").show();
+		var cadreId =$(this).attr('attr_cadre_id');
+		$('.submitBtnCls').attr("attr_cadre_id",cadreId)
   });
+  $(document).on("click",".makeInchargeCls",function(){
+	  if($(this).is(':checked')){
+			$("#btn"+$(this).attr('attr_count')).show();
+	  }
+	  else{
+		  $("#btn"+$(this).attr('attr_count')).hide();
+	  }
+  });
+  $(document).on("click",".submitBtnCls",function(){
+		var cadreId =$(this).attr('attr_cadre_id');
+		var boothIds=[];
+		$('.booths-btn-green').each(function()
+		{
+			boothIds.push($(this).text());
+		});
+		savingAssigningBooths(cadreId,boothIds);
+	});
+  function savingAssigningBooths(cadreId,boothIds){
+      
+		var jsObj={
+			boothIds:boothIds,
+		    cadreId : cadreId
+		}
+		$.ajax({
+			type:'GET',
+			url:'savingAssigningBoothsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			
+		});
+	}
+	$(document).on("click",".popupViewAreaIncDetUCls",function(){
+		$("#popupViewAreaIncDetModal").modal('show');
+		var cadreId =$(this).attr("attr_cadre_id");
+		editAssignedInchargeDetails(cadreId)
+	});
+	function editAssignedInchargeDetails(cadreId){
+		var jsObj={
+			levelId :4,
+		    levelValue : 262,
+		    cadreId : cadreId
+		}
+		$.ajax({
+			type:'GET',
+			url:'editAssignedInchargeDetailsAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+			   buildingAssignedAndUnAssignedBooths(result);
+			}
+			
+		});
+	}
+	function buildingAssignedAndUnAssignedBooths(result) {
+		var str='';
+		str+='<div class="row">';
+			str+='<div class="col-sm-2">';
+				str+='<div style="border:1px solid #ccc; border-radius:5px;">';
+				if(result.image == null || result.image == ""){
+						str+='<img class="media-object" src="coreApi/img/profile.jpg" alt="" style="width:100px;height:80px;">';
+					}else{
+						str+='<img class="media-object" src="https://mytdp.com/images/cadre_images/'+result.image+'" alt="'+result.image+'" style="width:100px;height:80px;">';
+					}
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-10">';
+				str+='<div style="border:1px solid red; border-radius:5px; padding:5px;">';
+					str+='<h5><b>Name :</b>'+result.name+'<b>Relative Name :</b>'+result.relativeName+'<b>Age :</b>'+result.age+'<b>Gender :</b>'+result.gender+'</h5></br>';		
+					str+='<h5><b>Address :</b>'+result.address+'<b>Caste :</b>'+result.caste+'</h5></br>';		
+					str+='<h5><b>Design :</b> Area incharge <b>Assigned Booths :</b>'; 
+					for(var j in result.assignBoothIds){
+						str+='<b>'+result.assignBoothIds[j]+',</b>';
+					}
+					str+='</h5>';
+						
+				str+='</div>';
+			str+='</div>';
+		str+='</div>';
+		str+='<div class="row m_top20">';
+			str+='<div class="col-sm-5">';
+				str+='<div class="media">';
+					str+='<div class="media-left">';
+						str+='<h5><span style="color:#6A82C0; border-bottom:1px solid #6A82C0;">Remove from Area Incharge</span></h5>';
+					str+='</div>';
+					str+='<div class="media-body" style="width:0px;">';
+						str+='<h4 class="media-heading"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></h4>';
+					str+=' </div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-5 pull-right">';
+				str+='<div class="media pull-right">';
+					str+='<div class="media-left">';
+						str+='<h5><span style="color:#6A82C0; border-bottom:1px solid #6A82C0;">Remove Assigned Booths</span></h5>';
+					str+='</div>';
+					str+='<div class="media-body" style="width:0px;">';
+						str+='<h4 class="media-heading"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></h4>';
+					str+=' </div>';
+				str+='</div>';
+			str+='</div>';
+			str+='<div class="col-sm-12 m_top10">';
+		str+='<h4 class="">Un Assigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
+	 str+='</div>';
+	 
+	  str+='<div class="col-sm-12">';
+		str+='<div class="border_block_style m_top5">';
+			str+='<div class="table-responsive">';
+			var xindex = 0;
+				str+='<table>';
+					str+='<tbody>';
+						for(var i in result.unAssignBoothList){
+							if( xindex == 0)
+							{
+								str+='<tr>';
+							}
+							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls" data-toogle="tooltip" title="Assigned To:'+result.unAssignBoothList[i].name+' Location: '+result.unAssignBoothList[i].panchayatName+','+result.unAssignBoothList[i].tehsilName+' Click For Assigned Booth">'+result.unAssignBoothList[i].id+'</button></td>';
+							xindex++;
+							if( xindex == 17){
+								str+='</tr>';
+								xindex = 0;
+							} 
+						}
+						
+					str+='</tbody>';
+				str+='</table>';
+			str+='</div>';
+			
+		 str+='</div>';
+	 str+='</div>';
+		str+='</div>';	
+		$("#modalContentId").html(str);
+		$(".tooltipCls").tooltip();
+	}

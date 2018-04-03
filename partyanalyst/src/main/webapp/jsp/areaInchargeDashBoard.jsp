@@ -49,17 +49,18 @@ body{
 								<div class="row">
 									<div class="col-sm-12">
 										<label class="radio-inline">
-										  <input type="radio" name="inlineRadioOptions" id="inlineRadio1" value="membershipId" class="getSelectedVal">Membership Id
+										  <input type="radio"  checked="true" name="inlineRadioOptions" id="inlineRadio1" value="membershipId"  class="getSelectedVal">Membership Id
 										</label>
 										<label class="radio-inline">
-										  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="voterId" class="getSelectedVal">Voter Id
+										  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="voterId" class="getSelectedVal" >Voter Id
 										</label>
 										<label class="radio-inline">
-										  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="mobileNo" class="getSelectedVal">Mobile No
+										  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="mobileNo" class="getSelectedVal" >Mobile No
 										</label>
 									</div>
 								</div>
 							</div>
+							<div id="searchErrDiv" style ="color:red"></div>
 							<div class="col-sm-12 m_top10">
 								<div class="row">
 									<div class="col-sm-8">
@@ -84,6 +85,28 @@ body{
 						</div>
 					</div>
 				</div>
+					<div class="row">
+						<div class="col-sm-5 pull-right">
+							<button class="btn btn-success btn-sm pull-right submitBtnCls" style="width: 150px;display:none;">Submit</button>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+	<div id="popupViewAreaIncDetModal" class="modal fade" role="dialog">
+  <div class="modal-dialog" style="width:75%; margin:auto;">
+			
+	 <div class="modal-content">
+		<div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title"> Edit Details </h4>
+        </div>
+			  <div class="modal-body">
+					<div id="modalContentId"></div>
+				</div>
+			  <div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			  </div>
 			</div>
 		</div>
 	</div>
