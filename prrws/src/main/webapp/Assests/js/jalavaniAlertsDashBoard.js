@@ -3014,6 +3014,59 @@ function buildJalavaniFeedBackDetailsInfo(result){
 		
 		str+='<div class="row">';
 			str+='<div class="col-sm-12 m_top10">';
+				str+='<h5 class="font_weight text-capital">IVR SUMMARY</h5>';
+			str+='</div>';
+			var postiveAlerts=0,negativeAlerts=0,positiveRespondants=0,negativeRespondants=0,totalAlerts=0,totalRespondants=0;
+			var postiveAlertsPerc=0.0,negativeAlertsPerc=0.0,positiveRespondantsPerc=0.0,negativeRespondantsPerc=0.0;
+			for(var i in result[0].hamletVoterInfo){
+				if(result[0].hamletVoterInfo[i].name != "Not Satisfied"){
+					if(result[0].hamletVoterInfo[i].hamletVoterInfo !=null && result[0].hamletVoterInfo[i].hamletVoterInfo.length>0){
+						for(var j in result[0].hamletVoterInfo[i].hamletVoterInfo){
+							postiveAlerts = postiveAlerts+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount;
+							negativeAlerts = negativeAlerts+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount;
+							
+							positiveRespondants=positiveRespondants+result[0].hamletVoterInfo[i].hamletVoterInfo[j].positiveAlertPositiveRespondentCount+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeAlertPositiveRespondentCount;
+							
+							negativeRespondants=negativeRespondants+result[0].hamletVoterInfo[i].hamletVoterInfo[j].positiveAlertNegativeRespondentCount+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeAlertNegativeRespondentCount;
+						}
+					}
+				}
+			}
+			totalAlerts =postiveAlerts+negativeAlerts;
+			totalRespondants=positiveRespondants+negativeRespondants;
+			postiveAlertsPerc  = (postiveAlerts* 100/totalAlerts).toFixed(2);
+			negativeAlertsPerc  = (negativeAlerts* 100/totalAlerts).toFixed(2);
+			positiveRespondantsPerc  = (positiveRespondants* 100/totalRespondants).toFixed(2);
+			negativeRespondantsPerc  = (negativeRespondants* 100/totalRespondants).toFixed(2);
+			
+			str+='<div class="col-sm-12 m_top10">';
+				str+='<div class="table-responsive">';
+					str+='<table class="table table-bordered table_Ivr">';
+						str+='<thead>';
+							str+='<th>Overall Alerts</th>';
+							str+='<th>Overall Respondants</th>';
+							str+='<th>Positive Alerts</th>';
+							str+='<th>Positive Respondants</th>';
+							str+='<th>Negative Alerts</th>';
+							str+='<th>Negative Respondants</th>';
+						str+='</thead>';
+						str+='<tbody>';
+							str+='<tr>'
+								str+='<td>'+totalAlerts+'</td>';
+								str+='<td>'+totalRespondants+'</td>';
+								
+								str+='<td>'+postiveAlerts+' <span style="color:#0FBE08;">('+postiveAlertsPerc+') %</td>';
+								str+='<td>'+positiveRespondants+'<span style="color:#0FBE08;">('+positiveRespondantsPerc+') %</td>';
+								
+								str+='<td>'+negativeAlerts+' <span style="color:#FE3131;">('+negativeAlertsPerc+') %</td>';
+								str+='<td>'+negativeRespondants+' <span style="color:#FE3131;">('+negativeRespondantsPerc+') %</td>';
+								
+							str+='</tr>'
+						str+='</tbody>';
+					str+='</table>';
+				str+='</div>';	
+			str+='</div>';
+			str+='<div class="col-sm-12 m_top10">';
 				str+='<h5 class="font_weight text-capital">IVR RESPONSE</h5>';
 			str+='</div>';
 			for(var i in result[0].hamletVoterInfo){
@@ -3305,6 +3358,7 @@ $(document).on("click",".timeSeriesWiseSummaryCls",function(){
 	$("#timeSeriesWiseModalId").modal("show");
 	getJalavaniStatusWiseSummaryGraphDetailsInfo("timeSeriesWisGraphDivId");
 	getJalavaniIvrWiseSummaryGraphDetailsInfo("timeSeriesIVRGraphDivId");
+	getJalavaniIvrRespondantsGraphDetailsInfo("timeSeriesIVRRespondantGraphDivId");
 	
 });
 
@@ -3434,8 +3488,21 @@ function getJalavaniIvrWiseSummaryGraphDetailsInfo(divId){
 		}
 	});	
 }
+function getJalavaniIvrRespondantsGraphDetailsInfo(divId){
+	$('#timeSeriesIVRRespondantGraphDivId').html(spinner);
+	$.ajax({
+		url: wurl+"/WebService/getJalavaniIvrRespondantsGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniIvrRespondantsGraphDetailsInfo/"+currentFromDate+"/"+currentToDate
+	}).then(function(result){
+		if(result != null && result.length > 0){
+			buildJalavaniIvrRespondantGraph(result,divId);
+		}else{
+			$("#"+divId).html('NO DATA AVAILABLE')
+		}
+	});	
+}
 
-function buildJalavaniIveGraph(result,divId){
+/* function buildJalavaniIveGraph(result,divId){
 	var categoriesArr=[],wpPosArr=[],wpNegArr=[],tpPosArr=[],tpNegArr=[];
 	
 	if(result != null && result.length > 0){
@@ -3508,6 +3575,212 @@ function buildJalavaniIveGraph(result,divId){
 			name: 'Tanker Prob - Not Satisfied',
 			data: tpNegArr,
 			stack: 'Tankers Problem'
+		}]
+	});
+} */
+function buildJalavaniIveGraph(result,divId){
+	var categoryDateArr=[],wpPosArr=[],wpNegArr=[],tpPosArr=[],tpNegArr=[];
+	
+	if(result != null && result.length > 0){
+		for(var i in result){
+			categoryDateArr.push(result[i].date);
+			if(result[i].hamletVoterInfo != null && result[i].hamletVoterInfo.length > 0){
+				for(var j in result[i].hamletVoterInfo){
+					if(result[i].hamletVoterInfo[j].id == 1){
+						wpPosArr.push({y:result[i].hamletVoterInfo[j].postiveCount,"extra":result[i].hamletVoterInfo[j].positivePerc});
+						wpNegArr.push({y:result[i].hamletVoterInfo[j].negativeCount,"extra":result[i].hamletVoterInfo[j].negativePerc});
+					}else if(result[i].hamletVoterInfo[j].id == 2){
+						tpPosArr.push({y:result[i].hamletVoterInfo[j].postiveCount,"extra":result[i].hamletVoterInfo[j].positivePerc});
+						tpNegArr.push({y:result[i].hamletVoterInfo[j].negativeCount,"extra":result[i].hamletVoterInfo[j].negativePerc});
+					}
+				}
+			}
+		}
+	}
+	$('#'+divId).highcharts({
+		chart: {
+			type: 'spline'
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories:categoryDateArr
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: ''
+			},
+			labels: {
+				formatter: function () {
+					return this.value + '';
+				}
+			}
+		},
+		tooltip: {
+			formatter: function () {
+			var s = '<b>' + this.x + '</b>';
+
+				$.each(this.points, function () {
+					if(this.series.name != "Series 1")  
+					s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+					this.y+" - "+(this.point.extra)+"%";
+				});
+
+				return s;
+			},
+			shared: true
+		},
+		plotOptions: {
+			
+		},
+		series: [{
+			name: 'WATER PROB-SATISIFIED',
+			data: wpPosArr,
+			color:'#0FBE08'
+		}, {
+			name: 'WATER PROB-NOT SATISIFIED',
+			data: wpNegArr,
+			color:'#FE3131'
+		}, {
+			name: 'TANKER PROB-SATISIFIED',
+			data: tpPosArr,
+			color:'#0FBE08'
+		}, {
+			name: 'TANKER PROB-NOT SATISIFIED',
+			data: tpNegArr,
+			color:'#FE3131'
+		}]
+	});
+	/* $('#'+divId).highcharts({
+		colors:["green","red","green","red"],
+		chart: {
+			type: 'column'
+		},
+
+		title: {
+			text: ''
+		},
+
+		xAxis: {
+			categories: categoriesArr
+		},
+
+		yAxis: {
+			allowDecimals: false,
+			min: 0,
+			title: {
+				text: ''
+			}
+		},
+
+		tooltip: {
+			formatter: function () {
+				return '<b>' + this.x + '</b><br/>' +
+					'Total: ' + this.point.stackTotal+'<br/>'+
+					this.series.name + ': ' + this.y+"-"+this.point.extra+"%";
+					
+			}
+		},
+
+		plotOptions: {
+			column: {
+				stacking: 'normal'
+			}
+		},
+
+		series: [{
+			name: 'Water Prob - Satisfied',
+			data: wpPosArr,
+			stack: 'Water Problem'
+		}, {
+			name: 'Water Prob - Not Satisfied',
+			data: wpNegArr,
+			stack: 'Water Problem'
+		}, {
+			name: 'Tanker Prob - Satisfied',
+			data: tpPosArr,
+			stack: 'Tankers Problem'
+		}, {
+			name: 'Tanker Prob - Not Satisfied',
+			data: tpNegArr,
+			stack: 'Tankers Problem'
+		}]
+	}); */
+}
+function buildJalavaniIvrRespondantGraph(result,divId){
+	var categoryDateArr=[],satisfiedArr=[],notSatisfiedArr=[];
+	
+	if(result != null && result.length > 0){
+		for(var i in result){
+			categoryDateArr.push(result[i].date);
+			satisfiedArr.push({y:result[i].positivePerc,"extra":result[i].postiveCount});
+			notSatisfiedArr.push({y:result[i].negativePerc,"extra":result[i].negativeCount});	
+		}
+	}
+	$('#'+divId).highcharts({
+		chart: {
+			type: 'spline'
+		},
+		title: {
+			text: ''
+		},
+		subtitle: {
+			text: ''
+		},
+		xAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories:categoryDateArr
+		},
+		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			title: {
+				text: ''
+			},
+			labels: {
+				formatter: function () {
+					return this.value + '%';
+				}
+			}
+		},
+		tooltip: {
+			formatter: function () {
+			var s = '<b>' + this.x + '</b>';
+
+				$.each(this.points, function () {
+					if(this.series.name != "Series 1")  
+					s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
+					this.y+" % - "+(this.point.extra)+"";
+				});
+
+				return s;
+			},
+			shared: true
+		},
+		plotOptions: {
+			
+		},
+		series: [{
+			name: 'SATISIFIED',
+			data: satisfiedArr,
+			color:'#0FBE08'
+		}, {
+			name: 'NOT-SATISIFIED',
+			data: notSatisfiedArr,
+			color:'#FE3131'
 		}]
 	});
 }
