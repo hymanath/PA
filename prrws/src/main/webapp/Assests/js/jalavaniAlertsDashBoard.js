@@ -3163,22 +3163,22 @@ function buildJalavaniFeedBackDetailsInfo(result){
 		str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10">';
 			str+='<div class="table-responsive">';
-				str+='<table class="table table_custom_jalavani_status table-bordered" id="dataTabledefaulters">';
+				str+='<table class="table table_custom_jalavani_status table-bordered" id="dataTabledefaulters" style="width:100%">';
 					str+='<thead>';
 						str+='<tr>';
-						str+='<th rowspan="4">LOCATION</th>';
+						str+='<th rowspan="3">LOCATION</th>';
 						for(var i in result[0].feedbackStatusList){
 							if(result[0].feedbackStatusList[i].id==1){
-								str+='<th style="background-color:#6dd18b" rowspan="4">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
-								str+='<th style="background-color:#6dd18b" rowspan="4">Perc(%)</th>';
+								str+='<th style="background-color:#6dd18b" rowspan="3">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#6dd18b" rowspan="3">Perc(%)</th>';
 								str+='<th style="background-color:#6dd18b" colspan="4" >Ivr '+result[0].feedbackStatusList[i].name+'</th>';
 							} else if(result[0].feedbackStatusList[i].id==2){
-								str+='<th style="background-color:#f35555" rowspan="4">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
-								str+='<th style="background-color:#f35555" rowspan="4">Perc(%)</th>';
+								str+='<th style="background-color:#f35555" rowspan="3">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#f35555" rowspan="3">Perc(%)</th>';
 								//str+='<th style="background-color:#f35555" colspan="4" >'+result[0].feedbackStatusList[i].name+'</th>';
 							}else if(result[0].feedbackStatusList[i].id==3){
-								str+='<th style="background-color:#e59866" rowspan="4">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
-								str+='<th style="background-color:#e59866" rowspan="4">Perc(%)</th>';
+								str+='<th style="background-color:#e59866" rowspan="3">Caller Feedback '+result[0].feedbackStatusList[i].name+'</th>';
+								str+='<th style="background-color:#e59866" rowspan="3">Perc(%)</th>';
 								str+='<th style="background-color:#e59866" colspan="4" >Ivr '+result[0].feedbackStatusList[i].name+'</th>';
 							
 							}
@@ -3300,14 +3300,16 @@ function buildJalavaniFeedBackDetailsInfo(result){
 			str+='</div>';
 		str+='</div>';
 		str+='</div>';
-	$("#ivrStatusFeedBackDivId").html(str);
-	/* $("#dataTabledefaulters").dataTable({
-		"paging":   false,
-		"info":     false,
-		"searching":false,
-		"autoWidth": true,
-		"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-	}); */
+		$("#ivrStatusFeedBackDivId").html(str);
+		$("#dataTabledefaulters").dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": true,
+			"autoWidth": true,
+			"iDisplayLength": 13,
+			 "aaSorting": [[ 3, "desc" ]], 
+			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
+	  });
 	$('[data-toggle="tooltip"]').tooltip(); 
 }
 $(document).on("click",".feedbackStatusCls",function(){
