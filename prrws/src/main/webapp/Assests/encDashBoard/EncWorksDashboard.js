@@ -131,8 +131,7 @@ $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 	}
 	$("#financialYearId").val('2003-2050');
 	$("#financialYearId").trigger('chosen:updated');
-		
-		 onloadCalls();
+		onloadCalls();
 });
 
 
