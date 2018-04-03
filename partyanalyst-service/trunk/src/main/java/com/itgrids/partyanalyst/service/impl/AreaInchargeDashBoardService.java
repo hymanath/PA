@@ -278,8 +278,20 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	}
 	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		String result = null;
-		int status=areaInchargeMemberDAO.deleteAreaInchargeAssignBooths(candidateId,boothId);
 		try{
+			int status=areaInchargeMemberDAO.deleteAreaInchargeAssignBooths(candidateId,boothId);
+			
+			List<Long> inchargeLocationIds =areaInchargeMemberDAO.getdeletedBoothIds(candidateId);
+			if(inchargeLocationIds != null && inchargeLocationIds.size()>0){
+			for(Long param : inchargeLocationIds){
+				AreaInchargeLocation inchargeLocation = areaInchargeLocationDAO.get(param);
+				if(inchargeLocation != null){
+					inchargeLocation.setIsAssinged("N");
+					inchargeLocation.setIsDeleted("Y");
+					inchargeLocation = areaInchargeLocationDAO.save(inchargeLocation);
+				}
+			}
+			}
 			if(status >0){
 				result = "success";
 			}
