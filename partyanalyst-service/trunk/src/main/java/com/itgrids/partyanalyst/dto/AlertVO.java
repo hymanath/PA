@@ -116,6 +116,8 @@ public class AlertVO {
 	private Double printPerc = 0.0d;
 	private Double electPerc = 0.0d;
 	private Double statusPerc = 0.0d;
+	private Long alertCategoryId;
+	private String apiType;
 	
 	
 	public Double getStatusPerc() {
@@ -726,6 +728,18 @@ public class AlertVO {
 	}
 	public void setIssueCategoryId(Long issueCategoryId) {
 		this.issueCategoryId = issueCategoryId;
+	}
+	public Long getAlertCategoryId() {
+		return alertCategoryId;
+	}
+	public void setAlertCategoryId(Long alertCategoryId) {
+		this.alertCategoryId = alertCategoryId;
+	}
+	public String getApiType() {
+		return apiType;
+	}
+	public void setApiType(String apiType) {
+		this.apiType = apiType;
 	}
 	
 }

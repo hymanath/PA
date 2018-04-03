@@ -31,6 +31,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.util.CellRangeAddress;
+import org.codehaus.jettison.json.JSONObject;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
@@ -1027,7 +1028,9 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 					String rs = new String();
 				try {
 				 DateUtilService date = new DateUtilService();
+				 
 				 Alert alert = new Alert();
+				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
 				 
 				 alert.setAlertSeverityId(inputVO.getSeverity());
 				 alert.setAlertTypeId(inputVO.getAlertTypeId());
@@ -1038,24 +1041,32 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 				 alert.setUpdatedBy(userId);
 				 alert.setImpactScopeId(inputVO.getAlertImpactId());
 
-				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0){
 					 alert.setAlertStatusId(2l);// if assign list given default status is notified
-				 else
+					 alertTrackingVO.setAlertStatusId(2l);
+				 }else{
 					 alert.setAlertStatusId(1l);// default pending status
-
+					 alertTrackingVO.setAlertStatusId(1l);
+				 }
+				
 				 alert.setAlertSourceId(inputVO.getAlertSourceId());
 				 alert.setCreatedTime(date.getCurrentDateAndTime());
 				 alert.setUpdatedTime(date.getCurrentDateAndTime());
 				 alert.setIsDeleted("N");
 				 
-				 alert.setAlertCategoryId(1L);//default Manual alert
+				// alert.setAlertCategoryId(1L);//default Manual alert
+				 alert.setAlertCategoryId(inputVO.getAlertCategoryId() !=null ? inputVO.getAlertCategoryId():1l);
 				 alert.setTitle(inputVO.getTitle());
 				 
 				 UserAddress userAddress = saveUserAddress(inputVO);
+				 
 				 alert.setAddressId(userAddress.getUserAddressId());
-				// alert.setAlertCategoryTypeId(inputVO.getCategoryId());
+				 alert.setApiType(inputVO.getApiType() !=null ? inputVO.getApiType():null);
 				 alert = alertDAO.save(alert);
-				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				 
+				 if(mapFiles !=null && mapFiles.size()>0){
+					 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				 }
 				 
 				 if(inputVO.getIdNamesList() != null && inputVO.getIdNamesList().size() > 0)
 				 {
@@ -1134,22 +1145,23 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 				 	}
 				 rs = "success";
 				    AlertComment alertComment = new AlertComment();
-				    alertComment.setComments(inputVO.getDesc().toString());
+				    
+				    alertComment.setComments(inputVO.getDesc() !=null ? inputVO.getDesc().toString():null);
 				    alertComment.setAlertId(alert.getAlertId());
 				    alertComment.setInsertedTime(date.getCurrentDateAndTime());
 				    alertComment.setIsDeleted("N");
 				    alertComment.setInsertedBy(userId);
 				    alertComment = alertCommentDAO.save(alertComment);
-				 AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
+				    
 				 alertTrackingVO.setUserId(userId);
 				 alertTrackingVO.setAlertCommentId(alertComment.getAlertCommentId());
 				 alertTrackingVO.setAlertUserTypeId(inputVO.getAlertSourceId());
-				 if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
+				 /*if(inputVO.getAssignList() != null && inputVO.getAssignList().size() > 0)
 				 {
 					 alertTrackingVO.setAlertStatusId(2l);
 				 }else{
 					 alertTrackingVO.setAlertStatusId(1l);
-				 }
+				 }*/
 				 
 				 alertTrackingVO.setAlertId(alert.getAlertId());
 				 alertTrackingVO.setAlertTrackingActionId(IConstants.ALERT_ACTION_STATUS_CHANGE);
@@ -1182,9 +1194,13 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 		 }		
 	}
 	
-	String newResultStatus=resultStatus.split(" ")[0];
+	if(inputVO.getAlertCategoryId() !=null && inputVO.getAlertCategoryId().longValue()>0l){
+		return resultStatus;
+	}else{
+		return resultStatus.split(" ")[0];
+	}
 	
-	return newResultStatus;
+	//return newResultStatus;
  }
  //Balu 
 public String saveIssueCategoryDetails(Long alertId,Long categoryId){
@@ -8273,7 +8289,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						 }
 					 }
 				 }
-				 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				 if(mapFiles !=null && mapFiles.size()>0){
+					 saveAlertDocument(alert.getAlertId(),userId,mapFiles);
+				 }
+				 
 				 List<Long> existingCadres = alertCandidateDAO.getTdpCadreIdsByAlertId(inputVO.getAlertId());
 				 List<Long> existingCadreIds = new ArrayList<Long>();
 				 if(existingCadres != null && existingCadres.size()>0){
@@ -10203,7 +10222,10 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 						alertCallerRelation = alertCallerRelationDAO.save(alertCallerRelation);
 
 						//saveAlertDocument(alert.getAlertId(),userId,mapFiles);
-						saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+						if(mapFiles !=null && mapFiles.size()>0){
+							saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+						}
+						
 
 						AlertComment alertComment = new AlertComment();
 						alertComment.setComments(inputVO.getDescription().toString());
@@ -13502,7 +13524,10 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 					    	
 							//Document Saving
 							//saveAlertDocument(alert.getAlertId(),userId,mapFiles);
-							saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+							if(mapFiles !=null && mapFiles.size()>0){
+								saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+							}
+							
 							
 							//Alert Tracking
 							AlertTrackingVO alertTrackingVO = new AlertTrackingVO();
@@ -14712,7 +14737,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 							alertCallerRelation = alertCallerRelationDAO.save(alertCallerRelation);
 
 							//saveAlertDocument(alert.getAlertId(),userId,mapFiles);
-							saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
+							if(mapFiles !=null && mapFiles.size()>0)
+								saveAlertDocumentNew(alert.getAlertId(),userId,mapFiles);
 
 							AlertComment alertComment = new AlertComment();
 							alertComment.setComments(inputVO.getDescription().toString());
@@ -16928,6 +16954,8 @@ public List<IdNameVO> getAllMandalsByDistrictID(Long districtId){
 		}
 		return status;
 	}
+	
+	
 	
 	
 }

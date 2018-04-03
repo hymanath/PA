@@ -176,6 +176,7 @@ import com.itgrids.partyanalyst.model.WebServiceBaseUrl;
 import com.itgrids.partyanalyst.security.PBKDF2;
 import com.itgrids.partyanalyst.service.IActivityService;
 import com.itgrids.partyanalyst.service.IAffiliatedMemberService;
+import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
 import com.itgrids.partyanalyst.service.IAlertManagementSystemService;
 import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAlertsNewsPortalService;
@@ -307,6 +308,14 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     private IAffiliatedMemberService affiliatedMemberService;
     private IitdpAppUserDAO itdpAppUserDAO;
     
+    private IAlertCreationAPIService alertCreationAPIService;
+    
+    
+	public void setAlertCreationAPIService(
+			IAlertCreationAPIService alertCreationAPIService) {
+		this.alertCreationAPIService = alertCreationAPIService;
+	}
+
 	public IitdpAppUserDAO getItdpAppUserDAO() {
 		return itdpAppUserDAO;
 	}
@@ -6017,5 +6026,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     		log.error("Exception raised in getJalavaniIvrRespondantsGraphDetailsInfo  method in WebServiceHandlerService1",e);
     	}
     	return alertVoList;
+	}
+	public JSONObject createNotificationAlert(JSONObject json){
+		try{
+			return alertCreationAPIService.createNotificationAlert(json);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniStatusWiseSummaryGraphDetailsInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return null;
 	}
 }

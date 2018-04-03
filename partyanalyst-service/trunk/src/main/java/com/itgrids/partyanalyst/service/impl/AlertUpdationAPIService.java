@@ -461,7 +461,12 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 						String comment=null;
 						String alertTicketId=null;
 						Long statusId = null;
+						String zohoCommentId ="";
 						try {
+							
+							if(playLoadObj.has("id")){
+								zohoCommentId = playLoadObj.getString("id");
+							}
 							
 							if(playLoadObj.getString("content").contains("\n\n")){
 								comment = playLoadObj.getString("content").split("\n\n")[1];
@@ -491,6 +496,7 @@ public class AlertUpdationAPIService implements IAlertUpdationAPIService{
 							
 							alertComment.setAlertId(alertIds.get(0));
 							alertComment.setComments(comment);
+							alertComment.setZohoCommentId(zohoCommentId);
 							
 							if(tdpUserId !=null){
 								alertComment.setInsertedBy(tdpUserId);
