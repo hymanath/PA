@@ -84,5 +84,5 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		return query.list();
 		
 	}
-	
+		
 }

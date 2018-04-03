@@ -93,9 +93,9 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 	}
 	public int deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" update AreaInchargeMember model set model.isActive = 'N',model.isDeleted = 'Y',model.areaInchargeLocation.isAssinged ='N',model.areaInchargeLocation.isDeleted ='Y' ");
+		sb.append(" update AreaInchargeMember model set model.isActive = 'N',model.isDeleted = 'Y' ");
 		if(candidateId != null && candidateId.longValue()>0l){
-			sb.append(" where model.tdpCadreId =:candidateId ");
+			sb.append(" where model.tdpCadre.tdpCadreId =:candidateId ");
 		}
 		if(boothId != null && boothId.longValue()>0l && boothId != 0){
 			sb.append("and model.areaInchargeLocationId =:boothId");
@@ -145,4 +145,20 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		return (Long)query.uniqueResult();
 		
 	}
+	public List<Long> getdeletedBoothIds(Long cadreId){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct AIM.areaInchargeLocationId "+
+				" from  AreaInchargeMember AIM where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
+		if(cadreId != null && cadreId.longValue()>0l){
+			sb.append("  and AIM.tdpCadre.tdpCadreId =:cadreId  "); 
+		}
+		sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
+		Query query = getSession().createQuery(sb.toString());
+		if(cadreId != null && cadreId.longValue()>0l){
+			query.setParameter("cadreId", cadreId);
+		}
+		return  query.list();
+		
+	}
+
 }
