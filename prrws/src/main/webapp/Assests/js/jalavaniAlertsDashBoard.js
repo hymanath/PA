@@ -3464,7 +3464,7 @@ $(document).on("click",".closedReopenAlertsCls",function(){
 function getJalavaniAlertForClosedAndReopenDetails(statusId,statusName){
 	//$('#timeSeriesWisGraphDivId').html(spinner);
 	$.ajax({
-		url: wurl+"/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate
+		url: wurl+"/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
 		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
 	}).then(function(result){
 		if(result != null && result.length > 0){
