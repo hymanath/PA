@@ -8,9 +8,7 @@ if(moment().format('MM').toString < "04"){
 	var glStartDate = "01-04-2014";
 	var	glEndDate = "01-04-"+currentYear;
 	var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
-					 {name:'Key Performance',id:'performance',img:'key_performance.png'},
-					 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
-					 {name:'Assests',id:'assestsId',img:'assets.png'},{name:'Water Source',id:'waterSourceId',img:'works.png'},{name:'Work Schemes',id:'schemeId',img:'schemes.png'}];
+	{name:'Work Schemes',id:'schemeId',img:'schemes.png'}];
 
 	var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 	var levelNamesArr=[{name:'state',id:'2'},{name:'district',id:'3'},{name:'constituency',id:'4'},{name:'mandal',id:'5'}];
@@ -174,6 +172,7 @@ function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue
 		success: function(ajaxresp){
 			if(ajaxresp !=null && ajaxresp.length>0){
 				if(type == "graph"){
+					//buildSchemeWiseWorkDetails(ajaxresp);
 					buildSchemeWiseWorkDetailsforState(ajaxresp);
 				}else{
 					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"completeOverview");
@@ -741,7 +740,7 @@ function tabBlocks(blockId,blockName){
 				}
 				for(var i in blocksArr)
 				{
-					if(i == 5)
+					if(i == 1)
 					{
 						tabBlock+='<div role="tabpanel" class="tab-pane active m_top10" id="'+blockId+''+blocksArr[i].id+'"></div>';
 					
@@ -1228,41 +1227,23 @@ function selectBox(id){
 		}
 	}); 
 	function emptyCheckState(){
-		$("#stateBlockIdhabitation").html('');
-		$("#stateBlockIdperformance").html('');
-		$("#alertStatusstate").html('');
-		$("#stateBlockIdassestsId").html('');
+		//$("#stateBlockIdhabitation").html('');
 		$("#stateBlockIdschemeId").html('');
-		$("#stateBlockIdwaterSourceId").html('');
 	}
 	function emptyCheckDistrict(){
-		$("#districtBlockIdhabitation").html('');
-		$("#districtBlockIdperformance").html('');
-		$("#alertStatusdistrict").html('');
-		$("#districtBlockIdassestsId").html('');
+		//$("#districtBlockIdhabitation").html('');
 		$("#districtBlockIdschemeId").html('');
-		$("#districtBlockIdwaterSourceId").html('');
 	}
 	function emptyCheckConstituency(){
-		$("#constituencyBlockIdhabitation").html('');
-		$("#constituencyBlockIdperformance").html('');
-		$("#alertStatusconstituency").html('');
-		$("#constituencyBlockIdassestsId").html('');
+		//$("#constituencyBlockIdhabitation").html('');
 		$("#constituencyBlockIdschemeId").html('');
-		$("#constituencyBlockIdwaterSourceId").html('');
 		$("#chosenconstValconstituencyBlockId").html('');
 		$("#chosenconstValconstituencyBlockId").trigger("chosen:updated");
 		
 	}
 	function emptyCheckMandal(){
-		$("#mandalBlockIdhabitation").html('');
-		$("#mandalBlockIdperformance").html('');
-		$("#alertStatusmandal").html('');
-		$("#mandalBlockIdassestsId").html('');
+		//$("#mandalBlockIdhabitation").html('');
 		$("#mandalBlockIdschemeId").html('');
-		$("#mandalBlockIdwaterSourceId").html('');
-		$("#chosenconstValmandalBlockId").html('');
-		$("#chosenconstValmandalBlockId").trigger("chosen:updated");
 		$("#chosenmandalValmandalBlockId").html('');
 		$("#chosenmandalValmandalBlockId").trigger("chosen:updated");
 	}
