@@ -117,4 +117,18 @@ public class SolidWasteManagementController {
 			}
 			return solidWasteManagementVO;
 		}
+	   
+	   @RequestMapping(value = "/emailNotificationForRfidTracking", method = RequestMethod.GET)
+	   public String  emailNotificationForRfidTracking(){
+		   String result=null;
+		   try {
+			   result = solidWasteManagementService.emailNotificationForRfidTracking();
+		   		
+		   	}catch (Exception e) {
+		   		
+		   		//resultStatus.setStatus("failure");
+		   		LOG.error("Exception Occured in saveRfidTrackingOverAllTargets() in SolidWasteManagementController class.",e);
+		   	}
+			return result;
+	   }
 }
