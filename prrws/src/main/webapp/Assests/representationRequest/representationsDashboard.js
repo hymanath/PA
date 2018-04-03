@@ -207,15 +207,15 @@ function buildStatusOverviewDetails(result){
 						str+='<p>Representations</p>';
 							var convertToAmt = result.list[i].estimationCost*100000;
 							var crores = (convertToAmt/10000000).toFixed(2);
-							str+='<h5 class="font_weight">'+result.list[i].petitionIds.length+' <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight" style="color:#000">('+crores+')</small></h5>';
-							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostPetitionsCount+'</h5>';
-							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostPetitionsCount+'</h5>';
+							str+='<h5 class="font_weight tooltipCls" title="Total Representations">'+result.list[i].petitionIds.length+' <small  title="Total Budget" class="font_weight" style="color:#000">('+crores+')</small></h5>';
+							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr tooltipCls" title="With Cost Representations"></i> '+result.list[i].withCostPetitionsCount+'</h5>';
+							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw tooltipCls" title="No Cost Representations"></i> '+result.list[i].noCostPetitionsCount+'</h5>';
 					str+='</div>';
 					str+='<div class="col-sm-4" style="padding-left:5px">';
 						str+='<p>Works</p>';
-							str+='<h5><b>'+result.list[i].subWorkIds.length+'</b></h5>';
-							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.list[i].withCostWorksCount+'</h5>';
-							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.list[i].noCostWorksCount+'</h5>';
+							str+='<h5><b class="tooltipCls" title="Total Works">'+result.list[i].subWorkIds.length+'</b></h5>';
+							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr tooltipCls" title="With Cost Works"></i> '+result.list[i].withCostWorksCount+'</h5>';
+							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw tooltipCls" title="No Cost Works"></i> '+result.list[i].noCostWorksCount+'</h5>';
 					str+='</div>';
 					str+='</div>';
 					
@@ -295,10 +295,10 @@ function buildMyActionsDetails(result){
 																var convertToAmt = result.statusList[i].estimationCost*100000;
 																var crores = (convertToAmt/10000000).toFixed(2);
 																
-																str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].petitionIds.length+'</a> <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
+																str+='<h4 class="font_weight"><a title="Total Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].petitionIds.length+'</a> <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
 							
-																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.statusList[i].withCostPetitionsCount+'</h5>';
-																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.statusList[i].noCostPetitionsCount+'</h5>';
+																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr tooltipCls" title="With Cost Representations"></i> '+result.statusList[i].withCostPetitionsCount+'</h5>';
+																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw tooltipCls" title="WithOut Cost Representations"></i> '+result.statusList[i].noCostPetitionsCount+'</h5>';
 																
 															str+='</div>';
 														str+='</div>';
@@ -313,8 +313,8 @@ function buildMyActionsDetails(result){
 															str+='<div class="media-body">';
 																str+='<p>Works</p>';
 																str+='<h4><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=total&desigId=0&statusId='+result.statusList[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.statusList[i].subWorkIds.length+'</a></h4>';
-																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.statusList[i].withCostWorksCount+'</h5>';
-																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.statusList[i].noCostWorksCount+'</h5>';
+																str+='<h5 class="font_weight m_top10"><i class="fa fa-inr tooltipCls" title="With Cost Works"></i> '+result.statusList[i].withCostWorksCount+'</h5>';
+																str+='<h5 class="font_weight m_top5"><i class="fa fa-krw tooltipCls" title="With Out Cost Works"></i> '+result.statusList[i].noCostWorksCount+'</h5>';
 															str+='</div>';
 														str+='</div>';
 													str+='</div>';
@@ -336,8 +336,8 @@ function buildMyActionsDetails(result){
 														    var crores = (convertToAmt/10000000).toFixed(2);
 															str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
 															
-															str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.statusList[i].referrerList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].referrerList[j].withCostWorksCount+'</span></h5>';
-															str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.statusList[i].referrerList[j].noCostPetitionsCount+'</span> - <span>'+result.statusList[i].referrerList[j].noCostWorksCount+'</span></h5>';
+															str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr tooltipCls" title="With Cost Repr - Works"></i> '+result.statusList[i].referrerList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].referrerList[j].withCostWorksCount+'</span></h5>';
+															str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw tooltipCls" title="No Cost Repr - Works"></i> '+result.statusList[i].referrerList[j].noCostPetitionsCount+'</span> - <span>'+result.statusList[i].referrerList[j].noCostWorksCount+'</span></h5>';
 									
 														str+='</li>';
 													}
@@ -359,8 +359,8 @@ function buildMyActionsDetails(result){
 													var crores = (convertToAmt/10000000).toFixed(2);
 													str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
 													
-													str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.statusList[i].subList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].subList[j].withCostWorksCount+'</span></h5>';
-													str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.statusList[i].subList[j].noCostPetitionsCount+'</span> - <span>'+result.statusList[i].subList[j].noCostWorksCount+'</span></h5>';
+													str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr tooltipCls" title="With Cost Repr - Works"></i> '+result.statusList[i].subList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].subList[j].withCostWorksCount+'</span></h5>';
+													str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw tooltipCls" title="No Cost Repr - Works"></i> '+result.statusList[i].subList[j].noCostPetitionsCount+'</span> - <span>'+result.statusList[i].subList[j].noCostWorksCount+'</span></h5>';
 												str+='</li>';
 											}
 											str+='</ul>';
@@ -382,8 +382,8 @@ function buildMyActionsDetails(result){
 													var crores = (convertToAmt/10000000).toFixed(2);
 													str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
 													
-													str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.statusList[i].deptList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].deptList[j].withCostWorksCount+'</span></h5>';
-													str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.statusList[i].deptList[j].noCostPetitionsCount+'</span> - <span>'+result.statusList[i].deptList[j].noCostWorksCount+'</span></h5>';
+													str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr tooltipCls" title="With Cost Repr - Works"></i> '+result.statusList[i].deptList[j].withCostPetitionsCount+'</span> - <span>'+result.statusList[i].deptList[j].withCostWorksCount+'</span></h5>';
+													str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw tooltipCls" title="No Cost Repr - Works"></i> '+result.statusList[i].deptList[j].noCostPetitionsCount+'</span> - <span>'+result.statusList[i].deptList[j].noCostWorksCount+'</span></h5>';
 													
 												str+='</li>';
 												
@@ -469,10 +469,10 @@ function buildCompleteOrStatusOverviewDetails(result){
 							var convertToAmt = result.estimationCost*100000;
 							var crores = (convertToAmt/10000000).toFixed(2);
 							str+='<p>Representations</p>';
-							str+='<h4 class="font_weight">'+result.petitionIds.length+' <small data-toggle="tooltip" title="Total Budget" class="tooltipCls font_weight">('+crores+')</small></h4>';
+							str+='<h4 class="font_weight">'+result.petitionIds.length+' <small data-toggle="tooltip" title="Total Representations" class="tooltipCls font_weight">('+crores+')</small></h4>';
 							
-							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.withCostPetitionsCount+'</h5>';
-							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.noCostPetitionsCount+'</h5>';
+							str+='<h5 class="font_weight m_top10"><i class="fa fa-inr tooltipCls" title="With Cost Representations"></i> '+result.withCostPetitionsCount+'</h5>';
+							str+='<h5 class="font_weight m_top5"><i class="fa fa-krw tooltipCls" title="Without Cost Representations"></i> '+result.noCostPetitionsCount+'</h5>';
 							
 						str+='</div>';
 					str+='</div>';
@@ -487,8 +487,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 						str+='<div class="media-body">';
 						str+='	<p>Works</p>';
 						str+='	<h4><b>'+result.subWorkIds.length+'</b></h4>';
-						str+='<h5 class="font_weight m_top10"><i class="fa fa-inr"></i> '+result.withCostWorksCount+'</h5>';
-						str+='<h5 class="font_weight m_top5"><i class="fa fa-krw"></i> '+result.noCostWorksCount+'</h5>';
+						str+='<h5 class="font_weight m_top10"><i class="fa fa-inr tooltipCls" title="With Cost Works"></i> '+result.withCostWorksCount+'</h5>';
+						str+='<h5 class="font_weight m_top5"><i class="fa fa-krw tooltipCls" title="WithOut Cost Works"></i> '+result.noCostWorksCount+'</h5>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -506,12 +506,12 @@ function buildCompleteOrStatusOverviewDetails(result){
 							for(var i in result.referrerList){
 								str+='<li class="petition_border">';
 									str+='<p  class="text-center" attr_id='+result.referrerList[i].id+'>'+result.referrerList[i].name.toUpperCase()+'</p>';
-									str+='<h5 class="text-center m_top5"><b title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.referrerList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.referrerList[i].subWorkIds.length+'</b></h5>';
+									str+='<h5 class="text-center m_top5"><b title="Total Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.referrerList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.referrerList[i].subWorkIds.length+'</b></h5>';
 									var convertToAmt = result.referrerList[i].estimationCost*100000;
 									var crores = (convertToAmt/10000000).toFixed(2);
 									str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
-									str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.referrerList[i].withCostPetitionsCount+'</span> - <span>'+result.referrerList[i].withCostWorksCount+'</span></h5>';
-									str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.referrerList[i].noCostPetitionsCount+'</span> - <span>'+result.referrerList[i].noCostWorksCount+'</span></h5>';
+									str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr tooltipCls" title="With Cost Repr-Works"></i> '+result.referrerList[i].withCostPetitionsCount+'</span> - <span>'+result.referrerList[i].withCostWorksCount+'</span></h5>';
+									str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw tooltipCls" title="No Cost Repr-Works"></i> '+result.referrerList[i].noCostPetitionsCount+'</span> - <span>'+result.referrerList[i].noCostWorksCount+'</span></h5>';
 								str+='</li>';
 								
 								}
@@ -533,8 +533,8 @@ function buildCompleteOrStatusOverviewDetails(result){
 										var crores = (convertToAmt/10000000).toFixed(2);
 										str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
 										
-										str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.subList[i].withCostPetitionsCount+'</span> - <span>'+result.subList[i].withCostWorksCount+'</span></h5>';
-										str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.subList[i].noCostPetitionsCount+'</span> - <span>'+result.subList[i].noCostWorksCount+'</span></h5>';
+										str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr tooltipCls" title="With Cost Repr-Works"></i> '+result.subList[i].withCostPetitionsCount+'</span> - <span>'+result.subList[i].withCostWorksCount+'</span></h5>';
+										str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw tooltipCls" title="No Cost Repr-Works"></i> '+result.subList[i].noCostPetitionsCount+'</span> - <span>'+result.subList[i].noCostWorksCount+'</span></h5>';
 									str+='</li>';
 										
 								}
@@ -551,13 +551,13 @@ function buildCompleteOrStatusOverviewDetails(result){
 								for(var i in result.deptList){
 										str+='<li class="col-sm-2 petition_border">';
 											str+='<p class="text-center" attr_id="'+result.deptList[i].id+'" style="font-size:11px"><b>'+result.deptList[i].name.toUpperCase()+'</b></p>';
-											str+='<h5 class="text-center m_top5"><b title="Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.deptList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.deptList[i].subWorkIds.length+'</b></h5>';
+											str+='<h5 class="text-center m_top5"><b title="Total Represents" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.deptList[i].petitionIds.length+'</b> - <b title="Works" data-toggle="tooltip" class="tooltipCls" data-placement="right">'+result.deptList[i].subWorkIds.length+'</b></h5>';
 											var convertToAmt = result.deptList[i].estimationCost*100000;
 											var crores = (convertToAmt/10000000).toFixed(2);
 											str+='<h5 class="text-center"><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls" data-placement="right">('+crores+')</b></h5>';
 											
-											str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr"></i> '+result.deptList[i].withCostPetitionsCount+'</span> - <span>'+result.deptList[i].withCostWorksCount+'</span></h5>';
-											str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw"></i> '+result.deptList[i].noCostPetitionsCount+'</span> - <span>'+result.deptList[i].noCostWorksCount+'</span></h5>';
+											str+='<h5 class="m_top5 font_weight text-center"><span><i class="fa fa-inr tooltipCls" title ="With Cost Repr-Works"></i> '+result.deptList[i].withCostPetitionsCount+'</span> - <span>'+result.deptList[i].withCostWorksCount+'</span></h5>';
+											str+='<h5 class=" font_weight text-center"><span><i class="fa fa-krw tooltipCls" title= "No Cost Repr - Works"></i> '+result.deptList[i].noCostPetitionsCount+'</span> - <span>'+result.deptList[i].noCostWorksCount+'</span></h5>';
 										str+='</li>';
 										
 								}
@@ -662,28 +662,37 @@ function buildLeadWiseOverviewDetails(result){
 					str+='<div class="row m_top5">';
 						str+='<div class="col-sm-6">';
 							str+='<p>Representations</p>';
-							//str+='<h4 style="float:left; margin-right:5px;"><b>'+result[i].petitionIds.length+'</b></h4>';
-							str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].petitionIds.length+'</a> </h4>';
+							if(result[i].estimationCost >0.0){
+								//str+='<h4 style="float:left; margin-right:5px;"><b>'+result[i].petitionIds.length+'</b></h4>';
+							str+='<h4 class="font_weight tooltipCls" title="Total Represents"><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].petitionIds.length+'</a> </h4>';
 							
 							var convertToAmt = result[i].estimationCost*100000;
 							var crores = (convertToAmt/10000000).toFixed(2);
 							str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+							}else{
+							str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">'+result[i].petitionIds.length+'</b></h5>';
+							}
+							
 						str+='</div>';
 						str+='<div class="col-sm-6">';
 							str+='<p>Works</p>';
+							if(result[i].subWorkIds.length >0){
+								str+='<h4 class="font_weight tooltipCls" title="Total Works"><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].subWorkIds.length+'</a> </h4>';
+							}else{
+								str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">'+result[i].subWorkIds.length+'</b></h5>';
+							}
 							//str+='<h4><b>'+result[i].subWorkIds.length+'</b></h4>';
-							str+='<h4 class="font_weight"><a title="Represents" href="'+wurl+'/representationRequestEntryViewMembers?searchBy=lead&desigId=0&leadId='+result[i].id+'&deptId=0&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result[i].subWorkIds.length+'</a> </h4>';
 						str+='</div>';
 					str+='</div>';
 					
 					str+='<div class="row m_top5">';
 						str+='<div class="col-sm-6">';
-							str+='<h5 class="m_top5 font_weight "><span><i class="fa fa-inr"></i> '+result[i].withCostPetitionsCount+'</span></h5>';
-						str+='<h5 class=" font_weight"><span><i class="fa fa-krw"></i> '+result[i].noCostPetitionsCount+'</span></h5>';
+							str+='<h5 class="m_top5 font_weight "><span><i class="fa fa-inr tooltipCls" title="With Cost Representations"></i> '+result[i].withCostPetitionsCount+'</span></h5>';
+						str+='<h5 class=" font_weight"><span><i class="fa fa-krw tooltipCls " title="No Cost Representations"></i> '+result[i].noCostPetitionsCount+'</span></h5>';
 						str+='</div>';
 						str+='<div class="col-sm-6">';
-							str+='<h5 class="m_top5 font_weight "><span><i class="fa fa-inr"></i> '+result[i].withCostWorksCount+'</span></h5>';
-						    str+='<h5 class=" font_weight "><span><i class="fa fa-krw"></i> '+result[i].noCostWorksCount+'</span></h5>';
+							str+='<h5 class="m_top5 font_weight "><span><i class="fa fa-inr tooltipCls" title="With Cost Works"></i> '+result[i].withCostWorksCount+'</span></h5>';
+						    str+='<h5 class=" font_weight "><span><i class="fa fa-krw tooltipCls" title="No Cost Works"></i> '+result[i].noCostWorksCount+'</span></h5>';
 						str+='</div>';
 						
 					str+='</div>';
@@ -880,15 +889,15 @@ function getReferralWiseOverviewDetails(desigId){
 					str+='<div class="col-sm-6">';
 					str+='<p><b>Representations</b></p>';
 					//str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].petitionIds.length+'</a></h4>';
-					str+='<h4><span>'+result.subList[i].petitionIds.length+'</span></h4>';
+					str+='<h4><span class ="tooltipCls" title="Total Representations">'+result.subList[i].petitionIds.length+'</span></h4>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 					str+='<p><b>Works</b></p>';
 					//str+='<h4><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referral&desigId='+result.subList[i].deptDesigId+'" target="_blank">'+result.subList[i].noOfWorks+'</a></h4>';
-					str+='<h4><span>'+result.subList[i].subWorkIds.length+'</span></h4>';
+					str+='<h4><span class="tooltipCls" title="Total Works">'+result.subList[i].subWorkIds.length+'</span></h4>';
 					 var convertToAmt = result.subList[i].estimationCost*100000;
                      var crores = (convertToAmt/10000000).toFixed(2);
-                     str+='<h5><b  data-toggle="tooltip" title="Total Budget" class="tooltipCls">('+crores+')</b></h5>';
+                     str+='<h5><b title="Total Budget" class="tooltipCls" >('+crores+')</b></h5>';
 					str+='</div>';				
 				str+='</div>';
 					
@@ -929,12 +938,12 @@ function getReferralWiseOverviewDetails(desigId){
 								str+='<td><h5><b>'+result.referrerList[i].referrerName+'</b><h5><p>'+result.referrerList[i].desigName+'</p></td>';
 								
 								if(result.referrerList[i].petitionIds.length >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.referrerList[i].petitionIds.length+'</a></td>';
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank"><span class ="tooltipCls" title ="Total Representations">'+result.referrerList[i].petitionIds.length+'</span></a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
 								if(result.referrerList[i].subWorkIds.length >0){
-									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank">'+result.referrerList[i].subWorkIds.length+'</a></td>';
+									str+='<td><a  href="'+wurl+'/representationRequestEntryViewMembers?searchBy=referralCan&desigId='+result.referrerList[i].deptDesigId+'&refCanId='+result.referrerList[i].id+'&fromDate='+currentFromDate+'&toDate='+currentToDate+'" target="_blank"><span class ="tooltipCls" title ="Total Works">'+result.referrerList[i].subWorkIds.length+'</span></a></td>';
 								}else{
 									str+='<td>-</td>';
 								}
@@ -1047,14 +1056,14 @@ function buildOfficerBlock(result,loginUsr){
 								str+='<div class="col-sm-6">';
 									str+='<h5 class="font_weight text-center">Representations</h5>';
 									if(typeof(result[i].petitionIds) != "undefined" && result[i].petitionIds.length >0)
-										str+='<h4 class="font_weight m_top10 text-center">'+result[i].petitionIds.length+'</h4>';
+										str+='<h4 class="font_weight m_top10 text-center tooltipCls" title="Total Representations">'+result[i].petitionIds.length+'</h4>';
 									else
 										str+='<h4 class="font_weight m_top10 text-center">-</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-6">';
 									str+='<h5 class="font_weight text-center">Works</h5>';
 									if(typeof(result[i].subWorkCnt) != "undefined" && result[i].subWorkCnt >0)
-										str+='<h4 class="font_weight m_top10 text-center">'+result[i].subWorkCnt+'</h4>';
+										str+='<h4 class="font_weight m_top10 text-center tooltipCls" title="Total Works">'+result[i].subWorkCnt+'</h4>';
 									else
 										str+='<h4 class="font_weight m_top10 text-center">-</h4>';
 								str+='</div>';
