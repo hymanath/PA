@@ -22,10 +22,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.itgrids.dao.IWebServiceDataDAO;
+import com.itgrids.dto.EmailDetailsVO;
 import com.itgrids.dto.InputVO;
 import com.itgrids.dto.SolidWasteManagementVO;
 import com.itgrids.dto.WebServiceDataVO;
 import com.itgrids.model.WebServiceData;
+import com.itgrids.service.IMailService;
 import com.itgrids.service.ISolidWasteManagementService;
 import com.itgrids.utils.CommonMethodsUtilService;
 import com.itgrids.utils.DateUtilService;
@@ -44,6 +46,8 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 	private DateUtilService dateUtilService;
 	@Autowired
 	private IWebServiceDataDAO webServiceDataDAO;
+	@Autowired
+	private IMailService mailService;
 
 	/*
 	 * Date : 7/11/2017
@@ -60,15 +64,16 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&filterType="
 						+ inputVO.getFilterType() + "&filterId=" + inputVO.getFilterId()
-						+ "&subFilterType=assembly&subFilterId=" + inputVO.getSubFilterId() +"&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
+						+ "&subFilterType=assembly&subFilterId=" + inputVO.getSubFilterId()
+						+ "&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("constituency"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
 						+ inputVO.getLocationId() + "&locationType=assembly&filterType=" + inputVO.getFilterType()
-						+ "&filterId=" + inputVO.getFilterId() + "&fromDate=1-06-2017&toDate="
-						+ inputVO.getToDate();
+						+ "&filterId=" + inputVO.getFilterId() + "&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
 			else if (inputVO.getLocationType() != null && inputVO.getLocationType().equalsIgnoreCase("district"))
 				url = "http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
-						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() +"&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
+						+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType()
+						+ "&fromDate=1-06-2017&toDate=" + inputVO.getToDate();
 
 			webResource = commonMethodsUtilService.getWebResourceObject(url.toString());
 			ClientResponse response = webResource.accept("application/json").type("application/json")
@@ -79,10 +84,14 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
 					output = output.replaceAll("<br />", "");
-					output = output.replaceAll("<b>Warning</b>:  Division by zero in <b>/var/www/html/survey/api/swmapi.php</b> on line <b>326</b>", "");
+					output = output.replaceAll(
+							"<b>Warning</b>:  Division by zero in <b>/var/www/html/survey/api/swmapi.php</b> on line <b>326</b>",
+							"");
 					output = output.replaceAll("<br />", "");
-					output = output.replaceAll("<b>Warning</b>:  Division by zero in <b>/var/www/html/survey/api/swmapi.php</b> on line <b>403</b>", "");
-					
+					output = output.replaceAll(
+							"<b>Warning</b>:  Division by zero in <b>/var/www/html/survey/api/swmapi.php</b> on line <b>403</b>",
+							"");
+
 					JSONArray finalArray = new JSONArray(output);
 					if (finalArray != null && finalArray.length() > 0) {
 						for (int i = 0; i < finalArray.length(); i++) {
@@ -186,10 +195,10 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 		try {
 
-			
 			WebResource webResource = commonMethodsUtilService
-		.getWebResourceObject("http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
-				+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType() + "&fromDate=1-06-2017&toDate=" + inputVO.getToDate());
+					.getWebResourceObject("http://pris.ap.gov.in/survey/api/swmapi.php?getSwmInfo=true&locationId="
+							+ inputVO.getLocationId() + "&locationType=" + inputVO.getLocationType()
+							+ "&fromDate=1-06-2017&toDate=" + inputVO.getToDate());
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.get(ClientResponse.class);
 
@@ -198,7 +207,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			} else {
 				String output = response.getEntity(String.class);
 				if (output != null && !output.isEmpty()) {
-										JSONArray finalArray = new JSONArray(output);
+					JSONArray finalArray = new JSONArray(output);
 					if (finalArray != null && finalArray.length() > 0) {
 						for (int i = 0; i < finalArray.length(); i++) {
 							JSONObject jObj = (JSONObject) finalArray.get(i);
@@ -294,18 +303,24 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				solidWasteManagementVO.setOutTime(solidWasteManagementVO.getOutTime() + rfidData.getOutTime());
 			}
 		} catch (JSONException e) {
-			LOG.error("Exception raised at getSolidWasteManagementOverAllCounts - SolidWasteManagementService service", e);
+			LOG.error("Exception raised at getSolidWasteManagementOverAllCounts - SolidWasteManagementService service",
+					e);
 		}
 		return solidWasteManagementVO;
 	}
 
 	public WebServiceDataVO saveRfidTrackingOverAllTargets() {
-
+		// if (record.has("problemkey") && !record.isNull("problemkey")) {
 		WebServiceDataVO webServiceDataVO = new WebServiceDataVO();
-
+		EmailDetailsVO str = new EmailDetailsVO();
 		String jsonList = getRfidTrackingData();
-		jsonList = jsonList.replaceAll("\\<.*?\\>", "");
-		jsonList = jsonList.replaceAll("Notice:  Undefined index: districtId in /var/www/html/api/swm/index.php on line 68", "");
+		if (jsonList.toString().equals("[]")) {
+			// str = mailService.sendEmailStatusForJob("Today RFID(webservice
+			// data) is not comming from Etrolabs");
+		} else
+			jsonList = jsonList.replaceAll("\\<.*?\\>", "");
+		jsonList = jsonList
+				.replaceAll("Notice:  Undefined index: districtId in /var/www/html/api/swm/index.php on line 68", "");
 
 		try {
 			WebServiceData model = new WebServiceData();
@@ -315,9 +330,9 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			model.setIsDeleted("N");
 			model.setDataDate(dateUtilService.getCurrentDateAndTime());
 			model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
-		
-			WebServiceData rfidData =null;
-			if(jsonList!=null && jsonList.length()>3 && !jsonList.isEmpty()){
+
+			WebServiceData rfidData = null;
+			if (jsonList != null && jsonList.length() > 3 && !jsonList.isEmpty()) {
 				rfidData = webServiceDataDAO.save(model);
 			}
 			// WebServiceData data = webServiceDataDAO.get(webserviceId);
@@ -328,6 +343,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			} else {
 				webServiceDataVO.setStatus("failure");
 			}
+
 		} catch (Exception e) {
 			LOG.error("Exception occured at saveRfidTrackingOverAllTargets() in SolidWasteManagementService class", e);
 			webServiceDataVO.setStatus("failure");
@@ -341,9 +357,9 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			Date fromDate = dateUtilService.getCurrentDateAndTime();
 			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 			String dateStr = sdf.format(fromDate);
-			WebResource webResource = commonMethodsUtilService.getWebResourceObject(
-					"http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&fromDate="
-							+ dateStr + "&toDate=" + dateStr + "");
+			WebResource webResource = commonMethodsUtilService
+					.getWebResourceObject("http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&fromDate=" + dateStr
+							+ "&toDate=" + dateStr + "");
 			ClientResponse response = webResource.accept("application/json").type("application/json")
 					.get(ClientResponse.class);
 			if (response.getStatus() != 200) {
@@ -372,10 +388,10 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			Map<Long, SolidWasteManagementVO> locationMap = new HashMap<Long, SolidWasteManagementVO>();
 			// Set<Long> gpIds = new HashSet<Long>();
 			Set<SolidWasteManagementVO> blockSet = new HashSet<SolidWasteManagementVO>();
-			Long webserviceId=0l;
+			Long webserviceId = 0l;
 			webserviceId = webServiceDataDAO.getMaxidforRFIDService(fromDate);
-			if(webserviceId ==null || webserviceId.longValue() ==0){
-				webserviceId =webServiceDataDAO.getMaxidforRFIDService(null);
+			if (webserviceId == null || webserviceId.longValue() == 0) {
+				webserviceId = webServiceDataDAO.getMaxidforRFIDService(null);
 			}
 			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
 
@@ -517,10 +533,10 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			}
 			Map<Long, List<SolidWasteManagementVO>> gpMap = new HashMap<Long, List<SolidWasteManagementVO>>();
 			Map<Long, SolidWasteManagementVO> locationMap = new HashMap<Long, SolidWasteManagementVO>();
-			Long webserviceId=0l;
+			Long webserviceId = 0l;
 			webserviceId = webServiceDataDAO.getMaxidforRFIDService(fromDate);
-			if(webserviceId ==null || webserviceId.longValue() ==0){
-				webserviceId =webServiceDataDAO.getMaxidforRFIDService(null);
+			if (webserviceId == null || webserviceId.longValue() == 0) {
+				webserviceId = webServiceDataDAO.getMaxidforRFIDService(null);
 			}
 			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
 			if (rfidList != null && rfidList.length() > 0) {
@@ -560,8 +576,7 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 										gpWiseBlockList.add(blockVO);
 										gpMap.put(jObj.getLong("gpID"), gpWiseBlockList);
-									}
-									else {
+									} else {
 										SolidWasteManagementVO matchVO = new SolidWasteManagementVO();
 										matchVO.setTotalRfidTags(
 												jObj.getLong("totalRfidTags") + matchVO.getTotalRfidTags());
@@ -612,15 +627,18 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 
 					});
 				}
-			/*	for (SolidWasteManagementVO solidWasteManagementVO : finalList) {
-					Collections.sort(finalList, new Comparator<SolidWasteManagementVO>() {
-						public int compare(SolidWasteManagementVO o1, SolidWasteManagementVO o2) {
-							return o1.getLocationName().compareTo(o2.getLocationName());
-
-						}
-
-					});
-				}*/
+				/*
+				 * for (SolidWasteManagementVO solidWasteManagementVO :
+				 * finalList) { Collections.sort(finalList, new
+				 * Comparator<SolidWasteManagementVO>() { public int
+				 * compare(SolidWasteManagementVO o1, SolidWasteManagementVO o2)
+				 * { return
+				 * o1.getLocationName().compareTo(o2.getLocationName());
+				 * 
+				 * }
+				 * 
+				 * }); }
+				 */
 
 			}
 
@@ -641,5 +659,35 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			LOG.error("Exception raised at getGpWiseRfidTrackingOverData - SolidWasteManagementService service", e);
 		}
 		return finalList;
+	}
+
+	public String emailNotificationForRfidTracking() {
+		String output = null;
+		EmailDetailsVO str = new EmailDetailsVO();
+		try {
+			Date fromDate = dateUtilService.getCurrentDateAndTime();
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			String dateStr = sdf.format(fromDate);
+			WebResource webResource = commonMethodsUtilService
+					.getWebResourceObject("http://pris.ap.gov.in/api/swm/index.php?getSwmInfo=1&fromDate=" + dateStr
+							+ "&toDate=" + dateStr + "");
+			ClientResponse response = webResource.accept("application/json").type("application/json")
+					.get(ClientResponse.class);
+
+			if (response.getStatus() != 200) {
+				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
+			} else {
+				output = response.getEntity(String.class);
+			}
+			if (output.toString().equals("[]") || output.toString().equals(null)) {
+				str = mailService.sendEmailStatusForJob("Today RFID(webservice data)  is  not comming from Etrolabs");
+			}
+		
+		} catch (Exception e) {
+			LOG.error("Exception occured at getRfidTrackingOverAllTargetsData() in  SolidWasteManagementService class",
+					e);
+		}
+		return output;
+
 	}
 }

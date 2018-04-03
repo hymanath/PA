@@ -14,10 +14,6 @@ public interface ISolidWasteManagementService
 	public  WebServiceDataVO saveRfidTrackingOverAllTargets(); 
 	public List<SolidWasteManagementVO> getRfidTrackingOverAllTargetsData(InputVO inputVO) throws ParseException;
     public List<SolidWasteManagementVO> getGpWiseRfidTrackingOverData(InputVO  inputVO) throws ParseException;
-	
-	
-	
-	
-	
+    public String emailNotificationForRfidTracking();
 }
 
