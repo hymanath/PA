@@ -1,7 +1,7 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var levelWiseOverviewArr = ['state','district','constituency','mandal'];
 var currentYear="";
-if(moment().format('MM').toString >= "04"){
+if(moment().format('MM').toString < "04"){
 	currentYear = moment().year()
 }else{
 	currentYear = moment().year()+1;
@@ -34,7 +34,7 @@ function getAllSchemes(){
 	}).done(function(result){
 		if(result != null && result.length >0){
 			for(var i in result){
-				$("#schemeDivId").append("<option value="+result[i].programCode+" selected>"+result[i].programName+"</option>");
+				$("#schemeDivId").append("<option value="+result[i].subGrantId+" selected>"+result[i].programName+'-'+result[i].subGrantName+"</option>");
 				
 			}
 			$('#schemeDivId').multiselect("destroy");
@@ -1058,7 +1058,7 @@ $(document).on("click",".schemsClickView",function(){
 		$("#modalSchemsTable").html('');
 		$("#modalAmountSchemeTable").html('');
 		$("#modalHabliHeadingId").html("<h4 class='text-capital'>"+locationName+"&nbsp;&nbsp;"+locationType+"&nbsp;&nbsp;"+"("+workStatus+")&nbsp;&nbsp;Overview</h4>");
-		getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locationType);
+		getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locationType,"");
 		getAmountWiseEncWorksCount(workStatus,totalCount,locationValue,locationType);
 	}
 	
@@ -1067,7 +1067,7 @@ $(document).on("click",".schemsClickView",function(){
 
 // get Onclcick overAll Works
 
-function getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locationType){
+function getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locationType,amountRange){
 	var yearVal="";
 	var financialVal =$("#financialYearId").val();
 	if(financialVal != 0){
@@ -1093,7 +1093,8 @@ function getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locatio
 		workStatus:workStatus,
 		locationType:locationType,
 		locationValue:locationValue,
-		schemeIdStr:schemeValArr
+		schemeIdStr:schemeValArr,
+		amountRange:amountRange
 	}
 	
 	$.ajax({                
@@ -1107,7 +1108,7 @@ function getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locatio
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount);
+			buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount,amountRange);
 		}else{
 			
 			$("#modalSchemsTable").html('No Data Available');
@@ -1116,88 +1117,110 @@ function getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locatio
 	});
 }
 
-function buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount){
+function buildOnclickWorkSchemsDetails(result,status,workStatus,totalCount,amountRange){
 	var tableView='';
-	tableView+='<div class="table-responsive m_top20">';
-	tableView+='<table class="table table-bordered" id="dataTableSchems">';
-		tableView+='<thead>';
-		tableView+='<tr>';
-				tableView+='<th>Work ID</th>';
-				tableView+='<th>Work NAME</th>';
-				tableView+='<th>Grant Type</th>';
-				tableView+='<th>Sub Grant Type</th>';
-				tableView+='<th>DISTRICT</th>';
-				tableView+='<th>CONSTITUENCY</th>';
-				tableView+='<th>MANDAL</th>';
-				tableView+='<th>HABITATIONS NAMES</th>';
-				tableView+='<th>SANCTIONED AMOUNT(In Lakhs)</th>';
-				if(workStatus !="not grounded"){
-				tableView+='<th>TARGET DATE</th>';
-				tableView+='<th>GROUNDED DATE</th>';
-				tableView+='<th>COMPLETION DATE</th>';
+	tableView+='<div class="row m_top20">';
+		tableView+='<div class="panel panel-default panel-black">';
+			tableView+='<div class="panel-heading">';
+				if(amountRange !=null && ( amountRange.length==0 || amountRange =="")){
+					tableView+='<h5 class="font_weight">OverAll Works</h5>';
 				}else{
-					tableView+='<th>ADMIN DATE</th>';
-					tableView+='<th>TARGET DATE</th>';
+					var range=""
+					if(amountRange=="0-499999"){
+						range="Less&nbsp;Than&nbsp;5,00,000";
+					}else if(amountRange=="500000-999999"){
+						range="5,00,000-10,00,000";
+					}else if(amountRange=="1000000-4999999"){
+						range="10,00,000-50,00,000";
+					}else if(amountRange=="5000000-above"){
+						range="50,00,000&nbsp;&&nbsp;Above";
+					}
+					tableView+='<h5 class="font_weight">'+range+' Works</h5>';
 				}
 				
-			tableView+='</tr>';
-			
-		tableView+='</thead>';
-		tableView+='<tbody>';
-		for(var i in result){
+			tableView+='</div>';
+		tableView+='</div>';
+	tableView+='</div>';
+	tableView+='<div class="table-responsive m_top10">';
+		tableView+='<table class="table table-bordered" id="dataTableSchems">';
+			tableView+='<thead>';
 			tableView+='<tr>';
-					tableView+='<td>'+result[i].workId+'</td>';
-					tableView+='<td>'+result[i].workName+'</td>';
-					tableView+='<td>'+result[i].grantName+'</td>';
-					tableView+='<td>'+result[i].subGrantName+'</td>';
-					tableView+='<td>'+result[i].districtName+'</td>';
-					tableView+='<td>'+result[i].constituencyname+'</td>';
-					tableView+='<td>'+result[i].mandalName+'</td>';
-					tableView+='<td>'+result[i].habCode+'</td>';
-					if(typeof result[i].sanctionedAmount === undefined ||typeof result[i].sanctionedAmount =="undefined" || result[i].sanctionedAmount =='' ){
-						tableView+='<td>-</td>';
-					}else{
-						tableView+='<td>'+parseFloat(result[i].sanctionedAmount/100000).toFixed(2)+'</td>';
-					}
+					tableView+='<th>Work ID</th>';
+					tableView+='<th>Work NAME</th>';
+					tableView+='<th>Grant Type</th>';
+					tableView+='<th>Sub Grant Type</th>';
+					tableView+='<th>DISTRICT</th>';
+					tableView+='<th>CONSTITUENCY</th>';
+					tableView+='<th>MANDAL</th>';
+					tableView+='<th>HABITATIONS NAMES</th>';
+					tableView+='<th>SANCTIONED AMOUNT(In Lakhs)</th>';
 					if(workStatus !="not grounded"){
-						if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
-							tableView+='<td>-</td>';
-						}else{
-							tableView+='<td>'+result[i].targetDate+'</td>';
-						}if(typeof result[i].groundedDate === undefined ||typeof result[i].groundedDate =="undefined" || result[i].groundedDate =='' ){
-							tableView+='<td>-</td>';
-						}else{
-							tableView+='<td>'+result[i].groundedDate+'</td>';
-						}if(typeof result[i].completedDate === undefined ||typeof result[i].completedDate =="undefined" || result[i].completedDate =='' ){
-							tableView+='<td>-</td>';
-						}else{
-							tableView+='<td>'+result[i].completedDate+'</td>';
-						}
-						
+					tableView+='<th>TARGET DATE</th>';
+					tableView+='<th>GROUNDED DATE</th>';
+					tableView+='<th>COMPLETION DATE</th>';
 					}else{
-						if(typeof result[i].adminDate === undefined ||typeof result[i].adminDate =="undefined" || result[i].adminDate =='' ){
-							tableView+='<td>-</td>';
-						}else{
-							tableView+='<td>'+result[i].adminDate+'</td>';
-						}
-						if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
-							tableView+='<td>-</td>';
-						}else{
-						tableView+='<td>'+result[i].targetDate+'</td>';
-						}
+						tableView+='<th>ADMIN DATE</th>';
+						tableView+='<th>TARGET DATE</th>';
 					}
-					
 					
 				tableView+='</tr>';
-		}
-		tableView+='</tbody>';
-	tableView+='</table>';
+				
+			tableView+='</thead>';
+			tableView+='<tbody>';
+			for(var i in result){
+				tableView+='<tr>';
+						tableView+='<td>'+result[i].workId+'</td>';
+						tableView+='<td>'+result[i].workName+'</td>';
+						tableView+='<td>'+result[i].grantName+'</td>';
+						tableView+='<td>'+result[i].subGrantName+'</td>';
+						tableView+='<td>'+result[i].districtName+'</td>';
+						tableView+='<td>'+result[i].constituencyname+'</td>';
+						tableView+='<td>'+result[i].mandalName+'</td>';
+						tableView+='<td>'+result[i].habCode+'</td>';
+						if(typeof result[i].sanctionedAmount === undefined ||typeof result[i].sanctionedAmount =="undefined" || result[i].sanctionedAmount =='' ){
+							tableView+='<td>-</td>';
+						}else{
+							tableView+='<td>'+parseFloat(result[i].sanctionedAmount/100000).toFixed(2)+'</td>';
+						}
+						if(workStatus !="not grounded"){
+							if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].targetDate+'</td>';
+							}if(typeof result[i].groundedDate === undefined ||typeof result[i].groundedDate =="undefined" || result[i].groundedDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].groundedDate+'</td>';
+							}if(typeof result[i].completedDate === undefined ||typeof result[i].completedDate =="undefined" || result[i].completedDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].completedDate+'</td>';
+							}
+							
+						}else{
+							if(typeof result[i].adminDate === undefined ||typeof result[i].adminDate =="undefined" || result[i].adminDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+								tableView+='<td>'+result[i].adminDate+'</td>';
+							}
+							if(typeof result[i].targetDate === undefined ||typeof result[i].targetDate =="undefined" || result[i].targetDate =='' ){
+								tableView+='<td>-</td>';
+							}else{
+							tableView+='<td>'+result[i].targetDate+'</td>';
+							}
+						}
+						
+						
+					tableView+='</tr>';
+			}
+			tableView+='</tbody>';
+		tableView+='</table>';
 	tableView+='</div>';
 	$("#modalSchemsTable").html(tableView);
 	$("#dataTableSchems").dataTable({
 		"order": [ 0, 'desc' ],
-		"iDisplayLength" : 15,
-		"aLengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
+		"iDisplayLength" : 10,
+		"aLengthMenu": [[10, 20, 40, -1], [10, 20, 40, "All"]],
 		"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
@@ -1407,7 +1430,7 @@ function buildgettAllEncWorksBySchemeDetails(result){
 	tableView+='<table class="table table-bordered" id="dataTableSchems1">';
 		tableView+='<thead>';
 		tableView+='<tr>';
-			tableView+='<th>GRANT&nbsp;NAME</th>';
+			tableView+='<th>GRANT&nbsp;NAME-SUB&nbsp;GRANT</th>';
 			tableView+='<th>ADMIN SANCTIONED</th>';
 			tableView+='<th>TECHNICALLY SANCTIONED</th>';
 			tableView+='<th>ENTRUSTED</th>';
@@ -1422,7 +1445,7 @@ function buildgettAllEncWorksBySchemeDetails(result){
 		tableView+='<tbody>';
 		for(var i in result){
 			tableView+='<tr>';
-					tableView+='<td>'+result[i].locationName+'</td>';
+					tableView+='<td>'+result[i].districtName+'-'+result[i].locationName+'</td>';
 					tableView+='<td>'+result[i].adminSanctionCount+'</td>';
 					tableView+='<td>'+result[i].technicallySanctionedCount+'</td>';
 					tableView+='<td>'+result[i].totalWorksEntrusted+'</td>';
@@ -1496,7 +1519,7 @@ function getAmountWiseEncWorksCount(workStatus,totalCount,locationValue,location
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildAmountWiseEncWorks(result,status,workStatus,totalCount);
+			buildAmountWiseEncWorks(result,status,workStatus,totalCount,locationValue,locationType);
 		}else{
 			
 			$("#modalAmountSchemeTable").html('No Data Available');
@@ -1505,7 +1528,7 @@ function getAmountWiseEncWorksCount(workStatus,totalCount,locationValue,location
 	});
 }
 
-function buildAmountWiseEncWorks(result,status,workStatus,totalCount){
+function buildAmountWiseEncWorks(result,status,workStatus,totalCount,locationValue,locationType){
 	
 	var tableView='';
 	tableView+='<div class="table-responsive">';
@@ -1515,35 +1538,45 @@ function buildAmountWiseEncWorks(result,status,workStatus,totalCount){
 			tableView+='<th>AMOUNT&nbsp;RANGE</th>';
 			for(var i in result){
 				if(result[i].workName=="0-499999"){
-					tableView+='<td align="center">Less&nbsp;Than&nbsp;5,00,000</td>';
-					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
+					tableView+='<td align="center" class=>Less&nbsp;Than&nbsp;5,00,000</td>';
 				}else if(result[i].workName=="500000-999999"){
 					tableView+='<td align="center">5,00,000-10,00,000</td>';
-					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
 				}else if(result[i].workName=="1000000-4999999"){
 					tableView+='<td align="center">10,00,000-50,00,000</td>';
-					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
 				}else if(result[i].workName=="5000000-above"){
 					tableView+='<td align="center">50,00,000&nbsp;&&nbsp;Above</td>';
-					//tableView+='<td>'+result[i].adminSanctionCount+'</td>';
 				}
 		}
+		
 		tableView+='</tr>';
 		tableView+='<tr>';
 			tableView+='<th>Works&nbsp;Count</th>';
 			for(var i in result){
 				if(result[i].workName=="0-499999"){
-					//tableView+='<td>Less&nbsp;Than&nbsp;5,00,000</td>';
-					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+					if(result[i].adminSanctionCount !=0){
+						tableView+='<td align="center" class="schemsClickView1"  attr_location_type="'+locationType+'" attr_filter_value="'+locationValue+'"attr_total_count = "'+result[i].adminSanctionCount+'" attr_type = "'+workStatus+'" attr_location_name="'+result[i].workName+'" style="cursor:pointer;text-decoration:underline">'+result[i].adminSanctionCount+'</td>';
+					}else{
+						tableView+='<td>-</td>';
+					}
+					
 				}else if(result[i].workName=="500000-999999"){
-					//tableView+='<td>5,00,000-10,00,000</td>';
-					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+					if(result[i].adminSanctionCount !=0){
+						tableView+='<td align="center" class="schemsClickView1"  attr_location_type="'+locationType+'" attr_filter_value="'+locationValue+'"attr_total_count = "'+result[i].adminSanctionCount+'" attr_type = "'+workStatus+'" attr_location_name="'+result[i].workName+'" style="cursor:pointer;text-decoration:underline">'+result[i].adminSanctionCount+'</td>';
+					}else{
+						tableView+='<td>-</td>';
+					}
 				}else if(result[i].workName=="1000000-4999999"){
-					//tableView+='<td>10,00,000-50,00,000</td>';
-					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+					if(result[i].adminSanctionCount !=0){
+						tableView+='<td align="center" class="schemsClickView1"  attr_location_type="'+locationType+'" attr_filter_value="'+locationValue+'"attr_total_count = "'+result[i].adminSanctionCount+'" attr_type = "'+workStatus+'" attr_location_name="'+result[i].workName+'" style="cursor:pointer;text-decoration:underline">'+result[i].adminSanctionCount+'</td>';
+					}else{
+						tableView+='<td>-</td>';
+					}
 				}else if(result[i].workName=="5000000-above"){
-					//tableView+='<td>50,00,000&nbsp;&&nbsp;Above</td>';
-					tableView+='<td align="center">'+result[i].adminSanctionCount+'</td>';
+					if(result[i].adminSanctionCount !=0){
+						tableView+='<td align="center" class="schemsClickView1"  attr_location_type="'+locationType+'" attr_filter_value="'+locationValue+'"attr_total_count = "'+result[i].adminSanctionCount+'" attr_type = "'+workStatus+'" attr_location_name="'+result[i].workName+'" style="cursor:pointer;text-decoration:underline">'+result[i].adminSanctionCount+'</td>';
+					}else{
+						tableView+='<td>-</td>';
+					}
 				}
 		}
 		tableView+='</tr>';
@@ -1551,6 +1584,19 @@ function buildAmountWiseEncWorks(result,status,workStatus,totalCount){
 	tableView+='</table>';
 	tableView+='</div>';
 	$("#modalAmountSchemeTable").html(tableView);
-	
-	
 }
+	$(document).on("click",".schemsClickView1",function(){
+	
+	var status = $(this).attr("attr_status");
+	var totalCount=$(this).attr("attr_total_count");
+	var workStatus=$(this).attr("attr_type");
+	var locationValue = $(this).attr("attr_filter_value");
+	var locationType=$(this).attr("attr_location_type");
+	var districtVal=$(this).attr("attr_district_val");
+	var locationName=$(this).attr("attr_location_name");
+	$("#modalSchemsTable").html('');
+	getOnclickWorkSchemsDetails(workStatus,totalCount,locationValue,locationType,locationName);
+	//getAmountWiseEncWorksCount(workStatus,totalCount,locationValue,locationType);
+	
+});
+	

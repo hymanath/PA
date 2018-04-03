@@ -1,7 +1,12 @@
 	//Angular Start  getAlertsOfCategoryByStatusWise()
-var month =moment().format("M");
-	var glStartDate = "01-04-"+moment().subtract(4, 'years').format("YYYY");
-	var	glEndDate = "01-04-"+moment().format("YYYY");
+var currentYear="";
+if(moment().format('MM').toString < "04"){
+	currentYear = moment().year()
+}else{
+	currentYear = moment().year()+1;
+}
+	var glStartDate = "01-04-2014";
+	var	glEndDate = "01-04-"+currentYear;
 	var blocksArr = [{name:'Coverage Status Of Habitation',id:'habitation',img:'coverage_status.png'},
 					 {name:'Key Performance',id:'performance',img:'key_performance.png'},
 					 {name:'<p><span><img src="Assests/icons/alert_status.png"/> Jalavani </span></p>',id:'jalavani',img:'alert_status.png'},
@@ -113,88 +118,81 @@ var month =moment().format("M");
 			
 		} 
 	}
-	function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue,districtValue){
-		//$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
-		var typeVal="";
-		if(type =="graph"){
-			$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
-			$("#habitationWorks").html(spinner);
-			typeVal ="graph"
-		}else{
-			for(var k in divId){
-				$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
-			}
+function getSchemeWiseWorkDetails(type,locationType,divId,filterType,filterValue,districtValue){
+	//$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
+	var typeVal="";
+	if(type =="graph"){
+		$("#habitationWorksPWS,#habitationWorksCPWS").html(spinner);
+		$("#habitationWorks").html(spinner);
+		typeVal ="graph"
+	}else{
+		for(var k in divId){
+			$("#"+locationType+"BlockId"+divId[k].id).html(spinner);
 		}
-		var schemeValArr=[];
-		var schemeVal =$("#schemeDivId").val();
-		if(schemeVal==null || schemeVal==""){
-			schemeValArr=[];
-		}else{
-			for(var i in schemeVal){
-				var schemeId="";
-				if(schemeVal[i].length ==1){
-					schemeId="0"+schemeVal[i]
+	}
+	var schemeValArr=[];
+	var schemeVal =$("#schemeDivId").val();
+	if(schemeVal==null || schemeVal==""){
+		schemeValArr=[];
+	}else{
+		for(var i in schemeVal){
+			var schemeId="";
+			if(schemeVal[i].length ==1){
+				schemeId="0"+schemeVal[i]
+			}else{
+				schemeId=schemeVal[i];
+			}
+			schemeValArr.push(schemeId);
+		}
+	}
+	var yearVal="";
+	var financialVal =$("#financialYearId").val();
+	if(financialVal != 0){
+		 yearVal=financialVal;
+	}
+	var json = {
+		fromDateStr:glStartDate,
+		toDateStr:glEndDate,
+		year:yearVal,
+		locationType:locationType,
+		type:typeVal,
+		filterType:filterType,
+		filterValue:filterValue,
+		districtValue:districtValue,
+		schemeIdStr:schemeValArr
+	}
+		  
+	$.ajax({
+		url: 'getLocationWiseSchemeWiseWorkDetails',
+		data: JSON.stringify(json),
+		type: "POST",
+		dataType: 'json', 
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		},
+		success: function(ajaxresp){
+			if(ajaxresp !=null && ajaxresp.length>0){
+				if(type == "graph"){
+					buildSchemeWiseWorkDetailsforState(ajaxresp);
 				}else{
-					schemeId=schemeVal[i];
+					buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"completeOverview");
 				}
-				schemeValArr.push(schemeId);
-			}
-		}
-		var yearVal="";
-		var financialVal =$("#financialYearId").val();
-		if(financialVal != 0){
-			 yearVal=financialVal;
-		}
-		var json = {
-			  fromDateStr:glStartDate,
-			  toDateStr:glEndDate,
-			  year:yearVal,
-			  locationType:locationType,
-			  type:typeVal,
-			  filterType:filterType,
-			  filterValue:filterValue,
-			  districtValue:districtValue,
-			  schemeIdStr:schemeValArr
-		  }
-			  var url ='';
-			  if(type == "graph"){
-				  //url='getLocationWiseSchemeWiseWorkDetails';
-				  url='getLocationWiseSchemeWiseWorkDetails';
-			  }else{
-				   url='getLocationWiseSchemeWiseWorkDetails';
-			  }
-			$.ajax({
-				url: url,
-				data: JSON.stringify(json),
-				type: "POST",
-				dataType: 'json', 
-				beforeSend: function(xhr) {
-					xhr.setRequestHeader("Accept", "application/json");
-					xhr.setRequestHeader("Content-Type", "application/json");
-				},
-				success: function(ajaxresp){
-					if(ajaxresp !=null && ajaxresp.length>0){
-						if(type == "graph"){
-							//buildSchemeWiseWorkDetails(ajaxresp);
-							buildSchemeWiseWorkDetailsforState(ajaxresp);
-						}else{
-							buildTableForHabitationCoverage(ajaxresp,locationType,divId,'habitations',"completeOverview");
-						}
-						
-					}else{
-						if(type == "graph"){
-							$("#habitationWorks").html("No Data Available");
-							$("#habitationWorksPWS,#habitationWorksCPWS").html("No Data Available");
-						}else{
-							for(var k in divId){
-								$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
-							}
-						}
-						
+				
+			}else{
+				if(type == "graph"){
+					$("#habitationWorks").html("No Data Available");
+					$("#habitationWorksPWS,#habitationWorksCPWS").html("No Data Available");
+				}else{
+					for(var k in divId){
+						$("#"+locationType+"BlockId"+divId[k].id).html("No Data Available");
 					}
 				}
-			});
-		  }
+				
+			}
+		}
+	});
+}
 		  
 function buildSchemeWiseWorkDetailsforState(result){
 	var PWSAdminSanctionCount ="";
@@ -1313,36 +1311,38 @@ function selectBox(id){
 			});
 		}
 	
-  $("#dateRangePickerAUM").daterangepicker({
-  opens: 'left',
-  startDate: glStartDate,
-  endDate: glEndDate,
-locale: {
-  format: 'DD-MM-YYYY'
-},
+$("#dateRangePickerAUM").daterangepicker({
+	opens: 'left',
+	startDate: glStartDate,
+	endDate: glEndDate,
+	locale: {
+	  format: 'DD-MM-YYYY'
+	},
 ranges: {
-    'All':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"), moment().add(10, 'years').endOf('year').format("DD-MM-YYYY")],
-    'Today' : [moment(), moment()],
-	   'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-	   'This Month': [moment().startOf('month'), moment()],
-	   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-	   'Last 3 Months': [moment().subtract(3, 'month'), moment()],
-	   'This Year': [moment().startOf('Year'), moment()],
-	   'Last 1 Year': [moment().subtract(1, 'Year'), moment()]
+		'All':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"), moment().add(10, 'years').endOf('year').format("DD-MM-YYYY")],
+		'2014 To Till Now':["01-04-2014", moment().format("DD-MM-YYYY")],
+		'Today' : [moment(), moment()],
+		'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+		'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		'This Month': [moment().startOf('month'), moment()],
+		'This Year': [moment().startOf('Year'), moment()],
+		'Last 1 Year': [moment().subtract(1, 'Year'), moment()],
+		'Last 2 Year': [moment().subtract(2, 'Year'), moment()],
+		'Last 3 Year': [moment().subtract(3, 'Year'), moment()]	
     }
   });
     var dates= $("#dateRangePickerAUM").val();
 var pickerDates = glStartDate+' - '+glEndDate
   if(dates == pickerDates)
   {
-    $("#dateRangePickerAUM").val('All');
+    $("#dateRangePickerAUM").val('2014 To Till Now');
   }
   $('#dateRangePickerAUM').on('apply.daterangepicker', function(ev, picker) {
 glStartDate = picker.startDate.format('DD-MM-YYYY')
 glEndDate = picker.endDate.format('DD-MM-YYYY')
-if(picker.chosenLabel == 'All')
+if(picker.chosenLabel == '2014 To Till Now')
 {
-  $("#dateRangePickerAUM").val('All');
+  $("#dateRangePickerAUM").val('2014 To Till Now');
 }
 $("#financialYearId").val(0);
 $("#financialYearId").trigger('chosen:updated');
@@ -1368,13 +1368,14 @@ $("#financialYearId").trigger('chosen:updated');
 		}
 	}).done(function(result){
 		$("#financialYearId").append("<option value='0'>All Financial Years</option>");
+		$("#financialYearId").append("<option value='2003'>2014-"+currentYear+"</option></option>");
 		if(result != null && result.length >0){
 			for(var i in result){
 				var value = result[i].financialYear.split('-');
 				$("#financialYearId").append("<option value="+value[0]+">"+result[i].financialYear+"</option>");
 				
 			}
-			$("#financialYearId").val('0');
+			$("#financialYearId").val('2003');
 		}
 		
 		$("#financialYearId").chosen();
