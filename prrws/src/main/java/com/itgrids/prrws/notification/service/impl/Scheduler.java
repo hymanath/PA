@@ -222,7 +222,7 @@ public class Scheduler {
 		} else
 			return;
 	}
-	@Scheduled(cron ="0 10 * * * ")	
+	@Scheduled(cron ="0 10 * * * ?")	
 	public void runTheSchedulerForeEmailNotification() {
 		if (IConstants.DEFAULT_SCHEDULER_SEVER.equalsIgnoreCase(IConstants.SERVER)) {
 			LOG.error("Cron Job For SWM EmailNotification Started");
