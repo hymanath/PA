@@ -332,5 +332,6 @@ public interface IWebServiceHandlerService {
 	public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId);
 	public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId,Long districtId,String satisfiedStatus);
 	public List<BasicVO> getJalavaniIvrRespondantsGraphDetailsInfo(String startDateStr,String endDateStr);
+	public JSONObject createNotificationAlert(JSONObject json);
 }
 

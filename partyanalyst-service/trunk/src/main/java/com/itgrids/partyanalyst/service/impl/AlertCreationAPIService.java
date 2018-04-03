@@ -23,6 +23,7 @@ import com.itgrids.partyanalyst.dao.IAlertCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertDAO;
 import com.itgrids.partyanalyst.dao.IAlertDocumentDAO;
 import com.itgrids.partyanalyst.dao.IAlertImpactScopeDAO;
+import com.itgrids.partyanalyst.dao.IAlertIssueCategoryDAO;
 import com.itgrids.partyanalyst.dao.IAlertIssueCategoryRelationDAO;
 import com.itgrids.partyanalyst.dao.IAlertSeverityDAO;
 import com.itgrids.partyanalyst.dao.IAlertStatusDAO;
@@ -37,9 +38,12 @@ import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dao.IUserAddressDAO;
 import com.itgrids.partyanalyst.dao.impl.IAlertSourceDAO;
+import com.itgrids.partyanalyst.dto.AlertVO;
+import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.model.Alert;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.service.IAlertCreationAPIService;
+import com.itgrids.partyanalyst.service.IAlertService;
 import com.itgrids.partyanalyst.service.IAlertUpdationAPIService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
@@ -83,8 +87,18 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	private IAlertUpdationAPIService alertUpdationAPIService;
 	private IAlertCandidateDAO alertCandidateDAO;
 	private IAlertIssueCategoryRelationDAO alertIssueCategoryRelationDAO;
-
 	
+	private IAlertService alertService;
+	private IAlertIssueCategoryDAO alertIssueCategoryDAO;
+	
+	
+	public void setAlertIssueCategoryDAO(
+			IAlertIssueCategoryDAO alertIssueCategoryDAO) {
+		this.alertIssueCategoryDAO = alertIssueCategoryDAO;
+	}
+	public void setAlertService(IAlertService alertService) {
+		this.alertService = alertService;
+	}
 	public void setAlertIssueCategoryRelationDAO(
 			IAlertIssueCategoryRelationDAO alertIssueCategoryRelationDAO) {
 		this.alertIssueCategoryRelationDAO = alertIssueCategoryRelationDAO;
@@ -585,7 +599,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	    	return null;
 	    }
 	 
-	 // Expose Alert Creation Api From Zoho End	 
+	 // Expose Alert Creation Api To Zoho
 	 public JSONObject createAlertApi(final JSONObject jsonObject,final String apiType) throws JSONException{
 		 JSONObject status=new JSONObject();
 		try {
@@ -768,4 +782,65 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 	    }
 	    return null;
 	  }
+	
+	public JSONObject createNotificationAlert(JSONObject jsonObject){
+		JSONObject finalJson = new JSONObject();
+		try {			
+			if(jsonObject !=null){
+			
+				AlertVO inputVo = new AlertVO();
+				inputVo.setTitle(getValueByKey(jsonObject,"title"));
+				inputVo.setDesc(getValueByKey(jsonObject,"description"));
+				inputVo.setApiType(getValueByKey(jsonObject,"apiType"));
+				 
+				inputVo.setSeverity(getValueByKey(jsonObject,"severity")!=null && getValueByKey(jsonObject,"severity") != "null" ?
+						 alertSeverityDAO.getIdOfName(jsonObject.getString("severity")).get(0):null);
+				inputVo.setAlertTypeId(getValueByKey(jsonObject,"alertType")!=null && getValueByKey(jsonObject,"alertType")!= "null" ?  
+						 alertTypeDAO.getIdOfName(jsonObject.getString("alertType")).get(0):null);
+				inputVo.setAlertImpactId(getValueByKey(jsonObject,"impactScope")!=null && getValueByKey(jsonObject,"impactScope")!= "null" ?
+						 alertImpactScopeDAO.getIdOfName(jsonObject.getString("impactScope")).get(0):null);
+				
+				inputVo.setAlertSourceId(getValueByKey(jsonObject,"alertSource")!=null && getValueByKey(jsonObject,"alertSource") != "null" ?
+						 alertSourceDAO.getIdOfName(jsonObject.getString("alertSource")).get(0):null);
+				/*inputVo.setAlertStatusId(getValueByKey(jsonObject,"status")!=null && getValueByKey(jsonObject,"status") !="null" ?
+						 alertStatusDAO.getIdOfName(jsonObject.getString("status")):null);*/
+				inputVo.setAlertCategoryId(getValueByKey(jsonObject,"category")!=null && getValueByKey(jsonObject,"category") !="null" ? 
+						 alertCategoryDAO.getIdOfName(jsonObject.getString("category")):null);
+				
+				inputVo.setLocationLevelId(getValueByKey(jsonObject,"locationLevel")!=null && getValueByKey(jsonObject,"locationLevel") !="null" ?
+						 regionScopesDAO.getIdOfName(jsonObject.getString("locationLevel")).get(0):null);
+				
+				inputVo.setIssueCategoryId(getValueByKey(jsonObject,"issueCategory")!=null && getValueByKey(jsonObject,"issueCategory") !="null" ?
+						alertIssueCategoryDAO.getIdOfName(jsonObject.getString("issueCategory")).get(0):null);
+				//balu
+				
+				if(jsonObject.has("assignList")){
+					JSONArray assignArr = jsonObject.getJSONArray("assignList");
+					if(assignArr !=null && assignArr.length()>0){
+						for (int i = 0; i < assignArr.length(); i++) {
+							JSONObject assigneeObj = (JSONObject)assignArr.get(i);
+							if(assigneeObj.has("cadreId")){
+								IdNameVO vo = new IdNameVO();
+								vo.setId(assigneeObj.getLong("cadreId"));
+								inputVo.getAssignList().add(vo);
+							}
+						}
+					}
+				}
+				
+				String result = alertService.createAlert(inputVo, null, null);
+				
+				if(inputVo.getAlertCategoryId() !=null && inputVo.getAlertCategoryId()>0l && result!=null && result.split(" ")[0].equalsIgnoreCase("success") ){
+					finalJson.put("alertId", result.split(" ")[1]);
+					finalJson.put("message", result.split(" ")[0]);
+				}else{
+					finalJson.put("message", "failure");
+				}
+				
+			}			
+		} catch (Exception e) {
+			LOG.error("Error occured createNotificationAlert(json) method of AlertService{}");
+		}
+		return finalJson;
+	}
 }

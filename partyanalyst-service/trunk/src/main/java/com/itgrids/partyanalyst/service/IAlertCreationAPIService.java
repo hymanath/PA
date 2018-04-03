@@ -9,4 +9,5 @@ public interface IAlertCreationAPIService {
 	public void sendApiDetailsOfAlertToZoho(Long alertId,String contactId,String deptId);
 	public JSONObject createAlertApi(final JSONObject jsonObject,final String apiType) throws JSONException;
 	public String uploadMultiPartFile(String URL,File uploadFile);
+	public JSONObject createNotificationAlert(JSONObject jsonObject);
 }

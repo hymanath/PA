@@ -32,6 +32,9 @@ public class AlertComment extends BaseModel implements Serializable {
 	private String isDeleted;
 	private User user;
 	private Alert alert;
+	
+	private String zohoCommentId;
+	
 /*	private TdpCadre assignTdpCadre;
 	private Long assignTdpCadreId;
 	*/
@@ -114,6 +117,15 @@ public class AlertComment extends BaseModel implements Serializable {
 
 	public void setAlert(Alert alert) {
 		this.alert = alert;
+	}
+	
+	@Column(name = "zoho_comment_id")
+	public String getZohoCommentId() {
+		return zohoCommentId;
+	}
+
+	public void setZohoCommentId(String zohoCommentId) {
+		this.zohoCommentId = zohoCommentId;
 	}
 	
 	

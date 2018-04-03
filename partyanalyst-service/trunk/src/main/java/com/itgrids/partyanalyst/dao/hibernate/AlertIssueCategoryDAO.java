@@ -25,4 +25,12 @@ public class AlertIssueCategoryDAO extends GenericDaoHibernate<AlertIssueCategor
 		return query.list();
 	}
 	
+	public List<Long> getIdOfName(String issueCategory){
+   		Query query = getSession().createQuery(" select " +
+   				" model.alertIssueCategoryId " +
+   				" from AlertIssueCategory model where model.issueCategory=:issueCategory and model.isDeleted = 'N' ");
+   		query.setParameter("issueCategory", issueCategory);
+   		return query.list();
+     }
+	
 }
