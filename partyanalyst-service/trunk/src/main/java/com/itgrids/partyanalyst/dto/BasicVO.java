@@ -68,9 +68,51 @@ public class BasicVO implements Serializable{
 	//private Long notSatisfiedPosCount=0l,notSatisfiedNegCount=0l,partiallySatisfiedPosCount=0l,partiallySatisfiedNegCount=0l,satisfiedPosCount=0l,satisfiedNegCount=0l;
 	//private Double notSatisfiedPosPerc=0.0,notSatisfiedNegPerc=0.0,partiallySatisfiedPosPerc=0.0,partiallySatisfiedNegPerc=0.0,satisfiedPosPerc=0.0,satisfiedNegPerc=0.0;
 	
+	private Long wpPosCount=0l,wpNegCount=0l,tpPosCount=0l,tpNegCount=0l;
+	private Double wpPosPerc=0.0,wpNegperc=0.0,tpPosPerc=0.0,tpNegPerc=0.0;
 	public BasicVO(){}
 	
 	
+	public Long getWpPosCount() {
+		return wpPosCount;
+	}
+
+
+	public void setWpPosCount(Long wpPosCount) {
+		this.wpPosCount = wpPosCount;
+	}
+
+
+	public Long getWpNegCount() {
+		return wpNegCount;
+	}
+
+
+	public void setWpNegCount(Long wpNegCount) {
+		this.wpNegCount = wpNegCount;
+	}
+
+
+	public Long getTpPosCount() {
+		return tpPosCount;
+	}
+
+
+	public void setTpPosCount(Long tpPosCount) {
+		this.tpPosCount = tpPosCount;
+	}
+
+
+	public Long getTpNegCount() {
+		return tpNegCount;
+	}
+
+
+	public void setTpNegCount(Long tpNegCount) {
+		this.tpNegCount = tpNegCount;
+	}
+
+
 	public String getIvrPosStatus() {
 		return ivrPosStatus;
 	}
@@ -711,5 +753,45 @@ public class BasicVO implements Serializable{
 	}
 
 
+	public Double getTpNegPerc() {
+		return tpNegPerc;
+	}
 
+
+	public void setTpNegPerc(Double tpNegPerc) {
+		this.tpNegPerc = tpNegPerc;
+	}
+
+
+	public Double getWpPosPerc() {
+		return wpPosPerc;
+	}
+
+
+	public void setWpPosPerc(Double wpPosPerc) {
+		this.wpPosPerc = wpPosPerc;
+	}
+
+
+	public Double getWpNegperc() {
+		return wpNegperc;
+	}
+
+
+	public void setWpNegperc(Double wpNegperc) {
+		this.wpNegperc = wpNegperc;
+	}
+
+
+	public Double getTpPosPerc() {
+		return tpPosPerc;
+	}
+
+
+	public void setTpPosPerc(Double tpPosPerc) {
+		this.tpPosPerc = tpPosPerc;
+	}
+
+
+ 
 }
