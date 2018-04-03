@@ -963,7 +963,9 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 			String output = null;
 			
 			//Off Field Vehicles
-			url = "http://rwstracking.com/dashboard/API/getvehicles.php";
+			//url = "http://rwstracking.com/dashboard/API/getvehicles.php";
+			//Supplied Water
+			url = "http://rwstracking.com/dashboard/API/getwater.php";
 			output = webserviceHandlerService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
 			if(output == null){
 	 	    	throw new RuntimeException("Webservice Data Not Found."+url);
@@ -974,19 +976,24 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	 	    		if(dataStr != null){
 	 	    			dataObj = new JSONObject(dataStr);
 	 	    		}
-	 	    		String vehicleStr = dataObj.has("vehicles") ? dataObj.get("vehicles").toString():null;
+	 	    		String vehicleStr = dataObj.has("water") ? dataObj.get("water").toString():null;
 	 	    		if(vehicleStr != null){
 	 	    			finalObj = new JSONObject(vehicleStr);
 	 	    		}
 	 	    		if(finalObj != null){
-	 	    			returnVO.setOffFieldVehicles(finalObj.has("offfield_vehicles") ?  (Long.valueOf(!(finalObj.get("offfield_vehicles").toString().equalsIgnoreCase("null") || finalObj.get("offfield_vehicles").toString().equalsIgnoreCase("NA") || finalObj.get("offfield_vehicles").toString().isEmpty()) ? finalObj.get("offfield_vehicles").toString():"0")):0);
+	 	    			//returnVO.setOffFieldVehicles(finalObj.has("offfield_vehicles") ?  (Long.valueOf(!(finalObj.get("offfield_vehicles").toString().equalsIgnoreCase("null") || finalObj.get("offfield_vehicles").toString().equalsIgnoreCase("NA") || finalObj.get("offfield_vehicles").toString().isEmpty()) ? finalObj.get("offfield_vehicles").toString():"0")):0);
+	 	    			returnVO.setTargetWater(finalObj.get("target_water_supply").toString());
+	 	    			returnVO.setSuppliedWater(finalObj.get("supplied_water").toString());
+	 	    			returnVO.setSuppliedWaterPerc(finalObj.get("supplied_water_percent").toString());
+	 	    			returnVO.setNotSuppliedWater(finalObj.get("not_supplied_water").toString());
+	 	    			returnVO.setNotSuppliedWaterPerc(finalObj.get("not_supplied_water_percent").toString());
 	 	    		}
 	 	    	}
 	 	    		
 	 	   }
 			
 			//Pending Trips
-			url = "http://rwstracking.com/dashboard/API/gettrips.php";
+			/*url = "http://rwstracking.com/dashboard/API/gettrips.php";
 			output = webserviceHandlerService.callWebService(url, null,IConstants.REQUEST_METHOD_GET);
 			if(output == null){
 	 	    	throw new RuntimeException("Webservice Data Not Found."+url);
@@ -1008,7 +1015,7 @@ public class TaxesDashBoardService implements ITaxesDashBoardService{
 	 	    			returnVO.setInProgressTrips(finalObj.has("inprogress_trips") ?  (Long.valueOf(!(finalObj.get("inprogress_trips").toString().equalsIgnoreCase("null") || finalObj.get("inprogress_trips").toString().equalsIgnoreCase("NA") || finalObj.get("inprogress_trips").toString().isEmpty()) ? finalObj.get("inprogress_trips").toString():"0")):0);
 	 	    		}
 	 	    	}	
-	 	   }
+	 	   }*/
 			
 		} catch (Exception e) {
 			LOG.error("Exception raised at getVehicletrackingDetails  in TaxesDashBoardService service", e);
