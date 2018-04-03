@@ -93,7 +93,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 	}
 	public int deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" update AreaInchargeMember model set model.isActive = 'N',model.isDeleted = 'Y' ");
+		sb.append(" update AreaInchargeMember model set model.isActive = 'N',model.isDeleted = 'Y',model.areaInchargeLocation.isAssinged ='N',model.areaInchargeLocation.isDeleted ='Y' ");
 		if(candidateId != null && candidateId.longValue()>0l){
 			sb.append(" where model.tdpCadreId =:candidateId ");
 		}
@@ -102,10 +102,10 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		}
 		Query queObject = getSession().createQuery(sb.toString());
 		if(candidateId != null && candidateId.longValue()>0l){
-		queObject.setLong("candidateId",candidateId);
+		  queObject.setParameter("candidateId",candidateId);
 		}
 		if(boothId != null && boothId.longValue()>0l && boothId != 0){
-			queObject.setLong("boothId",boothId);
+			queObject.setParameter("boothId",boothId);
 			}
 		return queObject.executeUpdate();
 	}
