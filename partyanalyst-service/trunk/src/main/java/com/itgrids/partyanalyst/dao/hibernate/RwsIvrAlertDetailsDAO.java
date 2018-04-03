@@ -62,7 +62,7 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
           
           str.append(" from RwsIvrAlertDetails model where model.alert.isDeleted='N' " +
           		" and model.isDeleted='N' and model.rwsIvrType.isDeleted='N' " +
-          		" and model.alert.alertFeedbackStatus.isDeleted='N' " +
+          		" and model.alert.alertFeedbackStatus.isDeleted='N' and model.alert.alertFeedbackStatusId !=2 " +
           		" and model.alert.govtDepartmentId =:govtDeptId ");
          
           if(fromDate !=null && toDate !=null){
@@ -128,4 +128,81 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
 	      }
         return  query.list();
       }
+	
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getJalavaniIvrRespondantsGraphDetailsInfo(Date fromDate,Date toDate,String searchType){
+        StringBuilder str = new StringBuilder();
+          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
+           //status-0,count-1,date-2
+        	  str.append("select model.rwsIvrStatus,count(distinct model.ivrRespondentId),date(model.rwsIvrAlertDetails.alert.updatedTime) ");
+        	  
+          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
+        	  //status-0,count-1,month-2,year-3
+        	  str.append("select model.rwsIvrStatus,count(distinct model.ivrRespondentId)," +
+        	  		" month(model.rwsIvrAlertDetails.alert.updatedTime),year(model.rwsIvrAlertDetails.alert.updatedTime)  ");
+          }
+          
+          str.append(" from RwsIvrAlertDetailsRespondent model " +
+          		" where model.isDeleted='N'" +
+          		" and model.rwsIvrAlertDetails.alert.isDeleted='N' " +
+          		" and model.rwsIvrAlertDetails.alert.govtDepartmentId =:govtDeptId and model.rwsIvrAlertDetails.alert.alertFeedbackStatusId !=2 ");
+         
+          if(fromDate !=null && toDate !=null){
+            str.append(" and date(model.rwsIvrAlertDetails.alert.updatedTime) between :fromDate and :toDate ");
+          }
+          
+          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
+            str.append(" group by date(model.rwsIvrAlertDetails.alert.updatedTime),model.rwsIvrStatus");  
+          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
+            str.append(" group by month(model.rwsIvrAlertDetails.alert.updatedTime),year(model.rwsIvrAlertDetails.alert.updatedTime),model.rwsIvrStatus " +
+            		"order by month(model.rwsIvrAlertDetails.alert.updatedTime),year(model.rwsIvrAlertDetails.alert.updatedTime) ");
+          }
+        Query query = getSession().createQuery(str.toString());
+          query.setParameter("govtDeptId",49l);
+          
+          if(fromDate !=null && toDate !=null){
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+          }
+        return  query.list();
+      }
+	/*public List<Object[]> getJalavaniIvrRespondantsGraphDetailsInfo(Date fromDate,Date toDate,String searchType){
+        StringBuilder str = new StringBuilder();
+          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
+          //TypeId-0,Type-1,status-2,count-3,date-4
+        	  str.append("select model.rwsIvrTypeId,model.rwsIvrType.rwsIvrName," +
+        	  		" model.ivrSatisfiedStatus,count(distinct model1.ivrRespondentId),date(model.alert.updatedTime) ");
+        	  
+          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
+        		
+        	  str.append("select model.rwsIvrTypeId,model.rwsIvrType.rwsIvrName," +
+        	  		" model.ivrSatisfiedStatus,count(distinct model1.ivrRespondentId), " +
+        	  		" month(model.alert.updatedTime),year(model.alert.updatedTime) ");
+          }
+          
+          str.append(" from RwsIvrAlertDetails model,RwsIvrAlertDetailsRespondent model1" +
+          		" where model.rwsIvrAlertDetailsId = model1.rwsIvrAlertDetailsId and model.alert.isDeleted='N'" +
+          		" and model1.isDeleted='N' " +
+          		" and model.isDeleted='N' and model.rwsIvrType.isDeleted='N' " +
+          		" and model.alert.alertFeedbackStatus.isDeleted='N' " +
+          		" and model.alert.govtDepartmentId =:govtDeptId ");
+         
+          if(fromDate !=null && toDate !=null){
+            str.append(" and date(model.alert.updatedTime) between :fromDate and :toDate ");
+          }
+          
+          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
+            str.append(" group by date(model.alert.updatedTime),model.rwsIvrTypeId");  
+          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
+            str.append(" group by month(model.alert.updatedTime),year(model.alert.updatedTime),model.rwsIvrTypeId order by month(model.alert.updatedTime),year(model.alert.updatedTime) ");
+          }
+        Query query = getSession().createQuery(str.toString());
+          query.setParameter("govtDeptId",49l);
+          
+          if(fromDate !=null && toDate !=null){
+            query.setParameter("fromDate",fromDate);
+            query.setParameter("toDate",toDate);
+          }
+        return  query.list();
+      }*/
 }

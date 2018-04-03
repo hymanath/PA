@@ -11,4 +11,5 @@ public interface IRwsIvrAlertDetailsDAO extends GenericDao<RwsIvrAlertDetails, L
 	public List<Object[]> getJalavaniIvrDetailsSummary(Date fromDate,Date toDate);
 	public List<Object[]> getJalavaniIvrSummaryGraphDetailsInfo(Date fromDate,Date toDate,String searchType);
 	public List<Long> getJalavaniIvrSummaryWiseClick(Date fromDate,Date toDate,Long statusid,Long probTypeId,Long districtId,String satisfiedStatus);
+	public List<Object[]> getJalavaniIvrRespondantsGraphDetailsInfo(Date fromDate,Date toDate,String searchType);
 }
