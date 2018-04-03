@@ -2787,3 +2787,7 @@ function buildgettAllRwsWorksBySchemeDetails(result){
 	});
 	
 }
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
