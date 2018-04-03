@@ -193,7 +193,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
 			sb.append(" and techSanctionDate is not null ");
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_ENTRUST)){
-			sb.append(" and entrustedDate is not null ");
+			sb.append(" and entrustedDate is not null and techSanctionDate is not null ");
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
 			sb.append(" and groundedDate is not null ");
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
@@ -242,9 +242,9 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notTechSanctioned")){
 			sb.append(" and ew.tech_sanction_date is null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_ENTRUST)){
-			sb.append(" and ew.entrusted_date is not null ");
+			sb.append(" and ew.entrusted_date is not null  and ew.tech_sanction_date is not null");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notEntrusted")){
-			sb.append(" and ew.entrusted_date is null  ");
+			sb.append(" and ew.entrusted_date is null and ew.tech_sanction_date is not null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
 			sb.append(" and ew.grounded_date is not null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
@@ -328,7 +328,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
 			sb.append(" and techSanctionDate is not null ");
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_ENTRUST)){
-			sb.append(" and entrustedDate is not null ");
+			sb.append(" and entrustedDate is not null  and techSanctionDate is not null ");
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
 			sb.append(" and groundedDate is not null ");
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
@@ -379,9 +379,9 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notTechSanctioned")){
 			sb.append(" and model.tech_sanction_date is null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_ENTRUST)){
-			sb.append(" and model.entrusted_date is not null ");
+			sb.append(" and model.entrusted_date is not null and model.tech_sanction_date is not null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase("notEntrusted")){
-			sb.append(" and model.entrusted_date is null  ");
+			sb.append(" and model.entrusted_date is null  and model.tech_sanction_date is not null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_GROUNDED)){  //ongoing
 			sb.append(" and model.grounded_date is not null ");
 		}else if(inputVO.getWorkStatus() !=null && inputVO.getWorkStatus().equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
@@ -415,7 +415,9 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 				query.setParameter("toAmount", amount[1]);
 			}
 		} 
-		
+		if(inputVO.getLocationType() !=null && !inputVO.getLocationType().equalsIgnoreCase("state") && inputVO.getLocationValue() !=null && inputVO.getLocationValue().longValue()>0){
+			query.setParameter("locationValue", inputVO.getLocationValue());
+		}
 		if( inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
 			query.setDate("startDate", inputVO.getStartDate());
 			query.setDate("endDate", inputVO.getEndDate());
@@ -425,4 +427,5 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}
 		return query.list();
 	}
+
 }
