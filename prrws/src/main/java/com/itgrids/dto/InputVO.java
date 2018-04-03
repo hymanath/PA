@@ -134,6 +134,7 @@ public class InputVO implements Serializable {
 	private List<String> schemeIdStr;
 	private List<Long> subjectIdsLst;
 	private List<Long> subSubjectIdsLst;
+	private String amountRange;
 	
 	public List<Long> getSearchDeptIdsList() {
 		return searchDeptIdsList;
@@ -860,6 +861,12 @@ public class InputVO implements Serializable {
 	}
 	public void setSubSubjectIdsLst(List<Long> subSubjectIdsLst) {
 		this.subSubjectIdsLst = subSubjectIdsLst;
+	}
+	public String getAmountRange() {
+		return amountRange;
+	}
+	public void setAmountRange(String amountRange) {
+		this.amountRange = amountRange;
 	}
 	
 	

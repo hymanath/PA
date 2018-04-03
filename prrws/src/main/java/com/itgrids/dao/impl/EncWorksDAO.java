@@ -65,7 +65,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}
 		
 		if(schemeIds !=null && schemeIds.size()>0){
-			sb.append(" and model.grant_id in(:schemeIds) ");
+			sb.append(" and model.sub_grant_id in(:schemeIds) ");
 		}
 		
 		if(fromDate!= null && toDate!=null){
@@ -188,7 +188,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 			sb.append(" adminSanctionDate between :startdate and  :endDate ");
 		}
 		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
-			sb.append(" and model.grantid in(:schemeIds) ");
+			sb.append(" and model.subGrantId in(:schemeIds) ");
 		}
 		if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
 			sb.append(" and techSanctionDate is not null ");
@@ -262,7 +262,14 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 			sb.append(" and mandal_id=:locationValue ");
 		}
 		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
-			sb.append(" and ew.grant_id in(:schemeIds) ");
+			sb.append(" and ew.sub_grant_id in(:schemeIds) ");
+		}
+		if(inputVO.getAmountRange() !=null && inputVO.getAmountRange().length()>0){
+			if(inputVO.getAmountRange().trim().contains("above")){
+				sb.append(" and ew.sanctioned_amount >= :fromAmount");
+			}else{
+				sb.append(" and ew.sanctioned_amount between :fromAmount and :toAmount");
+			}
 		}
 		Query query = getSession().createSQLQuery(sb.toString())
 				.addScalar("workId").addScalar("workName")
@@ -286,12 +293,21 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
 			query.setParameterList("schemeIds", inputVO.getSchemeIdsList());
 		}
+		if(inputVO.getAmountRange() !=null && inputVO.getAmountRange().length()>0){
+			String amount[] = inputVO.getAmountRange().split("-");
+			if(amount[1].trim().equalsIgnoreCase("above")){
+				query.setParameter("fromAmount", amount[0]);
+			}else{
+				query.setParameter("fromAmount", amount[0]);
+				query.setParameter("toAmount", amount[1]);
+			}
+		} 
 		return query.list();
 	}
 
 	@Override
 	public List<Object[]> getPRProgramsCodeAndName() {
-		Query query = getSession().createQuery("select distinct model.grantid,model.grantName from EncWorks model");
+		Query query = getSession().createQuery("select distinct model.grantid,model.grantName,model.subGrantId,model.subGrantName from EncWorks model");
 		 return query.list();
 	}
 	
@@ -299,7 +315,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 	public List<Object[]> getAllSchemeWiseWorkDetails(InputVO inputVO, String StatusType) {
 		StringBuilder sb = new StringBuilder();
 		
-		sb.append(" select count(model.encWorkId),'"+StatusType+"', model.grantid,model.grantName ");
+		sb.append(" select count(model.encWorkId),'"+StatusType+"', model.grantid,model.grantName,model.subGrantId,model.subGrantName ");
 		
 		sb.append(" from EncWorks model ");
 		if((inputVO.getStartDate() !=null && inputVO.getEndDate() !=null )|| StatusType !=null ){
@@ -322,7 +338,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 		}else if(StatusType !=null && StatusType.equalsIgnoreCase(IConstants.WORK_COMPLETION)){
 			sb.append(" and completionDate is not null  ");
 		}
-			sb.append(" group by model.grantid ");
+			sb.append(" group by model.subGrantId ");
 	
 		Query query = getSession().createQuery(sb.toString());
 		if( inputVO.getStartDate() !=null && inputVO.getEndDate() !=null){
@@ -383,7 +399,7 @@ public class EncWorksDAO extends GenericDaoHibernate<EncWorks, Long>  implements
 			sb.append(" and model.mandal_id=:locationValue ");
 		}
 		if(inputVO.getSchemeIdsList() !=null && inputVO.getSchemeIdsList().size()>0){
-			sb.append(" and model.grant_id in(:schemeIds) ");
+			sb.append(" and model.sub_grant_id  in(:schemeIds) ");
 		}
 	
 		Query query = getSession().createSQLQuery(sb.toString())
