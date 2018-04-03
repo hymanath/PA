@@ -29,10 +29,6 @@
 		<h2.version>1.4.187</h2.version>
 		<dbunit.version>2.2</dbunit.version>
 	</properties>
-	
-	
-	
-
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -324,11 +320,11 @@
   					<artifactId>prrws-biometric-soap</artifactId>
   				 <version>0.0.1-SNAPSHOT</version>
 		  </dependency>
-		   <dependency>
+		    <dependency>
 		   	     <groupId>com.itgrids.prrws</groupId>
   					<artifactId>prrws_meeseva_app_soap</artifactId>
   				 <version>0.0.1-SNAPSHOT</version>
-		  </dependency>
+		  </dependency> 
 		  <!-- <dependency>
 		   	     <groupId>com.itgrids.prrws</groupId>
   					<artifactId>Prrws_Meeseva_Soap</artifactId>
@@ -357,6 +353,11 @@
 			    <artifactId>axis</artifactId>
 			    <version>1.4</version>
 			</dependency>
+			
+		<dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
 	   
    <!-- Web serevices dependencies end -->
 
@@ -386,6 +387,4 @@
 			</plugin>
 		</plugins>
 	</build>
-
-
 </project>
