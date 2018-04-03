@@ -98,6 +98,14 @@
 													</a>
 												</div>
 											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#EE6CA9">
+													<a href="worksDashBoard">
+														<h3>RWS WORKS</h3>
+														 <p>RWS Works Dashboard</p>
+													</a>
+												</div>
+											</div>
 										</div>
 									</div>
 								</div>
@@ -183,11 +191,19 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#008000">
 													<a href="newsArticles?deptId=1699">
 														<h3>PR News</h3>
                            								 <p>Panchayat Raj News</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="EncWorksDashboard">
+														<h3>ENC WORKS</h3>
+                           								 <p>ENC Works DashBoard</p>
 													</a>
 												</div>
 											</div>
@@ -252,6 +268,7 @@
 			</div>
 		</div>
 	</nav>
+
 </header>
 <section class="" style="padding: 10px;background-color: #DFDFE0;">
 		<div class="container-fluid">

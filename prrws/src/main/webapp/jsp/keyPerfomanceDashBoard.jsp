@@ -26,11 +26,11 @@
 				<div class="col-sm-1 col-xs-3 pad_left0">
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
-				<div class="col-sm-4 m_top10 col-xs-9">
+				<div class="col-sm-10 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayat Raj & RD & RWS</h4>
 					<p>Rural Water Supply - AP</p>
 				</div>
-				<div class="col-sm-1 col-xs-12 col-sm-offset-5">
+				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
 					<div class="menu-data-cls">
 						<div class="arrow_box_top">
@@ -78,6 +78,30 @@
 													<a href="waterTanksClorinationDashBoard">
 														<h3>WTC</h3>
 														<p>Water Tank chlorination</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#483D8B">
+													<a href="vehicleTrackingDashboard">
+														<h3>VT</h3>
+                           								 <p>Vehicle Tracking</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#59bf82">
+													<a href="jalavaniAlertsDashBoard">
+														<h3>JALAVANI</h3>
+														 <p>Jalavani Alert Dashboard</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-12 m_top10">
+												<div class="menu-block" style="background-color:#EE6CA9">
+													<a href="worksDashBoard">
+														<h3>RWS WORKS</h3>
+														 <p>RWS Works Dashboard</p>
 													</a>
 												</div>
 											</div>
@@ -150,11 +174,35 @@
 													</a>
 												</div>
 											</div>
-											<div class="col-sm-12 m_top10">
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#FF1493">
+													<a href="panchayatTaxDashboard">
+														<h3>Taxes</h3>
+                           								 <p>Panchayat Raj Taxes</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#7B68EE">
+													<a href="eMeetingsDashboard">
+														<h3>E Meetings</h3>
+                           								 <p>Panchayat Raj eMeetings</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
 												<div class="menu-block" style="background-color:#008000">
 													<a href="newsArticles?deptId=1699">
 														<h3>PR News</h3>
                            								 <p>Panchayat Raj News</p>
+													</a>
+												</div>
+											</div>
+											<div class="col-sm-6 m_top10">
+												<div class="menu-block" style="background-color:#1c94ef">
+													<a href="EncWorksDashboard">
+														<h3>ENC WORKS</h3>
+                           								 <p>ENC Works DashBoard</p>
 													</a>
 												</div>
 											</div>
@@ -216,10 +264,10 @@
 						</div>
 					</div>
 				</div>
-				
 			</div>
 		</div>
 	</nav>
+
 	<section class="navbar-section">
 		<div class="container-fluid">
 			<div class="row">
