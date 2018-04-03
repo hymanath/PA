@@ -42,7 +42,7 @@ function buildAreaInchargesStatusWiseCount(result){
 	str+='<div class="row">';
 		str+='<div class="col-sm-4">';
 			str+='<div class="border_block_style panelheights">';
-				str+='<h4 class="text-center">Ichapuram - (<b>'+result.total+'</b> Booths)</h4>';
+				str+='<h4 class="text-center">'+result.name+' - (<b>'+result.total+'</b> Booths)</h4>';
 				str+='<div class="row">';
 					str+='<div id="mainBlockPieChartDivId" style="height:200px;"></div>';
 				str+='</div>';
@@ -284,11 +284,59 @@ function getAreaInchargeAssignedBoothDetails(){
 		voterId=0;
 		mobileNo=$("#searchValId").val();
 	}
-	getAreaInchargeDetails(memberShipId,voterId,mobileNo);
+	getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType);
  });
  
-   function getAreaInchargeDetails(memberShipId,voterId,mobileNo){
-	   
+   function getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType){
+	   if(selectedType == "membershipId"){
+	   var numericExpression = /^[0-9]+$/;
+					if(!memberShipId.trim().match(numericExpression)){
+						$('#searchErrDiv').html('Enter  Number Digits Only.');
+						return;
+					}else{
+						$('#searchErrDiv').html(' ');
+					}
+			if(memberShipId.trim().length == 0 )
+			{
+				$('#searchErrDiv').html('Please enter Membership Card No.');
+				return;
+			}else{
+						$('#searchErrDiv').html(' ');
+					}
+			if(memberShipId.trim().length != 8||memberShipId.trim().length > 8)
+			{
+				$('#searchErrDiv').html('Invalid memberShipCardNo.');
+				return;	
+			}else{
+						$('#searchErrDiv').html(' ');
+					}
+	   }
+    if(selectedType == "voterId"){
+		if(voterId.length == 0 || voterId == null )
+			{
+			   $('#searchErrDiv').html('Please enter Voter Card No.');
+				return;
+			}
+     }
+	 if(selectedType == "mobileNo"){
+		var numericExpression = /^[0-9]+$/;
+		 if(!mobileNo.trim().match(numericExpression)){
+			$('#searchErrDiv').html('Enter Number Digits Only.');
+						return;
+		}else{
+			$('#searchErrDiv').html(' ');
+		  }	
+		if(mobileNo.trim().length == 0 )
+			{
+			  $('#searchErrDiv').html('Please enter Mobile No.');
+				return;
+			}
+			if(mobileNo.trim().length != 10 ||mobileNo.trim().length > 10)
+			{
+				$('#searchErrDiv').html('Invalid Mobile No.');
+				return;
+			} 
+	 }			
       var jsObj={
 		    voterId:voterId,
 			mobileNo :mobileNo,
@@ -653,4 +701,6 @@ function deleteAreaInchargeAssignBooths(cadreId,boothId){
 			
 });
 } 
-
+$(document).on("click",".getSelectedVal",function(){
+   $("#searchValId").val('');
+});
