@@ -381,7 +381,7 @@
 			<div class="modal-body">
 				<div class="row">
 					<div class="col-sm-10">
-						<h4 style="font-weight:bold;">Feed Back Details</h4>
+						<h4 style="font-weight:bold;">Alert Feed Back Details</h4>
 					</div>
 					<div class="col-sm-2">
 						<button type="button" class="close pull-right" data-dismiss="modal" aria-label="Close"><span aria-hidden="true" style="color:red;font-size:30px;">&times;</span></button>
@@ -392,14 +392,24 @@
 						<div id="timeSeriesWisGraphDivId" style="height:300px;"></div>
 					</div>
 				</div>
-				<div class="row">
+				<!--<div class="row">
 					<div class="col-sm-12">
-							<h4 style="font-weight:bold;">IVR Details</h4>
+							<h4 style="font-weight:bold;">Alert IVR Summary</h4>
 					</div>
 				</div>	
 				<div class="row">
 					<div class="col-sm-12">
 						<div id="timeSeriesIVRGraphDivId" style="height:300px;"></div>
+					</div>
+				</div>-->
+				<div class="row">
+					<div class="col-sm-12">
+							<h4 style="font-weight:bold;">IVR Respondant Details</h4>
+					</div>
+				</div>	
+				<div class="row">
+					<div class="col-sm-12">
+						<div id="timeSeriesIVRRespondantGraphDivId" style="height:300px;"></div>
 					</div>
 				</div>
 				<div class="row">
