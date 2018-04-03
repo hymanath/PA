@@ -3978,4 +3978,21 @@ public class WebServiceHandler {
     		@PathParam("endDateStr") String endDateStr){
 		return  webServiceHandlerService.getJalavaniIvrRespondantsGraphDetailsInfo(startDateStr,endDateStr);
     }
+	@POST
+	@Path("/createNotificationAlert")
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JSONObject createNotificationAlert(JSONObject json)
+	{
+		
+		try{
+			  return webServiceHandlerService.createNotificationAlert(json);
+		}
+		catch(Exception e)
+		{
+			LOG.error("Exception Occured in createNotificationAlert() Method in WebServiceHandler Class  ",e);
+		}
+		return null;
+	}
+	
 }
