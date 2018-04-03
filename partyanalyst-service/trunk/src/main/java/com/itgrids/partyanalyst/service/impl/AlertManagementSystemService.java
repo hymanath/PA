@@ -17753,6 +17753,16 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 		}
 		return voList;
 	}
+	public List<BasicVO> buildIvrResponseFinalVoStructure(Map<Long,List<String>> weekdatesMap){
+		List<BasicVO> voList = new ArrayList<BasicVO>(0);
+		for (Entry<Long, List<String>> entry : weekdatesMap.entrySet()){
+			BasicVO vo = new BasicVO();
+			vo.setAgeRanges(entry.getValue());
+ 			vo.setDate(entry.getValue().get(0)+" to "+entry.getValue().get(entry.getValue().size()-1));
+			voList.add(vo);
+		}
+		return voList;
+	}
 	public Map<Long,List<String>> setWeekWiseDatesMap(List<String> datesList){
 		Map<Long,List<String>> map = new HashMap<Long, List<String>>(); 
 		Long t=0l,index=1l;
@@ -17991,5 +18001,116 @@ public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDat
 	return finalAlertVOs;
 }
 
+public List<BasicVO> getJalavaniIvrRespondantsGraphDetailsInfo(String startDateStr,String endDateStr){
+	List<BasicVO> finalVOList = new ArrayList<BasicVO>(0);
+	try {
+		Date startDate = null;Date endDate = null;
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		if(startDateStr != null && endDateStr != null){
+			startDate = sdf.parse(startDateStr);
+			endDate = sdf.parse(endDateStr );
+		}
+		List<Object[]> dateAndMonthObjList =null;
+		String dayWise="dayWise";
+		String monthWise="monthWise";
+		
+		List<String> datesList = dateUtilService.getDaysBetweenDatesStringFormat(startDate, endDate);
+		if(datesList !=null && datesList.size() <= 31){
+			//dateAndMonthObjList = rwsIvrAlertDetailsDAO.getJalavaniIvrSummaryGraphDetailsInfo(startDate, endDate,dayWise);
+			dateAndMonthObjList = rwsIvrAlertDetailsDAO.getJalavaniIvrRespondantsGraphDetailsInfo(startDate, endDate,dayWise);
+			if(dateAndMonthObjList !=null && dateAndMonthObjList.size() >0){
+				if(datesList.size() <= 7){
+					for (String string : datesList) {
+						BasicVO vo = new BasicVO();
+							vo.setDate(string);
+						finalVOList.add(vo);
+					}
+					setIvrRespondantGraphdata(finalVOList,dateAndMonthObjList,dayWise);
+				}else{
+					 //status-0,count-1,date-2
+					Map<Long,List<String>> weekdatesMap = setWeekWiseDatesMap(datesList);
+					if(weekdatesMap != null && weekdatesMap.size() > 0){
+						finalVOList = buildIvrResponseFinalVoStructure(weekdatesMap);
+						for (Object[] object : dateAndMonthObjList) {
+							for (BasicVO vo : finalVOList) {
+								if(vo.getAgeRanges().contains(object[2].toString())){
+									if(object[0].toString() !=null && object[0].toString().equalsIgnoreCase("Y")){
+										vo.setPostiveCount(vo.getPostiveCount()+(Long) object[1]);
+									}else if(object[0].toString() !=null && object[0].toString().equalsIgnoreCase("N")){
+										vo.setNegativeCount(vo.getNegativeCount()+(Long) object[1]);
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}else{
+			 
+			dateAndMonthObjList = rwsIvrAlertDetailsDAO.getJalavaniIvrRespondantsGraphDetailsInfo(startDate, endDate,monthWise);
+			setIvrRespondantGraphdata(finalVOList,dateAndMonthObjList,monthWise);
+		}
+		Long totalCount =0l;
+		if(finalVOList !=null && finalVOList.size() >0){
+			for (BasicVO vo : finalVOList){
+				totalCount =vo.getPostiveCount()+vo.getNegativeCount();
+				vo.setCount(totalCount);
+			}
+			
+			for (BasicVO vo : finalVOList){
+				if(vo.getCount() >0l){
+					vo.setPositivePerc(caclPercantage(vo.getPostiveCount(),vo.getCount()));
+					vo.setNegativePerc(caclPercantage(vo.getNegativeCount(),vo.getCount()));
+				}
+			}
+		}
+		
+	}catch (Exception e){
+		LOG.error("Error occured getJalavaniIvrRespondantsGraphDetailsInfo() method of AlertManagementSystemService",e);
+	}
+	return finalVOList;
+}
+public void setIvrRespondantGraphdata(List<BasicVO> finalVoList,List<Object[]> monthObjList,String type){
+	
+	if(type !=null && type.equalsIgnoreCase("dayWise")){
+		 //status-0,count-1,date-2
+		if(monthObjList != null && monthObjList.size() > 0){
+			for (Object[] obj : monthObjList) {
+				BasicVO matchedDateVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[2].toString());
+				if(matchedDateVO != null){
+					if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("Y")){
+						matchedDateVO.setPostiveCount((Long) obj[1]);
+					}else if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("N")){
+						matchedDateVO.setNegativeCount((Long) obj[1]);
+					}
+				}
+			}
+		}
+	}else if(type !=null && type.equalsIgnoreCase("monthWise")){
+		 //status-0,count-1,month-2,year-3
+		if(monthObjList != null && monthObjList.size() > 0){
+			for (Object[] obj : monthObjList) {
+				BasicVO matchedMonthVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[2].toString()+"-"+obj[3].toString());
+				if(matchedMonthVO == null){
+					matchedMonthVO = new BasicVO();
+					matchedMonthVO.setDate(obj[2].toString()+"-"+obj[3].toString());
+					
+					if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("Y")){
+						matchedMonthVO.setPostiveCount((Long) obj[1]);
+					}else if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("N")){
+						matchedMonthVO.setNegativeCount((Long) obj[1]);
+					}
+					finalVoList.add(matchedMonthVO);
+				}else{
+					if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("Y")){
+						matchedMonthVO.setPostiveCount((Long) obj[1]);
+					}else if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("N")){
+						matchedMonthVO.setNegativeCount((Long) obj[1]);
+					}
+				}
+			}
+		}
+	}
+}
 
 }//class

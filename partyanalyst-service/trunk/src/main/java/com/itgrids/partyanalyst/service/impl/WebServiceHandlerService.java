@@ -6009,4 +6009,13 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
+	public List<BasicVO> getJalavaniIvrRespondantsGraphDetailsInfo(String startDateStr,String endDateStr){
+		List<BasicVO> alertVoList = new ArrayList<BasicVO>(0);
+		try{
+			alertVoList = alertManagementSystemService.getJalavaniIvrRespondantsGraphDetailsInfo(startDateStr,endDateStr);
+    	}catch(Exception e){
+    		log.error("Exception raised in getJalavaniIvrRespondantsGraphDetailsInfo  method in WebServiceHandlerService1",e);
+    	}
+    	return alertVoList;
+	}
 }
