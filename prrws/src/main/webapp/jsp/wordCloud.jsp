@@ -27,7 +27,7 @@
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayat Raj</h4>
-					<p>Tax - DashBoard</p>
+					<p>Word Cloud - DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
