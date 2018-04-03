@@ -43,8 +43,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import sun.misc.BASE64Encoder;
-
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Chunk;
 import com.itextpdf.text.Document;
@@ -101,6 +99,8 @@ import com.itgrids.utils.NREGSCumulativeThreadPerformance;
 import com.itgrids.utils.RWSThread;
 import com.sun.jersey.api.client.ClientResponse;
 import com.sun.jersey.api.client.WebResource;
+
+import sun.misc.BASE64Encoder;
 
 @Service
 @Transactional
@@ -5125,6 +5125,19 @@ private List<InputVO> getRequiredParamer(InputVO inputVO) {
 						}
 					}
 				}
+			}
+			if(inputVO.getStatus() !=null && inputVO.getStatus().length()>0 && inputVO.getStatus().equalsIgnoreCase("ongoing")){
+				List<IdNameVO> exceeded = getExceededWorkDetailsLocationWise2(inputVO);
+				if(commonMethodsUtilService.isListOrSetValid(exceeded)){
+					Long total =exceeded.get(0).getSubList().get(0).getCount()+exceeded.get(0).getSubList().get(1).getCount();
+					 Long CpwinTime = exceeded.get(0).getSubList().get(0).getSubList().get(0).getCount();
+					 Long pwsinTime = exceeded.get(0).getSubList().get(1).getSubList().get(0).getCount();
+					 WorksVO locationCountVO= locationMap.get(1l);
+					 if(locationCountVO !=null){
+						 locationCountVO.setOngoingPWSExceededCount(total-(pwsinTime+CpwinTime));
+					 }
+				}
+				
 			}
 			finalList.addAll(locationMap.values());
 		}catch(Exception e){
