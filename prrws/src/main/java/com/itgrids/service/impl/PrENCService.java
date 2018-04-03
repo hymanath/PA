@@ -1401,7 +1401,8 @@ public class PrENCService implements IPrENCService {
 				GrantVO vo= new GrantVO();
 				vo.setProgramCode(Long.valueOf(param[0] != null ? param[0].toString():"0"));
 				vo.setProgramName(param[1] !=null ? param[1].toString():"");
-				
+				vo.setSubGrantId(Long.valueOf(param[2] != null ? param[2].toString():"0"));
+				vo.setSubGrantName(param[3] !=null ? param[3].toString():"");
 				returnList.add(vo);
 				}
 			}
@@ -1448,12 +1449,14 @@ public class PrENCService implements IPrENCService {
 			objList.addAll(workNotGroundingObjLst);
 			Map<Long, EncWorksVO> locationMap = new HashMap<Long, EncWorksVO>();
 			for (Object[] objects : objList) {
-				EncWorksVO locationCountVO= locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[2]));
+				EncWorksVO locationCountVO= locationMap.get(commonMethodsUtilService.getLongValueForObject(objects[4]));
 				if(locationCountVO ==null){
 					locationCountVO = new EncWorksVO();
-					locationCountVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[2]));
-					locationCountVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[3]));
-					locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[2]), locationCountVO);
+					locationCountVO.setLocationId(commonMethodsUtilService.getLongValueForObject(objects[4]));
+					locationCountVO.setLocationName(commonMethodsUtilService.getStringValueForObject(objects[5]));
+					locationCountVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(objects[2]));
+					locationCountVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(objects[3]));
+					locationMap.put(commonMethodsUtilService.getLongValueForObject(objects[4]), locationCountVO);
 				}
 				if(commonMethodsUtilService.getStringValueForObject(objects[1]) !=null && commonMethodsUtilService.getStringValueForObject(objects[1]).trim().equalsIgnoreCase(IConstants.WORK_ADMIN_SANC)){
 					locationCountVO.setAdminSanctionCount(commonMethodsUtilService.getLongValueForObject(objects[0]));

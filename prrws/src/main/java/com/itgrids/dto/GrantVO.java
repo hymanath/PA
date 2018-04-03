@@ -6,7 +6,8 @@ public class GrantVO implements Serializable{
 	
 	private Long programCode;
 	private String programName;
-	
+	private Long subGrantId;
+	private String subGrantName;
 	
 	public Long getProgramCode() {
 		return programCode;
@@ -19,6 +20,18 @@ public class GrantVO implements Serializable{
 	}
 	public void setProgramName(String programName) {
 		this.programName = programName;
+	}
+	public Long getSubGrantId() {
+		return subGrantId;
+	}
+	public void setSubGrantId(Long subGrantId) {
+		this.subGrantId = subGrantId;
+	}
+	public String getSubGrantName() {
+		return subGrantName;
+	}
+	public void setSubGrantName(String subGrantName) {
+		this.subGrantName = subGrantName;
 	}
 	
 	
