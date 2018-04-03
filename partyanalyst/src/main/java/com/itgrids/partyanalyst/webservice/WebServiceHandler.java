@@ -3969,4 +3969,13 @@ public class WebServiceHandler {
     		@PathParam("satisfiesStatus") String satisfiesStatus){
 		return  webServiceHandlerService.getJalavaniIvrSummaryWiseClick(startDateStr,endDateStr,statusId,probTypeId,districtId,satisfiesStatus);
     }
+	@GET
+    @Path("/getJalavaniIvrRespondantsGraphDetailsInfo/{startDateStr}/{endDateStr}")
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public List<BasicVO> getJalavaniIvrRespondantsGraphDetailsInfo(
+    		@PathParam("startDateStr") String startDateStr,
+    		@PathParam("endDateStr") String endDateStr){
+		return  webServiceHandlerService.getJalavaniIvrRespondantsGraphDetailsInfo(startDateStr,endDateStr);
+    }
 }
