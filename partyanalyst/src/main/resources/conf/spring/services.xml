@@ -2494,6 +2494,7 @@
 	   <property name="partyMeetingMOMService" ref="partyMeetingMOMService"/>
 	   <property name="affiliatedMemberService" ref="affiliatedMemberService"/>
 	   <property name="itdpAppUserDAO" ref="itdpAppUserDAO" />
+	   <property name="alertCreationAPIService" ref="alertCreationAPIService" />
 	</bean>
  
   <bean name="castePredictionService" class="com.itgrids.partyanalyst.service.impl.CastePredictionService" >
@@ -4702,6 +4703,9 @@
     		<property name="alertUpdationAPIService" ref="alertUpdationAPIService"></property>
     		<property name="alertCandidateDAO" ref="alertCandidateDAO" />
     		<property name="alertIssueCategoryRelationDAO" ref="alertIssueCategoryRelationDAO"></property>
+    		<property name="alertService" ref="alertService"></property>
+    		<property name="alertIssueCategoryDAO" ref="alertIssueCategoryDAO"></property>
+    		
     	 </bean>
     	 <bean name="alertRenderService" class="com.itgrids.partyanalyst.service.impl.AlertRenderService">
     	 	<property name="alertCreationAPIService" ref="alertCreationAPIService"></property>
