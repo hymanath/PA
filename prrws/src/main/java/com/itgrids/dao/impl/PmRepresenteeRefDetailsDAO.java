@@ -756,10 +756,11 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 				.addScalar("refDesignation", StandardBasicTypes.STRING)
 				.addScalar("refName", StandardBasicTypes.STRING)3
 				.addScalar("officerName", StandardBasicTypes.STRING);*/
-		if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
-			query.setParameterList("districtIdsList", inputVO.getDistrictIdsList());
+		
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			query.setParameterList("constituencyIdsList", inputVO.getConstituencyIdsList());
+		else if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
+			query.setParameterList("districtIdsList", inputVO.getDistrictIdsList());
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
 			query.setParameterList("deptIdsList", inputVO.getDeptIdsList());
 		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
