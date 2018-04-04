@@ -1773,20 +1773,20 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 				str+='<div class="row m_top5">'
 					str+='<div class="col-sm-12">'
 						str+='<div class="table-responsive">';
-						str+='<table class="table details-overview_petition_print">';
+						str+='<table class="table details-overview_petition_print font_size_13">';
 							str+='<thead>';
 								str+='<tr>';
-									str+='<th style="width:70px; !important;">GIVEN&nbsp;DATE</th>';
-									str+='<th>ENDORS&nbsp;NO</th>';
-									str+='<th>WORK&nbsp;REF&nbsp;NO </th>';
-									str+='<th>LOCATION</th>';
-									str+='<th>WORK&nbsp;DESC</th>';
-									str+='<th>EST&nbsp;COST<br>(in Lakhs)</th>';
-									str+='<th>REF BY</th>';
-									str+='<th>ACTION MEMO</th>';
-									str+='<th>GO ISSUED </th>';
-									str+='<th>PENDING&nbsp;@</th>';
-									str+='<th>INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
+									str+='<th class="font_size_13" style="width:70px; !important;">GIVEN&nbsp;DATE</th>';
+									str+='<th  class="font_size_13" >ENDORS&nbsp;NO</th>';
+									str+='<th class="font_size_13" >WORK&nbsp;REF&nbsp;NO </th>';
+									str+='<th class="font_size_13" >LOCATION</th>';
+									str+='<th class="font_size_13" >WORK&nbsp;DESC</th>';
+									str+='<th class="font_size_13" >EST&nbsp;COST<br>(in Lakhs)</th>';
+									str+='<th class="font_size_13" >REF BY</th>';
+									str+='<th class="font_size_13" >ACTION MEMO</th>';
+									//str+='<th class="font_size_13" >GO ISSUED </th>';
+									str+='<th class="font_size_13" >PENDING&nbsp;@</th>';
+									str+='<th class="font_size_13" >INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
 									str+='</tr>';
 								str+='</thead>';
 								str+='<tbody>';
@@ -1794,7 +1794,7 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 										if(typeof result[s].subWorksList[i] != 'undefined' && result[s].subWorksList[i] != null){
 											
 											//if(result[s].subWorksList[i].subWorksList != null && result[s].subWorksList[i].length>0){
-												console.log(s+" : "+i+" - "+result[s].subWorksList[i]);
+												//console.log(s+" : "+i+" - "+result[s].subWorksList[i]);
 												for(var k in result[s].subWorksList[i].subWorksList){
 													console.log(result[s].subWorksList[i].subWorksList[k]);
 													//if(typeof result[s].subWorksList[i].subWorksList[k] != 'undefined' && result[s].subWorksList[i].subWorksList[k] != null){
@@ -1858,10 +1858,10 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 															str+='<td></td>';
 													
 													
-													if(typeof result[s].subWorksList[i].subWorksList[k].goRefNo != 'undefined' && result[s].subWorksList[i].subWorksList[k].goRefNo != null)
-														str+='<td>'+result[s].subWorksList[i].subWorksList[k].goRefNo+'</td>';
-													else 
-														str+='<td></td>';
+												//	if(typeof result[s].subWorksList[i].subWorksList[k].goRefNo != 'undefined' && result[s].subWorksList[i].subWorksList[k].goRefNo != null)
+												//		str+='<td>'+result[s].subWorksList[i].subWorksList[k].goRefNo+'</td>';
+												//	else 
+												//		str+='<td></td>';
 													
 													
 													if(typeof result[s].subWorksList[i].subWorksList[k].pendingAt != 'undefined' && result[s].subWorksList[i].subWorksList[k].pendingAt != null)
