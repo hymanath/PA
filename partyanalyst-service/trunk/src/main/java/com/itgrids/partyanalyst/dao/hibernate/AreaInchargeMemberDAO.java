@@ -120,7 +120,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		}else if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
 			sb.append("  and AIM.areaInchargeLocation.address.constituency.constituencyId =:levelValue "); 
 		}
-		//sb.append(" group by tdpCadre.tdpCadreId ");
+		sb.append(" order by tdpCadre.tdpCadreId ");
 		Query query = getSession().createQuery(sb.toString());
 		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
 			query.setParameter("levelValue", levelValue);
