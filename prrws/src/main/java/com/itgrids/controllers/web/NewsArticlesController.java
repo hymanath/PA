@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class NewsArticlesController {
 	 
-private static final Logger LOG = Logger.getLogger(NewsArticlesController.class);
+	private static final Logger LOG = Logger.getLogger(NewsArticlesController.class);
 	@RequestMapping(value ="/newsArticles",method = RequestMethod.GET)
 	public String newsArticles() {
 	   return "newsArticles";
@@ -28,5 +28,9 @@ private static final Logger LOG = Logger.getLogger(NewsArticlesController.class)
 	@RequestMapping(value="/wordCloud", method = RequestMethod.GET)
 	public String wordCloud(){
 		return "wordCloud";
+	}
+	@RequestMapping(value="/govtAndPartywordCloud", method = RequestMethod.GET)
+	public String partyGovtWordCloud(){
+		return "partyAndGovtwordCloud";
 	}
 }
