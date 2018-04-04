@@ -150,4 +150,12 @@ public class PmTrackingDAO extends GenericDaoHibernate<PmTracking, Long> impleme
 		}
 		return query.list();
 	}
+	
+	public Long getLatestUpdatedDetailsOfPetition(Long petitionId){
+		StringBuilder str = new StringBuilder();
+		str.append("select distinct max(model.pmTrackingId) from PmTracking model where model.petitionId =:petitionId and model.isDeleted='N'  " );
+		Query query = getSession().createQuery(str.toString());
+		query.setParameter("petitionId", petitionId);
+		return (Long) query.uniqueResult();
+	}
 }

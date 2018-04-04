@@ -8,6 +8,7 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
+	private Long pmTrackingId;
 	private Long petitionId;
 	private Long pmSubWorkDetailsId;
 	private Long pmTrackingActionId;
@@ -130,5 +131,10 @@ public class PetitionTrackingVO implements java.io.Serializable{
 	public void setPmDocumentTypeId(Long pmDocumentTypeId) {
 		this.pmDocumentTypeId = pmDocumentTypeId;
 	}
-	
+	public Long getPmTrackingId() {
+		return pmTrackingId;
+	}
+	public void setPmTrackingId(Long pmTrackingId) {
+		this.pmTrackingId = pmTrackingId;
+	}
 }
