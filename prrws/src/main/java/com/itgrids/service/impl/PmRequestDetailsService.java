@@ -6655,6 +6655,13 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						/*if(inputVO.getStatusType() != null && inputVO.getStatusType().equalsIgnoreCase("COVERING LETTER")){
 							updatedId = pmSubWorkCoveringLetterDAO.disableExistingCoveringLettersForPetition(inputVO.getPetitionId(),inputVO.getStatusType());
 						}*/
+						Set<Long> petitionIdsList = new HashSet<Long>(0);
+						petitionIdsList.add(inputVO.getPetitionId());
+						Long pmPetitionAssignedOfficerId=0L;
+						List<Object[]> assignedOffiecrList = pmPetitionAssignedOfficerDAO.getLatestUpdatedDetailsOfPetition(petitionIdsList);
+						if(commonMethodsUtilService.isListOrSetValid(assignedOffiecrList)){
+							pmPetitionAssignedOfficerId = commonMethodsUtilService.getLongValueForObject(assignedOffiecrList.get(0)[0]);
+						}
 						
 						PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
 						
@@ -6672,7 +6679,21 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						pmSubWorkCoveringLetter.setRefNo(inputVO.getRefNo());
 						pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
 						
-						for (Long subWorkId : inputVO.getWorkIds()) {
+						PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
+						pmTrackingVO.setUserId(inputVO.getId());
+						pmTrackingVO.setPetitionId(inputVO.getPetitionId());
+						pmTrackingVO.setRemarks("Uploaded covering letter,reuploaded after sign.");
+						pmTrackingVO.setActionType("COMPLETED");
+						pmTrackingVO.setPmTrackingActionId(6L);//FILE UPLOAD
+						pmTrackingVO.setDocumentId(documentId);
+						updatePetitionTracking(pmTrackingVO,updatedTime);
+						
+						if(pmPetitionAssignedOfficerId != null && pmPetitionAssignedOfficerId.longValue()>0L)
+							pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficerId);
+						pmTrackingVO.setPmSubWorkDetailsId(null);
+						updatePetitionTracking(pmTrackingVO,updatedTime);
+						
+						/*for (Long subWorkId : inputVO.getWorkIds()) {
 							pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
 							
 							pmSubWorkCoveringLetter.setPetitionId(inputVO.getPetitionId());
@@ -6683,35 +6704,12 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmSubWorkCoveringLetter.setIsDeleted("N");
 							if(inputVO.getDocumentTypeId() != null && inputVO.getDocumentTypeId().longValue() >0l){
 								pmSubWorkCoveringLetter.setDocumentTypeId(inputVO.getDocumentTypeId());
-							}/*else{
+							}else{
 								pmSubWorkCoveringLetter.setDocumentTypeId(4l);
-							}*/
+							}
 							pmSubWorkCoveringLetter.setRefNo(inputVO.getRefNo());
 							pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
-							/*PetitionTrackingVO pmTrackingVO = new PetitionTrackingVO();
-							pmTrackingVO.setPmStatusId(statusId);// PENDING ACTION MEMO 
-							pmTrackingVO.setUserId(userId);
-							pmTrackingVO.setPetitionId(petitonId);
-							if(statusId == 6L)
-								pmTrackingVO.setRemarks("Uploaded covering letter");
-							else if(statusId == 7L || statusId == 10L || statusId == 11L || statusId == 12L|| statusId == 13L)// for joint secretories
-								pmTrackingVO.setRemarks("uploaded action memo document");
-							else if(statusId == 14L)
-								pmTrackingVO.setRemarks("Uploaded detailed report document");
-							pmTrackingVO.setActionType(inputVO.getActionType());
-							if(pmTrackingVO.getRemarks() != null && !pmTrackingVO.getRemarks().isEmpty())
-								pmTrackingVO.setRemarks(pmTrackingVO.getRemarks()+" , "+remarks);
-							pmTrackingVO.setPmDocumentTypeId(documentTypeId);
-							pmTrackingVO.setPmTrackingActionId(4L);//FILE UPLOAD
-							pmTrackingVO.setDocumentId(documentId);
-							pmTrackingVO.setPmSubWorkDetailsId(subWorkId);
-							if(pmPetitionAssignedOfficer != null)
-								pmTrackingVO.setAssignedToPmPetitionAssignedOfficerId(pmPetitionAssignedOfficer.getPmPetitionAssignedOfficerId());
-							updatePetitionTracking(pmTrackingVO,updatedTime);
-							
-							pmTrackingVO.setPmSubWorkDetailsId(null);
-							updatePetitionTracking(pmTrackingVO,updatedTime);*/
-						}
+						}*/
 					}
 					status.setExceptionMsg("SUCCESS");
 				} catch (Exception e) {
