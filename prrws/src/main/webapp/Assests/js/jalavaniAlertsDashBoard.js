@@ -14,9 +14,11 @@ var locationArr=['state','district','constituency','mandal'];
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
 	$(".menu-data-cls").toggle();
+	$(".menuCls-table2").hide();
 });
 $(document).on("click",function(){
 	$(".menu-data-cls").hide();
+	$(".menuCls-table2").hide();
 });
 $("#dateRangePicker").daterangepicker({
 		opens: 'left',
@@ -1182,23 +1184,51 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"info":     false,
 			"searching": true,
 			"autoWidth": true,
-			"sDom": '<"top"iflp>rt<"bottom"><"clear">',
-			/* "scrollX":        true,
-			"scrollCollapse": false,
-			"fixedColumns":   {
-				"leftColumns": 1,
-			}, */
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
+					titleAttr: 'CSV',
+				}
+			]
+			
 		});
 	}else if(type != 'state'){
 		$("#dataTable"+type).dataTable({
 			"iDisplayLength": 10,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20,50, -1], [10, 15, 20,50, "All"]],
-			/* "scrollX":        true,
-			"scrollCollapse": false,
-			"fixedColumns":   {
-				"leftColumns": 1,
-			}, */
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
+					titleAttr: 'CSV',
+				}
+			]
+		});
+	}else if(type == 'state'){
+		$("#dataTable"+type).dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": false,
+			"autoWidth": false,
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			buttons: [
+				{
+					extend:    'csvHtml5',
+					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
+					titleAttr: 'CSV',
+				}
+			]
+			
 		});
 	}
 }
@@ -1246,7 +1276,7 @@ $(document).on("click",".getAmsPopUpCls",function(){
 
 function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid,locationValueName,locationValue,statusName,statusType){
 	//district-5,mandal-8,status-id/CategotyID
-	
+	$("#modalHeadingTotal").html("");
 	$.ajax({
 		//url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
 		url: "http://mytdp.com/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
@@ -1262,13 +1292,17 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 
 function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockType)
 {
-	$("#modalHeadingTotal").html("");
 	var str='';
 	var alertId = '';
-	if(statuscount !=null && statuscount >0){
-		$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
+	if(blockType == "closedAndReopend"){
+		$("#modalHeadingTotal").html("Total "+statusName+' - '+result.length);
 	}else{
-		$("#modalHeadingTotal").html("Total "+statusName+' :');
+		if(statuscount !=null && statuscount >0){
+			$("#modalHeadingTotal").html("Total "+statusName+' - '+statuscount);
+		}else{
+			$("#modalHeadingTotal").html("Total "+statusName+' :');
+		}
+		
 	}
 	
 	str+='<div class="row">';
@@ -1281,7 +1315,11 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockTyp
 						str+='<th>Title</th>';
 						str+='<th><span class="channel-name">Source</span></th>';
 						str+='<th><span class="location-name">Location</span></th>';
-						str+='<th><span class="channel-name">Status</span></th>';
+						if(blockType =="closedAndReopend"){
+							str+='<th><span class="channel-name">Present Status</span></th>';
+						}else{
+							str+='<th><span class="channel-name">Status</span></th>';
+						}
 						str+='<th><span class="channel-name">Ofcr Name</span></th>';//alertStatus
 						str+='<th><span class="channel-name">Ofcr Location</span></th>';
 						//str+='<th><span class="channel-name">Lag Days</span></th>';
@@ -3330,7 +3368,7 @@ $(document).on("click",".feedbackStatusCls",function(){
 });
 
 function getJalavaniFeedBackNotSatisifiedAlertsInfo(feedBackStatusId,districtId,statusName,alertCount){
- 
+	$("#modalHeadingTotal").html("");
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
 		//url: "http://192.168.11.176:8080/PartyAnalyst/WebService/getJalavaniFeedBackNotSatisifiedAlertsInfo/"+currentFromDate+"/"+currentToDate+"/"+feedBackStatusId+"/"+districtId
@@ -3465,12 +3503,13 @@ $(document).on("click",".closedReopenAlertsCls",function(){
 });
 function getJalavaniAlertForClosedAndReopenDetails(statusId,statusName){
 	//$('#timeSeriesWisGraphDivId').html(spinner);
+	$("#modalHeadingTotal").html("");
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
 		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
 	}).then(function(result){
 		if(result != null && result.length > 0){
-			buildAlertDtlsBasedOnStatusClick(result,statusName,"","");
+			buildAlertDtlsBasedOnStatusClick(result,statusName,"","closedAndReopend");
 		}else{
 			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
 		}
@@ -3789,6 +3828,7 @@ function buildJalavaniIvrRespondantGraph(result,divId){
 $(document).on("click",".menu-cls2",function(e){
 	e.stopPropagation();
 	$(".menuCls-table2").toggle();
+	$(".menu-data-cls").hide();
 });
 $(document).on("click",".statusWiseIvrCls",function(){
 	var statusId = $(this).attr("attr_status_id");
@@ -3807,6 +3847,7 @@ $(document).on("click",".statusWiseIvrCls",function(){
 });
 
 function getJalavaniIvrSummaryWiseClick(statusId,probTypeId,statusName,districtId,satisfiedStatus,alertCount){
+	$("#modalHeadingTotal").html("");
 	$.ajax({
 		url: wurl+"/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+probTypeId+"/"+districtId+"/"+satisfiedStatus
 		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniIvrSummaryWiseClick/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+probTypeId+"/"+districtId+"/"+satisfiedStatus
