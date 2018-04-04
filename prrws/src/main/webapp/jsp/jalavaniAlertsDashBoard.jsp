@@ -12,6 +12,7 @@
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="Assests/css/responsive.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
@@ -392,7 +393,7 @@
 						<div id="timeSeriesWisGraphDivId" style="height:300px;"></div>
 					</div>
 				</div>
-				<!--<div class="row">
+				<div class="row">
 					<div class="col-sm-12">
 							<h4 style="font-weight:bold;">Alert IVR Summary</h4>
 					</div>
@@ -401,7 +402,7 @@
 					<div class="col-sm-12">
 						<div id="timeSeriesIVRGraphDivId" style="height:300px;"></div>
 					</div>
-				</div>-->
+				</div>
 				<div class="row">
 					<div class="col-sm-12">
 							<h4 style="font-weight:bold;">IVR Respondant Details</h4>
@@ -431,6 +432,11 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/exportButtons.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/jsZip.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/pdf.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/v5font.js" type="text/javascript"></script>
+<script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="Assests/js/jalavaniAlertsDashBoard.js" type="text/javascript"></script>
 </body>
