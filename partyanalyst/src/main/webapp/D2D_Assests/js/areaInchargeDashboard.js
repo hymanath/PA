@@ -1,4 +1,5 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+
 var globalLevelId=4;
 var globalLevelValue='';
 var globalConstituencyName='';
@@ -30,6 +31,7 @@ function onloadCalls(type){
 	 if(globalLevelType == "district" && type =="onchange"){
 		 globalLevelId =3;
 		 globalLevelValue=21;
+		 globalLocationName='KURNOOL';
 	 }
 	 if(globalLevelId ==3){
 		 getAreaInchargesStatusWiseCountDistrict("mainOverViewConstituencyBlockDivId",'constituency','district',type);
@@ -256,8 +258,6 @@ function getAreaInchargeAssignedBoothDetails(){
     }).done(function(result){
       if(result !=null && result.length>0){
 		  buildAreaInchargeAssignedBoothDetails(result);
-	  }else{
-		  $("#alreadyAreaInchargeDetailsDivId").html("No Data Available")
 	  }
     });
   }
