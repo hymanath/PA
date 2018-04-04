@@ -230,7 +230,7 @@ public class PmRequestDetailsController {
 				KeyValueVO deptVO = pmRequestDetailsService.getDeptIdsListBYUserIds(userId);
 				deptIds = deptVO.getDeptIdsList();
 			}
-	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),userId,inputVO.getSubProgramIdsList(),inputVO.getLeadIdsList());
+	    	return locationDetailsService.getMandalsBySearchTypeAndConstituencyId(inputVO,inputVO.getFilterType(),inputVO.getSearchLvlVals(),deptIds,inputVO.getFromDate(),inputVO.getToDate(),inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),userId,inputVO.getSubProgramIdsList(),inputVO.getLeadIdsList());
 	    }
 	    @RequestMapping(value ="/getDesignationsBySearchType",method = RequestMethod.POST)
 	    public @ResponseBody List<KeyValueVO> getDesignationsBySearchType(@RequestBody InputVO inputVO,HttpServletRequest request ) {

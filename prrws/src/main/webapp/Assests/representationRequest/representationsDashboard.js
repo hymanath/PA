@@ -1391,6 +1391,9 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 			var constId =0;
 			
 				for(var i in result){
+					if(result[i].locationName == null || result[i].locationName.length==0)
+						continue;
+					
 					str+='<tr>';
 						if(locationtype == "district"){
 							str+='<td class="text-capital">'+result[i].locationName+'</td>';

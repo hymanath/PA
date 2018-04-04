@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IPmRepresenteeDAO;
+import com.itgrids.dto.InputVO;
 import com.itgrids.model.PmRepresentee;
 
 @Repository
@@ -52,21 +53,47 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		return query.list();
 	}
 	
-	public List<Object[]> getAllDistrictsBySearchType(Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType,List<Long> statIds,Set<Long> petitionIdsLst){
+	public List<Object[]> getAllDistrictsBySearchType(InputVO inputVO, Date fromDate,Date toDate,List<Long> deptIds,List<Long> desigIds,String desigType,List<Long> statIds,Set<Long> petitionIdsLst){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.pmRepresentee.userAddress.district.districtId,model.pmRepresentee.userAddress.district.districtName ");
-		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRepresentee.isDeleted='N' " +
-				" and model.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' ");
+		if(inputVO != null){
+			sb.append("select distinct district.districtId,district.districtName ");
+		}else{
+			sb.append("select distinct district.districtId,district.districtName ");
+		}
+		if(inputVO != null){
+			sb.append(" from PmRepresenteeRefDetails model ,PmSubWorkDetails model1 ");
+			sb.append( " left join model1.locationAddress userAddress " +
+					" left join userAddress.district district " +
+					" left join userAddress.constituency constituency " +
+					" left join userAddress.tehsil tehsil " +
+					" left join userAddress.localElectionBody localElectionBody " );
+		}else{
+			sb.append(" from PmSubWorkDetails model1 ,PmRepresenteeRefDetails model ");
+			sb.append( " left join model.pmRepresentee pmRepresentee " +
+					" left join pmRepresentee.userAddress userAddress " +
+					" left join userAddress.district district " +
+					" left join userAddress.constituency constituency " +
+					" left join userAddress.tehsil tehsil " +
+					" left join userAddress.localElectionBody localElectionBody " );
+		}
+		sb.append( " where  model.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N' ");
 		if(deptIds != null && deptIds.size()>0){
 			sb.append(" and model1.pmDepartment.pmDepartmentId in (:deptIds) ");
 		}
 		if(statIds != null && statIds.size() >0){
 			sb.append(" and model1.pmStatus.pmStatusId in (:statIds) ");
 		}	
+		
 		if(desigIds != null && desigIds.size() >0 && desigType != null && desigType.equalsIgnoreCase("referral")){
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:desigIds) ");
 		}else if(desigIds != null && desigIds.size() >0 && desigType != null && desigType.equalsIgnoreCase("representee")){
 			sb.append(" and model.pmRefCandidateDesignation.pmDesignation.pmDesignationId in (:desigIds) ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("name")){
+			sb.append(" and model.pmRepresentee.name like '%"+inputVO.getFilterValue()+"%' ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("mail")){
+			sb.append(" and model.pmRepresentee.email like '%"+inputVO.getFilterValue()+"%' ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("mobile")){
+			sb.append(" and model.pmRepresentee.mobileNo like '%"+inputVO.getFilterValue()+"%' ");
 		}
 		
 		if(petitionIdsLst != null && petitionIdsLst.size() >0){
@@ -75,7 +102,7 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		if(fromDate != null && toDate != null){
 			sb.append(" and (date(model1.insertedTime) between :fromDate and :toDate ) ");
 		}
-		sb.append( "order by model.pmRepresentee.userAddress.district.districtName asc ");
+		sb.append( "order by district.districtName asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size()>0){
 			query.setParameterList("deptIds", deptIds);
@@ -95,15 +122,32 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		}
 		return query.list();
 	}
-	
-	public List<Object[]> getAlConstituenciesBySearchType(Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type,List<Long> statIds,Set<Long> petitionIdsLst){
+	 
+	public List<Object[]> getAlConstituenciesBySearchType(InputVO inputVO,Date fromDate,Date toDate,List<Long> districtIds,  List<Long> deptIds,List<Long> pmDesignationIds,String type,List<Long> statIds,Set<Long> petitionIdsLst){
 		StringBuilder sb = new StringBuilder();
-		sb.append("select distinct model.pmRepresentee.userAddress.constituency.constituencyId,model.pmRepresentee.userAddress.constituency.name ");
-		sb.append( " from PmRepresenteeRefDetails model,PmSubWorkDetails model1 where model.pmRepresentee.isDeleted='N' " +
-				" and model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId" +
+		sb.append("select distinct constituency.constituencyId,constituency.name ");
+		
+		if(inputVO != null){
+			sb.append(" from PmRepresenteeRefDetails model ,PmSubWorkDetails model1 ");
+			sb.append( " left join model1.locationAddress userAddress " +
+					" left join userAddress.district district " +
+					" left join userAddress.constituency constituency " +
+					" left join userAddress.tehsil tehsil " +
+					" left join userAddress.localElectionBody localElectionBody " );
+		}else{
+			sb.append(" from PmSubWorkDetails model1 ,PmRepresenteeRefDetails model ");
+			sb.append( " left join model.pmRepresentee pmRepresentee " +
+					" left join pmRepresentee.userAddress userAddress " +
+					" left join userAddress.district district " +
+					" left join userAddress.constituency constituency " +
+					" left join userAddress.tehsil tehsil " +
+					" left join userAddress.localElectionBody localElectionBody " );
+		}
+		
+		sb.append( " where  model.isDeleted='N'and model1.isDeleted='N' and model.petition.petitionId = model1.petition.petitionId" +
 				" and model1.petition.isDeleted='N'  ");
 		if(districtIds != null && districtIds.size() >0 ){
-			sb.append("and model.pmRepresentee.userAddress.district.districtId in (:districtIds) ");
+			sb.append("and district.districtId in (:districtIds) ");
 		}		
 		if(deptIds != null && deptIds.size() >0 ){
 			sb.append("and model1.pmDepartment.pmDepartmentId in (:deptIds)");
@@ -123,7 +167,14 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 	   else if (type != null  && type.equalsIgnoreCase("representee") && pmDesignationIds !=null && pmDesignationIds.size()>0){
 		sb.append(" and model.pmRepresenteeDesignation.pmDesignation.pmDesignationId in(:pmDesignationIds) ");
 	    }
-		sb.append(" order by model.pmRepresentee.userAddress.constituency.name asc ");
+	   	else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("name")){
+			sb.append(" and model.pmRepresentee.name like '%"+inputVO.getFilterValue()+"%' ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("mail")){
+			sb.append(" and model.pmRepresentee.email like '%"+inputVO.getFilterValue()+"%' ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("mobile")){
+			sb.append(" and model.pmRepresentee.mobileNo like '%"+inputVO.getFilterValue()+"%' ");
+		}
+		sb.append(" order by constituency.name asc ");
 		Query query =getSession().createQuery(sb.toString());
 		if(deptIds != null && deptIds.size() >0 ){
 			query.setParameterList("deptIds", deptIds);
@@ -146,16 +197,34 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		}
 		return query.list();
 	}
-	public List<Object[]> getAllMandalsBySearchType(List<Long> constituencyIds,List<Long> deptIds,Date fromDate,Date toDate,List<Long> desigIds,String desigType,List<Long> statIds,Set<Long> petitionIdsList){
+	public List<Object[]> getAllMandalsBySearchType(InputVO inputVO,List<Long> constituencyIds,List<Long> deptIds,Date fromDate,Date toDate,List<Long> desigIds,String desigType,List<Long> statIds,Set<Long> petitionIdsList){
 		StringBuilder sb = new StringBuilder();
 		sb.append("select distinct tehsil.tehsilId,tehsil.tehsilName ");
 		sb.append( " , localElectionBody.localElectionBodyId,localElectionBody.name," +
-				"localElectionBody.electionTypeId " +
-				"from PmRepresenteeRefDetails model left join model.pmRepresentee.userAddress.localElectionBody localElectionBody " +
-				"left join model.pmRepresentee.userAddress.tehsil tehsil ,PmSubWorkDetails model1 where model.isDeleted='N'  and " +
+				"localElectionBody.electionTypeId ");
+		
+		if(inputVO != null){
+			sb.append(" from PmRepresenteeRefDetails model ,PmSubWorkDetails model1 ");
+			sb.append( " left join model1.locationAddress userAddress " +
+					" left join userAddress.district district " +
+					" left join userAddress.constituency constituency " +
+					" left join userAddress.tehsil tehsil " +
+					" left join userAddress.localElectionBody localElectionBody " );
+		}else{
+			sb.append(" from PmSubWorkDetails model1 ,PmRepresenteeRefDetails model ");
+			sb.append( " left join model.pmRepresentee pmRepresentee " +
+					" left join pmRepresentee.userAddress userAddress " +
+					" left join userAddress.district district " +
+					" left join userAddress.constituency constituency " +
+					" left join userAddress.tehsil tehsil " +
+					" left join userAddress.localElectionBody localElectionBody " );
+		}
+		
+		sb.append( " where model.isDeleted='N'  and " +
 				"model.pmRepresentee.isDeleted='N' and  model.petition.petitionId = model1.petition.petitionId and model1.petition.isDeleted='N'  ");
+		
 		if(constituencyIds != null && constituencyIds.size() >0 ){
-			sb.append("and model.pmRepresentee.userAddress.constituencyId in (:constituencyIds) ");
+			sb.append("and userAddress.constituencyId in (:constituencyIds) ");
 		}
 		 
 		if(deptIds != null && deptIds.size() >0){
@@ -176,6 +245,12 @@ public class PmRepresenteeDAO extends GenericDaoHibernate<PmRepresentee, Long> i
 		
 		if(petitionIdsList != null && petitionIdsList.size() >0){
 			sb.append(" and model1.petition.petitionId in (:petitionIdsList) ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("name")){
+			sb.append(" and model.pmRepresentee.name like '%"+inputVO.getFilterValue()+"%' ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("mail")){
+			sb.append(" and model.pmRepresentee.email like '%"+inputVO.getFilterValue()+"%' ");
+		}else if(inputVO != null && inputVO.getFilterValue() != null && inputVO.getFilterType().trim().equalsIgnoreCase("mobile")){
+			sb.append(" and model.pmRepresentee.mobileNo like '%"+inputVO.getFilterValue()+"%' ");
 		}
 		sb.append( "order by tehsil.tehsilName asc,localElectionBody.name asc ");
 		Query query =getSession().createQuery(sb.toString());

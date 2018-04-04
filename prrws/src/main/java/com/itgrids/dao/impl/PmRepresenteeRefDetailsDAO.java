@@ -702,7 +702,8 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" LEFT JOIN pm_dept_designation dd on o.pm_dept_designation_id  =dd.pm_dept_designation_id and dd.is_deleted='N' ");
 		sb.append(" LEFT JOIN pm_officer_designation pod on dd.pm_officer_designation_id = pod.pm_officer_designation_id  ");
 		sb.append(" LEFT JOIN pm_officer off on o.pm_officer_id = off.pm_officer_id   ");
-		sb.append(" where  sub.pm_status_id not in (:PETITION_COMPLETED_IDS) and " );
+		sb.append(" where ");
+		//sb.append(" where  sub.pm_status_id not in (:PETITION_COMPLETED_IDS) and " );
 			//	" sub.pm_brief_lead_id not in (:PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS) and " +
 			//	" sub.pm_brief_lead_id not in (:PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS) and  ");
 		sb.append(" p.petition_id = sub.petition_id and  ");
@@ -713,10 +714,11 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" SELECT max(o1.pm_petition_assigned_officer_id) from pm_petition_assigned_officer o1 where o1.is_deleted='N' GROUP BY o1.petition_id ");
 		sb.append(" )   ");
 		
-		if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
-			sb.append(" and dis.district_id in(:districtIdsList ) ");
+		
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			sb.append(" and c.constituency_id in (:constituencyIdsList)  ");
+		else if(inputVO.getDistrictIdsList() != null && inputVO.getDistrictIdsList().size() >0)
+			sb.append(" and dis.district_id in(:districtIdsList ) ");
 		if( inputVO.getDeptIdsList() != null &&  inputVO.getDeptIdsList().size()>0)
 			sb.append("  and  d.pm_department_id in (:deptIdsList)   ");
 		if( inputVO.getStatusIdsList() != null &&  inputVO.getStatusIdsList().size()>0)
@@ -771,9 +773,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 			query.setParameter("endDate", endDate);
 		}
 		
-		if( IConstants.PETITION_COMPLETED_IDS != null &&  IConstants.PETITION_COMPLETED_IDS.size()>0){
+		/*if( IConstants.PETITION_COMPLETED_IDS != null &&  IConstants.PETITION_COMPLETED_IDS.size()>0){
 			query.setParameterList("PETITION_COMPLETED_IDS", IConstants.PETITION_COMPLETED_IDS);
-		}
+		}*/
 		
 	/*	if( IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS != null &&  IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.size()>0){
 			query.setParameterList("PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS", IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS);
