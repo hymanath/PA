@@ -17852,7 +17852,19 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 			
 			List<Object[]> list = alertDAO.getAlertDtls(new HashSet<Long>(alertIdsList));
 		    setAlertDtls(finalAlertVOs, list);
-		
+		    List<Object[]> currentStatusObjList = alertDAO.getJalavaniClosedAndreopenAlertStatus(alertIdsList);
+			if(currentStatusObjList !=null && currentStatusObjList.size() >0){
+				if(finalAlertVOs !=null && finalAlertVOs.size()>0){
+					for (AlertCoreDashBoardVO vo : finalAlertVOs){
+						for (Object[] objects : currentStatusObjList){
+							if(vo.getId().equals((Long)objects[0])){
+								vo.setStatus(objects[1].toString());
+							}
+						}
+					}
+				}
+			}
+		    
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniAlertForClosedAndReopenDetails() method of AlertManagementSystemService",e);
 		}
