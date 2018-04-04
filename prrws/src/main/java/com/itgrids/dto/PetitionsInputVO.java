@@ -17,6 +17,14 @@ public class PetitionsInputVO implements java.io.Serializable{
 	private List<Long> subSubjectIdsList = new ArrayList<Long>(0);
 	private List<Long> constituencyIdsList = new ArrayList<Long>(0);
 	private List<Long> districtIdsList = new ArrayList<Long>(0);
+	private List<Long> petitinsIdsList = new ArrayList<Long>(0);
+	
+	public List<Long> getPetitinsIdsList() {
+		return petitinsIdsList;
+	}
+	public void setPetitinsIdsList(List<Long> petitinsIdsList) {
+		this.petitinsIdsList = petitinsIdsList;
+	}
 	public Long getId() {
 		return id;
 	}

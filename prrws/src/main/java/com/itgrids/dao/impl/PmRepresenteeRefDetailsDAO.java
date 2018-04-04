@@ -671,12 +671,12 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 	public List<Object[]> getPetitionsDetailsForPdf(PetitionsInputVO inputVO,Date fromDate,Date endDate){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
-		sb.append(" p.petition_id as petition_id,CONCAT('#',date(p.representation_date))as representation_date ,CONCAT('#',date(p.endorsment_date)) as endorsment_date, ");
-		sb.append(" p.endorsment_no as endorsment_no,p.representee_type as representee_type ,p.no_of_works as no_of_works, ");
-		sb.append(" sub.pm_sub_work_details_id as pm_sub_work_details_id ,p.pm_status_id as pm_status_id, ");
-		sb.append(" st.state_id as state_id,dis.district_id as district_id,c.constituency_id as constituency_id,t.tehsil_id as tehsil_id, p1.panchayat_id as panchayat_id, ");
-		sb.append(" st.state_name as state_name,dis.district_name as district_name,c.name as cname ,t.tehsil_name as tehsil_name, p1.panchayat_name as panchayat_name, ");
-		sb.append(" sub.grievance_description as grievance_description ,sub.cost_estimation as cost_estimation,repd1.designation as repDesignation,rep.name as repname ,  ");//21
+		sb.append(" p.petition_id as petition_id,CONCAT('#',date(p.representation_date))as representation_date ,CONCAT('#',date(p.endorsment_date)) as endorsment_date, ");//1,2,3
+		sb.append(" p.endorsment_no as endorsment_no,p.representee_type as representee_type ,p.no_of_works as no_of_works, ");//4,5,6
+		sb.append(" sub.pm_sub_work_details_id as pm_sub_work_details_id ,p.pm_status_id as pm_status_id, ");//7,8
+		sb.append(" st.state_id as state_id,dis.district_id as district_id,c.constituency_id as constituency_id,t.tehsil_id as tehsil_id, p1.panchayat_id as panchayat_id, ");//9,10,11,12,13
+		sb.append(" st.state_name as state_name,dis.district_name as district_name,c.name as cname ,t.tehsil_name as tehsil_name, p1.panchayat_name as panchayat_name, ");//14,15,16,17,18
+		sb.append(" sub.grievance_description as grievance_description ,sub.cost_estimation as cost_estimation,repd1.designation as repDesignation,rep.name as repname ,  ");//19,20,21
 		sb.append(" refd.designation as refDesignation,rcand.name as refName ,off.name as officerName , ");//24
 		sb.append(" d.pm_department_id as pm_department_id, d.department as departmentName,sub.priority as priority, sub.pm_brief_lead_id as pm_brief_lead_id  ");//25,26,27,28
 		sb.append(" from  ");
@@ -714,6 +714,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		sb.append(" SELECT max(o1.pm_petition_assigned_officer_id) from pm_petition_assigned_officer o1 where o1.is_deleted='N' GROUP BY o1.petition_id ");
 		sb.append(" )   ");
 		
+		if(inputVO.getPetitinsIdsList() != null && inputVO.getPetitinsIdsList().size()>0){
+			sb.append(" and p.petition_id in (:petitinsIdsList) ");
+		}
 		
 		if( inputVO.getConstituencyIdsList() != null &&  inputVO.getConstituencyIdsList().size()>0)
 			sb.append(" and c.constituency_id in (:constituencyIdsList)  ");
@@ -772,6 +775,9 @@ public class PmRepresenteeRefDetailsDAO extends GenericDaoHibernate<PmRepresente
 		if(fromDate != null &&  endDate != null){
 			query.setParameter("fromDate", fromDate);
 			query.setParameter("endDate", endDate);
+		}
+		if(inputVO.getPetitinsIdsList() != null && inputVO.getPetitinsIdsList().size()>0){
+			query.setParameterList("petitinsIdsList", inputVO.getPetitinsIdsList());
 		}
 		
 		/*if( IConstants.PETITION_COMPLETED_IDS != null &&  IConstants.PETITION_COMPLETED_IDS.size()>0){

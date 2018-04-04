@@ -20,18 +20,25 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 		super(PmDepartmentDesignationOfficer.class);
 	}
 
-	public List<Object[]> getDeptDesignationOfficerDetailsByDeptDesignation(List<Long> designationIdsList,List<Long> deptIdsList){
+	public List<Object[]> getDeptDesignationOfficerDetailsByDeptDesignation(List<Long> designationIdsList,List<Long> deptIdsList,List<Long> districtIdsList){
 		StringBuilder str = new StringBuilder();
 		//str.append(" select distinct model.pmDepartmentDesignationOfficerId, model.pmOfficer.name," +
 		str.append(" select distinct model.pmOfficer.pmOfficerId, model.pmOfficer.name," +
 				"  model.pmOfficer.mobileNo,model.pmDepartmentDesignation.pmDepartment.department, " +
-				" model.pmDepartmentDesignation.pmOfficerDesignation.designation " +
-				" from PmDepartmentDesignationOfficer model" +
+				" model.pmDepartmentDesignation.pmOfficerDesignation.designation , state.stateId,district.districtId, constituency.constituencyId" +//4,5,6
+				" from PmDepartmentDesignationOfficer model , PmOfficerUser model1 "
+				+ " left join model1.address address "
+				+ " left join address.state state "
+				+ " left join address.district district "
+				+ " left join address.constituency constituency " +
 				//"  where model.pmDepartmentDesignationId =:deptDesignationId and " +
-				"  where model.pmDepartmentDesignation.pmOfficerDesignationId in (:designationIdsList) and " +
+				"  where model.pmOfficerId = model1.pmOfficerId and model.pmDepartmentDesignation.pmOfficerDesignationId in (:designationIdsList) and " +
 				" model.isActive ='Y' and model.pmOfficer.isActive ='Y' and model.pmDepartmentDesignation.isDeleted='N' " );
 		if(deptIdsList != null && deptIdsList.size()>0){
 			str.append("  and model.pmDepartmentDesignation.pmDepartmentId in (:deptIdsList) ");
+		}
+		if(districtIdsList != null && districtIdsList.size()>0){
+			str.append("  and district.districtId in (:districtIdsList) ");
 		}
 				//"  group by model.pmOfficer.pmOfficerId order by model.pmDepartmentDesignation.pmDepartment.department,model.pmDepartmentDesignation.pmOfficerDesignation.designation ");
 		str.append("   group by model.pmOfficer.pmOfficerId order by model.pmOfficer.name ");
@@ -40,7 +47,9 @@ public class PmDepartmentDesignationOfficerDAO extends GenericDaoHibernate<PmDep
 			query.setParameterList("designationIdsList", designationIdsList);
 		if(deptIdsList != null && deptIdsList.size()>0)
 			query.setParameterList("deptIdsList", deptIdsList);
-			
+		if(districtIdsList != null && districtIdsList.size()>0){
+			query.setParameterList("districtIdsList", districtIdsList);
+		}
 		return query.list();
 		
 	}

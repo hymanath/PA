@@ -20,10 +20,13 @@ public class PmOfficerUser {
 	private Long userId;
 	private Long pmOfficerId;
 	private String isActive;
+	private Long addressId;
 	
 	private PmDepartmentDesignation pmDepartmentDesignation;
 	private User insertedUser;
 	private PmOfficer pmOfficer;
+	private LocationAddress address;
+	
 	@Id
 	@Column(name="pm_officer_user_id")
 	@GeneratedValue(strategy= GenerationType.AUTO)
@@ -87,4 +90,23 @@ public class PmOfficerUser {
 	public void setPmOfficer(PmOfficer pmOfficer) {
 		this.pmOfficer = pmOfficer;
 	}
+	
+	@Column(name = "address_id")
+	public Long getAddressId() {
+		return addressId;
+	}
+	public void setAddressId(Long addressId) {
+		this.addressId = addressId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "address_id", insertable = false, updatable = false)
+	public LocationAddress getAddress() {
+		return address;
+	}
+	public void setAddress(LocationAddress address) {
+		this.address = address;
+	}
+	
+	
 }
