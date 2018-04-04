@@ -1141,14 +1141,14 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 							str+='<tr>';
 								
 								if(type =="district" || type =="state"){
-									str+='<td class="" style="text-align:left !important;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform: uppercase;">'+result[i].districtName+'</td>';
 								}else if(type =="constituency"){
-									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
-									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;text-transform: uppercase;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform: uppercase;">'+result[i].constiruenctName+'</td>';
 								}else if(type =="mandal"){
-									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;">'+result[i].districtName+'</td>';
-									str+='<td class="" style="text-align:left !important;">'+result[i].constiruenctName+'</td>';
-									str+='<td class="" style="text-align:left !important;">'+result[i].mandalName+'</td>';
+									str+='<td class="" style="text-align:left !important;border-right:1px solid #ddd !important;text-transform: uppercase;">'+result[i].districtName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform: uppercase;">'+result[i].constiruenctName+'</td>';
+									str+='<td class="" style="text-align:left !important;text-transform: uppercase;">'+result[i].mandalName+'</td>';
 								}
 								
 								str+='<td class="" style="background-color:#c5e6f9;"><span class="getAmsPopUpCls" attr_alertCount="'+result[i].count+'" attr_categoryId="'+alertSourceId+'" attr_location_id="'+type+'" attr_location_district_id="'+result[i].districtId+'" attr_location_constituency_id="'+result[i].constituenctId+'" attr_location_mandal_id="'+result[i].mandalId+'" attr_statusid="0" attr_statusName="">'+result[i].count+'</span></td>';
