@@ -14,6 +14,7 @@ import com.itgrids.partyanalyst.dto.AlertInputVO;
 import com.itgrids.partyanalyst.dto.AlertInputsVO;
 import com.itgrids.partyanalyst.dto.LocationVO;
 import com.itgrids.partyanalyst.model.Alert;
+import com.itgrids.partyanalyst.model.AlertAssignedOfficerTrackingNew;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 import com.itgrids.partyanalyst.utils.IConstants;
 
@@ -12050,8 +12051,9 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
         	  		" month(model.updatedTime),year(model.updatedTime)  ");
           }
           
-          str.append(" from Alert model where model.isDeleted='N' and model.alertFeedbackStatus.isDeleted='N'" +
-          		" and model.govtDepartmentId =:govtDeptId ");
+          str.append(" from AlertAssignedOfficerTrackingNew model " +
+          		" where model.alert.isDeleted='N' and model.alertFeedbackStatus.isDeleted='N'" +
+          		" and model.alert.govtDepartmentId =:govtDeptId and model.govtAlertActionTypeId=:actionTypeId ");
          
           if(fromDate !=null && toDate !=null){
             str.append(" and date(model.updatedTime) between :fromDate and :toDate ");
@@ -12060,11 +12062,12 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
           if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
             str.append(" group by model.alertFeedbackStatusId,date(model.updatedTime) order by date(model.updatedTime)");  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
-            str.append(" group by model.alertFeedbackStatusId,month(model.updatedTime),year(model.updatedTime) order by month(model.updatedTime),year(model.updatedTime) ");
+            str.append(" group by model.alertFeedbackStatusId,month(model.updatedTime),year(model.updatedTime) " +
+            		" order by month(model.updatedTime),year(model.updatedTime) ");
           }
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
-          
+          query.setParameter("actionTypeId",9l);
           if(fromDate !=null && toDate !=null){
             query.setParameter("fromDate",fromDate);
             query.setParameter("toDate",toDate);
@@ -12077,23 +12080,36 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
         	//0-locationId,1-locationName,2-feedbackStatusId,problemtypeId-3,satisifiedStatus-4,count-5
         str.append(" select distinct model.alertId ");
       
-        str.append(" from Alert model " +
-        		" where  model.isDeleted ='N' and " +
-        		" model.govtDepartmentId =:govtDeptId  ");
+        str.append(" from AlertAssignedOfficerTrackingNew model " +
+        		" where  model.alert.isDeleted ='N' and " +
+        		" model.alert.govtDepartmentId =:govtDeptId and model.govtAlertActionTypeId=:actionTypeId  ");
         
 	        if(fromDate !=null && toDate !=null){
-	        	str.append(" and date(model.createdTime) between :fromDate and :toDate ");
+	        	str.append(" and date(model.updatedTime) between :fromDate and :toDate ");
 	        }
         str.append( " and model.alertStatusId =:statusId ");
         
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
           query.setParameter("statusId",statusId);
-          
+          query.setParameter("actionTypeId",6l);
           if(fromDate !=null && toDate !=null){
             query.setDate("fromDate",fromDate);
             query.setDate("toDate",toDate);
           }
         return  query.list();
+      }
+	@SuppressWarnings("unchecked")
+	public List<Object[]> getJalavaniClosedAndreopenAlertStatus(List<Long> alertIds){
+        StringBuilder str = new StringBuilder();
+        str.append(" select distinct model.alertId,model.alertStatus.alertStatus ");
+      
+        str.append(" from Alert model " +
+        		" where  model.isDeleted ='N' and " +
+        		" model.alertId in (:alertIds)  ");
+        
+        Query query = getSession().createQuery(str.toString());
+        query.setParameterList("alertIds", alertIds);
+        	return  query.list();
       }
 }
