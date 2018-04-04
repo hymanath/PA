@@ -2470,6 +2470,7 @@ $(document).on('change','.popUpChangesCls',function(){
 })
 
 function getDeptDesignationOfficerDetail(onChangeValue){
+	var petitionId = $("#petitionsId").val();
 	
 	$("#officerId").html('');
 	$("#officerId").html('<option value ="0">SELECT OFFICER  </option>');
@@ -2479,7 +2480,8 @@ function getDeptDesignationOfficerDetail(onChangeValue){
 		//deptDesignationId : deptDesignationId,
 		pmDeptDesignationOfficerId : deptDesignationId,
 		deptIdsList : departmentSelectArr,
-		statusId : $('option:selected', '#statusChangeId').attr('attr_next_status_id')
+		statusId : $('option:selected', '#statusChangeId').attr('attr_next_status_id'),
+		petitionId : petitionId
 	}           
 $.ajax({              
 	type:'POST',    

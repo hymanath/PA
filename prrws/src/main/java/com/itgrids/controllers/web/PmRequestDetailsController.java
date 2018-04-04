@@ -505,7 +505,7 @@ public class PmRequestDetailsController {
 		    }else{
 		    	return null;
 		    }
-		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(dataVo.getPmDeptDesignationOfficerId(),dataVo.getDeptIdsList() ,dataVo.getStatusId(), userId);
+		    return pmRequestDetailsService.getDeptDesignationOfficerDetail(dataVo.getPmDeptDesignationOfficerId(),dataVo.getDeptIdsList() ,dataVo.getStatusId(), dataVo.getPetitionId(),userId);
 	    }
 	    @RequestMapping(value ="/generateCoveringLetterForPetition",method = RequestMethod.POST)
 	    public @ResponseBody ResultStatus generateCoveringLetterForPetition(@RequestBody InputVO inputVO,HttpServletRequest request ) {

@@ -5072,14 +5072,27 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 			return returnList;
 		}
 		
-		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList,Long statusId, Long userId){
+		public List<KeyValueVO> getDeptDesignationOfficerDetail(Long deptDesignationId ,List<Long> deptIdsList,Long statusId,Long petitionId, Long userId){
 			 List<KeyValueVO>  returnList = new ArrayList<KeyValueVO>();
 			try {
 				List<Long> deptDesignationIdsList = new ArrayList<>();//pmOfficerUserDAO.getPmDeptDesignationIdByUserId(userId);
 				deptDesignationIdsList.add(deptDesignationId);
+				List<Long> districtIdsList = new ArrayList<Long>(0);
+				
+				if(IConstants.PETITIONS_DISTRICT_LEVEL_DESIGNATION_IDS.contains(deptDesignationId)){
+					PetitionsInputVO inputVO = new PetitionsInputVO();
+					inputVO.getPetitinsIdsList().add(petitionId);
+					List<Object[]> petitionDetails = pmRepresenteeRefDetailsDAO.getPetitionsDetailsForPdf(inputVO,null,null);
+					if(commonMethodsUtilService.isListOrSetValid(petitionDetails)){
+						for (Object[] param : petitionDetails) {
+							Long districtId =commonMethodsUtilService.getLongValueForObject(param[9]) ;
+							districtIdsList.add(districtId);
+						}
+					}
+				}
 				
 				if(commonMethodsUtilService.isListOrSetValid(deptDesignationIdsList)){
-					List<Object[]> deptDesignationOfficerDetails = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptDesignation(deptDesignationIdsList,deptIdsList);
+					List<Object[]> deptDesignationOfficerDetails = pmDepartmentDesignationOfficerDAO.getDeptDesignationOfficerDetailsByDeptDesignation(deptDesignationIdsList,deptIdsList,districtIdsList);
 					if(commonMethodsUtilService.isListOrSetValid(deptDesignationOfficerDetails)){
 						for (Object[] param : deptDesignationOfficerDetails) {
 							Long pmDepartmentDesignationOfficerId = commonMethodsUtilService.getLongValueForObject(param[0]);
