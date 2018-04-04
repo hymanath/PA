@@ -1348,15 +1348,16 @@ $("#financialYearId").trigger('chosen:updated');
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		$("#financialYearId").append("<option value='0'>All Financial Years</option>");
-		$("#financialYearId").append("<option value='2003'>2014-"+currentYear+"</option></option>");
+		$("#financialYearId").append("<option value='1900-2050'>All Financial Years</option>");
+		$("#financialYearId").append("<option value='1995-2014'>Before 2014</option>");
+		$("#financialYearId").append("<option value='2014-"+currentYear+"'>2014-"+currentYear+"</option></option>");
 		if(result != null && result.length >0){
 			for(var i in result){
 				var value = result[i].financialYear.split('-');
 				$("#financialYearId").append("<option value="+value[0]+">"+result[i].financialYear+"</option>");
 				
 			}
-			$("#financialYearId").val('2003');
+			$("#financialYearId").val('2014-'+currentYear);
 		}
 		
 		$("#financialYearId").chosen();
@@ -1476,13 +1477,18 @@ $(document).on("change","#chosenmandalValmandalBlockId",function(){
 	}
 });
 $(document).on("change","#financialYearId",function(){
-	var yearId = $(this).val();
+/* 	var yearId = $(this).val();
 	glStartDate="";
 	glEndDate="";
 	if(yearId == 0){
 		glStartDate="01-01-1900";
 		glEndDate="01-01-2050";
 	}
+	onloadCalls(); */
+	var split=$(this).val().split('-')
+	var yearId = $(this).val();
+	glStartDate="01-04-"+split[0];
+	glEndDate="01-04-"+split[1];
 	onloadCalls();
 });
 
