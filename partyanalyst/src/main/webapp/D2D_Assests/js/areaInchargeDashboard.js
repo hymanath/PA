@@ -1,6 +1,36 @@
- getAreaInchargesStatusWiseCount();
- getAreaInchargeAssignedBoothDetails();
- getAssignedAndUnAssignedBooths();
+var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
+var globalLevelId=3;
+var globalLevelValue='';
+var globalConstituencyName='';
+
+if(globalLevelId ==4){
+	globalLevelValue=262;
+	globalLocationName='NANDYAL';
+	$("#locationNameId").html(globalLocationName+" Assembly Details")
+	$(".constituencySelectBoxCls").hide();
+}else if(globalLevelId ==3){
+	globalLevelValue=21;
+	globalLocationName='KURNOOL';
+	$("#locationNameId").html(globalLocationName+" District Details")
+	$(".constituencySelectBoxCls").show();
+}
+
+setTimeout(function(){ 
+	onloadCalls();
+}, 1500);
+
+function onloadCalls(){
+	 getAreaInchargesStatusWiseCount("mainOverViewConstituencyBlockDivId",'constituency');
+	 if(globalLevelId ==3){
+		$("#constituencyId").chosen();
+		getConstituenciesByDistrict();
+		$(".showHideAddAreaIncharge").hide();
+	 }else{
+		 getAreaInchargeAssignedBoothDetails();
+		 getAssignedAndUnAssignedBooths();
+	 }
+}
+
  
 function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	'use strict';
@@ -19,10 +49,12 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 }
 
  
-  function getAreaInchargesStatusWiseCount(){
-    var jsObj={
-        levelId :4,
-        levelValue : 262
+  function getAreaInchargesStatusWiseCount(divId,locationType){
+	 $("#"+divId).html(spinner);
+    
+	var jsObj={
+        levelId :globalLevelId,
+        levelValue : globalLevelValue
     }
     $.ajax({
       type:'GET',
@@ -31,20 +63,22 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
-			buildAreaInchargesStatusWiseCount(result);
+			buildAreaInchargesStatusWiseCount(result,divId,locationType);
+		}else{
+			 $("#"+divId).html("No Data Available");
 		}
     });
 }
 
-function buildAreaInchargesStatusWiseCount(result){
+function buildAreaInchargesStatusWiseCount(result,divId,locationType){
 	var str='';
 	
 	str+='<div class="row">';
 		str+='<div class="col-sm-4">';
 			str+='<div class="border_block_style panelheights">';
-				str+='<h4 class="text-center">'+result.name+' - (<b>'+result.total+'</b> Booths)</h4>';
+				str+='<h4 class="text-center">'+globalLocationName+' - (<b>'+result.total+'</b> Booths)</h4>';
 				str+='<div class="row">';
-					str+='<div id="mainBlockPieChartDivId" style="height:200px;"></div>';
+					str+='<div id="mainBlockPieChartDivId'+locationType+'" style="height:200px;"></div>';
 				str+='</div>';
 			str+='</div>';
 		str+='</div>';
@@ -73,7 +107,8 @@ function buildAreaInchargesStatusWiseCount(result){
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
-	$("#mainOverViewBlockDivId").html(str);
+	
+	$("#"+divId).html(str);
 	
 	
 	var categoryNameArr=[];
@@ -86,7 +121,7 @@ function buildAreaInchargesStatusWiseCount(result){
 			pendingCountArr=result.pendingPers;
 	}
 
-	var id = 'mainBlockPieChartDivId';
+	var id = 'mainBlockPieChartDivId'+locationType+'';
 	var type = {
 		type: 'pie',
 		backgroundColor:'transparent',
@@ -163,10 +198,10 @@ function buildAreaInchargesStatusWiseCount(result){
 }
 
 function getAreaInchargeAssignedBoothDetails(){
-			
+	$("#alreadyAreaInchargeDetailsDivId").html(spinner);		
     var jsObj={
-        levelId :4,
-        levelValue : 262
+        levelId :globalLevelId,
+        levelValue : globalLevelValue
     }
     $.ajax({
       type:'GET',
@@ -176,6 +211,8 @@ function getAreaInchargeAssignedBoothDetails(){
     }).done(function(result){
       if(result !=null && result.length>0){
 		  buildAreaInchargeAssignedBoothDetails(result);
+	  }else{
+		  $("#alreadyAreaInchargeDetailsDivId").html("No Data Available")
 	  }
     });
   }
@@ -219,11 +256,6 @@ function getAreaInchargeAssignedBoothDetails(){
 												str+='</div>';
 											str+='</div>';
 											str+='<div class="row">';
-												str+='<div class="col-sm-1 pull-right">';
-													str+='<span class="fa fa-edit popupViewAreaIncDetUCls"  attr_cadre_id="'+result[i].id+'"style="font-size:20px;">';
-												str+='</div>';
-											str+='</div>';
-											str+='<div class="row">';
 												str+='<div class="col-sm-12 m_top10">';
 													str+='<ul class="list-inline list_style">';
 														str+='<li>MemberShip No: : <b>'+result[i].memberShipNo+'</b></li>';
@@ -240,6 +272,11 @@ function getAreaInchargeAssignedBoothDetails(){
 														}
 														str+='</li>';
 													str+='</ul>';
+												str+='</div>';
+											str+='</div>';
+											str+='<div class="row">';
+												str+='<div class="col-sm-12">';
+													str+='<h5 class="fa fa-edit popupViewAreaIncDetUCls pull-right"  attr_cadre_id="'+result[i].id+'" style="font-size:20px;margin-top: -20px;"></h5>';
 												str+='</div>';
 											str+='</div>';
 									  str+='</div>';
@@ -288,7 +325,7 @@ function getAreaInchargeAssignedBoothDetails(){
  });
  
    function getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType){
-	   if(selectedType == "membershipId"){
+	    if(selectedType == "membershipId"){
 	   var numericExpression = /^[0-9]+$/;
 					if(!memberShipId.trim().match(numericExpression)){
 						$('#searchErrDiv').html('Enter  Number Digits Only.');
@@ -336,7 +373,9 @@ function getAreaInchargeAssignedBoothDetails(){
 				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;
 			} 
-	 }			
+	 }
+	 
+	   $("#areaInchargeSearchDetailsDivId").html(spinner);
       var jsObj={
 		    voterId:voterId,
 			mobileNo :mobileNo,
@@ -350,6 +389,8 @@ function getAreaInchargeAssignedBoothDetails(){
 		}).done(function(result){
 		  if(result !=null && result.length){
 			  buildAreaInchargeDetails(result);
+		  }else{
+			    $("#areaInchargeSearchDetailsDivId").html("No Data Available");
 		  }
 		});
 }
@@ -411,10 +452,25 @@ function buildAreaInchargeDetails(result){
 	$("#areaInchargeSearchDetailsDivId").html(str);
 }
 
+$(document).on("click",".makeInchargeAssignedBoothsCls",function(){
+		$(".assignedUnAssignedDivCls").show();
+		$(".submitBtnCls").show();
+		var cadreId =$(this).attr('attr_cadre_id');
+		$('.submitBtnCls').attr("attr_cadre_id",cadreId)
+});
+$(document).on("click",".makeInchargeCls",function(){
+  if($(this).is(':checked')){
+		$("#btn"+$(this).attr('attr_count')).show();
+  }
+  else{
+	  $("#btn"+$(this).attr('attr_count')).hide();
+  }
+});
+  
 function getAssignedAndUnAssignedBooths(){
     var jsObj={
-      levelId :4,
-      levelValue : 262
+      levelId :globalLevelId,
+      levelValue : globalLevelValue
     }
     $.ajax({
       type:'GET',
@@ -452,7 +508,7 @@ function getAssignedAndUnAssignedBooths(){
 							}else{
 								panchayatName = "";
 							}
-							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls"  data-toogle="tooltip" title="Assigned To:'+result.assignBoothList[i].name+' Location: '+panchayatName+','+result.assignBoothList[i].tehsilName+' Click For Assigned Booth" >'+result.assignBoothList[i].id+'</button></td>';
+							str+='<td><button type="button" class="booths-btn-un" data-toggle="popover" data-trigger="focus" title="Details" data-content="Assigned To:<b>'+result.assignBoothList[i].name+'</b><br/>Location:<b>'+panchayatName+','+result.assignBoothList[i].tehsilName+'</b>">'+result.assignBoothList[i].id+'</button></td>';
 							xindex++;
 							if( xindex == 17){
 								str+='</tr>';
@@ -464,16 +520,15 @@ function getAssignedAndUnAssignedBooths(){
 					str+='</tbody>';
 				str+='</table>';
 			str+='</div>';
-			/* str+='<ul class="list-inline workStagesCls">';
-			for(var i in result.assignBoothList){
-					str+='<li>';
-						str+='<span class="tooltipCls" data-toogle="tooltip" title="Assigned To:'+result.assignBoothList[i].name+' <br/>Location: '+result.assignBoothList[i].panchayatName+','+result.assignBoothList[i].tehsilName+' <br/> Click For Assigned Booth">'+result.assignBoothList[i].id+'</span>';
-					str+='</li>';
-			} */
 		 str+='</div>';
 	 str+='</div>';
 	 $("#areaInchargeassignedBoothsDivId").html(str);
-	 $(".tooltipCls").tooltip();
+	    $('[data-toggle="popover"]').popover({
+			placement : 'top',
+			trigger : 'hover',
+			html : true,
+			content : ''
+    });
  }
  function  buildUnAssignedBoothsDetails(result){
 	 var str='';
@@ -498,7 +553,7 @@ function getAssignedAndUnAssignedBooths(){
 							}else{
 								panchayatName = "";
 							}
-							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls" data-toogle="tooltip" title=" Location: '+result.unAssignBoothList[i].panchayatName+','+result.unAssignBoothList[i].tehsilName+' Click For Assigned Booth">'+result.unAssignBoothList[i].id+'</button></td>';
+							str+='<td><button type="button" class="booths-btn-un assignedUnAssignedCls" data-placement="top" data-toggle="popover" data-trigger="focus" title="Details" data-content="Location:<b>'+panchayatName+','+result.unAssignBoothList[i].tehsilName+'</b>">'+result.unAssignBoothList[i].id+'</button></td>';
 							xindex++;
 							if( xindex == 17){
 								str+='</tr>';
@@ -510,36 +565,29 @@ function getAssignedAndUnAssignedBooths(){
 				str+='</table>';
 			str+='</div>';
 			
-			/* str+='<ul class="list-inline workStagesCls">';
-			for(var i in result.unAssignBoothList){
-					str+='<li>';
-						str+='<span class="tooltipCls" data-toogle="tooltip" title="Assigned To:'+result.unAssignBoothList[i].name+' <br/>Location: '+result.unAssignBoothList[i].panchayatName+','+result.unAssignBoothList[i].tehsilName+' <br/> Click For Assigned Booth">'+result.unAssignBoothList[i].id+'</span>';
-					str+='</li>';
-			} */
 		 str+='</div>';
 	 str+='</div>';
 	 $("#areaInchargeUnAssignedboothsDivId").html(str);
-	  $(".tooltipCls").tooltip();
+	 $('[data-toggle="popover"]').popover({
+			placement : 'top',
+			trigger : 'hover',
+			html : true,
+			content : ''
+    });
  }
+ 
   $(document).on("click",".assignedUnAssignedCls",function(){
-		$(this).addClass("booths-btn-green");
+		if($(this).hasClass("booths-btn-green")){
+			$(this).removeClass("booths-btn-green");
+			$(this).addClass("booths-btn-un");
+		}else{
+			$(this).removeClass("booths-btn-un");
+			$(this).addClass("booths-btn-green");
+		}
 		
   });
-   $(document).on("click",".makeInchargeAssignedBoothsCls",function(){
-		$(".assignedUnAssignedDivCls").show();
-		$(".submitBtnCls").show();
-		var cadreId =$(this).attr('attr_cadre_id');
-		$('.submitBtnCls').attr("attr_cadre_id",cadreId)
-  });
-  $(document).on("click",".makeInchargeCls",function(){
-	  if($(this).is(':checked')){
-			$("#btn"+$(this).attr('attr_count')).show();
-	  }
-	  else{
-		  $("#btn"+$(this).attr('attr_count')).hide();
-	  }
-  });
-  $(document).on("click",".submitBtnCls,.applyChangesCls",function(){
+  
+   $(document).on("click",".submitBtnCls",function(){
 		var cadreId =$(this).attr('attr_cadre_id');
 		var boothIds=[];
 		$('.booths-btn-green').each(function()
@@ -548,8 +596,8 @@ function getAssignedAndUnAssignedBooths(){
 		});
 		savingAssigningBooths(cadreId,boothIds);
 	});
-  function savingAssigningBooths(cadreId,boothIds){
-      
+	function savingAssigningBooths(cadreId,boothIds){
+		$(".spinnerDivId").show();
 		var jsObj={
 			boothIds:boothIds,
 		    cadreId : cadreId
@@ -560,23 +608,65 @@ function getAssignedAndUnAssignedBooths(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
+			$(".spinnerDivId").hide();
+			$("#popupSuccessModalDivId").modal("show");
 			if(result != null && result.message == "SUCCESS"){
-				alert("Assigning Booths successfully");
-				getAreaInchargeAssignedBoothDetails();
-				getAreaInchargesStatusWiseCount();
-				$("#popupViewAreaIncDetModal").modal('hide');
+				$("#successMsgDivId").html("<h4 class='font_weight' style='color:green;text-align:center;'>Assigned Booths Successfully</h4>")
+				setTimeout(function(){ 
+					$("#popupSuccessModalDivId").modal("hide");
+					onloadCalls();
+				}, 3500);
+			}else{
+				$("#successMsgDivId").html("<h4 class='font_weight' style='color:red;text-align:center;'>Please Try Again Later</h4>")
+				setTimeout(function(){ 
+					$("#popupSuccessModalDivId").modal("hide");
+				}, 3500);
 			}
 		});
 	}
-	$(document).on("click",".popupViewAreaIncDetUCls",function(){
+  function getConstituenciesByDistrict(){
+	  $("#constituencyId").html('');
+    var jsObj={
+        districtId:globalLevelValue
+    }
+    $.ajax({
+      type:'GET',
+      url:'getConstituenciesByDistrictForLoationDashBoardAction.action',
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null && result.length>0){
+			$("#constituencyId").append("<option value='0'>Select Constituency</option>");
+			for(var i in result){
+				$("#constituencyId").append("<option value="+result[i].locationId+">"+result[i].locationName+"</option>")
+			}
+			$("#constituencyId").chosen();
+			$("#constituencyId").trigger("chosen:updated");
+		}
+    });
+}
+
+ $(document).on("change","#constituencyId",function(){	 
+	 globalLevelId=4;
+	 globalLevelValue=$("#constituencyId").val();
+	 globalLocationName=$("#constituencyId option:selected").text();
+	 getAreaInchargesStatusWiseCount("mainOverDistrictViewBlockDivId",'district');
+	 getAreaInchargeAssignedBoothDetails();
+     getAssignedAndUnAssignedBooths();
+	 $(".showHideAddAreaIncharge").show();
+});
+
+
+$(document).on("click",".popupViewAreaIncDetUCls",function(){
 		$("#popupViewAreaIncDetModal").modal('show');
 		var cadreId =$(this).attr("attr_cadre_id");
 		editAssignedInchargeDetails(cadreId)
 	});
 	function editAssignedInchargeDetails(cadreId){
+		$("#editAreaInchargeDetailsDivId").html(spinner);
 		var jsObj={
-			levelId :4,
-		    levelValue : 262,
+			levelId :globalLevelId,
+			levelValue : globalLevelValue,
 		    cadreId : cadreId
 		}
 		$.ajax({
@@ -587,6 +677,8 @@ function getAssignedAndUnAssignedBooths(){
 		}).done(function(result){
 			if(result != null){
 			   buildingAssignedAndUnAssignedBooths(result);
+			}else{
+				$("#editAreaInchargeDetailsDivId").html("No Data Available")
 			}
 			
 		});
@@ -594,113 +686,191 @@ function getAssignedAndUnAssignedBooths(){
 	function buildingAssignedAndUnAssignedBooths(result) {
 		var str='';
 		str+='<div class="row">';
-			str+='<div class="col-sm-2">';
-				str+='<div style="border:1px solid #ccc; border-radius:5px;">';
-				if(result.image == null || result.image == ""){
-						str+='<img class="media-object" src="coreApi/img/profile.jpg" alt="" style="width:100px;height:80px;">';
-					}else{
-						str+='<img class="media-object" src="https://mytdp.com/images/cadre_images/'+result.image+'" alt="'+result.image+'" style="width:100px;height:80px;">';
-					}
+			str+='<div class="col-sm-12">';
+			
+				str+='<div class="border_block_style m_top10">';
+					str+='<div class="media">';
+					  str+='<div class="media-left">';
+						if(result.image == null || result.image == ""){
+							str+='<img class="media-object" src="coreApi/img/profile.jpg" alt="" style="width:100px;height:80px;">';
+						}else{
+							str+='<img class="media-object" src="https://mytdp.com/images/cadre_images/'+result.image+'" alt="'+result.image+'" style="width:100px;height:80px;">';
+						}
+						  
+					  str+='</div>';
+					  str+='<div class="media-body">';
+							str+='<div class="row">';
+								str+='<div class="col-sm-12">';
+									str+='<ul class="list-inline list_style">';
+										str+='<li>Name : <b class="text-capital">'+result.name+'</b></li>';
+										str+='<li>Relative Name : <b class="text-capital">'+result.relativeName+'</b></li>';
+										str+='<li>Age : <b>'+result.age+'</b></li>';
+										str+='<li>Gender : <b>'+result.gender+'</b></li>';
+									str+='</ul>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-12 m_top10">';
+									str+='<ul class="list-inline list_style">';
+										str+='<li>Address: <b>'+result.address+'</b></li>';
+										str+='<li>Caste: <b>'+result.caste+'</b></li>';
+									str+='</ul>';
+								str+='</div>';
+							str+='</div>';
+							str+='<div class="row">';
+								str+='<div class="col-sm-12 m_top10">';
+									str+='<ul class="list-inline list_style">';
+										str+='<li>Designation: <b>Area Incharge</b></li>';
+										str+='<li>Assigned Booths: ';
+											for(var j in result.assignBoothIds){
+												str+='<b>'+result.assignBoothIds[j]+',</b>';
+											}
+										str+='</li>';
+									str+='</ul>';
+								str+='</div>';
+							str+='</div>';
+							
+					str+='</div>';		
+				str+='</div>';		
+			str+='</div>';				
+		str+='</div>';
+	str+='</div>';
+		
+		
+		
+		str+='<div class="row">';
+			str+='<div class="col-sm-12">';
+				str+='<ul class="list-inline list_style pull-right">';
+					str+='<li><img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" id="removeAssigspinnerDivId"></img></li>';
+					str+='<li class="font_weight removeInchageCls m_top10" style="font-size:17px;" attr_cadre_id="'+result.id+'" attr_booth_id="0"><span class="label label-warning">Remove From Area Incharge</span></li>';
+					str+='<li class="font_weight menu-cls m_top10" style="font-size:17px;"><span class="label label-warning">Remove Assigned Booths</span></li>';
+				str+='</ul>';
+				str+='<div class="menu-data-cls">';
+					str+='<div class="arrow_box_top">';
+						str+='<div class="row">';
+							str+='<div class="col-sm-12">';
+								str+='<ul class="list-inline removeAssignedBoothsCls">';
+									
+										for(var j in result.assignBoothIds){
+											str+='<li>'+result.assignBoothIds[j]+'<span class="glyphicon glyphicon-trash removeInchageCls" style="font-size:12px;" attr_cadre_id="'+result.id+'" attr_booth_id="'+result.assignBoothIds[j]+'"></span></li>';
+										}
+									
+								str+='</ul">';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
 				str+='</div>';
+				
 			str+='</div>';
-			str+='<div class="col-sm-10">';
-				str+='<div style="border:1px solid red; border-radius:5px; padding:5px;">';
-					str+='<h5><b>Name :</b>'+result.name+'<b>Relative Name :</b>'+result.relativeName+'<b>Age :</b>'+result.age+'<b>Gender :</b>'+result.gender+'</h5></br>';		
-					str+='<h5><b>Address :</b>'+result.address+'<b>Caste :</b>'+result.caste+'</h5></br>';		
-					str+='<h5><b>Design :</b> Area incharge <b>Assigned Booths :</b>'; 
-					for(var j in result.assignBoothIds){
-						str+='<b>'+result.assignBoothIds[j]+',</b>';
-					}
-					str+='</h5>';
-						
-				str+='</div>';
+		str+='</div>';	
+		
+		str+='<div class="row">';
+			 str+='<div class="col-sm-12 m_top10">';
+				str+='<h4 class="">Add Booths</h4>';
 			str+='</div>';
 		str+='</div>';
-		str+='<div class="row m_top20">';
-			str+='<div class="col-sm-5">';
-				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<h5><span style="color:#6A82C0; border-bottom:1px solid #6A82C0;">Remove from Area Incharge</span></h5>';
-					str+='</div>';
-					str+='<div class="media-body" style="width:0px;">';
-						str+='<h4 class="media-heading"><i class="fa fa-trash fa-lg removeInchageCls" aria-hidden="true" attr_cadre_id="'+result.id+'"></i></h4>';
-					str+=' </div>';
+	 
+	 str+='<div class="row">';
+		str+='<div class="col-sm-12">';
+			str+='<div class="border_block_style m_top5">';
+				str+='<h4 class="">Un Assigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
+				str+='<div class="table-responsive">';
+				var xindex = 0;
+					str+='<table class="m_top10">';
+						str+='<tbody>';
+						var panchayatName = "";
+							for(var i in result.unAssignBoothList){
+								if( xindex == 0)
+								{
+									str+='<tr>';
+								}
+								
+								str+='<td><button type="button" class="booths-btn-un assignedUnAssignedCls" data-placement="top" data-toggle="popover" data-trigger="focus" title="Details" data-content="Location:<b>'+panchayatName+','+result.unAssignBoothList[i].tehsilName+'</b><br/> Click For Assign Booth">'+result.unAssignBoothList[i].id+'</button></td>';
+								xindex++;
+								if( xindex == 16){
+									str+='</tr>';
+									xindex = 0;
+								} 
+							}
+							
+						str+='</tbody>';
+					str+='</table>';
 				str+='</div>';
+				
+			 str+='</div>';
+		 str+='</div>';
+	 str+='</div>';
+	 str+='<div class="row">';
+			str+='<div class="col-sm-1 pull-right">';
+				str+='<img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" class="spinnerDivId"></img>';
 			str+='</div>';
 			str+='<div class="col-sm-5 pull-right">';
-				str+='<div class="media pull-right">';
-					str+='<div class="media-left">';
-						str+='<h5><span style="color:#6A82C0; border-bottom:1px solid #6A82C0;">Remove Assigned Booths</span></h5>';
-					str+='</div>';
-					str+='<div class="media-body" style="width:0px;">';
-						str+='<h4 class="media-heading"><i class="fa fa-trash fa-lg" aria-hidden="true"></i></h4>';
-					str+=' </div>';
-				str+='</div>';
+				str+='<button class="btn btn-success btn-sm pull-right applyChangesCls" style="width: 150px;" attr_cadre_id="'+result.id+'">Submit</button>';
 			str+='</div>';
-			str+='<div class="col-sm-12 m_top10">';
-		str+='<h4 class="">Un Assigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
-	 str+='</div>';
-	 
-	  str+='<div class="col-sm-12">';
-		str+='<div class="border_block_style m_top5">';
-			str+='<div class="table-responsive">';
-			var xindex = 0;
-				str+='<table>';
-					str+='<tbody>';
-						for(var i in result.unAssignBoothList){
-							if( xindex == 0)
-							{
-								str+='<tr>';
-							}
-							str+='<td><button type="button" class="booths-btn-un tooltipCls assignedUnAssignedCls" data-toogle="tooltip" title="Assigned To:'+result.unAssignBoothList[i].name+' Location: '+result.unAssignBoothList[i].panchayatName+','+result.unAssignBoothList[i].tehsilName+' Click For Assigned Booth">'+result.unAssignBoothList[i].id+'</button></td>';
-							xindex++;
-							if( xindex == 17){
-								str+='</tr>';
-								xindex = 0;
-							} 
-						}
-						
-					str+='</tbody>';
-				str+='</table>';
-			str+='</div>';
-			
-		 str+='</div>';
-	     str+='</div>';
-	       str+='<div class="row">';
-				    str+='<div class="col-sm-4 pull-right">';
-					str+='<button class="btn btn-success btn-sm pull-right applyChangesCls" attr_cadre_id ="'+result.id+'"  style="width: 150px;">Apply Changes</button>';
-				str+='</div>';
-				str+='</div>';
-		str+='</div>';	
-		$("#modalContentId").html(str);
-		$(".tooltipCls").tooltip();
-	}
+		str+='</div>';
+		
+	$("#editAreaInchargeDetailsDivId").html(str);
+	 $('[data-toggle="popover"]').popover({
+			placement : 'top',
+			trigger : 'hover',
+			html : true,
+			content : ''
+    });
+}
+$(document).on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});	
 $(document).on("click",".removeInchageCls",function(){
-		var cadreId =$(this).attr("attr_cadre_id");
-		deleteAreaInchargeAssignBooths(cadreId,0);
-	});
+	var cadreId =$(this).attr("attr_cadre_id");
+	var boothId =$(this).attr("attr_booth_id");
+	
+	if(!confirm('Are you sure want to remove?'))
+	return;
+	
+	deleteAreaInchargeAssignBooths(cadreId,boothId);
+});
+	
 function deleteAreaInchargeAssignBooths(cadreId,boothId){
-  var jsObj={
-   candidateId:cadreId,
-   boothId:boothId
-  }
-  $.ajax({
-   type:'GET',
-   url: 'deleteAreaInchargeAssignBoothsAction.action',
-   data: {task:JSON.stringify(jsObj)}
- }).done(function(result){
-	if(result != null && result == "success"){
-		if(confirm('Are you sure want to delete it? '))
-		{
-			$('.'+cadreId).remove();
-		}	
-		getAreaInchargeAssignedBoothDetails();
-		getAreaInchargesStatusWiseCount();
-		$("#popupViewAreaIncDetModal").modal('hide');
- }
-			
-});
+	$("#removeAssigspinnerDivId").show();
+	  var jsObj={
+	   candidateId:cadreId,
+	   boothId:boothId
+	  }
+	  $.ajax({
+	   type:'GET',
+	   url: 'deleteAreaInchargeAssignBoothsAction.action',
+	   data: {task:JSON.stringify(jsObj)}
+	 }).done(function(result){
+		 $("#removeAssigspinnerDivId").hide();
+		 $("#popupSuccessModalDivId").modal("show");
+			if(result != null && result == "success"){
+				$("#successMsgDivId").html("<h4 class='font_weight' style='color:green;text-align:center;'>Deleted Successfully</h4>")
+				setTimeout(function(){ 
+					$("#popupSuccessModalDivId").modal("hide");
+					$("#popupViewAreaIncDetModal").modal("hide");
+					onloadCalls();
+				}, 3500);
+			}else{
+				$("#successMsgDivId").html("<h4 class='font_weight' style='color:red;text-align:center;'>Please Try Again Later</h4>")
+				setTimeout(function(){ 
+					$("#popupSuccessModalDivId").modal("hide");
+				}, 3500);
+			}
+	});
 } 
-$(document).on("click",".getSelectedVal",function(){
-   $("#searchValId").val('');
-});
+ $(document).on("click",".applyChangesCls",function(){
+		var cadreId =$(this).attr('attr_cadre_id');
+		var boothIds=[];
+		$('.booths-btn-green').each(function()
+		{
+			boothIds.push($(this).text());
+		});
+		savingAssigningBooths(cadreId,boothIds);
+	});
+	$(document).on("click",".getSelectedVal",function(){
+   		$("#searchValId").val('');
+	});

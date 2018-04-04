@@ -18,9 +18,12 @@
 {
 	box-shadow:0 5px 8px 2px rgba(0, 0, 0, 0.3);
 }
-#menu_multilevelpushmenu{box-shadow:none;}
+
 body{
 	background-color:#fff !important;
+}
+.popover{
+    max-width: 500px;
 }
 </style>
 </head>
@@ -32,13 +35,24 @@ body{
 				<div class="panel panel-default" style="box-shadow: none;">
 					<div class="panel-heading" role="tab" style="background-color: #ddd;padding: 12px;">
 						<h4 class="panel-title text-capital text-center">Area Incharges</h4>
+						<h5 class="panel-title text-capital text-center font_weight m_top5" id="locationNameId"></h5>
 					</div>
 					<div class="panel-body">
-						<div id="mainOverViewBlockDivId"></div>
-						<div id="alreadyAreaInchargeDetailsDivId"></div>
+						<div id="mainOverViewConstituencyBlockDivId"></div>
 						<div class="row">
-							<div class="col-sm-5 pull-right">
-								<button class="btn btn-success btn-sm pull-right addAssignedBlockCls" style="width: 150px;">ADD</button>
+							<div class="col-sm-3 m_top10 constituencySelectBoxCls">
+								<label>Constituency</label>
+								<select class="form-control chosen-select" id="constituencyId">
+								</select>
+							</div>
+						</div>
+						<div id="mainOverDistrictViewBlockDivId" class="m_top10"></div>	
+						
+						<div id="alreadyAreaInchargeDetailsDivId"></div>
+						
+						<div class="row">
+							<div class="col-sm-5 pull-right m_top10">
+								<button class="btn btn-success btn-sm pull-right addAssignedBlockCls showHideAddAreaIncharge" style="width: 150px;">ADD</button>
 							</div>
 						</div>
 						<div class="row addAssignedBlockCls" style="display:none;">
@@ -86,6 +100,9 @@ body{
 					</div>
 				</div>
 					<div class="row">
+						<div class="col-sm-1 pull-right">
+							<img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" class="spinnerDivId"></img>
+						</div>
 						<div class="col-sm-5 pull-right">
 							<button class="btn btn-success btn-sm pull-right submitBtnCls" style="width: 150px;display:none;">Submit</button>
 						</div>
@@ -93,25 +110,37 @@ body{
 				</div>
 		</div>
 	</div>
-	<div id="popupViewAreaIncDetModal" class="modal fade" role="dialog">
-  <div class="modal-dialog" style="width:75%; margin:auto;">
-			
+
+<div id="popupViewAreaIncDetModal" class="modal fade" role="dialog" style="z-index:9999">
+  <div class="modal-dialog" style="width:80%;">
 	 <div class="modal-content">
 		<div class="modal-header">
-		 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title"> Edit Details </h4>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			<h4 class="modal-title"> Edit Details </h4>
         </div>
-			  <div class="modal-body">
-					<div id="modalContentId"></div>
-			  </div>
-			  <div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-			  </div>
-			  
+		  <div class="modal-body">
+				<div id="editAreaInchargeDetailsDivId"></div>
+		  </div>
 			</div>
 		</div>
-	</div>
-
+</div>
+<div id="popupSuccessModalDivId" class="modal fade" role="dialog" style="z-index:9999">
+  <div class="modal-dialog" style="width:40%;">
+	 <div class="modal-content">
+		  <div class="modal-body" style="padding: 35px;">
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close" style="font-size:22px;color:red;"><span aria-hidden="true">&times;</span></button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12"><div id="successMsgDivId"></div></div>
+				</div>
+				
+		  </div>
+			</div>
+		</div>
+</div>
 <script src="D2D_Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/bootstrap.js" type="text/javascript"></script>
 <script src="coreApi/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
