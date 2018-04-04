@@ -182,86 +182,23 @@ nav
 	}
 	*/
 }
-.menu-cls
-{
-	position:relative;
-	top:20px;
-	
-	font-size:30px;
-	cursor:pointer;
-	color:#333;
-}
+
 .menu-data-cls
 {
 	position:absolute;
 	right:30px;
-	top:65px;
-	width:350px;
+	top:48px;
+	width:400px;
 	z-index:999;
 	display:none;
 	background-color:@white_color;
-	ul
-	{
-		
+	.removeAssignedBoothsCls{
 		padding-left:0px;
-		li
-		{
-			width:47%;
-			display:inline-table;
-			background-color:@red_color;
-			padding:10px;
-			margin:2px 2px;
-			text-align:center;
-			text-transform:uppercase;
-			color:@white_color;
-			height:100px;
-			position:relative;
-			p
-			{
-				font-size:13px;
-				position:absolute;
-				bottom:10px;
-				margin:auto;
-				text-align:center;
-			}
-			h3
-			{
-				font-size:32px;
-				font-weight:bold;
-			}
-			a
-			{
-				color:@white_color;
-				text-decoration:none;
-			}
-		}
-		li:nth-child(1)
-		{
-			background-color:@dark_yellow_color;
-		}
-		li:nth-child(2)
-		{
-			background-color:@navy_blue;
-			p
-			{
-				font-size:10px;
-			}
-			h3
-			{
-				font-size:31px;
-			}
-		}
-		li:nth-child(3)
-		{
-			background-color:@dark_blue;
-			p
-			{
-				left:36px;
-			}
-		}
-		li:nth-child(4)
-		{
-			background-color:@maroon_color;
+		li{
+			padding:8px;
+			border:1px solid #ddd;
+			margin-left:5px;
+			
 		}
 	}
 }
@@ -1963,4 +1900,10 @@ h3
 	color:#fff;
 	border-radius:5px;
 	margin:3px;
+}
+.popupViewAreaIncDetUCls{
+	cursor:pointer;
+}
+.removeInchageCls{
+	cursor:pointer;
 }

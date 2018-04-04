@@ -1519,6 +1519,7 @@ function buildVolunteersDetails(result){
 		var finalReslt = result.subList1;
 		var alertTypeId = $("input[name='alertRadioBtn']:checked").val();
 		var str ='';
+		str+='<div class="table-responsive">';
 		str+='<table class="table table-borderd table-condensed" id="alertTableTab" style="font-size: 10px;">';
 		str+='<thead>';
 		str+='<tr>';
@@ -1571,6 +1572,7 @@ function buildVolunteersDetails(result){
 		}
 		str+='</tbody>';
 		str+='</table>';
+		str+='</div>';
 		
 		$('#alertDetailsDiv').html(str);
 	}
@@ -1677,6 +1679,7 @@ function buildVolunteersDetails(result){
 			var familyBenefitsRsltDtls  = result.familyDetailsVO;
 			if(personalBenefitRsltDtls != null && personalBenefitRsltDtls.length > 0){
 				var str = '';
+				str+='<div class="table-responsive">';
 				str+='<table class="table table-condensed tableHeaderFontSize" style="border:1px solid #ddd;">';
 				str+='<thead>';
 				str+='<tr>';
@@ -1713,6 +1716,7 @@ function buildVolunteersDetails(result){
 					str+='</tr>';
 				str+='</tbody>';
 				str+='</table>';
+				str+='</div>';
 				$("#personalBenefitsDivId").html(str);
 			}else{
 				$("#personalBenefitsDivId").html("");
@@ -1720,6 +1724,7 @@ function buildVolunteersDetails(result){
 				
 			if(familyBenefitsRsltDtls != null && familyBenefitsRsltDtls.length > 0){
 				var str1 = '';
+				str1+='<div class="table-responsive">';
 				str1+='<table class="table table-condensed tableHeaderFontSize" style="border:1px solid #ddd;">';
 				str1+='<thead >';
 					if(familyBenefitsRsltDtls[0].cadreDetailsVO != null && familyBenefitsRsltDtls[0].cadreDetailsVO.length > 0){
@@ -1776,6 +1781,7 @@ function buildVolunteersDetails(result){
 					}
 				str1+='</tbody>';
 				str1+='</table>';
+				str1+='</div>';
 				$("#familyBenefitsDivId").html(str1);
 			}else{
 				$("#familyBenefitsDivId").html("");
@@ -1804,6 +1810,8 @@ function buildVolunteersDetails(result){
 				$("#errMsgId").html('');
 				var str='';
 				if(result.cadreDetailsVO != null && result.cadreDetailsVO.length > 0){
+					str+='<div class="table-responsive">';
+					str+='<div class="table-responsive">';
 					str+='<table class="table table-condensed tableHeaderFontSize" style="border:1px solid #ddd;">';
 					str+='<thead>';
 					str+='<tr>';
@@ -1825,6 +1833,7 @@ function buildVolunteersDetails(result){
 							}
 						str+='</tr>';
 					str+='</table>';
+					str+='</div>';
 					$("#constituencyBenefitsDivId").html(str);
 				}else{
 					$("#constituencyBenefitsDivId").html("No Own Constituency Benefits Available")
@@ -1854,6 +1863,7 @@ function buildVolunteersDetails(result){
 							}
 						strt+='</tr>';
 					strt+='</table>';
+					strt+='</div>';
 					$("#partConstituencyBenefitsDivId").html(strt);
 				}else{
 					//$("#partConstituencyBenefitsDivId").html("No Participated Constituency Benefits Available");
@@ -1879,6 +1889,7 @@ function buildVolunteersDetails(result){
 				for(var t in result){
 					if(result[t].cadreDetailsVO != null && result[t].cadreDetailsVO.length > 0){
 						str+='<h4><span style="background-color:#E8E8E8;padding:5px;">'+result[t].designationName+'</span></h4>';
+						str+='<div class="table-responsive">';
 						str+='<table class="table table-condensed tableHeaderFontSize  m_top20" style="border:1px solid #ddd;">';
 						str+='<thead >';
 						str+='<tr>';
@@ -1934,6 +1945,7 @@ function buildVolunteersDetails(result){
 							str+='</tr>';
 						str+='</tbody>';
 						str+='</table>';
+						str+='</div>';
 					}
 				}
 				$("#localityBasedBenefitsDivId").html(str);
