@@ -779,17 +779,17 @@ function buildResultforWordCloud(levelTypeId,result,type,isDepartment){
 			if(levelTypeId=="wordCloudDistrict"){
 				if(isDepartment !=null && isDepartment =='Y'){
 					if(result[i].locationId !=517){
-						optionStr+='<option selected>'+result[i].locationName+'</option>';
-						globalDistricts.push(result[i].locationName);
+						optionStr+='<option selected>'+result[i].name+'</option>';
+						globalDistricts.push(result[i].name);
 					}
 					
 				}else{
-					optionStr+='<option selected>'+result[i].locationName+'</option>';
-					globalDistricts.push(result[i].locationName);
+					optionStr+='<option selected>'+result[i].name+'</option>';
+					globalDistricts.push(result[i].name);
 					
 				}
 			}else{
-				optionStr+='<option selected>'+result[i].locationName+'</option>';
+				optionStr+='<option selected>'+result[i].name+'</option>';
 			}
 		}
 	}
