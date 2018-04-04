@@ -1791,7 +1791,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 			departmentSelectArr.push($(this).attr("attr_department_id"));
 		}
 	});
-	console.log(selectdWorksArr);
+	//console.log(selectdWorksArr);
 	if(selectdWorksArr.length == 0){
 		alert("Please select atleast one work to update.");
 		return ;
@@ -2570,14 +2570,15 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	 $('#fileCoverUploadIdErr').html(""); 
 	if(glDesignationId == 2 || glDesignationId==86 && endorsementId.trim().length >0){
 		if($("#uploadCoverFileDivCls").is(':visible')){
-				   var uploadfile = document.getElementById('uploadCoveringDocId');
-				if(uploadfile != null && uploadfile.value == '')
-				{
-					$('#fileCoverUploadIdErr').html('Please upload the covering letter');
-					flag = true ; 
-				}
-			   }
-		   }
+			   var uploadfile = document.getElementById('uploadCoveringDocId');
+			if(uploadfile != null && uploadfile.value == '')
+			{
+				$('#fileCoverUploadIdErr').html('Please upload the covering letter');
+				flag = true ; 
+			}
+			 $('#endorseDivId').show();
+		 }
+	}
 	
 	if(flag==true){
 		return;
@@ -2673,9 +2674,11 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		}
 	//if($(".uploadFuncCls").is(":checked")){
 		if($("#endorseDivId").is(':visible')){
-		formData.append("statusType", "COVERING LETTER");
-		formData.append("dataType", $(".uploadFuncCls").val());
-	}
+			formData.delete("statusType");
+			formData.append("statusType", "COVERING LETTER");
+			formData.append("dataType", $(".uploadFuncCls").val());
+		}
+		
 		/*
 		var nextStatusId=6;
 			if(globalStatusArr[i].key == 1)
@@ -3772,5 +3775,4 @@ $(document).on("click",".showPdfOrImagIdCls",function(){
   
 });
 
-	
 	

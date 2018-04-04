@@ -13,13 +13,13 @@ var allCheckedColumnsArr=[];
 $(".scrollTableColCls").mCustomScrollbar({setHeight:'400px'});
 function locationLevelRefresh(){
 	
-	$("#districtCandId").html('<option value="0">Select District</option>');
+	$("#districtCandId").html('');
 	$("#districtCandId").trigger('chosen:updated');
 	
-	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	$("#constituencyCanId").html('');
 	$("#constituencyCanId").trigger('chosen:updated');
 	
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+	$("#mandalCanId").html('');
 	$("#mandalCanId").trigger('chosen:updated');
 
 	$("#designationsId").html('<option value="0">Select Designation</option>');
@@ -310,11 +310,12 @@ $(document).on("change","#locationSelId",function(){
 	$("#mobileDivid").hide();
 	$("#emailDivid").hide();
 	$("#endorsmentNoDivid").hide();
-	$("#districtCandId").html('<option value="0">Select District</option>');
+	$("#districtCandId").html('');
 	$("#districtCandId").trigger('chosen:updated');
-	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	$("#constituencyCanId").html('');
 	$("#constituencyCanId").trigger('chosen:updated');
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+	
+	$("#mandalCanId").html('');
 	$("#mandalCanId").trigger('chosen:updated');
 	$("#designationsId").html('<option value="0">Select Designation</option>');
 	$("#designationsId").trigger('chosen:updated');
@@ -358,10 +359,11 @@ $(document).on("change","#locationSelId",function(){
 		$("#districtConsMandDivId").hide();
 		 $('#petitionSubWorkRadioDivId').hide();
 		$("#advancedSearchButtonDivId").show();
-		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-	    $("#constituencyCanId").trigger('chosen:updated');
-        $("#mandalCanId").html('<option value="0">Select Mandal</option>');
-	    $("#mandalCanId").trigger('chosen:updated');
+		$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 		$('#advanceSearchBtnId').prop("checked",true);
 		if($('#advanceSearchBtnId').prop( "checked",false)){
 			$("#advanceSearchBtnId").prop({disabled: true});
@@ -371,14 +373,14 @@ $(document).on("change","#locationSelId",function(){
 	}
 	
 	if(searchType == 'work' || searchType =='representee' || searchType =='referral'){
-			$("#districtCandId").html('<option value="0">Select District</option>');
+			$("#districtCandId").html('');
 			$("#districtCandId").trigger('chosen:updated');
 			$("#endorsmentNoDivid").hide();
-			$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-	        $("#constituencyCanId").trigger('chosen:updated');
-			$("#mandalCanId").html('<option value="0">Select Mandal</option>');
-	        $("#mandalCanId").trigger('chosen:updated');
-			$("#designationsId").html('<option value="0">Select Designation</option>');
+			$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 	        $("#designationsId").trigger('chosen:updated');
 			$("#nameId").val(' ');
 			$("#mobileId").val(' ');
@@ -399,11 +401,11 @@ $(document).on("change","#locationSelId",function(){
 			$("#districtCandId").html('<option value="0">Select District</option>');
 			$("#districtCandId").trigger('chosen:updated');
 			
-			$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-			$("#constituencyCanId").trigger('chosen:updated');
-			$("#endorsmentNoDivid").hide();
-			$("#mandalCanId").html('<option value="0">Select Mandal</option>');
-			$("#mandalCanId").trigger('chosen:updated');
+			$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 			$("#nameId").val(' ');
 			$("#mobileId").val(' ');
 			$("#emailId").val(' ');
@@ -446,11 +448,11 @@ $(document).on("change","#locationSelId",function(){
 		$("#districtCandId").html('<option value="0">Select District</option>');
 		$("#districtCandId").trigger('chosen:updated');
 		$("#endorsmentNoDivid").hide();
-		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-		$("#constituencyCanId").trigger('chosen:updated');
-		
-		$("#mandalCanId").html('<option value="0">Select Mandal</option>');
-		$("#mandalCanId").trigger('chosen:updated');
+		$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 		$("#nameId").val(' ');
 		$("#mobileId").val(' ');
 		$("#emailId").val(' ');
@@ -475,13 +477,13 @@ $(document).on("change","#locationSelId",function(){
 		$("#districtCandId").html('');
 		$("#constituencyCanId").html('');
 		$("#mandalCanId").html('');
-		$("#districtCandId").html('<option value="0">Select District</option>');
+		$("#districtCandId").html('');
 		$("#districtCandId").trigger('chosen:updated');
 		$("#endorsmentNoDivid").hide();
-		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-		$("#constituencyCanId").trigger('chosen:updated');
+		//$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+		//$("#constituencyCanId").trigger('chosen:updated');
 		
-		$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+		$("#mandalCanId").html('');
 		$("#mandalCanId").trigger('chosen:updated');
 		$("#nameId").val(' ');
 		$("#mobileId").val(' ');
@@ -515,14 +517,14 @@ $(document).on("change","#locationSelId",function(){
 		}
 	
    }else if(searchType == 'pmOfficer'){
-		$("#districtCandId").html('<option value="0">Select District</option>');
+		$("#districtCandId").html('');
 		$("#districtCandId").trigger('chosen:updated');
 		$("#endorsmentNoDivid").hide();
-		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-		$("#constituencyCanId").trigger('chosen:updated');
-		
-		$("#mandalCanId").html('<option value="0">Select Mandal</option>');
-		$("#mandalCanId").trigger('chosen:updated');
+		$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 		$("#nameId").val(' ');
 		$("#mobileId").val(' ');
 		$("#emailId").val(' ');
@@ -551,15 +553,15 @@ $(document).on("change","#locationSelId",function(){
 		 }); */
 	
    }else if(searchType == 'lead'){
-		$("#selectLeadId").html('<option value="0">Select Lead</option>');
+		$("#selectLeadId").html('');
 		$("#selectLeadId").trigger('chosen:updated');
 		$("#selectLeadDivId").show();
 		$("#endorsmentNoDivid").hide();
-		$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-		$("#constituencyCanId").trigger('chosen:updated');
-		
-		$("#mandalCanId").html('<option value="0">Select Mandal</option>');
-		$("#mandalCanId").trigger('chosen:updated');
+		$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 		$("#nameId").val(' ');
 		$("#mobileId").val(' ');
 		$("#lead").val(' ');
@@ -593,14 +595,14 @@ $(document).on("change","#locationSelId",function(){
 		    $("#nameDivid").show();
 			 $("#districtConsMandDivId").hide();
 			 $("#advancedSearchButtonDivId").show();
-				$("#districtCandId").html('<option value="0">Select District</option>');
+				$("#districtCandId").html('');
 				$("#districtCandId").trigger('chosen:updated');
 				$("#endorsmentNoDivid").hide();
-				$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-				$("#constituencyCanId").trigger('chosen:updated');
-				
-				$("#mandalCanId").html('<option value="0">Select Mandal</option>');
-				$("#mandalCanId").trigger('chosen:updated');
+				$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
+	
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 				
 				$("#designationsId").html('<option value="0">Select Designation</option>');
 				$("#designationsId").trigger('chosen:updated');
@@ -617,14 +619,14 @@ $(document).on("change","#locationSelId",function(){
 			$("#mobileDivid").show();
 			 $("#districtConsMandDivId").hide();
 			 $("#advancedSearchButtonDivId").show();
-			 $("#districtCandId").html('<option value="0">Select District</option>');
+			 $("#districtCandId").html('');
 	         $("#districtCandId").trigger('chosen:updated');
 			$("#endorsmentNoDivid").hide();
-	         $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-	         $("#constituencyCanId").trigger('chosen:updated');
+	        $("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
 	
-	         $("#mandalCanId").html('<option value="0">Select Mandal</option>');
-	         $("#mandalCanId").trigger('chosen:updated');
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 			 $("#designationsId").html('<option value="0">Select Designation</option>');
 	         $("#designationsId").trigger('chosen:updated');
 			 $("#nameId").val(' ');
@@ -640,14 +642,14 @@ $(document).on("change","#locationSelId",function(){
 			$("#emailDivid").show();
 			$("#districtConsMandDivId").hide();
 			$("#advancedSearchButtonDivId").show();
-	         $("#districtCandId").html('<option value="0">Select District</option>');
+	         $("#districtCandId").html('');
 	         $("#districtCandId").trigger('chosen:updated');
 			$("#endorsmentNoDivid").hide();
-	         $("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-	         $("#constituencyCanId").trigger('chosen:updated');
+	        $("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
 	
-	         $("#mandalCanId").html('<option value="0">Select Mandal</option>');
-	         $("#mandalCanId").trigger('chosen:updated');
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 			  $("#designationsId").html('<option value="0">Select Designation</option>');
 	         $("#designationsId").trigger('chosen:updated');
 			  $("#nameId").val(' ');
@@ -661,13 +663,13 @@ $(document).on("change","#locationSelId",function(){
 			$('#advanceSearchBtnId').prop("checked",false);
 			$("#endorsmentNoDivid").show();
 			$("#districtConsMandDivId").hide();
-	         $("#districtCandId").html('<option value="0">Select District</option>');
+	         $("#districtCandId").html('');
 	         $("#districtCandId").trigger('chosen:updated');
-			$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
-	         $("#constituencyCanId").trigger('chosen:updated');
+			$("#constituencyCanId").html('');
+	$("#constituencyCanId").trigger('chosen:updated');
 	
-	         $("#mandalCanId").html('<option value="0">Select Mandal</option>');
-	         $("#mandalCanId").trigger('chosen:updated');
+	$("#mandalCanId").html('');
+	$("#mandalCanId").trigger('chosen:updated');
 			  $("#designationsId").html('<option value="0">Select Designation</option>');
 	          $("#designationsId").trigger('chosen:updated');
 			  $("#nameId").val(' ');
@@ -692,9 +694,8 @@ $(document).on("change","#locationSelId",function(){
 });
 $(document).on("change","#districtCandId",function(){
 	$("#constituencyCanId").html('');
-	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	
 	$("#constituencyCanId").trigger('chosen:updated');
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
 	$("#mandalCanId").trigger('chosen:updated');
 	var searchType=$("#locationSelId").val();
 	var distictId=$(this).val();
@@ -705,7 +706,7 @@ $(document).on("change","#districtCandId",function(){
 
 });
 $(document).on("change","#constituencyCanId",function(){
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+	$("#mandalCanId").html('');
 	$("#mandalCanId").trigger('chosen:updated');
 	var searchType=$("#locationSelId").val();
 	var consituencyId=$(this).val();
@@ -715,13 +716,13 @@ $(document).on("change","#designationsId",function(){
 	$("#referralNameId").html('<option value="0">Select Referral Name</option>');
 	$("#referralNameId").trigger('chosen:updated');
 	
-	$("#districtCandId").html('<option value="0">Select District</option>');
+	$("#districtCandId").html('');
 	$("#districtCandId").trigger('chosen:updated');
 	
-	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	$("#constituencyCanId").html('');
 	$("#constituencyCanId").trigger('chosen:updated');
 	
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+	$("#mandalCanId").html('');
 	$("#mandalCanId").trigger('chosen:updated');
 	var searchType=$("#locationSelId").val();
 	var dateRangeStr =$("#dateRangePicker").val();
@@ -740,13 +741,13 @@ $(document).on("change","#departmentId",function(){
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 });
 $(document).on("change","#subjectId",function(){
-	$("#districtCandId").html('<option value="0">Select District</option>');
+	$("#districtCandId").html('');
 	$("#districtCandId").trigger('chosen:updated');
 	
-	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	$("#constituencyCanId").html('');
 	$("#constituencyCanId").trigger('chosen:updated');
 	
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+	$("#mandalCanId").html('');
 	$("#mandalCanId").trigger('chosen:updated');
 	
 	var searchType=$("#locationSelId").val();
@@ -754,13 +755,13 @@ $(document).on("change","#subjectId",function(){
 	getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
 });
 $(document).on("change","#selectLeadId",function(){
-    $("#districtCandId").html('<option value="0">Select District</option>');
+    $("#districtCandId").html('');
 	$("#districtCandId").trigger('chosen:updated');
 	
-	$("#constituencyCanId").html('<option value="0">Select Constituency</option>');
+	$("#constituencyCanId").html('');
 	$("#constituencyCanId").trigger('chosen:updated');
 	
-	$("#mandalCanId").html('<option value="0">Select Mandal</option>');
+	$("#mandalCanId").html('');
 	$("#mandalCanId").trigger('chosen:updated');
 	
 	var searchType=$("#locationSelId").val();
@@ -795,6 +796,16 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
 			desigType="representee";
 		}
 	  } */
+  var filterValue ="";
+  if(filterType == 'name'){
+	    filterValue=$("#nameId").val();
+   }else if(filterType == 'mobile'){
+	    filterValue=$("#mobileId").val();
+   }else if(filterType == 'email'){
+	    filterValue=$("#emailId").val();
+   }else if(filterType == 'endorsmentNO'){
+	    filterValue=$("#endorsmentNoId").val();
+   }
 	var depts =$("#departmntId").val();
 	if(depts != null && depts !=0){
 		deptIds=depts;
@@ -834,6 +845,7 @@ function getDistrictBySearchType(searchType,selBoxId,dateRangeStr){
   
  var json = {
 		 filterType :searchType,
+		 filterValue:filterValue,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
 		 deptIdsList:deptIds,
@@ -875,7 +887,7 @@ function getConstituenciesBySearchTypeAndDistrict(searchType,distictId,selBoxId)
 	
 	$("#"+selBoxId).html("");
 	$("#"+selBoxId).empty();
-	$("#selBoxId").html('<option value="0">Select Constituency</option>');
+	//$("#selBoxId").html('<option value="0">Select Constituency</option>');
 	$("#selBoxId").trigger('chosen:updated');
 	
 	var desigIds= [];
@@ -925,8 +937,20 @@ var selectLeadIdVal =$("#selectLeadId").val();
 	    leadIdArr = selectLeadIdVal;
    }
   
+  var filterValue ="";
+  if(filterType == 'name'){
+	    filterValue=$("#nameId").val();
+   }else if(filterType == 'mobile'){
+	    filterValue=$("#mobileId").val();
+   }else if(filterType == 'email'){
+	    filterValue=$("#emailId").val();
+   }else if(filterType == 'endorsmentNO'){
+	    filterValue=$("#endorsmentNoId").val();
+   }
+   
  var json = {
 		 filterType :searchType,
+		 filterValue:filterValue,
 		 searchLvlVals: distictId,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
@@ -949,12 +973,14 @@ var selectLeadIdVal =$("#selectLeadId").val();
 	}).done(function(result){
 		if(result !=null && result.length >0){
 			//$("#"+selBoxId).html("<option value='0'>All</option>");
-			$("#"+selBoxId).html("<option value='0'>Select Constituency</option>");
+			//$("#"+selBoxId).html("<option value='0'>Select Constituency</option>");
 			for(var i in result){
-				if(constId != null && constId==result[i].key){
-					$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
-				}else{
-					$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+				if(parseInt(result[i].key)>0){
+					if(constId != null && constId==result[i].key){
+						$("#"+selBoxId).append("<option value='"+result[i].key+"' selected>"+result[i].value+"</option>");
+					}else{
+						$("#"+selBoxId).append("<option value='"+result[i].key+"'>"+result[i].value+"</option>");
+					}
 				}
 			}
 		}
@@ -966,7 +992,7 @@ var selectLeadIdVal =$("#selectLeadId").val();
 	});	
 }
 function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId){
-	$("#"+selBoxId).html("<option value='0'>Select Mandal</option>");
+	//$("#"+selBoxId).html("<option value='0'>Select Mandal</option>");
 	$("#"+selBoxId).trigger('chosen:updated');
 	var desigIds= [];
 	var deptIds = [];
@@ -1013,9 +1039,20 @@ function getMandalsBySearchTypeAndConstituency(searchType,consituencyId,selBoxId
 	   if(selectLeadIdVal != null && selectLeadIdVal !=0){
 			leadIdArr = selectLeadIdVal;
 	   }
-
+ var filterValue ="";
+  if(filterType == 'name'){
+	    filterValue=$("#nameId").val();
+   }else if(filterType == 'mobile'){
+	    filterValue=$("#mobileId").val();
+   }else if(filterType == 'email'){
+	    filterValue=$("#emailId").val();
+   }else if(filterType == 'endorsmentNO'){
+	    filterValue=$("#endorsmentNoId").val();
+   }
+   
  var json = {
 		 filterType :searchType,
+		 filterValue:filterValue,
 		 searchLvlVals: consituencyId,
 		 fromDate :currentFromDate,
 		 toDate : currentToDate,
@@ -1326,6 +1363,21 @@ function getDepartmentsBySearchType(searchType,selBoxId,ondeptId,statusId){
 	$("#representeeDetailsModelDivId").modal("show");
    getPetitionDetails(petionId,endorsNo);
  }); */
+ 
+ function getFinalArr(inputArr){
+	 var returnArr =[];
+	 if(inputArr != null && inputArr.length>0){
+		for(var i in inputArr){
+			if(parseInt(inputArr[i])==0){
+				returnArr=[];
+				break;
+			}else{
+				returnArr.push(parseInt(inputArr[i]));
+			}
+		}
+	}
+	return returnArr;
+ }
 function getRepresentativeSearchDetails1(value,globalStIndex){
 	
 	$("#petitionSubWorkRadioDivId").hide();
@@ -1511,6 +1563,12 @@ var briefLeadId = $("#selectLeadId").val();
 	if(briefLeadId != null && briefLeadId.length >0){
 		briefLeadIdsArr=briefLeadId;
 	}
+	
+	searchLevelValue = getFinalArr(searchLevelValue);
+	deptIdsList = getFinalArr(deptIdsList);
+	statusIds = getFinalArr(statusIds);
+	briefLeadIdsArr = getFinalArr(briefLeadIdsArr);
+	
 	$("#representationRequestEntryTable").html(spinner);
 var json = {
     filterType :filterType,//mobileno/department/name/email
@@ -3401,6 +3459,11 @@ function petitionWiseRepresenteeDetails(myResult,radioTypeVal,globalStIndex,coun
 								 alreadyGiven=true;
 								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 							}
+							
+							if(parseInt(endorsmentNo) == 2630 || parseInt(endorsmentNo) == 2585){
+								 alreadyGiven=true;
+								str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
+							}
 							//if(!alreadyGiven && (userId == 25 || userId == 26 || userId == 27 || userId == 28)){
 							//	str+='<a href="'+wurl+'/representationRequestEdit?petitionId='+result[i].petitionId+'" target="_blank"><i class="tooltipCls fa fa-pencil-square-o" aria-hidden="true" style="font-size: 16px;cursor:pointer" data-toggle="tooltip" data-placement="top" title="Edit Petition"></i></a>';
 							//}
@@ -3801,3 +3864,12 @@ if(deptIdsList != null && deptIdsList.length>0){
 		}  
 	});	
 }
+
+$(document).on("click","#advanceSearchBtnId",function(){
+	
+	if($('#advanceSearchBtnId').prop( "checked")){
+		var searchType=$("#locationSelId").val();
+		var dateRangeStr =$("#dateRangePicker").val();
+		getDistrictBySearchType(searchType,'districtCandId',dateRangeStr);
+	}
+});

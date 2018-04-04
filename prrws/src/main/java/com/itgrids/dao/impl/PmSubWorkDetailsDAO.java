@@ -864,12 +864,15 @@ public class PmSubWorkDetailsDAO extends GenericDaoHibernate<PmSubWorkDetails, L
 		
 		sb.append(" select model.petition.petitionId,model.pmSubWorkDetailsId, model.costEstimation ");
 		if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("district")){
-			sb.append(" ,model.locationAddress.district.districtId,model.locationAddress.district.districtName ");
+			sb.append(" ,district.districtId,district.districtName ");
 		}else if(inputVO.getAssetType() != null && inputVO.getAssetType().equalsIgnoreCase("constituency")){
-			sb.append(" ,model.locationAddress.constituency.constituencyId,model.locationAddress.constituency.name ");
-			sb.append(" ,model.locationAddress.district.districtId,model.locationAddress.district.districtName ");
+			sb.append(" ,constituency.constituencyId,constituency.name ");
+			sb.append(" ,district.districtId,district.districtName ");
 		}
-		sb.append(" from PmSubWorkDetails as  model" +
+		sb.append(" from PmSubWorkDetails as  model " +
+				" left join model.locationAddress locationAddress " +
+				" left join locationAddress.district district " +
+				" left join locationAddress.constituency constituency " +
 				//",PmRepresenteeRefDetails as model1  " +
 				" where model.isDeleted='N' " +
 				" and model.petition.isDeleted='N'  ");

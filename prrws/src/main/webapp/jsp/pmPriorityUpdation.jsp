@@ -82,88 +82,75 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 %>
 </header>
 <main>
-	<section>
 		<div class="container-fluid">
-			
-			<div class="row m_top10 dispalyNone">
-				<div class="col-sm-12">
-					<div class="white-block petition_block">
-						<div class="row m_top10">	
-						    <div class="col-sm-3 " id="deptsDivId">
-								<label>DEPARTMENT</label>
-								<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId1" multiple>
-								</select>
-							</div>
-							<div class="col-sm-3">
-								<label>STATUS</label>
-								<select class="chosen-select form-control " id="statusLocId1" data-placeholder="All" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-							</div>
-							<div class="col-sm-4 pull-right">	
-								<div class="input-group inline-block">
-									<span class="input-group-addon">
-										<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
-									</span>
-									<input type="text"  class="form-control" id="dateRangePicker"/>
-								</div>
-							</div>
-						</div>	
-						<div class="row m_top10">	
-							<div class="col-sm-3">
-								<label>SUBJECT</label>
-								<select class="chosen-select form-control" id="subjectId1" data-placeholder="All" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-							</div>
-							<div class="col-sm-3">
-								<label>SUB SUBJECT</label>
-								<select class="chosen-select form-control" id="SubSubjectId" data-placeholder="All" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-							</div>
-						
+			<div class="row dispalyNone">
+				<div class="col-sm-12">	
+					<div class="col-sm-3 pull-right">
+						<div class="input-group inline-block">
+							<span class="input-group-addon">
+								<span class="glyphicon glyphicon-calendar clearDataCls" aria-hidden="true"></span>
+							</span>
+							<input type="text"  class="form-control" id="dateRangePickerId"/>
 						</div>
-						<div class="row m_top20">
-							<div class="col-sm-3" id="districtCandDiv">
-								<label>DISTRICT</label>
-								<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId1" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-								<!--<div class="error_colorCls" id="districtCandErrDiv"></div>-->
-							</div>
-							<div class="col-sm-3" id="constituencyCanDiv">
-								<label>CONSTITUENCY</label>
-								<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId1" multiple>
-									<!--<option value="0">All</option>-->
-								</select>
-								<!--<div class="error_colorCls" id="constituencyCanErrDiv"></div>-->
-							</div>
-							
-							
-						</div>
-						
 					</div>
+					
 				</div>
-				
-				<div class="col-sm-12">
-					<div class="col-sm-2 m_top20 pull-right">	
-						<input type="button"  class="btn btn-success btn-mini btn-xs" onclick="getPetitionsDetails();" value="GET DETAILs" />
-					</div>
-				</div>
-				
 			</div>
+			<div class="white-block petition_block dispalyNone">
+				<div class="row">
+					<div class="col-sm-3 " id="deptsDivId">
+						<label>DEPARTMENT</label>
+						<select class="form-control chosen-select"  data-placeholder="SELECT DEPARTMENT"  id="departmntId1" multiple>
+						</select>
+					</div>
+					<div class="col-sm-3">
+						<label>STATUS</label>
+						<select class="chosen-select form-control " id="statusLocId1" data-placeholder="All" multiple>
+							<!--<option value="0">All</option>-->
+						</select>
+					</div>
+					<div class="col-sm-3">
+						<label>SUBJECT</label>
+						<select class="chosen-select form-control" id="subjectId1" data-placeholder="All" multiple>
+							<!--<option value="0">All</option>-->
+						</select>
+					</div>
+					<div class="col-sm-3">
+						<label>SUB SUBJECT</label>
+						<select class="chosen-select form-control" id="SubSubjectId" data-placeholder="All" multiple>
+							<!--<option value="0">All</option>-->
+						</select>
+					</div>
+				</div>
+				<div class="row m_top20">
+					<div class="col-sm-3" id="districtCandDiv">
+						<label>DISTRICT</label>
+						<select class="form-control chosen-select clearDataCls" data-placeholder="SELECT DISTRICT " id="districtCandId1" multiple>
+							<!--<option value="0">All</option>-->
+						</select>
+						<!--<div class="error_colorCls" id="districtCandErrDiv"></div>-->
+					</div>
+					<div class="col-sm-3" id="constituencyCanDiv">
+						<label>CONSTITUENCY</label>
+						<select class="form-control chosen-select clearDataCls"  data-placeholder="SELECT CONSTITUENCY "  id="constituencyCanId1" multiple>
+							<!--<option value="0">All</option>-->
+						</select>
+						<!--<div class="error_colorCls" id="constituencyCanErrDiv"></div>-->
+					</div>
+					<div class="col-sm-3">
+						<input type="button"  class="btn btn-success btn-mini btn-sm m_top20" onclick="getPetitionsDetails();" value="GET DETAILs" />
+					</div>
+				</div>
+			</div>
+
 			<div id="printableArea"  class="displayBlock">
 				<div class="white-block pad_10" id="printcontent">
-					<div class="row">
-						<div class="col-sm-12">
-							<div id="pdfWiswPetitionsView" ></div>
-						</div>
-					</div>
+					<div id="pdfWiswPetitionsView" ></div>
 				</div>
 			</div>
+			
 		</div>
-	</section>
+		</section>
 </main>
 
 <script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
@@ -198,8 +185,8 @@ var currentFromDate="";
 	currentFromDate=moment().subtract(7, 'year').format("DD-MM-YYYY");
 	currentToDate=moment().add(38,"year").format("DD-MM-YYYY");
 
-
-$("#dateRangePicker").daterangepicker({
+//$("#dateRangePickerId").val('All');
+$("#dateRangePickerId").daterangepicker({
 		opens: 'left',
 		startDate: currentFromDate,
 		endDate: currentToDate,
@@ -218,12 +205,12 @@ $("#dateRangePicker").daterangepicker({
 		   
 		}
 	});
-	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+	$('#dateRangePickerId').on('apply.daterangepicker', function(ev, picker) {
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
 		if(picker.chosenLabel == 'All')
 		{
-			$("#dateRangePicker").val('All');
+			$("#dateRangePickerId").val('All');
 		}
 		$("#pdfWiswPetitionsView").html('');
 		locationlevels();
@@ -660,8 +647,8 @@ function getPetitionsDetails(){
 		
 		str+='<div class="row m_top5">'
 					str+='<div class="col-sm-12">'
-						str+='<div class="table-responsive">';
-						str+='<table class="table details-overview_petition_print" id="worksDetailsTab" >';
+						str+='<div class="">';
+						str+='<table class="table details-overview_petition_print1" id="worksDetailsTab" >';
 							str+='<thead>';
 								str+='<tr>';
 									//str+='<th style="width:70px; !important;">GIVEN&nbsp;DATE</th>';
@@ -740,9 +727,9 @@ function getPetitionsDetails(){
 									else 
 										str+='<td></td>';
 									if(typeof result[s].subWorksList[i].subWorksList[k].priority != 'undefined' && parseInt(result[s].subWorksList[i].subWorksList[k].priority)>0)
-										str+='<td  style="text-align:center;" title="Please enter priority"> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="Please enter priority" value="'+result[s].subWorksList[i].subWorksList[k].priority+'" style="width:50px;text-align:center;"/></td>';
+										str+='<td  style="text-align:center;" title="Please enter priority"> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="" value="'+result[s].subWorksList[i].subWorksList[k].priority+'" style="width:50px;text-align:center;"/></td>';
 									else
-										str+='<td  style="text-align:center;"  title="Please enter priority"> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder="Please enter priority"  style="width:50px;text-align:center;"/></td>';
+										str+='<td  style="text-align:center;"  title="Please enter priority"> <input type="text" class="prirotyCls" attr_work_id="'+result[s].subWorksList[i].subWorksList[k].workId+'" attr_petition_id="'+result[s].subWorksList[i].subWorksList[k].petitionId+'" maxlength="10" placeholder=""  style="width:50px;text-align:center;"/></td>';
 									str+='</tr>';
 									
 								//}
@@ -759,12 +746,12 @@ function getPetitionsDetails(){
 					str+='</div>';
 				str+='</div>';
 		}
-		str+='<button type="button" class="btn btn-success m_top10 pull-right" onclick="updatePriorityDetailsforPetitionsWorks()">SUBMIT DETAILS</button>';
+		str+='<button type="button" class="btn btn-success m_top10 pull-right dispalyNone" onclick="updatePriorityDetailsforPetitionsWorks()">SUBMIT DETAILS</button>';
 		$('#pdfWiswPetitionsView').html(str);
 		
 		$("#worksDetailsTab").dataTable({
-		"paging":   true,
-		"info":     true,
+		"paging":   false,
+		"info":     false,
 		"searching": true,
 		"autoWidth": true,
 		//"sDom": '<"top"iflp>rt<"bottom"><"clear">',
@@ -772,9 +759,9 @@ function getPetitionsDetails(){
 		"aaSorting": [[ 0, "desc" ]],
 		"aLengthMenu": [[500,200,100 -1], [ 500,200,100, "All"]],
 		*/
-		"iDisplayLength": 50,
+		//"iDisplayLength": -1,
 		"aaSorting": ["7"],
-		"aLengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]],
+		//"aLengthMenu": [[50, 100, 500, -1], [50, 100, 500, "All"]],
 		
 		"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 		"<'row'<'col-sm-12'tr>>" +
@@ -996,13 +983,13 @@ function updatePriorityDetailsforPetitionsWorks(){
     var attr_workId = $(this).attr('attr_work_id');
     var attr_priority_id = $(this).attr('attr_petition_id');
     var priority = $(this).val();
-	
+	 $(this).css("background-color","#fff");
 		if(parseInt(priority) >0){
 			if(priorityArr != null && priorityArr.length>0){
 			  for(var i in priorityArr){
 				if(parseInt(priorityArr[i])==parseInt(priority)){
 				  hasDuplicate=true;
-				  break;
+					$(this).css("background-color","#f2c5c1");
 				}
 			  }
 			}
@@ -1011,7 +998,7 @@ function updatePriorityDetailsforPetitionsWorks(){
 			  "petitionId":attr_priority_id,
 			  "priority":priority
 			}
-			console.log(obj);
+			//console.log(obj);
 			worksArr.push(obj);
 			priorityArr.push(priority);
 		}    
@@ -1078,10 +1065,23 @@ function updatePriorityDetailsforPetitionsWorks(){
    }
 }
 
-$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1,#SubSubjectId",function()
-{
+$(document).on("change","#departmntId1,#districtCandId1,#constituencyCanId1,#statusLocId1,#subjectId1,#SubSubjectId",function(){
 	$("#pdfWiswPetitionsView").html('');
 });	
+
+
+$(document).on("click",".printViewCls",function(){
+	printDiv();
+});
+function printDiv() {
+	 var printContents = document.getElementById('printableArea').innerHTML;
+	 var originalContents = document.getElementById("printcontent").innerHTML;
+	 document.title = "";
+     document.getElementById("printcontent").innerHTML = printContents;
+	 window.print();
+     document.getElementById("printcontent").innerHTML = originalContents;
+	 $(".dispalyNone").show();
+}
 
 </script>
 </body>

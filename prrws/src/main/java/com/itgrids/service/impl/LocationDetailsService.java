@@ -655,8 +655,10 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				districtObjs=pmRefCandidateDAO.getAllDistrictsByReferral(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
 				districtObjs=pmRefCandidateDesignationDAO.getAllDistrictsByReferalAndDesignation(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
-			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee") || inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
-				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
+			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee"))){
+				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(null,fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
+			}else if(inputVO.getFilterType() !=null && ( inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
+				districtObjs=pmRepresenteeDAO.getAllDistrictsBySearchType(inputVO,fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("representeeDesignation")){
 				districtObjs=pmRepresenteeDesignationDAO.getAllDistrictsByRepresenteeDesignationWise(fromDateStr,toDateStr,deptIds,inputVO.getDesignationIds(),inputVO.getpType(),inputVO.getStatusIds(),petitionIdsList);
 			}
@@ -749,7 +751,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 			Date fromDateStr = null;
 			Date toDateStr = null;
 			SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-			List<Object[]> districtObjs=null;
+			//List<Object[]> districtObjs=null;
 			if(inputVO.getFromDate() != null && inputVO.getToDate() != null && inputVO.getFromDate().length() > 0 && inputVO.getToDate().length() > 0){
 				fromDateStr = dateFormat.parse(inputVO.getFromDate());
 				toDateStr = dateFormat.parse(inputVO.getToDate());
@@ -764,9 +766,13 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				conObjs=pmRefCandidateDAO.getAllConstituenciesByReferralAndDistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type, statIds,petitionIdsList);
 			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("referrelDesignation")){
 				conObjs=pmRefCandidateDesignationDAO.getAlConstituenciesByReferalAndDesignationBydistrict(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
-			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee") || inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
-				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
-			}else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("representeeDesignation")){
+			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee"))){
+				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(null,fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
+			}else if(inputVO.getFilterType() !=null && ( inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
+				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(inputVO,fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
+			}/*else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee") || inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
+				conObjs=pmRepresenteeDAO.getAlConstituenciesBySearchType(inputVO,fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
+			}*/else if(inputVO.getFilterType() !=null && inputVO.getFilterType().trim().equalsIgnoreCase("representeeDesignation")){
 				conObjs=pmRepresenteeDesignationDAO.getAllConstituenciesByRepresenteeDesignationWise(fromDateStr,toDateStr,districtIds,deptIds,pmDesignationIds,type,statIds,petitionIdsList);
 			}
 			if(conObjs != null && conObjs.size() >0 ){
@@ -783,7 +789,7 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 		}
 		return finalList;
 	}
-	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(String serchType,List<Long> conIds,List<Long> deptIds,String fromDate,String toDate,List<Long> desigids,String desigType,List<Long> statIds,Long userId,List<Long> subjectIdsLst,List<Long> leadIdsLst){
+	public List<KeyValueVO> getMandalsBySearchTypeAndConstituencyId(InputVO inputVO,String serchType,List<Long> conIds,List<Long> deptIds,String fromDate,String toDate,List<Long> desigids,String desigType,List<Long> statIds,Long userId,List<Long> subjectIdsLst,List<Long> leadIdsLst){
 		List<KeyValueVO> finalList = new ArrayList<KeyValueVO>();
 		try{
 			List<Object[]> conObjs=null;
@@ -803,9 +809,13 @@ public List<KeyValueVO> getPmDesignations(String searchType){
 				conObjs=pmRefCandidateDAO.getAllMandalsByReferralAndDistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}else if(serchType !=null && serchType.trim().equalsIgnoreCase("referrelDesignation")){
 				conObjs=pmRefCandidateDesignationDAO.getAllMandalsByReferalAndDesignationBydistrict(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
-			}else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
-				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
-			}if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
+			}else if(inputVO.getFilterType() !=null && (inputVO.getFilterType().trim().equalsIgnoreCase("representee"))){
+				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(null,conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
+			}else if(inputVO.getFilterType() !=null && ( inputVO.getFilterType().trim().equalsIgnoreCase("name") || inputVO.getFilterType().trim().equalsIgnoreCase("mobile") || inputVO.getFilterType().trim().equalsIgnoreCase("email") || inputVO.getFilterType().trim().equalsIgnoreCase("endorsmentNO"))){
+				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(inputVO,conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
+			}/*else if(serchType !=null && (serchType.trim().equalsIgnoreCase("representee") || serchType.trim().equalsIgnoreCase("name") || serchType.trim().equalsIgnoreCase("mobile") || serchType.trim().equalsIgnoreCase("email") || serchType.trim().equalsIgnoreCase("endorsmentNO"))){
+				conObjs=pmRepresenteeDAO.getAllMandalsBySearchType(inputVO,conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
+			}*/if(serchType !=null && serchType.trim().equalsIgnoreCase("representeeDesignation")){
 				conObjs=pmRepresenteeDesignationDAO.getAllMandalsByRepresenteeDesignationAndconstincy(conIds,deptIds,startDate,endDate,desigids,desigType,statIds,petitionIdsList);
 			}
 			if(conObjs != null && conObjs.size() >0 ){

@@ -5413,6 +5413,26 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 												
 										}else if(inputVO != null && inputVO.getStatusId() != null){
 											
+											
+											String status="";
+											if(commonMethodsUtilService.isListOrSetValid(inputVO.getFilesList())){
+												List<String> base64BitFilesList = new ArrayList<String>(0);
+												for (MultipartFile file : inputVO.getFilesList()) {
+													//if(document == null){
+														//base64BitFilesList.add(imageAndStringConverter.convertImageFileToBase64String(new File(file.getOriginalFilename()).getAbsoluteFile()));
+														document = saveDocument(file,IConstants.STATIC_CONTENT_FOLDER_URL+IConstants.PETITIONS_FOLDER,inputVO.getId(),null,null);
+													//}
+													if(document != null){
+														resultStatus =saveCoveringLetterDocument(updatedTime,inputVO,pmPetitionAssignedOfficer,inputVO.getRemark(),worksList,document.getDocumentId(),
+																inputVO.getId(), endorsmentNo,petitionId,inputVO.getStatusType(),inputVO.getStatusId(),inputVO.getDocumentTypeId(),inputVO.getRefNo());
+														base64BitFilesList.add(imageAndStringConverter.convertImageFileToBase64String(new File(file.getOriginalFilename()).getAbsoluteFile()));
+													}
+												}
+												
+												if(commonMethodsUtilService.isListOrSetValid(base64BitFilesList))
+													inputVO.setBase64ImageList(base64BitFilesList);
+											}
+											
 											pmSubWorkDetails.setPmStatusId(inputVO.getStatusId());
 											pmSubWorkDetails.setUpdatedTime(updatedTime);
 											pmSubWorkDetails.setUpdatedUserId(inputVO.getId());
@@ -6944,10 +6964,10 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 				
 				if(commonMethodsUtilService.isListOrSetValid(petitonsDetailsList)){
 					for (Object[] param : petitonsDetailsList) {
-						Long pmBriefLeadId = commonMethodsUtilService.getLongValueForObject(param[28]);
-						if(IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.contains(pmBriefLeadId) || IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS.contains(pmBriefLeadId)){
-							continue;
-						}
+						//Long pmBriefLeadId = commonMethodsUtilService.getLongValueForObject(param[28]);
+						//if(IConstants.PETITION_NEXT_BUDGET_BRIEF_LEAD_IDS.contains(pmBriefLeadId) || IConstants.PETITIONS_CENTRAL_BUDGET_BRIEF_LEAD_IDS.contains(pmBriefLeadId)){
+							//continue;
+						//}
 						
 						Long petitionId =commonMethodsUtilService.getLongValueForObject(param[0]);
 						String reprDate=commonMethodsUtilService.getStringValueForObject(param[1]).replace("#", "");

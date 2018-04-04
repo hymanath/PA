@@ -484,7 +484,7 @@
 		color-adjust:exact;
 	}
 	.details-overview_petition_print thead tr th{
-		font-size:6px !important;
+		font-size:7px !important;
 		padding:2px !important;
 		border-bottom:none !important;
 		font-weight:bold !important;
@@ -494,7 +494,7 @@
 		color-adjust:exact;
 	}
 	.details-overview_petition_print tbody tr td{
-		font-size:8px !important;
+		font-size:9px !important;
 		padding:2px !important;
 		font-weight:bold !important;
 		border:1px solid #000 !important;
@@ -502,6 +502,32 @@
 	.details-overview_petition_print tbody tr td:nth-child(8){
 		width:100px !important; 
 	}
+	
+	.details-overview_petition_print1{
+		margin-bottom:0 !important;
+		margin-top:5px !important;
+		border:1px solid #000 !important;
+		background-color:#fff !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	.details-overview_petition_print1 thead tr th{
+		font-size:6px !important;
+		padding:2px !important;
+		font-weight:bold !important;
+		background-color:#C5D9F0 !important;
+		border:1px solid #000 !important;
+		-webkit-print-color-adjust:exact;
+		color-adjust:exact;
+	}
+	
+	.details-overview_petition_print1 tbody tr td{
+		font-size:8px !important;
+		padding:2px !important;
+		font-weight:bold !important;
+		border: 1px solid #000 !important;
+	}
+	
 	.line_heightCss h5{
 		line-height:28px !important;
 	}
@@ -516,10 +542,17 @@
 	}
 	.font_size_12{
 		
-		font-size:10px !important;
+		font-size:13px !important;
+		font-weight:bold !important;
 	}
 	.displayBlock{
 		display:block !important;
+	}
+	#worksDetailsTab_filter{
+		display:none !important;
+	}
+	.dt-button{
+		display:none !important;
 	}
 	@page { 
 		size: auto;  
