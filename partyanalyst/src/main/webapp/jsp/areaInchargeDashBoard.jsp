@@ -25,6 +25,7 @@ body{
 .popover{
     max-width: 500px;
 }
+#menu_multilevelpushmenu{box-shadow: none;}
 </style>
 </head>
 <body>
@@ -52,7 +53,7 @@ body{
 						
 						<div class="row">
 							<div class="col-sm-5 pull-right m_top10">
-								<button class="btn btn-success btn-sm pull-right addAssignedBlockCls showHideAddAreaIncharge" style="width: 150px;">ADD</button>
+								<button class="btn btn-success btn-sm pull-right showHideAddAreaIncharge" style="width: 150px;">ADD</button>
 							</div>
 						</div>
 						<div class="row addAssignedBlockCls" style="display:none;">
@@ -87,7 +88,7 @@ body{
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-sm-12">
+							<div class="col-sm-12 showHideCls">
 								<div id="areaInchargeSearchDetailsDivId"></div>
 							</div>
 						</div>
