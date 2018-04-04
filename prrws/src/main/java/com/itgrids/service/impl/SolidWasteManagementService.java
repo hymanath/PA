@@ -384,17 +384,15 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 			if (inputVO.getFromDate() != null && inputVO.getFromDate().trim().length() > 0) {
 				fromDate = sdf.parse(inputVO.getFromDate());
 			}
+			String rfidList=null;
 			Map<Long, SolidWasteManagementVO> Map = new HashMap<Long, SolidWasteManagementVO>();
 			Map<Long, SolidWasteManagementVO> locationMap = new HashMap<Long, SolidWasteManagementVO>();
 			// Set<Long> gpIds = new HashSet<Long>();
 			Set<SolidWasteManagementVO> blockSet = new HashSet<SolidWasteManagementVO>();
 			Long webserviceId = 0l;
 			webserviceId = webServiceDataDAO.getMaxidforRFIDService(fromDate);
-			if (webserviceId == null || webserviceId.longValue() == 0) {
-				webserviceId = webServiceDataDAO.getMaxidforRFIDService(null);
-			}
-			String rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
-
+			if (webserviceId != null) 
+				rfidList = webServiceDataDAO.getRfidTrackingOverAllTargetsData(webserviceId);
 			if (rfidList != null && rfidList.length() > 0) {
 				String jsonData = rfidList;
 				if (jsonData != null && !jsonData.isEmpty()) {
@@ -641,7 +639,6 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 				 */
 
 			}
-
 			if (finalList != null && !finalList.isEmpty()) {
 				for (SolidWasteManagementVO MainVO : finalList) {
 					for (SolidWasteManagementVO subVO : MainVO.getSubList()) {
@@ -660,7 +657,6 @@ public class SolidWasteManagementService implements ISolidWasteManagementService
 		}
 		return finalList;
 	}
-
 	public String emailNotificationForRfidTracking() {
 		String output = null;
 		EmailDetailsVO str = new EmailDetailsVO();
