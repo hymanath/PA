@@ -6655,8 +6655,25 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 						/*if(inputVO.getStatusType() != null && inputVO.getStatusType().equalsIgnoreCase("COVERING LETTER")){
 							updatedId = pmSubWorkCoveringLetterDAO.disableExistingCoveringLettersForPetition(inputVO.getPetitionId(),inputVO.getStatusType());
 						}*/
+						
+						PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
+						
+						pmSubWorkCoveringLetter.setPetitionId(inputVO.getPetitionId());
+						pmSubWorkCoveringLetter.setEndorsmentNo(inputVO.getEndorsementNO());
+						pmSubWorkCoveringLetter.setPmSubWorkDetailsId(null);
+						pmSubWorkCoveringLetter.setDocumentId(documentId);
+						pmSubWorkCoveringLetter.setReportType(inputVO.getStatusType());
+						pmSubWorkCoveringLetter.setIsDeleted("N");
+						if(inputVO.getDocumentTypeId() != null && inputVO.getDocumentTypeId().longValue() >0l){
+							pmSubWorkCoveringLetter.setDocumentTypeId(inputVO.getDocumentTypeId());
+						}/*else{
+							pmSubWorkCoveringLetter.setDocumentTypeId(4l);
+						}*/
+						pmSubWorkCoveringLetter.setRefNo(inputVO.getRefNo());
+						pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
+						
 						for (Long subWorkId : inputVO.getWorkIds()) {
-							PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
+							pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
 							
 							pmSubWorkCoveringLetter.setPetitionId(inputVO.getPetitionId());
 							pmSubWorkCoveringLetter.setEndorsmentNo(inputVO.getEndorsementNO());
@@ -6695,23 +6712,6 @@ public class PmRequestDetailsService implements IPmRequestDetailsService{
 							pmTrackingVO.setPmSubWorkDetailsId(null);
 							updatePetitionTracking(pmTrackingVO,updatedTime);*/
 						}
-						
-						PmSubWorkCoveringLetter pmSubWorkCoveringLetter = new PmSubWorkCoveringLetter();
-						
-						pmSubWorkCoveringLetter.setPetitionId(inputVO.getPetitionId());
-						pmSubWorkCoveringLetter.setEndorsmentNo(inputVO.getEndorsementNO());
-						pmSubWorkCoveringLetter.setPmSubWorkDetailsId(null);
-						pmSubWorkCoveringLetter.setDocumentId(documentId);
-						pmSubWorkCoveringLetter.setReportType(inputVO.getStatusType());
-						pmSubWorkCoveringLetter.setIsDeleted("N");
-						if(inputVO.getDocumentTypeId() != null && inputVO.getDocumentTypeId().longValue() >0l){
-							pmSubWorkCoveringLetter.setDocumentTypeId(inputVO.getDocumentTypeId());
-						}/*else{
-							pmSubWorkCoveringLetter.setDocumentTypeId(4l);
-						}*/
-						pmSubWorkCoveringLetter.setRefNo(inputVO.getRefNo());
-						pmSubWorkCoveringLetter = pmSubWorkCoveringLetterDAO.save(pmSubWorkCoveringLetter);
-						
 					}
 					status.setExceptionMsg("SUCCESS");
 				} catch (Exception e) {
