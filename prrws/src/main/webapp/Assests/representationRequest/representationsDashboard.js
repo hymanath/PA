@@ -1776,17 +1776,17 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 						str+='<table class="table details-overview_petition_print font_size_13">';
 							str+='<thead>';
 								str+='<tr>';
-									str+='<th class="font_size_13" style="width:70px; !important;">GIVEN&nbsp;DATE</th>';
-									str+='<th  class="font_size_13" >ENDORS&nbsp;NO</th>';
-									str+='<th class="font_size_13" >WORK&nbsp;REF&nbsp;NO </th>';
-									str+='<th class="font_size_13" >LOCATION</th>';
-									str+='<th class="font_size_13" >WORK&nbsp;DESC</th>';
-									str+='<th class="font_size_13" >EST&nbsp;COST<br>(in Lakhs)</th>';
-									str+='<th class="font_size_13" >REF BY</th>';
-									str+='<th class="font_size_13" >ACTION MEMO</th>';
-									//str+='<th class="font_size_13" >GO ISSUED </th>';
-									str+='<th class="font_size_13" >PENDING&nbsp;@</th>';
-									str+='<th class="font_size_13" >INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span></th>';
+									str+='<th style="width:70px; !important;"><h6 class="font_size_12"> GIVEN&nbsp;DATE<h6> </th>';
+									str+='<th><h6 class="font_size_12"> ENDORS&nbsp;NO<h6></th>';
+									str+='<th><h6 class="font_size_12"> WORK&nbsp;REF&nbsp;NO <h6></th>';
+									str+='<th><h6 class="font_size_12"> LOCATION<h6></th>';
+									str+='<th><h6 class="font_size_12"> WORK&nbsp;DESC<h6></th>';
+									str+='<th><h6 class="font_size_12"> EST&nbsp;COST<br>(in Lakhs)<h6></th>';
+									str+='<th><h6 class="font_size_12"> REF BY<h6></th>';
+									str+='<th><h6 class="font_size_12"> ACTION MEMO<h6></th>';
+									//str+='<th class="font_size_12" >GO ISSUED </th>';
+									str+='<th><h6 class="font_size_12"> PENDING&nbsp;@<h6></th>';
+									str+='<th><h6 class="font_size_12"> INDICATE PRIORITY<br/><span class="f-12">(Ex:1,2,3...)</span><h6></th>';
 									str+='</tr>';
 								str+='</thead>';
 								str+='<tbody>';
@@ -1796,26 +1796,26 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 											//if(result[s].subWorksList[i].subWorksList != null && result[s].subWorksList[i].length>0){
 												//console.log(s+" : "+i+" - "+result[s].subWorksList[i]);
 												for(var k in result[s].subWorksList[i].subWorksList){
-													console.log(result[s].subWorksList[i].subWorksList[k]);
+												//	console.log(result[s].subWorksList[i].subWorksList[k]);
 													//if(typeof result[s].subWorksList[i].subWorksList[k] != 'undefined' && result[s].subWorksList[i].subWorksList[k] != null){
 														str+='<tr>';
 														if(typeof result[s].subWorksList[i].subWorksList[k].representationDate != 'undefined' && result[s].subWorksList[i].subWorksList[k].representationDate != null)
-															str+='<td  style="width:70px; !important;">'+result[s].subWorksList[i].subWorksList[k].representationDate+'</td>';
+															str+='<td  style="width:70px; !important;"><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].representationDate+'</h6></td>';
 														else
 															str+='<td></td>';
 														
 														if(typeof result[s].subWorksList[i].subWorksList[k].endorsmentNo != 'undefined' && result[s].subWorksList[i].subWorksList[k].endorsmentNo != null)
-															str+='<td>'+result[s].subWorksList[i].subWorksList[k].endorsmentNo+'</td>';
+															str+='<td><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].endorsmentNo+'</h6></td>';
 														else 
 															str+='<td></td>';
 													
 													
 														if(typeof result[s].subWorksList[i].subWorksList[k].workId != 'undefined' && result[s].subWorksList[i].subWorksList[k].workId != null)
-															str+='<td>'+result[s].subWorksList[i].subWorksList[k].workId+'</td>';
+															str+='<td><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].workId+'</h6></td>';
 														else 
 															str+='<td></td>';
 														
-														str+='<td>';
+														str+='<td><h6 class="font_size1_12">';
 														if(result[s].subWorksList[i].subWorksList[k].addressVO != null){
 															if(typeof result[s].subWorksList[i].subWorksList[k].addressVO.districtName != 'undefined' && result[s].subWorksList[i].subWorksList[k].addressVO.districtName .length>0)
 																str+='D:'+result[s].subWorksList[i].subWorksList[k].addressVO.districtName+'<br/>';
@@ -1826,20 +1826,20 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 															if(typeof result[s].subWorksList[i].subWorksList[k].addressVO.panchayatName != 'undefined'  && result[s].subWorksList[i].subWorksList[k].addressVO.panchayatName .length>0)
 																str+='P:'+result[s].subWorksList[i].subWorksList[k].addressVO.panchayatName+'';
 														}
-														str+='</td>';
+														str+='</h6></td>';
 														
 														if(typeof result[s].subWorksList[i].subWorksList[k].workDescription != 'undefined' && result[s].subWorksList[i].subWorksList[k].workDescription != null)
-															str+='<td>'+result[s].subWorksList[i].subWorksList[k].workDescription+'</td>';
+															str+='<td><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].workDescription+'</h6></td>';
 														else 
 															str+='<td></td>';
 													
 													
 														if(typeof result[s].subWorksList[i].subWorksList[k].estimationCost != 'undefined' && result[s].subWorksList[i].subWorksList[k].estimationCost != null)
-															str+='<td>'+result[s].subWorksList[i].subWorksList[k].estimationCost+'</td>';
+															str+='<td><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].estimationCost+'</h6></td>';
 														else 
 															str+='<td></td>';
 														
-														str+='<td>';
+														str+='<td><h6 class="font_size1_12">';
 														if(typeof result[s].subWorksList[i].subWorksList[k].subList2 != 'undefined' && result[s].subWorksList[i].subWorksList[k].subList2 != null && result[s].subWorksList[i].subWorksList[k].subList2.length>0){
 															for(var j in result[s].subWorksList[i].subWorksList[k].subList2){
 																if(j >0)
@@ -1848,12 +1848,12 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 																	str+=''+result[s].subWorksList[i].subWorksList[k].subList2[j].name+' ('+result[s].subWorksList[i].subWorksList[k].subList2[j].designation+')';
 															}
 														}else{
-															str+='<td></td>';
+															//str+='<td></td>';
 														}
-														str+='</td>';
+														str+='</h6></td>';
 														
 														if(typeof result[s].subWorksList[i].subWorksList[k].actionMemo != 'undefined' && result[s].subWorksList[i].subWorksList[k].actionMemo != null)
-															str+='<td>'+result[s].subWorksList[i].subWorksList[k].actionMemo+'</td>';
+															str+='<td><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].actionMemo+'</h6></td>';
 														else 
 															str+='<td></td>';
 													
@@ -1865,7 +1865,7 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 													
 													
 													if(typeof result[s].subWorksList[i].subWorksList[k].pendingAt != 'undefined' && result[s].subWorksList[i].subWorksList[k].pendingAt != null)
-														str+='<td>'+result[s].subWorksList[i].subWorksList[k].pendingAt+'</td>';
+														str+='<td><h6 class="font_size1_12">'+result[s].subWorksList[i].subWorksList[k].pendingAt+'</h6></td>';
 													else 
 														str+='<td></td>';
 													
