@@ -73,6 +73,7 @@ function getAllFiniancialYears(){
 		}
 	}).done(function(result){
 		$("#financialYearId").append("<option value='2003-2050'>All Financial Years</option>");
+		$("#financialYearId").append("<option value='2008-2014'>Before 2014</option>");
 		$("#financialYearId").append("<option value=2014-"+currentYear+">2014-"+currentYear+"</option>");
 		if(result != null && result.length >0){
 			for(var i in result){
