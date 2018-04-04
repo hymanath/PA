@@ -1,31 +1,46 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-var globalLevelId=3;
+var globalLevelId=4;
 var globalLevelValue='';
 var globalConstituencyName='';
+var globalLevelType='';
 
 if(globalLevelId ==4){
 	globalLevelValue=262;
 	globalLocationName='NANDYAL';
+	globalLevelType="constituency";
 	$("#locationNameId").html(globalLocationName+" Assembly Details")
 	$(".constituencySelectBoxCls").hide();
 }else if(globalLevelId ==3){
 	globalLevelValue=21;
 	globalLocationName='KURNOOL';
+	globalLevelType="district";
 	$("#locationNameId").html(globalLocationName+" District Details")
 	$(".constituencySelectBoxCls").show();
 }
 
 setTimeout(function(){ 
-	onloadCalls();
+	onloadCalls("onload");
 }, 1500);
 
-function onloadCalls(){
-	 getAreaInchargesStatusWiseCount("mainOverViewConstituencyBlockDivId",'constituency');
+function onloadCalls(type){
+	 $(".addAssignedBlockCls").hide();
+	 $(".showHideCls").hide();
+	 $(".assignedUnAssignedDivCls").hide();
+	 $(".submitBtnCls").hide();
+	 if(globalLevelType == "district" && type =="onchange"){
+		 globalLevelId =3;
+		 globalLevelValue=21;
+	 }
 	 if(globalLevelId ==3){
+		 getAreaInchargesStatusWiseCountDistrict("mainOverViewConstituencyBlockDivId",'constituency','district',type);
 		$("#constituencyId").chosen();
-		getConstituenciesByDistrict();
+		if(type=="onload"){
+			getConstituenciesByDistrict();
+		}
+		
 		$(".showHideAddAreaIncharge").hide();
 	 }else{
+		 getAreaInchargesStatusWiseCount("mainOverViewConstituencyBlockDivId",'constituency','constituency',type);
 		 getAreaInchargeAssignedBoothDetails();
 		 getAssignedAndUnAssignedBooths();
 	 }
@@ -48,8 +63,28 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
 	});
 }
 
- 
-  function getAreaInchargesStatusWiseCount(divId,locationType){
+ function getAreaInchargesStatusWiseCountDistrict(divId,locationType,loadType,changeType){
+	 $("#"+divId).html(spinner);
+    
+	var jsObj={
+        levelId :3,
+        levelValue : globalLevelValue
+    }
+    $.ajax({
+      type:'GET',
+      url:'getAreaInchargesStatusWiseCountAction.action',
+      dataType: 'json',
+      data: {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+		if(result !=null){
+			buildAreaInchargesStatusWiseCount(result,divId,locationType,loadType,changeType);
+		}else{
+			 $("#"+divId).html("No Data Available");
+		}
+    });
+}
+
+  function getAreaInchargesStatusWiseCount(divId,locationType,loadType,changeType){
 	 $("#"+divId).html(spinner);
     
 	var jsObj={
@@ -63,14 +98,14 @@ function highcharts(id,type,data,plotOptions,title,tooltip,legend){
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
 		if(result !=null){
-			buildAreaInchargesStatusWiseCount(result,divId,locationType);
+			buildAreaInchargesStatusWiseCount(result,divId,locationType,loadType,changeType);
 		}else{
 			 $("#"+divId).html("No Data Available");
 		}
     });
 }
 
-function buildAreaInchargesStatusWiseCount(result,divId,locationType){
+function buildAreaInchargesStatusWiseCount(result,divId,locationType,loadType,changeType){
 	var str='';
 	
 	str+='<div class="row">';
@@ -195,6 +230,16 @@ function buildAreaInchargesStatusWiseCount(result,divId,locationType){
 	   if ($(this).height() > maxHeight) { maxHeight = $(this).height(); }
 	});
 	$(".panelheights").height(maxHeight);
+	
+	if(loadType == "district" && changeType == "onchange"){
+		 globalLevelId=4;
+		 globalLevelValue=$("#constituencyId").val();
+		 globalLocationName=$("#constituencyId option:selected").text();
+		 getAreaInchargesStatusWiseCount("mainOverDistrictViewBlockDivId",'district','constituency',changeType);
+		 getAreaInchargeAssignedBoothDetails();
+		 getAssignedAndUnAssignedBooths();
+		 $(".showHideAddAreaIncharge").show();
+	}
 }
 
 function getAreaInchargeAssignedBoothDetails(){
@@ -293,8 +338,9 @@ function getAreaInchargeAssignedBoothDetails(){
 		str+='</div>';
 		$("#alreadyAreaInchargeDetailsDivId").html(str);
   }
- $(document).on("click",".addAssignedBlockCls",function(){
+ $(document).on("click",".showHideAddAreaIncharge",function(){
 	 $(".addAssignedBlockCls").show();
+	 $("#searchValId").val('');
 	 
  });
  $(document).on("click",".getSearchDetailsCls",function(){
@@ -321,6 +367,7 @@ function getAreaInchargeAssignedBoothDetails(){
 		voterId=0;
 		mobileNo=$("#searchValId").val();
 	}
+	$(".showHideCls").show();
 	getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType);
  });
  
@@ -452,11 +499,12 @@ function buildAreaInchargeDetails(result){
 	$("#areaInchargeSearchDetailsDivId").html(str);
 }
 
-$(document).on("click",".makeInchargeAssignedBoothsCls",function(){
+$(document).on("click",".makeInchargeAssignedBoothsCls",function(){//srujana
 		$(".assignedUnAssignedDivCls").show();
 		$(".submitBtnCls").show();
 		var cadreId =$(this).attr('attr_cadre_id');
 		$('.submitBtnCls').attr("attr_cadre_id",cadreId)
+		getAssignedAndUnAssignedBooths();
 });
 $(document).on("click",".makeInchargeCls",function(){
   if($(this).is(':checked')){
@@ -594,10 +642,15 @@ function getAssignedAndUnAssignedBooths(){
 		{
 			boothIds.push($(this).text());
 		});
-		savingAssigningBooths(cadreId,boothIds);
+		savingAssigningBooths(cadreId,boothIds,"save");
 	});
-	function savingAssigningBooths(cadreId,boothIds){
-		$(".spinnerDivId").show();
+	function savingAssigningBooths(cadreId,boothIds,saveType){
+		if(saveType == "save"){
+			$(".spinnerDivId").show();
+		}else{
+			$(".spinnereditDivId").show();
+		}
+		
 		var jsObj={
 			boothIds:boothIds,
 		    cadreId : cadreId
@@ -608,18 +661,31 @@ function getAssignedAndUnAssignedBooths(){
 			dataType: 'json',
 			data: {task:JSON.stringify(jsObj)}
 		}).done(function(result){
-			$(".spinnerDivId").hide();
+			if(saveType == "save"){
+				$(".spinnerDivId").hide();
+			}else{
+				$(".spinnereditDivId").hide();
+			}
+			
 			$("#popupSuccessModalDivId").modal("show");
 			if(result != null && result.message == "SUCCESS"){
 				$("#successMsgDivId").html("<h4 class='font_weight' style='color:green;text-align:center;'>Assigned Booths Successfully</h4>")
 				setTimeout(function(){ 
 					$("#popupSuccessModalDivId").modal("hide");
-					onloadCalls();
+					if(saveType == "edit"){
+						$("#popupViewAreaIncDetModal").modal("hide");
+					}
+					onloadCalls("onchange");
+					
 				}, 3500);
 			}else{
 				$("#successMsgDivId").html("<h4 class='font_weight' style='color:red;text-align:center;'>Please Try Again Later</h4>")
 				setTimeout(function(){ 
 					$("#popupSuccessModalDivId").modal("hide");
+					if(saveType == "edit"){
+						$("#popupViewAreaIncDetModal").modal("hide");
+					}
+					
 				}, 3500);
 			}
 		});
@@ -650,7 +716,7 @@ function getAssignedAndUnAssignedBooths(){
 	 globalLevelId=4;
 	 globalLevelValue=$("#constituencyId").val();
 	 globalLocationName=$("#constituencyId option:selected").text();
-	 getAreaInchargesStatusWiseCount("mainOverDistrictViewBlockDivId",'district');
+	 getAreaInchargesStatusWiseCount("mainOverDistrictViewBlockDivId",'district','constituency',"onchange");
 	 getAreaInchargeAssignedBoothDetails();
      getAssignedAndUnAssignedBooths();
 	 $(".showHideAddAreaIncharge").show();
@@ -802,10 +868,10 @@ $(document).on("click",".popupViewAreaIncDetUCls",function(){
 	 str+='</div>';
 	 str+='<div class="row">';
 			str+='<div class="col-sm-1 pull-right">';
-				str+='<img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" class="spinnerDivId"></img>';
+				str+='<img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" class="spinnereditDivId"></img>';
 			str+='</div>';
 			str+='<div class="col-sm-5 pull-right">';
-				str+='<button class="btn btn-success btn-sm pull-right applyChangesCls" style="width: 150px;" attr_cadre_id="'+result.id+'">Submit</button>';
+				str+='<button class="btn btn-success btn-sm pull-right applyChangesCls" style="width: 150px;" attr_cadre_id="'+result.id+'">Apply Changes</button>';
 			str+='</div>';
 		str+='</div>';
 		
@@ -852,7 +918,9 @@ function deleteAreaInchargeAssignBooths(cadreId,boothId){
 				setTimeout(function(){ 
 					$("#popupSuccessModalDivId").modal("hide");
 					$("#popupViewAreaIncDetModal").modal("hide");
-					onloadCalls();
+					onloadCalls("onchange");
+					
+					
 				}, 3500);
 			}else{
 				$("#successMsgDivId").html("<h4 class='font_weight' style='color:red;text-align:center;'>Please Try Again Later</h4>")
@@ -869,8 +937,12 @@ function deleteAreaInchargeAssignBooths(cadreId,boothId){
 		{
 			boothIds.push($(this).text());
 		});
-		savingAssigningBooths(cadreId,boothIds);
+		savingAssigningBooths(cadreId,boothIds,"edit");
 	});
 	$(document).on("click",".getSelectedVal",function(){
    		$("#searchValId").val('');
+		$("#areaInchargeSearchDetailsDivId").html('');
+		$("#areaInchargeassignedBoothsDivId").html('');
+		$("#areaInchargeUnAssignedboothsDivId").html('');
+		$(".submitBtnCls").hide();
 	});
