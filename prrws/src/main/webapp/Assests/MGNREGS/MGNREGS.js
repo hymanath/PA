@@ -443,39 +443,39 @@ var globalFinancialYear = "2017";
 			if(globalDivName == "GH"){
 				if(levelType == "state" || levelType == "district")
 				{
-					theadArr = [levelType,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = [levelType,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "constituency")
 				{
-					theadArr = ["district",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "mandal")
 				{
-					theadArr = ["district","constituency",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}else if(levelType == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency","mandal",levelType,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}
 			}else{
-				theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				if(levelType == "constituency")
-					theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(levelType == "mandal")
-					theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(levelType == "panchayat")
-					theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				
 				if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && levelType == "state")
-					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','sanctioned Percentage'];
 				if(globalDivName == 'Farm Ponds' || globalDivName == 'IHHL' || globalDivName == 'Vermi Compost' || globalDivName == 'Burial Ground' || globalDivName == 'Solid Waste Management' || globalDivName == 'Play fields' || globalDivName == 'NTR 90 Days' || globalDivName == 'Production of Bricks')
 				{
 					if(levelType == "constituency")
 					{
-						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}else if(levelType == "mandal"){
-						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}else if(levelType == "panchayat"){
-						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}else{
-						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}
 				}
 					
@@ -491,36 +491,36 @@ var globalFinancialYear = "2017";
 						
 					}else if(levelType == "district")
 					{
-						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}else if(levelType == "constituency")
 					{
-						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}else if(levelType == "mandal")
 					{
-						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}else if(levelType == "panchayat")
 					{
-						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					}
 				}
 					
 				
 				if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (levelType == "state" || levelType == "district"))
-					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+					theadArr = [levelType,'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','sanctioned Percentage'];
 				
 				if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (levelType == "state" || levelType == "district"))
-					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','sanctioned Percentage','Achivement Percentage'];
+					theadArr = [levelType,'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','sanctioned Percentage','Achievement Percentage'];
 				
 				if(globalDivName == 'Anganwadi')
 				{
 					if(levelType == "constituency")
-						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 					else if(levelType == "mandal")
-						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 					else if(levelType == "panchayat")
-						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 					else
-						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				}
 				
 				if(globalDivName == 'Man Days Comparision')
@@ -554,23 +554,23 @@ var globalFinancialYear = "2017";
 				if(globalDivName == 'GP Buildings1' || globalDivName == 'Mandal buildings1')
 				{
 					if(levelType == "constituency")
-						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 					else if(levelType == "mandal")
-						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 					else if(levelType == "panchayat")
-						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 					else
-						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 				}
 				
 				if(globalDivName !='' && (globalDivName == 'Agriculture Related Works' || globalDivName == 'Greenary works Chettu' || globalDivName == 'Rural Sanitation Works' || globalDivName == 'IJP PROGRAM WORKS' || globalDivName == 'Works in community lands' || globalDivName == 'Soil Moisture Conservation works Neeru' || globalDivName == 'Institutional Development Works' || globalDivName == 'Road Works' || globalDivName == 'Water Harvesting Structures Neeru' || globalDivName == 'AH-Live Stock Related works')){
-				theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = [levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				if(levelType == "constituency")
-					theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(levelType == "mandal")
-					theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(levelType == "panchayat")
-					theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",levelType,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				}
 				if(divId == 'FA Vacancies'){
 					theadArr = [levelType,'Total','Senior Mate','Junior Mate','Mate'];
@@ -1228,86 +1228,86 @@ function projectData(divId,levelId,locationId)
 		if(globalDivName == "GH"){
 			if(dataArr[i] == "state" || dataArr[i] == "district")
 				{
-					theadArr = [dataArr[i],'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = [dataArr[i],'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}else if(dataArr[i] == "constituency")
 				{
-					theadArr = ["district",dataArr[i],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district",dataArr[i],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}else if(dataArr[i] == "mandal")
 				{
-					theadArr = ["district","constituency",dataArr[i],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency",dataArr[i],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}else if(dataArr[i] == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",dataArr[i],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				}
 		}else{
-			 theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			 theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			if(dataArr[i] == "constituency")
-				theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			else if(dataArr[i] == "mandal")
-				theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			else if(dataArr[i] == "panchayat")
-				theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			
 			if((globalDivName == 'Cattle Drinking Water Troughs' || globalDivName == 'Raising of Perinnial Fodders') && dataArr[i] == "state")
-				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','sanctioned Percentage'];
 
 			if(globalDivName == 'Mulbery New' || globalDivName == 'Silk worm New')
 			{
 				if(dataArr[i] == "state")
 				{
 					//if(globalDivName == 'Mulbery New'){
-						theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 					/*}else{
-						theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
+						theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','sanctioned Percentage','Wage Exp','Material Exp','Total Exp'];
 					}*/
 					
 				}else if(dataArr[i] == "district")
 				{
-					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}else if(dataArr[i] == "constituency")
 				{
-					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}else if(dataArr[i] == "mandal")
 				{
-					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}else if(dataArr[i] == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}
 			}
 			
 			if((globalDivName == 'SMC Trench' || globalDivName == 'Imp to CD' || globalDivName == 'MPT_PT' || globalDivName == 'GC Works' || globalDivName == 'CD_CW') && (dataArr[i] == "state" || dataArr[i] == "district"))
-				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','sanctioned Percentage'];
+				theadArr = [dataArr[i],'Target','sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','sanctioned Percentage'];
 			
 			if((globalDivName == 'Fish Ponds' || globalDivName == 'Fish Drying Platforms') && (dataArr[i] == "state" || dataArr[i] == "district"))
-				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','sanctioned Percentage','Achivement Percentage'];
+				theadArr = [dataArr[i],'Target','sanctioned','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','sanctioned Percentage','Achievement Percentage'];
 			if(divId == 'Farm Ponds' || divId == 'IHHL' || divId == 'Vermi Compost' || divId == 'Burial Ground' || divId == 'Solid Waste Management' || divId == 'Play fields' || divId == 'NTR 90 Days' || divId == 'Production of Bricks')
 			{
 				if(dataArr[i] == "state" || dataArr[i] == "district")
 				{
-					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}else if(dataArr[i] == "constituency")
 				{
-					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}else if(dataArr[i] == "mandal")
 				{
-					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}else if(dataArr[i] == "panchayat")
 				{
-					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','Material Exp','Total Exp'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','Material Exp','Total Exp'];
 				}
 			}
 			
 			if(divId == 'Anganwadi')
 			{
 				if(dataArr[i] == "constituency")
-					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				else if(dataArr[i] == "mandal")
-					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				else if(dataArr[i] == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				else
-					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 			}
 			
 			if(divId == 'Man Days Comparision')
@@ -1348,32 +1348,32 @@ function projectData(divId,levelId,locationId)
 			if(divId == 'GP Buildings1' || divId == 'Mandal buildings1')
 			{
 				if(dataArr[i] == "constituency")
-					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 				else if(dataArr[i] == "mandal")
-					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 				else if(dataArr[i] == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 				else
-					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+					theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 			}
 			if(divId !='' && (divId == 'Agriculture Related Works' || divId == 'Greenary works Chettu' || divId == 'Rural Sanitation Works' || divId == 'IJP PROGRAM WORKS' || divId == 'Works in community lands' || divId == 'Soil Moisture Conservation works Neeru' || divId == 'Institutional Development Works' || divId == 'Road Works' || divId == 'Water Harvesting Structures Neeru' || divId == 'AH-Live Stock Related works')){
-				theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				if(dataArr[i] == "constituency")
-					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(dataArr[i] == "mandal")
-					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(dataArr[i] == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			}
 			
 			if(globalMCCMainDivName !='' && (globalMCCMainDivName == 'Agriculture Related Works' || globalMCCMainDivName == 'Greenary works Chettu' || globalMCCMainDivName == 'Rural Sanitation Works' || globalMCCMainDivName == 'IJP PROGRAM WORKS' || globalMCCMainDivName == 'Works in community lands' || globalMCCMainDivName == 'Soil Moisture Conservation works Neeru' || globalMCCMainDivName == 'Institutional Development Works' || globalMCCMainDivName == 'Road Works' || globalMCCMainDivName == 'Water Harvesting Structures Neeru' || globalMCCMainDivName == 'AH-Live Stock Related works')){
-				theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+				theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				if(dataArr[i] == "constituency")
-					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(dataArr[i] == "mandal")
-					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(dataArr[i] == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			}
 			if(divId == 'FA Vacancies'){
 				theadArr = [dataArr[i],'Total','Senior Mate','Junior Mate','Mate'];
@@ -2571,13 +2571,13 @@ function getNREGSLabourBudgetExpenditure(projectDivId,menuLocationType,menuLocat
 function getNREGSLabBugdtLelwiseData(divIdd,locationType,menuLocationType,menuLocationId,blockName)
 {
 	var districtId = $("#selectedName").attr("attr_distid");
-	var theadArr = [locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
+	var theadArr = [locationType,'Target Person days','Generated','Achievement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
+		theadArr = ["district",locationType,'Target Person days','Generated','Achievement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
+		theadArr = ["district","constituency",locationType,'Target Person days','Generated','Achievement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Target Person days','Generated','Achivement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
+		theadArr = ["district","constituency","mandal",locationType,'Target Person days','Generated','Achievement Percentage','Wage Expenditure','Material Expenditure','Total Expenditure','Material Perc'];
 	
 	var json = {
 		year : globalFinancialYear,
@@ -3222,53 +3222,53 @@ function buildDistrictsPopupDetails(result,dataArr){
 			str+='<div class="panel-body">';
 			
 			if(globalDivName == "Average Wage" || globalDivName == "Average Days of Employment" || globalDivName == "HH Completed 100 Days"){
-				theadArr = [dataArr,'Target','Achivement','Achieved Percentage'];
+				theadArr = [dataArr,'Target','Achievement','Achieved Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Target','Achivement','Achieved Percentage'];
+					theadArr = ["district",dataArr,'Target','Achievement','Achieved Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Target','Achivement','Achieved Percentage'];
+					theadArr = ["district","constituency",dataArr,'Target','Achievement','Achieved Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Target','Achivement','Achieved Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Target','Achievement','Achieved Percentage'];
 			}else if(globalDivName == "Timely Payment"){
-				theadArr = [dataArr,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+				theadArr = [dataArr,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+					theadArr = ["district",dataArr,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+					theadArr = ["district","constituency",dataArr,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Target','Achivement','Achieved Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Target','Achievement','Achieved Percentage'];
 			}else if(globalDivName == "Agriculture Activities"){
-				theadArr = [dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+				theadArr = [dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+					theadArr = ["district",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 			}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
-				theadArr = [dataArr,'Target','Sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Sanctioned Percentage'];
+				theadArr = [dataArr,'Target','Sanctioned Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Sanctioned Percentage'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 			}else if(globalDivName == "Anganwadi"){
-				theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+				theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
+					theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','ICDS Exp','Total Exp'];
 			}else if(globalDivName == "CC Roads1"){
-				theadArr = [dataArr,'Target Length (in KMS)','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+				theadArr = [dataArr,'Target Length (in KMS)','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+					theadArr = ["district",dataArr,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+					theadArr = ["district","constituency",dataArr,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE'];
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE'];
 			}else if(globalDivName == "Horticulture"){
 				theadArr = [dataArr,'Target(in Acres)','Sanctioned Area (in Acres)','Pitting  Area (in Acres)','Planting  Area (in Acres)','Pitting Perc','Achievement Percentage'];
 				if(dataArr == "constituency")
@@ -3294,21 +3294,21 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Amount','Expenditure','Achieved Percentage'];
 			}else if(globalDivName == "FAperformance"){
-				theadArr = [dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+				theadArr = [dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achievement(5)','Total Average(100)'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+					theadArr = ["district",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achievement(5)','Total Average(100)'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+					theadArr = ["district","constituency",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achievement(5)','Total Average(100)'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achivement(5)','Total Average(100)'];
+					theadArr = ["district","constituency","mandal",dataArr,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozger Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FladShip Programme Achievement(5)','Total Average(100)'];
 			}else if(globalDivName == "GH"){
-				theadArr = [dataArr,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+				theadArr = [dataArr,'District Target(in Ha)','Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Acheivement Percentage','Expenditure(in Lakhs)'];
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Target(in Ha)','Pitting Extent(in Ha)','Planting Extent(in Ha)','Achievement Percentage','Expenditure(in Lakhs)'];
 			}/* else if(globalDivName == "coffee"){
 				theadArr = [dataArr,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
 				if(dataArr == "constituency")
@@ -3318,38 +3318,38 @@ function buildDistrictsPopupDetails(result,dataArr){
 				else if(dataArr == "panchayat")
 					theadArr = ["district","constituency","mandal",dataArr,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
 			} */else if(globalDivName == "UGDrainage"){
-				theadArr = [dataArr,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+				theadArr = [dataArr,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 				if(dataArr == "constituency")
-					theadArr = ["district",dataArr,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+					theadArr = ["district",dataArr,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 				else if(dataArr == "mandal")
-					theadArr = ["district","constituency",dataArr,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+					theadArr = ["district","constituency",dataArr,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 				else if(dataArr == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+					theadArr = ["district","constituency","mandal",dataArr,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 			}else{
 				if(globalDivName == "Farm Ponds" || globalDivName == "IHHL" || globalDivName == "Vermi Compost" || globalDivName == "Burial Ground" || globalDivName == "Solid Waste Management" || globalDivName == "Play fields" || globalDivName == "NTR 90 Days" || globalDivName == "Production of Bricks" || globalDivName == "Mulbery New" || globalDivName == "Silk worm New"){
-					theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','MAterial Exp','Total Exp'];
+					theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','MAterial Exp','Total Exp'];
 					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','MAterial Exp','Total Exp'];
+						theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','MAterial Exp','Total Exp'];
 					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','MAterial Exp','Total Exp'];
+						theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','MAterial Exp','Total Exp'];
 					else if(dataArr == "panchayat")
-						theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','Wage Exp','MAterial Exp','Total Exp'];
+						theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','Wage Exp','MAterial Exp','Total Exp'];
 				}else if(globalDivName == 'Mandal buildings1' || globalDivName == 'GP Buildings1'){
-					theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+					theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 					else if(dataArr == "panchayat")
-						theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
+						theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage','EGS Exp','CONVERGENCE Exp','Total Exp'];
 				}else{
-					theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+					theadArr = [dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+						theadArr = ["district",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+						theadArr = ["district","constituency",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 					else if(dataArr == "panchayat")
-						theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+						theadArr = ["district","constituency","mandal",dataArr,'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 				}
 				
 			}
@@ -3390,7 +3390,7 @@ function buildDistrictsPopupDetails(result,dataArr){
 											str+='<td class="text-capital">'+result.distList[i].panchayat+'</td>';
 										}
 										str+='<td>'+result.distList[i].target+'</td>';
-										str+='<td>'+result.distList[i].achivement+'</td>';
+										str+='<td>'+result.distList[i].Achievement+'</td>';
 										
 											if(result.distList[i].percentage >= 100){
 												str+='<td style="background-color:#f7b519;color:#fff">'+result.distList[i].percentage+'</td>';
@@ -3432,14 +3432,14 @@ function buildDistrictsPopupDetails(result,dataArr){
 										}
 										str+='<td>'+result.distList[i].targetPersonDays+'</td>';
 										str+='<td>'+result.distList[i].argicultureExpenditure+'</td>';
-										if(result.distList[i].achivement < 60){
-											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].achivement+'</td>';
-										}else if(result.distList[i].achivement >= 65)
+										if(result.distList[i].achievement < 60){
+											str+='<td style="background-color:#FF0000;color:#fff">'+result.distList[i].achievement+'</td>';
+										}else if(result.distList[i].achievement >= 65)
 										{
-											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].achivement+'</td>';
-										}else if(result.distList[i].achivement >= 60 && result.distList[i].achivement < 65)
+											str+='<td style="background-color:#00AF50;color:#fff">'+result.distList[i].achievement+'</td>';
+										}else if(result.distList[i].achievement >= 60 && result.distList[i].achievement < 65)
 										{
-											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].achivement+'</td>';
+											str+='<td style="background-color:#ff6600;color:#fff">'+result.distList[i].achievement+'</td>';
 										}
 									str+='</tr>';
 									}else if(globalDivName == "Fish Drying Platforms" || globalDivName == "Fish Ponds" || globalDivName == "Anganwadi" || globalDivName == "SMC Trench" || globalDivName == "Imp to CD" || globalDivName == "MPT_PT" || globalDivName == "GC Works" || globalDivName == "CD_CW"){
@@ -4071,13 +4071,13 @@ function buildDistrictsPopupDetails(result,dataArr){
 					str+='</div>';
 				}
 				else{
-					theadArr = [dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
+					theadArr = [dataArr,'Target Person days','Generated','Achievement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					if(dataArr == "constituency")
-						theadArr = ["district",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
+						theadArr = ["district",dataArr,'Target Person days','Generated','Achievement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					else if(dataArr == "mandal")
-						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
+						theadArr = ["district","constituency",dataArr,'Target Person days','Generated','Achievement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					else if(dataArr == "panchayat")
-						theadArr = ["district","constituency","mandal",dataArr,'Target Person days','Generated','Achivement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
+						theadArr = ["district","constituency","mandal",dataArr,'Target Person days','Generated','Achievement Percentage','Wage Expanditure','Material Expenditure','Total Expenditure','Material Perc'];
 					str+='<div class="table-responsive">';
 						str+='<table class="table table-bordered m_top10 dataTableClsDist">';
 						str+='<thead>';
@@ -4774,13 +4774,13 @@ function getNregaLevelsWiseDataForFAPerformance(divIdd,locationTypeNew,menuLocat
 {
 	$("#"+divIdd).html(spinner);
 	var districtId = $("#selectedName").attr("attr_distid");
-	var theadArr = [locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
+	var theadArr = [locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozgar Divas(5)','Average Days Of Employment(15)','Average Wage Rate(15)','FlagShip Programme Achievement(5)','Total Average(100)'];
 	if(locationTypeNew == "constituency")
-		theadArr = ["district",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
+		theadArr = ["district",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozgar Divas(5)','Average Days Of Employment(15)','Average Wage Rate(15)','FlagShip Programme Achievement(5)','Total Average(100)'];
 	else if(locationTypeNew == "mandal")
-		theadArr = ["district","constituency",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
+		theadArr = ["district","constituency",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozgar Divas(5)','Average Days Of Employment(15)','Average Wage Rate(15)','FlagShip Programme Achievement(5)','Total Average(100)'];
 	else if(locationTypeNew == "panchayat")
-		theadArr = ["district","constituency","mandal",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achivement(40)','Rozgar Divas(5)','Average Days Of Employement(15)','Average Wage Rate(15)','FlagShip Programme Achivement(5)','Total Average(100)'];
+		theadArr = ["district","constituency","mandal",locationTypeNew,'Demand Collection(10)','D_Musters(10)','Labour Budget Achievement(40)','Rozgar Divas(5)','Average Days Of Employment(15)','Average Wage Rate(15)','FlagShip Programme Achievement(5)','Total Average(100)'];
 	
 	var json = {
 		year : globalFinancialYear,
@@ -5392,13 +5392,13 @@ function getNregaLevelsWiseDataFrNewCalls(divIdd,locationType,menuLocationType,m
 			else if(locationType == "panchayat")
 				theadArr = ["district","constituency","mandal",locationType,'Target HH Completed 100 Days','Achieved','Achieved Percentage'];
 	 }else if(divId == 'Timely Payment'){
-			theadArr = [locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+			theadArr = [locationType,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 			if(locationType == "constituency")
-				theadArr = ["district",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+				theadArr = ["district",locationType,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 			else if(locationType == "mandal")
-				theadArr = ["district","constituency",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+				theadArr = ["district","constituency",locationType,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 			else if(locationType == "panchayat")
-				theadArr = ["district","constituency","mandal",locationType,'Target Percentage','Achivement Percentage','Achieved Percentage'];
+				theadArr = ["district","constituency","mandal",locationType,'Target Percentage','Achievement Percentage','Achieved Percentage'];
 	}else{
 			if(locationType == "constituency")
 				theadArr = ["district",locationType,'Sanctioned Amount','Expenditure','Achieved Percentage'];
@@ -5506,13 +5506,13 @@ function getNregaLevelsWiseDataFrAgriculture(divIdd,locationType,menuLocationTyp
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	var theadArr = [locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+	var theadArr = [locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+		theadArr = ["district",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+		theadArr = ["district","constituency",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achivement Percentage'];
+		theadArr = ["district","constituency","mandal",locationType,'Total Expenditure','Expenditure on Agriculture & Allied Activities','Achievement Percentage'];
 	
 	var json = {
 		year : globalFinancialYear,
@@ -5866,22 +5866,22 @@ function getNregaLevelsWiseDataForCCRoads(divIdd,locationType,menuLocationType,m
 	$("#"+divIdd).html(spinner);
 	var theadArr = [];
 	if(blockName == "UGDrainage"){
-			theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+			theadArr = [locationType,'Target Length (in KMS)','Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Percentage of Sanctioned Length','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 		if(locationType == "constituency")
-			theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+			theadArr = ["district",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 		else if(locationType == "mandal")
-			theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+			theadArr = ["district","constituency",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 		else if(locationType == "panchayat")
-			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIVEMENT PERCENTAGE'];
+			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Estimate Cost','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','Achv perc based on Sanc length','ACHIEVEMENT PERCENTAGE'];
 	}
 	else if(blockName == "CC Roads1"){
-		theadArr = [locationType,'Target Length (in KMS)','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE','Egs Exp','Convergenge Exp'];
+		theadArr = [locationType,'Target Length (in KMS)','Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE','Egs Exp','Convergence Exp '];
 		if(locationType == "constituency")
-			theadArr = ["district",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE','Egs Exp','Convergenge Exp'];
+			theadArr = ["district",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE','Egs Exp','Convergence Exp '];
 		else if(locationType == "mandal")
-			theadArr = ["district","constituency",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE','Egs Exp','Convergenge Exp'];
+			theadArr = ["district","constituency",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE','Egs Exp','Convergence Exp '];
 		else if(locationType == "panchayat")
-			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIVEMENT PERCENTAGE','Egs Exp','Convergenge Exp'];
+			theadArr = ["district","constituency","mandal",locationType,'Sanctioned Length (in KMS)','Expenditure','Completed Length (in KMS)','ACHIEVEMENT PERCENTAGE','Egs Exp','Convergence Exp '];
 	}
 	
 	var json = {
@@ -8995,13 +8995,13 @@ $(document).on("change","[mcctype_click]",function(){
 	}
 	for(var i in dataArr)
 	{
-		var theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+		var theadArr = [dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 		if(dataArr[i] == "constituency")
-			theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			theadArr = ["district",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 		else if(dataArr[i] == "mandal")
-			theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			theadArr = ["district","constituency",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 		else if(dataArr[i] == "panchayat")
-			theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achivement Percentage'];
+			theadArr = ["district","constituency","mandal",dataArr[i],'Target','Grounded','Grounded Percentage','Not-Grounded','In Progress','Completed','Achievement Percentage'];
 		var tableId = blockName.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i];
 		getNregaOtherMCCLevelData(tableId,dataArr[i],theadArr,menuLocationType,menuLocationId,divId,districtId,blockName,'overview',levelId)
 	}	
@@ -9011,13 +9011,13 @@ function getNregaLevelsWiseDataFrCoffeePlantation(divIdd,locationType,theadArr,m
 {
 	var districtId = $("#selectedName").attr("attr_distid");
 	$("#"+divIdd).html(spinner);
-	 var theadArr = [locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+	 var theadArr = [locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expenditure','Planting  Area (in Acres)','Planting Expenditure','Total Expenditure','Pitting Perc','Planting Perc'];
 	if(locationType == "constituency")
-		theadArr = ["district",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+		theadArr = ["district",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expenditure','Planting  Area (in Acres)','Planting Expenditure','Total Expenditure','Pitting Perc','Planting Perc'];
 	else if(locationType == "mandal")
-		theadArr = ["district","constituency",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+		theadArr = ["district","constituency",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expenditure','Planting  Area (in Acres)','Planting Expenditure','Total Expenditure','Pitting Perc','Planting Perc'];
 	else if(locationType == "panchayat")
-		theadArr = ["district","constituency","mandal",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expanditure','Planting  Area (in Acres)','Planting Expanditure','Total Expanditure','Pitting Perc','Planting Perc'];
+		theadArr = ["district","constituency","mandal",locationType,'Target(in Acres)','Pitting  Area (in Acres)','Pitting Expenditure','Planting  Area (in Acres)','Planting Expenditure','Total Expenditure','Pitting Perc','Planting Perc'];
 	
 	var json = {
 		year : globalFinancialYear,
