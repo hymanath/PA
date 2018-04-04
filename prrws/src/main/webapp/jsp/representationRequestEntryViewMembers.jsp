@@ -698,10 +698,7 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 			<span id="finalapproveFile"></span>
 		  </div>
 		</div>
-				
-		<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
-		<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
-		<input type="hidden" class="form-control" id="hiddenEndorseNo"  name="workName"/>
+		
 		<div class="row m_top10" id="commentsDivId" style="display:none;">
 			<div class="col-sm-12">
 				<label>Comment<span style="color:red;">*</span><span id="remarkIdErr"></span></label>
@@ -744,6 +741,11 @@ out.println("<h4 class='pull-right' style='margin:6px 10px; color:green;'>&nbsp;
 			   </div>
 		  </div>
 	  </div>
+	  
+	<input type="hidden" class="form-control" id="nextStatusId"  name="statusId"/>
+	<input type="hidden" class="form-control" id="petitionsId"  name="petitionId"/>
+	<input type="hidden" class="form-control" id="hiddenEndorseNo"  name="workName"/>
+		
 	</form>
   </div>
 </div>

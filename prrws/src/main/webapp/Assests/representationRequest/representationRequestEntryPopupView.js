@@ -128,6 +128,7 @@ $(document).on("click",".viewBtnCls",function(){
   });
 }
  function getPetitionDetails(petitionId,endorsNo){
+	 $("#endorsmentNo").val('');
 	$("#representeeViewId").html(spinner);
 	$('#petitionId').val(petitionId);
 	$('#petitionsId').val(petitionId);
@@ -188,7 +189,8 @@ function buildPetitionDetailsView(result){
 	if(typeof (result.endorsmentNo) != 'undefined' && result.endorsmentNo !='undefined'){
 		enrorsNo = result.endorsmentNo;
 	}
-	
+	$("#endorsmentNo").val(enrorsNo);
+	$("#hiddenEndorseNo").val(enrorsNo);
 	 $('#forwardText').html('FORWARD FOR');
 	 $('#actionTypeStr').val(globalReviewStatus.toUpperCase());
 	 $("#letterNameId").html(""+globalActionName.toUpperCase()+"");
@@ -1741,7 +1743,7 @@ $(document).on("click",".updateStatusChangeCls",function(){
 		$("#endorseMentHeadingId").html("<span style='color:#455862'> Endorsed No </span>- "+enrorsNo+" ,<span style='color:"+colorCode[3]+"'> Present Status </span>: "+globalActionName+"    , <b class='text-success'> FORWARDED BY </b>:"+assignedBy+" ");
 	if((glDesignationId == 2 || glDesignationId==86) && enrorsNo != null && enrorsNo>0){
 	  $("#endorseDivId").show();
-	  $("#hiddenEndorseNo").val(enrorsNo);
+	 // $("#hiddenEndorseNo").val(enrorsNo);
 	}
 	
 	 $('#uploadFileDivCls').hide();
@@ -2568,7 +2570,12 @@ function endorsingSubWorksAndAssigningToOfficer(){
 		 } 
 	}
 	 $('#fileCoverUploadIdErr').html(""); 
-	if(glDesignationId == 2 || glDesignationId==86 && endorsementId.trim().length >0){
+	 
+	 if(endorsementId == null || endorsementId.length==0){
+		endorsementId =$("#hiddenEndorseNo").val();
+	 }
+	 
+	if((glDesignationId == 2 || glDesignationId==86) && endorsementId.trim().length >0){
 		if($("#uploadCoverFileDivCls").is(':visible')){
 			   var uploadfile = document.getElementById('uploadCoveringDocId');
 			if(uploadfile != null && uploadfile.value == '')
@@ -2577,6 +2584,8 @@ function endorsingSubWorksAndAssigningToOfficer(){
 				flag = true ; 
 			}
 			 $('#endorseDivId').show();
+			  $("#nextStatusId").val('');
+			 $("#nextStatusId").val(6);
 		 }
 	}
 	
@@ -2651,6 +2660,9 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			}
 		}
 	);
+//	alert(endorsementId);
+//	alert(glDesignationId);
+	//alert($("#nextStatusId").val());
 	if(selectdWorksArr !=null && selectdWorksArr.length>0){
 			for(var i = 0; i < selectdWorksArr.length; i++){
 				formData.append("workIds["+i+"]", selectdWorksArr[i]);
@@ -2677,8 +2689,13 @@ function endorsingSubWorksAndAssigningToOfficer(){
 			formData.delete("statusType");
 			formData.append("statusType", "COVERING LETTER");
 			formData.append("dataType", $(".uploadFuncCls").val());
+			if(endorsementId == null || endorsementId.length==0){
+				alert("some thing wrong. Please try again.");
+				return;
+			}
+				
 		}
-		
+		console.log(formData.get('statusType'));
 		/*
 		var nextStatusId=6;
 			if(globalStatusArr[i].key == 1)
@@ -2699,7 +2716,8 @@ function endorsingSubWorksAndAssigningToOfficer(){
 	if($('#actionTypeStr').val() == ""){
 		$('#actionTypeStr').val("COMPLETED");
 	}
-	
+	//return;
+	//alert(111);
 	//formData.append("petitionId", petitionId);
 	//alert(formData.get("refNo"));
 	$("#endorsWorksId").attr("disabled",true);
