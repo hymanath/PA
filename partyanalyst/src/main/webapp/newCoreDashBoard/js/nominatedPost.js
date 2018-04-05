@@ -993,7 +993,7 @@ function getBoardWisePositions()
 	  }
     $.ajax({   
       type:'GET',
-      url:'getDepartmentWisePostAndApplicationDetailsAction.action',  
+      url:'getDepartmentWisePostAndApplicationDetailsAction1.action',  
       dataType: 'json',
       data: {task:JSON.stringify(jsObj)}
     }).done(function(result){
@@ -1124,7 +1124,8 @@ function getLevelWiseGoIssuedPostions(boardLevelId,statusId,startIndex,endIndex)
       boardLevelId		:boardLevelId, 
 	  statusIds			:statusIds, // 3-complered 4 goIsuued
 	  startIndex:startIndex,
-	  endIndex:endIndex
+	  endIndex:endIndex,
+	  positionId :0
      
     }
     $.ajax({   
