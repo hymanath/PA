@@ -1,9 +1,11 @@
-<!DOCTYPE html>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <html>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MINISTER DASHBOARD</title>
+<title id="name"></title>
 <!--<link href="Assests/MaterialKit/css/bootstrap.min.css" rel="stylesheet" type="text/css">
 <link href="Assests/MaterialKit/css/material-kit.css" rel="stylesheet"/>
 <link href="Assests/MaterialKit/css/landingPage.css" rel="stylesheet"/>-->
@@ -15,6 +17,7 @@
 <script src="Assests/Plugins/Less/less.js"></script>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
+<script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <style>
 	.landing-menu li:hover{
 		cursor:pointer;
@@ -63,7 +66,11 @@
 		</div>
 	</div>
 </header>
+<script>
+	var officerDesigName = '${sessionScope.path}';
+</script>
 <section>
+	<c:if test="${sessionScope.path == 'ministerHomePage'}">
 	<div class="landingmenu-block">
 		<div class="container">
 			<div class="row" style="color:white;">
@@ -118,6 +125,7 @@
 			</div>
 		</div>
 	</div>
+	 </c:if>	
 </section>
 <section style="padding:20px 0px;margin-bottom: 45px;" id="showMainBlock">
 	<div class="container-fluid">
@@ -146,7 +154,7 @@
 	<div class="container-fluid">
 		<div class="row">
 			<div class="col-sm-12 footer-block">
-				<p>Copyright © 2017, All Rights Reserved by Govt of A.P. India</p>
+				<p>Copyright Â© 2017, All Rights Reserved by Govt of A.P. India</p>
 				<p class="pull-right">Designed & Developed by<img src="Assests/img/logo (1).png"></p>
 			</div>
 		</div>
@@ -166,7 +174,7 @@
 <div class="modal fade" id="validateModalId" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
-	<button class="close" type="button" data-dismiss="modal" style="border-left-width: 0px; width: 52px; padding-top: 3px;">×</button>
+	<button class="close" type="button" data-dismiss="modal" style="border-left-width: 0px; width: 52px; padding-top: 3px;">Ã—</button>
 		<h1 class = "text-center m_top10 " ><font size ="4">LOGIN DETAILS</font></h1>
         </button>
      <div class="modal-body">
@@ -193,7 +201,6 @@
 </div>	
 </div>  
 </div>  	
-<script src="Assests/js/jquery-1.11.3.js" type="text/javascript"></script>
 <!--<script src="Assests/MaterialKit/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/bootstrap.min.js" type="text/javascript"></script>
 <script src="Assests/MaterialKit/js/material.min.js"></script>-->
@@ -202,5 +209,46 @@
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/fundManagament/landingPage.js"></script>
+<script>
+var officerDesigName = '${sessionScope.path}';
+if(officerDesigName == 'rdHomePage')
+{
+	$("#name").html("RD DASHBOARD");
+}else if(officerDesigName == 'rwsHomePage')
+{
+	$("#name").html("RWS DASHBOARD");
+}else if(officerDesigName == 'prHomePage')
+{
+	$("#name").html("PR DASHBOARD");
+}else if(officerDesigName == 'itecHomePage')
+{
+	$("#name").html("IT&C DASHBOARD");
+}else{
+	$("#name").html("MINISTER DASHBOARD");
+}
+setTimeout(function(){
+	if(officerDesigName != 'ministerHomePage'){
+		$("#showMainBlock").css("display","none");
+	}
+	if(officerDesigName == 'rdHomePage')
+	{
+		$("#name").html("RD DASHBOARD");
+		$("[landing-block='rd']").show();
+	}else if(officerDesigName == 'rwsHomePage')
+	{
+		$("#name").html("RWS DASHBOARD");
+		$("[landing-block='rws']").show();
+	}else if(officerDesigName == 'prHomePage')
+	{
+		$("#name").html("PR DASHBOARD");
+		$("[landing-block='panchayat']").show();
+	}else if(officerDesigName == 'itecHomePage')
+	{
+		$("#name").html("IT&C DASHBOARD");
+		$("[landing-block='itec']").show();
+	}
+},5000);
+	
+</script>
 </body>
 </html>
