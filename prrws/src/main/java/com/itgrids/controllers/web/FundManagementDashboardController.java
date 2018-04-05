@@ -300,10 +300,10 @@ public class FundManagementDashboardController {
 			List<NregsFmsWorksVO> fmsWorksVOList = fundManagementDashboardService.getMgnregsFMSWorksDetailsByCategory(inputVO);
 			return fmsWorksVOList;
 		}
-		@RequestMapping(value ="/ministerHomePage", method = RequestMethod.GET)
+		/*@RequestMapping(value ="/ministerHomePage", method = RequestMethod.GET)
 	    public String landingPage(ModelMap model) {
 			return "landingPage";
-	    }
+	    }*/
 	
 		@PostMapping(value ="/getFavouriteComponents")
 	    public @ResponseBody List<IdNameVO> getFavouriteComponents(@RequestBody IdNameVO inputVO) {
