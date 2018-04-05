@@ -262,17 +262,17 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 						return 	status;
 					}
 					else{
-						status.put("membershipId", "");
+						status.put("memberShipId", "");
 						status.put("status", "failed");
 					}
 		    	 }
 				 else{
-					 status.put("membershipId", "");
+					 status.put("memberShipId", "");
 					 status.put("status", "failed");
 				 }
 			}
 			else{
-				status.put("membershipId", "");
+				status.put("memberShipId", "");
 				status.put("status", "failed");
 			}
 			
@@ -308,7 +308,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 					for (Object[] objects : cadreTypeInfoObj) {
 						if(objects[2] !=null){
 							
-							statusJson.put("membershipId", membershipId);
+							statusJson.put("memberShipId", membershipId);
 							statusJson.put("status", "success");
 							
 							if((Long)objects[2] == 3l){ // stake holders
@@ -327,7 +327,7 @@ public String generatingAndSavingOTPDetails(Long tdpCadreId,String mobileNoStr,S
 					}
 					
 				}else{
-					statusJson.put("membershipId", "");
+					statusJson.put("memberShipId", "");
 					statusJson.put("status", "failed");
 				}
 			}

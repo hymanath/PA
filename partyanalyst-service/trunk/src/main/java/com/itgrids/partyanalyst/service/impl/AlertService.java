@@ -3526,7 +3526,7 @@ public ResultStatus saveAlertTrackingDetails(final AlertTrackingVO alertTracking
 			      }
 				});
 				
-				if(deptMap !=null && deptMap.size()>0 )
+				if(deptMap !=null && deptMap.size()>0  && globalAlert.getAlertStatusId()<=1l) // status should be in pending 
 					updateGovtDepartment(deptMap,globalAlert);
 				
 				alertDAO.flushAndclearSession();
