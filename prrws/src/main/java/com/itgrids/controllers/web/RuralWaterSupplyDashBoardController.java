@@ -10,9 +10,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.itgrids.dto.AddressVO;
@@ -55,6 +57,14 @@ public class RuralWaterSupplyDashBoardController {
 		return "ruralWaterSupplyDashBoard";
 	}
 
+	@RequestMapping(value={"/{path}"}, method=RequestMethod.GET)
+	public String getCenter(@PathVariable String path,HttpSession session) throws Exception {
+		session.setAttribute("path", path);
+		System.out.println(session.getAttribute("path"));
+		return "landingPage";             
+	  
+	}
+	
 	@GetMapping("/mgnregsIHHLInfo")
 	public String swatchBharatIHHLInfo(ModelMap model){
 		return "swatchBharatIHHL";
