@@ -1669,9 +1669,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 					" model.updatedTime =:updatedTime" +
 					"	WHERE model.isDeleted ='N' and model.isExpired = 'N'  " );
 			
-			if(finalIds !=null && finalIds.size()>0){
+			//if(finalIds !=null && finalIds.size()>0){
 				queryStr.append("  and model.nominatedPostFinalId in (:finalIds)  ");
-			}
+			//}
 					
 			Query query = getSession().createQuery(queryStr.toString());
 			
@@ -1679,9 +1679,9 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			query.setParameter("updatedBy", userId);
 			query.setParameter("updatedTime", dateUtilService.getCurrentDateAndTime());
 			
-			if(finalIds !=null && finalIds.size()>0){
+			//if(finalIds !=null && finalIds.size()>0){
 				query.setParameterList("finalIds", finalIds);
-			}
+			//}
 			
 			return query.executeUpdate();
 		}	
@@ -2045,14 +2045,14 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 		str.append(" update NominatedPostFinal model set model.applicationStatusId=:statusId, model.updatedTime=:date " +
 				" where   model.isDeleted='N' and model.isExpired = 'N' ");
 		
-		if(applicationIds != null && applicationIds.size() >0)
+		//if(applicationIds != null && applicationIds.size() >0)
 			str.append(" and model.nominatedPostApplicationId in (:applicationIds) ");
 		
 			Query query = getSession().createQuery(str.toString());
 		query.setParameter("statusId", statusId);
 		query.setParameter("date", date);
 		
-		if(applicationIds != null && applicationIds.size() >0)
+		//if(applicationIds != null && applicationIds.size() >0)
 		query.setParameterList("applicationIds", applicationIds);
 		
 		return query.executeUpdate();
@@ -3005,32 +3005,32 @@ public int updateApplicationExpiredByPostIdsList(List<Long> nominatedPostIdsLsit
 	queryStr.append("  update NominatedPostFinal model set  model.isExpired='Y' ,model.cadreDeletedReasonId =:reasonId, model.deletedRemarks =:remark " +
 			         " , model.updatedTime =:currentDate ");
 	
-	if(userId != null && userId.longValue()>0L){
+	//if(userId != null && userId.longValue()>0L){
 		queryStr.append(" , model.updatedBy=:userId ");
-	}
-	if(nominatedPostIdsLsit != null && nominatedPostIdsLsit.size() >0){
+	//}
+	//if(nominatedPostIdsLsit != null && nominatedPostIdsLsit.size() >0){
 		queryStr.append(" where model.nominatedPostId in (:nominatedPostIdsLsit) ");
-	}
+//	}
 	queryStr.append(" and model.isDeleted='N' and model.isExpired='N' ");
 	
 	Query query = getSession().createQuery(queryStr.toString());
 	
-	if(userId != null && userId.longValue()>0L){
+	//if(userId != null && userId.longValue()>0L){
 		 query.setParameter("userId", userId);
-	}
-	if(nominatedPostIdsLsit != null && nominatedPostIdsLsit.size() >0){
+	//}
+	//if(nominatedPostIdsLsit != null && nominatedPostIdsLsit.size() >0){
 		 query.setParameterList("nominatedPostIdsLsit", nominatedPostIdsLsit);
-	}
+	//}
 	
-	 if(reasonId != null && reasonId.longValue() >0l){
+	 //if(reasonId != null && reasonId.longValue() >0l){
 		 query.setParameter("reasonId", reasonId);
-	 }
-	 if(remark != null && remark.length() >0){
+	// }
+	// if(remark != null && remark.length() >0){
 		 query.setParameter("remark", remark);
-	 }
-	if(currentDate != null){
+	// }
+	//if(currentDate != null){
 	 query.setDate("currentDate", currentDate);
-	}
+	//}
 	 int count = query.executeUpdate();
 	 return count;
 }	
