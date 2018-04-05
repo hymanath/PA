@@ -211,16 +211,16 @@
 <script type="text/javascript" src="Assests/fundManagament/landingPage.js"></script>
 <script>
 var officerDesigName = '${sessionScope.path}';
-if(officerDesigName == 'rdHomePage')
+if(officerDesigName == 'RD')
 {
 	$("#name").html("RD DASHBOARD");
-}else if(officerDesigName == 'rwsHomePage')
+}else if(officerDesigName == 'RWS')
 {
 	$("#name").html("RWS DASHBOARD");
-}else if(officerDesigName == 'prHomePage')
+}else if(officerDesigName == 'PR')
 {
 	$("#name").html("PR DASHBOARD");
-}else if(officerDesigName == 'itecHomePage')
+}else if(officerDesigName == 'ITEC')
 {
 	$("#name").html("IT&C DASHBOARD");
 }else{
@@ -230,19 +230,19 @@ setTimeout(function(){
 	if(officerDesigName != 'ministerHomePage'){
 		$("#showMainBlock").css("display","none");
 	}
-	if(officerDesigName == 'rdHomePage')
+	if(officerDesigName == 'RD')
 	{
 		$("#name").html("RD DASHBOARD");
 		$("[landing-block='rd']").show();
-	}else if(officerDesigName == 'rwsHomePage')
+	}else if(officerDesigName == 'RWS')
 	{
 		$("#name").html("RWS DASHBOARD");
 		$("[landing-block='rws']").show();
-	}else if(officerDesigName == 'prHomePage')
+	}else if(officerDesigName == 'PR')
 	{
 		$("#name").html("PR DASHBOARD");
 		$("[landing-block='panchayat']").show();
-	}else if(officerDesigName == 'itecHomePage')
+	}else if(officerDesigName == 'ITEC')
 	{
 		$("#name").html("IT&C DASHBOARD");
 		$("[landing-block='itec']").show();
@@ -251,4 +251,4 @@ setTimeout(function(){
 	
 </script>
 </body>
-</html>
+</html>	
