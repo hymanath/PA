@@ -29,7 +29,7 @@ public class PartyMeetingStatusTempDAO extends GenericDaoHibernate<PartyMeetingS
 	    	
 	    	Query query = getSession().createSQLQuery("" +
 	    	"  INSERT INTO party_meeting_status_temp2(party_meeting_id,party_office_status,ivr_status,third_party_status) " +
-	        "         SELECT PM.party_meeting_id,PM.is_conducted,PM.is_conducted_by_ivr,PM.third_party_status " +
+	        "         SELECT PM.party_meeting_id,if(PM.is_conducted !='',PM.is_conducted,null),if(PM.is_conducted_by_ivr !='',PM.is_conducted_by_ivr,null),if(PM.third_party_status !='',PM.third_party_status,null) " +
 	        "         FROM   party_meeting PM " +
 	        "         WHERE PM.start_date IS NOT NULL AND "+
 	        "         PM.is_active = 'Y' ");
