@@ -2531,7 +2531,7 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
  *  @since 13-SEPTEMBER-2016
  */
  public ResultStatus insertDataInToPartyMeetingStatusTableOLD(){
-	 
+	 LOG.info("Entered into  insertDataInToPartyMeetingStatusTableOLD  method in CoreDashboardPartyMeetingService.@ "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+"");
 	 ResultStatus resultStatus = new ResultStatus();
 	 try{
 		 
@@ -2573,13 +2573,13 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 	}catch(Exception e){
 		resultStatus.setResultCode(1);
 		resultStatus.setMessage("failure");
-		LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
+		LOG.error("Exception raised in insertDataInToPartyMeetingStatusTableOLD  method in CoreDashboardPartyMeetingService.",e);
 	}
 	 return resultStatus;
  }
  
  public ResultStatus insertDataInToPartyMeetingStatusTable(){
-	 
+	 LOG.info("Entered into  insertDataInToPartyMeetingStatusTable  method in CoreDashboardPartyMeetingService.@ "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+"");
 	 ResultStatus resultStatus = new ResultStatus();
 	 try{
 		 
@@ -2628,7 +2628,7 @@ public void setInviteeDetails(List<Object[]> inviteeReturnList,Map<Long,List<Par
 		resultStatus.setResultCode(1);
 		resultStatus.setMessage("failure");
 		LOG.error("Exception raised in saveNewPublicRepresentativeDetails  method in CadreDetailsService.",e);
-	}
+	} LOG.info("completed into  insertDataInToPartyMeetingStatusTable  method in CoreDashboardPartyMeetingService.@ "+new DateUtilService().getCurrentDateAndTimeInStringFormat()+"");
 	 return resultStatus;
  }
 
