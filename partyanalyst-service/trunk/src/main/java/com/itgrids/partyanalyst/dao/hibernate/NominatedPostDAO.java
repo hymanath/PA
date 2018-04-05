@@ -2000,14 +2000,14 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append("update NominatedPost model set model.nominationPostCandidateId = null ,model.updatedTime=:currentDate,model.nominatedPostStatusId = 1  ");
-		if(userId != null && userId.longValue()>0L)
+		//if(userId != null && userId.longValue()>0L)
 			queryStr.append(" ,model.updatedBy=:updatedBy ");
 		queryStr.append(" where model.isDeleted='N' and model.nominatedPostId in (:nominatedPostIdsLsist)  ");
 		
 		Query query = getSession().createQuery(queryStr.toString());
 		query.setDate("currentDate", currentDate);
 		query.setParameterList("nominatedPostIdsLsist", nominatedPostIdsLsist);
-		if(userId != null && userId.longValue()>0L)
+		//if(userId != null && userId.longValue()>0L)
 			query.setParameter("updatedBy", userId);
 		
 		return query.executeUpdate();
@@ -3450,25 +3450,25 @@ public List<Object[]> getPositionWiseMemberCount(List<Long> locationValues,Date 
 			
 			StringBuilder queryStr = new StringBuilder();
 			queryStr.append(" update NominatedPost model set model.nominationPostCandidateId = null ,model.updatedTime=:currentDate,model.nominatedPostStatusId = 1  ");
-			if(userId != null && userId.longValue()>0L){
+			//if(userId != null && userId.longValue()>0L){
 				queryStr.append(" ,model.updatedBy=:updatedBy ");
-			}
+			//}
 			queryStr.append(" where ");
-            if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
+           // if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
             	queryStr.append(" model.nominatedPostId in (:nominatedPostIdsLsist) ");
-            }
+           // }
             queryStr.append(" and model.isDeleted='N'  and model.isExpired='N' ");
 			
 			Query query = getSession().createQuery(queryStr.toString());
 			
 			query.setDate("currentDate", currentDate);
 			
-			if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
+			//if(nominatedPostIdsLsist != null && nominatedPostIdsLsist.size() >0){
 				query.setParameterList("nominatedPostIdsLsist", nominatedPostIdsLsist);
-			}
-			if(userId != null && userId.longValue()>0L){
+			//}
+			//if(userId != null && userId.longValue()>0L){
 				query.setParameter("updatedBy", userId);
-			}
+			//}
 			return query.executeUpdate();
 		}
 }
