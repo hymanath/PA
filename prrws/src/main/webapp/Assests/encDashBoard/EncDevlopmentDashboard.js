@@ -212,7 +212,23 @@ function build(ajaxresp,locationType){
 	
 	$("#levelWiseEnc"+locationType).html(tableView);
 	if(locationType != "state"){
-		$("#dataTable1"+locationType).dataTable({
+		$('#dataTable1'+locationType).dataTable({
+			"iDisplayLength": 15,
+			"aaSorting": [],
+			"order": [ 0, 'asc' ],
+			"dom": "<'row'<'col-sm-4'l><'col-sm-6'f><'col-sm-2'B>>" +
+			"<'row'<'col-sm-12'tr>>" +
+			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]],
+			buttons: [
+				{
+					extend		:'csvHtml5',
+					text		:'<i class="fa fa-file-text-o"></i>',
+					titleAttr	: 'CSV',
+					title		:  "ENC WORKS DASHBOARD",
+					filename	:  'ENC Roads'+moment().format("DD/MMMM/YYYY  HH:MM"),
+				}
+			]
 						
 		});
 	}
