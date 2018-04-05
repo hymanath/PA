@@ -1490,9 +1490,9 @@ function getSchemeWiseWorkDetails()
 				var adminSanctionCount=parseInt(ajaxresp[0].subList[0].adminSanctionedCount)+parseInt(ajaxresp[0].subList[1].adminSanctionedCount); 
 				var ongoingCount=parseInt(ajaxresp[0].subList[0].undrProcessCount)+parseInt(ajaxresp[0].subList[1].undrProcessCount); 
 				var notGrounded = parseInt(ajaxresp[0].subList[0].notgroundedCount)+parseInt(ajaxresp[0].subList[1].notgroundedCount); 
-				var ONGOINGExceed = parseInt(ajaxresp[0].subList[0].undrProcessCount)+parseInt(ajaxresp[0].subList[1].undrProcessCount); 
+				var ONGOINGExceed = ajaxresp[0].ongoingPWSExceededCount; 
 				var notGroundedper= (parseFloat(notGrounded/adminSanctionCount*100)).toFixed(2);
-				var ONGOINGExceedper= (parseFloat(notGrounded/ongoingCount*100)).toFixed(2);
+				var ONGOINGExceedper= (parseFloat(ONGOINGExceed/ongoingCount*100)).toFixed(2);
 				$(".RWSWORKSAllCls").html(notGrounded+"<small style='color:#000;top: -5px;left: 3px;font-size:16px;font-weight:bold;'>("+notGroundedper+"%)</small> /"+ONGOINGExceed+"<small style='color:#000;top: -5px;left: 3px;font-size:16px;font-weight:bold;'>("+ONGOINGExceedper+"%)</small>");
 			}else{
 				$(".RWSWORKSAllCls").html('0 / 0');
@@ -2476,7 +2476,11 @@ function getSolidWasteManagementOverAllCounts(){
 			//$(".SolidWasteManagementAllCls").html(swmData(''+houses+' / '+farmers+'',''+total+'',''));
 			//$(".SolidWasteManagementAllCls").html(''+houses+' / '+farmers+' / <small style="font-size:14px;top:0px;">'+total+'</small>');
 			//var  achive = result.trackingPer.toFixed(2)
-			$(".SolidWasteManagementAllCls").html(achieverfid.toFixed(2)+'%'+'('+achieve+')');
+			if(achieverfid !=null && achieverfid !='undefined'){
+				$(".SolidWasteManagementAllCls").html('- %('+achieve+')');
+			}else{
+				$(".SolidWasteManagementAllCls").html(achieverfid.toFixed(2)+'%'+'('+achieve+')');
+			}
 		}
 	});
 }
@@ -2761,8 +2765,9 @@ function getTaxesAndCategoryWiseOverViewDetails(){
 		if(result !=null){
 			var arrear = parseFloat(result.balanceArrearAmount).toFixed(2);
 			var current = parseFloat(result.balanceCurentAmount).toFixed(2);
-			
-			$(".PRTaxesAllCls").html(arrear+' / '+current); 
+			var arrearPer=(parseFloat((result.balanceArrearAmount/result.demandArrearAmount)*100)).toFixed(2);
+			var currentPer=(parseFloat((result.balanceCurentAmount/result.demandCurrentAmount)*100)).toFixed(2);
+			$(".PRTaxesAllCls").html(arrear+'<small style="position: relative; top: -3px; font-size: 12px ! important; color: black;left: 4px;">('+arrearPer+'%)</small>'+' / '+current+'<small style="position: relative; top: -3px; font-size: 12px ! important; color: black;">('+currentPer+'%)</small>'); 
 		}else{
 			$(".PRTaxesAllCls").html("0 / 0"); 
 		}
