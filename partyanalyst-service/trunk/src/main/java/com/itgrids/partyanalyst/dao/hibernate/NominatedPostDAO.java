@@ -1353,8 +1353,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	}
 	
 	public List<Long> getTotalApplicationsDeptsCount(Long levelId){
-		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId   from NominatedPostApplication model " +
-				" where  model.isDeleted = 'N' and model.nominatedPostMember.boardLevelId =:levelId and model.nominatedPostMember.isDeleted='N' and " +
+		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId   from NominatedPostApplication model  " +
+				" left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" where model.isDeleted ='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' and nominatedPostMember.isDeleted='N' "+
+				" and  model.isDeleted = 'N' and nominatedPostMember.boardLevelId =:levelId and nominatedPostMember.isDeleted='N' and " +
 				" model.isDeleted='N' and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") and model.nominatedPostMemberId is not null order by  " +
 				" model.nominatedPostMember.nominatedPostPosition.departmentId ");
 		query.setParameter("levelId", levelId);
@@ -1362,8 +1365,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	}
 	
 	public List<Long> getTotalApplicationsDeptsCountforAnyBoards(Long levelId){
-		Query query= getSession().createQuery("select distinct model.departmentId   from NominatedPostApplication model " +
-				" where  model.isDeleted = 'N' and model.boardLevelId =:levelId  and model.isDeleted='N'   and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  " +
+		Query query= getSession().createQuery("select distinct model.departmentId   from NominatedPostApplication model  " +
+				" left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" where model.isDeleted ='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' and nominatedPostMember.isDeleted='N' "+
+				" and  model.isDeleted = 'N' and model.boardLevelId =:levelId  and model.isDeleted='N'   and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  " +
 				" and  model.departmentId is not null order by  model.departmentId ");
 		query.setParameter("levelId", levelId);
 		return query.list();
@@ -1381,8 +1387,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	
 	public List<Object[]> getTotalApplicationsCorpsIdsCount(Long levelId){
 		Query query= getSession().createQuery("select distinct model.nominatedPostMember.nominatedPostPosition.departmentId , " +
-				" model.nominatedPostMember.nominatedPostPosition.boardId  from NominatedPostApplication model " +
-				" where model.isDeleted = 'N' and model.nominatedPostMember.boardLevelId =:levelId  " +
+				" model.nominatedPostMember.nominatedPostPosition.boardId  from NominatedPostApplication model  " +
+				" left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" where model.isDeleted ='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' and nominatedPostMember.isDeleted='N' "+
+				" and model.isDeleted = 'N' and nominatedPostMember.boardLevelId =:levelId  " +
 				"  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+") and model.nominatedPostMemberId is not null  order by   " + 
 				" model.nominatedPostMember.nominatedPostPosition.departmentId, model.nominatedPostMember.nominatedPostPosition.boardId ");
 		query.setParameter("levelId", levelId);
@@ -1391,8 +1400,11 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	
 	public List<Object[]> getTotalApplicationsCorpsIdsForAnyPostsCount(Long levelId){
 		Query query= getSession().createQuery("select distinct model.departmentId , " +
-				" model.boardId  from NominatedPostApplication model " +
-				" where model.isDeleted = 'N' and model.boardId is not null and model.boardLevelId =:levelId  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  ");
+				" model.boardId  from NominatedPostApplication model  " +
+				" left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" where model.isDeleted ='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' and nominatedPostMember.isDeleted='N' "+
+				" and model.isDeleted = 'N' and model.boardId is not null and model.boardLevelId =:levelId  and model.applicationStatusId not in ("+IConstants.NOMINATED_POST_REJECTED_STATUS_IDS+")  ");
 		query.setParameter("levelId", levelId);
 		return query.list();
 	}

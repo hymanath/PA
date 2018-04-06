@@ -638,13 +638,13 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition" +
 							"  left join nominatedPostPosition.departments department" +
 							"  left join nominatedPostPosition.board  board ");
-			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and model.isDeleted='N'  and model.isExpired = 'N' " );
+			queryStr.append(" ,UserAddress model3 where model.addressId = model3.userAddressId and model.isDeleted='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' " );
 		}
 		else{
 			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
 			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
 							"  left join nominatedPostPosition.departments department " +
-							"  left join nominatedPostPosition.board  board where model.isDeleted='N' and model.isExpired = 'N'  ");
+							"  left join nominatedPostPosition.board  board where model.isDeleted='N' and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' ");
 		}
 		
 		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
@@ -1471,11 +1471,14 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getTotalAppliedCorpIdsAndBoardsIdsAndPositionsIds(Long boardLevelId,Long searchlevelId,Long searchLevelValue){
 		  
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append(" select count( model.nominatedPostApplicationId), model.nominatedPostMember.nominatedPostMemberId ");
-		queryStr.append(" from NominatedPostApplication model   " );
-		queryStr.append(" where ");
-		queryStr.append(" model.isDeleted='N'  and model.nominatedPostMember.isDeleted='N'  and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'" +
-				" and model.isExpired = 'N'  ");	// for total 
+		queryStr.append(" select count( model.nominatedPostApplicationId), nominatedPostMember.nominatedPostMemberId ");
+		queryStr.append(" from NominatedPostApplication model   " +
+				" left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" where model.isDeleted ='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' and nominatedPostMember.isDeleted='N' ");
+		//queryStr.append(" where ");
+		//queryStr.append(" model.isDeleted='N'  and model.nominatedPostMember.isDeleted='N'  and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'" +
+		//		" and model.isExpired = 'N'  ");	// for total 
 						
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() < 5L)
@@ -1929,7 +1932,9 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	public List<Object[]> getTotalAvaiableApplicationsDetails(Long boardLevelId,Long stateId,Long applicationStatusId){
 		StringBuilder queryStr = new StringBuilder();
 		queryStr.append(" select model.applicationStatusId, count(distinct model.nominatedPostApplicationId)  from NominatedPostApplication model " +
-				" where model.isDeleted ='N'  and model.isExpired = 'N' ");
+				" left join model.nominatedPostMember nominatedPostMember " +
+				" left join nominatedPostMember.nominatedPostPosition nominatedPostPosition " +
+				" where model.isDeleted ='N'  and model.isExpired = 'N' and nominatedPostPosition.isDeleted='N' and nominatedPostMember.isDeleted='N' ");
 		if(boardLevelId != null && boardLevelId.longValue()>0L){
 			if(boardLevelId.longValue() < 5L)
 				queryStr.append(" and model.boardLevelId=:boardLevelId ");
@@ -2123,7 +2128,8 @@ public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId
 		}
 		else{
 			queryStr.append(" left join model.nominatedPostMember nominatedPostMember ");
-			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition where model.isDeleted='N' and model.isExpired = 'N' ");
+			queryStr.append("  left join nominatedPostMember.nominatedPostPosition nominatedPostPosition where model.isDeleted='N' and model.isExpired = 'N' " +
+					" and nominatedPostPosition.isDeleted='N' ");
 		}
 		
 		//queryStr.append(" and  model.applicationStatusId is not null and nominatedPostMember is not null ");
