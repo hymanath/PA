@@ -15,15 +15,6 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		super(AreaInchargeLocation.class);
 	}
 	
-	
-	/*public int getLocationIdsOfBooths(List<Long> boothIds ){
-		Query query = getSession().createQuery(" update AreaInchargeLocation model " +
-				" set model.isAssinged = 'Y',model.isDeleted ='N' where " +
-				"  model.address.booth.boothId in(:boothIds) ");
-		
-		query.setParameterList("boothIds", boothIds);
-		return query.executeUpdate();
-	}*/
 	public Long getLocationIdsOfBooths(Long boothId){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select AIL.areaInchargeLocationId from  AreaInchargeLocation AIL  where  " );
@@ -37,10 +28,10 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		return (Long)query.uniqueResult();
 		
 	}
-	//AIL.address.booth.partNo
+	//AIL.address.booth.partNo,AIL.areaInchargeLocationId
 	public List<Object[]> getAssignedAndUnAssignedBooths(Long levelId,Long levelValue){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged," +
+		sb.append(" select distinct AIL.address.booth.partNo,AIL.isAssinged," +
 				" panchayat.panchayatId,panchayat.panchayatName," +
 				" tehsil.tehsilId,tehsil.tehsilName  " +
 				" from  AreaInchargeLocation AIL " +
@@ -52,7 +43,7 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		}else if(levelId != null && levelValue != null && levelValue .longValue() >0l && levelId.longValue() == 4l){
 			sb.append(" where AIL.address.constituency.constituencyId =:levelValue "); 
 		}
-		sb.append(" group by AIL.areaInchargeLocationId order by AIL.areaInchargeLocationId ");
+		sb.append(" group by AIL.address.booth.partNo order by AIL.address.booth.partNo ");
 		Query query = getSession().createQuery(sb.toString());
 		if(levelId != null && levelValue != null && levelValue .longValue() >0l && levelId.longValue() == 3l){
 			query.setParameter("levelValue", levelValue);
@@ -63,7 +54,7 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 	}
 	public List<Object[]> getAreaInchargesStatusWiseCount(Long levelId,Long levelValue){
 		StringBuilder sb = new StringBuilder();
-		  sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged " );
+		  sb.append(" select distinct AIL.address.booth.partNo,AIL.isAssinged " );
 		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
 		  sb.append(",AIL.address.constituency.name " );
 		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
@@ -92,6 +83,53 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 				" AIL.areaInchargeLocation.address.constituency.constituencyId,AIL.areaInchargeLocation.address.constituency.name" );
 		
 		return null;
+		
+	}
+	public List<Long> getBoothPortInchageLocationIds(List<String> portNos,Long levelId,Long levelValue){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select AIL.areaInchargeLocationId from  AreaInchargeLocation AIL  where  " );
+		if(portNos != null && portNos.size()>0){
+			sb.append(" AIL.address.booth.partNo in(:portNos) and AIL.address.booth.publicationDate.publicationDateId =24 "); 
+		}
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			sb.append(" and  AIL.address.district.districtId =:levelValue "); 
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			sb.append(" and AIL.address.constituency.constituencyId =:levelValue "); 
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(portNos != null && portNos.size()>0){
+			query.setParameterList("portNos", portNos);
+		}
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			query.setParameter("levelValue", levelValue);
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			query.setParameter("levelValue", levelValue);
+		}
+		return query.list();
+		
+	}
+	public Long getBoothPortInchageLocationId(String portNo,Long levelId,Long levelValue){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select AIL.areaInchargeLocationId from  AreaInchargeLocation AIL  where  " );
+		if(portNo != null){
+			sb.append(" AIL.address.booth.partNo =:portNo and"); 
+		}
+		sb.append(" AIL.isAssinged ='Y' and AIL.isDeleted ='N' and AIL.address.booth.publicationDate.publicationDateId =24");
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			sb.append(" and AIL.address.district.districtId =:levelValue "); 
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			sb.append(" and AIL.address.constituency.constituencyId =:levelValue "); 
+		}
+		Query query = getSession().createQuery(sb.toString());
+		if(portNo != null){
+			query.setParameter("portNo", portNo);
+		}
+		if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			query.setParameter("levelValue", levelValue);
+		}else if(levelId != null && levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			query.setParameter("levelValue", levelValue);
+		}
+		return (Long)query.uniqueResult();
 		
 	}
 		

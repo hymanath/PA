@@ -78,12 +78,12 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 	//0-areaInchargeLoc,1-cadreId,2-cadreName,3-house
 	public List<Long> getAssignedInchargeBooths(Long cadreId){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select distinct AIM.areaInchargeLocationId "+
+		sb.append(" select distinct AIM.areaInchargeLocation.address.booth.partNo "+
 				" from  AreaInchargeMember AIM   where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
 		if(cadreId != null && cadreId.longValue()>0l){
 			sb.append("  and AIM.tdpCadre.tdpCadreId =:cadreId "); 
 		}
-		sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
+		sb.append("  and AIM.areaInchargeLocation.address.booth.publicationDate.publicationDateId =24 group by AIM.areaInchargeLocation.address.booth.partNo order by AIM.areaInchargeLocation.address.booth.partNo");
 		Query query = getSession().createQuery(sb.toString());
 		if(cadreId != null && cadreId.longValue()>0l){
 			query.setParameter("cadreId", cadreId);
@@ -113,14 +113,14 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
 				" tdpCadre.age,tdpCadre.gender,tdpCadre.memberShipNo,tdpCadre.mobileNo," +
-				" AIM.areaInchargeLocationId,tdpCadre.image "+
+				" AIM.areaInchargeLocation.address.booth.partNo,tdpCadre.image "+
 				" from  AreaInchargeMember AIM left join AIM.tdpCadre tdpCadre  where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
 		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
 			sb.append("  and AIM.areaInchargeLocation.address.district.districtId =:levelValue "); 
 		}else if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
 			sb.append("  and AIM.areaInchargeLocation.address.constituency.constituencyId =:levelValue "); 
 		}
-		sb.append(" order by tdpCadre.tdpCadreId ");
+		sb.append(" and AIM.areaInchargeLocation.address.booth.publicationDate.publicationDateId =24 order by tdpCadre.tdpCadreId ");
 		Query query = getSession().createQuery(sb.toString());
 		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
 			query.setParameter("levelValue", levelValue);
@@ -130,12 +130,13 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		return query.list();
 		
 	}
-	public Long getInchargeMembers(Set<Long> assignIds){
+	public Long getInchargeMembers(Set<String> assignIds){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct AIM.tdpCadre.tdpCadreId )"+
 				" from  AreaInchargeMember AIM   where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
 		if(assignIds != null && assignIds.size()>0){
-			sb.append("  and AIM.areaInchargeLocationId in(:assignIds)"); 
+			sb.append("  and AIM.areaInchargeLocation.address.booth.partNo in(:assignIds) " +
+					" and AIM.areaInchargeLocation.address.booth.publicationDate.publicationDateId =24"); 
 		}
 		//sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
 		Query query = getSession().createQuery(sb.toString());
