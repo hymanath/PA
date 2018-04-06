@@ -150,5 +150,18 @@ body{
 <script src="D2D_Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="D2D_Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
 <script src="D2D_Assests/js/areaInchargeDashboard.js" type="text/javascript"></script>
+<script type="text/javascript">
+	/* var globalLevelId="${sessionScope.levelId}";
+	var globalLevelValue="${sessionScope.levelValue}";
+	var globalLevelValueStored="${sessionScope.levelValue}";
+	var globalLocationName="${sessionScope.locationName}";
+	var globalLevelType=''; */
+	var globalLevelId='${levelId}';
+	var globalLevelValue="${levelValue}";
+	var globalLevelValueStored="${levelValue}";
+	var globalLocationName="${locationName}";
+	var globalLevelType='';
+		
+</script>
 </body>
 </html>

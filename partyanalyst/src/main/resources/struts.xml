@@ -258,6 +258,7 @@
       		<result type="redirect" name="alertDistManagement">alertDistManagement.action</result>
       		<result type="redirect" name="alertDistOfficeManagement">alertDistOfficeManagement.action</result>
 			<result type="redirect" name="constituencyPageAction">areaWiseDashboardAction.action</result>
+			<result type="redirect" name="areaInchargeDashBoardAction">areaInchargeDashBoardAction.action</result>
 			
 			<result>/jsp/loginsuccess.jsp</result>
 			 <!-- Problem Management Flow From Different Pages -->
@@ -5733,7 +5734,7 @@
 	  <result type="redirect" name="alertDistManagement">alertDistManagement.action</result>
 	  <result type="redirect" name="alertDistOfficeManagement">alertDistOfficeManagement.action</result>
       <result type="redirect" name="URL_REDIRECT">${redirectUrl}</result>
-      
+      <result type="redirect" name="areaInchargeDashBoardAction">areaInchargeDashBoardAction.action</result>
     </action>
 		
 		<action name="getPariesForAssemplyAction" class="dashBoardAction" method="ajaxHandler">
@@ -19028,7 +19029,7 @@
 			<param name="root">inchargeVO</param>
 		</result>
 	</action>
-	<action name="areaInchargeDashBoardAction" class="areaInchargeDashBoardAction" method="execute">
+	<action name="areaInchargeDashBoardAction" class="areaInchargeDashBoardAction" method="areaInchargeDashBoard">
 		<result name="success">/jsp/areaInchargeDashBoard.jsp</result>
 	</action>
  </package>

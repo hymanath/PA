@@ -12,8 +12,11 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AreaInchargeVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
+import com.itgrids.partyanalyst.dto.SelectOptionVO;
 import com.itgrids.partyanalyst.service.IAreaInchargeDashBoardService;
+import com.itgrids.partyanalyst.service.IUserProfileService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -21,7 +24,6 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
      
 	private static final Logger LOG = Logger.getLogger(AreaInchargeDashBoardAction.class);
 	
-	//private HttpServletRequest  request;
 	private HttpServletRequest  request;
 	private HttpSession session;
 	
@@ -31,12 +33,43 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 	private AreaInchargeVO inchargeVO;
 	private List<AreaInchargeVO> inchargeList;
 	private IAreaInchargeDashBoardService areaInchargeDashBoardService;
+	private IUserProfileService userProfileService;
 	private String result;
+	private Long levelId;
+	private Long levelValue;
+	private String locationName;
 	
-	
+	public String getLocationName() {
+		return locationName;
+	}
+
+	public void setLocationName(String locationName) {
+		this.locationName = locationName;
+	}
+
 	public String getResult() {
 		return result;
 	}
+
+	public Long getLevelId() {
+		return levelId;
+	}
+
+
+	public void setLevelId(Long levelId) {
+		this.levelId = levelId;
+	}
+
+
+	public Long getLevelValue() {
+		return levelValue;
+	}
+
+
+	public void setLevelValue(Long levelValue) {
+		this.levelValue = levelValue;
+	}
+
 
 	public void setResult(String result) {
 		this.result = result;
@@ -58,8 +91,48 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		this.task = task;
 	}
 
+	public IUserProfileService getUserProfileService() {
+		return userProfileService;
+	}
 
-	public String execute(){
+	public void setUserProfileService(IUserProfileService userProfileService) {
+		this.userProfileService = userProfileService;
+	}
+
+	public String areaInchargeDashBoard(){
+		try{
+		session = request.getSession();
+        RegistrationVO user = (RegistrationVO)session.getAttribute("USER");
+        
+		List<String> entitlements = user.getEntitlements();
+		if(user == null || user.getEntitlements().size() == 0 || (!entitlements.contains("AREA_INCHARGE_DASHBOARD_ENTITLEMENT")))
+		{
+				return ERROR;
+		}
+		
+		if(user.getDistricts() != null && user.getDistricts().size() > 0)
+		{
+			levelId = 3L;
+			for(SelectOptionVO optionVO : user.getDistricts())
+			{
+				levelValue = optionVO.getId();
+				locationName = optionVO.getName();
+			}
+			
+		}
+		else if(user.getAssemblies() != null && user.getAssemblies().size() > 0)
+		{
+			levelId = 4L;
+			for(SelectOptionVO optionVO : user.getAssemblies())
+			{
+				levelValue = optionVO.getId();
+				locationName = optionVO.getName();
+			}
+			
+		}
+		}catch(Exception e){
+			LOG.error("Entered into Execute Action",e);
+		}
 		return Action.SUCCESS;
 	}
 

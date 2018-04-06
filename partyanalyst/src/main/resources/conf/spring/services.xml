@@ -4831,6 +4831,10 @@
    	 		<property name="areaInchargeLocationDAO" ref="areaInchargeLocationDAO"></property>
    	 		<property name="transactionTemplate" ref="transactionTemplate"></property>
    	 		<property name="cadreDetailsService" ref="cadreDetailsService"></property>
+   	 		<property name="districtDAO" ref="districtDAO"></property>
+   	 		<property name="constituencyDAO" ref="constituencyDAO"></property>
+   	 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
+   	 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
     	</bean>
    	 	
 </beans>			
