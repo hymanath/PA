@@ -35,7 +35,8 @@ $("#dateRangePicker").daterangepicker({
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
 		   'Last Year': ['01-01-2017', moment()],
-		   'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
+		   'OverAll':['28-11-2016',moment()]
+		   //'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
 		}
 	});
 	var dates= $("#dateRangePicker").val();
@@ -95,6 +96,10 @@ $(document).on("click",".tab_bordered li",function(){
 				$("#alertTypeId").val(5);
 				$("#alertTypeId").trigger("chosen:updated");
 				levelWiseJalavaniDetails('jalavani',"socialTabClick");
+			}else if(blockType == "All"){
+				$("#alertTypeId").val(0);
+				$("#alertTypeId").trigger("chosen:updated");
+				levelWiseJalavaniDetails('jalavani',"onload");
 			}
 		}
 	}
@@ -199,7 +204,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/print_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/print_media_alert_icon.png" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5 font_weight">PRINT&nbsp;MEDIA</h5>';
@@ -219,7 +224,7 @@ function buildJalavaniDashBoardOverview(result){
 							str+='<div class="col-sm-9">';
 								str+='<div class="media">';
 									str+='<div class="media-left">';
-									  str+='<img src="Assests/images/electronic_media_icon.PNG" class="media-object" style="width:45px">';
+									  str+='<img src="Assests/images/electronic_media_alert_icon.png" class="media-object" style="width:45px">';
 									str+='</div>';
 									str+='<div class="media-body">';
 										str+='<h5 class="media-heading color_black m_top5 font_weight">ELECTRONIC MEDIA</h5>';
@@ -722,7 +727,7 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 		
 		if(searchType == "callcenter"){
 			//str+='<h5 class="font_weight text-capital">Call Center Feedback</h5>';	
-			str+='<div style="padding:15px;background-color:#fff;" class="m_top10">';
+			str+='<div id="ivrStatusBaseFeedBackDivId" style="padding:15px;background-color:#fff;" class="m_top10">';
 				str+='<div id="ivrStatusFeedBackDivId"></div>';
 			str+='</div>';
 		}
@@ -1138,6 +1143,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 					str+='</thead>';
 					str+='<tbody>';
 						for(var i in result){
+						if(result[i].count != null && result[i].count > 0){
 							str+='<tr>';
 								
 								if(type =="district" || type =="state"){
@@ -1171,6 +1177,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 									
 								}
 							str+='</tr>';
+							}
 						}
 					str+='<tbody>';
 				str+='<table>';
@@ -1450,7 +1457,11 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockTyp
 		str+='<div id="rightSideExpandView"></div>';
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
-	$("#dataTable").dataTable();
+	$("#dataTable").dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 25, 50,100, -1], [10, 25, 50,100, "All"]]
+		});
 	$('[data-toggle="tooltip"]').tooltip();
 	//getAlertData(alertId);
 }
@@ -3006,7 +3017,7 @@ function getJalavaniFeedBackDetailsInfo(){
 		if(result !=null && result.length>0){
 			buildJalavaniFeedBackDetailsInfo(result);
 		}else{
-			$("#ivrStatusFeedBackDivId").html("No Data Available");
+			$("#ivrStatusBaseFeedBackDivId").hide();
 		}
 	});	
 }
@@ -3142,14 +3153,14 @@ function buildJalavaniFeedBackDetailsInfo(result){
 													var cumilativeNegativeResponders = positiveAlertNegativeRespondentCount +negativeAlertNegativeRespondentCount;
 													
 													if(result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount !=null && result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount >0){
-														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'" attr_district_id="0" attr_satisfied_status="Y" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+positiveAlertPositiveRespondentCount+'  -veRspndnts : '+positiveAlertNegativeRespondentCount+'"></i></td>';
+														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'" attr_district_id="0" attr_satisfied_status="Y" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle tooltipClsStatusCls " aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+ve Respondents : '+positiveAlertPositiveRespondentCount+'  -ve Respondents : '+positiveAlertNegativeRespondentCount+'"></i></td>';
 													}else{
-														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+positiveAlertPositiveRespondentCount+'  -veRspndnts : '+positiveAlertNegativeRespondentCount+'"></i></td>';
+														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle tooltipClsStatusCls " aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+ve Respondents : '+positiveAlertPositiveRespondentCount+' <br /> -ve Respondents : '+positiveAlertNegativeRespondentCount+'"></i></td>';
 													}
 													if(result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount !=null && result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount>0){
-														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_district_id="0" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'" attr_satisfied_status="N" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+negativeAlertPositiveRespondentCount+'  -veRspndnts : '+negativeAlertNegativeRespondentCount+'"></i></td>';
+														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_district_id="0" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'" attr_satisfied_status="N" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle tooltipClsStatusCls" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+ve Respondents : '+negativeAlertPositiveRespondentCount+' <br /> -ve Respondents : '+negativeAlertNegativeRespondentCount+'"></i></td>';
 													}else{
-														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+veRspndnts : '+negativeAlertPositiveRespondentCount+'  -veRspndnts : '+negativeAlertNegativeRespondentCount+'"></i></td>';
+														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].negativeCount+'<i class="fa fa-info-circle tooltipClsStatusCls" aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" data-placement="top" data-container="body"  title="+ve Respondents : '+negativeAlertPositiveRespondentCount+' <br /> -ve Respondents : '+negativeAlertNegativeRespondentCount+'"></i></td>';
 													}
 												}
 											str+='</tr>';
@@ -3170,8 +3181,8 @@ function buildJalavaniFeedBackDetailsInfo(result){
 													var postiveResponderPerc = (cumilativePositiveResponders*100/totalResponderCount).toFixed(2);
 													var negativeResponderPerc= (cumilativeNegativeResponders*100/totalResponderCount).toFixed(2);
 
-													str+='<td title="Respondants"><span title="Respondants :'+cumilativePositiveResponders+'" style="color:#0FBE08;" data-toggle="tooltip" >('+postiveResponderPerc+' %)</span></td>';
-													str+='<td title="Respondants"><span title="Respondants :'+cumilativeNegativeResponders+'" style="color:#FE3131;" data-toggle="tooltip">('+negativeResponderPerc+' %)</span></td>';
+													str+='<td title="Respondents"><span title="Respondents :'+cumilativePositiveResponders+'" style="color:#0FBE08;" data-toggle="tooltip" >('+postiveResponderPerc+' %)</span></td>';
+													str+='<td title="Respondents"><span title="Respondents :'+cumilativeNegativeResponders+'" style="color:#FE3131;" data-placement="top" data-container="body" data-toggle="tooltip">('+negativeResponderPerc+' %)</span></td>';
 											}
 											str+='</tr>';
 											
@@ -3339,6 +3350,7 @@ function buildJalavaniFeedBackDetailsInfo(result){
 		str+='</div>';
 		str+='</div>';
 		$("#ivrStatusFeedBackDivId").html(str);
+		$('.tooltipClsStatusCls').tooltip({"html":"true"})
 		$("#dataTabledefaulters").dataTable({
 			"paging":   false,
 			"info":     false,
@@ -3390,7 +3402,7 @@ function getJalavaniStatusWiseSummaryGraphDetailsInfo(divId){
 		 if(result != null && result.length > 0){
 			buildJalavaniStatusWiseSummaryGraphDetailsInfo(result,divId);
 		}else{
-			$("#"+divId).html('NO DATA AVAILABLE')
+			$("#"+divId).html('<img src="Assests/images/no_data_available.png" style="display:block ;margin-left: auto;margin-right: auto;margin-top: 100px">')
 		}
 	});	
 }
