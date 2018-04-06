@@ -325,8 +325,8 @@ var searchParams = new URLSearchParams(window.location.search);
 				</div>
 				<div class="col-sm-4">
 					<ul class="switch-btn pull-right" role="tabCummulative">
-						<li class="active" attr_type="" style="font-size:12px !important;">This Fin. Year</li>
-						<li  attr_type="" style="font-size:12px !important;">Prev Fin. Year</li>
+						<li class="active" attr_type="thisFin" style="font-size:12px !important;">This Fin. Year</li>
+						<li  attr_type="prevFin" style="font-size:12px !important;">Prev Fin. Year</li>
 					</ul>
 				</div>
 				<div class="col-sm-12 text-right" id="logOutId" style="display:none;">

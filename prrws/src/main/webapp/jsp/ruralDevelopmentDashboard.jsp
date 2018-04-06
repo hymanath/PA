@@ -276,7 +276,7 @@ var searchParams = new URLSearchParams(window.location.search);
 					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" style="font-size:13px;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
-				<div class="col-sm-2 border_right">
+				<div class="col-sm-3 border_right">
 					<div class="row">
 						<div class="col-sm-4 m_top5">
 							<label>FROM DATE</label>
@@ -291,7 +291,7 @@ var searchParams = new URLSearchParams(window.location.search);
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2 border_right">
+				<div class="col-sm-3 border_right">
 					<div class="row">
 						<div class="col-sm-4 m_top5">
 							<label>TO DATE</label>
@@ -306,28 +306,33 @@ var searchParams = new URLSearchParams(window.location.search);
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-6 m_top5 pad_right0">
+				<div class="col-sm-4">
+					<ul class="switch-btn pull-right" role="tabCummulative">
+						<li class="active" attr_type="thisFin" style="font-size:12px !important;">This Fin. Year</li>
+						<li  attr_type="prevFin" style="font-size:12px !important;">Prev Fin. Year</li>
+					</ul>
+				</div>
+				<!--<div class="col-sm-6 m_top5 pad_right0">
 					<ul class="list-inline pull-left">
 						<li><span class="color-label color-label-gold"></span> 100% and above</li>
 						<li><span class="color-label color-label-success"></span> 90% and above</li>
 						<li><span class="color-label color-label-default"></span> 60% to Below 90%</li>
 						<li><span class="color-label color-label-danger"></span> less than 60% &nbsp;&nbsp;&nbsp;</li>
-						<!--<li><button type="button" class="btn btn-primary btn-xs" title="Webservice Details" id="getWebserviceDetailsId">WS Details</button> </li>-->
 					</ul>
-					<!--<div class="menu-top-selection">
-						<i class="glyphicon glyphicon-cog menu-top-selection-icon"></i>
-						<div class="arrow_box_top">
-							<div class="row">
-								<div id="navTabsMenuSelectionId"></div>
-							</div>
-						</div>
-					</div>-->
-				</div>
+				</div>-->
 			</div>
 		</div>
 	</section>
 </header>
 <main>
+<div class="col-sm-6 m_top5 pad_right0 pull-right">
+	<ul class="list-inline pull-left">
+		<li><span class="color-label color-label-gold"></span> 100% and above</li>
+		<li><span class="color-label color-label-success"></span> 90% and above</li>
+		<li><span class="color-label color-label-default"></span> 60% to Below 90%</li>
+		<li><span class="color-label color-label-danger"></span> less than 60% &nbsp;&nbsp;&nbsp;</li>
+	</ul>
+</div>
 	<section>
 		<div class="container-fluid">
 			<div class="row">

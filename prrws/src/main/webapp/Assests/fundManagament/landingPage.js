@@ -142,14 +142,14 @@ function buildFavouriteComponentsResult(result) {
 							str+='<div class="row" >';
 								str+='<div class="col-sm-5 text-right">';
 									str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId"></h3>';
-									str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+									str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve</p>';
 								str+='</div>';
 								str+='<div class="col-sm-1 text-right">';
 									str+='<h3 style="font-size:30px;">/</h3>';
 								str+='</div>';
 								str+='<div class="col-sm-5 text-right">';
 									str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay"></h3>';
-									str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+									str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve</p>';
 								str+='</div>';
 							str+='</div>';	
 							
@@ -157,25 +157,25 @@ function buildFavouriteComponentsResult(result) {
 							 	str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdPR" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdPR"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RD NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRD" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdRD"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "RWS NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdRWS" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdRWS"></div>';
-									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+									str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve</span></div>';
 								str+='</div>';
 						}else if(result[i].name == "IT E& C NEWS"){
 								str+='<div class="row" style="margin-top: -15px;">';
 									str+='<div id="printMediaCountIdIT" style="font-weight:bold;"></div>';
 									//str+='<div id="ElectronicMediaCountIdIT"></div>';
-								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve&nbsp;&nbspArticles</span></div>';
+								str+='<div class="col-sm-12"><span class="pull-right" style="text-transform:uppercase;margin-top:5px;font-size:12px;">This&nbsp;&nbspToday&nbsp;&nbsp-ve</span></div>';
 								str+='</div>';
 						}else if(result[i].name == 'WORDCLOUD'){
 							str+='<div class="row" style="margin-top: -15px;">';
@@ -825,8 +825,8 @@ function getNregsLabourBudgetOverAllAchievent()
 {
 	$(".MGNREGSAllCls").html(spinner);
 	var json = {
-		year : "2017",
-		fromDate : "2017-04-31",
+		year : "2018",
+		fromDate : "2018-04-01",
 		toDate : nregsDate,
 		locationType: "state",
 		divType : "Labour Budget",
@@ -1254,8 +1254,8 @@ function getRDAbstractDataByType(type,locType,locId)
 {
 	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
 	var json = {
-		year : "2017",
-		fromDate : '2017-04-01',
+		year : "2018",
+		fromDate : '2018-04-01',
 		toDate : moment().format("YYYY-MM")+'-30',
 		type : type,
 		locationType: locType,
@@ -1281,8 +1281,8 @@ function getNtrJalaSiriLvlWiseData(type,locType,locId)
 {
 	$("."+type.replace(/\s+/g, '')+"AllCls").html(spinner);
 	var json = {
-		year : "2017",
-		fromDate : '2017-04-01',
+		year : "2018",
+		fromDate : '2018-04-01',
 		toDate : moment().format("YYYY-MM")+'-30',
 		locationType : "state"
 	}
@@ -2161,14 +2161,14 @@ function buildPageWiseComponents(result,pageId){
 										str+='<div class="row" >';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId1"></h3>';
-												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 											str+='<div class="col-sm-1 text-right">';
 												str+='<h3 style="font-size:30px;">/</h3>';
 											str+='</div>';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay1"></h3>';
-												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 										str+='</div>';
 										
@@ -2178,14 +2178,14 @@ function buildPageWiseComponents(result,pageId){
 										str+='<div class="row" >';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId2"></h3>';
-												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 											str+='<div class="col-sm-1 text-right">';
 												str+='<h3 style="font-size:30px;">/</h3>';
 											str+='</div>';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay2"></h3>';
-												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 										str+='</div>';
 										
@@ -2195,14 +2195,14 @@ function buildPageWiseComponents(result,pageId){
 										str+='<div class="row" >';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId3"></h3>';
-												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 											str+='<div class="col-sm-1 text-right">';
 												str+='<h3 style="font-size:30px;">/</h3>';
 											str+='</div>';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay3"></h3>';
-												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 										str+='</div>';
 										
@@ -2212,14 +2212,14 @@ function buildPageWiseComponents(result,pageId){
 										str+='<div class="row" >';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 style="margin-top: 0px;font-weight:bold;" id="printMediaCountId4"></h3>';
-												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Today&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 											str+='<div class="col-sm-1 text-right">';
 												str+='<h3 style="font-size:30px;">/</h3>';
 											str+='</div>';
 											str+='<div class="col-sm-5 text-right">';
 												str+='<h3 class="" style="margin-top: 0px;font-weight:bold;" id="printMediaCountIdYesterDay4"></h3>';
-												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve&nbsp;&nbspArticles</p>';
+												str+='<p style="font-size:13px;">Yesterday&nbsp;&nbsp-ve</p>';
 											str+='</div>';
 										str+='</div>';
 										
@@ -2830,8 +2830,8 @@ function getVehicletrackingDetails(){
 function getMaterialAvailabilityStatusForFinancialYear(){
 	$(".MaterialAvailabilityAllCls").html(spinner); 
 	var json = {
-		year : "2017",
-		fromDate : "2017-04-01",
+		year : "2018",
+		fromDate : "2018-04-01",
 		toDate : glEndDate,
 		locationType: "state",
 		locationIdStr : "-1",
@@ -2887,4 +2887,16 @@ function getWorkCompletionData(){
 			$(".NotYetCompletedWorksAllCls").html("0 / 0"); 
 		}
 	});
+}
+//fun();
+function fun() 
+{
+   var data="hello";
+   $.get("https://demo.eoffice.ap.gov.in/TTReports/Filesumm1.php?strFromDate=2014-01-01&strToDate=2018-03-09", function(response) {
+        data = response;
+   }).error(function(){
+  alert("Sorry could not proceed");
+});
+
+   return data;
 }

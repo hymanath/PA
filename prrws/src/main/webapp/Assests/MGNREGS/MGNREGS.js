@@ -1,14 +1,14 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 //var smallSpinner = '<img src="Assests/images/spinner.gif"/>';
 var smallSpinner = '<img src="Assests/images/spinner.gif" style="width:25px;height:25px;"/>';
-var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
+var glStartDate = '2018-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
 var glStartDateForWebservice = moment().format("DD/MM/YYYY");
 var glEndDateForWebservice = moment().format("DD/MM/YYYY");
 var globalDivName;
 var globalMCCMainDivName;
 var $windowWidth = $(window).width();
-var globalFinancialYear = "2017";
+var globalFinancialYear = "2018";
 //getAllDistricts();
 //function onLoadCalls()
 //{
@@ -154,7 +154,7 @@ var globalFinancialYear = "2017";
 	});
 	$(".chosenSelect").chosen({width:'100%'})
 	
-	$("#dateRangePickerMGNF").val('2017-04-01');
+	$("#dateRangePickerMGNF").val('2018-04-01');
 	$("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
 	
 	
@@ -6856,28 +6856,28 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='<small class="text-center">Availability</small>';
 			if(result[0].balanceMaterial != null && result[0].balanceMaterial.length > 0)
 			{
-				str+='<h1 class="text-center" style="font-size:29px"><i class="fa fa-inr"></i> '+result[0].balanceMaterial+'&nbsp;Cr</h1>';
+				str+='<h1 class="text-center" style="font-size:27px"><i class="fa fa-inr"></i> '+result[0].balanceMaterial+'&nbsp;Cr</h1>';
 			}else{
 				str+='<h1 class="text-center">0</h1>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label>Entitlement</label>';
+					str+='<label class="m_top10">Entitlement</label>';
 					if(result[0].materialEntitlement != null && result[0].materialEntitlement.length > 0)
 					{
-						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].materialEntitlement+'&nbsp;Cr</h4>';
+						str+='<h4 class="m_top10" style="font-size: 13px !important;"><i class="fa fa-inr" style="position:static"></i>'+result[0].materialEntitlement+'&nbsp;Cr</h4>';
 					}else{
-						str+='<h4>0</h4>';
+						str+='<h4  class="m_top10">0</h4>';
 					}
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label>Expenditure</label>';
+					str+='<label class="m_top10">Expenditure</label>';
 					if(result[0].materialExpenditure != null && result[0].materialExpenditure.length > 0)
 					{
-						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].materialExpenditure+'&nbsp;Cr</h4>';
+						str+='<h4 class="m_top10" style="font-size: 13px !important;"><i class="fa fa-inr" style="position:static"></i>'+result[0].materialExpenditure+'&nbsp;Cr</h4>';
 					}else{
-						str+='<h4>0</h4>';
+						str+='<h4 class="m_top10">0</h4>';
 					}
 				str+='</div>';
 			str+='</div>';
@@ -10956,3 +10956,50 @@ function buildDepartmentCommentsDetails(result,globalDivName){
 			] 
 		});
 }
+$(document).on("click","[role='tabCummulative'] li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var finanicialYearType = $(this).attr("attr_type")
+	var subLocType = '';
+	var locationType = '';
+	var divId = '';
+	if(finanicialYearType == "thisFin"){
+		glStartDate = '2018-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
+		glEndDate = moment().format("YYYY-MM")+'-30';
+		globalFinancialYear = "2018";
+		$("#dateRangePickerMGNF").val('2018-04');
+		$("#dateRangePickerMGNT").val(moment().format("YYYY-MM"));
+	}else{
+		
+		glStartDate = '2017-04-01';//moment().startOf('year').format("YYYY-MM")+'-1';
+		glEndDate='2018-03-31';
+		globalFinancialYear = "2017";
+		$("#dateRangePickerMGNF").val('2017-04');
+		$("#dateRangePickerMGNT").val('2018-03');
+	}
+	var levelId = $("#selectedName").attr("attr_levelid");
+	var districtId = $("#selectedName").attr("attr_distid");
+	var locId = $("#selectedName").attr("attr_id");
+	if(levelId == 2)
+	{
+		locationType = 'state';
+		subLocType = 'state';
+		divId = 'ConsolidatedViewstate'
+	}else if(levelId == 3)
+	{
+		locationType = 'district';
+		subLocType = 'district';
+		divId = 'ConsolidatedViewdistrict'
+	}else if(levelId == 4)
+	{
+		locationType = 'constituency';
+		subLocType = 'constituency';
+		divId = 'ConsolidatedViewconstituency';
+		districtId = $("#selectedName").attr("attr_distId");
+	}
+	//$("#projectOverviewBlock,#projectData").html('');
+	//$("[overview-block='"+type+"']").removeClass("panel-block-white");
+	buildNREGSProjectsOverview(overViewArr,'');
+	getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId,'completed');
+	onloadCallsBuilding();
+});
