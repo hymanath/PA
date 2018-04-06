@@ -193,12 +193,13 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		
 	}
 	
-	public ResultStatus savingAssigningBooths(final Long cadreId, final List<Long> boothIds){
+	public ResultStatus savingAssigningBooths(final Long cadreId, final List<String> portNos,final Long levelId,final Long levelValue){
 		ResultStatus status = new ResultStatus();
 		try{
 			transactionTemplate.execute(new TransactionCallbackWithoutResult() {
 				public void doInTransactionWithoutResult(TransactionStatus status) {
-					//getLocationIdsOfBooths(boothIds);
+					List<Long> boothIds = areaInchargeLocationDAO.getBoothPortInchageLocationIds(portNos,levelId,levelValue);
+					if(boothIds != null && boothIds.size()>0){
 					for(Long param : boothIds){
 						//Long inchargeLocationId = areaInchargeLocationDAO.getLocationIdsOfBooths(param);
 						AreaInchargeLocation modal = areaInchargeLocationDAO.get(param);
@@ -214,6 +215,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 						AIM.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 						AreaInchargeMember inchargeMember = areaInchargeMemberDAO.save(AIM);
 						
+					}
 					}
 				}
 
@@ -335,10 +337,14 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		}
 		return inchargeVo;
 	}
-	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
+	public String deleteAreaInchargeAssignBooths(Long candidateId,String portNo,Long levelId,Long levelValue){
 		String result = null;
 		try{
-			if(boothId.longValue() == 0l){
+			Long boothId =0l;
+			if((portNo != null) || !(portNo.equalsIgnoreCase("0"))){
+				 boothId = areaInchargeLocationDAO.getBoothPortInchageLocationId(portNo,levelId,levelValue);
+			}
+			if((portNo  == null) || (portNo.equalsIgnoreCase("0"))){
 				List<Long> inchargeLocationIds =areaInchargeMemberDAO.getdeletedBoothIds(candidateId);
 				if(inchargeLocationIds != null && inchargeLocationIds.size()>0){
 				for(Long param : inchargeLocationIds){
@@ -351,6 +357,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 				}
 				}
 			}else{
+				//Long getBoothPortInchageLocationIds(Long portNo)
 				AreaInchargeLocation inchargeLocation = areaInchargeLocationDAO.get(boothId);
 				if(inchargeLocation != null){
 					inchargeLocation.setIsAssinged("N");
@@ -431,14 +438,14 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	public AreaInchargeVO settingAssignedAndUnAssignedCount(List<Object[]> totalList,AreaInchargeVO finalVo){
 		try{
 			Long total=0l,assignCount=0l,unAssignCount =0l;
-			Set<Long> assignIds = new HashSet<Long>();
+			Set<String> assignIds = new HashSet<String>();
 			if(totalList != null && totalList.size()>0){
 				for(Object[] param : totalList){
 					String status=commonMethodsUtilService.getStringValueForObject(param[1]);
 					if(status != null && status.equalsIgnoreCase("Y")){
 						assignCount=assignCount+1l;
 						finalVo.setAssignedCount(assignCount);
-						assignIds.add(commonMethodsUtilService.getLongValueForObject(param[0]));
+						assignIds.add(commonMethodsUtilService.getStringValueForObject(param[0]));
 					}else if(status != null && status.equalsIgnoreCase("N")){
 						unAssignCount=unAssignCount+1l;
 						finalVo.setUnAssignedCount(unAssignCount);
@@ -525,8 +532,9 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 			if(inchargeConstituencyMap != null && inchargeConstituencyMap.size()>0){
 				finalList.addAll(inchargeConstituencyMap.values());
 			}
-			   returnList = setAreaInchargeAssignedTemplete();
-			   returnList = setAreaInchargeAssignedPer(finalList,returnList);
+			Map<String,InchargeMemberVO> areaPerMAp = new HashMap<String,InchargeMemberVO>();
+			   returnList = setAreaInchargeAssignedTemplete(areaPerMAp);
+			   returnList = setAreaInchargeAssignedPer(finalList,returnList,areaPerMAp);
 		
 			
 		}catch(Exception e){
@@ -535,11 +543,10 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		}
 		return returnList;
 	}
-	public List<InchargeMemberVO> setAreaInchargeAssignedTemplete(){
+	public List<InchargeMemberVO> setAreaInchargeAssignedTemplete(Map<String,InchargeMemberVO> areaPerMAp){
 		List<InchargeMemberVO> returnList = new ArrayList<InchargeMemberVO>();
 		try{
-			String[] perArr = {"0","1-10","10-20","20-30","30-40","40-50","50-60","60-70","70-80","80-90","above 90"};
-			Map<String,InchargeMemberVO> areaPerMAp =new HashMap<String,InchargeMemberVO>();
+			String[] perArr = {"0","1-10","10-20","20-30","30-40","40-50","50-60","60-70","70-80","80-90","90"};
 			for(String param : perArr){
 				InchargeMemberVO perVo =areaPerMAp.get(param);
 				if(perVo == null ){
@@ -559,34 +566,41 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		return returnList;
 		
 	}
-	public List<InchargeMemberVO> setAreaInchargeAssignedPer(List<AreaInchargeVO> finalList,List<InchargeMemberVO> returnList){
+	public List<InchargeMemberVO> setAreaInchargeAssignedPer(List<AreaInchargeVO> finalList,List<InchargeMemberVO> returnList,Map<String,InchargeMemberVO> areaPerMAp){
 		
 		//List<InchargeMemberVO> returnList = new ArrayList<InchargeMemberVO>();
 		try{
 			Long total =0l;
 			if(finalList != null && finalList.size()>0){
 				for(AreaInchargeVO inchargeVO : finalList){
-					//InchargeMemberVO perVO = new InchargeMemberVO();
 					inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(inchargeVO.getTotal(),inchargeVO.getAssignedCount())));
 					if(Double.valueOf(inchargeVO.getAssignPer()) >=1 && Double.valueOf(inchargeVO.getAssignPer()) <10){
-						
-						//perVO.setOneToTenCount(perVO.getOneToTenCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(1-10);
+						memberVo.setOneToTenCount(memberVo.getOneToTenCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=10 && Double.valueOf(inchargeVO.getAssignPer()) <20){
-						//perVO.setTenToTwentyCount(perVO.getTenToTwentyCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(10-20);
+						memberVo.setTenToTwentyCount(memberVo.getTenToTwentyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=20 && Double.valueOf(inchargeVO.getAssignPer()) <30){
-						//perVO.setTwentyToThirCount(perVO.getTwentyToThirCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(20-30);
+						memberVo.setTwentyToThirCount(memberVo.getTwentyToThirCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=30 && Double.valueOf(inchargeVO.getAssignPer()) <40){
-						//perVO.setThirToFrtyCount(perVO.getThirToFrtyCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(30-40);
+						memberVo.setThirToFrtyCount(memberVo.getThirToFrtyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=40 && Double.valueOf(inchargeVO.getAssignPer()) <50){
-						//perVO.setFrtyToFivtyCount(perVO.getFrtyToFivtyCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(40-50);
+						memberVo.setFrtyToFivtyCount(memberVo.getFrtyToFivtyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=50 && Double.valueOf(inchargeVO.getAssignPer()) <60){
-						//perVO.setFivtyToSixtyCount(perVO.getFivtyToSixtyCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(50-60);
+						memberVo.setFivtyToSixtyCount(memberVo.getFivtyToSixtyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=60 && Double.valueOf(inchargeVO.getAssignPer()) <70){
-						//perVO.setSixtyToSeventyCount(perVO.getSixtyToSeventyCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(60-70);
+						memberVo.setSixtyToSeventyCount(memberVo.getSixtyToSeventyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=80 && Double.valueOf(inchargeVO.getAssignPer()) <90){
-						//perVO.setEightyToNightyCount(perVO.getEightyToNightyCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(80-90);
+						memberVo.setEightyToNightyCount(memberVo.getEightyToNightyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=90){
-						//perVO.setAboveNighty(perVO.getAboveNighty()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get(90);
+						memberVo.setAboveNighty(memberVo.getAboveNighty()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) ==0){
 						//perVO.setZeroPerCount(perVO.getZeroPerCount()+1);
 					}

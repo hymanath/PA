@@ -14,4 +14,6 @@ public interface IAreaInchargeLocationDAO extends GenericDao<AreaInchargeLocatio
 	public List<Object[]> getAssignedAndUnAssignedBooths(Long levelId,Long levelValue);
 	public List<Object[]> getAreaInchargesStatusWiseCount(Long levelId,Long levelValue);
 	public List<Object[]> getConstituenciesBaseBoothLocationCount(Long userAccessLevelId,Set<Long> locationValuesSet);
+	public List<Long> getBoothPortInchageLocationIds(List<String> portNos,Long levelId,Long levelValue);
+	public Long getBoothPortInchageLocationId(String portNo,Long levelId,Long levelValue);
 }
