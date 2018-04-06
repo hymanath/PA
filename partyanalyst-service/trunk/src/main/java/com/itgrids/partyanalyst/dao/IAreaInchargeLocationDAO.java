@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.GenericDao;
 
@@ -12,4 +13,5 @@ public interface IAreaInchargeLocationDAO extends GenericDao<AreaInchargeLocatio
 	public Long getLocationIdsOfBooths(Long boothId);
 	public List<Object[]> getAssignedAndUnAssignedBooths(Long levelId,Long levelValue);
 	public List<Object[]> getAreaInchargesStatusWiseCount(Long levelId,Long levelValue);
+	public List<Object[]> getConstituenciesBaseBoothLocationCount(Long userAccessLevelId,Set<Long> locationValuesSet);
 }
