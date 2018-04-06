@@ -252,7 +252,14 @@ function buildCompleteOverviewDetails(result){
 	var str='';
 	var str1='';
 	var str2='';
-	
+	var	 totcollectionPer = parseFloat(result.totalCollectionAmount)*100/parseFloat(result.totalDemandAmount);
+	var  collectionAreaAmtPer = parseFloat(result.collectionArrearAmount)*100/parseFloat(result.demandArrearAmount);
+	var  collectionCurrentAmtper = parseFloat(result.collectionCurrentAmount)*100/parseFloat(result.demandCurrentAmount);
+    var  totalBalanceAmtPer = parseFloat(result.totalBalanceAmount)*100/parseFloat(result.totalDemandAmount);
+	var  balanceArrearAmtPer = parseFloat(result.balanceArrearAmount)*100/parseFloat(result.demandArrearAmount);
+	var  balanceCurrentAmtPer = parseFloat(result.balanceCurentAmount)*100/parseFloat(result.demandCurrentAmount);
+		
+		
 	str+='<div class="col-sm-4 m_top10">';
 		str+='<div class="panel" style="text-align:center; background-color:#3393CD;">';
 			str+='<div class="panel-heading">';
@@ -288,19 +295,19 @@ function buildCompleteOverviewDetails(result){
 			str+='</div>';
 			str+='<div class="panel-body" style="background-color:#5D9440;">';
 				str+='<div class="row">';
-					str+='<div class="Pad_14_10">';
-						str+='<h2 class="white_color">'+result.totalCollectionAmount+'</h2>';
+					str+='<div class="Pad_14_10" >';
+						str+='<h2 class="white_color" >'+result.totalCollectionAmount+'<span style="font-size:16px;"> ('+totcollectionPer.toFixed(2)+'%) </span></h2>';
 						str+='<h5 class="m_top5 font_weight">Units:&nbsp;'+result.totalCollectionUnts+'</h5>';
 						str+='<hr class="m_top_bottom">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-6 Bor_rgt_white">';
 								str+='<h5 class="font_weight m_top5">Arrears</h5>';
-								str+='<h5 class="font_weight m_top5 white_color">'+result.collectionArrearAmount+'&nbsp;<!--<small class="white_color font_weight">Cr</small>--></h5>';
+								str+='<h5 class="font_weight m_top5 white_color">'+result.collectionArrearAmount+' ('+collectionAreaAmtPer.toFixed(2)+'%)&nbsp;<!--<small class="white_color font_weight">Cr</small>--></h5>';
 								str+='<h6 class="font_weight m_top5">Units:&nbsp;'+result.collectionArrearUnits+'</h6>';
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<h5 class="font_weight m_top5">Current</h5>';
-								str+='<h5 class="font_weight m_top5 white_color">'+result.collectionCurrentAmount+'&nbsp;<!--<small class="white_color font_weight">Cr</small>--></h5>';
+								str+='<h5 class="font_weight m_top5 white_color">'+result.collectionCurrentAmount+'&nbsp('+collectionCurrentAmtper.toFixed(2)+'%)&nbsp;<!--<small class="white_color font_weight">Cr</small>--></h5>';
 								str+='<h6 class="font_weight m_top5">Units:&nbsp;'+result.collectionCurrentUnits+'</h6>';
 							str+='</div>';
 						str+='</div>';
@@ -317,18 +324,18 @@ function buildCompleteOverviewDetails(result){
 			str+='<div class="panel-body" style="background-color:#F1595B;">';
 				str+='<div class="row">';
 					str+='<div class="Pad_14_10">';
-						str+='<h2 class="white_color">'+result.totalBalanceAmount+'</h2>';
+						str+='<h2 class="white_color">'+result.totalBalanceAmount+'<span style="font-size:16px;"> ('+totalBalanceAmtPer.toFixed(2)+'%)</span></h2>';
 						str+='<h5 class="m_top5 font_weight">Units:&nbsp;'+result.totalBalanceUnits+'</h5>';
 						str+='<hr class="m_top_bottom">';
 						str+='<div class="row">';
 							str+='<div class="col-sm-6 Bor_rgt_white">';
 								str+='<h5 class="font_weight m_top5">Arrears</h5>';
-								str+='<h5 class="font_weight m_top5 white_color">'+result.balanceArrearAmount+'&nbsp;<!--<small class="white_color font_weight">Cr</small>--></h5>';
+								str+='<h5 class="font_weight m_top5 white_color">'+result.balanceArrearAmount+'&nbsp('+balanceArrearAmtPer.toFixed(2)+'%)<!--<small class="white_color font_weight">Cr</small>--></h5>';
 								str+='<h6 class="font_weight m_top5">Units:&nbsp;'+result.balanceArrearUnits+'</h6>';
 							str+='</div>';
 							str+='<div class="col-sm-6">';
 								str+='<h5 class="font_weight m_top5">Current</h5>';
-								str+='<h5 class="font_weight m_top5 white_color">'+result.balanceCurentAmount+'&nbsp;<!--<small class="white_color font_weight">Cr</small>--></h5>';
+								str+='<h5 class="font_weight m_top5 white_color">'+result.balanceCurentAmount+'&nbsp('+balanceCurrentAmtPer.toFixed(2)+'%)<!--<small class="white_color font_weight">Cr</small>--></h5>';
 								str+='<h6 class="font_weight m_top5">Units:&nbsp;'+result.balanceCurrentUnits+'</h6>';
 							str+='</div>';
 						str+='</div>';
