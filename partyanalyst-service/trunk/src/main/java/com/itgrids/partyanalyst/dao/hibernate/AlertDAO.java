@@ -11294,28 +11294,28 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,state S " +
  	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and UA.state_id =S.state_id and UA.district_id is not null ") ;
+ 	 					" and UA.state_id =S.state_id  ") ;
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("district")){
  				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
  				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,district D " +
- 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id and UA.district_id is not null ") ;
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
  				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,0 as mandalId,'' as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,constituency C,district D " +
  	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 ");
+ 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 and UA.district_id is not null ");
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("mandal")){
  				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,T.tehsil_id as mandalId ,T.tehsil_name as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
  	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
- 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id and UA.district_id is not null ");
  			}
  		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
  			if(type !=null && type.equalsIgnoreCase("state")){
@@ -11325,7 +11325,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
  				
  				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id and UA.district_id is not null ") ;
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id  and UA.district_id is not null ") ;
  				
  			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
