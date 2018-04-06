@@ -214,13 +214,13 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 			
 			jObj = new JSONObject(getTask());
 			JSONArray boothIdsArr = jObj.getJSONArray("boothIds");  
-			List<Long> boothIdsList = new ArrayList<Long>();
+			List<String> boothIdsList = new ArrayList<String>();
 			if(boothIdsArr != null && boothIdsArr.length() > 0){
 				for (int i = 0; i < boothIdsArr.length(); i++){
-					boothIdsList.add(Long.parseLong(boothIdsArr.getString(i)));          
+					boothIdsList.add(boothIdsArr.getString(i));          
 				}  
 			}
-			resultStatus = areaInchargeDashBoardService.savingAssigningBooths(jObj.getLong("cadreId"),boothIdsList);
+			resultStatus = areaInchargeDashBoardService.savingAssigningBooths(jObj.getLong("cadreId"),boothIdsList,jObj.getLong("levelId"),jObj.getLong("levelValue"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into savingAssigningBooths Action",e);
@@ -282,9 +282,9 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 			LOG.info("Entered into deleteAreaInchargeAssignBooths");
 				jObj = new JSONObject(getTask());
 			Long candidateId = jObj.getLong("candidateId");
-			Long boothId = jObj.getLong("boothId");
+			String boothId = jObj.getString("boothId");
 			
-			result = areaInchargeDashBoardService.deleteAreaInchargeAssignBooths(candidateId,boothId);	
+			result = areaInchargeDashBoardService.deleteAreaInchargeAssignBooths(candidateId,boothId,jObj.getLong("levelId"),jObj.getLong("levelValue"));	
 		}catch(Exception e){
 			LOG.error("Exception in deleteAreaInchargeAssig" +
 					"nBooths method,e ");

@@ -657,7 +657,9 @@ function getAssignedAndUnAssignedBooths(){
 		
 		var jsObj={
 			boothIds:boothIds,
-		    cadreId : cadreId
+		    cadreId : cadreId,
+			levelId :globalLevelId,
+            levelValue : globalLevelValue
 		}
 		$.ajax({
 			type:'GET',
@@ -908,7 +910,9 @@ function deleteAreaInchargeAssignBooths(cadreId,boothId){
 	$("#removeAssigspinnerDivId").show();
 	  var jsObj={
 	   candidateId:cadreId,
-	   boothId:boothId
+	   boothId:boothId,
+	   levelId :globalLevelId,
+	   levelValue : globalLevelValue
 	  }
 	  $.ajax({
 	   type:'GET',
