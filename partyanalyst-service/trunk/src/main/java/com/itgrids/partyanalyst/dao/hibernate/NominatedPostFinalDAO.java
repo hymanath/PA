@@ -734,7 +734,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			queryStr.append(" model.nominatedPostMember.address.tehsil.tehsilId =:locationId and ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			queryStr.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId =:locationId and ");
+			queryStr.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:locationId and ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
@@ -815,7 +815,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			queryStr.append(" model.nominatedPostMember.address.tehsil.tehsilId =:locationId and ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			queryStr.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId =:locationId and ");
+			queryStr.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:locationId and ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
@@ -894,7 +894,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			queryStr.append(" model.nominatedPostMember.address.tehsil.tehsilId =:locationId and ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			queryStr.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId =:locationId and ");
+			queryStr.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId =:locationId and ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			queryStr.append(" model.nominatedPostMember.address.panchayat.panchayatId =:locationId and ");
@@ -1215,7 +1215,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" select model.nominatedPostMember.address.localElectionBody.localElectionBodyId, model.nominatedPostMember.address.localElectionBody.name, ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
-			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, ");
+			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.panchayat.panchayatName, ");
 		}
 		
 		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
@@ -1262,7 +1262,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ");
+			strQuery.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ");
@@ -1282,7 +1282,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ");
+			strQuery.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ");
@@ -1327,7 +1327,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" select model.nominatedPostMember.address.localElectionBody.localElectionBodyId, model.nominatedPostMember.address.localElectionBody.name, model.nominationPostCandidate.gender, ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
-			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, model.nominationPostCandidate.gender, ");
+			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.panchayat.panchayatName, model.nominationPostCandidate.gender, ");
 		}
 		
 		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
@@ -1375,7 +1375,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId , model.nominationPostCandidate.gender");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.gender");
+			strQuery.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId ,model.nominationPostCandidate.gender");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.gender");
@@ -1395,7 +1395,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId , model.nominationPostCandidate.gender");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.gender");
+			strQuery.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId ,model.nominationPostCandidate.gender");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.gender");
@@ -1441,7 +1441,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" select model.nominatedPostMember.address.localElectionBody.localElectionBodyId, model.nominatedPostMember.address.localElectionBody.name, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
-			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.localElectionBody.panchayatName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
+			strQuery.append(" select model.nominatedPostMember.address.panchayat.panchayatId, model.nominatedPostMember.address.panchayat.panchayatName, model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId, ");
 		}
 		
 		strQuery.append(" count(distinct model.nominatedPostApplication.nominatedPostApplicationId) " +
@@ -1488,7 +1488,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
+			strQuery.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId ");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
@@ -1508,7 +1508,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 			strQuery.append(" model.nominatedPostMember.address.tehsil.tehsilId , model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Muncipality/Corporation")){
-			strQuery.append(" model.nominatedPostMember.address.panchayat.localElectionBodyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
+			strQuery.append(" model.nominatedPostMember.address.localElectionBody.localElectionBodyId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
 		}
 		else if(locationLevelName.equalsIgnoreCase("Village")){
 			strQuery.append(" model.nominatedPostMember.address.panchayat.panchayatId ,model.nominationPostCandidate.nominatedPostAgeRange.nominatedPostAgeRangeId");
@@ -1553,13 +1553,13 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 				" model.nominatedPostMember.nominatedPostPosition.isDeleted='N' and model.isPrefered = 'Y' " +
 				" and model.applicationStatus.applicationStatusId = 6 and model.isExpired = 'N' ");
 	       
-	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l && boardLevelId != null && boardLevelId<7l){
-	    	   if(LocationLevelId.longValue() != 5L)
+	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
+	    	   //if(LocationLevelId.longValue() < 5L)
 	    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId=:LocationLevelId ");
-	    	   else
-	    		   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
-	       }else{
-	    	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
+	    	   //else
+	    		  // queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (5,6) ");
+	      // }else{
+	    	//   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
 	       }
 	       
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0 && boardLevelId != null && boardLevelId<7l){
@@ -1592,7 +1592,7 @@ public class NominatedPostFinalDAO extends GenericDaoHibernate<NominatedPostFina
 	       
 	       Query query = getSession().createQuery(queryStr.toString());
 	       if(LocationLevelId != null && LocationLevelId.longValue() > 0l){
-	    	   if(LocationLevelId.longValue() != 5L  && boardLevelId != null && boardLevelId<7l)
+	    	   //if(LocationLevelId.longValue() != 5L  && boardLevelId != null && boardLevelId<7l)
 	    		   query.setParameter("LocationLevelId", LocationLevelId);
 	       }
 	       if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){

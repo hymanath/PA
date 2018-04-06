@@ -1080,7 +1080,8 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 		    queryStr.append("select model.nominatedPostStatus.nominatedPostStatusId,model.nominatedPostStatus.status,count(distinct model.nominatedPostId) from NominatedPost model " +
 		    		       " where " +
 		    		       " model.isExpired='N' and model.isDeleted='N'" +
-		    		       " and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  ");
+		    		       " and model.nominatedPostMember.nominatedPostPosition.isDeleted='N'  " +
+		    		       "and model.nominatedPostMember.isDeleted = 'N' ");
 		    
            if(positionId != null && positionId.longValue() > 0){
         	   queryStr.append(" and model.nominatedPostMember.nominatedPostPosition.position.positionId=:positionId ");
@@ -1860,7 +1861,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
 	    	queryStr.append(" and model.nominatedPostMember.boardLevelId=:locationLevelId ");
 	    }*/
        if(boardLevelId != null && boardLevelId.longValue() >=7){
-    	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId in (7,8) ");
+    	   queryStr.append(" and model.nominatedPostMember.boardLevel.boardLevelId =:LocationLevelId ");
     	   if(lctnLevelValueList != null && lctnLevelValueList.size() > 0){
 	    		   if(LocationLevelId != null && LocationLevelId.longValue() == 5l){
 			    	   queryStr.append(" and model.nominatedPostMember.address.tehsil.tehsilId in (:lctnLevelValueList)");
@@ -1899,7 +1900,7 @@ public class NominatedPostDAO extends GenericDaoHibernate<NominatedPost, Long> i
        
        Query query = getSession().createQuery(queryStr.toString());
        
-       if(LocationLevelId != null && LocationLevelId.longValue() > 0l && boardLevelId != null && boardLevelId.longValue() <7l){
+       if(LocationLevelId != null && LocationLevelId.longValue() > 0l ){
 		   query.setParameter("LocationLevelId", LocationLevelId);
        }
       
