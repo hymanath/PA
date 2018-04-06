@@ -3,6 +3,7 @@ package com.itgrids.partyanalyst.service;
 import java.util.List;
 
 import com.itgrids.partyanalyst.dto.AreaInchargeVO;
+import com.itgrids.partyanalyst.dto.InchargeMemberVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 
 
@@ -16,5 +17,6 @@ public interface IAreaInchargeDashBoardService {
 	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId);
 	public List<AreaInchargeVO> getAreaInchargeAssignedBoothDetails(Long levelId,Long levelValue);
 	public AreaInchargeVO getAreaInchargesStatusWiseCount(Long levelId,Long levelValue);
+	public List<InchargeMemberVO> getBoothAssignedpercentageBaseConstituencies(String fromDateStr,String toDateStr,Long activityMemberId);
 	
 }

@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dao.hibernate;
 
 import java.util.List;
+import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
 import org.hibernate.Query;
@@ -36,7 +37,7 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 		return (Long)query.uniqueResult();
 		
 	}
-	
+	//AIL.address.booth.partNo
 	public List<Object[]> getAssignedAndUnAssignedBooths(Long levelId,Long levelValue){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged," +
@@ -82,6 +83,15 @@ public class AreaInchargeLocationDAO extends GenericDaoHibernate<AreaInchargeLoc
 			query.setParameter("levelValue", levelValue);
 		}
 		return query.list();
+		
+	}
+	//0-locationId,1-isAssigned,2-constituencyId,3-name
+	public List<Object[]> getConstituenciesBaseBoothLocationCount(Long userAccessLevelId,Set<Long> locationValuesSet){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select distinct AIL.areaInchargeLocationId,AIL.isAssinged, " +
+				" AIL.areaInchargeLocation.address.constituency.constituencyId,AIL.areaInchargeLocation.address.constituency.name" );
+		
+		return null;
 		
 	}
 		

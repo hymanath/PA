@@ -1,6 +1,8 @@
 package com.itgrids.partyanalyst.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -8,14 +10,21 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
+import org.jfree.util.Log;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallbackWithoutResult;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import com.itgrids.partyanalyst.dao.IActivityMemberAccessLevelDAO;
 import com.itgrids.partyanalyst.dao.IAreaInchargeLocationDAO;
 import com.itgrids.partyanalyst.dao.IAreaInchargeMemberDAO;
+import com.itgrids.partyanalyst.dao.IConstituencyDAO;
+import com.itgrids.partyanalyst.dao.IDistrictDAO;
 import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
+import com.itgrids.partyanalyst.dao.IUserConstituencyAccessInfoDAO;
+import com.itgrids.partyanalyst.dao.IUserDistrictAccessInfoDAO;
 import com.itgrids.partyanalyst.dto.AreaInchargeVO;
+import com.itgrids.partyanalyst.dto.InchargeMemberVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.model.AreaInchargeLocation;
 import com.itgrids.partyanalyst.model.AreaInchargeMember;
@@ -36,6 +45,11 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	private TransactionTemplate     transactionTemplate;
 	private IAreaInchargeLocationDAO areaInchargeLocationDAO;
 	private ICadreDetailsService cadreDetailsService;
+	private IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO;
+	private IDistrictDAO districtDAO;
+	private IConstituencyDAO constituencyDAO;
+	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
+	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -95,6 +109,51 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 
 	public void setCadreDetailsService(ICadreDetailsService cadreDetailsService) {
 		this.cadreDetailsService = cadreDetailsService;
+	}
+
+	
+	public IActivityMemberAccessLevelDAO getActivityMemberAccessLevelDAO() {
+		return activityMemberAccessLevelDAO;
+	}
+
+	public void setActivityMemberAccessLevelDAO(
+			IActivityMemberAccessLevelDAO activityMemberAccessLevelDAO) {
+		this.activityMemberAccessLevelDAO = activityMemberAccessLevelDAO;
+	}
+
+	public IDistrictDAO getDistrictDAO() {
+		return districtDAO;
+	}
+
+	public void setDistrictDAO(IDistrictDAO districtDAO) {
+		this.districtDAO = districtDAO;
+	}
+
+	
+	public IConstituencyDAO getConstituencyDAO() {
+		return constituencyDAO;
+	}
+
+	public void setConstituencyDAO(IConstituencyDAO constituencyDAO) {
+		this.constituencyDAO = constituencyDAO;
+	}
+	
+	public IUserDistrictAccessInfoDAO getUserDistrictAccessInfoDAO() {
+		return userDistrictAccessInfoDAO;
+	}
+
+	public void setUserDistrictAccessInfoDAO(
+			IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO) {
+		this.userDistrictAccessInfoDAO = userDistrictAccessInfoDAO;
+	}
+
+	public IUserConstituencyAccessInfoDAO getUserConstituencyAccessInfoDAO() {
+		return userConstituencyAccessInfoDAO;
+	}
+
+	public void setUserConstituencyAccessInfoDAO(
+			IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO) {
+		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 	}
 
 	public List<AreaInchargeVO> getAreaInchargeDetails(Long voterId,String mobileNo,String memberShipId){
@@ -207,9 +266,9 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 			AreaInchargeVO assignVO = new AreaInchargeVO();
 			assignVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
 			assignVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[4]));
-			assignVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[5])+""+"Mandal");
+			assignVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[5])+""+"(M)");
 			assignVO.setPanchayatId(commonMethodsUtilService.getLongValueForObject(param[2]));
-			assignVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[3])+""+"Panchayat");
+			assignVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[3])+""+"(P)");
 			if(status != null && status.equalsIgnoreCase("N")){
 				finalVO.getUnAssignBoothList().add(assignVO);
 				unAssignedCount = unAssignedCount+1l;
@@ -279,22 +338,31 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	public String deleteAreaInchargeAssignBooths(Long candidateId,Long boothId){
 		String result = null;
 		try{
-			int status=areaInchargeMemberDAO.deleteAreaInchargeAssignBooths(candidateId,boothId);
-			
-			List<Long> inchargeLocationIds =areaInchargeMemberDAO.getdeletedBoothIds(candidateId);
-			if(inchargeLocationIds != null && inchargeLocationIds.size()>0){
-			for(Long param : inchargeLocationIds){
-				AreaInchargeLocation inchargeLocation = areaInchargeLocationDAO.get(param);
+			if(boothId.longValue() == 0l){
+				List<Long> inchargeLocationIds =areaInchargeMemberDAO.getdeletedBoothIds(candidateId);
+				if(inchargeLocationIds != null && inchargeLocationIds.size()>0){
+				for(Long param : inchargeLocationIds){
+					AreaInchargeLocation inchargeLocation = areaInchargeLocationDAO.get(param);
+					if(inchargeLocation != null){
+						inchargeLocation.setIsAssinged("N");
+						inchargeLocation.setIsDeleted("Y");
+						inchargeLocation = areaInchargeLocationDAO.save(inchargeLocation);
+					}
+				}
+				}
+			}else{
+				AreaInchargeLocation inchargeLocation = areaInchargeLocationDAO.get(boothId);
 				if(inchargeLocation != null){
 					inchargeLocation.setIsAssinged("N");
 					inchargeLocation.setIsDeleted("Y");
 					inchargeLocation = areaInchargeLocationDAO.save(inchargeLocation);
 				}
 			}
-			}
-			if(status >0){
-				result = "success";
-			}
+		int status=areaInchargeMemberDAO.deleteAreaInchargeAssignBooths(candidateId,boothId);
+		
+		if(status >0){
+			result = "success";
+		  }
 		}catch(Exception e){
 			e.printStackTrace();
 			result = "failure";
@@ -381,14 +449,182 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 				}
 				
 			}
+		if(assignIds != null && assignIds.size()>0){
 			 Long inchargeCount = areaInchargeMemberDAO.getInchargeMembers(assignIds);
 			 if(inchargeCount != null && inchargeCount.longValue()>0l){
 				 finalVo.setInchargeCount(inchargeCount);
 			 }
+		  }
 			
 		}catch(Exception e){
 			LOG.error("Exception occurred at settingAssignedAndUnAssignedCount() of AreaInchargeDashBoardService class ",e);
 		}
 		return finalVo;
+	}
+	public List<InchargeMemberVO> getBoothAssignedpercentageBaseConstituencies(String fromDateStr,String toDateStr,Long activityMemberId){
+		List<AreaInchargeVO> finalList =new ArrayList<AreaInchargeVO>();
+		List<InchargeMemberVO> returnList = null;
+		try{
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+			 Long userAccessLevelId=0l;
+			 Set<Long> locationValuesSet= null;
+			 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+			    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+				   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+				   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+				  locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+					 if(locationValuesSet == null){
+						 locationValuesSet = new java.util.HashSet<Long>();
+						 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+					 }
+					 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+				}
+			   }
+			Date startDate = null;
+			Date endDate = null;
+			if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && toDateStr != null && !toDateStr.isEmpty() && toDateStr.trim().length() > 0){
+				startDate = sdf.parse(fromDateStr);
+				endDate = sdf.parse(toDateStr);
+			}
+			Map<Long,AreaInchargeVO> inchargeConstituencyMap =new HashMap<Long,AreaInchargeVO>();
+			Long assignedCount =0l,unAssignedCount=0l,total=0l;
+			////0-locationId,1-isAssigned,2-constituencyId,3-name
+			 List<Object[]> constituencyList = areaInchargeLocationDAO.getConstituenciesBaseBoothLocationCount(userAccessLevelId,locationValuesSet);
+			 if(constituencyList != null && constituencyList.size()>0l){
+				 for(Object[] param: constituencyList){
+					String assignedStatus =commonMethodsUtilService.getStringValueForObject(param[1]);
+					AreaInchargeVO inchargeVo = inchargeConstituencyMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
+					if(inchargeVo == null){
+						inchargeVo = new AreaInchargeVO();
+						inchargeVo.setId(commonMethodsUtilService.getLongValueForObject(param[2]));
+						inchargeVo.setName(commonMethodsUtilService.getStringValueForObject(param[3]));
+						if(assignedStatus != null && assignedStatus.equalsIgnoreCase("N")){
+							assignedCount =assignedCount+1;
+							inchargeVo.setUnAssignedCount(assignedCount);
+						}else if(assignedStatus != null && assignedStatus.equalsIgnoreCase("Y")){
+							assignedCount =assignedCount+1;
+							inchargeVo.setAssignedCount(assignedCount);
+						}
+						total =total+1;
+						inchargeVo.setTotal(total);
+						inchargeConstituencyMap.put(commonMethodsUtilService.getLongValueForObject(param[2]),inchargeVo);
+					}else{
+						if(assignedStatus != null && assignedStatus.equalsIgnoreCase("N")){
+							assignedCount =assignedCount+1;
+							inchargeVo.setUnAssignedCount(assignedCount);
+						}else if(assignedStatus != null && assignedStatus.equalsIgnoreCase("Y")){
+							assignedCount =assignedCount+1;
+							inchargeVo.setAssignedCount(assignedCount);
+						}
+						total = total+1;
+						inchargeVo.setTotal(total);
+					}
+				 }
+			 }
+			if(inchargeConstituencyMap != null && inchargeConstituencyMap.size()>0){
+				finalList.addAll(inchargeConstituencyMap.values());
+			}
+			   returnList = setAreaInchargeAssignedTemplete();
+			   returnList = setAreaInchargeAssignedPer(finalList,returnList);
+		
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception raised in getLevelWisePostsOverView method of LocationDashboardService"+e);
+		}
+		return returnList;
+	}
+	public List<InchargeMemberVO> setAreaInchargeAssignedTemplete(){
+		List<InchargeMemberVO> returnList = new ArrayList<InchargeMemberVO>();
+		try{
+			String[] perArr = {"0","1-10","10-20","20-30","30-40","40-50","50-60","60-70","70-80","80-90","above 90"};
+			Map<String,InchargeMemberVO> areaPerMAp =new HashMap<String,InchargeMemberVO>();
+			for(String param : perArr){
+				InchargeMemberVO perVo =areaPerMAp.get(param);
+				if(perVo == null ){
+					perVo = new InchargeMemberVO();
+					perVo.setName(param);
+					areaPerMAp.put(param, perVo);
+				}
+			}
+			if(areaPerMAp != null && areaPerMAp.size()>0){
+				returnList.addAll(areaPerMAp.values());
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception raised in setAreaInchargeAssignedTemplete method of LocationDashboardService"+e);
+		}
+		
+		return returnList;
+		
+	}
+	public List<InchargeMemberVO> setAreaInchargeAssignedPer(List<AreaInchargeVO> finalList,List<InchargeMemberVO> returnList){
+		
+		//List<InchargeMemberVO> returnList = new ArrayList<InchargeMemberVO>();
+		try{
+			Long total =0l;
+			if(finalList != null && finalList.size()>0){
+				for(AreaInchargeVO inchargeVO : finalList){
+					//InchargeMemberVO perVO = new InchargeMemberVO();
+					inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(inchargeVO.getTotal(),inchargeVO.getAssignedCount())));
+					if(Double.valueOf(inchargeVO.getAssignPer()) >=1 && Double.valueOf(inchargeVO.getAssignPer()) <10){
+						
+						//perVO.setOneToTenCount(perVO.getOneToTenCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=10 && Double.valueOf(inchargeVO.getAssignPer()) <20){
+						//perVO.setTenToTwentyCount(perVO.getTenToTwentyCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=20 && Double.valueOf(inchargeVO.getAssignPer()) <30){
+						//perVO.setTwentyToThirCount(perVO.getTwentyToThirCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=30 && Double.valueOf(inchargeVO.getAssignPer()) <40){
+						//perVO.setThirToFrtyCount(perVO.getThirToFrtyCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=40 && Double.valueOf(inchargeVO.getAssignPer()) <50){
+						//perVO.setFrtyToFivtyCount(perVO.getFrtyToFivtyCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=50 && Double.valueOf(inchargeVO.getAssignPer()) <60){
+						//perVO.setFivtyToSixtyCount(perVO.getFivtyToSixtyCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=60 && Double.valueOf(inchargeVO.getAssignPer()) <70){
+						//perVO.setSixtyToSeventyCount(perVO.getSixtyToSeventyCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=80 && Double.valueOf(inchargeVO.getAssignPer()) <90){
+						//perVO.setEightyToNightyCount(perVO.getEightyToNightyCount()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=90){
+						//perVO.setAboveNighty(perVO.getAboveNighty()+1);
+					}else if(Double.valueOf(inchargeVO.getAssignPer()) ==0){
+						//perVO.setZeroPerCount(perVO.getZeroPerCount()+1);
+					}
+					total = total+1;
+					//returnList.add(perVO);
+				}
+				returnList.get(0).setCount(total);
+			}
+			if(returnList != null && returnList.size()>0){
+				for(InchargeMemberVO inchargeVO : returnList){
+					if(inchargeVO.getOneToTenCount()>0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getOneToTenCount())));
+					}else if(inchargeVO.getTenToTwentyCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getTenToTwentyCount())));
+					}else if(inchargeVO.getTwentyToThirCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getTwentyToThirCount())));
+					}else if(inchargeVO.getThirToFrtyCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getThirToFrtyCount())));
+					}else if(inchargeVO.getFrtyToFivtyCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getFrtyToFivtyCount())));
+					}else if(inchargeVO.getFivtyToSixtyCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getFivtyToSixtyCount())));
+					}else if(inchargeVO.getSixtyToSeventyCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getSixtyToSeventyCount())));
+					}else if(inchargeVO.getEightyToNightyCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getEightyToNightyCount() )));
+					}else if(inchargeVO.getAboveNighty() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getAboveNighty())));
+					}else if(inchargeVO.getZeroPerCount() >0l){
+					 inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(total,inchargeVO.getZeroPerCount())));
+					}
+				}
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+			Log.error("Exception raised in setAreaInchargeAssignedPer method of LocationDashboardService"+e);
+		}
+		return returnList;
 	}
 }
