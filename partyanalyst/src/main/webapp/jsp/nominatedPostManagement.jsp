@@ -90,6 +90,13 @@
 									<option value="0">Select Mandal/Town/Division</option>
 								</select>
 							</div>
+							<div class="col-md-3 col-xs-12 col-sm-3" style="display:none" id="villageWardDivMainId">
+								<label>Village/Ward</label>
+									<span id="villWardDivIdImg"><img src="images/search.gif"/></span>
+								<select class="form-control" id="villageWardId">
+									<option value="0">Select Village/Ward</option>
+								</select>
+							</div>
 							<div class="col-md-3 col-xs-12 col-sm-3">						
 								<input type="button" class="btn btn-primary btn-sm" value="Submit" style="margin-top: 25px;" id="locationWiseDataId"/>
 							</div>
@@ -208,6 +215,7 @@ $("#stateId").val(globalStateId);
 var grlobalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTowDivArr=[];
+var globalVillageWardDivArr=[];
 $(document).ready(function() {
 	if(globalStatus == "notYet"){
 		$("#headinggId").html("yet to start "+globalLvlTxt+" level - board/corporation");
@@ -227,6 +235,7 @@ $(document).ready(function() {
 		$("#districtMainId").hide();
 		$("#constituencyMainId").hide();
 		$("#manTowDivMainId").hide();
+		$("#villageWardDivMainId").hide();
 	}	
 	$(".filterSection").hide();
 	//$(".filterSectionIconCls").hide();

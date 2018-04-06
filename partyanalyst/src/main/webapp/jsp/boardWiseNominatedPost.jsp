@@ -998,10 +998,12 @@ $(document).on("click",".updateStatusCls",function(){
    }).done(function(result){
 	  
 	    if(result == "Shortlisted"){
-			$(this).show();
+			$(this).attr("disabled",false);
+			//$(this).show();
 			$("#"+divId).html("Already shortlisted for this Candidate").css("color","red");
 		}else{
-			$(this).hide();
+			//$(this).hide();
+			$(this).attr("disabled",true);
 			updateApplicationStatusDetailsAction(applicationId,status,comment,levelId,levelVal,deptId,boardId,positionId,candidateId,divId);
 		}
    });

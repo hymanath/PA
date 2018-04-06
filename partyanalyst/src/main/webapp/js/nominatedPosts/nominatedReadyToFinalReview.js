@@ -1,6 +1,7 @@
 var globalDistrictArr=[];
 var globalAssmblyArr=[];
 var globalMandalTownDivArr=[];
+var globalVillageWardDivArr=[];
 var globalLocationLevelValueArr =[];
 var globalLocationLevel=5;
 var globalLocationLevelId = 0;
@@ -55,7 +56,7 @@ function getDistrictsForStates(state,isFirst){
 				for(var i in result){
 					$("#districtId").append('<option value='+result[i].id+'>'+result[i].name+'</option>');
 					globalDistrictArr.push(result[i].id);
-					//globalLocationLevelValueArr = globalDistrictArr;
+					globalLocationLevelValueArr = globalDistrictArr;
 				}
 			}
 		 	if(globalLocationLevelId == 3 && isFirst =="true"){
@@ -104,7 +105,7 @@ function getConstituenciesForDistricts(district,stateId,isFirst){
 				   }
 				   if(globalLocationLevelId == 4 && isFirst=="true"){
 					   globalLocationLevelValueArr =[];
-					   //globalLocationLevelValueArr = globalAssmblyArr; 
+					   globalLocationLevelValueArr = globalAssmblyArr; 
 					   getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 				   }
 			 }	
@@ -164,23 +165,31 @@ function getMandalVillageDetails(constituencyId,stateId,isFirst){
 			}
 			if(globalLocationLevelId ==5 && isFirst=="true"){
 			   globalLocationLevelValueArr =[];
-			  // globalLocationLevelValueArr = globalMandalTownDivArr; 
+			   globalLocationLevelValueArr = globalMandalTownDivArr; 
 			    getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 			  }
 			  if(globalLocationLevelId>5){
-				getVillageWardDetails(0,stateId,isFirst);
+				getVillageWardDetails(0,assmblyArrTemp,stateId,isFirst);
 			}
 		});
 	}
 	
 	$(document).on("change","#manTowDivId",function(){
 		var mandalId=$(this).val();
+		var constituencyId=$("#constituencyId").val();
+		var assmblyArrTemp = [];
+		if(constituencyId==0){
+			assmblyArrTemp = globalAssmblyArr;	
+		}else{
+			assmblyArrTemp.push(constituencyId);
+		}
 		var stateId = $("#stateId").val();
 		if(globalLocationLevelId >5){
-			getVillageWardDetails(mandalId,stateId,"false");
+			getVillageWardDetails(mandalId,assmblyArrTemp,stateId,"false");
 		}
 	});
-function getVillageWardDetails(mandalId,stateId,isFirst){
+function getVillageWardDetails(mandalId,constituencyIds,stateId,isFirst){
+	globalVillageWardDivArr = [];
 	  /*  globalMandalTownDivArr = [];
 		var districtId = $("#districtId").val();
 		var distArrTemp = [];
@@ -201,11 +210,18 @@ function getVillageWardDetails(mandalId,stateId,isFirst){
 			$("#villageWardId").html("");
 		}
 		var madalIds = [];
+		var assemblyIds= [];
 		if(mandalId >0){
 			madalIds.push(mandalId);
+		}else{
+			var districtId = $("#districtId").val();
+			if(districtId>0){
+				assemblyIds=constituencyIds;
+			}
 		}
 	   var jsObj={				
 			mandalIds : madalIds,
+			constituencyIds:assemblyIds,
 			task:""
 		}
 		$.ajax({
@@ -218,11 +234,11 @@ function getVillageWardDetails(mandalId,stateId,isFirst){
 			$("#villageWardId").append("<option value='0'>ALL</option>");			  
 			for(var i in result){
 				$("#villageWardId").append('<option value='+result[i].locationId+'>'+result[i].locationName+'</option>');
-				//globalMandalTownDivArr.push(result[i].locationId);
+				globalVillageWardDivArr.push(result[i].locationId);
 			}
 			if(globalLocationLevelId >5 && isFirst=="true"){
 			   globalLocationLevelValueArr =[];
-			  // globalLocationLevelValueArr = globalMandalTownDivArr; 
+			   globalLocationLevelValueArr = globalVillageWardDivArr; 
 			    getDistrictConstituencyAndMndlTwnDvsnLvlData(globalLocationLevelId);
 			  }
 		});
@@ -255,38 +271,34 @@ $(document).on("click","#submitBtnId",function(){
 		}
 	 }
 	 if(districtId != null){
-	  // locationLevelValueArr =[];
+	   locationLevelValueArr =[];
 		if(districtId == 0){
-			 //locationLevelValueArr = globalDistrictArr;
+			 locationLevelValueArr = globalDistrictArr;
 		 }else{
-			 locationLevelValueArr =[];
 			 locationLevelValueArr.push(districtId); 
 		 } 
 	 }
 	 if(constituencyId != null){	 
-		 //locationLevelValueArr =[];
+		 locationLevelValueArr =[];
 		 if(constituencyId == 0){
-			 //locationLevelValueArr = globalAssmblyArr
+			 locationLevelValueArr = globalAssmblyArr
 		 }else{
-			 locationLevelValueArr =[];
 			 locationLevelValueArr.push(constituencyId);
 		 } 
 	 }
 	if(manTowDivId != null){
-		//locationLevelValueArr =[];
+		locationLevelValueArr =[];
 		if(manTowDivId == 0){
-			 //locationLevelValueArr = globalMandalTownDivArr
+			 locationLevelValueArr = globalMandalTownDivArr
 		 }else{
-			 locationLevelValueArr =[];
 			 locationLevelValueArr.push(manTowDivId);
 		 }
 	}
 	if(villageWardId != null){
-		//locationLevelValueArr =[];
+		locationLevelValueArr =[];
 		if(villageWardId == 0){
-			 //locationLevelValueArr = globalMandalTownDivArr
+			 locationLevelValueArr = globalVillageWardDivArr
 		 }else{
-			 locationLevelValueArr =[];
 			 locationLevelValueArr.push(villageWardId);
 		 }
 	}
@@ -978,7 +990,7 @@ $(document).on("click",".wishListCls",function(){
 					   totalWishListCount = parseInt(totalWishListCount)+parseInt(1);
 						$("#wishListCountId").html(totalWishListCount);
 				   }
-				   getFinalReviewCandidateCountLocationWise(globalLocationLevelId,[],0,0," ");
+				   getFinalReviewCandidateCountLocationWise(globalLocationLevelId,globalLocationLevelValueArr,0,0," ");
 				}
 			});
 		}
@@ -1053,7 +1065,7 @@ $(document).on("click",".saveGoForCandidateCls",function(){
 			showSbmitStatus(uploadResult);
 		}
 	};
-		
+	$(".saveGoForCandidateCls").attr("disabled",true);	
 	YAHOO.util.Connect.setForm('goSubmitApplicationForCandi',true);
 	YAHOO.util.Connect.asyncRequest('POST','assginGOToNominationPostCandidateAction.action',uploadHandler);
 	   
@@ -1597,7 +1609,7 @@ $(document).on("click",".boardHrfCls",function(){
 				showSbmitStatus(uploadResult);
 			}
 		};
-		
+		$("#confirmGOBtnId").attr("disabled",true);
 		YAHOO.util.Connect.setForm('goSubmitApplication',true);
 		YAHOO.util.Connect.asyncRequest('POST','confirmGOForNominatedPostsAction.action',uploadHandler);
 		
@@ -1643,8 +1655,12 @@ $(document).on("click",".boardHrfCls",function(){
 			   getReferralCandidateDetails(globalLocationLevelId,levelValue,globalDepartmentId,glFinalyeboardId,glFinalyePositionId,''); 		   
 			}
 		}else if(result.indexOf("AlreadyPassed") > -1){
+			$(".saveGoForCandidateCls").attr("disabled",false);
+			$("#confirmGOBtnId").attr("disabled",false);
 			alert("Already this post issued someone else....");
 		}else {
+			$(".saveGoForCandidateCls").attr("disabled",false);
+			$("#confirmGOBtnId").attr("disabled",false);
 			alert("Something goes wrong, Please try again....");
 		}
 	}

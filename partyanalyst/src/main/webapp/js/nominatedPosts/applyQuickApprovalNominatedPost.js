@@ -114,9 +114,11 @@ function searchResultBlock(myresult){
 		});
 		
 		var nominationPostCandidateId=0;
+		var nominatedCanCadreId=0;
 		if(myresult.previousElections != null && myresult.previousElections.length>0 ){
 				for(var s in myresult.previousElections){
-					nominationPostCandidateId= myresult.previousElections[s].tdpCadreId;
+					nominatedCanCadreId= myresult.previousElections[s].tdpCadreId;
+					nominationPostCandidateId= myresult.previousElections[s].nominatedPostCandidateId;
 				}
 		}
 	block+='<li class="">';
@@ -162,10 +164,10 @@ function searchResultBlock(myresult){
 				for(var s in myresult.previousElections){
 					block+=''+parseInt(parseInt(s)+1)+') <label>'+myresult.previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+myresult.previousElections[s].electionType+':'+myresult.previousElections[s].roleName+' --> '+myresult.previousElections[s].occupation+' Dept --> '+myresult.previousElections[s].role+' --> '+myresult.previousElections[s].casteCategory+'"> </i></label>  <br> ';
 				}
-				 block+='<label class="checkbox-inline" > <input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
+				 block+='<label class="checkbox-inline" > <input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+' attr_candidate_id="'+nominationPostCandidateId+'">Select Member</label>';
 				 
 			}else{
-				 block+='<label class="checkbox-inline" > <input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
+				 block+='<label class="checkbox-inline" > <input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_candidate_id="'+nominationPostCandidateId+'" attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
 			}
                
 				
@@ -195,6 +197,7 @@ $(document).on('click','.selectMember',function(){
 	var position = $("#deptBoardPostnId option:selected").text();
 	var postionArr = position.split("(");
 	var uniqueId =  $(this).attr("attr_unique_id");
+	var nominatedCandId = $(this).attr("attr_candidate_id");
 	if(postionArr != "Select Board Position"){
 		position = postionArr[0];
 	}
@@ -222,7 +225,7 @@ $(document).on('click','.selectMember',function(){
 						globalCadreIds.push(cadreId);
 						globalMemAddedCunt = globalMemAddedCunt+1;
 						globalMembersCount++;
-						buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId);
+						buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId,nominatedCandId);
 						$("#addmember"+uniqueId).find("li div.panel-footer").remove();
 					}else{
 						var posiMemCnt = $("#posiMemCnt"+uniqueId).text();
@@ -249,7 +252,7 @@ $(document).on('click','.selectMember',function(){
 							globalCadreIds.push(cadreId);
 							globalMemAddedCunt = globalMemAddedCunt+1;
 							globalMembersCount++;
-							buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId);
+							buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId,nominatedCandId);
 							$("#addmember"+uniqueId).find("li div.panel-footer").remove();
 						}else{
 							alert("Posts Are completed");
@@ -263,7 +266,7 @@ $(document).on('click','.selectMember',function(){
 		}
 });
 
-function buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId){
+function buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId,nominatedCandId){
 	var departmentId=$("#depmtsId").val();
 	var boardId = $("#deptBoardId").val();
 	var positionId = $("#deptBoardPostnId").val();                                                                    
@@ -304,6 +307,7 @@ function buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId){
 											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].departmentId" value="'+departmentId+'">';
 											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].boardId" value="'+boardId+'">';
 											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].positionId" value="'+positionId+'">';
+											collapse+='<input type="hidden" class="cadreVoterId" name="nominatedPostDetailsVO.subList['+globalPosiDivs+'].subList1['+count+'].nominatedPostCandiateId" value="'+nominatedCandId+'">';
 											collapse+=appendBlock;
 											collapse+='</li>';
 										collapse+='</ul>';
@@ -343,7 +347,8 @@ function buildPanelBlock(selPosition,appendBlock,cadreId,uniqueId){
 							collapse+='</div>';
 						collapse+='</div>';
 						collapse+='<div class="col-sm-4 col-sm-offset-4 m_top10">';
-							collapse+='<button class="btn btn-success btn-block btn-lg" type="button" onclick="savingApplication();">SUBMIT APPLICATION</button>';
+							collapse+='<button class="btn btn-success btn-block btn-lg submitBtnId" type="button" onclick="savingApplication();">SUBMIT APPLICATION</button>';
+							collapse+='<div style="margin-top:12px;"><img id="savingAjaxImg" src="images/icons/loading.gif" style="display:none;"/></div>';
 						collapse+='</div>';
 			collapse+='</div>';
 			collapse+='</div>';
@@ -440,14 +445,16 @@ $(document).on('click','.removeMember-icon',function(){
 });
 
 function savingApplication(){
-
+$("#savingAjaxImg").css("display","block");
+$(".submitBtnId").attr("disabled",true)
 			var uploadHandler = {
 				upload: function(o) {
-					//$("#savingAjaxImg").css("display","none");
+					$("#savingAjaxImg").css("display","none");
 					uploadResult = o.responseText;
 					showSubmitStatus(uploadResult);
 				}
 			};
+			
 			YAHOO.util.Connect.setForm('submitApplication',true);
 			YAHOO.util.Connect.asyncRequest('POST','saveNominatedPostProfileDtlsAction.action',uploadHandler);
 			
@@ -468,8 +475,11 @@ function showSubmitStatus(myResult){
 		 // console.log(statusCode);
 	if(statusCode !=null && statusCode== 1 ){	
 		alert("Application  Submitted Successfully");
+		
 		location.reload(); 
 	}else{
+		//$("#submitBtnId").show();
+		$(".submitBtnId").attr("disabled",false)
 		alert("Application  Not Submitted Please Try Again ")
 	}
 	
@@ -1156,7 +1166,7 @@ function hideDetails(){
 	$('.ramakrishnaCls').hide();
 	//$('#searchDivId').hide();
 	//$("#uploadFlDivId").hide();
-	$("#submitBtnId").hide();
+	$(".submitBtnId").hide();
 	//$("#addedRefferalsDiv").hide();
 }
 function refreshExistingDetails(){ 	
@@ -1807,7 +1817,7 @@ function voterSearchResultBlock(result){
 					block+=''+parseInt(parseInt(s)+1)+') <label>'+result[i].previousElections[s].casteName+' &nbsp&nbsp&nbsp<i class="fa fa-info tooltipClass" style="cursor:pointer;" title="'+result[i].previousElections[s].electionType+':'+result[i].previousElections[s].roleName+' --> '+result[i].previousElections[s].occupation+' Dept --> '+result[i].previousElections[s].role+' --> '+result[i].previousElections[s].casteCategory+'"> </i></label> <br> ';
 				}
 			}else{
-				 block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+'>Select Member</label>';
+				 block+='<label class="checkbox-inline" ><input type="checkbox" value="" attr_cadreId="'+result[i].tdpCadreId+'" class="selectMember" attr_position_type="'+level+' &nbsp;Level - '+board+' &nbsp;Board - '+position+' &nbsp;Position " attr_postion_count="'+postitonCunt+'" attr_unique_id='+uniqueId+' attr_candidate_id="'+nominationPostCandidateId+'">Select Member</label>';
 			}
                
 				

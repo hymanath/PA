@@ -1092,6 +1092,7 @@ $(document).on("click",".locationLevelcollapseCls",function(){
 		  $("#collapseTwo").collapse('hide');
 		  $("#collapseThree").collapse('hide');
 		  $("#collapseFour").collapse('hide');
+		   $("#collapseFive").collapse('hide');
 		  $(this).collapse('show');
 		  
 	var  collapseLevelId = $(this).attr("attr_collapse_level_Id");
@@ -1151,6 +1152,11 @@ function getPositionAndApplicationDetailsCntLocationWise(positionId,locationLeve
 	  $('#locationLevelId').val(5);
 	   $('#mandalCasteId').addClass('active');
 	   $('#mandalCasteGrpId').addClass('active');
+	}else if(locationLevelId == 7){
+	  $(".villageWardBodyDivCls").html("<img style='margin-left: 85px;height:20px;widht:20px;' src='images/icons/loading.gif'>");
+	  $('#locationLevelId').val(7);
+	   $('#villageCasteId').addClass('active');
+	   $('#villageCasteGrpId').addClass('active');
 	}else{
 		//$('#allCasteId').addClass('active');
 	    //$('#allCasteGrpId').addClass('active');
@@ -1186,7 +1192,7 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 					str+='<ul class="positionsUl" style="margin-top:20px !imortant;">';
 						str+='<li class="total"><span class="statusBox"></span>TOTAL POSTS<span class="count pull-right">'+positionRslt[0].totalPostsCnt+'</span></li>';
 						str+='<li class="openPosts"><span class="statusBox"></span>OPEN POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="open" attr_department_name="" attr_board_statusIds="0" attr_position_id="'+positionId+'">'+positionRslt[0].openPostCnt+'</span></li>';
-						str+='<li class="finalized"><span class="statusBox"></span>FINALIZED POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="goIssued" attr_department_name="" attr_board_statusIds="3" attr_position_id="'+positionId+'">'+positionRslt[0].confirmCntCnt+'</span></li>';
+						str+='<li class="finalized"><span class="statusBox"></span>FINALIZED POSTS<span class="count pull-right popUpDetailsClickCls" style="cursor:pointer;" attr_department_id="0" attr_boardLevelId="'+locationLevelId+'" attr_type="finalized" attr_department_name="" attr_board_statusIds="3" attr_position_id="'+positionId+'">'+positionRslt[0].confirmCntCnt+'</span></li>';
 						str+='<li class="goIssued"><span class="statusBox"></span>G.O ISSUED<span class="count pull-right popUpDetailsClickCls" attr_department_id="0" style="cursor:pointer;" attr_boardLevelId="'+locationLevelId+'" attr_type="goIssued" attr_department_name="" attr_board_statusIds="4" attr_position_id="'+positionId+'">'+positionRslt[0].goIssuedCnt+'</span></li>';
 					str+='</ul>';
 				str+='</div>';
@@ -1205,19 +1211,22 @@ function buildLocationLevelPositionAndAppRslt(result,locationLevelId,collapseLev
 				str+='</div>';
 			str+='</div>';
 		if(locationLevelId==2){
-		  $(".stateBodyDivCls").html(str);	
+			$(".stateBodyDivCls").html(str);	
 		}else if(locationLevelId == 3){
-		 $(".districtBodyDivCls").html(str);
+			$(".districtBodyDivCls").html(str);
 		}else if(locationLevelId == 4){
-		 $(".constituencyBodyDivCls").html(str);
+			$(".constituencyBodyDivCls").html(str);
 		}else if(locationLevelId == 5){
-		 $(".manMunCorBodyDivCls").html(str);
+			$(".manMunCorBodyDivCls").html(str);
+		}else if(locationLevelId == 7) {
+			$(".villageWardBodyDivCls").html(str);
 		}
 		if(collapseLevelId != null && collapseLevelId=="stateLevlId"){
 		  $("#collapseOne").collapse('show');
 		  $("#collapseTwo").collapse('hide');
 		  $("#collapseThree").collapse('hide');
 		  $("#collapseFour").collapse('hide');
+		  $("#collapseFive").collapse('hide');
 		} 
 	  buildLocationWisePostionHighCahrtRslt(positionRslt,postionHighChartId);	
 	}
@@ -3237,6 +3246,12 @@ $(document).on("click",".popUpDetailsClickCls",function(){
 			$("#openModalDiv").modal("show");
 			$("#openModalDiv .modal-dialog").css("width","95%");
 			$("#TitleId").html(departmentName + "  G.O Issued Positions");
+			$("#subTitleId").html("");
+			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10,positionId);
+		}else if(type == "finalized"){
+			$("#openModalDiv").modal("show");
+			$("#openModalDiv .modal-dialog").css("width","95%");
+			$("#TitleId").html(departmentName + "  Finalized Positions");
 			$("#subTitleId").html("");
 			getLevelWiseGoIssuedPostions(boardLevelId,statusIds,0,10,positionId);
 		}else if(type == "department"){
