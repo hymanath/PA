@@ -1,9 +1,9 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
-$("#dateRangePickerMGNF").val('2017-04-01');
+$("#dateRangePickerMGNF").val('2018-04-01');
 $("#dateRangePickerMGNT").val(moment().format("YYYY-MM")+'-30');
-var glStartDate = '2017-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
+var glStartDate = '2018-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
 var glEndDate = moment().format("YYYY-MM")+'-30';
-var globalFinancialYear = "2017";
+var globalFinancialYear = "2018";
 
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -38,15 +38,13 @@ $('#dateRangePickerMGNF').on('dp.change', function(e){
 	
 	var fromDatteee = new Date(glStartDate);
 	var lastFinaYearDatee = new Date("2018-03-31");
-	console.log(glStartDate);
-	console.log(fromDatteee);
-	console.log(lastFinaYearDatee);
-	alert(fromDatteee > lastFinaYearDatee)
+	
+	//alert(fromDatteee > lastFinaYearDatee)
 	if(fromDatteee > lastFinaYearDatee)
 		globalFinancialYear = "2018";
 	else
 		globalFinancialYear = "2017";
-	alert(globalFinancialYear);
+	//alert(globalFinancialYear);
 	for(var i in overViewArr)
 	{
 		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
@@ -2077,3 +2075,46 @@ function getAllNregaSubLocationDetails(divId,levelId,locationScopeId,type){
 		}
 	});
 }
+
+$(document).on("click","[role='tabCummulative'] li",function(){
+	$(this).closest("ul").find("li").removeClass("active");
+	$(this).addClass("active");
+	var finanicialYearType = $(this).attr("attr_type")
+	var levelId = $("#selectedName").attr("attr_levelId");
+	var locId = $("#selectedName").attr("attr_id");
+	var locType = '';
+	if(levelId == 2)
+	{
+		locType = 'state'
+	}else if(levelId == 3)
+	{
+		locType = 'district'
+	}
+	if(finanicialYearType == "thisFin"){
+		glStartDate = '2018-04-01'//moment().startOf('year').format("YYYY-MM")+'-1';
+		glEndDate = moment().format("YYYY-MM")+'-30';
+		globalFinancialYear = "2018";
+		$("#dateRangePickerMGNF").val('2018-04');
+		$("#dateRangePickerMGNT").val(moment().format("YYYY-MM"));
+	}else{
+		
+		glStartDate = '2017-04-01';//moment().startOf('year').format("YYYY-MM")+'-1';
+		glEndDate='2018-03-31';
+		globalFinancialYear = "2017";
+		$("#dateRangePickerMGNF").val('2017-04');
+		$("#dateRangePickerMGNT").val('2018-03');
+	}
+	for(var i in overViewArr)
+	{
+		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+		$("[overview-block='"+overViewArr[i]+"']").append(spinner);
+		if(overViewArr[i] == 'SMC Trench' || overViewArr[i] == 'Imp to CD' || overViewArr[i] == 'MPT_PT' || overViewArr[i] == 'GC Works' || overViewArr[i] == 'CD_CW' || overViewArr[i] == 'WaterBudget' || overViewArr[i] == 'GH')
+		{
+			getRDAbstractDataByType(overViewArr[i],'state',"0",'',2);
+		}else if(overViewArr[i] == 'Ntr Jalasiri')
+		{
+			getNtrJalaSiriLvlWiseData("","state","",locType,locId,"Abstract");
+		}
+	}
+	buildOverviewAbstract();
+});
