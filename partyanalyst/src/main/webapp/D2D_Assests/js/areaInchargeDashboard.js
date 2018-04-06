@@ -1,27 +1,29 @@
 var spinner = '<div class="row"><div class="col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 
-var globalLevelId=4;
-var globalLevelValue='';
-var globalConstituencyName='';
-var globalLevelType='';
 
-if(globalLevelId ==4){
-	globalLevelValue=262;
-	globalLocationName='NANDYAL';
-	globalLevelType="constituency";
-	$("#locationNameId").html(globalLocationName+" Assembly Details")
-	$(".constituencySelectBoxCls").hide();
-}else if(globalLevelId ==3){
-	globalLevelValue=21;
-	globalLocationName='KURNOOL';
-	globalLevelType="district";
-	$("#locationNameId").html(globalLocationName+" District Details")
-	$(".constituencySelectBoxCls").show();
-}
+setTimeout(function(){ 
+	if(globalLevelId ==4){
+		/* globalLevelValue=262;
+		globalLocationName='NANDYAL'; */
+		globalLevelType="constituency";
+		$("#locationNameId").html(globalLocationName+" Assembly Details")
+		$(".constituencySelectBoxCls").hide();
+	}else if(globalLevelId ==3){
+		/* globalLevelValue=21;
+		globalLocationName='KURNOOL'; */
+		globalLevelType="district";
+		$("#locationNameId").html(globalLocationName+" District Details")
+		$(".constituencySelectBoxCls").show();
+	}
+	//alert(globalLevelId)
+	//alert(globalLevelValue)
+	//alert(globalLocationName)
+
+}, 1500);
 
 setTimeout(function(){ 
 	onloadCalls("onload");
-}, 1500);
+}, 2500);
 
 function onloadCalls(type){
 	 $(".addAssignedBlockCls").hide();
@@ -30,8 +32,8 @@ function onloadCalls(type){
 	 $(".submitBtnCls").hide();
 	 if(globalLevelType == "district" && type =="onchange"){
 		 globalLevelId =3;
-		 globalLevelValue=21;
-		 globalLocationName='KURNOOL';
+		 globalLevelValue=globalLevelValueStored;
+		 globalLocationName=globalLocationName;
 	 }
 	 if(globalLevelId ==3){
 		 getAreaInchargesStatusWiseCountDistrict("mainOverViewConstituencyBlockDivId",'constituency','district',type);
@@ -258,6 +260,8 @@ function getAreaInchargeAssignedBoothDetails(){
     }).done(function(result){
       if(result !=null && result.length>0){
 		  buildAreaInchargeAssignedBoothDetails(result);
+	  }else{
+		  $("#alreadyAreaInchargeDetailsDivId").html("No Data Available");		  
 	  }
     });
   }
@@ -919,8 +923,6 @@ function deleteAreaInchargeAssignBooths(cadreId,boothId){
 					$("#popupSuccessModalDivId").modal("hide");
 					$("#popupViewAreaIncDetModal").modal("hide");
 					onloadCalls("onchange");
-					
-					
 				}, 3500);
 			}else{
 				$("#successMsgDivId").html("<h4 class='font_weight' style='color:red;text-align:center;'>Please Try Again Later</h4>")

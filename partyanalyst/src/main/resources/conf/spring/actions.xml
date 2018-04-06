@@ -1843,6 +1843,7 @@
 	</bean>
 	<bean id="areaInchargeDashBoardAction" class="com.itgrids.partyanalyst.web.action.AreaInchargeDashBoardAction" singleton="false">
 		 <property name="areaInchargeDashBoardService" ref="areaInchargeDashBoardService" /> 
+		 <property name="userProfileService" ref="userProfileService" /> 
 	</bean>
 	
 	
