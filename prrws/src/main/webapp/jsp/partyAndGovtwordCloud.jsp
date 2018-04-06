@@ -23,7 +23,7 @@
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-sm-12 col-xs-12" style="margin-bottom: 3px; margin-top: 3px;">
-					<h4 class="text-capital" style="text-align:center;font-size: 25px">WORD CLOUD NEWS</h4>
+					<h4 class="text-capital" style="text-align:center;font-size: 25px">NEWS WORD CLOUD</h4>
 				</div>
 			</div>
 		</div>
@@ -31,7 +31,7 @@
 	
 </header>
 <div class="container-fluid" style="padding-left: 0px;padding-right: 0px;">
-	<div class="white-block" style="padding: 20px;">
+	<div class="white-block" style="padding: 5px 25px 5px 25px;">
 		<div class="row">
 			<div class="col-sm-12">
 				<div id="chart">
@@ -60,11 +60,11 @@
 		</div>
 		<div class="bg_color m_top10" style="border:1px solid #ddd;border-radius:5px">
 			<div class="row">
-				<div class="col-sm-12" style="padding-bottom: 8px;">
+				<div class="col-sm-7" style="padding-bottom: 8px;margin-left: 12px;">
 					<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5" style=" background-color: #337ab7;">
-					<li class="active" attr_type="N" >Party</li>
-					<li attr_type="Y">Govt</li>
-					<li attr_type="">ALL</li>
+					<li class="active" attr_type="N" style="font-weight: bolder;width:67px; text-align: center;" >Party</li>
+					<li attr_type="Y" style="font-weight: bolder;width:67px;text-align: center;">Govt</li>
+					<li attr_type="" style="font-weight: bolder;width:67px;text-align: center;">ALL</li>
 					</ul>
 				</div>
 			</div>
