@@ -293,7 +293,7 @@ var searchParams = new URLSearchParams(window.location.search);
 					<h4 class="arrowIconChanged"><i class="glyphicon glyphicon-menu-hamburger" id="selectedName1" style="font-size:13px;cursor:pointer;"></i>&nbsp;&nbsp;<span id="selectedName" style="text-transform: uppercase;cursor:pointer;" attr_distId="" attr_levelid="2" attr_id="-1" title="Location Level">Andhra Pradesh </span></h4>
 					<div class="multi-level-selection-menu arrow_box_top"></div>
 				</div>
-				<div class="col-sm-4 border_right">
+				<div class="col-sm-3 border_right">
 					<div class="row">
 						<div class="col-sm-4 m_top5">
 							<label>FROM DATE</label>
@@ -308,7 +308,7 @@ var searchParams = new URLSearchParams(window.location.search);
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-4 border_right">
+				<div class="col-sm-3 border_right">
 					<div class="row">
 						<div class="col-sm-4 m_top5">
 							<label>TO DATE</label>
@@ -322,6 +322,12 @@ var searchParams = new URLSearchParams(window.location.search);
 							</div>
 						</div>
 					</div>
+				</div>
+				<div class="col-sm-4">
+					<ul class="switch-btn pull-right" role="tabCummulative">
+						<li class="active" attr_type="" style="font-size:12px !important;">This Fin. Year</li>
+						<li  attr_type="" style="font-size:12px !important;">Prev Fin. Year</li>
+					</ul>
 				</div>
 				<div class="col-sm-12 text-right" id="logOutId" style="display:none;">
 		              <a href="loginPage" class="btn btn-success btn-logout">Logout</a>
