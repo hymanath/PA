@@ -1849,6 +1849,7 @@ $(document).on("click","#addOneMore",function(){
 });
 function savingApplication(){
 	 $('#notCadreErrMsg').html("");
+	 
 	var flag = true;
 	
 	  $(".cadreCheckCls").each(function(){
@@ -1939,6 +1940,7 @@ function savingApplication(){
 			 });
 			 
 	if(flag){
+		$("#submitBtnId").hide();
 		//$( "#addressCheckId" ).prop( "checked", false );
 		if($("#addressCheckId").is(":checked")){
 			$("#addressCheckId1").val(true);
@@ -1973,6 +1975,7 @@ function savingApplication(){
 			
 				
 		}else {
+			$("#submitBtnId").show();
 			setTimeout(function(){
 			$("#savingStatusDivId").html("<span style='color: red;font-size:22px;'>Application Submission Failed. Please Try Again.</span>");
 			}, 1000);

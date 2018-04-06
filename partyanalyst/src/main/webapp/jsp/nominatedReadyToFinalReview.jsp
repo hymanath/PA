@@ -725,6 +725,9 @@ $(".hideVillageWardDivCls").hide();
 if(boardLevelId ==5){
 $(".hideVillageWardDivCls").hide();	
 }
+if(boardLevelId >=7){
+$(".hideVillageWardDivCls").show();	
+}
 if(boardLevelId != null && boardLevelId > 6){
 getBoardLevelId(7,stateId);		
 }else if(boardLevelId != null && (boardLevelId == 5 || boardLevelId == 6)){

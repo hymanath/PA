@@ -178,6 +178,20 @@
 						  </div>
 						</div>
 					  </div>
+					  <div class="panel panel-default panelDashboard">
+						<div class="panel-heading" role="tab" id="headingFive">
+						  <h4 class="panel-title locationLevelcollapseCls"   attr_postion_highChart_id="manLvlPstnHghChrtId" attr_app_highChart_id="manLvlApplctnHghChrtId" attr_collapse_href_id="collapseFive" attr_level_Id="7" attr_collapse_level_Id="manMunCorLevelId">
+							<a class="collapsed panelDashboardIcon" role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+							 Village/Ward
+							</a>
+						  </h4>
+						</div>
+						<div id="collapseFive" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFive">
+						  <div class="panel-body">
+							<div class="villageWardBodyDivCls"></div>
+						  </div>
+						</div>
+					  </div>
 					</div>
                 </div>
             </div>
@@ -198,6 +212,7 @@
                                 <li role="presentation"  class="selectCls"  id="districtCasteId"><a href="#district" aria-controls="district" attr_href_id="district" attr_level_value="3" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="DISTRICT">district</a></li>
                                 <li role="presentation"  class="selectCls"  id="assemblyCasteId"><a href="#constituency" aria-controls="constituency" attr_href_id="constituency" attr_level_value="4" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="CONSTITUENCY">constituency</a></li>
 								<li role="presentation"  class="selectCls"  id="mandalCasteId"><a href="#mndlmncpltyCrprtn" aria-controls="mndlmncpltyCrprtn" attr_href_id="mndlmncpltyCrprtn" attr_level_value="5" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="MANDAL/MUNCIPALITY/CORPORATION">Mandal/Muncipality/Corporation</a></li>
+								<li role="presentation"  class="selectCls"  id="villageCasteId"><a href="#villageWard" aria-controls="villageWard" attr_href_id="villageWard" attr_level_value="7" class="castePositionCls" role="tab" data-toggle="tab" attr_heading="VILLAGE/WARD">Village/Ward</a></li>
                               </ul>
                               <!-- Tab panes -->
                               <div class="tab-content navTabsSelectionBody">
@@ -222,6 +237,7 @@
                                 <li role="presentation" class="castGrupCls" id="districtCasteGrpId" ><a href="#districtCasteGroup" aria-controls="districtCasteGroup" attr_href_id="districtCasteGroup" attr_level_value="3" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="DISTRICT">district</a></li>
                                 <li role="presentation"  class="castGrupCls" id="assemblyCasteGrpId" ><a href="#constituencyCasteGroup" aria-controls="constituencyCasteGroup" attr_href_id="constituencyCasteGroup" attr_level_value="4" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="CONSTITUENCY">constituency</a></li>
 								<li role="presentation"  class="castGrupCls" id="mandalCasteGrpId" ><a href="#mndlmncpltyCrprtnCasteGroup" aria-controls="mndlmncpltyCrprtnCasteGroup" attr_href_id="mndlmncpltyCrprtnCasteGroup" attr_level_value="5" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="MANDAL/MUNCIPALITY/CORPORATION">Mandal/Muncipality/Corporation</a></li>
+								<li role="presentation"  class="castGrupCls" id="villageCasteGrpId" ><a href="#villageWardCasteGroup" aria-controls="villageWardCasteGroup" attr_href_id="villageWardCasteGroup" attr_level_value="7" class="casteGroupCls" role="tab" data-toggle="tab" attr_heading="VILLAGE/WARD">Village/Ward</a></li>
                               </ul>
                               <!-- Tab panes -->
                               <div class="tab-content navTabsSelectionBody">

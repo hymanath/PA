@@ -1046,12 +1046,12 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 				distIds.add(distId1);
 			}*/
 			
-			/*List<Long> constiIds = new ArrayList<Long>();
-			JSONArray jsonArray2 = jObj.getJSONArray("constituencyId");
+			List<Long> constiIds = new ArrayList<Long>();
+			JSONArray jsonArray2 = jObj.getJSONArray("constituencyIds");
 			for (int i = 0; i < jsonArray2.length(); i++) {
 				Long constiId = Long.valueOf(jsonArray2.get(i).toString());
 				constiIds.add(constiId);
-			}*/
+			}
 			List<Long> mandals = new ArrayList<Long>();
 			List<Long> localBodys = new ArrayList<Long>();
 			JSONArray jsonArray3 = jObj.getJSONArray("mandalIds");
@@ -1066,7 +1066,7 @@ public class NominatedPostProfileAction extends ActionSupport implements Servlet
 				
 			}
 			
-			locations = cadreCommitteeService.getPanchayatWardDivisionDetailsOfSubLocation(null, mandals,localBodys);
+			locations = cadreCommitteeService.getPanchayatWardDivisionDetailsOfSubLocation(constiIds, mandals,localBodys);
 			
 		}catch (Exception e) {
 			LOG.error("Exception Occured in getSubLevelForConstituency() method, Exception - ",e);
