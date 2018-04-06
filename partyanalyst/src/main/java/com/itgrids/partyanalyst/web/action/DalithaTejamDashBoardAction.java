@@ -12,6 +12,7 @@ import org.json.JSONObject;
 import com.itgrids.partyanalyst.dto.DalithaTejamInputVo;
 import com.itgrids.partyanalyst.dto.DalithaTejamVO;
 import com.itgrids.partyanalyst.dto.EventLocationVO;
+import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.service.IDalithaTejamDashBoardService;
 import com.opensymphony.xwork2.Action;
 import com.opensymphony.xwork2.ActionSupport;
@@ -71,9 +72,25 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 	public String dalithTejamDashBoard()
 	{
 		try {
-			
-			final HttpSession session = request.getSession();
-			
+			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
+			if(regVO==null){
+		      return "input";
+		    }
+			 boolean noaccess = false;
+			    List<String> entitlements = null;
+			    if(regVO.getEntitlements() != null && regVO.getEntitlements().size()>0){
+			      entitlements = regVO.getEntitlements();
+			      if(!(entitlements.contains("DALITHA_TEJAM_ADMIN_USER_ENTITLEMENT") || entitlements.contains("DALITHA_TEJAM_ADMIN_USER_GROUP_ENTITLEMENT"))){
+			        noaccess = true ;
+			      }
+
+			    if(regVO.getIsAdmin() != null && regVO.getIsAdmin().equalsIgnoreCase("true")){
+			      noaccess = false;
+			    }
+			    if(noaccess){
+			      return "error";
+			    }
+			    }    
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
 		}
