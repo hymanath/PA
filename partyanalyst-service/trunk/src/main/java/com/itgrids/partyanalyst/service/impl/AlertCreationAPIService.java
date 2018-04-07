@@ -214,7 +214,10 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			 JSONObject customJson = new JSONObject();
 			 customJson.put("Alert ID", alert.getAlertId());
 			 customJson.put("Location Level",alert.getRegionScopes() !=null ? alert.getRegionScopes().getScope():null);
-			 JSONObject locationJson = getLocationName(alert.getImpactLevelId(), alert.getImpactLevelValue());
+			 JSONObject locationJson =null;
+			 if(alert.getImpactLevelId() !=null)
+				 locationJson = getLocationName(alert.getImpactLevelId(), alert.getImpactLevelValue());
+			 
 			 if(locationJson !=null && locationJson.has("location"))
 				 customJson.put("Location", locationJson.getString("location"));
 			 
