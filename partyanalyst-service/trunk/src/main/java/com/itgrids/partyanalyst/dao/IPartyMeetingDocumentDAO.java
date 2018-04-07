@@ -36,4 +36,5 @@ public interface IPartyMeetingDocumentDAO extends GenericDao<PartyMeetingDocumen
 	public List<Object[]> getPartyMeetingMomDocumentByUserAccessLevel(Long userAccessLevelId,List<Long> userAccessLevelValues,Integer monthId,Integer yearId,String type,Long partyMeetingId);
 	public Integer deletePartyMeetingMOMDocument(Long docId,Long loginUserId,Date updatedDate);
 	public List<String> getMomDocuments(Long partyMeetingMomId);
+	public List<Object[]> getMOMDocumentDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues);
 }

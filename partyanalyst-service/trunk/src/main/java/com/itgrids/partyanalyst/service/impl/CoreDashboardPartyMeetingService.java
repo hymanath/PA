@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingInviteeDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingSessionDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingStatusTempDAO;
@@ -53,6 +54,7 @@ import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SessionVO;
+import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.PartyMeetingLevel;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -85,6 +87,8 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	 private IPublicRepresentativeTypeDAO publicRepresentativeTypeDAO; 
 	 private IPartyMeetingLevelDAO partyMeetingLevelDAO;      
 	 private ITdpCadreDAO tdpCadreDAO;
+	 private IPartyMeetingMinuteDAO partyMeetingMinuteDAO;
+	 
 	 
 	public ITdpCadreDAO getTdpCadreDAO() {
 		return tdpCadreDAO;
@@ -179,6 +183,14 @@ public class CoreDashboardPartyMeetingService implements ICoreDashboardPartyMeet
 	public void setPartyMeetingDocumentDAO(
 			IPartyMeetingDocumentDAO partyMeetingDocumentDAO) {
 		this.partyMeetingDocumentDAO = partyMeetingDocumentDAO;
+	}
+
+	public IPartyMeetingMinuteDAO getPartyMeetingMinuteDAO() {
+		return partyMeetingMinuteDAO;
+	}
+
+	public void setPartyMeetingMinuteDAO(IPartyMeetingMinuteDAO partyMeetingMinuteDAO) {
+		this.partyMeetingMinuteDAO = partyMeetingMinuteDAO;
 	}
 
 /**
@@ -10571,4 +10583,389 @@ public Map<String,PartyMeetingsVO> getLvelWiseUpdationCount(Date startDate,Date 
 			}
 			
 		}
+	
+ /**
+  * @param  Long activityMemberId
+  * @param String fromDateStr
+  * @param String toDateStr
+  * @param Long stateId
+  * @return PartyMeetingsVO
+  * @author Nandhini 
+  * @Description :This Service Method is used to get Meeting And MOM basic Details.. 
+  *  @since 5-APRIL-2018
+  */
+  public PartyMeetingsVO getMOMBasicCountDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues){
+ 	 PartyMeetingsVO finalVO = new PartyMeetingsVO(); 
+ 	 try{
+ 		 Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+ 	 	 Map<Long,PartyMeetingsVO> meetingLvlMap = new HashMap<Long, PartyMeetingsVO>(0);
+ 	 	 Long userAccessLevelId=0l;
+ 	      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+ 	      Date fromDate=null;
+ 	 	 Date toDate=null;
+ 	 	 
+ 		if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+ 			 fromDate = sdf.parse(fromDateStr);
+ 			 toDate = sdf.parse(toDateStr);
+ 		 }
+ 		
+ 	    List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+ 	    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+ 		   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+ 		   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+ 			Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+ 			 if(locationValuesSet == null){
+ 				 locationValuesSet = new java.util.HashSet<Long>();
+ 				 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+ 			 }
+ 			 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+ 		   }
+ 	    }
+ 	    Long levelId = 0L;
+	 	 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+	 		 for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+	 			 List<Object[]> rtrnObjList =  partyMeetingDAO.getPartyMeetingCountByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);// userAccessLevelId,locationValues,
+	 			 if(rtrnObjList != null && !rtrnObjList.isEmpty()){
+	 				 for (Object[] param : rtrnObjList) {
+	 					levelId = param[0] != null ? Long.valueOf(param[0].toString()):0;
+	 					PartyMeetingsVO vo = new PartyMeetingsVO();
+	 						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0);
+	 						if(levelId != null && levelId.longValue() == 4L)
+	 							vo.setName("Mandal/Town/Division");
+	 						else
+	 							vo.setName(param[1] != null ? param[1].toString() : "");
+	 						vo.setPlannedCount(param[2] != null ? Long.valueOf(param[2].toString()):0);
+	 					meetingLvlMap.put(vo.getId(), vo);
+					}
+	 			 }
+	 		 }
+	 	 }
+	 	List<Object[]> conductedList = null;
+	 	List<Object[]> notConductedList = null;
+	 	List<Object[]> notUpdatedList = null;
+	 	List<Object[]> generalList = null;
+	 	List<Object[]> actionList = null;
+	 	List<Object[]> actionTypeList = null;
+	 	List<Object[]> momDocmList = null;
+	 	
+	 	 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+	 		 for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+	 			 conductedList = partyMeetingDAO.getPartyMeetingStatusCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"Conducted");
+	 			 notConductedList = partyMeetingDAO.getPartyMeetingStatusCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"Not Conducted");
+	 			 notUpdatedList = partyMeetingDAO.getPartyMeetingStatusCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"Not Updated");
+	 		 }
+	 	 }
+	 	
+	 	if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+	 		for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+	 			 actionList = partyMeetingMinuteDAO.getMOMTypesCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"Actionable");
+	 			 generalList = partyMeetingMinuteDAO.getMOMTypesCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"General");
+			 }
+		 }
+	 	
+	 	if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+	 		for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+	 	         actionTypeList = partyMeetingMinuteDAO.getMOMActionTypeCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
+	 		}
+	 	}
+	 	
+	 	/*if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+	 		for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+	 			momDocmList = partyMeetingDocumentDAO.getMOMDocumentDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);
+	 		}
+	 	}*/
+	 	
+	 	setStatusCount(conductedList,meetingLvlMap,"Conducted");
+	 	setStatusCount(notConductedList,meetingLvlMap,"Not Conducted");
+	 	setStatusCount(notUpdatedList,meetingLvlMap,"Not Updated");
+	 	setStatusCount(actionList,meetingLvlMap,"Actionable");
+	 	setStatusCount(generalList,meetingLvlMap,"General");
+	 	setActionTypeCountDetails(actionTypeList,meetingLvlMap);
+	 	setStatusCount(momDocmList,meetingLvlMap,"Document");
+	 	
+	 	if(meetingLvlMap != null && !meetingLvlMap.isEmpty()){
+	 		finalVO.getPartyMettingsVOList().addAll(meetingLvlMap.values());
+	 	}
+ 	 
+	 	if(finalVO.getPartyMettingsVOList() != null && !finalVO.getPartyMettingsVOList().isEmpty()){
+	 		for (PartyMeetingsVO resultVO : finalVO.getPartyMettingsVOList()) {
+	 			resultVO.setTotalMoms(resultVO.getGeneralCount()+resultVO.getActionCount());
+	 			resultVO.setNotUpdatedMomCount(resultVO.getConductedCount() - resultVO.getTotalMoms());
+	 			finalVO.setPlannedCount(finalVO.getPlannedCount()+resultVO.getPlannedCount());
+	 			finalVO.setConductedCount(finalVO.getConductedCount()+resultVO.getConductedCount());
+	 			finalVO.setNotConductedCount(finalVO.getNotConductedCount()+resultVO.getNotConductedCount());
+	 			finalVO.setNotUpdatedCount(finalVO.getNotUpdatedCount()+resultVO.getNotUpdatedCount());
+	 			finalVO.setGeneralCount(finalVO.getGeneralCount()+resultVO.getGeneralCount());
+	 			finalVO.setActionCount(finalVO.getActionCount()+resultVO.getActionCount());
+	 			finalVO.setGovtCount(finalVO.getGovtCount()+resultVO.getGovtCount());
+	 			finalVO.setPartyCount(finalVO.getPartyCount()+resultVO.getPartyCount());
+	 			finalVO.setMomDocumentCount(finalVO.getMomDocumentCount()+resultVO.getMomDocumentCount());
+	 			finalVO.setTotalMoms(finalVO.getTotalMoms()+resultVO.getTotalMoms());
+	 			finalVO.setNotUpdatedMomCount(finalVO.getConductedCount() - finalVO.getTotalMoms());
+			}
+	 	}
+	 	
+	 	//Calculate Percentages
+	 	if(finalVO.getPartyMettingsVOList() != null && !finalVO.getPartyMettingsVOList().isEmpty()){
+	 		for (PartyMeetingsVO resultVO : finalVO.getPartyMettingsVOList()) {
+	 			resultVO.setConductedCommentCntPer(calculatePercantage(resultVO.getConductedCount(),resultVO.getPlannedCount()));
+	 			resultVO.setNotConductedCommentCntPer(calculatePercantage(resultVO.getNotConductedCount(),resultVO.getPlannedCount()));
+	 			resultVO.setNotUpdatedCommentCntPer(calculatePercantage(resultVO.getNotUpdatedCount(),resultVO.getPlannedCount()));
+	 			resultVO.setGeneralCntPer(calculatePercantage(resultVO.getGeneralCount(),resultVO.getTotalMoms()));
+	 			resultVO.setActionCntPer(calculatePercantage(resultVO.getActionCount(),resultVO.getTotalMoms()));
+	 			resultVO.setPartyCntPer(calculatePercantage(resultVO.getPartyCount(),resultVO.getActionCount()));
+	 			resultVO.setGovtCntPer(calculatePercantage(resultVO.getGovtCount(),resultVO.getActionCount()));
+	 			resultVO.setNotUpdatedMomCntPer(calculatePercantage(resultVO.getNotUpdatedMomCount(),resultVO.getConductedCount()));
+	 			
+	 			finalVO.setConductedCommentCntPer(calculatePercantage(finalVO.getConductedCount(),finalVO.getPlannedCount()));
+	 			finalVO.setNotConductedCommentCntPer(calculatePercantage(finalVO.getNotConductedCount(),finalVO.getPlannedCount()));
+	 			finalVO.setNotUpdatedCommentCntPer(calculatePercantage(finalVO.getNotUpdatedCount(),finalVO.getPlannedCount()));
+	 			finalVO.setGeneralCntPer(calculatePercantage(finalVO.getGeneralCount(),finalVO.getTotalMoms()));
+	 			finalVO.setActionCntPer(calculatePercantage(finalVO.getActionCount(),finalVO.getTotalMoms()));
+	 			finalVO.setPartyCntPer(calculatePercantage(finalVO.getPartyCount(),finalVO.getActionCount()));
+	 			finalVO.setGovtCntPer(calculatePercantage(finalVO.getGovtCount(),finalVO.getActionCount()));
+	 			finalVO.setNotUpdatedMomCntPer(calculatePercantage(finalVO.getNotUpdatedMomCount(),finalVO.getConductedCount()));
+	 			
+			}
+	 	}
+	 	if(finalVO.getPartyMettingsVOList() != null && finalVO.getPartyMettingsVOList().size()>0)
+		{
+			Collections.sort(finalVO.getPartyMettingsVOList(), new Comparator<PartyMeetingsVO>() {
+				public int compare(PartyMeetingsVO o1, PartyMeetingsVO o2) {
+					return o2.getId().compareTo(o1.getId());
+				}
+			});
+		}
+     }catch(Exception e) {
+ 		 LOG.error("Exception raised at getPartyMeetingBasicCount() method of CoreDashboardPartyMeetingService", e);	
+ 	 }
+ 	 return finalVO; 
+   }
+  
+  public void setStatusCount(List<Object[]> list,Map<Long,PartyMeetingsVO> levelMap,String statusType){
+	  try {
+		  if(list != null && !list.isEmpty()){
+	 		 for (Object[] param : list) {
+	 			 Long levelId = param[0] != null ? Long.valueOf(param[0].toString()):0;
+	 			 PartyMeetingsVO vo = levelMap.get(levelId);
+	 			if(vo != null){
+	 				if(statusType != null && statusType.trim().equalsIgnoreCase("Conducted"))
+	 					vo.setConductedCount(param[1] != null ? Long.valueOf(param[1].toString()):0);
+	 				else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Conducted"))
+	 					vo.setNotConductedCount(param[1] != null ? Long.valueOf(param[1].toString()):0);
+	 				else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Updated"))
+	 					vo.setNotUpdatedCount(param[1] != null ? Long.valueOf(param[1].toString()):0);
+	 				else if(statusType != null && statusType.trim().equalsIgnoreCase("General"))
+	 					vo.setGeneralCount(param[1] != null ? Long.valueOf(param[1].toString()):0);
+	 				else if(statusType != null && statusType.trim().equalsIgnoreCase("Actionable"))
+	 					vo.setActionCount(param[1] != null ? Long.valueOf(param[1].toString()):0);
+	 				else if(statusType != null && statusType.trim().equalsIgnoreCase("Document"))
+	 					vo.setMomDocumentCount(param[1] != null ? Long.valueOf(param[1].toString()):0);
+	 			}
+	 		 }
+	 	 }
+	} catch (Exception e) {
+		LOG.error("Exception raised at setStatusCount() method of CoreDashboardPartyMeetingService", e);
+	}
+  }  
+	public void setActionTypeCountDetails(List<Object[]> list,Map<Long,PartyMeetingsVO> levelMap){
+		try {
+			if(list != null && !list.isEmpty()){
+				for (Object[] param : list) {
+					Long levelId = param[0] != null ? Long.valueOf(param[0].toString()):0;
+					String sourceType = param[2] != null ? param[0].toString():"";
+					PartyMeetingsVO vo = levelMap.get(levelId);
+					if(vo != null){
+						if(sourceType != null && sourceType.trim().equalsIgnoreCase("Govt"))
+							vo.setGovtCount(param[3] != null ? Long.valueOf(param[3].toString()):0);
+						else if(sourceType != null && sourceType.trim().equalsIgnoreCase("Party"))
+							vo.setPartyCount(param[3] != null ? Long.valueOf(param[3].toString()):0);
+					}
+				}
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setActionTypeCountDetails() method of CoreDashboardPartyMeetingService", e);
+		}
+	}
+	
+	/**
+	  * @param  Long activityMemberId
+	  * @param String fromDateStr
+	  * @param String toDateStr
+	  * @param Long stateId
+	  * @return PartyMeetingsVO
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to get  MOM Detailed Block Details.. 
+	  *  @since 6-APRIL-2018
+	  */
+	  public PartyMeetingsVO getMOMDetailedBlockDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String levelType){
+	 	 PartyMeetingsVO finalVO = new PartyMeetingsVO(); 
+	 	 try{
+	 		 Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+	 	 	 Map<Long,PartyMeetingsVO> meetingLvlMap = new HashMap<Long, PartyMeetingsVO>(0);
+	 	 	 Long userAccessLevelId=0l;
+	 	      SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 	      Date fromDate=null;
+	 	 	 Date toDate=null;
+	 	 	 
+	 		if(fromDateStr != null && fromDateStr.trim().length()>0 && toDateStr!= null && toDateStr.trim().length()>0){
+	 			 fromDate = sdf.parse(fromDateStr);
+	 			 toDate = sdf.parse(toDateStr);
+	 		 }
+	 		
+	 	    List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+	 	    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+	 		   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+	 		   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+	 			Set<Long> locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+	 			 if(locationValuesSet == null){
+	 				 locationValuesSet = new java.util.HashSet<Long>();
+	 				 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+	 			 }
+	 			 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+	 		   }
+	 	    }
+	 	 //   Long levelId = 0L;
+		 	 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+		 		 for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+		 			 List<Object[]> rtrnObjList =  partyMeetingDAO.getLevelsCountByType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,levelType);// userAccessLevelId,locationValues,
+		 			 if(rtrnObjList != null && !rtrnObjList.isEmpty()){
+		 				 for (Object[] param : rtrnObjList) {
+		 					//levelId = param[0] != null ? Long.valueOf(param[0].toString()):0;
+		 					PartyMeetingsVO vo = new PartyMeetingsVO();
+		 						vo.setId(param[0] != null ? Long.valueOf(param[0].toString()):0);
+		 						vo.setName(param[1] != null ? param[1].toString() : "");
+		 						vo.setPlannedCount(param[2] != null ? Long.valueOf(param[2].toString()):0);
+		 					meetingLvlMap.put(vo.getId(), vo);
+						}
+		 			 }
+		 		 }
+		 	 }
+		 	List<Object[]> conductedList = null;
+		 	List<Object[]> notConductedList = null;
+		 	List<Object[]> notUpdatedList = null;
+		 	List<Object[]> generalList = null;
+		 	List<Object[]> actionList = null;
+		 	List<Object[]> actionTypeList = null;
+		 	List<Object[]> momStatusList = null;
+		 	
+		 	 if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+		 		 for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+		 			 conductedList = partyMeetingDAO.getMOMLevelsConductedDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,"Conducted",levelType);
+		 			// notConductedList = partyMeetingDAO.getPartyMeetingStatusCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"Not Conducted");
+		 			// notUpdatedList = partyMeetingDAO.getPartyMeetingStatusCountDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues,"Not Updated");
+		 		 }
+		 	 }
+		 	
+		 	if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+		 		for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+		 			 actionList = partyMeetingMinuteDAO.getMOMTypesByLevelTypeDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,"Actionable",levelType);
+		 			 generalList = partyMeetingMinuteDAO.getMOMTypesByLevelTypeDetails(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,"General",levelType);
+				 }
+			 }
+		 	
+		 	if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+		 		for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+		 	         actionTypeList = partyMeetingMinuteDAO.getMOMActionTypeDetailsByLevelType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,levelType);
+		 		}
+		 	}
+		 	
+		 	if(locationAccessLevelMap != null && locationAccessLevelMap.size() > 0){
+		 		for (Entry<Long, Set<Long>> entry : locationAccessLevelMap.entrySet()) {
+		 			momStatusList = partyMeetingMinuteDAO.getMOMStatusDetailsByLevelType(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,levelType);
+		 		}
+		 	}
+		 	
+		 	setStatusCount(conductedList,meetingLvlMap,"Conducted");
+		 	setStatusCount(notConductedList,meetingLvlMap,"Not Conducted");
+		 	setStatusCount(notUpdatedList,meetingLvlMap,"Not Updated");
+		 	setStatusCount(actionList,meetingLvlMap,"Actionable");
+		 	setStatusCount(generalList,meetingLvlMap,"General");
+		 	setActionTypeCountDetails(actionTypeList,meetingLvlMap);
+		 	setMOMStatusDetails(momStatusList,meetingLvlMap);
+		 	
+		 	if(meetingLvlMap != null && !meetingLvlMap.isEmpty()){
+		 		finalVO.getPartyMettingsVOList().addAll(meetingLvlMap.values());
+		 	}
+	 	 
+		 	if(finalVO.getPartyMettingsVOList() != null && !finalVO.getPartyMettingsVOList().isEmpty()){
+		 		for (PartyMeetingsVO resultVO : finalVO.getPartyMettingsVOList()) {
+		 			resultVO.setTotalMoms(resultVO.getGeneralCount()+resultVO.getActionCount());
+		 			resultVO.setMomTotalStausCnt(resultVO.getMomCreatedCnt()+resultVO.getMomInPrgCnt()+resultVO.getMomCmpltedCnt());
+		 			finalVO.setPlannedCount(finalVO.getPlannedCount()+resultVO.getPlannedCount());
+		 			finalVO.setConductedCount(finalVO.getConductedCount()+resultVO.getConductedCount());
+		 			finalVO.setNotConductedCount(finalVO.getNotConductedCount()+resultVO.getNotConductedCount());
+		 			finalVO.setNotUpdatedCount(finalVO.getNotUpdatedCount()+resultVO.getNotUpdatedCount());
+		 			finalVO.setGeneralCount(finalVO.getGeneralCount()+resultVO.getGeneralCount());
+		 			finalVO.setActionCount(finalVO.getActionCount()+resultVO.getActionCount());
+		 			finalVO.setGovtCount(finalVO.getGovtCount()+resultVO.getGovtCount());
+		 			finalVO.setPartyCount(finalVO.getPartyCount()+resultVO.getPartyCount());
+		 			finalVO.setMomDocumentCount(finalVO.getMomDocumentCount()+resultVO.getMomDocumentCount());
+		 			finalVO.setTotalMoms(finalVO.getTotalMoms()+resultVO.getTotalMoms());
+		 			finalVO.setMomTotalStausCnt(finalVO.getMomTotalStausCnt()+resultVO.getMomTotalStausCnt());
+				}
+		 	}
+		 	
+		 	//Calculate Percentages
+		 	if(finalVO.getPartyMettingsVOList() != null && !finalVO.getPartyMettingsVOList().isEmpty()){
+		 		for (PartyMeetingsVO resultVO : finalVO.getPartyMettingsVOList()) {
+		 			resultVO.setConductedCommentCntPer(calculatePercantage(resultVO.getConductedCount(),resultVO.getPlannedCount()));
+		 			resultVO.setNotConductedCommentCntPer(calculatePercantage(resultVO.getNotConductedCount(),resultVO.getPlannedCount()));
+		 			resultVO.setNotUpdatedCommentCntPer(calculatePercantage(resultVO.getNotUpdatedCount(),resultVO.getPlannedCount()));
+		 			resultVO.setGeneralCntPer(calculatePercantage(resultVO.getGeneralCount(),resultVO.getTotalMoms()));
+		 			resultVO.setActionCntPer(calculatePercantage(resultVO.getActionCount(),resultVO.getTotalMoms()));
+		 			resultVO.setPartyCntPer(calculatePercantage(resultVO.getPartyCount(),resultVO.getActionCount()));
+		 			resultVO.setGovtCntPer(calculatePercantage(resultVO.getGovtCount(),resultVO.getActionCount()));
+		 			resultVO.setMomCreatedCntPer(calculatePercantage(resultVO.getMomCreatedCnt(),resultVO.getMomTotalStausCnt()));
+		 			resultVO.setMomInPrgCntPer(calculatePercantage(resultVO.getMomInPrgCnt(),resultVO.getMomTotalStausCnt()));
+		 			resultVO.setMomCmpltedCntPer(calculatePercantage(resultVO.getMomCmpltedCnt(),resultVO.getMomTotalStausCnt()));
+		 			
+		 			finalVO.setConductedCommentCntPer(calculatePercantage(finalVO.getConductedCount(),finalVO.getPlannedCount()));
+		 			finalVO.setNotConductedCommentCntPer(calculatePercantage(finalVO.getNotConductedCount(),finalVO.getPlannedCount()));
+		 			finalVO.setNotUpdatedCommentCntPer(calculatePercantage(finalVO.getNotUpdatedCount(),finalVO.getPlannedCount()));
+		 			finalVO.setGeneralCntPer(calculatePercantage(finalVO.getGeneralCount(),finalVO.getTotalMoms()));
+		 			finalVO.setActionCntPer(calculatePercantage(finalVO.getActionCount(),finalVO.getTotalMoms()));
+		 			finalVO.setPartyCntPer(calculatePercantage(finalVO.getPartyCount(),finalVO.getActionCount()));
+		 			finalVO.setGovtCntPer(calculatePercantage(finalVO.getGovtCount(),finalVO.getActionCount()));
+		 			finalVO.setMomCreatedCntPer(calculatePercantage(finalVO.getMomCreatedCnt(),finalVO.getMomTotalStausCnt()));
+		 			finalVO.setMomInPrgCntPer(calculatePercantage(finalVO.getMomInPrgCnt(),finalVO.getMomTotalStausCnt()));
+		 			finalVO.setMomCmpltedCntPer(calculatePercantage(finalVO.getMomCmpltedCnt(),finalVO.getMomTotalStausCnt()));
+		 			
+				}
+		 	}
+		 	if(finalVO.getPartyMettingsVOList() != null && finalVO.getPartyMettingsVOList().size()>0)
+			{
+				Collections.sort(finalVO.getPartyMettingsVOList(), new Comparator<PartyMeetingsVO>() {
+					public int compare(PartyMeetingsVO o1, PartyMeetingsVO o2) {
+						return o1.getId().compareTo(o2.getId());
+					}
+				});
+			}
+	     }catch(Exception e) {
+	 		 LOG.error("Exception raised at getMOMDetailedBlockDetails() method of CoreDashboardPartyMeetingService", e);	
+	 	 }
+	 	 return finalVO; 
+	  }
+	  public void setMOMStatusDetails(List<Object[]> list,Map<Long,PartyMeetingsVO> levelMap){
+			try {
+				if(list != null && !list.isEmpty()){
+					for (Object[] param : list) {
+						Long levelId = param[0] != null ? Long.valueOf(param[0].toString()):0;
+						String sourceType = param[2] != null ? param[0].toString():"";
+						PartyMeetingsVO vo = levelMap.get(levelId);
+						if(vo != null){
+							if(sourceType != null && sourceType.trim().equalsIgnoreCase("Created"))
+								vo.setMomCreatedCnt(param[3] != null ? Long.valueOf(param[3].toString()):0);
+							else if(sourceType != null && sourceType.trim().equalsIgnoreCase("In Progress"))
+								vo.setMomInPrgCnt(param[3] != null ? Long.valueOf(param[3].toString()):0);
+							else if(sourceType != null && sourceType.trim().equalsIgnoreCase("Completed"))
+								vo.setMomCmpltedCnt(param[3] != null ? Long.valueOf(param[3].toString()):0);
+						}
+					}
+				}
+			} catch (Exception e) {
+				LOG.error("Exception raised at setMOMStatusDetails() method of CoreDashboardPartyMeetingService", e);
+			}
+		} 
+  
 }
