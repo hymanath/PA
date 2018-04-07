@@ -12,5 +12,5 @@ public interface IAlertCallerRelationDAO extends GenericDao<AlertCallerRelation,
 	public List<Object[]> getAlertCallerDetailsByAlert(Long alertId);
 	public List<Object[]> getAlertCallerDetailsForAlerts(List<Long> alertIds);
 	public Long getMaxCallerOrderForAlert(Long alertId);
-	public Long totalCallCenterCallForRwsDept(Date fromDate,Date toDate);
+	public Long totalCallCenterCallForRwsDept(Date fromDate,Date toDate, Long deptId);
 }

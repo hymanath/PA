@@ -185,7 +185,7 @@ public class GovtDepartmentDesignationOfficerDetailsDAO extends GenericDaoHibern
 	public List<Object[]> getNewLocationInfoOfUser(Long userId){
 		
 		Query query = getSession().createQuery(" " +
-				" SELECT '','', " +
+				" SELECT  '','' "+
 				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.govtDepartment.departmentName, " +
 				" model.govtDepartmentDesignationOfficer.govtDepartmentDesignation.designationName, " +
 				" model.govtOfficer.officerName, " +
