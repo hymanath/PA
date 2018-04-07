@@ -30,6 +30,7 @@ import com.itgrids.partyanalyst.model.AreaInchargeLocation;
 import com.itgrids.partyanalyst.model.AreaInchargeMember;
 import com.itgrids.partyanalyst.service.IAreaInchargeDashBoardService;
 import com.itgrids.partyanalyst.service.ICadreDetailsService;
+import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
 import com.itgrids.partyanalyst.utils.CommonMethodsUtilService;
 import com.itgrids.partyanalyst.utils.DateUtilService;
 
@@ -50,6 +51,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	private IConstituencyDAO constituencyDAO;
 	private IUserDistrictAccessInfoDAO userDistrictAccessInfoDAO;
 	private IUserConstituencyAccessInfoDAO userConstituencyAccessInfoDAO;
+	private ICoreDashboardGenericService coreDashboardGenericService;
 	public CommonMethodsUtilService getCommonMethodsUtilService() {
 		return commonMethodsUtilService;
 	}
@@ -156,11 +158,21 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		this.userConstituencyAccessInfoDAO = userConstituencyAccessInfoDAO;
 	}
 
-	public List<AreaInchargeVO> getAreaInchargeDetails(Long voterId,String mobileNo,String memberShipId){
+	
+	public ICoreDashboardGenericService getCoreDashboardGenericService() {
+		return coreDashboardGenericService;
+	}
+
+	public void setCoreDashboardGenericService(
+			ICoreDashboardGenericService coreDashboardGenericService) {
+		this.coreDashboardGenericService = coreDashboardGenericService;
+	}
+
+	public List<AreaInchargeVO> getAreaInchargeDetails(String voterCardNo,String mobileNo,String memberShipId){
 		List<AreaInchargeVO> finalList = new ArrayList<AreaInchargeVO>();
 		try{
 			//1-first name,2-relativeName,3-age,4-gender,5-houseNo,6-tehsilId,7-tehsilName,8-casteName,9-image
-			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterId,mobileNo,memberShipId);
+			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterCardNo,mobileNo,memberShipId);
 			
 			if(inchargeDetails != null && inchargeDetails.size()>0){
 				for(Object[] param: inchargeDetails){
@@ -382,7 +394,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		try{
 			Map<Long,AreaInchargeVO> inchargeMap= new HashMap<Long,AreaInchargeVO>();
 			Set<Long> assignedBooths = null;
-			//0-tdpCadreId,1-name,2-relativename,3-age,4-gender,5-memberShipNo,6-mobileNo,7-locationId,8-image
+			//0-tdpCadreId,1-name,2-relativename,3-age,4-gender,5-memberShipNo,6-mobileNo,7-locationId,8-image,9-name,10-panchaytId,11-panchayatName
 			List<Object[]> inchargeDetails= areaInchargeMemberDAO.getAreaInchargeAssignedBoothDetails(levelId,levelValue);
 			if(inchargeDetails != null && inchargeDetails.size()>0){
 				for(Object[] param : inchargeDetails){
@@ -403,6 +415,8 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 					  assignedBooths.add(commonMethodsUtilService.getLongValueForObject(param[7]));
 					  inchargeVo.setAssignIds(assignedBooths);
 					  inchargeVo.setImage(commonMethodsUtilService.getStringValueForObject(param[8]));
+					  inchargeVo.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[9]));
+					  inchargeVo.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[11]));
 					  inchargeMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), inchargeVo);
 					}
 				}
@@ -568,41 +582,41 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 	}
 	public List<InchargeMemberVO> setAreaInchargeAssignedPer(List<AreaInchargeVO> finalList,List<InchargeMemberVO> returnList,Map<String,InchargeMemberVO> areaPerMAp){
 		
-		//List<InchargeMemberVO> returnList = new ArrayList<InchargeMemberVO>();
 		try{
 			Long total =0l;
 			if(finalList != null && finalList.size()>0){
 				for(AreaInchargeVO inchargeVO : finalList){
 					inchargeVO.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(inchargeVO.getTotal(),inchargeVO.getAssignedCount())));
 					if(Double.valueOf(inchargeVO.getAssignPer()) >=1 && Double.valueOf(inchargeVO.getAssignPer()) <10){
-						InchargeMemberVO  memberVo = areaPerMAp.get(1-10);
+						InchargeMemberVO  memberVo = areaPerMAp.get("1-10");
 						memberVo.setOneToTenCount(memberVo.getOneToTenCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=10 && Double.valueOf(inchargeVO.getAssignPer()) <20){
-						InchargeMemberVO  memberVo = areaPerMAp.get(10-20);
+						InchargeMemberVO  memberVo = areaPerMAp.get("10-20");
 						memberVo.setTenToTwentyCount(memberVo.getTenToTwentyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=20 && Double.valueOf(inchargeVO.getAssignPer()) <30){
-						InchargeMemberVO  memberVo = areaPerMAp.get(20-30);
+						InchargeMemberVO  memberVo = areaPerMAp.get("20-30");
 						memberVo.setTwentyToThirCount(memberVo.getTwentyToThirCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=30 && Double.valueOf(inchargeVO.getAssignPer()) <40){
-						InchargeMemberVO  memberVo = areaPerMAp.get(30-40);
+						InchargeMemberVO  memberVo = areaPerMAp.get("30-40");
 						memberVo.setThirToFrtyCount(memberVo.getThirToFrtyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=40 && Double.valueOf(inchargeVO.getAssignPer()) <50){
-						InchargeMemberVO  memberVo = areaPerMAp.get(40-50);
+						InchargeMemberVO  memberVo = areaPerMAp.get("40-50");
 						memberVo.setFrtyToFivtyCount(memberVo.getFrtyToFivtyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=50 && Double.valueOf(inchargeVO.getAssignPer()) <60){
-						InchargeMemberVO  memberVo = areaPerMAp.get(50-60);
+						InchargeMemberVO  memberVo = areaPerMAp.get("50-60");
 						memberVo.setFivtyToSixtyCount(memberVo.getFivtyToSixtyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=60 && Double.valueOf(inchargeVO.getAssignPer()) <70){
-						InchargeMemberVO  memberVo = areaPerMAp.get(60-70);
+						InchargeMemberVO  memberVo = areaPerMAp.get("60-70");
 						memberVo.setSixtyToSeventyCount(memberVo.getSixtyToSeventyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=80 && Double.valueOf(inchargeVO.getAssignPer()) <90){
-						InchargeMemberVO  memberVo = areaPerMAp.get(80-90);
+						InchargeMemberVO  memberVo = areaPerMAp.get("80-90");
 						memberVo.setEightyToNightyCount(memberVo.getEightyToNightyCount()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) >=90){
-						InchargeMemberVO  memberVo = areaPerMAp.get(90);
+						InchargeMemberVO  memberVo = areaPerMAp.get("90");
 						memberVo.setAboveNighty(memberVo.getAboveNighty()+1);
 					}else if(Double.valueOf(inchargeVO.getAssignPer()) ==0){
-						//perVO.setZeroPerCount(perVO.getZeroPerCount()+1);
+						InchargeMemberVO  memberVo = areaPerMAp.get("0");
+						memberVo.setZeroPerCount(memberVo.getZeroPerCount()+1);
 					}
 					total = total+1;
 					//returnList.add(perVO);
@@ -641,4 +655,162 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		}
 		return returnList;
 	}
+	/*public List<List<UserTypeVO>> getUserTypeWiseTotalCadreInsuranceComplainctCnt(Long activityMemberId,Long userId,Long userTypeId,Long stateId,Long cadreEnrollmentYearId,String fromDateStr,String toDateStr) {
+		 
+		  List<List<UserTypeVO>> resultList = new ArrayList<List<UserTypeVO>>(0);
+		  Map<String,UserTypeVO> complainctCntMap  = new HashMap<String, UserTypeVO>(0);
+		  List<UserTypeVO> issueTypeList = new ArrayList<UserTypeVO>();
+		  Map<Long,Set<Long>> locationLevelMap = null;
+		  Map<Long,Map<Long,UserTypeVO>> userTypeMapDtls = null;
+		  try{
+			     SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+				 Date fromDate = null;
+				 Date toDate = null;
+				 if(fromDateStr != null && fromDateStr.length() > 0 && toDateStr != null && fromDateStr.length() > 0){
+					fromDate = sdf.parse(fromDateStr);
+					toDate = sdf.parse(toDateStr);
+				 }
+			     ActivityMemberVO activityMemberVO = new ActivityMemberVO();
+			     activityMemberVO.setUserId(userId);
+			     activityMemberVO.setActivityMemberId(activityMemberId);
+			     activityMemberVO.setUserTypeId(userTypeId);
+			     activityMemberVO = coreDashboardGenericService.getChildActivityMembersAndLocationsNew(activityMemberVO);//calling generic method.
+			     userTypeMapDtls = activityMemberVO.getUserTypesMap();
+			     locationLevelMap = activityMemberVO.getLocationLevelIdsMap();
+			     //Setting query input parameter
+			     CadreInsuranceInputVO inputVO = new CadreInsuranceInputVO();
+			     inputVO.setStateId(stateId);
+			     inputVO.setFromDate(fromDate);
+			     inputVO.setToDate(toDate);
+			     inputVO.setEnrollmentYearId(cadreEnrollmentYearId);
+			     //PrepareTemplate
+			     List<String> rtrnissutTypeObj = insuranceStatusDAO.getAllIssueType(stateId);
+			     List<Object[]> rtrnStatusObjLst = insuranceStatusDAO.getAllGrievanceInsuranceStatus();
+			     //Prepare Template
+			      prepareTemplate(rtrnissutTypeObj,rtrnStatusObjLst,issueTypeList);
+			      //Setting Candidate Wise Template
+			      settingCandiateWiseIssueTypeAndStatusDls(userTypeMapDtls,issueTypeList);
+			      
+			      if(locationLevelMap != null && locationLevelMap.size() > 0){
+			    	 
+			    	 for(Entry<Long,Set<Long>> entry:locationLevelMap.entrySet()){
+			    		 inputVO.setUserAccessLevelId(entry.getKey());
+			    		 inputVO.setUserAccessLevelValues(entry.getValue());
+			    		 List<Object[]> rtrnComplaintCnt = insuranceStatusDAO.getLocationWiseComplaintCntBasedOnUserAccessLevel(inputVO);
+			    		 setComplaintCount(entry.getKey(),rtrnComplaintCnt,complainctCntMap,issueTypeList,"complaintCnt");
+			    		
+			    	 }
+			     }
+			  
+			     //pushing complaint count
+			     if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+			    	 
+					  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
+						  
+					      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+					      
+					      for(UserTypeVO vo:userTypeMap.values()){
+					    	  
+					    	  for(Long locationValueId:vo.getLocationValuesSet()){
+					    		  
+					    		  String key = vo.getLocationLevelId()+"-"+locationValueId;
+					    		  
+					    		  if(complainctCntMap.get(key) != null){
+					    			  
+					    			  UserTypeVO issueTypeVO = complainctCntMap.get(key);
+					    			  
+					    				  if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() > 0){
+					    					  
+					    					  for(UserTypeVO issTypeVO:issueTypeVO.getSubList()){
+					    						  
+					    						  List<UserTypeVO> statuList = getIssueTypeMatchVO(vo.getSubList(),issTypeVO.getName());
+					    						  
+					    						  if(statuList != null && statuList.size() > 0){
+					    							  
+					    							  if(issTypeVO.getSubList() != null && issTypeVO.getSubList().size() > 0){
+					    								  
+					    								for(UserTypeVO statusVO:issTypeVO.getSubList()) {
+					    									
+					    									UserTypeVO matchVO = getStatusMatchVO(statuList, statusVO.getId());
+					    									
+					    									 if(matchVO != null){
+					    										 
+					    										 matchVO.setTotalCount(matchVO.getTotalCount()+statusVO.getTotalCount());
+					    									 }
+					    								}
+					    							  }
+					    						  }
+					    					  }
+					    				  }
+					    			  }
+					    	  }
+					      }
+				  }  
+				}
+			
+			    // Calculate Total Complaint Count Candidate Wise
+			     if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+			    	  for (Entry<Long, Map<Long, UserTypeVO>> entry : userTypeMapDtls.entrySet()) {
+					      Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+					      for(UserTypeVO vo:userTypeMap.values()){
+					    	 if(vo.getSubList() != null && vo.getSubList().size() > 0){
+					    		 for(UserTypeVO issueTypeVO:vo.getSubList()){
+					    			 if(issueTypeVO.getSubList() != null && issueTypeVO.getSubList().size() >0l){
+					    				 for(UserTypeVO statusVO:issueTypeVO.getSubList()){
+					    					 vo.setTotalCount(vo.getTotalCount()+statusVO.getTotalCount());//Over all complaint count candidate wise
+					    					 issueTypeVO.setTotalCount(issueTypeVO.getTotalCount()+statusVO.getTotalCount());//Issue type wise total complaint count
+					    				 }
+					    			 }
+					    		 }
+					    	 }
+					    	
+				     }  
+				 }
+			   }
+			   if(userTypeMapDtls!=null && userTypeMapDtls.size()>0){
+			        Map<Long,UserTypeVO> orgSecAndSecMap = new LinkedHashMap<Long,UserTypeVO>();
+			        Map<Long,UserTypeVO>  secreteriesMap = null;
+			        if(userTypeMapDtls.containsKey(11l)){
+			          secreteriesMap = userTypeMapDtls.get(11l);
+			          orgSecAndSecMap.putAll(secreteriesMap);
+			          //remove secreteries from Map
+			          userTypeMapDtls.remove(11l); 
+			        }
+			        
+			        Map<Long,UserTypeVO>  organizingSecreteriesMap = null;
+			        if(userTypeMapDtls.containsKey(4l)){
+			          organizingSecreteriesMap = userTypeMapDtls.get(4l);
+			          orgSecAndSecMap.putAll(organizingSecreteriesMap);
+			        }
+			       
+			        if(organizingSecreteriesMap!=null && organizingSecreteriesMap.size()>0){
+			        	userTypeMapDtls.put(4l, orgSecAndSecMap); 
+			        }
+			      }
+				
+				if(userTypeMapDtls != null && userTypeMapDtls.size() > 0){
+					  for(Entry<Long, Map<Long, UserTypeVO>> entry:userTypeMapDtls.entrySet()){
+					   Map<Long,UserTypeVO> userTypeMap = entry.getValue();
+					   resultList.add(new ArrayList<UserTypeVO>(userTypeMap.values()));
+				}
+				}
+				if(resultList != null && resultList.size() > 0){
+					for(List<UserTypeVO> memberList:resultList){
+						Collections.sort(memberList, complaintCountDesc);
+					}
+				}
+			
+		 }catch (Exception e) {
+			 LOG.error("Error occured at getUserTypeWiseTotalComplainctCnt() in CoreDashboardInsuranceService class",e);
+		 }
+		  return resultList;
+	  }
+	public static Comparator<UserTypeVO> complaintCountDesc = new Comparator<UserTypeVO>() {
+		public int compare(UserTypeVO member2, UserTypeVO member1) {
+		Long count2 = member2.getTotalCount();
+		Long count1 = member1.getTotalCount();
+		//descending order of percantages.
+		 return count1.compareTo(count2);
+		}
+	};*/ 
 }
