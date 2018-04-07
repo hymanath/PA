@@ -5818,10 +5818,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVo;
 	}
-	public  List<JalavaniAlertResultVO>  getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId){
+	public  List<JalavaniAlertResultVO>  getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId,Long deptId){
 		 List<JalavaniAlertResultVO> alertVoLIst = new ArrayList<JalavaniAlertResultVO>(0);
 		  try{			  
-			  alertVoLIst = alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(fromDateStr, toDateStr, searchType, type, alertCategoryId);			  
+			  alertVoLIst = alertManagementSystemService.getJalavanilocationAndStatusDetailsInfo(fromDateStr, toDateStr, searchType, type, alertCategoryId,deptId);			  
 		  }catch(Exception e){
 			  e.printStackTrace();
 				log.error("exception occured in  the getJalavanilocationAndStatusDetailsInfo  method in WebServiceHandlerService");
@@ -5946,10 +5946,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId){
+	public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId,Long deptId){
 		List<AlertCoreDashBoardVO> alertVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 		try{
-			alertVoList = alertManagementSystemService. getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,searchType,type,locationTypeId,alertCategoryId,statusId);
+			alertVoList = alertManagementSystemService. getJalavaniAlertSourceDetailsInformation(startDateStr,endDateStr,searchType,type,locationTypeId,alertCategoryId,statusId,deptId);
     	}catch(Exception e){
     		log.error("Exception raised in getJalavaniAlertSourceDetailsInformation  method in WebServiceHandlerService1",e);
     	}
@@ -5991,10 +5991,10 @@ public class WebServiceHandlerService implements IWebServiceHandlerService {
     	}
     	return alertVoList;
 	}
-	public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId){
+	public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId,Long deptId,Long categoryId){
 		List<AlertCoreDashBoardVO> alertVoList = new ArrayList<AlertCoreDashBoardVO>(0);
 		try{
-			alertVoList = alertManagementSystemService.getJalavaniAlertForClosedAndReopenDetails(startDateStr,endDateStr,statusId);
+			alertVoList = alertManagementSystemService.getJalavaniAlertForClosedAndReopenDetails(startDateStr,endDateStr,statusId,deptId,categoryId);
     	}catch(Exception e){
     		log.error("Exception raised in getJalavaniAlertForClosedAndReopenDetails  method in WebServiceHandlerService1",e);
     	}

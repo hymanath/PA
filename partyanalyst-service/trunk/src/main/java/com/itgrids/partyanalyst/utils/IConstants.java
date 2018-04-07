@@ -1395,4 +1395,5 @@ public interface IConstants {
 	public static final List<Long> JALAVANI_ALERT_STATUS_IDS   = Arrays.asList(2l,3l,11l,12l,4l,13l,10l,6l,7l,8l,9l);
 	public static final List<Long> JALAVANI_DEPT_IDS =Arrays.asList(19l,20l,48l,49l);
 	public static final List<String> JALAVANI_ALERT_STATUS_NAMES=Arrays.asList("NOTIFIED","ACTION IN PROGRESS","REOPEN","CLOSED","COMPLETED","PROPOSAL","REJOINDER","ACTION NOT REQUIRED","DUPLICATE","WRONGLY MAPPED DESIGNATION","WRONGLY MAPPED DEPARTMENT");
+	public static final List<Long> JALAVANI_OTHER_DEPT_CATEGORY_IDS=Arrays.asList(2l,3l,5l);
 }

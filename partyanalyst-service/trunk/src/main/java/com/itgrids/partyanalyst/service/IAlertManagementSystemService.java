@@ -266,13 +266,13 @@ public interface IAlertManagementSystemService {
 	 public AlertVO getJalavaniCategoryWiseDetailsInfo(JalavaniAlertsInputVO inputVo);
 	 public List<AlertVO> getAlertsMonthlyOverviewInfoBySearchType(JalavaniAlertsInputVO vo);
 	 public List<AlertVO> getJalavanilocationOverview(JalavaniAlertsInputVO inputVo);
-	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId);
-	 public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId);
+	 public List<JalavaniAlertResultVO> getJalavanilocationAndStatusDetailsInfo(String fromDateStr,String toDateStr,String searchType,String type,Long alertCategoryId,Long deptId);
+	 public List<AlertCoreDashBoardVO> getJalavaniAlertSourceDetailsInformation(String startDateStr,String endDateStr,String searchType,String type,Long locationTypeId,Long alertCategoryId,Long statusId,Long deptId);
 	 public List<AlertCoreDashBoardVO> getJalavaniFeedBackNotSatisifiedAlertsInfo(String startDateStr,String endDateStr,Long feedbackId,Long districtId);
 	 public List<BasicVO> getJalavaniFeedBackDetailsInfo(String startDateStr,String endDateStr);
 	 public List<BasicVO> getJalavaniStatusWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
 	 public List<BasicVO> getJalavaniIvrWiseSummaryGraphDetailsInfo(String startDateStr,String endDateStr);
-	 public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId);
+	 public List<AlertCoreDashBoardVO> getJalavaniAlertForClosedAndReopenDetails(String startDateStr,String endDateStr,Long statusId,Long deptId,Long categoryId);
 	 public List<AlertCoreDashBoardVO> getJalavaniIvrSummaryWiseClick(String startDateStr,String endDateStr,Long statusId,Long probTypeId,Long districtId,String satisfiedStatus);
 	 public List<BasicVO> getJalavaniIvrRespondantsGraphDetailsInfo(String startDateStr,String endDateStr);
 }        
