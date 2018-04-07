@@ -1062,7 +1062,8 @@
 											<a href="applyQuickApprovalNominatedPostAction.action"><i class="fa fa-file ico-white"></i><span>&nbsp;&nbsp;Apply Quick Approval Post</span></a> 
 											</li>
 										</c:if>
-											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT')}">
+											<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT') || 
+												fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT') }">
 										  <li>
 										<a href="nominatedPostApplicationReviewAction.action"><i class="fa fa-qrcode  ico-white"></i><span>&nbsp;&nbsp;Nominated Posts Overview</span></a>
 										</li>

@@ -57,6 +57,7 @@
     	<div class="col-md-12 col-xs-12 col-sm-12">
 		 <h3 class="text-capital"  style="color:#5C2D25;">Nominated Posts Overview Details</h3>
         </div>
+		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_ENTITLEMENT')}">
 		<div class="col-md-12 col-xs-12 col-sm-12 m_top10" >
 			<div class="applicationsOverView">
 			<div class="m_top10">
@@ -106,6 +107,7 @@
 				<div id="districtWiseOverviewId"  style="margin-top: 15px"></div>
 			</div>
         </div>
+		</c:if>
 		<c:if test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT')}">
 			<div class="col-md-12 col-xs-12 col-sm-12 m_top20">
 				<div class="applicationsOverView">
@@ -147,6 +149,16 @@
 		//$('#'+divId+'').html('<img id="dataLoadingsImgForImagePath" src="images/Loading-data.gif" style="width:60px;height:50px;margin:auto;display:block"/>');
 		$('#'+divId+'').html('<div class="spinner"><div class="dot1"></div><div class="dot2"></div></div>');
 		var stateId = $('input[name=stateName]:checked').val();
+		
+		<c:choose>
+			<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
+			stateId = parseInt(1);
+			</c:when> 
+			<c:otherwise>
+				stateId = parseInt(1);
+			</c:otherwise>
+		</c:choose>
+		
 		if(stateId >1)
 			stateId = 36;
 		if(levelId == 1){
@@ -194,7 +206,7 @@
 						if(result[i].name == "TOTAL AVAILABLE"){
 							
 							<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' ) || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
@@ -207,7 +219,7 @@
 						}						
 						else if(result[i].name == "READY TO SHORT LIST" || result[i].name == "RUNNING"){
 							<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
@@ -221,7 +233,7 @@
 							
 						else if(result[i].name == "READY FOR FINAL REVIEW"){
 							<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')  || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
@@ -234,7 +246,7 @@
 						}
 						else if(result[i].name == "FINALIZED"){
 							<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')  || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
@@ -247,7 +259,7 @@
 						}
 						else if(result[i].name == "GO ISSUED / COMPLETED"){
 							<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')  || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="finalReviewCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
@@ -263,7 +275,7 @@
 							<!--str+='<h3><span attr_level_id="'+levelId+'" attr_status="'+result[i].name+'">'+result[i].totalPositions+'</span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:15px;">Applications : <span id="">700</span></p>';-->
 							
 							<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_READY_TO_FINALYZE_ENTITLEMENT')  || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-muted">'+result[i].perc+'%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;"></p>';
 								else
@@ -280,7 +292,7 @@
 						//str+='<h3>'+result[i].totalPositions+' </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+result[i].totalApplicationReceivedCnt+'</span></p>';
 						
 						<c:choose>
-								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )}">
+								<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_MOVE_TO_RUNNING_ENTITLEMENT' )  || fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
 								if(result[i].totalPositions > 0)
 									str+='<h3><span class="yetToStartCls" attr_level_id="'+levelId+'" attr_level_txt="'+levelTxt+'" attr_status="'+result[i].name+'" style="cursor:pointer;color:#70A4BE">'+result[i].totalPositions+'<span style="font-size:13px;"> Posts</span></span><span class="pull-right text-danger">100.0%</span> </h3><p style="color:#DDC4E2;text-align:center;font-size:14px;">Applications : <span id="">'+applicationsCount+'</span></p>';
 								else
@@ -322,6 +334,17 @@ $(document).on("click",".newWindowCls",function(){
 	var status = $(this).attr("attr_status");
 	var stateId = $('input[name=stateName]:checked').val();
 	var levelTxt = $(this).attr("attr_level_txt");
+	
+	<c:choose>
+			<c:when test="${fn:contains(sessionScope.USER.entitlements, 'NOMINATED_POST_OVERVIEW_AC_MANDAL_VILLAGE_ACCESS_ENTITLEMENT' )}">
+			stateId = parseInt(1);
+			</c:when> 
+			<c:otherwise>
+				stateId = parseInt(1);
+			</c:otherwise>
+		</c:choose>
+		
+		
 	if(status == "TOTAL")//totalCorpCls
 		window.location.replace('nominatedReadyToFinalReviewAction.action?lId='+levelId+'&stId='+stateId+'&sts=Total','_self');
 	else if(status == "TOTAL AVAILABLE")//totalCorpCls
