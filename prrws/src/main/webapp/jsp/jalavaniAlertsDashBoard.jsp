@@ -36,8 +36,8 @@
 					<img src="Assests/images/aplogo.png" class="logo"/>
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9j">
-					<h4 class="text-capital">Panchayat Raj,RD&News</h4>
-					<p>Jalavani DashBoard</p>
+					<h4 class="text-capital" id="nameHeaderId"></h4>
+					<p id="nameId"></p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -271,7 +271,7 @@
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="12" attr_statusName="Closed" style="text-decoration:underline;cursor:pointer;">Closed Alerts</h6></li>
 						<li><h6 class="font_weight closedReopenAlertsCls" attr_statusId="11" attr_statusName="Reopen" style="text-decoration:underline;cursor:pointer;">Reopen Alerts</h6></li>
 					</ul>-->
-					<i class="fa fa-info-circle menu-cls2 pull-right" title="Click To Show Closed And Reopen Alerts"></i>
+					<i class="fa fa-info-circle menu-cls2 pull-right m_top20" title="Click To Show Closed And Reopen Alerts"></i>
 					<div class="menuCls-table2">
 						<div class="arrow_box_top1">
 							<div class="row">
@@ -287,13 +287,23 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-sm-2 pull-right">
+				<div class="col-sm-3 pull-right m_top20">
 					<div class="input-group">
 						<span class="input-group-addon">
 							<i class="glyphicon glyphicon-calendar"></i>
 						</span>
-						<input type="text" class="form-control" id="dateRangePicker" style="width: 200px;"/>
+						<input type="text" class="form-control" id="dateRangePicker"/>
 					</div>
+				</div>
+				<div class="col-sm-3 pull-right">
+					<label>Department</label>
+					<select class="chosen-select form-control" id="departmentId">
+						<option value="0">All</option>
+						<option value="19">IT & C DEPARTMENT</option>
+						<option value="20">PANCHAYAT RAJ - COMMISSIONER</option>
+						<option value="48">RURAL DEVELOPMENT DEPARTMENT</option>
+						<option value="49">RURAL WATER SUPPLY</option>
+					</select>
 				</div>
 			</div>
 		</div>
@@ -305,7 +315,7 @@
 			<div class="pad_border">
 				<div class="row">
 					<div class="col-sm-12">
-						<h3 class="">Jalavani</h3>
+						<h3 class="" id="componentId"></h3>
 					</div>
 				</div>
 				<div class="row">
@@ -439,5 +449,25 @@
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js" type="text/javascript"></script>
 <script src="Assests/js/jalavaniAlertsDashBoard.js" type="text/javascript"></script>
+<script type="text/javascript">
+	var globalDepartmentId="${param.deptId}";
+	if(globalDepartmentId == 19){
+		$("#nameHeaderId").html("IT E&C ALERTS");
+		$("#componentId").html("ALERTS OVERVIEW");
+	}else if(globalDepartmentId == 20){
+		$("#nameHeaderId").html("PANCHAYAT RAJ ALERTS");
+		$("#componentId").html("ALERTS OVERVIEW");
+	}else if(globalDepartmentId == 48){
+		$("#nameHeaderId").html("RURAL DEVELOPMENT ALERTS");
+		$("#componentId").html("ALERTS OVERVIEW");
+	}else if(globalDepartmentId == 49){
+		$("#nameHeaderId").html("Panchayat Raj,RD&News");
+		$("#componentId").html("JALAVANI");
+		$("#nameId").html("JALAVANI DASHBOARD");
+	}else if(globalDepartmentId == 0){
+		$("#componentId").html("ALERTS OVERVIEW");
+		$("#nameHeaderId").html("PACHAYAT RAJ,RD,RWS,IT E&C ALERTS");
+	}
+</script> 
 </body>
 </html>
