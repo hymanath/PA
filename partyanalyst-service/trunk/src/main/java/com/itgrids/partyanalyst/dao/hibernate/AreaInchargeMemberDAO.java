@@ -64,7 +64,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 	
 	public List<Object[]> getAssignedCadreList(String status){
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select AIM.areaInchargeLocationId,tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.houseNo " +
+		sb.append(" select AIM.areaInchargeLocation.address.booth.partNo,tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.houseNo " +
 				"from  AreaInchargeMember AIM left join AIM.tdpCadre tdpCadre  where AIM.isDeleted ='N' " );
 		if(status != null && !status.isEmpty()){
 			sb.append(" and AIM.isActive =:status "); 
@@ -113,7 +113,8 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select distinct tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
 				" tdpCadre.age,tdpCadre.gender,tdpCadre.memberShipNo,tdpCadre.mobileNo," +
-				" AIM.areaInchargeLocation.address.booth.partNo,tdpCadre.image "+
+				" AIM.areaInchargeLocation.address.booth.partNo,tdpCadre.image,tdpCadre.userAddress.tehsil.tehsilName," +
+				" tdpCadre.userAddress.panchayat.panchayatId,tdpCadre.userAddress.panchayat.panchayatName "+
 				" from  AreaInchargeMember AIM left join AIM.tdpCadre tdpCadre  where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
 		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
 			sb.append("  and AIM.areaInchargeLocation.address.district.districtId =:levelValue "); 
