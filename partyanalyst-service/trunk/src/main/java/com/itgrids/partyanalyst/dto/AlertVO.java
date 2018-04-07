@@ -118,6 +118,7 @@ public class AlertVO {
 	private Double statusPerc = 0.0d;
 	private Long alertCategoryId;
 	private String apiType;
+	private Long alertCategoryTypeId;
 	
 	
 	public Double getStatusPerc() {
@@ -740,6 +741,12 @@ public class AlertVO {
 	}
 	public void setApiType(String apiType) {
 		this.apiType = apiType;
+	}
+	public Long getAlertCategoryTypeId() {
+		return alertCategoryTypeId;
+	}
+	public void setAlertCategoryTypeId(Long alertCategoryTypeId) {
+		this.alertCategoryTypeId = alertCategoryTypeId;
 	}
 	
 }

@@ -215,7 +215,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			 customJson.put("Alert ID", alert.getAlertId());
 			 customJson.put("Location Level",alert.getRegionScopes() !=null ? alert.getRegionScopes().getScope():null);
 			 JSONObject locationJson = getLocationName(alert.getImpactLevelId(), alert.getImpactLevelValue());
-			 if(locationJson.has("location"))
+			 if(locationJson !=null && locationJson.has("location"))
 				 customJson.put("Location", locationJson.getString("location"));
 			 
 			 //setLocationFields(customJson,alert.getImpactLevelId(),alert.getUserAddress());
@@ -790,8 +790,9 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 			
 				AlertVO inputVo = new AlertVO();
 				inputVo.setTitle(getValueByKey(jsonObject,"title"));
-				inputVo.setDesc(getValueByKey(jsonObject,"description"));
-				inputVo.setApiType(getValueByKey(jsonObject,"apiType"));
+				inputVo.setDesc(getValueByKey(jsonObject,"description")!=null && getValueByKey(jsonObject,"description") !="null" ? 
+						getValueByKey(jsonObject,"description"):null);
+				//inputVo.setApiType(getValueByKey(jsonObject,"apiType"));
 				 
 				inputVo.setSeverity(getValueByKey(jsonObject,"severity")!=null && getValueByKey(jsonObject,"severity") != "null" ?
 						 alertSeverityDAO.getIdOfName(jsonObject.getString("severity")).get(0):null);
@@ -807,21 +808,43 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 				inputVo.setAlertCategoryId(getValueByKey(jsonObject,"category")!=null && getValueByKey(jsonObject,"category") !="null" ? 
 						 alertCategoryDAO.getIdOfName(jsonObject.getString("category")):null);
 				
+				inputVo.setAlertCategoryTypeId(getValueByKey(jsonObject,"categoryTypeId")!=null && getValueByKey(jsonObject,"categoryTypeId") !="null" ? 
+						Long.parseLong(getValueByKey(jsonObject,"categoryTypeId")):null);
+				
 				inputVo.setLocationLevelId(getValueByKey(jsonObject,"locationLevel")!=null && getValueByKey(jsonObject,"locationLevel") !="null" ?
 						 regionScopesDAO.getIdOfName(jsonObject.getString("locationLevel")).get(0):null);
 				
+				inputVo.setLocationValue(getValueByKey(jsonObject,"locationValue")!=null && getValueByKey(jsonObject,"locationValue") !="null" ?
+						Long.parseLong(getValueByKey(jsonObject,"locationValue")):null);
+				
 				inputVo.setIssueCategoryId(getValueByKey(jsonObject,"issueCategory")!=null && getValueByKey(jsonObject,"issueCategory") !="null" ?
 						alertIssueCategoryDAO.getIdOfName(jsonObject.getString("issueCategory")).get(0):null);
-				//balu
+				
+				// UserAddress Realted Stuff
+				inputVo.setStateId(getValueByKey(jsonObject,"stateId")!=null && getValueByKey(jsonObject,"stateId") !="null" ?
+						Long.parseLong(getValueByKey(jsonObject,"stateId")):null);
+				
+				inputVo.setDistrictId(getValueByKey(jsonObject,"districtId")!=null && getValueByKey(jsonObject,"districtId") !="null" ?
+						Long.parseLong(getValueByKey(jsonObject,"districtId")):null);
+				
+				inputVo.setConstituencyId(getValueByKey(jsonObject,"constituencyId")!=null && getValueByKey(jsonObject,"constituencyId") !="null" ?
+						Long.parseLong(getValueByKey(jsonObject,"constituencyId")):null);
+				
+				inputVo.setTehsilId(getValueByKey(jsonObject,"tehsilId")!=null && getValueByKey(jsonObject,"tehsilId") !="null" ?
+						Long.parseLong(getValueByKey(jsonObject,"tehsilId")):null);
+				
+				inputVo.setPanchayatId(getValueByKey(jsonObject,"panchayatId")!=null && getValueByKey(jsonObject,"panchayatId") !="null" ?
+						Long.parseLong(getValueByKey(jsonObject,"panchayatId")):null);
+				
 				
 				if(jsonObject.has("assignList")){
 					JSONArray assignArr = jsonObject.getJSONArray("assignList");
 					if(assignArr !=null && assignArr.length()>0){
 						for (int i = 0; i < assignArr.length(); i++) {
-							JSONObject assigneeObj = (JSONObject)assignArr.get(i);
-							if(assigneeObj.has("cadreId")){
+							Long cadreId= assignArr.get(i) !=null ? Long.parseLong(assignArr.get(i).toString()):null;							
+							if(cadreId !=null){
 								IdNameVO vo = new IdNameVO();
-								vo.setId(assigneeObj.getLong("cadreId"));
+								vo.setId(cadreId);
 								inputVo.getAssignList().add(vo);
 							}
 						}
@@ -839,7 +862,7 @@ public class AlertCreationAPIService implements IAlertCreationAPIService {
 				
 			}			
 		} catch (Exception e) {
-			LOG.error("Error occured createNotificationAlert(json) method of AlertService{}");
+			LOG.error("Error occured createNotificationAlert(json) method of AlertService{}",e);
 		}
 		return finalJson;
 	}
