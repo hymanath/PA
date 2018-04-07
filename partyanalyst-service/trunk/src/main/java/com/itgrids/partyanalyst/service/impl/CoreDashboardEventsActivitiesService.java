@@ -31,6 +31,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.ILocationInfoDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IStateDAO;
 import com.itgrids.partyanalyst.dao.ITehsilDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
@@ -70,6 +71,7 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	private IActivityQuestionnaireDAO activityQuestionnaireDAO;
 	private CoreDashboardService coreDashboardService;
 	private IActivityQuestionAnswerInfoDAO activityQuestionAnswerInfoDAO;
+	private IPartyMeetingMinuteDAO partyMeetingMinuteDAO;
 	 
 	public IActivityQuestionAnswerInfoDAO getActivityQuestionAnswerInfoDAO() {
 		return activityQuestionAnswerInfoDAO;
@@ -182,6 +184,12 @@ public class CoreDashboardEventsActivitiesService implements ICoreDashboardEvent
 	public void setActivityQuestionnaireDAO(
 			IActivityQuestionnaireDAO activityQuestionnaireDAO) {
 		this.activityQuestionnaireDAO = activityQuestionnaireDAO;
+	}
+	public IPartyMeetingMinuteDAO getPartyMeetingMinuteDAO() {
+		return partyMeetingMinuteDAO;
+	}
+	public void setPartyMeetingMinuteDAO(IPartyMeetingMinuteDAO partyMeetingMinuteDAO) {
+		this.partyMeetingMinuteDAO = partyMeetingMinuteDAO;
 	}
 	/**
 	* @param  Long activityMemberId
@@ -2506,6 +2514,249 @@ public List<EventLocationVO> activitiesLocationWiseData(String fromDate,String t
 	  }
 	  return null;
 	}
+	
+	/**
+	  * @author Nandhini 
+	  * @Description :This Service Method is used to getSelectedChildMembersForMultiLocationMOMDetails. 
+	  *  @since 6-APRIL-2018
+	  */
+	/*public List<UserTypeVO> getSelectedChildMembersForMultiLocationMOMDetails(Long parentActivityMemberId,List<Long> childUserTypeIds,String reportType,Long stateId,
+			 				Long partyMeetingMainTypeId,Long partyMeetingTypeId,String fromDateStr,String toDateStr){
+	 	 List<UserTypeVO> resultList = new ArrayList<UserTypeVO>();
+	 	 Map<String,Long> eventIviteeMap = new HashMap<String, Long>(0);
+	 	 Map<String,Long> eventInviteeAttendedMap = new HashMap<String, Long>(0);
+	 	 Map<String,Long> eventAttendedMap = new HashMap<String, Long>(0);
+	 	
+	 	 try {
+	 		 
+	 			 Map<Long,Set<Long>> locationLevelIdsMap=null;
+	 			  Map<String,String>     nameForLocationMap=null;
+	 			  ActivityMemberVO activityMemberVO=null;
+	 			  Map<Long,UserTypeVO> childActivityMembersMap=null;
+	 			  Date fromDate = null;
+	 			  Date toDate = null;
+	 			  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+	 			  if(fromDateStr != null && toDateStr != null){
+	 				  fromDate = sdf.parse(fromDateStr);
+	 				  toDate = sdf.parse(toDateStr);
+	 			  }
+	 			  
+	 			  //List<Object[]> hasSpecilaActivitiesList = activityConductedInfoDAO.getTotalCountsForScopeIds(eventIds,null,null,null);
+	 			 Map<String,Long> totalMomsMap = new HashMap<String, Long>(0);
+	 			 Map<String,Long> conductedAssblyMap = new HashMap<String, Long>(0);
+	 			Map<String,Long> momCreatedMap = new HashMap<String, Long>(0);
+	 			Map<String,Long> momInProgrsMap = new HashMap<String, Long>(0);
+	 			Map<String,Long> momCompletedMap = new HashMap<String, Long>(0);
+	 			
+	 			Map<String,List<Long>> totalInvitedMembersMap = new LinkedHashMap<String, List<Long>>(0);
+	 			 
+	 			//calling generic method to get childActivityMembers and there location level and values
+	 			  
+	 			  if(reportType != null && reportType.equalsIgnoreCase("selectedUserType")){
+	 				  activityMemberVO = coreDashboardGenericService.getRequiredSubLevelActivityMembersDetails(parentActivityMemberId,childUserTypeIds);
+	 				  childActivityMembersMap= activityMemberVO.getActivityMembersMap();
+	 				  locationLevelIdsMap= activityMemberVO.getLocationLevelIdsMap();
+	 			  }else if(reportType != null && reportType.equalsIgnoreCase("directChild")){ 
+	 				  if(childUserTypeIds != null && childUserTypeIds.size()>0){
+	 					   activityMemberVO = coreDashboardGenericService.getDirectChildActivityMemberCommitteeDetails(parentActivityMemberId,childUserTypeIds.get(0));//activityMemerId,userTypeId
+	 				  }
+	 				   childActivityMembersMap = activityMemberVO.getActivityMembersMap();
+	 				   locationLevelIdsMap = activityMemberVO.getLocationLevelIdsMap();
+	 			  }
+	 			  
+	 			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+	 				  nameForLocationMap = coreDashboardGenericService.getLocationNamesByLocationIds(locationLevelIdsMap);
+	 			  }
+	 					// if(searchType != null && searchType.equalsIgnoreCase("events")){
+	 			if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+	 		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+	 		    		 
+	 		    		 List<Object[]> rtrnConductedObjList = new ArrayList<Object[]>(0);
+	 		    		 
+	 		    		rtrnConductedObjList = partyMeetingDAO.getTotalConductedAssemblyCountDetails(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, partyMeetingMainTypeId, partyMeetingTypeId, fromDate, toDate);
+	 		    		  if(rtrnConductedObjList != null && rtrnConductedObjList.size() > 0){
+	 		    			  for (Object[] param : rtrnConductedObjList) {
+	 		    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+	 		    				  Long count =0L;
+	 		    				  
+	 		    				  if(conductedAssblyMap.get(locationLevelAndId) != null)
+	 		    					  count = conductedAssblyMap.get(locationLevelAndId);
+	 		    				 conductedAssblyMap.put(locationLevelAndId, count+commonMethodsUtilService.getLongValueForObject(param[2]));
+	 						}
+	 		    		  }
+	 		    	  }
+	 			    }
+	 			  
+	 			  if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+	 		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+	 		    		 List<Object[]> rtrnMoMsObjLst = new ArrayList<Object[]>(0);
+	 		    		 
+	 		    		rtrnMoMsObjLst = partyMeetingMinuteDAO.getMOMTypesCountDetails(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, partyMeetingMainTypeId, partyMeetingTypeId, fromDate, toDate);
+	 		    		 if(rtrnMoMsObjLst != null && rtrnMoMsObjLst.size() > 0){
+	 		    			  for (Object[] param : rtrnMoMsObjLst) {
+	 		    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+	 		    				  Long count =0L;			    				  
+	 		    				  if(totalMomsMap.get(locationLevelAndId) != null)
+	 		    					  count = totalMomsMap.get(locationLevelAndId);
+	 		    				 totalMomsMap.put(locationLevelAndId, count+commonMethodsUtilService.getLongValueForObject(param[2]));
+	 						}
+	 		    		  }
+	 		    	 }
+	 			  }
+	 			  
+	 			 if(locationLevelIdsMap != null && locationLevelIdsMap.size() > 0){
+	 		    	 for(Entry<Long,Set<Long>> entry:locationLevelIdsMap.entrySet()){
+	 		    		 
+	 		    		 List<Object[]> rtrnMomStatusObjLst = partyMeetingMinuteDAO.getMOMStatusCntDetails(entry.getKey(), new ArrayList<Long>(entry.getValue()), stateId, partyMeetingMainTypeId, partyMeetingTypeId, fromDate, toDate);
+	 		    		
+	 		    		 if(rtrnMomStatusObjLst != null && rtrnMomStatusObjLst.size() > 0){
+	 		    			  for (Object[] param : rtrnMomStatusObjLst) {
+	 		    				  String locationLevelAndId = entry.getKey()+"-"+commonMethodsUtilService.getStringValueForObject(param[0]);
+	 		    				 Long count =0L;	
+	 		    				 Long statusId = commonMethodsUtilService.getLongValueForObject(param[1]);
+	 		    				if(statusId != null && statusId.longValue() == 1L){
+	 		    					if(momCreatedMap.get(locationLevelAndId) != null)
+		 		    					 count = momCreatedMap.get(locationLevelAndId);
+		 		    					 momCreatedMap.put(locationLevelAndId, count+commonMethodsUtilService.getLongValueForObject(param[2]));
+	 		    				}else if(statusId != null && statusId.longValue() == 2L){
+	 		    					if(momInProgrsMap.get(locationLevelAndId) != null)
+		 		    					 count = momInProgrsMap.get(locationLevelAndId);
+	 		    					momInProgrsMap.put(locationLevelAndId, count+commonMethodsUtilService.getLongValueForObject(param[2]));
+	 		    				}else if(statusId != null && statusId.longValue() == 3L){
+	 		    					if(momCompletedMap.get(locationLevelAndId) != null)
+		 		    					 count = momCompletedMap.get(locationLevelAndId);
+	 		    					momCompletedMap.put(locationLevelAndId, count+commonMethodsUtilService.getLongValueForObject(param[2]));
+	 		    				}
+	 		    			}
+	 		    		 }
+	 		    	 }
+	 			  }
+	 			  
+	 		     //setting Conducted AC Cunt
+	 		    if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+	 		    		  for(Long locationValueId:VO.getLocationValuesSet()){
+	 			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+	 			    		  if(conductedAssblyMap.get(key) != null){
+	 			    			  if(VO.getConductedAssmblyCnt() == null)
+	 			    				  VO.setConductedAssmblyCnt(conductedAssblyMap.get(key)); 
+	 			    			  else
+	 			    				  VO.setConductedAssmblyCnt(VO.getConductedAssmblyCnt()+conductedAssblyMap.get(key));
+	 			    		  }
+	 			    	  }
+	 		    	}
+	 		    }
+	 		    
+	 		   //setting Total MOM's Count
+	 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+	 		    		  for(Long locationValueId:VO.getLocationValuesSet()){
+	 			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+	 			    		  if(totalMomsMap.get(key) != null){
+	 			    			  if(VO.getTotalMomsCnt() == null)
+	 			    				  VO.setTotalMomsCnt(totalMomsMap.get(key));//(VO.getInviteeCnt()+eventIviteeMap.get(key)); 
+	 			    			  else
+	 			    				  VO.setTotalMomsCnt(VO.getTotalMomsCnt()+totalMomsMap.get(key));
+	 			    		  }
+	 			    	  }
+	 		    	}
+	 		    }
+	 		   
+	 		//setting MOM Created Count
+	 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+	 		    		  for(Long locationValueId:VO.getLocationValuesSet()){
+	 			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+	 			    		  if(momCreatedMap.get(key) != null){
+	 			    			  if(VO.getMomCreatedCnt() == null)
+	 			    				  VO.setMomCreatedCnt(momCreatedMap.get(key));//(VO.getInviteeCnt()+eventIviteeMap.get(key)); 
+	 			    			  else
+	 			    				  VO.setMomCreatedCnt(VO.getMomCreatedCnt()+momCreatedMap.get(key));
+	 			    		  }
+	 			    	  }
+	 		    	}
+	 		    }
+	 		   
+	 		   
+	 		//setting MOM InProgress Count
+	 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+	 		    		  for(Long locationValueId:VO.getLocationValuesSet()){
+	 			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+	 			    		  if(momInProgrsMap.get(key) != null){
+	 			    			  if(VO.getMomInProgrssCnt() == null)
+	 			    				  VO.setMomInProgrssCnt(momInProgrsMap.get(key));//(VO.getInviteeCnt()+eventIviteeMap.get(key)); 
+	 			    			  else
+	 			    				  VO.setMomInProgrssCnt(VO.getMomInProgrssCnt()+momInProgrsMap.get(key));
+	 			    		  }
+	 			    	  }
+	 		    	}
+	 		    }
+	 		   
+	 		//setting MOM Completed Count
+	 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 		    	for(UserTypeVO VO:childActivityMembersMap.values()){
+	 		    		  for(Long locationValueId:VO.getLocationValuesSet()){
+	 			    		  String key = VO.getLocationLevelId()+"-"+locationValueId;
+	 			    		  if(momCompletedMap.get(key) != null){
+	 			    			  if(VO.getMomCompletedCnt() == null)
+	 			    				  VO.setMomCompletedCnt(momCompletedMap.get(key));//(VO.getInviteeCnt()+eventIviteeMap.get(key)); 
+	 			    			  else
+	 			    				  VO.setMomCompletedCnt(VO.getMomCompletedCnt()+momCompletedMap.get(key));
+	 			    		  }
+	 			    	  }
+	 		    	}
+	 		    }
+	 		   
+			    // calculating invitee Attended percentage
+		 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+		 			   for(UserTypeVO userVO:childActivityMembersMap.values()){
+		 				   if(commonMethodsUtilService.isListOrSetValid(userVO.getLocationValuesSet())){
+		 					   userVO.setMomCreatedCntPer(calculatePercantage(userVO.getMomCreatedCnt(), userVO.getTotalMomsCnt()));
+		 					   userVO.setMomInProgrssCntPer(calculatePercantage(userVO.getMomInProgrssCnt(), userVO.getTotalMomsCnt()));
+		 					   userVO.setMomCompletedCntPer(calculatePercantage(userVO.getMomCompletedCnt(), userVO.getTotalMomsCnt()));
+		 					}
+		 			   }
+		 		   }
+			    
+	 		   // setting location name for direct child 
+	 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 			      for(UserTypeVO vo:childActivityMembersMap.values()){
+	 			    	  for(Long locationValueId:vo.getLocationValuesSet()){
+	 			    		  String key = vo.getLocationLevelId()+"_"+locationValueId;
+	 			    		  if(vo.getLocationName() == null || vo.getLocationName().isEmpty()){
+	 			    			  vo.setLocationName(nameForLocationMap.get(key));
+	 						   }else{
+	 							   vo.setLocationName(vo.getLocationName()+","+ nameForLocationMap.get(key) );  
+	 						   }
+	 			    	  }
+	 			      }
+	 		    }
+	 		   
+	 		   // calculating non invitees count and percentage
+	 		   if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 			   for(UserTypeVO userVO:childActivityMembersMap.values()){
+	 				   if(commonMethodsUtilService.isListOrSetValid(userVO.getLocationValuesSet())){
+	 					    userVO.setNotCondctedActiesCount(userVO.getTotalActvtiesCount() - userVO.getCondctedActiesCount());
+	 					    userVO.setNotConductedPerc(calculatePercantage(userVO.getNotCondctedActiesCount(), userVO.getTotalActvtiesCount()));
+	 					    userVO.setConductedPerc(calculatePercantage(userVO.getCondctedActiesCount(), userVO.getTotalActvtiesCount()));
+	 				   }
+	 			   }
+	 		   }
+	 	 
+	 	  if(childActivityMembersMap != null && childActivityMembersMap.size() > 0){
+	 		  resultList.addAll(childActivityMembersMap.values());
+	 	  }
+	 	  
+	 	  if(resultList != null && resultList.size() > 0)
+	 	  {
+	 		  Collections.sort(resultList, eventInviteeAttendedPercDesc);
+	 	  }
+	 	} catch (Exception e) {
+	 		 LOG.error("Error occured at getSelectedChildMembersForMultiLocationMOMDetails() in setAttendedDataToMap class",e);
+	 	}
+	 	 return resultList;
+	  }*/
 }
 
 

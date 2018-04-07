@@ -113,6 +113,14 @@ public class UserTypeVO implements Serializable{
 	private Double villagePostsPerc=0.0;
 	private String totalPer;
 	private Long overalTotal =0l;
+	private Long conductedAssmblyCnt = 0L;
+	private Long totalMomsCnt = 0L;
+	private Long momCreatedCnt = 0L;
+	private Long momInProgrssCnt = 0L;
+	private Long momCompletedCnt = 0L;
+	private Double momCreatedCntPer = 0.0;
+	private Double momInProgrssCntPer = 0.0;
+	private Double momCompletedCntPer = 0.0;
 	//private String 
 	// Don't add new variables
 	
@@ -656,6 +664,54 @@ public class UserTypeVO implements Serializable{
 	}
 	public void setOveralTotal(Long overalTotal) {
 		this.overalTotal = overalTotal;
+	}
+	public Long getConductedAssmblyCnt() {
+		return conductedAssmblyCnt;
+	}
+	public void setConductedAssmblyCnt(Long conductedAssmblyCnt) {
+		this.conductedAssmblyCnt = conductedAssmblyCnt;
+	}
+	public Long getTotalMomsCnt() {
+		return totalMomsCnt;
+	}
+	public void setTotalMomsCnt(Long totalMomsCnt) {
+		this.totalMomsCnt = totalMomsCnt;
+	}
+	public Long getMomCreatedCnt() {
+		return momCreatedCnt;
+	}
+	public void setMomCreatedCnt(Long momCreatedCnt) {
+		this.momCreatedCnt = momCreatedCnt;
+	}
+	public Long getMomInProgrssCnt() {
+		return momInProgrssCnt;
+	}
+	public void setMomInProgrssCnt(Long momInProgrssCnt) {
+		this.momInProgrssCnt = momInProgrssCnt;
+	}
+	public Long getMomCompletedCnt() {
+		return momCompletedCnt;
+	}
+	public void setMomCompletedCnt(Long momCompletedCnt) {
+		this.momCompletedCnt = momCompletedCnt;
+	}
+	public Double getMomCreatedCntPer() {
+		return momCreatedCntPer;
+	}
+	public void setMomCreatedCntPer(Double momCreatedCntPer) {
+		this.momCreatedCntPer = momCreatedCntPer;
+	}
+	public Double getMomInProgrssCntPer() {
+		return momInProgrssCntPer;
+	}
+	public void setMomInProgrssCntPer(Double momInProgrssCntPer) {
+		this.momInProgrssCntPer = momInProgrssCntPer;
+	}
+	public Double getMomCompletedCntPer() {
+		return momCompletedCntPer;
+	}
+	public void setMomCompletedCntPer(Double momCompletedCntPer) {
+		this.momCompletedCntPer = momCompletedCntPer;
 	}
 	
 }
