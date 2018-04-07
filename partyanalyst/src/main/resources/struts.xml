@@ -19037,5 +19037,15 @@
 			<param name="root">membersList</param>
 		</result>
 	</action>
+	<action name="getMOMBasicCountDetailsAction" class="coreDashboardAction" method="getMOMBasicCountDetails">
+		<result type="json" name="success">
+   			<param name="root">partyMeetingsVO</param>
+   		</result>
+	</action>
+	<action name="getMOMDetailedBlockDetailsAction" class="coreDashboardAction" method="getMOMDetailedBlockDetails">
+		<result type="json" name="success">
+   			<param name="root">partyMeetingsVO</param>
+   		</result>
+	</action>
  </package>
 </struts>

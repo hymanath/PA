@@ -3939,6 +3939,7 @@
 	    <property name="publicRepresentativeTypeDAO" ref="publicRepresentativeTypeDAO" />
 	    <property name="partyMeetingLevelDAO" ref="partyMeetingLevelDAO" />
 	     <property name="tdpCadreDAO" ref="tdpCadreDAO" />
+	     <property name="partyMeetingMinuteDAO" ref="partyMeetingMinuteDAO" />
 	   </bean>
 	
 	<bean name="coreDashboardEventsActivitiesService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardEventsActivitiesService">
@@ -3963,6 +3964,7 @@
 	 <property name="activityQuestionnaireDAO" ref="activityQuestionnaireDAO"/>
 	 <property name="coreDashboardService" ref="coreDashboardService"></property>
 	 <property name="activityQuestionAnswerInfoDAO" ref="activityQuestionAnswerInfoDAO"></property>
+	 <property name="partyMeetingMinuteDAO" ref="partyMeetingMinuteDAO"></property>
 	</bean>
 	<bean name="attendanceCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.AttendanceCoreDashBoardService">
 		<property name="departmentDAO" ref="departmentDAO" />
