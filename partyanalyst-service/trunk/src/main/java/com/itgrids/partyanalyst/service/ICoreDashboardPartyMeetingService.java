@@ -66,4 +66,5 @@ public interface ICoreDashboardPartyMeetingService {
 			 Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId,Long sessionId,String type);
 	 public PartyMeetingsVO getMOMBasicCountDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues);
 	 public PartyMeetingsVO getMOMDetailedBlockDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String levelType);
+	 public List<List<UserTypeVO>> getUserTypeWiseCommitteesMOMCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString);
 }
