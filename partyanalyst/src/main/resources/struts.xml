@@ -13519,6 +13519,12 @@
    		</result>
 	</action>
 	
+	<action name="getUserTypeWisePartyMeetingMOMDetailsCounts1" class="coreDashboardAction" method="getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1">
+		<result type="json" name="success">
+   			<param name="root">userTypeVOList</param>
+   		</result>
+	</action>
+	
 	<action name="getPositionsForABoardAction" class="nominatedPostProfileAction" method="getPositionsForABoard">
 		<result type="json" name="success">
    			<param name="root">idNameVOList</param>
