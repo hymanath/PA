@@ -13,8 +13,8 @@ public class WorkStatusVO {
 	public Long govtWorkStatusId;
 	public String govtWorkStatus;
 	public List<String> imagesList = new ArrayList<String>(0);
-	public Double totalLenght;
-	public Double workLenght,currentWorkLength;
+	public Double totalLenght=0.00;
+	public Double workLenght=0.00,currentWorkLength=0.00;
 	public Double workCompletedPercentage,currentWorkCompletedPercentage;
 	public String isCompleted;
 	public String userName;

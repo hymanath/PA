@@ -28,8 +28,8 @@ public class GovtWorksVO {
 	private List<String> imagesList = new ArrayList<String>(0);
 	private Long govtMainWorkId;
 	private String govtMainWork;
-	private Long totalWorks,statusWorks;
-	private Double totalKms=0.00,statusKms;
+	private Long totalWorks=0l,statusWorks=0l;
+	private Double totalKms=0.00,statusKms=0.00;
 	private Long sanctionAmt=0l,target=0l;
 	private String date;
 	
