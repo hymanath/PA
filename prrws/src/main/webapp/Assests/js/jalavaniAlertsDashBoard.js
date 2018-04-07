@@ -1,6 +1,6 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalStatusObj={"SATISFIED":"#0FBE08","NOT SATISFIED":"#FF0909","PAR SATISFIED":"#FFBA00"}
-var currentFromDate=moment().startOf('month').format("DD-MM-YYYY");
+var currentFromDate=moment().format("DD-MM-YYYY");
 var currentToDate=moment().format("DD-MM-YYYY");
 $(".chosen-select").chosen();
 var url = window.location.href;
@@ -10,6 +10,7 @@ var url = window.location.href;
 
 //var wurl="http://mytdp.com"
 var locationArr=['state','district','constituency','mandal'];
+$(".chosen-select").chosen();
 //responsiveTabs();
 $("header").on("click",".menu-cls",function(e){
 	e.stopPropagation();
@@ -34,9 +35,7 @@ $("#dateRangePicker").daterangepicker({
 		   'This Year': [moment().startOf('Year'), moment()],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 		   //'Last 30 Days': [moment().subtract(29, 'days'), moment()],
-		   'Last Year': ['01-01-2017', moment()],
-		   'OverAll':['28-11-2016',moment()]
-		   //'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"),moment().add(10,'years').endOf('year').format("DD-MM-YYYY")]
+		   'Last Year': ['01-01-2017', moment()]
 		}
 	});
 	var dates= $("#dateRangePicker").val();
@@ -44,14 +43,14 @@ $("#dateRangePicker").daterangepicker({
 	var overAllDates ='28-11-2016'+' - '+currentToDate
 	if(dates == pickerDates)
 	{
-		$("#dateRangePicker").val('This Month');
+		$("#dateRangePicker").val('Today');
 	}
 	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
-		if(picker.chosenLabel == 'This Month')
+		if(picker.chosenLabel == 'Today')
 		{
-			$("#dateRangePicker").val('This Month');
+			$("#dateRangePicker").val('Today');
 		}
 		if('28-11-2016'+' - '+currentToDate == overAllDates)
 		{
@@ -59,10 +58,33 @@ $("#dateRangePicker").daterangepicker({
 		}
 		$("#alertTypeId").val(0)
 		$("#alertTypeId").trigger("chosen:updated")
-		onloadCalls();
+		onloadCalls("change");
 	});
-onloadCalls();	
-function onloadCalls(){
+
+setTimeout(function(){
+	onloadCalls("onload");
+},1500);	
+	
+function onloadCalls(type){
+	if(type == "onload"){
+		$("#departmentId").html('');
+		if(globalDepartmentId == 0){
+			$("#departmentId").append('<option value="0">All</option>')
+			$("#departmentId").append('<option value="19">IT E& C DEPARTMENT</option>')
+			$("#departmentId").append('<option value="20">PANCHAYAT RAJ</option>')
+			$("#departmentId").append('<option value="48">RURAL DEVELOPMENT DEPARTMENT</option>')
+			$("#departmentId").append('<option value="49">RURAL WATER SUPPLY</option>')
+		}else if(globalDepartmentId == 19){
+			$("#departmentId").append('<option value="19">IT E& C DEPARTMENT</option>')
+		}else if(globalDepartmentId == 20){
+			$("#departmentId").append('<option value="20">PANCHAYAT RAJ</option>')
+		}else if(globalDepartmentId == 48){
+			$("#departmentId").append('<option value="48">RURAL DEVELOPMENT DEPARTMENT</option>')
+		}else if(globalDepartmentId == 49){
+			$("#departmentId").append('<option value="49">RURAL WATER SUPPLY</option>')
+		}
+		$("#departmentId").trigger("chosen:updated")
+	}
 	getJalavaniDashBoardOverview();
 	levelWiseJalavaniDetails('jalavani',"onload");
 }
@@ -114,7 +136,8 @@ function getJalavaniDashBoardOverview(){
 	$("#jalavaniTabOverVewDivId").html(spinner);
 	var json={
 		fromDateStr:currentFromDate,
-		toDateStr:currentToDate
+		toDateStr:currentToDate,
+		deptId:globalDepartmentId
 	}
 	$.ajax({                
 	type:'POST',    
@@ -182,6 +205,7 @@ function buildJalavaniDashBoardOverview(result){
 						str+='</div>';	
 					str+='</a>';
 				str+='</li>';
+				if(globalDepartmentId == 49 || globalDepartmentId == 0){
 				str+='<li role="presentation" class="" attr_type="callcenter" attr_block_count="'+callcenterCount+'">';
 					str+='<a href="#callcenter" data-toggle="tab">';
 						str+='<div class="row">';
@@ -202,6 +226,7 @@ function buildJalavaniDashBoardOverview(result){
 						str+='</div>';		
 					str+='</a>';
 				str+='</li>';
+				}
 				str+='<li role="presentation" class="" attr_type="print" attr_block_count="'+printMediaCount+'">';
 					str+='<a href="#print" data-toggle="tab">';
 						str+='<div class="row">';
@@ -281,27 +306,47 @@ function buildJalavaniDashBoardOverview(result){
 							str+='</div>';	
 							var colorObj={'Print Media':'#575858','Electronic Media':'#F26532','Call Center':'#E952A0','Social Media':'#0849FF'}
 							for(var i in result.subList1){
-								if(result.subList1.length == 4){
-									if(result.subList1[i].name == "Electronic Media"){
-										str+='<div class="col-sm-3">';
-									}else{
-										str+='<div class="col-sm-2">';
-									}
-								}else{
-									str+='<div class="col-sm-3">';
-								}
-								
-								
-									str+='<div class="brdR_3 pad_10" style="border: 1px solid '+colorObj[result.subList1[i].name]+';">';
-										if(result.subList1[i].name == "Electronic Media"){
-											str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">Electronic&nbsp;Media <br/>Alerts</h5>';
+								//if(globalDepartmentId == 49){}
+								if(result.subList1[i].name == "Call Center"){
+									if(globalDepartmentId == 49 || globalDepartmentId == 0){
+										if(result.subList1.length == 4){
+											str+='<div class="col-sm-2">';
 										}else{
-											str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">'+result.subList1[i].name+' <br/>Alerts</h5>';
+											str+='<div class="col-sm-3">';
 										}
 										
-										str+='<h4 class="m_top10">'+result.subList1[i].alertCnt+'</h4>';
+											str+='<div class="brdR_3 pad_10" style="border: 1px solid '+colorObj[result.subList1[i].name]+';">';
+												str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">'+result.subList1[i].name+' <br/>Alerts</h5>';
+												str+='<h4 class="m_top10">'+result.subList1[i].alertCnt+'</h4>';
+											str+='</div>';	
+										str+='</div>';
+									}
+									
+								}else{
+									if(result.subList1.length == 4){
+										if(result.subList1[i].name == "Electronic Media"){
+											str+='<div class="col-sm-3">';
+										}else if(result.subList1[i].name == "Print Media"){
+											str+='<div class="col-sm-2">';
+										}else{
+											str+='<div class="col-sm-3">';
+										}
+									}else{
+										str+='<div class="col-sm-3">';
+									}
+									
+										str+='<div class="brdR_3 pad_10" style="border: 1px solid '+colorObj[result.subList1[i].name]+';">';
+											if(result.subList1[i].name == "Electronic Media"){
+												str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">Electronic&nbsp;Media <br/>Alerts</h5>';
+											}else{
+												str+='<h5 class="font_weight text-capital" style="color:'+colorObj[result.subList1[i].name]+'">'+result.subList1[i].name+' <br/>Alerts</h5>';
+											}
+											
+											str+='<h4 class="m_top10">'+result.subList1[i].alertCnt+'</h4>';
+										str+='</div>';
 									str+='</div>';
-								str+='</div>';
+								}
+								
 							}
 						str+='</div>';
 						str+='<div class="bg_yash_color_10 m_top10">';
@@ -532,8 +577,8 @@ function getJalavaniCategoryWiseDetailsInfo(searchType,blockCount){
 	var json={
 		fromDateStr:currentFromDate,
 		toDateStr:currentToDate,
-		searchType:searchType//print or electronic or callcenter or social
-		
+		searchType:searchType,//print or electronic or callcenter or social
+		deptId:globalDepartmentId
 	}
 	$.ajax({                
 	type:'POST',    
@@ -1098,8 +1143,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 	$("#jalavani"+type).html(spinner);
 	 
 	$.ajax({
-		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
-		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId
+		url: wurl+"/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId+"/"+globalDepartmentId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavanilocationAndStatusDetailsInfo/"+currentFromDate+"/"+currentToDate+"/"+searchType+"/"+type+"/"+alertCategoryId+"/"+globalDepartmentId
 	}).then(function(result){
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
@@ -1209,7 +1254,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"info":     false,
 			"searching": true,
 			"autoWidth": true,
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			/* "dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -1218,7 +1263,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
 					titleAttr: 'CSV',
 				}
-			]
+			] */
 			
 		});
 	}else if(type != 'state'){
@@ -1226,14 +1271,14 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"iDisplayLength": 10,
 			"aaSorting": [],
 			"aLengthMenu": [[10, 15, 20,50, -1], [10, 15, 20,50, "All"]],
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'b>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'CSV',
+					extend:    'csvhtml5',
+					text:      '<i class="fa fa-file-text-o" title="excel"></i>',
+					titleattr: 'csv',
 				}
 			]
 		});
@@ -1243,7 +1288,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"info":     false,
 			"searching": false,
 			"autoWidth": false,
-			"dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
+			/* "dom": "<'row'<'col-sm-4'l><'col-sm-7'f><'col-sm-1'B>>" +
 			"<'row'<'col-sm-12'tr>>" +
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
@@ -1252,7 +1297,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
 					titleAttr: 'CSV',
 				}
-			]
+			] */
 			
 		});
 	}
@@ -1303,8 +1348,8 @@ function getJalavaniAlertSourceDetailsInformation(alertCount,categoryId,statusid
 	//district-5,mandal-8,status-id/CategotyID
 	$("#modalHeadingTotal").html("");
 	$.ajax({
-		//url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
-		url: "http://mytdp.com/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid
+		url: wurl+"/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid+"/"+globalDepartmentId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniAlertSourceDetailsInformation/"+currentFromDate+"/"+currentToDate+"/"+statusType+"/"+locationValueName+"/"+locationValue+"/"+categoryId+"/"+statusid+"/"+globalDepartmentId
 	}).then(function(result){
 		 if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,alertCount,"");
@@ -3523,7 +3568,25 @@ function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result,divId){
 $(document).on("click",".closedReopenAlertsCls",function(){
 	var statusId = $(this).attr("attr_statusId");
 	var statusName = $(this).attr("attr_statusName");
-	getJalavaniAlertForClosedAndReopenDetails(statusId,statusName);
+	var categoryId=0;
+	 var blockType = ''; 
+	$("[role='tablist'] li").each(function(i, obj){
+		 if($(this).hasClass('active_li')){
+			blockType = $(this).attr("attr_type");
+		 }
+	});
+	if(blockType == "All"){
+		categoryId=0;
+	}else if(blockType == "print"){
+		categoryId=2;
+	}else if(blockType == "electronic"){
+		categoryId=3;
+	}else if(blockType == "callcenter"){
+		categoryId=4;
+	}else if(blockType == "social"){
+		categoryId=5;
+	}
+	getJalavaniAlertForClosedAndReopenDetails(statusId,statusName,categoryId);
 	$("#alertManagementPopup").modal({
 		show: true,
 		keyboard: false,
@@ -3531,12 +3594,12 @@ $(document).on("click",".closedReopenAlertsCls",function(){
 	});
 	$("#alertManagementPopupBody").html(spinner);
 });
-function getJalavaniAlertForClosedAndReopenDetails(statusId,statusName){
+function getJalavaniAlertForClosedAndReopenDetails(statusId,statusName,categoryId){
 	//$('#timeSeriesWisGraphDivId').html(spinner);
 	$("#modalHeadingTotal").html("");
 	$.ajax({
-		url: wurl+"/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
-		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId
+		url: wurl+"/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+globalDepartmentId+"/"+categoryId
+		//url: "http://192.168.11.173:8080/PartyAnalyst/WebService/getJalavaniAlertForClosedAndReopenDetails/"+currentFromDate+"/"+currentToDate+"/"+statusId+"/"+globalDepartmentId+"/"+categoryId
 	}).then(function(result){
 		if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,"","closedAndReopend");
@@ -3889,3 +3952,9 @@ function getJalavaniIvrSummaryWiseClick(statusId,probTypeId,statusName,districtI
 		}
 	});	
 }
+$(document).on("change","#departmentId",function(e){
+	globalDepartmentId = $(this).val();
+	$("#alertTypeId").val(0);
+	$("#alertTypeId").trigger("chosen:updated")
+	onloadCalls("change");
+});
