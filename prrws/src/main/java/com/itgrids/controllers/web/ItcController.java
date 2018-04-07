@@ -18,6 +18,7 @@ import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
+import com.itgrids.dto.ExampleVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
@@ -457,5 +458,15 @@ public class ItcController {
 	   public @ResponseBody  List<MeesevaKPIDtlsVO>  getMeesevaCentersTargetAchievement(@RequestBody InputVO inputVO) {
 		   List<MeesevaKPIDtlsVO>  resultList = itcDashboardService.getMeesevaCentersTargetAchievement(inputVO);
 		   return resultList;
+	   }
+	   
+	   @RequestMapping(value ="/checkeOfficeDataExists",method = RequestMethod.GET)
+		public @ResponseBody String checkeOfficeDataExists() {
+			return itcDashboardService.checkeOfficeDataExists();
+		}
+	   
+	   @RequestMapping(value = "/saveeOfficeWebServiceData", method = RequestMethod.POST,produces=MediaType.APPLICATION_JSON_VALUE,consumes=MediaType.APPLICATION_JSON_VALUE)
+	   public @ResponseBody  String  saveeOfficeWebServiceData(@RequestBody ExampleVO inputVO) {
+		   return itcDashboardService.saveeOfficeWebServiceData(inputVO);
 	   }
 }

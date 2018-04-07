@@ -11,4 +11,7 @@ public interface IEofficeEmployeeWorkDetailsDAO extends GenericDao<EofficeEmploy
 	
 	public List<Object[]> getEOfcDepartmentCunts(Date fromDate,Date toDate,List<Long> deptIds);
 	public Long deleteRecrdsFrmTable();
+	
+	public Long geteOfficeDataExists();
+	public int updateoldData();
 }

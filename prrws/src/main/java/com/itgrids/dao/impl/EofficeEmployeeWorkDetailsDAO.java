@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import com.itgrids.dao.IEofficeEmployeeWorkDetailsDAO;
 import com.itgrids.model.EofficeEmployeeWorkDetails;
+import com.itgrids.utils.DateUtilService;
 
 @Repository
 public class EofficeEmployeeWorkDetailsDAO extends GenericDaoHibernate<EofficeEmployeeWorkDetails, Long> implements IEofficeEmployeeWorkDetailsDAO{
@@ -45,5 +46,17 @@ public class EofficeEmployeeWorkDetailsDAO extends GenericDaoHibernate<EofficeEm
 		int query = getSession().createQuery("delete from EofficeEmployeeWorkDetails").executeUpdate();
 		
 		return (long) query;
+	}
+	
+	public int updateoldData(){
+		Query query = getSession().createQuery("update EofficeEmployeeWorkDetails model set model.isDeleted = 'Y' where model.isDeleted = 'N'");
+		return query.executeUpdate();
+	}
+	
+	public Long geteOfficeDataExists(){
+		Query query = getSession().createQuery("select count(model.eofficeEmployeeWorkDetailsId) from EofficeEmployeeWorkDetails model where model.isDeleted = 'N'"
+										+ " and date(model.insertedTime) = :today");
+		query.setParameter("today", new DateUtilService().getCurrentDateAndTime());
+		return (Long) query.uniqueResult();
 	}
 }
