@@ -6328,6 +6328,47 @@ public String getDistrictWiseAlertsDetails(){
 	}
 	return Action.SUCCESS;
 }
+
+public String getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1(){
+	LOG.info("Entered into getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1()  of CoreDashboardAction");
+	try{
+		
+		 Long userId = null; 
+		 HttpSession session = request.getSession();
+		 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		 if(user == null || user.getRegistrationID() == null){
+			//return ERROR;
+			 userId = 1L;
+		 }
+		 else
+			 userId = user.getRegistrationID();
+		
+		jObj = new JSONObject(getTask());
+		
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long userTypeId = jObj.getLong("userTypeId");
+		String committeType= jObj.getString("commiteType");
+		String state = jObj.getString("state");
+		
+		Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
+
+		String dateString = jObj.getString("dateString");
+		List<Long> committeeEnrollmentYearsIdsLst = new ArrayList<Long>();
+		JSONArray committeeEnrollmentYearArray =jObj.getJSONArray("committeeEnrollmentYearArray");
+		if(committeeEnrollmentYearArray!=null &&  committeeEnrollmentYearArray.length()>0){
+			for( int i=0;i<committeeEnrollmentYearArray.length();i++){
+				committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
+			}
+		}
+		
+		userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseCommitteesMOMCompletedCounts1(userId,activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString);
+	}catch(Exception e){
+		LOG.error("Exception raised at getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
+
+
 public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 	try {
 		LOG.info("Entered into getPartyMeetingExceptionReportMeetingLevelWiseAction()  of CoreDashboardAction");
