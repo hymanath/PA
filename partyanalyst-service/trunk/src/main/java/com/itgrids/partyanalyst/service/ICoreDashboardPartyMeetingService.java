@@ -64,4 +64,6 @@ public interface ICoreDashboardPartyMeetingService {
 				List<Long> partyMeetingTypeValues,String meetingStatus,String partyMeetingLevel,String isComment,Long locationId,String locationType);
 	 public List<List<MeetingDtlsVO>> getDistWiseMeetingsBaseDtlsForDiffLevelOfMeetings(Long activityMemberId, Long partyMeetingMainTypeId,
 			 Long locLevelId, Long stateId,String startDateString, String endDateString, Long partyMeetingGroupId,Long sessionId,String type);
+	 public PartyMeetingsVO getMOMBasicCountDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues);
+	 public PartyMeetingsVO getMOMDetailedBlockDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String levelType);
 }

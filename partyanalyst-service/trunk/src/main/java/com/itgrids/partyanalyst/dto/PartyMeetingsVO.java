@@ -96,6 +96,25 @@ public class PartyMeetingsVO implements Serializable{
 	private String meetingLevel;
 	private String mobileNo;
 	private Long userGroupId;
+	private Long generalCount = 0L;
+	private Long actionCount = 0L;
+	private Long govtCount = 0L;
+	private Long partyCount = 0L;
+	private Long momDocumentCount = 0L;
+	private Long totalMoms = 0L;
+	private Double  generalCntPer=0.0;
+	private Double actionCntPer=0.0;
+	private Double  partyCntPer=0.0;
+	private Double govtCntPer=0.0;
+	private Long momCreatedCnt = 0L;
+	private Long momInPrgCnt = 0L;
+	private Long momCmpltedCnt = 0L;
+	private Long momTotalStausCnt = 0L;
+	private Double  momCreatedCntPer=0.0;
+	private Double momInPrgCntPer=0.0;
+	private Double  momCmpltedCntPer=0.0;
+	private Long notUpdatedMomCount = 0L;
+	private Double notUpdatedMomCntPer = 0.0;
 	
 
 	public String getWardName() {
@@ -571,6 +590,120 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setUserGroupId(Long userGroupId) {
 		this.userGroupId = userGroupId;
+	}
+	public Long getGeneralCount() {
+		return generalCount;
+	}
+	public void setGeneralCount(Long generalCount) {
+		this.generalCount = generalCount;
+	}
+	public Long getActionCount() {
+		return actionCount;
+	}
+	public void setActionCount(Long actionCount) {
+		this.actionCount = actionCount;
+	}
+	public Long getGovtCount() {
+		return govtCount;
+	}
+	public void setGovtCount(Long govtCount) {
+		this.govtCount = govtCount;
+	}
+	public Long getPartyCount() {
+		return partyCount;
+	}
+	public void setPartyCount(Long partyCount) {
+		this.partyCount = partyCount;
+	}
+	public Long getMomDocumentCount() {
+		return momDocumentCount;
+	}
+	public void setMomDocumentCount(Long momDocumentCount) {
+		this.momDocumentCount = momDocumentCount;
+	}
+	public Long getTotalMoms() {
+		return totalMoms;
+	}
+	public void setTotalMoms(Long totalMoms) {
+		this.totalMoms = totalMoms;
+	}
+	public Double getGeneralCntPer() {
+		return generalCntPer;
+	}
+	public void setGeneralCntPer(Double generalCntPer) {
+		this.generalCntPer = generalCntPer;
+	}
+	public Double getActionCntPer() {
+		return actionCntPer;
+	}
+	public void setActionCntPer(Double actionCntPer) {
+		this.actionCntPer = actionCntPer;
+	}
+	public Double getPartyCntPer() {
+		return partyCntPer;
+	}
+	public void setPartyCntPer(Double partyCntPer) {
+		this.partyCntPer = partyCntPer;
+	}
+	public Double getGovtCntPer() {
+		return govtCntPer;
+	}
+	public void setGovtCntPer(Double govtCntPer) {
+		this.govtCntPer = govtCntPer;
+	}
+	public Long getMomCreatedCnt() {
+		return momCreatedCnt;
+	}
+	public void setMomCreatedCnt(Long momCreatedCnt) {
+		this.momCreatedCnt = momCreatedCnt;
+	}
+	public Long getMomInPrgCnt() {
+		return momInPrgCnt;
+	}
+	public void setMomInPrgCnt(Long momInPrgCnt) {
+		this.momInPrgCnt = momInPrgCnt;
+	}
+	public Long getMomCmpltedCnt() {
+		return momCmpltedCnt;
+	}
+	public void setMomCmpltedCnt(Long momCmpltedCnt) {
+		this.momCmpltedCnt = momCmpltedCnt;
+	}
+	public Long getMomTotalStausCnt() {
+		return momTotalStausCnt;
+	}
+	public void setMomTotalStausCnt(Long momTotalStausCnt) {
+		this.momTotalStausCnt = momTotalStausCnt;
+	}
+	public Double getMomCreatedCntPer() {
+		return momCreatedCntPer;
+	}
+	public void setMomCreatedCntPer(Double momCreatedCntPer) {
+		this.momCreatedCntPer = momCreatedCntPer;
+	}
+	public Double getMomInPrgCntPer() {
+		return momInPrgCntPer;
+	}
+	public void setMomInPrgCntPer(Double momInPrgCntPer) {
+		this.momInPrgCntPer = momInPrgCntPer;
+	}
+	public Double getMomCmpltedCntPer() {
+		return momCmpltedCntPer;
+	}
+	public void setMomCmpltedCntPer(Double momCmpltedCntPer) {
+		this.momCmpltedCntPer = momCmpltedCntPer;
+	}
+	public Long getNotUpdatedMomCount() {
+		return notUpdatedMomCount;
+	}
+	public void setNotUpdatedMomCount(Long notUpdatedMomCount) {
+		this.notUpdatedMomCount = notUpdatedMomCount;
+	}
+	public Double getNotUpdatedMomCntPer() {
+		return notUpdatedMomCntPer;
+	}
+	public void setNotUpdatedMomCntPer(Double notUpdatedMomCntPer) {
+		this.notUpdatedMomCntPer = notUpdatedMomCntPer;
 	}
 	
 
