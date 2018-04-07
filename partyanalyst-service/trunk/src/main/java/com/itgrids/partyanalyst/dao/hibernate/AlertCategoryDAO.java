@@ -39,6 +39,7 @@ public class AlertCategoryDAO extends GenericDaoHibernate<AlertCategory, Long>
 	public Long getIdOfName(String category){
 		Query query = getSession().createQuery("select model.alertCategoryId from " +
 				" AlertCategory model where model.category =:category  ");
+		query.setParameter("category", category);
 		return (Long) query.uniqueResult();
 	}
 }

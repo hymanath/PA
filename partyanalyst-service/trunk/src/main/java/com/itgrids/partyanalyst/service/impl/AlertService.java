@@ -1036,7 +1036,7 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 				 alert.setAlertTypeId(inputVO.getAlertTypeId());
 				 alert.setImpactLevelId(inputVO.getLocationLevelId());
 				 alert.setImpactLevelValue(inputVO.getLocationValue());
-				 alert.setDescription(inputVO.getDesc().toString());
+				 alert.setDescription(inputVO.getDesc() !=null ? inputVO.getDesc().toString():null);
 				 alert.setCreatedBy(userId);
 				 alert.setUpdatedBy(userId);
 				 alert.setImpactScopeId(inputVO.getAlertImpactId());
@@ -1056,6 +1056,7 @@ public List<BasicVO> getCandidatesByName(String candidateName){
 				 
 				// alert.setAlertCategoryId(1L);//default Manual alert
 				 alert.setAlertCategoryId(inputVO.getAlertCategoryId() !=null ? inputVO.getAlertCategoryId():1l);
+				 alert.setAlertCategoryTypeId(inputVO.getAlertCategoryTypeId() !=null ? inputVO.getAlertCategoryTypeId():null);
 				 alert.setTitle(inputVO.getTitle());
 				 
 				 UserAddress userAddress = saveUserAddress(inputVO);
