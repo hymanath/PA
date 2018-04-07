@@ -41,17 +41,21 @@ $("#dateRangePicker").daterangepicker({
 	});
 	var dates= $("#dateRangePicker").val();
 	var pickerDates = currentFromDate+' - '+currentToDate
+	var overAllDates ='28-11-2016'+' - '+currentToDate
 	if(dates == pickerDates)
 	{
 		$("#dateRangePicker").val('This Month');
 	}
-	
 	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
 		currentFromDate = picker.startDate.format('DD-MM-YYYY');
 		currentToDate = picker.endDate.format('DD-MM-YYYY');
 		if(picker.chosenLabel == 'This Month')
 		{
 			$("#dateRangePicker").val('This Month');
+		}
+		if('28-11-2016'+' - '+currentToDate == overAllDates)
+		{
+			$("#dateRangePicker").val('Over All');
 		}
 		$("#alertTypeId").val(0)
 		$("#alertTypeId").trigger("chosen:updated")
@@ -349,22 +353,36 @@ function buildJalavaniDashBoardOverview(result){
 	
 	
 	for(var i in result.subList2){
-		if(result.subList2[i].monthType == "monthWise"){
-			var monthAndYearSpilt=result.subList2[i].monthName.split('-');
-			var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
-			var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
-			monthNameArr.push(changedMonthYear);
-		}else if(result.subList2[i].monthType == "dayWise"){
-			var changedMonthYear = result.subList2[i].monthName;
-			monthNameArr.push(changedMonthYear);
-		}
-		mainArr.push({y:result.subList2[i].percentage,"extra":result.subList2[i].monthCount})
+		//if(result.subList2[i].percentage !=null && result.subList2[i].percentage>0){
+			if(result.subList2[i].monthType == "monthWise"){
+				var monthAndYearSpilt=result.subList2[i].monthName.split('-');
+				var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+				var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+				monthNameArr.push(changedMonthYear);
+			}else if(result.subList2[i].monthType == "dayWise"){
+				var changedMonthYear = result.subList2[i].monthName;
+				monthNameArr.push(changedMonthYear);
+			}
+			mainArr.push({y:result.subList2[i].percentage,"extra":result.subList2[i].monthCount})
+		//}
+		/* else{
+			$('#areasplineChartId').html("No Data Available");
+			$('#areasplineChartId').removeClass('monthGraphCss').addClass('height_10')
+		} */
+		
 	}
 	for(var i in result.list){
-		if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
-			statusNameArr.push(result.list[i].status);
-			dataArr.push({"y":result.list[i].statusCount,"extra":result.list[i].statusPerc});
-		}	
+		//if(result.list[i].statusCount !=null && result.list[i].statusCount>0){
+			if(result.list[i].statusId !=5 && result.list[i].statusId !=14){
+				statusNameArr.push(result.list[i].status);
+				dataArr.push({"y":result.list[i].statusCount,"extra":result.list[i].statusPerc});
+			}	
+		//}
+		/* else{
+			$('#alertStatusChartId').html("No Data Available");
+			$('#alertStatusChartId').removeClass('monthGraphCss').addClass('height_10')
+		} */
+		
 	}
 	if(result.subList2 !=null && result.subList2.length>0){
 		$('#areasplineChartId').removeClass('height_10').addClass('monthGraphCss')
@@ -506,7 +524,6 @@ function buildJalavaniDashBoardOverview(result){
 	}
 	
 }
-
 
 
 
@@ -838,8 +855,8 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 			}]
 		});
 	}else{
-		$('#areaspline'+searchType+'ChartId').html("No Data Available")
-		$('#areaspline'+searchType+'ChartId').removeClass("monthGraphCss").addClass('height_10')
+		$('#areaspline'+searchType+'ChartId').removeClass("monthGraphCss")
+		$('#areaspline'+searchType+'ChartId').html('<img src="Assests/images/no_data_available.png" style="display:block ;margin-left: auto;margin-right: auto;">')
 	}
 	if(result.list !=null && result.list.length>0){
 		$('#alertStatus'+searchType+'ChartId').removeClass("height_10").addClass('monthGraphCss')
@@ -902,8 +919,9 @@ function buildJalavaniCategoryWiseDetailsInfo(result,searchType,blockCount){
 				}],
 		});
 	}else{
-		$('#alertStatus'+searchType+'ChartId').html("No Data Available")
-		$('#alertStatus'+searchType+'ChartId').removeClass("monthGraphCss").addClass('height_10')
+		$('#alertStatus'+searchType+'ChartId').removeClass("monthGraphCss")
+		$('#alertStatus'+searchType+'ChartId').html('<div><img src="Assests/images/no_data_available.png" style="display:block ;margin-left: auto;margin-right: auto;"></div>')
+		
 	}
 	if(result.subList1 !=null && result.subList1.length>0){
 		$('#callcenterIVRFeedBackId').removeClass("height_10").addClass('monthGraphCss')
@@ -1086,7 +1104,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 		if(result !=null && result.length>0){
 			buildJalavanilocationOverview(result,type,searchType)
 		}else{
-			$("#jalavani"+type).html("No Data Available");
+			$("#jalavani"+type).html('<img src="Assests/images/no_data_available.png" style="display:block ;margin-left: auto;margin-right: auto;">');
 		}
 		
 	});	
@@ -3153,7 +3171,7 @@ function buildJalavaniFeedBackDetailsInfo(result){
 													var cumilativeNegativeResponders = positiveAlertNegativeRespondentCount +negativeAlertNegativeRespondentCount;
 													
 													if(result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount !=null && result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount >0){
-														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'" attr_district_id="0" attr_satisfied_status="Y" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle tooltipClsStatusCls " aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+ve Respondents : '+positiveAlertPositiveRespondentCount+'  -ve Respondents : '+positiveAlertNegativeRespondentCount+'"></i></td>';
+														str+='<td class="statusWiseIvrCls"  attr_status_id="'+result[0].hamletVoterInfo[i].id+'" attr_probTypeId="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].id+'" attr_statusName="'+result[0].hamletVoterInfo[i].name+'" attr_alert_Count ="'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'" attr_district_id="0" attr_satisfied_status="Y" style="cursor:pointer;">'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle tooltipClsStatusCls " aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+ve Respondents : '+positiveAlertPositiveRespondentCount+' <br /> -ve Respondents : '+positiveAlertNegativeRespondentCount+'"></i></td>';
 													}else{
 														str+='<td>'+result[0].hamletVoterInfo[i].hamletVoterInfo[j].postiveCount+'<i class="fa fa-info-circle tooltipClsStatusCls " aria-hidden="true" style="margin-left:5px;" data-toggle="tooltip" title="+ve Respondents : '+positiveAlertPositiveRespondentCount+' <br /> -ve Respondents : '+positiveAlertNegativeRespondentCount+'"></i></td>';
 													}
@@ -3523,7 +3541,7 @@ function getJalavaniAlertForClosedAndReopenDetails(statusId,statusName){
 		if(result != null && result.length > 0){
 			buildAlertDtlsBasedOnStatusClick(result,statusName,"","closedAndReopend");
 		}else{
-			$("#alertManagementPopupBody").html('<div class="col-xs-12">NO DATA AVAILABLE</div>')
+			$("#alertManagementPopupBody").html('<img src="Assests/images/no_data_available.png" style="display:block ;margin-left: auto;margin-right: auto;">')
 		}
 	});	
 }
