@@ -6353,4 +6353,84 @@ public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 	return Action.SUCCESS;
 }
 
+	public String getMOMBasicCountDetails(){
+	  try{
+			LOG.info("Entered into getMOMBasicCountDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+			JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+			if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+				for( int i=0;i<partyMeetingTypeArray.length();i++){
+					partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+				}
+			}
+			partyMeetingsVO = coreDashboardPartyMeetingService.getMOMBasicCountDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues);
+		}catch(Exception e){
+			LOG.error("Exception raised at getMOMBasicCountDetails() method of CoreDashBoardAction", e);
+		}
+		return Action.SUCCESS;
+	}
+
+	public String getMOMDetailedBlockDetails(){
+	  try{
+			LOG.info("Entered into getMOMBasicCountDetails()  of CoreDashboardAction");
+			jObj = new JSONObject(getTask());
+			Long activityMemberId = jObj.getLong("activityMemberId");
+			Long stateId = jObj.getLong("stateId");
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			List<Long> partyMeetingTypeValues=new ArrayList<Long>();
+			JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
+			if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
+				for( int i=0;i<partyMeetingTypeArray.length();i++){
+					partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
+				}
+			}
+			partyMeetingsVO = coreDashboardPartyMeetingService.getMOMDetailedBlockDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,null);
+		}catch(Exception e){
+			LOG.error("Exception raised at getMOMDetailedBlockDetails() method of CoreDashBoardAction", e);
+		}
+		return Action.SUCCESS;
+	}
+	/*public String getSelectedChildMembersForMultiLocationMOMDetails(){
+		try{
+			
+			jObj = new JSONObject(getTask()); 
+		    Long parentActivityMemberId = jObj.getLong("parentActivityMemberId");
+			
+			List<Long> childUserTypeIds=new ArrayList<Long>();
+			JSONArray childUserTypeIdsArray=jObj.getJSONArray("childUserTypeIdsArray");
+			if(childUserTypeIdsArray!=null &&  childUserTypeIdsArray.length()>0){
+				for( int i=0;i<childUserTypeIdsArray.length();i++){
+					childUserTypeIds.add(childUserTypeIdsArray.getString(i) != null && !childUserTypeIdsArray.getString(i).trim().isEmpty() ?Long.valueOf(childUserTypeIdsArray.getString(i)):0L);
+				}
+			}
+			String reportType = jObj.getString("reportType");
+			Long stateId = jObj.getLong("stateId");
+			List<Long> eventsIds = new ArrayList<Long>();
+			JSONArray eventIdsArray=jObj.getJSONArray("eventIds");
+			if(eventIdsArray!=null &&  eventIdsArray.length()>0){
+				for( int i=0;i<eventIdsArray.length();i++){
+					eventsIds.add(Long.valueOf(eventIdsArray.getString(i)));
+				}
+			}
+			
+			Long partyMeetingMainTypeId = jObj.getLong("partyMeetingMainTypeId");
+			Long partyMeetingTypeId = jObj.getLong("partyMeetingTypeId");
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			
+			//String searchType = jObj.getString("searchType");
+			activityMembersList = coreDashboardEventsActivitiesService.getSelectedChildMembersForMultiLocationMOMDetails(parentActivityMemberId,childUserTypeIds,reportType,stateId,
+										partyMeetingMainTypeId,partyMeetingTypeId,fromDateStr,toDateStr);
+		}catch (Exception e) {
+			LOG.error("Exception raised at getSelectedChildMembersForMultiLocationMOMDetails() method of CoreDashBoard", e);
+		}
+		return Action.SUCCESS;
+	}*/
+
 }//public List<AlertCoreDashBoardVO> getDistrictWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds)>>>>>>> .r50089
