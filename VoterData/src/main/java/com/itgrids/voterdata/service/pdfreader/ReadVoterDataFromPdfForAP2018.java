@@ -65,13 +65,11 @@ public class ReadVoterDataFromPdfForAP2018 {
     		conn = DriverManager.getConnection(DB_URL,USER,PASS);
     		stmt = conn.createStatement();
     		
-    		votersInfoList = checkForVoterList(votersInfoList);
+    		//votersInfoList = checkForVoterList(votersInfoList);
     		//votersInfoList = checkForSpecialCharacters(votersInfoList);
     		
     		for(VoterInfo info : votersInfoList)
     		{
-    			if(info.getsNo().longValue() == 13 || info.getsNo().longValue() == 24 || info.getsNo().longValue() == 25)
-    				System.out.println("kamal");
     			try{
     			String insertQuery = "INSERT INTO voter_temp(voter_id, name, sex, age, house_no, guardian_name, relation, constituency_id, " +
     				" constituency_name, booth_id, booth_name,sno) VALUES ('"+info.getVoterId()+"','"+info.getVoterName()+"','"+info.getSex()+
