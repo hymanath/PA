@@ -4661,6 +4661,12 @@ div[expand-main='true'] {
 .sliderNewCls{
 	li{
 		margin-left:5px;
+		cursor:pointer;
+	}li.active{
+		border: 2px solid #72B8D7;
+		margin-bottom: 20px;
+		border-radius: 5px;
+		box-shadow: 0px 4px 4px 4px rgba(0,0,0,0.3);
 	}
 }
 .table_custom_tax{
@@ -5012,7 +5018,7 @@ div[expand-main='true'] {
 			width: 100%;
 			li
 			{
-				padding:15px;
+				padding:3px;
 				display: table-cell;
 				width: auto;
 				text-align:center;
@@ -5021,7 +5027,12 @@ div[expand-main='true'] {
 				text-transform:uppercase;
 				font-size:16px;
 				color:#fff;
+				border-radius:5px;
 				
+				h5{
+					padding: 10px;
+					border-radius: 5px;
+				}
 			}
 	}
 }
@@ -5114,22 +5125,18 @@ div[expand-main='true'] {
 			-moz-transition: 0.5s all ease-out;
 	}
 }
-.details-overview_petition_print1{
-		margin-bottom:0;
-		margin-top:5px;
-		border:1px solid #000 !important;
-		background-color:#fff;
+.table_custom_WMS{
 		thead{
 			tr{
 				th{
 					font-size:12px;
-					padding:8px 12px;
-					border-bottom:none;
+					padding:8px;
 					font-weight:bold;
-					background-color:#C5D9F0 !important;
-					border-left:1px solid #000 !important;
-				}th:first-child{
-					border-left: 0px solid #000 !important;
+					background-color:#F3F3F3 !important;
+					text-align:center;
+					vertical-align:middle;
+					color:#000;
+					
 				}
 			}
 		}
@@ -5137,14 +5144,79 @@ div[expand-main='true'] {
 			tr{
 				td{
 					font-size:13px;
-					padding:8px 12px;
+					padding:4px;
 					font-weight:bold;
-					border-left: 1px solid #000 !important;
-					border-top: 1px solid #000 !important;
-				}td:first-child{
-					border-left: 0px solid #000 !important;
+					background-color:#fff !important;
+					text-align:center;
+					color:#000;
+					vertical-align:middle;
 				}
 			}
 		}
 		
 	}
+.plus_icon_WMS{
+	background-color: #07B592;
+	color: #fff;
+	font-size: 10px !important;
+	padding: 5px;
+	border-radius: 10px;
+	cursor:pointer;
+}	
+.minus_icon_WMS{
+	background-color: #FF0000;
+	color: #fff;
+	font-size: 10px !important;
+	padding: 5px;
+	border-radius: 10px;
+	cursor:pointer;
+}
+.rounder_WMS{
+	color: #fff;
+	font-size: 12px;
+	padding: 5px;
+	border-radius: 13px;
+}
+.ugdImagesCss{
+	border:2px solid #0080FF;
+}
+.card-img-overlay1 {
+    position: absolute !important;
+    right: 17px !important;
+    bottom: 0 !important;
+    left: 15px !important;
+    padding: 1.25rem !important;
+	background-color: rgba(0, 0, 0, 0.5);
+	-webkit-clip-path: polygon(0 0, 100% 25%, 100% 100%, 0 100%);
+	clip-path: polygon(0 0, 100% 25%, 100% 100%, 0 100%);
+}
+
+.color_white{
+	color:#fff;
+}
+.bg_StatusWorkCss{
+	padding: 10px;
+	background-color: #fff;
+	border: 1px solid #ccc;
+}
+.card-img-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 10px;
+    padding: 1.25rem;
+}
+.card-img-overlay2 {
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+	top: 53px;
+    padding: 1.25rem;
+}
+.statusRoundCss{
+	background-color: rgba(174,165,150, 0.9);
+	padding: 8px;
+	border-radius: 50%;
+	color: #fff;
+	font-weight: bold;
+}

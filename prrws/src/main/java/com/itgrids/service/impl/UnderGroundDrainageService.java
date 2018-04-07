@@ -1502,7 +1502,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(objList != null && objList.size() > 0){
 				for (Object[] objects : objList) {
 					if(map.get(objects[0].toString()) != null){
-						map.get(objects[0].toString()).setKms(Double.parseDouble(objects[1].toString()));
+						map.get(objects[0].toString()).setKms(Math.round(Double.parseDouble(objects[1].toString())* 100D) / 100D);
 					}
 				}
 				voList.addAll(map.values());
@@ -1675,7 +1675,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						
 						map.put(Long.parseLong(objects[0].toString()),vo);
 					}else{
-						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[3].toString())).getList(),objects[0].toString());
+						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[0].toString())).getList(),objects[3].toString());
 						if(matchedDateVO != null)
 							matchedDateVO.setKms(Double.parseDouble(objects[3].toString()));
 					}
@@ -1733,8 +1733,10 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			//get work completed kms for workType
 			Object[] completedDetails = govtWorkProgressDAO.getWorkCompletedKms(workTypeId);
 			if(completedDetails != null && completedDetails.length > 0){
-				finalVO.setCompletedWorksCount(Long.parseLong(completedDetails[0].toString()));
-				finalVO.setCompletedKms(Double.parseDouble(completedDetails[1].toString()));
+				if(completedDetails[0] != null && completedDetails[1] != null){
+					finalVO.setCompletedWorksCount(Long.parseLong(completedDetails[0].toString()));
+					finalVO.setCompletedKms(completedDetails[1] != null ? Double.parseDouble(completedDetails[1].toString()):0.00);
+				}
 			}
 			
 			if(finalVO.getWorksCount() != null && finalVO.getWorksCount() > 0l && finalVO.getCompletedWorksCount() != null && finalVO.getCompletedWorksCount() > 0){
@@ -2035,8 +2037,10 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(estimationCostObj != null)
 				finalVo.setEstimationCost(Double.parseDouble(estimationCostObj.toString()));
 			if(completedObjArr != null && completedObjArr.length > 0){
-				finalVo.setCompletedWorksCount(Long.parseLong(completedObjArr[0].toString()));
-				finalVo.setCompletedKms(Double.parseDouble(completedObjArr[1].toString()));
+				if(completedObjArr[0] != null && completedObjArr[1] != null){
+					finalVo.setCompletedWorksCount(Long.parseLong(completedObjArr[0].toString()));
+					finalVo.setCompletedKms(Double.parseDouble(completedObjArr[1].toString()));
+				}
 			}
 		} catch (Exception e) {
 			LOG.error("exception occured at getLocationLevelWiseOverviewDetails", e);
@@ -2258,7 +2262,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		
 	}
 	
-	public List<DocumentVO> getLocationOverviewStatusDayWiseKms(String fromDate,String toDate,Long locationScopeId,Long locationValue,Long workTypeId){
+	public List<DocumentVO> getLocationOverviewStatusDayWiseKms(String fromDate,String toDate,Long locationScopeId,Long locationValue,Long workTypeId,Long statusId){
 		List<DocumentVO> finalList = new ArrayList<DocumentVO>(0);
 		try {
 			Date startDate=null,endDate=null;
@@ -2281,7 +2285,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			}
 			
 			
-			List<Object[]> objList = govtWorkProgressTrackDAO.getLocationOverviewStatusDayWiseKms(startDate,endDate,locationScopeId,locationValue,workTypeId);
+			List<Object[]> objList = govtWorkProgressTrackDAO.getLocationOverviewStatusDayWiseKms(startDate,endDate,locationScopeId,locationValue,workTypeId,statusId);
 			if(objList != null && objList.size() > 0){
 				for (Object[] objects : objList) {
 					if(map.get(objects[0].toString()) != null)

@@ -16,10 +16,17 @@
 <link href="Assests/Plugins/DataTable/dataTable.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/DataTable/exportButtons.css" type="text/css" rel="stylesheet"/>
 <link href="Assests/Plugins/Chosen/chosen.css" type="text/css" rel="stylesheet"/>
+<link href="Assests/Plugins/sliderbar/bootstrap-slider.css" type="text/css" rel="stylesheet"/>
 <link href="http://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css">
 <script src="https://use.fontawesome.com/e94c241642.js"></script>
 <style>
-
+.slick-prev{left: -3 !important;}
+.slick-next{right: -7 !important;}
+.slider.slider-horizontal {
+    width: 125px !important;
+    left: -16px !important;
+}
+.slider-handle{display: none;}
 </style>
 </head>
 <body>
@@ -32,7 +39,7 @@
 				</div>
 				<div class="col-sm-10 m_top10 col-xs-9">
 					<h4 class="text-capital">Panchayat Raj</h4>
-					<p>Tax - DashBoard</p>
+					<p>UGD - DashBoard</p>
 				</div>
 				<div class="col-sm-1 col-xs-12">
 					<i class="glyphicon glyphicon-th menu-cls pull-right"></i>
@@ -286,11 +293,37 @@
 					<div id="timeLinesWorkTypesDivId"></div>
 				</div>
 			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="stateLevelWorkTypesDivId"></div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div id="locationWiseWorkTypesDivId"></div>
+				</div>
+			</div>
 		</div>
 	</div>	
 </section>	
+<div class="modal fade" id="locationLevelPopupId" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document" style="width: 90%;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="locationLevelHeadingId"></h4>
+      </div>
+      <div class="modal-body">
+       <div id="locationLevelFirstBlockDivId"></div>
+       <div id="locationLevelSecondBlockDivId"></div>
+       <div id="locationLevelThirdBlockDivId"></div>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 <script src="Assests/js/jquery-3.2.1.js" type="text/javascript"></script>
 <script src="Assests/js/bootstrap.js" type="text/javascript"></script>
+<script src="Assests/Plugins/Highcharts/highcharts.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
 <script src="Assests/Plugins/SlickSliderNew/slick.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Scroller/jquery.mCustomScrollbar.js" type="text/javascript"></script>
@@ -299,6 +332,7 @@
 <script src="Assests/Plugins/DateTime/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
 <script src="Assests/Plugins/Date/daterangepicker.js" type="text/javascript"></script>
 <script src="Assests/Plugins/DataTable/dataTable.js" type="text/javascript"></script>
+<script src="Assests/Plugins/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="Assests/js/wmsDashBoard.js" type="text/javascript"></script>
 <script type="text/javascript">
 $(".chosen-select").chosen();

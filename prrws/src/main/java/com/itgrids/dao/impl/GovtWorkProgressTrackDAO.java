@@ -133,7 +133,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 			sb.append(" and la.district_id=:districtId ");
 		}
 		if(divisonId != null && divisonId > 0l){
-			sb.append(" and la.divison_id=:divisonId ");
+			sb.append(" and la.division_id=:divisonId ");
 		}
 		if(subDivisonId != null && subDivisonId > 0l){
 			sb.append(" and la.sub_division_id=:subDivisonId ");
@@ -203,7 +203,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 			sb.append(" and la.district_id=:districtId ");
 		}
 		if(divisonId != null && divisonId > 0l){
-			sb.append(" and la.divison_id=:divisonId ");
+			sb.append(" and la.division_id=:divisonId ");
 		}
 		if(subDivisonId != null && subDivisonId > 0l){
 			sb.append(" and la.sub_division_id=:subDivisonId ");
@@ -328,14 +328,16 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationOverviewStatusDayWiseKms(Date startDate,Date endDate,Long locationScopeId,Long locationValue,Long workTypeId){
+	public List<Object[]> getLocationOverviewStatusDayWiseKms(Date startDate,Date endDate,Long locationScopeId,Long locationValue,Long workTypeId,Long statusId){
 		StringBuilder sb = new StringBuilder();
 		
 		sb.append(" select date(gwpt.updated_time),sum(gwpt.work_length) "
 				+ " from govt_work_progress_track gwpt,govt_work gw,govt_main_work gmw,location_address la "
 				+ " where gwpt.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id "
 				+ " and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' and gmw.govt_work_type_id=:workTypeId ");
-		
+		if(statusId != null && statusId > 0l){
+			sb.append(" and  gwpt.govt_work_status_id=:statusId ");
+		}
 		if(startDate != null && endDate != null){
 			sb.append(" and date(gwpt.updated_time) between :startDate and :endDate ");
 		}
@@ -347,7 +349,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		}else if(locationScopeId == 6l){
 			sb.append(" and la.panchayat_id=:locationValue ");
 		}else if(locationScopeId == 12l){
-			sb.append(" and la.divison_id=:locationValue ");
+			sb.append(" and la.division_id=:locationValue ");
 		}else if(locationScopeId == 13l){
 			sb.append(" and la.sub_division_id=:locationValue ");
 		}
@@ -365,6 +367,9 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		
 		if(locationScopeId == 3l || locationScopeId == 5l || locationScopeId == 6l || locationScopeId == 12l || locationScopeId == 13l){
 			query.setParameter("locationValue", locationValue);
+		}
+		if(statusId != null && statusId>0l){
+			query.setParameter("statusId", statusId);
 		}
 		
 		return query.list();

@@ -163,7 +163,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 			sb.append(" and la.district_id=:districtId ");
 		}
 		if(divisonId != null && divisonId > 0l){
-			sb.append(" and la.divison_id=:divisonId ");
+			sb.append(" and la.division_id=:divisonId ");
 		}
 		if(subDivisonId != null && subDivisonId > 0l){
 			sb.append(" and la.sub_divison_id=:subDivisonId ");

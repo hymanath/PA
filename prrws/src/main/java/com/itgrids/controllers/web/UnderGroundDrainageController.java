@@ -321,7 +321,7 @@ public class UnderGroundDrainageController {
 	@RequestMapping(value="/getLocationOverviewStatusDayWiseKms", method=RequestMethod.POST)
 	public @ResponseBody List<DocumentVO> getLocationOverviewStatusDayWiseKms(@RequestBody MobileAppInputVO inputVO){
 		try {//inputs-fromdate,todate,locationScopeId,locationValue,workTypeId
-			return underGroundDrainageService.getLocationOverviewStatusDayWiseKms(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId());
+			return underGroundDrainageService.getLocationOverviewStatusDayWiseKms(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getLocationScopeId(),inputVO.getLocationValue(),inputVO.getWorkTypeId(),inputVO.getStatusId());
 		} catch (Exception e) {
 			LOG.error("Exception raised at getLocationOverviewStatusDayWiseKms ", e);
 		}
