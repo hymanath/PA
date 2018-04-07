@@ -11155,31 +11155,63 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		query.setParameter("alertTicketId", alertTicketId);
 	 		return query.list();
 	 	}
-	 	public List<Object[]> getTotalAlertCounts(Date fromDate,Date toDate,Long typeId){//top view counts
+	 	public List<Object[]> getTotalAlertCounts(Date fromDate,Date toDate,Long typeId, Long deptId){//top view counts
 	 		StringBuilder str = new StringBuilder();
 			str.append("select model.alertCategory.alertCategoryId," +
 						" model.alertCategory.category," +
 						" count(model.alertId) " +
 		 				" from Alert model" +
-		 				" where model.isDeleted='N' " +
-		 				" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds)" +
-		 				" and model.userAddress.district.districtId is not null  " );
-				if(typeId !=null && typeId.longValue()>0){
-		 			str.append("  and model.alertCategoryId =:typeId ");
-		 		}else{
-		 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
-		 		}
+		 				" where model.isDeleted='N' ");
+			
+			  	if(deptId != null && deptId.longValue()>0){
+			  		str.append(" and model.govtDepartmentId =:deptId ");
+			  	}else{
+			  		str.append(" and model.govtDepartmentId in(:govtDeptId) ");
+			  	}
+			  	
+			  	if(deptId !=null && deptId == 0l || deptId == 49l){
+			  		if(typeId !=null && typeId.longValue()>0){
+			 			str.append("  and model.alertCategoryId =:typeId ");
+			 		}else{
+			 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+			 		}
+			  	}else{
+			  		if(typeId !=null && typeId.longValue()>0){
+			 			str.append("  and model.alertCategoryId =:typeId ");
+			 		}else{
+			 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+			 		}
+			  	}
+				
+				
 		 		if(fromDate !=null && toDate !=null){
 		 			str.append(" and  date(model.createdTime) between :fromDate and :toDate ");
 		 		}
+		 		str.append(" and model.alertStatusId in(:alertStatusIds) ");
+		 		
 		 		str.append(" group by model.alertCategoryId ");
 		 	Query query = getSession().createQuery(str.toString());
-		 		query.setParameter("govtDeptId",49l);
-		 		if(typeId !=null && typeId.longValue()>0){
-		 			query.setParameter("typeId",typeId);
+		 		
+		 		if(deptId != null && deptId.longValue()>0){
+		 		query.setParameter("deptId",deptId);
 		 		}else{
-		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+		 		query.setParameterList("govtDeptId",IConstants.JALAVANI_DEPT_IDS);
 		 		}
+		 		if(deptId !=null && deptId == 0l || deptId == 49l){
+		 			if(typeId !=null && typeId.longValue()>0){
+			 			query.setParameter("typeId",typeId);
+			 		}else{
+			 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+			 		}
+			  	}else{
+			  		if(typeId !=null && typeId.longValue()>0){
+			 			query.setParameter("typeId",typeId);
+			 		}else{
+			 			query.setParameterList("alertCategoryIds",IConstants.JALAVANI_OTHER_DEPT_CATEGORY_IDS);
+			 		}
+			  	}
+		 		
+		 		
 		 		query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 		 		if(fromDate !=null && toDate !=null){
 		 			query.setParameter("fromDate",fromDate);
@@ -11187,7 +11219,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}
 		 	return  query.list();
 	 	}
-	 	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId,String searchType){
+	 	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId,String searchType,Long deptId){
 	        StringBuilder str = new StringBuilder();
 	          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
 	           //date-0,count-1
@@ -11200,59 +11232,115 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	               " from Alert model " +
 	               " where model.isDeleted='N' ");
 	          }
-	         str.append(" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) ");
+	         str.append(" and model.alertStatusId in(:alertStatusIds) ");
 	         
-	         if(typeId !=null && typeId.longValue()>0){
-	            str.append("  and model.alertCategoryId =:typeId ");
-	          }else{
-	            str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
-	          }
+	         if(deptId !=null && deptId == 0l || deptId == 49l){
+	        	 if(typeId !=null && typeId.longValue()>0){
+	 	            str.append("  and model.alertCategoryId =:typeId ");
+	 	          }else{
+	 	            str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+	 	          }
+			  }else{
+			  	if(typeId !=null && typeId.longValue()>0){
+			            str.append("  and model.alertCategoryId =:typeId ");
+			    }else{
+			            str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+			    }
+			  }
+	         
+	         
 	          if(fromDate !=null && toDate !=null){
 	            str.append(" and date(model.createdTime) between :fromDate and :toDate ");
 	          }
+	          if(deptId != null && deptId.longValue()>0){
+			  		str.append(" and model.govtDepartmentId =:deptId ");
+			  	}else{
+			  		str.append(" and model.govtDepartmentId in(:govtDeptIds) ");
+			  	}
 	          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
 	            str.append(" group by date(model.createdTime) ");  
 	          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
 	            str.append(" group by month(model.createdTime),year(model.createdTime) order by month(model.createdTime),year(model.createdTime) ");
 	          }
 	        Query query = getSession().createQuery(str.toString());
-	          query.setParameter("govtDeptId",49l);
+	        if(deptId != null && deptId.longValue()>0){
+	        	  query.setParameter("deptId",deptId);
+		  	}else{
+		  	  query.setParameterList("govtDeptIds",IConstants.JALAVANI_DEPT_IDS);
+		  	}
 	          query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
-	          if(typeId !=null && typeId.longValue()>0){
-	            query.setParameter("typeId",typeId);
-	          }else{
-	            query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
-	          }
+	          
+	          if(deptId !=null && deptId == 0l || deptId == 49l){
+	        	   if(typeId !=null && typeId.longValue()>0){
+	  	             query.setParameter("typeId",typeId);
+	  	           }else{
+	  	             query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+	  	           }
+			   }else{
+				   if(typeId !=null && typeId.longValue()>0){
+					   query.setParameter("typeId",typeId);
+				   }else{
+					   query.setParameterList("alertCategoryIds",IConstants.JALAVANI_OTHER_DEPT_CATEGORY_IDS);
+				   }
+			   }
 	          if(fromDate !=null && toDate !=null){
 	            query.setParameter("fromDate",fromDate);
 	            query.setParameter("toDate",toDate);
 	          }
 	        return  query.list();
 	      }
-	 	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId){
+	 	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId, Long deptId){
 	 		//statusId-0,status-1,statusColor-2,count-3
 	 		StringBuilder str = new StringBuilder();
 			str.append("SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
-					" model.alertStatus.color,count(distinct model.alertId) from Alert model " +
-					" WHERE model.isDeleted ='N'  " +
-					" and model.alertTypeId  in ("+IConstants.GOVT_ALERT_TYPE_ID+") " +
-							" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) ");
-				if(typeId !=null && typeId.longValue()>0){
-		 			str.append("  and model.alertCategoryId =:typeId ");
-		 		}else{
-		 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
-		 		}
+					" model.alertStatus.color,count(distinct model.alertId) " +
+					" from Alert model " +
+					" WHERE model.isDeleted ='N' " +
+					" and model.alertStatusId in(:alertStatusIds) and model.userAddress.state.stateId =1 " );
+			
+				if(deptId != null && deptId.longValue()>0){
+			  		str.append(" and model.govtDepartmentId =:deptId ");
+			  	}else{
+			  		str.append(" and model.govtDepartmentId in(:govtDeptId) ");
+			  	}
+				if(deptId !=null && deptId == 0l || deptId == 49l){
+					if(typeId !=null && typeId.longValue()>0){
+			 			str.append("  and model.alertCategoryId =:typeId ");
+			 		}else{
+			 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+			 		}
+				}else{
+					if(typeId !=null && typeId.longValue()>0){
+			 			str.append("  and model.alertCategoryId =:typeId ");
+			 		}else{
+			 			str.append("  and model.alertCategoryId in(:alertCategoryIds) ");
+			 		}
+				}
+				
+				
 		 		if(fromDate !=null && toDate !=null){
 		 			str.append(" and date(model.createdTime) between :fromDate and :toDate  ");
 		 		}
 		 		str.append(" GROUP BY model.alertStatus.alertStatusId order by model.alertStatus.alertStatusId ");
 		 	Query query = getSession().createQuery(str.toString());
-		 	query.setParameter("govtDeptId",49l);
-			 	if(typeId !=null && typeId.longValue()>0){
-		 			query.setParameter("typeId",typeId);
+		 		if(deptId != null && deptId.longValue()>0){
+		 		query.setParameter("deptId",deptId);
 		 		}else{
-		 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+		 		query.setParameterList("govtDeptId",IConstants.JALAVANI_DEPT_IDS);
 		 		}
+		 		if(deptId !=null && deptId == 0l || deptId == 49l){
+			 		if(typeId !=null && typeId.longValue()>0){
+			 			query.setParameter("typeId",typeId);
+			 		}else{
+			 			query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+			 		}
+				}else{
+					if(typeId !=null && typeId.longValue()>0){
+			 			query.setParameter("typeId",typeId);
+			 		}else{
+			 			query.setParameterList("alertCategoryIds",IConstants.JALAVANI_OTHER_DEPT_CATEGORY_IDS);
+			 		}
+				}
 			 	query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 		 		if(fromDate !=null && toDate !=null){
 		 			query.setParameter("fromDate",fromDate);
@@ -11260,11 +11348,18 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}
 		 	return  query.list();
 	 	}
-	 	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId){
+	 	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId,Long deptId){
 	 		StringBuilder str = new StringBuilder();
 			str.append("SELECT count(distinct model.alertId) from Alert model " +
 					" WHERE model.isDeleted ='N'  " +
-							" and model.govtDepartmentId =:govtDeptId and model.alertStatusId in(:alertStatusIds) ");
+					" and model.alertStatusId in(:alertStatusIds)" );
+			
+				if(deptId != null && deptId.longValue()>0){
+			  		str.append(" and model.govtDepartmentId =:deptId ");
+			  	}else{
+			  		str.append(" and model.govtDepartmentId in(:govtDeptId) ");
+			  	}
+				
 				if(typeId !=null && typeId.longValue()>0){
 		 			str.append("  and model.alertCategoryId =:typeId ");
 		 		}
@@ -11273,7 +11368,11 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}
 		 		str.append(" GROUP BY model.alertCategoryId ");
 		 	Query query = getSession().createQuery(str.toString());
-		 	query.setParameter("govtDeptId",49l);
+		 		if(deptId != null && deptId.longValue()>0){
+		 		query.setParameter("deptId",deptId);
+		 		}else{
+		 			query.setParameterList("govtDeptId",IConstants.JALAVANI_DEPT_IDS);
+		 		}
 		 	query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 			 	if(typeId !=null && typeId.longValue()>0){
 		 			query.setParameter("typeId",typeId);
@@ -11284,7 +11383,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		 		}
 		 	return  (Long) query.uniqueResult();
 	 	}
-	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId){
+	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId,Long deptId){
  		StringBuilder str = new StringBuilder();
  		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
  			
@@ -11301,21 +11400,21 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,district D " +
- 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id and UA.district_id is not null ") ;
+ 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id ") ;
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("constituency")){
  				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,0 as mandalId,'' as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,constituency C,district D " +
  	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 and UA.district_id is not null ");
+ 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 ");
  	 			
  			}else if(type !=null && type.equalsIgnoreCase("mandal")){
  				str.append(" select D.district_id as distId,D.district_name as distName,C.constituency_id as constId,C.name as constName,T.tehsil_id as mandalId ,T.tehsil_name as mandalName, " +
  						" AC.alert_category_id as propertyTypeId,AC.category as property,'' as color,count(distinct A.alert_id) as count " +
  	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
  	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
- 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id and UA.district_id is not null ");
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id  ");
  			}
  		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
  			if(type !=null && type.equalsIgnoreCase("state")){
@@ -11325,7 +11424,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
  				
  				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id  and UA.district_id is not null ") ;
+ 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id ") ;
  				
  			}else if(type !=null && type.equalsIgnoreCase("district")){
  				str.append(" select D.district_id as distId,D.district_name as distName,0 as constId,'' as constName,0 as mandalId,'' as mandalName, " +
@@ -11351,11 +11450,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 			
  	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
  	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id " +
- 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ") ;
+ 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id  ") ;
  			}
  		}
- 		
- 		str.append(" and A.govt_department_id =:govtDeptId and A.is_deleted='N' and UA.state_id=1 ");
+ 		if(deptId != null && deptId.longValue()>0){
+	  		str.append(" and A.govt_department_id =:deptId ");
+	  	}else{
+	  		str.append(" and A.govt_department_id in(:govtDeptId)");
+	  	}
+ 		str.append("  and A.is_deleted='N' and UA.state_id=1 and A.alert_status_id in (:alertStatusIds) ");
  		if(locationTypeId !=null && locationTypeId>0){
 				str.append(" and UA.district_id =:locationTypeId ");
 		}
@@ -11365,10 +11468,18 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		if(fromDate !=null && toDate !=null){
  			str.append(" and date(A.created_time) between :fromDate and :toDate  ");
  		}
-		if(alertCategoryId !=null && alertCategoryId.longValue() >0){
-			str.append(" and AC.alert_category_id =:alertCategoryId ");
+		if(deptId !=null && deptId == 0l || deptId == 49l){
+			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+				str.append(" and AC.alert_category_id =:alertCategoryId ");
+			}else{
+				str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+			}
 		}else{
-			str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+				str.append(" and AC.alert_category_id =:alertCategoryId ");
+			}else{
+				str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+			}
 		}
 		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
 			if(type !=null && type.equalsIgnoreCase("state")){
@@ -11413,7 +11524,12 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
   				   .addScalar("color", Hibernate.STRING)
   				   .addScalar("count", Hibernate.LONG);
  		}*/
- 		query.setParameter("govtDeptId",49l);
+	 		if(deptId != null && deptId.longValue()>0){
+	 		query.setParameter("deptId",deptId);
+	 		}else{
+	 		query.setParameterList("govtDeptId",IConstants.JALAVANI_DEPT_IDS);
+	 		}
+	 		query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 		 	if(locationTypeId !=null && locationTypeId.longValue()>0){
 	 			query.setParameter("locationTypeId",locationTypeId);
 	 		}
@@ -11425,11 +11541,18 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			if(subLocationId !=null && subLocationId>0){
 				query.setParameter("subLocationId",subLocationId);
 			}
-			
-			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
-				query.setParameter("alertCategoryId",alertCategoryId);
+			if(deptId !=null && deptId == 0l || deptId == 49l){
+				if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+					query.setParameter("alertCategoryId",alertCategoryId);
+				}else{
+					query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+				}
 			}else{
-				query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+				if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+					query.setParameter("alertCategoryId",alertCategoryId);
+				}else{
+					query.setParameterList("alertCategoryIds",IConstants.JALAVANI_OTHER_DEPT_CATEGORY_IDS);
+				}
 			}
 	 	return  query.list();
  	}
@@ -11643,7 +11766,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 		query.setParameter("categoryTypeId", categoryTypeId);
 		return query.list();
 	}
-	public List<Object[]> getJalavanilocationOverview(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId){
+	public List<Object[]> getJalavanilocationOverview(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId, Long deptId){
  		StringBuilder str = new StringBuilder();
  		Query query =null;
  			if(type !=null && type.equalsIgnoreCase("district")){
@@ -11691,8 +11814,12 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id ") ;
  			}
  		}*/
- 		
- 		str.append(" and A.govt_department_id =:govtDeptId and A.is_deleted='N' and UA.state_id=1 ");
+ 		if(deptId != null && deptId.longValue()>0){
+		  	str.append(" and A.govt_department_id =:deptId ");
+		}else{
+		  	str.append(" and A.govt_department_id in(:govtDeptId) ");
+		 }
+ 		str.append(" and A.is_deleted='N' and UA.state_id=1 ");
  		if(locationTypeId !=null && locationTypeId>0){
 				str.append(" and UA.district_id =:locationTypeId ");
 		}
@@ -11721,8 +11848,12 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  				   .addScalar("name", Hibernate.STRING)
  				   .addScalar("count", Hibernate.LONG)
  				   .addScalar("categoryId",Hibernate.LONG);
- 		
- 			query.setParameter("govtDeptId",49l);
+ 	
+	 		if(deptId != null && deptId.longValue()>0){
+	 		query.setParameter("deptId",deptId);
+	 		}else{
+	 			query.setParameterList("govtDeptId",IConstants.JALAVANI_DEPT_IDS);
+	 		}
 		 	if(locationTypeId !=null && locationTypeId.longValue()>0){
 	 			query.setParameter("locationTypeId",locationTypeId);
 	 		}
@@ -11814,96 +11945,112 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
  		}
  		return  query.list();
   }
- public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId){
- 		StringBuilder str = new StringBuilder();
- 		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
- 			if(type !=null && type.equalsIgnoreCase("state")){
- 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
- 				str.append(" select distinct A.alert_id as alertId " +
- 						" from alert A,user_address UA,alert_category AC,state S " +
- 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and UA.state_id =S.state_id and UA.district_id is not null ") ;
- 	 			
- 			}else if(type !=null && type.equalsIgnoreCase("district")){
- 				str.append(" select distinct A.alert_id as alertId " +
- 	 					" from alert A,user_address UA,alert_category AC,district D " +
- 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
- 	 			
- 			}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 				str.append(" select distinct A.alert_id as alertId " +
- 	 					" from alert A,user_address UA,alert_category AC,constituency C,district D " +
- 	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 ");
- 	 			
- 			}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 				str.append(" select distinct A.alert_id as alertId " +
- 	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
- 	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
- 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
- 			}
- 		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
- 			
- 			if(type !=null && type.equalsIgnoreCase("state")){
- 				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
- 				str.append(" select distinct A.alert_id as alertId " +
- 	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
- 				
- 				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id and UA.district_id is not null ") ;
- 				
- 			}else if(type !=null && type.equalsIgnoreCase("district")){
- 				str.append(" select distinct A.alert_id as alertId " +
- 	 					" from alert A,user_address UA,alert_category AC,district D,alert_status ARS ");
- 	 			
- 	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.district_id =D.district_id ") ;
- 				
- 			}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 				str.append(" select distinct A.alert_id as alertId " +
- 	 					" from alert A,user_address UA,alert_category AC,constituency C,alert_status ARS,district D ");
- 	 			
- 	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.constituency_id =C.constituency_id and D.district_id= C.district_id " +
- 	 					" and C.district_id between 11 and 23 ") ;
- 	 			
- 			}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 				str.append(" select distinct A.alert_id as alertId" +
- 	 					" from alert A,user_address UA,alert_category AC,tehsil T,alert_status ARS,constituency C,district D ");
- 	 			
- 	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
- 	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id " +
- 	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ") ;
- 			}
- 		}
- 		
- 		str.append(" and A.govt_department_id =:govtDeptId and A.is_deleted='N' and UA.state_id=1 ");
- 		
- 		if(statusId !=null && statusId.longValue() >0){
- 			str.append(" and A.alert_status_id =:statusId ");
- 		}
- 		
- 		if(type !=null && type.equalsIgnoreCase("state")){
- 			str.append(" and UA.state_id in(:locationTypeIds) ");
+ public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId,Long deptId){
+		StringBuilder str = new StringBuilder();
+		if(searchType !=null && searchType.equalsIgnoreCase("Alert")){
+			if(type !=null && type.equalsIgnoreCase("state")){
+				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+				str.append(" select distinct A.alert_id as alertId " +
+						" from alert A,user_address UA,alert_category AC,state S " +
+	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+	 					" and UA.state_id =S.state_id  ") ;
+	 			
+			}else if(type !=null && type.equalsIgnoreCase("district")){
+				str.append(" select distinct A.alert_id as alertId " +
+	 					" from alert A,user_address UA,alert_category AC,district D " +
+	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.district_id =D.district_id  ") ;
+	 			
+			}else if(type !=null && type.equalsIgnoreCase("constituency")){
+				str.append(" select distinct A.alert_id as alertId " +
+	 					" from alert A,user_address UA,alert_category AC,constituency C,district D " +
+	 					" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+	 					" and UA.constituency_id =C.constituency_id and C.district_id=D.district_id and  C.district_id between 11 and 23 ");
+	 			
+			}else if(type !=null && type.equalsIgnoreCase("mandal")){
+				str.append(" select distinct A.alert_id as alertId " +
+	 					" from alert A,user_address UA,alert_category AC,tehsil T,constituency C,district D " +
+	 					"  where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id and UA.tehsil_id =T.tehsil_id " +
+	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id ");
+			}
+		}else if(searchType !=null && searchType.equalsIgnoreCase("Status")){
+			
+			if(type !=null && type.equalsIgnoreCase("state")){
+				//0-distId,1-distname,2-constId,3-constName,4-mandalId,5-mandalName,6-propertyIdId,7-property,8-color,9-color
+				str.append(" select distinct A.alert_id as alertId " +
+	 					" from alert A,user_address UA,alert_category AC,state S,alert_status ARS  ") ;
+				
+				str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+	 					" and A.alert_status_id =ARS.alert_status_id and UA.state_id =S.state_id ") ;
+				
+			}else if(type !=null && type.equalsIgnoreCase("district")){
+				str.append(" select distinct A.alert_id as alertId " +
+	 					" from alert A,user_address UA,alert_category AC,district D,alert_status ARS ");
+	 			
+	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+	 					" and A.alert_status_id =ARS.alert_status_id and UA.district_id =D.district_id ") ;
+				
+			}else if(type !=null && type.equalsIgnoreCase("constituency")){
+				str.append(" select distinct A.alert_id as alertId " +
+	 					" from alert A,user_address UA,alert_category AC,constituency C,alert_status ARS,district D ");
+	 			
+	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+	 					" and A.alert_status_id =ARS.alert_status_id and UA.constituency_id =C.constituency_id and D.district_id= C.district_id " +
+	 					" and C.district_id between 11 and 23 ") ;
+	 			
+			}else if(type !=null && type.equalsIgnoreCase("mandal")){
+				str.append(" select distinct A.alert_id as alertId" +
+	 					" from alert A,user_address UA,alert_category AC,tehsil T,alert_status ARS,constituency C,district D ");
+	 			
+	 			str.append(" where A.address_id=UA.user_address_id and A.alert_category_id =AC.alert_category_id " +
+	 					" and A.alert_status_id =ARS.alert_status_id and UA.tehsil_id =T.tehsil_id " +
+	 					" and UA.district_id=D.district_id and UA.constituency_id=C.constituency_id  ") ;
+			}
+		}
+		
+		str.append("  and A.is_deleted='N' and UA.state_id=1 and A.alert_status_id in (:alertStatusIds) ");
+		if(deptId !=null && deptId.longValue() >0){
+			str.append(" and A.govt_department_id =:deptId ");
+		}else{
+			str.append(" and A.govt_department_id in(:govtDeptId) ");
+		}
+		if(statusId !=null && statusId.longValue() >0){
+			str.append(" and A.alert_status_id =:statusId ");
+		}
+		
+		if(type !=null && type.equalsIgnoreCase("state")){
+			str.append(" and UA.state_id in(:locationTypeIds) ");
 		}else if(type !=null && type.equalsIgnoreCase("district")){
 			str.append(" and UA.district_id in(:locationTypeIds) ");
- 		}else if(type !=null && type.equalsIgnoreCase("constituency")){
- 			str.append(" and UA.constituency_id in(:locationTypeIds) ");
- 		}else if(type !=null && type.equalsIgnoreCase("mandal")){
- 			str.append(" and UA.tehsil_id in(:locationTypeIds) ");
- 		}
- 		
-		if(fromDate !=null && toDate !=null){
- 			str.append(" and date(A.created_time) between :fromDate and :toDate  ");
- 		}
-		if(alertCategoryId !=null && alertCategoryId.longValue() >0){
-			str.append(" and AC.alert_category_id =:alertCategoryId ");
-		}else{
-			str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+		}else if(type !=null && type.equalsIgnoreCase("constituency")){
+			str.append(" and UA.constituency_id in(:locationTypeIds) ");
+		}else if(type !=null && type.equalsIgnoreCase("mandal")){
+			str.append(" and UA.tehsil_id in(:locationTypeIds) ");
 		}
- 		Query query = getSession().createSQLQuery(str.toString()).addScalar("alertId",Hibernate.LONG);
- 		
- 		query.setParameter("govtDeptId",49l);
-		 	
+		
+		if(fromDate !=null && toDate !=null){
+			str.append(" and date(A.created_time) between :fromDate and :toDate  ");
+		}
+		if(deptId !=null && deptId == 0l || deptId == 49l){
+			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+				str.append(" and AC.alert_category_id =:alertCategoryId ");
+			}else{
+				str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+			}
+		}else{
+			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+				str.append(" and AC.alert_category_id =:alertCategoryId ");
+			}else{
+				str.append(" and AC.alert_category_id in(:alertCategoryIds) ");
+			}
+		}
+		Query query = getSession().createSQLQuery(str.toString()).addScalar("alertId",Hibernate.LONG);
+		
+		if(deptId !=null && deptId.longValue() >0){
+			query.setParameter("deptId",deptId);
+		}else{
+			query.setParameterList("govtDeptId",IConstants.JALAVANI_DEPT_IDS);
+		}
+		query.setParameterList("alertStatusIds",IConstants.JALAVANI_ALERT_STATUS_IDS);
 	 		if(fromDate !=null && toDate !=null){
 	 			query.setParameter("fromDate",fromDate);
 	 			query.setParameter("toDate",toDate);
@@ -11921,15 +12068,24 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 		if(statusId !=null && statusId.longValue() >0){
 	 			query.setParameter("statusId",statusId);
 	 		}
-			if(alertCategoryId !=null && alertCategoryId.longValue() >0){
-				query.setParameter("alertCategoryId",alertCategoryId);
+			
+	 		if(deptId !=null && deptId == 0l || deptId == 49l){
+				if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+					query.setParameter("alertCategoryId",alertCategoryId);
+				}else{
+					query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+				}
 			}else{
-				query.setParameterList("alertCategoryIds",IConstants.CATEGORY_IDS);
+				if(alertCategoryId !=null && alertCategoryId.longValue() >0){
+					query.setParameter("alertCategoryId",alertCategoryId);
+				}else{
+					query.setParameterList("alertCategoryIds",IConstants.JALAVANI_OTHER_DEPT_CATEGORY_IDS);
+				}
 			}
 	 	return  query.list();
- 	}
+	}
  
-	public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date stDate,Date ndDate, Long stateId,List<Long> alertIds, String accessType) {
+ public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date stDate,Date ndDate, Long stateId,List<Long> alertIds, String accessType) {
 		StringBuilder sb = new StringBuilder();
 		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
 			sb.append("select pc.constituency_id as parliamentId,pc.name as parliamentName,"); //0,1
@@ -11958,15 +12114,15 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 				+ " ALT.address_id = UA.user_address_id and "
 				+ " UA.state_id = :stateId and  "
 				+ " ALT.alert_type_id = ALTTYPE.alert_type_id and "
-				+ " ALT.alert_status_id = ALTSTS.alert_status_id and ALT.impact_scope_id in(1,2,3,4, 5,6,7,8,9,12) ");
+				+ " ALT.alert_status_id = ALTSTS.alert_status_id  AND ");
 				if(alertIds !=null && alertIds.size()>0){
-					sb.append(" and	ALTTYPE.alert_type_id in (:alertIds)  ");
+					sb.append("	ALTTYPE.alert_type_id in (:alertIds) and ");
 				}else{
-					sb.append(" and ALTTYPE.alert_type_id in (1) and ALTSTS.alert_status_id not in(6,7)  ");
+					sb.append("  ALTTYPE.alert_type_id in (1) and ALTSTS.alert_status_id not in(6,7) and ");
 				}
 			
 		if (stDate != null && ndDate != null) {
-			sb.append(" and ALT.created_time between date(:stDate) and date(:ndDate) ");
+			sb.append(" ALT.created_time between date(:stDate) and date(:ndDate) ");
 		}
 		if(accessType !=null && accessType.equalsIgnoreCase("parliament")){
 			sb.append(" group by pc.constituency_id ,ALTSTS.alert_status_id ");
@@ -12075,14 +12231,26 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
         return  query.list();
       }
 	@SuppressWarnings("unchecked")
-	public List<Long> getJalavaniAlertForClosedAndReopenDetails(Date fromDate,Date toDate,Long statusId){
+	public List<Long> getJalavaniAlertForClosedAndReopenDetails(Date fromDate,Date toDate,Long statusId,Long deptId,Long categoryId){
         StringBuilder str = new StringBuilder();
         	//0-locationId,1-locationName,2-feedbackStatusId,problemtypeId-3,satisifiedStatus-4,count-5
         str.append(" select distinct model.alertId ");
       
         str.append(" from AlertAssignedOfficerTrackingNew model " +
-        		" where  model.alert.isDeleted ='N' and " +
-        		" model.alert.govtDepartmentId =:govtDeptId and model.govtAlertActionTypeId=:actionTypeId  ");
+        		" where  model.alert.isDeleted ='N'  " +
+        		"  and model.govtAlertActionTypeId=:actionTypeId  ");
+        
+	        if(deptId !=null && deptId.longValue()>0){
+	        	 str.append(" and model.alert.govtDepartmentId =:deptId ");
+	        }else{
+	        	str.append(" and model.alert.govtDepartmentId in(:deptIds) ");
+	        }
+	        
+	        if(categoryId !=null && categoryId.longValue()>0){
+	        	str.append(" and model.alert.alertCategoryId =:categoryId ");
+	        }else{
+	        	str.append(" and model.alert.alertCategoryId in(:categoryIds) ");
+	        }
         
 	        if(fromDate !=null && toDate !=null){
 	        	str.append(" and date(model.updatedTime) between :fromDate and :toDate ");
@@ -12090,7 +12258,17 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
         str.append( " and model.alertStatusId =:statusId ");
         
         Query query = getSession().createQuery(str.toString());
-          query.setParameter("govtDeptId",49l);
+          
+          if(deptId !=null && deptId.longValue()>0){
+        	  query.setParameter("deptId",deptId);
+	        }else{
+	        	 query.setParameterList("deptIds",IConstants.JALAVANI_DEPT_IDS);
+	        }
+          if(categoryId !=null && categoryId.longValue()>0){
+        	  query.setParameter("categoryId",categoryId);
+	      }else{
+	    	  query.setParameterList("categoryIds",IConstants.CATEGORY_IDS);
+	      }
           query.setParameter("statusId",statusId);
           query.setParameter("actionTypeId",6l);
           if(fromDate !=null && toDate !=null){

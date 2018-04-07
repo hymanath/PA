@@ -199,11 +199,11 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public int updateZohoAlertDetails(String ticketId,Long alertId);
 	public String getAlertTicketId(Long alertId);
 	public List<Long> getAlertId(String alertTicketId);
-	public List<Object[]> getTotalAlertCounts(Date fromDate,Date toDate,Long typeId);
-	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId,String searchType);
-	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId);
-	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId);
-	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId);
+	public List<Object[]> getTotalAlertCounts(Date fromDate,Date toDate,Long typeId, Long deptId);
+	public List<Object[]> getAlertsMonthWiseOverview(Date fromDate,Date toDate,Long typeId,String searchType,Long deptId);
+	public List<Object[]> getAlertsStatusOverView(Date fromDate,Date toDate,Long typeId, Long deptId);
+	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId,Long deptId);
+	public List<Object[]> getAlertAndStatusWiseCountsForDist(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId,Long deptId);
 	public List<Object[]> getjalavaniFeedbackSurveyDeatails(Date fromDate,Date toDate);
 	public List<Object[]> getAssignedCandidateWisePendingAlerts(Date startDate,Date endDate,Long stateId,List<Long> alertTypeId);
 	public List<Object[]> getOverAllAlertDtls(Date pastDate,Date endDate,Long stateId,List<Long> alertTypeIds,List<Long> statusIds);
@@ -213,12 +213,12 @@ public interface IAlertDAO extends GenericDao<Alert, Long> {
 	public List<Object[]> getDistrictWiseTotalAlerts(Date stDate, Date ndDate, Long stateId,List<Long>alertTypeIds);
 	public List<Long> getAlertId(Long categoryId,Long categoryTypeId);
 	public List<Object[]> getDistrictWiseTotalAlertsforConslidated(Date fromDate, Date toDate, Long stateId, List<Long> alertTypeIds, String levelType);
-	public List<Object[]> getJalavanilocationOverview(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId);
+	public List<Object[]> getJalavanilocationOverview(Date fromDate,Date toDate,String searchType,String type,Long locationTypeId,Long subLocationId,Long alertCategoryId,Long deptId);
 	public List<Object[]> getJalavaniAlertDetailsInformation(Date fromDate,Date toDate,Long locationTypeId,Long locationId,
 			Long statusId,Long sourceId);
-	public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId);
+	public List<Long> getAlertAndStatusWiseCountsForDistForPopup(Date fromDate,Date toDate,String searchType,String type,List<Long> locationTypeIds,Long alertCategoryId,Long statusId,Long deptId);
 	public List<Long> getJalavaniFeedBackNotSatisifiedAlertsInfo(Date fromDate,Date toDate,Long feedBackId,Long districtId);
 	public List<Object[]> getJalavaniStatusWiseSummaryGraphDetailsInfo(Date fromDate,Date toDate,String searchType);
-	public List<Long> getJalavaniAlertForClosedAndReopenDetails(Date fromDate,Date toDate,Long statusId);
+	public List<Long> getJalavaniAlertForClosedAndReopenDetails(Date fromDate,Date toDate,Long statusId,Long deptId,Long categoryId);
 	public List<Object[]> getJalavaniClosedAndreopenAlertStatus(List<Long> alertIds);
 }
