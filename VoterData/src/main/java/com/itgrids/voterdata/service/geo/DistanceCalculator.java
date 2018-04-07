@@ -12,7 +12,7 @@ public class DistanceCalculator
 		calculateDistanceFromFile("C:/Users/Administrator/Desktop/TEMP/BD/BD1.txt");
 	}
 
-	private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) 
+	public static double distance(double lat1, double lon1, double lat2, double lon2, String unit) 
 	{
 		try{
 			double theta = lon1 - lon2;
