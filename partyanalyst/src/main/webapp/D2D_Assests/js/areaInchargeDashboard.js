@@ -115,7 +115,7 @@ function buildAreaInchargesStatusWiseCount(result,divId,locationType,loadType,ch
 	str+='<div class="row">';
 		str+='<div class="col-sm-4">';
 			str+='<div class="border_block_style panelheights">';
-				str+='<h4 class="text-center">'+globalLocationName+' - (<b>'+result.total+'</b> Booths)</h4>';
+				str+='<h4 class="text-center">'+result.name+' - (<b>'+result.total+'</b> Booths)</h4>';
 				str+='<div class="row">';
 					str+='<div id="mainBlockPieChartDivId'+locationType+'" style="height:200px;"></div>';
 				str+='</div>';
@@ -261,7 +261,7 @@ function getAreaInchargeAssignedBoothDetails(){
       if(result !=null && result.length>0){
 		  buildAreaInchargeAssignedBoothDetails(result);
 	  }else{
-		  $("#alreadyAreaInchargeDetailsDivId").html("No Data Available");		  
+		  $("#alreadyAreaInchargeDetailsDivId").html("");		  
 	  }
     });
   }
@@ -295,13 +295,16 @@ function getAreaInchargeAssignedBoothDetails(){
 									  str+='</div>';
 									  str+='<div class="media-body">';
 											str+='<div class="row">';
-												str+='<div class="col-sm-12">';
+												str+='<div class="col-sm-11">';
 													str+='<ul class="list-inline list_style">';
 														str+='<li>Name : <b class="text-capital">'+result[i].name+'</b></li>';
 														str+='<li>Relative Name : <b class="text-capital">'+result[i].relativeName+'</b></li>';
 														str+='<li>Age : <b>'+result[i].age+'</b></li>';
 														str+='<li>Gender : <b>'+result[i].gender+'</b></li>';
 													str+='</ul>';
+												str+='</div>';
+												str+='<div class="col-sm-1">';
+													str+='<h5 class="fa fa-edit popupViewAreaIncDetUCls"  attr_cadre_id="'+result[i].id+'" style="font-size:20px;"></h5>';
 												str+='</div>';
 											str+='</div>';
 											str+='<div class="row">';
@@ -314,20 +317,19 @@ function getAreaInchargeAssignedBoothDetails(){
 											str+='</div>';
 											str+='<div class="row">';
 												str+='<div class="col-sm-12 m_top10">';
-													str+='<ul class="list-inline list_style">';
-														str+='<li>Assigned Booths :';
+														str+='<h5>Assigned Booths :';
 														for(var j in result[i].assignIds){
-															str+='<b>'+result[i].assignIds[j]+',</b>';
+															str+='<span class="font_weight">'+result[i].assignIds[j]+', </span>';
 														}
-														str+='</li>';
-													str+='</ul>';
+														str+='</h5>';
+														
 												str+='</div>';
 											str+='</div>';
-											str+='<div class="row">';
+											/* str+='<div class="row">';
 												str+='<div class="col-sm-12">';
 													str+='<h5 class="fa fa-edit popupViewAreaIncDetUCls pull-right"  attr_cadre_id="'+result[i].id+'" style="font-size:20px;margin-top: -20px;"></h5>';
 												str+='</div>';
-											str+='</div>';
+											str+='</div>'; */
 									  str+='</div>';
 									str+='</div>';
 								str+='</div>';
@@ -347,11 +349,22 @@ function getAreaInchargeAssignedBoothDetails(){
 	 $("#searchValId").val('');
 	 
  });
+ $( document ).ready(function(){
+  var selectedType="";
+	 $( ".getSelectedVal" ).each(function() {
+		if($(this).is(":checked")){
+			selectedType=$(this).val();
+		}
+	});
+	if(selectedType == "membershipId"){
+		$('#searchValId').attr("maxlength",8)
+	}
+}); 
  $(document).on("click",".getSearchDetailsCls",function(){
-	var voterId=0;
+	var voterId="";
 	var mobileNo="";
 	var memberShipId="";
-	
+	$("#errorId").html('');
 	var selectedType="";
 	 $( ".getSelectedVal" ).each(function() {
 		if($(this).is(":checked")){
@@ -360,7 +373,7 @@ function getAreaInchargeAssignedBoothDetails(){
 	});
 	if(selectedType == "membershipId"){
 		memberShipId = $("#searchValId").val();
-		voterId=0;
+		voterId="";
 		mobileNo="";
 	}else if(selectedType == "voterId"){
 		memberShipId = "";
@@ -368,7 +381,7 @@ function getAreaInchargeAssignedBoothDetails(){
 		mobileNo="";
 	}else if(selectedType == "mobileNo"){
 		memberShipId =""; 
-		voterId=0;
+		voterId="";
 		mobileNo=$("#searchValId").val();
 	}
 	$(".showHideCls").show();
@@ -376,28 +389,22 @@ function getAreaInchargeAssignedBoothDetails(){
  });
  
    function getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType){
-	    if(selectedType == "membershipId"){
+	   $('#searchValId').removeAttr("maxlength");
 	   var numericExpression = /^[0-9]+$/;
-					if(!memberShipId.trim().match(numericExpression)){
-						$('#searchErrDiv').html('Enter  Number Digits Only.');
-						return;
-					}else{
-						$('#searchErrDiv').html(' ');
-					}
-			if(memberShipId.trim().length == 0 )
-			{
+	    if(selectedType == "membershipId"){
+			if(memberShipId.trim().length == 0 ){
 				$('#searchErrDiv').html('Please enter Membership Card No.');
 				return;
-			}else{
-						$('#searchErrDiv').html(' ');
-					}
-			if(memberShipId.trim().length != 8||memberShipId.trim().length > 8)
-			{
+			}
+			if(!memberShipId.trim().match(numericExpression)){
+				$('#searchErrDiv').html('Enter  Number Digits Only.');
+				return;
+			 }else if(memberShipId.trim().length != 8 || memberShipId.trim().length > 8){
 				$('#searchErrDiv').html('Invalid memberShipCardNo.');
 				return;	
-			}else{
-						$('#searchErrDiv').html(' ');
-					}
+			 }else{
+			   $('#searchErrDiv').html(' ');
+		     }
 	   }
     if(selectedType == "voterId"){
 		if(voterId.length == 0 || voterId == null )
@@ -407,26 +414,22 @@ function getAreaInchargeAssignedBoothDetails(){
 			}
      }
 	 if(selectedType == "mobileNo"){
-		var numericExpression = /^[0-9]+$/;
-		 if(!mobileNo.trim().match(numericExpression)){
-			$('#searchErrDiv').html('Enter Number Digits Only.');
-						return;
-		}else{
-			$('#searchErrDiv').html(' ');
-		  }	
-		if(mobileNo.trim().length == 0 )
+		 if(mobileNo.trim().length == 0 )
 			{
 			  $('#searchErrDiv').html('Please enter Mobile No.');
 				return;
 			}
-			if(mobileNo.trim().length != 10 ||mobileNo.trim().length > 10)
-			{
+	   if(!mobileNo.trim().match(numericExpression)){
+			$('#searchErrDiv').html('Enter Number Digits Only.');
+						return;
+		}else if(mobileNo.trim().length != 10 ||mobileNo.trim().length > 10){
 				$('#searchErrDiv').html('Invalid Mobile No.');
 				return;
-			} 
+		}else{
+			$('#searchErrDiv').html(' ');
+		 }
 	 }
-	 
-	   $("#areaInchargeSearchDetailsDivId").html(spinner);
+	$("#areaInchargeSearchDetailsDivId").html(spinner);
       var jsObj={
 		    voterId:voterId,
 			mobileNo :mobileNo,
@@ -488,7 +491,7 @@ function buildAreaInchargeDetails(result){
 										  str+='<input type="checkbox"  name="inlineRadioOptions" id="inlineRadio11" attr_count="'+i+'" value="'+result[i].isActive+'" class="makeInchargeCls">Make Area Incharge';
 										str+='</label>';
 									str+='</li>';
-									str+='<li><button type="button" id="btn'+i+'" class="btn btn-success btn-sm makeInchargeAssignedBoothsCls" style="display:none;" attr_cadre_id="'+result[i].id+'">Assigned Booths</button></li>';
+									str+='<li><button type="button" id="btn'+i+'" class="btn btn-success btn-sm makeInchargeAssignedBoothsCls" style="display:none;" attr_cadre_id="'+result[i].id+'">Assign Booths</button></li>';
 									str+='</ul>';
 								}else{
 									str+='<h4 class="text-center font_weight" style="color:green;">Already Area Incharge</h4>';
@@ -503,7 +506,7 @@ function buildAreaInchargeDetails(result){
 	$("#areaInchargeSearchDetailsDivId").html(str);
 }
 
-$(document).on("click",".makeInchargeAssignedBoothsCls",function(){//srujana
+$(document).on("click",".makeInchargeAssignedBoothsCls",function(){
 		$(".assignedUnAssignedDivCls").show();
 		$(".submitBtnCls").show();
 		var cadreId =$(this).attr('attr_cadre_id');
@@ -585,7 +588,7 @@ function getAssignedAndUnAssignedBooths(){
  function  buildUnAssignedBoothsDetails(result){
 	 var str='';
 	 str+='<div class="col-sm-12 m_top10">';
-		str+='<h4 class="">Un Assigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
+		str+='<h4 class="">UnAssigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
 	 str+='</div>';
 	 
 	  str+='<div class="col-sm-12">';
@@ -648,10 +651,22 @@ function getAssignedAndUnAssignedBooths(){
 		});
 		savingAssigningBooths(cadreId,boothIds,"save");
 	});
-	function savingAssigningBooths(cadreId,boothIds,saveType){
+	function savingAssigningBooths(cadreId,boothIds,saveType){//srujana
 		if(saveType == "save"){
-			$(".spinnerDivId").show();
+		if(boothIds.length == 0){
+			$("#errorId").html("Please Select Booths");
+			return;
 		}else{
+		  $("#errorId").html("");	
+		}
+		$(".spinnerDivId").show();
+		}else{
+		if(boothIds.length == 0){
+			$("#applyErrorId").html("Please Select Booths");
+			return;
+		}else{
+		  $("#applyErrorId").html("");	
+		 }
 			$(".spinnereditDivId").show();
 		}
 		
@@ -724,8 +739,15 @@ function getAssignedAndUnAssignedBooths(){
 	 globalLocationName=$("#constituencyId option:selected").text();
 	 getAreaInchargesStatusWiseCount("mainOverDistrictViewBlockDivId",'district','constituency',"onchange");
 	 getAreaInchargeAssignedBoothDetails();
-     getAssignedAndUnAssignedBooths();
+	 $(".addAssignedBlockCls").hide();
+	 $(".assignedUnAssignedDivCls").hide();
+	 $(".submitBtnCls").hide();
+	 $(".showHideCls").hide();
 	 $(".showHideAddAreaIncharge").show();
+	 $("#errorId").html('');
+	 /* getAreaInchargeAssignedBoothDetails();
+     getAssignedAndUnAssignedBooths(); */
+	 //$(".showHideAddAreaIncharge").show();
 });
 
 
@@ -791,6 +813,15 @@ $(document).on("click",".popupViewAreaIncDetUCls",function(){
 							str+='</div>';
 							str+='<div class="row">';
 								str+='<div class="col-sm-12 m_top10">';
+										str+='<h5>Assigned Booths :';
+											for(var j in result.assignBoothIds){
+												str+='<span class="font_weight">'+result.assignBoothIds[j]+', </span>';
+													}
+												str+='</h5>';		
+										str+='</div>';
+								str+='</div>';
+							/* str+='<div class="row">';
+								str+='<div class="col-sm-12 m_top10">';
 									str+='<ul class="list-inline list_style">';
 										str+='<li>Designation: <b>Area Incharge</b></li>';
 										str+='<li>Assigned Booths: ';
@@ -800,7 +831,7 @@ $(document).on("click",".popupViewAreaIncDetUCls",function(){
 										str+='</li>';
 									str+='</ul>';
 								str+='</div>';
-							str+='</div>';
+							str+='</div>'; */
 							
 					str+='</div>';		
 				str+='</div>';		
@@ -845,7 +876,7 @@ $(document).on("click",".popupViewAreaIncDetUCls",function(){
 	 str+='<div class="row">';
 		str+='<div class="col-sm-12">';
 			str+='<div class="border_block_style m_top5">';
-				str+='<h4 class="">Un Assigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
+				str+='<h4 class="">UnAssigned Booths : '+result.unAssignedCount+' Booths out of '+result.total+' booths</h4>';
 				str+='<div class="table-responsive">';
 				var xindex = 0;
 					str+='<table class="m_top10">';
@@ -877,6 +908,7 @@ $(document).on("click",".popupViewAreaIncDetUCls",function(){
 				str+='<img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" class="spinnereditDivId"></img>';
 			str+='</div>';
 			str+='<div class="col-sm-5 pull-right">';
+			str+='<div id="applyErrorId" class="pull-right" style="color:red;"></div>';
 				str+='<button class="btn btn-success btn-sm pull-right applyChangesCls" style="width: 150px;" attr_cadre_id="'+result.id+'">Apply Changes</button>';
 			str+='</div>';
 		str+='</div>';
@@ -951,4 +983,38 @@ function deleteAreaInchargeAssignBooths(cadreId,boothId){
 		$("#areaInchargeassignedBoothsDivId").html('');
 		$("#areaInchargeUnAssignedboothsDivId").html('');
 		$(".submitBtnCls").hide();
+		$("#searchErrDiv").html('');
+		$("#errorId").html('');
 	});
+	//getBoothAssignedpercentageBaseConstituencies();
+	function getBoothAssignedpercentageBaseConstituencies(){
+		//alert(67);
+		//$("#editAreaInchargeDetailsDivId").html(spinner);
+		var jsObj={
+			fromDateStr :"",
+			toDateStr : "",
+		    activityMemberId : 44
+		}
+		$.ajax({
+			type:'GET',
+			url:'getBoothAssignedpercentageBaseConstituenciesAction.action',
+			dataType: 'json',
+			data: {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result != null){
+			   //buildingAssignedAndUnAssignedBooths(result);
+			}else{
+				//$("#editAreaInchargeDetailsDivId").html("No Data Available")
+			}
+			
+		});
+	}
+$(document).on("click",".getSelectedVal",function(){
+	$("#searchValId").removeAttr('maxLength');
+	var value = $('input[name=inlineRadioOptions]:checked').val();
+	if(value == "mobileNo"){
+		$("#searchValId").attr("maxLength","10");
+	}else if(value == "membershipId"){
+		$("#searchValId").attr("maxLength","8");
+	}
+});

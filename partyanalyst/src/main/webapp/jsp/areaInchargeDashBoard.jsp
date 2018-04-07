@@ -64,13 +64,13 @@ body{
 								<div class="row">
 									<div class="col-sm-12">
 										<label class="radio-inline">
-										  <input type="radio"  checked="true" name="inlineRadioOptions" id="inlineRadio1" value="membershipId"  class="getSelectedVal">Membership Id
+										  <input type="radio"  checked="true" name="inlineRadioOptions"  id="inlineRadio1" value="membershipId"  class="getSelectedVal">Membership Id
 										</label>
 										<label class="radio-inline">
-										  <input type="radio" name="inlineRadioOptions" id="inlineRadio2" value="voterId" class="getSelectedVal" >Voter Id
+										  <input type="radio" name="inlineRadioOptions" id="inlineRadio2"  value="voterId" class="getSelectedVal" >Voter Id
 										</label>
 										<label class="radio-inline">
-										  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="mobileNo" class="getSelectedVal" >Mobile No
+										  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="mobileNo"  class="getSelectedVal" >Mobile No
 										</label>
 									</div>
 								</div>
@@ -104,7 +104,8 @@ body{
 						<div class="col-sm-1 pull-right">
 							<img src="D2D_Assests/images/spinner.gif" style="width:40px;height:40px;display:none;" class="spinnerDivId"></img>
 						</div>
-						<div class="col-sm-5 pull-right">
+						<div class="col-sm-3 pull-right">
+						<div id="errorId" class="pull-right" style="color:red;"></div>
 							<button class="btn btn-success btn-sm pull-right submitBtnCls" style="width: 150px;display:none;">Submit</button>
 						</div>
 					</div>
