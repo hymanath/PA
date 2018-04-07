@@ -46,6 +46,7 @@ import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
+import com.itgrids.dto.ExampleVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
@@ -6304,5 +6305,130 @@ public class ItcDashboardService implements IItcDashboardService {
 			LOG.error("Exception occured at getMeesevaCentersTargetAchievement() in  ItcDashboardService class",e);
 		}
 		return finalList;
+	}
+	
+	public String checkeOfficeDataExists(){
+		String status = null;
+		try {
+			Long count = eofficeEmployeeWorkDetailsDAO.geteOfficeDataExists();
+			if(count != null && count > 0L)
+				status = "exists";
+			else
+				status = "notExists";
+		} catch (Exception e) {
+			LOG.error("Exception occured at checkeOfficeDataExists() in  ItcDashboardService class",e);
+		}
+		return status;
+	}
+	
+	public String saveeOfficeWebServiceData(ExampleVO inputvo){
+		String status = null;
+		try {
+			if(inputvo != null && inputvo.getSubject() != null && inputvo.getSubject().trim().length() > 0){
+				List<EofficeEmployeeWorkDetails> finalList = new ArrayList<EofficeEmployeeWorkDetails>(0);
+				Long[] deptIdsArr = IConstants.ITEC_EOFFICE_DEPT_IDS;
+				Long[] prDeptIdsArr = IConstants.PR_RD_EOFFICE_DEPT_IDS;
+				List<Long> deptIds = new ArrayList<Long>(0);
+				if(deptIdsArr != null && deptIdsArr.length > 0){
+					for (int i = 0; i < deptIdsArr.length; i++) {
+						deptIds.add(Long.valueOf(deptIdsArr[i].toString()));
+					}
+				}
+				
+				List<Long> prDeptIds = new ArrayList<Long>(0);
+				if(prDeptIdsArr != null && prDeptIdsArr.length > 0){
+					for (int i = 0; i < prDeptIdsArr.length; i++) {
+						prDeptIds.add(Long.valueOf(prDeptIdsArr[i].toString()));
+					}
+				}
+				
+				//DateFormat sdf = new SimpleDateFormat(dateUtilService.getCurrentDateAndTimeInStringFormat());
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				String fromDateStr ="2014-01-01";
+				Date toDateStr =dateUtilService.getCurrentDateAndTime();
+				String toDateStr1 = sdf.format(toDateStr);
+				
+				String output = inputvo.getSubject();
+				JSONArray finalArray = new JSONArray(output);
+				if (finalArray != null && finalArray.length() > 0) {
+					for (int i = 0; i < finalArray.length(); i++) {
+						JSONObject jObj = (JSONObject) finalArray.get(i);
+						EofficeEmployeeWorkDetails model = new EofficeEmployeeWorkDetails();
+						if(Long.valueOf(jObj.getLong("departmentid")) != null && deptIds.contains(jObj.getLong("departmentid"))){
+							model.setDepartmentId(jObj.getLong("departmentid"));
+						 	model.setDepartmentName(jObj.getString("departmentname"));
+						 	model.setOrgName(jObj.getString("orgname"));
+						 	model.setEmployeeName(jObj.getString("employeename"));
+						 	model.setPostName(jObj.getString("postname"));
+						 	model.setPostDetailsActive(jObj.getString("postdetailactive"));
+						 	model.setOpBalanceCount(jObj.getLong("opbalancecount"));
+						 	model.setFileCreated(jObj.getLong("filecreated"));
+						 	model.setFileReceived(jObj.getLong("file_received"));
+						 	model.setTotalFiles(jObj.getLong("totalfiles"));
+						 	model.setFilesClosed(jObj.getLong("files_closed"));
+						 	model.setFilesForwarded(jObj.getLong("files_forwarded"));
+						 	model.setFilesParked(jObj.getLong("files_parked"));
+						 	model.setFileAction(jObj.getLong("fileaction"));
+						 	model.setFirstCount(jObj.getLong("firstcount"));
+						 	model.setSecondCount(jObj.getLong("secondcount"));
+						 	model.setThirdCount(jObj.getLong("thirdcount"));
+						 	model.setFourthCount(jObj.getLong("fourthcount"));
+						 	model.setFifthCount(jObj.getLong("fifthcount"));
+						 	model.setTotalCount(jObj.getLong("totalcount"));
+						 	model.setFromDate(sdf.parse(fromDateStr));
+						 	model.setToDate(sdf.parse(toDateStr1));
+						 	model.setIsDeleted("N");
+						 	model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						 	finalList.add(model);
+						}else if(Long.valueOf(jObj.getLong("departmentid")) != null && prDeptIds.contains(jObj.getLong("departmentid"))){
+							model.setDepartmentId(jObj.getLong("departmentid"));
+						 	model.setDepartmentName(jObj.getString("departmentname"));
+						 	model.setOrgName(jObj.getString("orgname"));
+						 	model.setEmployeeName(jObj.getString("employeename"));
+						 	model.setPostName(jObj.getString("postname"));
+						 	model.setPostDetailsActive(jObj.getString("postdetailactive"));
+						 	model.setOpBalanceCount(jObj.getLong("opbalancecount"));
+						 	model.setFileCreated(jObj.getLong("filecreated"));
+						 	model.setFileReceived(jObj.getLong("file_received"));
+						 	model.setTotalFiles(jObj.getLong("totalfiles"));
+						 	model.setFilesClosed(jObj.getLong("files_closed"));
+						 	model.setFilesForwarded(jObj.getLong("files_forwarded"));
+						 	model.setFilesParked(jObj.getLong("files_parked"));
+						 	model.setFileAction(jObj.getLong("fileaction"));
+						 	model.setFirstCount(jObj.getLong("firstcount"));
+						 	model.setSecondCount(jObj.getLong("secondcount"));
+						 	model.setThirdCount(jObj.getLong("thirdcount"));
+						 	model.setFourthCount(jObj.getLong("fourthcount"));
+						 	model.setFifthCount(jObj.getLong("fifthcount"));
+						 	model.setTotalCount(jObj.getLong("totalcount"));
+						 	model.setFromDate(sdf.parse(fromDateStr));
+						 	model.setToDate(sdf.parse(toDateStr1));
+						 	model.setIsDeleted("N");
+						 	model.setInsertedTime(dateUtilService.getCurrentDateAndTime());
+						 	finalList.add(model);
+						}
+					}
+				}
+				
+				//Deleting Existing Data From Table
+				int deletedStatus = eofficeEmployeeWorkDetailsDAO.updateoldData();
+				
+				//Inserting New Data Into a Table
+				if(deletedStatus > 0){
+					if(commonMethodsUtilService.isListOrSetValid(finalList)){
+						for (EofficeEmployeeWorkDetails finalModel : finalList) {
+							eofficeEmployeeWorkDetailsDAO.save(finalModel);
+						}
+					}
+					status = "success";
+				}else
+					status = "fail";
+			}else
+				status = "fail";
+			
+		} catch (Exception e) {
+			LOG.error("Exception occured at saveeOfficeWebServiceData() in  ItcDashboardService class",e);
+		}
+		return status;
 	}
 }

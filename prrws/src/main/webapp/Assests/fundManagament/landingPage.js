@@ -2888,15 +2888,3 @@ function getWorkCompletionData(){
 		}
 	});
 }
-//fun();
-function fun() 
-{
-   var data="hello";
-   $.get("https://demo.eoffice.ap.gov.in/TTReports/Filesumm1.php?strFromDate=2014-01-01&strToDate=2018-03-09", function(response) {
-        data = response;
-   }).error(function(){
-  alert("Sorry could not proceed");
-});
-
-   return data;
-}

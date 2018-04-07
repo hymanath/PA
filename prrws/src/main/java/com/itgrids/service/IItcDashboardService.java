@@ -6,6 +6,7 @@ import com.itgrids.dto.ApInnovationCenterVO;
 import com.itgrids.dto.ApInnovationSocietyOverviewVO;
 import com.itgrids.dto.CmEoDBDtlsVO;
 import com.itgrids.dto.CohortDtlsVO;
+import com.itgrids.dto.ExampleVO;
 import com.itgrids.dto.IdNameVO;
 import com.itgrids.dto.InnovationSocietyDtlsVO;
 import com.itgrids.dto.InputVO;
@@ -87,4 +88,7 @@ public interface IItcDashboardService {
 	public List<ApInnovationSocietyOverviewVO> getCompleteOverviewForAPIS(InputVO inputVO);
 	public ApInnovationSocietyOverviewVO getStartupsEmploymentFundingPatternAcquisitionsDetails();
 	public  List<MeesevaKPIDtlsVO> getMeesevaCentersTargetAchievement(InputVO inputVO);
+	
+	public String checkeOfficeDataExists();
+	public String saveeOfficeWebServiceData(ExampleVO inputvo);
 }
