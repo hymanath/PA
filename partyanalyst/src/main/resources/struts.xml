@@ -19032,5 +19032,10 @@
 	<action name="areaInchargeDashBoardAction" class="areaInchargeDashBoardAction" method="areaInchargeDashBoard">
 		<result name="success">/jsp/areaInchargeDashBoard.jsp</result>
 	</action>
+	<action name="getBoothAssignedpercentageBaseConstituenciesAction" class="areaInchargeDashBoardAction" method="getBoothAssignedpercentageBaseConstituencies">
+		<result type="json" name="success">
+			<param name="root">membersList</param>
+		</result>
+	</action>
  </package>
 </struts>

@@ -4835,6 +4835,7 @@
    	 		<property name="constituencyDAO" ref="constituencyDAO"></property>
    	 		<property name="userConstituencyAccessInfoDAO" ref="userConstituencyAccessInfoDAO"></property>
    	 		<property name="userDistrictAccessInfoDAO" ref="userDistrictAccessInfoDAO"></property>
+   	 		<property name="activityMemberAccessLevelDAO" ref="activityMemberAccessLevelDAO"></property>
     	</bean>
    	 	
 </beans>			

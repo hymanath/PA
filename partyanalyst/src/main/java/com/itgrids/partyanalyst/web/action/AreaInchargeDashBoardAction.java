@@ -12,6 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import com.itgrids.partyanalyst.dto.AreaInchargeVO;
+import com.itgrids.partyanalyst.dto.InchargeMemberVO;
 import com.itgrids.partyanalyst.dto.RegistrationVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SelectOptionVO;
@@ -38,6 +39,7 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 	private Long levelId;
 	private Long levelValue;
 	private String locationName;
+	private List<InchargeMemberVO> membersList;
 	
 	public String getLocationName() {
 		return locationName;
@@ -99,6 +101,14 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		this.userProfileService = userProfileService;
 	}
 
+	public List<InchargeMemberVO> getMembersList() {
+		return membersList;
+	}
+
+	public void setMembersList(List<InchargeMemberVO> membersList) {
+		this.membersList = membersList;
+	}
+
 	public String areaInchargeDashBoard(){
 		try{
 		session = request.getSession();
@@ -107,7 +117,7 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 		List<String> entitlements = user.getEntitlements();
 		if(user == null || user.getEntitlements().size() == 0 || (!entitlements.contains("AREA_INCHARGE_DASHBOARD_ENTITLEMENT")))
 		{
-				return ERROR;
+			return "loginAction";
 		}
 		
 		if(user.getDistricts() != null && user.getDistricts().size() > 0)
@@ -200,7 +210,7 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 				userId = regVO.getRegistrationID();
 			}*/
 			jObj = new JSONObject(getTask());
-			inchargeList = areaInchargeDashBoardService.getAreaInchargeDetails(jObj.getLong("voterId"),jObj.getString("mobileNo"),jObj.getString("memberShipId"));
+			inchargeList = areaInchargeDashBoardService.getAreaInchargeDetails(jObj.getString("voterId"),jObj.getString("mobileNo"),jObj.getString("memberShipId"));
 			
 		}catch (Exception e) {
 			LOG.error("Entered into getAreaInchargeDetails Action",e);
@@ -287,6 +297,22 @@ public class AreaInchargeDashBoardAction extends ActionSupport  implements Servl
 			result = areaInchargeDashBoardService.deleteAreaInchargeAssignBooths(candidateId,boothId,jObj.getLong("levelId"),jObj.getLong("levelValue"));	
 		}catch(Exception e){
 			LOG.error("Exception in deleteAreaInchargeAssig" +
+					"nBooths method,e ");
+		}
+		return Action.SUCCESS;
+	}
+
+	public String getBoothAssignedpercentageBaseConstituencies(){
+		try{
+			LOG.info("Entered into deleteAreaInchargeAssignBooths");
+				jObj = new JSONObject(getTask());
+			String fromDateStr = jObj.getString("fromDateStr");
+			String toDateStr = jObj.getString("toDateStr");
+			Long activityMemberId =jObj.getLong("activityMemberId");
+			
+			membersList = areaInchargeDashBoardService.getBoothAssignedpercentageBaseConstituencies(fromDateStr,toDateStr,activityMemberId);	
+		}catch(Exception e){
+			LOG.error("Exception in getBoothAssignedpercentageBaseConstituencies" +
 					"nBooths method,e ");
 		}
 		return Action.SUCCESS;
