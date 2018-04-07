@@ -115,10 +115,12 @@ public class UserTypeVO implements Serializable{
 	private Long overalTotal =0l;
 	private Long conductedAssmblyCnt = 0L;
 	private Long totalMomsCnt = 0L;
+	private Long totalPendingMomsCnt = 0L;
 	private Long momCreatedCnt = 0L;
 	private Long momInProgrssCnt = 0L;
 	private Long momCompletedCnt = 0L;
 	private Double momCreatedCntPer = 0.0;
+	private Double totalPendingMomsCntPer = 0.0;
 	private Double momInProgrssCntPer = 0.0;
 	private Double momCompletedCntPer = 0.0;
 	//private String 
@@ -713,5 +715,16 @@ public class UserTypeVO implements Serializable{
 	public void setMomCompletedCntPer(Double momCompletedCntPer) {
 		this.momCompletedCntPer = momCompletedCntPer;
 	}
-	
+	public Long getTotalPendingMomsCnt() {
+		return totalPendingMomsCnt;
+	}
+	public void setTotalPendingMomsCnt(Long totalPendingMomsCnt) {
+		this.totalPendingMomsCnt = totalPendingMomsCnt;
+	}
+	public Double getTotalPendingMomsCntPer() {
+		return totalPendingMomsCntPer;
+	}
+	public void setTotalPendingMomsCntPer(Double totalPendingMomsCntPer) {
+		this.totalPendingMomsCntPer = totalPendingMomsCntPer;
+	}
 }
