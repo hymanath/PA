@@ -53,6 +53,7 @@ import com.itgrids.partyanalyst.dto.KaizalaExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
+import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
@@ -249,11 +250,19 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	private ActivityExceptionalReportVO activityExceptionalReportVO;
 	private ConsolidatedExceptionalReportVO consolidatedExceptionalReportVO;
+	private List<MomDetailsVO> momDetailsList = new ArrayList<MomDetailsVO>(0);
 	//setters And Getters
-	
 	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
+	}
+
+	public List<MomDetailsVO> getMomDetailsList() {
+		return momDetailsList;
+	}
+
+	public void setMomDetailsList(List<MomDetailsVO> momDetailsList) {
+		this.momDetailsList = momDetailsList;
 	}
 
 	public ConsolidatedExceptionalReportVO getConsolidatedExceptionalReportVO() {
@@ -6368,6 +6377,29 @@ public String getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1(){
 	return Action.SUCCESS;
 }
 
+public String getPartyMeetingMOMDetailsCompletedCountsClicks(){
+	LOG.info("Entered into getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1()  of CoreDashboardAction");
+	try{
+		
+		 Long userId = null; 
+		 HttpSession session = request.getSession();
+		 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+		 if(user == null || user.getRegistrationID() == null){
+			//return ERROR;
+			 userId = 1L;
+		 }
+		 else
+			 userId = user.getRegistrationID();
+		
+		jObj = new JSONObject(getTask());
+		
+		MomDetailsVO momDetailsVO = new MomDetailsVO();
+		momDetailsList = coreDashboardPartyMeetingService.getPartyMeetingsMOMDetails(momDetailsVO);
+	}catch(Exception e){
+		LOG.error("Exception raised at getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1() method of CoreDashBoard", e);
+	}
+	return Action.SUCCESS;
+}
 
 public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 	try {
