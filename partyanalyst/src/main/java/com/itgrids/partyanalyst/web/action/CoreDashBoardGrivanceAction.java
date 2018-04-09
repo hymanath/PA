@@ -140,7 +140,9 @@ public class CoreDashBoardGrivanceAction extends ActionSupport implements Servle
 			Long enrollmentyearId = jObj.getLong("enrollmentyearId");
 			String searchType = jObj.getString("searchType");
 			String searchValue=jObj.getString("searchValue");
-			grievanceReportVO=coreDashboardCoreService.getgrivanceDetailsByIssueType(enrollmentyearId,searchType,searchValue);
+			String fromDate = jObj.getString("fromDate");
+			String toDate = jObj.getString("toDate");
+			grievanceReportVO=coreDashboardCoreService.getgrivanceDetailsByIssueType(enrollmentyearId,searchType,searchValue,fromDate,toDate);
 			
 		}catch(Exception e){
 			LOG.error("Exception getgrivanceDetailsByIssueTypeForGraph() in CoreDashBoardGrivance Action class", e);
