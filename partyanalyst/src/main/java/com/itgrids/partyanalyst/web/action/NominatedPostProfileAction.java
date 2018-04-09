@@ -1844,7 +1844,8 @@ public String execute()
 			    String expireDate = jObj.getString("expireDate");
 			    Long LocationLevelId = jObj.getLong("LocationLevelId");  
 			    String status = jObj.getString("status");
-			    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate, expireDate, status);
+			    String applicationType = jObj.getString("applicationType");
+			    nominatedPostMemberVOs = nominatedPostProfileService.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate, expireDate, status,applicationType);
 			    
 			  /*  jObj = new JSONObject(getTask());
 			    List<Long> lctnLevelValueList = new ArrayList<Long>(0); 

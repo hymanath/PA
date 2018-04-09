@@ -263,8 +263,14 @@ if(globalLocationLevelId == 2){
 				
 				
 	buildPage(0);
-	function buildPage(typeId){       
-		/*var jsObj = {
+	function buildPage(typeId){
+		var radioVal = "";
+		$(".radionBtn").each(function(){
+			if($(this).is(":checked")){
+				radioVal =$(this).val() ;
+			}
+		});
+	/*var jsObj = {
 		LocationLevelId : globalLocationLevelId, 
 		locationLevelValueArr : globalLocationLevelValueArr,              
 		departmentId : deptId,
@@ -307,7 +313,8 @@ if(globalLocationLevelId == 2){
 			positionIds : positionIs,  
 			fromDate : fromDate,
 			expireDate : expireDate,
-			status : status
+			status : status,
+			applicationType:radioVal
 			
 			}
 			
@@ -352,7 +359,8 @@ if(globalLocationLevelId == 2){
 			var locationsArr=[];
 			if(levelId == globalLocationLevelId)
 				locationsArr = globalLocationLevelValueArr;
-			$("#bodyId").html('<img id="" src="images/Loading-data.gif" style="width:60px;height:50px;margin:auto;margin-left:500px;"/>'); 
+			
+		$("#bodyId").html('<img id="" src="images/Loading-data.gif" style="width:60px;height:50px;margin:auto;margin-left:500px;"/>'); 
 			jsObj = {
 			LocationLevelId : levelId, 
 			locationLevelValueArr : locationsArr,              
@@ -361,9 +369,11 @@ if(globalLocationLevelId == 2){
 			positionIds : positionIs,  
 			fromDate : fromDate,
 			expireDate : expireDate,
-			status : status
+			status : status,
+			applicationType:radioVal
 			};
 		}
+		
 			$.ajax({
 			  type:'GET',
 			  url: 'getFinalReviewCandidateCountForLocationFilterAction.action',    
@@ -381,15 +391,15 @@ if(globalLocationLevelId == 2){
 			
 	}
 	function buildModel(myresult,typeId){
-		var radioVal = "";
+		/* var radioVal = "";
 		$(".radionBtn").each(function(){
 			if($(this).is(":checked")){
 				radioVal =$(this).val() ;
 			}
-		});
+		}); */
 	var str = '';
 		var result = myresult;
-		if(radioVal == "expire" || radioVal == "running"){
+		/* if(radioVal == "expire" || radioVal == "running"){
 			result=[];
 			for(var i in myresult){
 				if(radioVal == "expire" && myresult[i].expireDate == " All Ready Expired"){
@@ -400,7 +410,7 @@ if(globalLocationLevelId == 2){
 				}
 				}
 			}
-		}
+		} */
 		var strDate = $("#DateRanges").val();
 			var dateArray = strDate.split("-");
 			var fromDate = dateArray[0].trim();
@@ -694,6 +704,7 @@ var levelId = $("#boardsLevelId").val();
 		var expireDate = dateArray[1].trim();  
 		//console.log(deptIds+":"+boardIds+":"+positionIs+":"+fromDate+":"+expireDate);
 		var levelId = $("#boardsLevelId").val();
+		alert(6)
 		var locationsArr=[];
 		if(levelId == globalLocationLevelId)
 			locationsArr = globalLocationLevelValueArr;
