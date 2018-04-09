@@ -4985,7 +4985,7 @@
 	
 	<!--<div class="row">	
 		<!-- grivance start
-			<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
+		<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
 			<div class="panel panel-default panelNewCustom ">
 				<div class="panel-heading">
 					<div class="row">
