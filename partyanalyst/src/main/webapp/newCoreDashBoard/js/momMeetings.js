@@ -54,6 +54,7 @@ $("#dateRangeIdForMOM").daterangepicker({
 	});	
 function onloadMOMCalls(){
 	getMOMBasicCountDetailsAction();
+	//getPartyMeetingMOMDetailsCompletedCountClicks();
 	if($(".momIconExpand").find("i").hasClass("glyphicon glyphicon-resize-small" )){
 		 $("[role='tabCummulativeMOM'] li").removeClass("active");
 		 $("[role='tabCummulativeMOM'] li:nth-child(1)").addClass("active");
@@ -137,6 +138,7 @@ function buildMOMBasicCountDetailsAction(result){
 			str+='</div>';
 			
 			str+='<div class="bg_light_yash m_top10">';
+				str+='<span class="text-invert">MOM</span>';
 				str+='<div class="row">';
 					str+='<div class="col-sm-3">';
 						str+='<div class="border_pad">';
@@ -204,6 +206,7 @@ function buildMOMBasicCountDetailsAction(result){
 				str+='</div>';
 				
 				str+='<div class="bg_light_yash m_top10">';
+				str+='<span class="text-invert">MOM</span>';
 					str+='<div class="row">';
 						str+='<div class="col-sm-3">';
 							str+='<div class="border_pad">';
@@ -779,3 +782,24 @@ function buildMOMDetailedBlockDetailsAction(result,locationType){
 	
 	
 }
+
+/* $(document).on("click",".clickCls",function(){
+	$("#momModalDivId").modal("show");
+	
+});
+function getPartyMeetingMOMDetailsCompletedCountClicks(){
+   
+    
+    var jsObj ={  
+		
+    };      
+    $.ajax({
+      type : 'POST',
+      url : 'getPartyMeetingMOMDetailsCompletedCountsClicks.action',
+      dataType : 'json',
+      data : {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+      
+       
+    });
+  } */

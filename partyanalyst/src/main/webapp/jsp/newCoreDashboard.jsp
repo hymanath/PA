@@ -186,6 +186,7 @@
     </div>
 </header>
 <c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
+<div class="right-menu-button">MENU</div>
 <div class="rightNavigationMenu">
 	<div class="backgroundBlock hidden-xs"></div>
 	<ul class="hidden-xs">
@@ -4918,7 +4919,7 @@
 						<div class="row">
 							<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="MOM">
 								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
+									<img src="newCoreDashBoard/img/momMeeting.png" class="iconClass"/>
 									MOM Meetings <small class="text-muted"> - LAST MONTH</small>
 								</h4>
 							</div>
@@ -6345,6 +6346,18 @@ $(document).ready(function() {
 $(document).on("click",".rightNavigationMenuRes",function(){
 	$(this).toggleClass("active");
 	$(".rightNavigationMenu ul,.backgroundBlock").toggleClass("hidden-xs");
+});
+$(document).on("click",".right-menu-button",function(){
+	$(this).toggleClass("active");
+	var html = $(this).html()
+	if(html == 'MENU')
+	{
+		$(this).html("<i class='glyphicon glyphicon-remove'></i>")
+		$(".rightNavigationMenu").show();
+	}else{
+		$(this).html("MENU")
+		$(".rightNavigationMenu").hide();
+	}
 });
 $("[expand-icon]").click(function(){
 	var $this = $(this);
