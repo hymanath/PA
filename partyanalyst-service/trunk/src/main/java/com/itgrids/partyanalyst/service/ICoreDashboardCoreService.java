@@ -21,7 +21,8 @@ public interface ICoreDashboardCoreService {
 	public  List<TrainingCampSurveyVO> getTrainingCampFeedBackDetailsProgramWise(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdList);
 	public List<TrainingCampSurveyVO> getTrainingQuizDetails(List<Long> programIdList,Long userAccessLevelId,List<Long> userAccessLevelValues,List<Long> enrollmentYrIds,List<Long> committeeLevelIdArr);
 	public List<GrievanceReportVO> getEffiencyDetailsForgrivanceByDates( List<Integer> daysList,String grievanceReqType, Long enrollmentyearId);
-	public List<GrievanceReportVO> getgrivanceDetailsByIssueType(Long enrollmentyearId,String searchType,String searchValue);
+	public List<GrievanceReportVO> getgrivanceDetailsByIssueType(Long enrollmentyearId,String searchType,String searchval,String formDate,String toDate);
 	public List<GrievanceReportVO> getgrivanceDetailsBySearch(Long enrollmentyearId,String searchType,String searchValue);
 	public List<ComplaintStatusCountVO> getCategoryAndIssuetypeStatusCount(String inputType,String fromDate,String toDate,String stateIds,Long enrollmentYrId,String task);
+	
 }

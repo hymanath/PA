@@ -1391,9 +1391,9 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 			ClientConfig clientConfig = new DefaultClientConfig();
 			clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 			Client client = Client.create(clientConfig);
-			//WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
-			WebResource webResource2 = client.resource("http://mytdp.com/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
-			ClientResponse response = webResource2.accept("application/json").type("application/json").get(ClientResponse.class);
+			WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
+			//WebResource webResource2 = client.resource("http://mytdp.com/Grievance/WebService/getCategoryAndIssuetypeStatusCount/"+inputType+"/"+fromDate+"/"+toDate+"/"+stateIds+"/"+enrollmentYrId+"/"+task+"/");
+			ClientResponse response = webResource.accept("application/json").type("application/json").get(ClientResponse.class);
 			if(response.getStatus() != 200){
 				throw new RuntimeException("Failed : HTTP error code : "+ response.getStatus());
 			}else{
@@ -1487,18 +1487,20 @@ public class CoreDashboardCoreService implements ICoreDashboardCoreService {
 	 }
  	 return null;
   }
-	public List<GrievanceReportVO> getgrivanceDetailsByIssueType(Long enrollmentyearId,String searchType,String searchval) {
+	public List<GrievanceReportVO> getgrivanceDetailsByIssueType(Long enrollmentyearId,String searchType,String searchval,String formDate,String toDate) {
 		List<GrievanceReportVO> finalDaysList = new ArrayList<GrievanceReportVO>();
 		try{
 			ComplaintStatusCountVO complaintStatusCountVO = new ComplaintStatusCountVO();
 			complaintStatusCountVO.setCount(enrollmentyearId);
 			complaintStatusCountVO.setStatus(searchType);
 			complaintStatusCountVO.setStatusVal(searchval);
+			complaintStatusCountVO.setFormDate(formDate);
+			complaintStatusCountVO.setToDate(toDate);
 			 ClientConfig clientConfig = new DefaultClientConfig();
 		     clientConfig.getFeatures().put(JSONConfiguration.FEATURE_POJO_MAPPING, Boolean.TRUE);
 	         Client client = Client.create(clientConfig);
-		     WebResource webResource = client.resource("http://mytdp.com/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
-		     //WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
+		     //WebResource webResource = client.resource("http://mytdp.com/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
+		     WebResource webResource = client.resource("http://localhost:8080/Grievance/WebService/getGrivanceDetailsForIssueTypeWiseGraph");
 		     String jsonInString = new ObjectMapper().writeValueAsString(complaintStatusCountVO);
 	         System.out.println(jsonInString);
 	         

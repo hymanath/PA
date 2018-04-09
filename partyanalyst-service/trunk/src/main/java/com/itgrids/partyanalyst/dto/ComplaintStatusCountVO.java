@@ -31,7 +31,8 @@ public class ComplaintStatusCountVO {
 	private Long maxIndex=0l;
 	private Long startIndex=0l;
 	private Long id;
-	
+	private String formDate;
+	private String toDate;
 	
 	
 	public String getStatusVal() {
@@ -195,6 +196,18 @@ public class ComplaintStatusCountVO {
 	}
 	public void setApprCMReliefMembsCount(Long apprCMReliefMembsCount) {
 		this.apprCMReliefMembsCount = apprCMReliefMembsCount;
+	}
+	public String getFormDate() {
+		return formDate;
+	}
+	public void setFormDate(String formDate) {
+		this.formDate = formDate;
+	}
+	public String getToDate() {
+		return toDate;
+	}
+	public void setToDate(String toDate) {
+		this.toDate = toDate;
 	}
 	
 	
