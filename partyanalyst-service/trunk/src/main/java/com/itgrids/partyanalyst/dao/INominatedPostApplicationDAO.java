@@ -45,7 +45,8 @@ public interface INominatedPostApplicationDAO extends GenericDao<NominatedPostAp
 	public List<Object[]> getAppliedPositionsForCandidate(Long departmentId,Long boardId,Long boardLevelId,Long searchLevelValue,Long locationLevelId,Long nominatedPostCandId);
 	public List<Long> getApplicationIds(Long deptId,Long boardId,List<Long> positions,Long levelId,List<Long> searchLevelValues,Long userId,List<Long> statusIds);
 	public List<Object[]> getTotalAvaiableApplicationsDetails(Long boardLevelId,Long stateId,Long applicationStatusId);
-	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, Date lowerRange, Date expDate, String status);
+	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, 
+			List<Long> boardList, List<Long> positionList, Date lowerRange, Date expDate, String status,String applicationType);
 	public List<Object[]> getNominatedPostsAppliedApplciationsDetalsNew(Long levelId,Date startDate,Date endDate,Long stateId,String type);
 	public List<Object[]> getPositionWiseTotalApplicationsReceived(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType);
 	public List<Object[]> getPositionWiseTotalApplicationnsReceived(Long boardLevelId,List<Long> locationValues,List<Long> deptsIds,List<Long> boardIds,String statusType,String positionType);

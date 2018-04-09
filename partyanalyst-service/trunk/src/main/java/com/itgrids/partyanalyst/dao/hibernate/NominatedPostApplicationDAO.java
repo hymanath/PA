@@ -1962,7 +1962,8 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 		  
 		  return query.list();
 	}
-	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, Date fromDate, Date expDate, String status){
+	public List<Object[]> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, 
+			List<Long> boardList, List<Long> positionList, Date fromDate, Date expDate, String status,String applicationType){
 		
 	       StringBuilder queryStr = new StringBuilder();  
 	       queryStr.append(" select distinct " +
@@ -2047,12 +2048,11 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    		   queryStr.append(" and D.departmentId in (:deptList) ");  
 	       }
 	     
-	       if(fromDate != null && expDate != null){//expired
+	       if(fromDate != null && expDate != null && applicationType != null && applicationType.equalsIgnoreCase("expire")){//expired
 	    	   queryStr.append(" and (date(NPGO.govtOrder.toDate) between :lowerRange and :expDate ) ");        
-	       }
-	       /*else  if(fromDate != null && expDate != null){// all/ running 
+	       }else  if(fromDate != null && expDate != null && (applicationType.equalsIgnoreCase("all") || applicationType.equalsIgnoreCase("running"))){// all/ running 
 	    	   queryStr.append(" and ((date(NPGO.govtOrder.fromDate) between :lowerRange and :expDate) or (date(NPGO.govtOrder.toDate) between :lowerRange and :expDate) ) ");        
-	       }  */
+	       }  
 	       
 	       //queryStr.append(" and nominatedPost.nominatedPostId = NPOST.nominatedPostId " );   
 	       queryStr.append(" and NPC.isDeleted = 'N' " +
@@ -2104,7 +2104,7 @@ public List<Object[]> getNominatedPostsAppliedAppliciationsDtals(Long levelId,Da
 	    	   else if(positionList.size() > 1)
 	    		   query.setParameterList("positionList", positionList); 
 	       }
-	       if(fromDate != null && expDate != null){
+	       if(fromDate != null && expDate != null && applicationType != null){
 	    	   query.setDate("lowerRange", fromDate);
 	    	   query.setDate("expDate", expDate);
 	       }
