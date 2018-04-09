@@ -74,7 +74,8 @@ public interface INominatedPostProfileService {
 	 public ResultStatus checkPositionAvailableOrNot(Long departmentId,Long boardId,Long positionId,Long boardLevlId,Long searchLevelValue,Long searchLevelId);
 	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocation(Long LocationLevelId,List<Long> lctnLevelValueList,Long departmentId,Long boardId, Long positionId, String status);
 	 public ResultStatus assginGOToNominationPostCandidate(GovtOrderVO goVO,Long userId,Map<File,String> mapfiles);
-	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String today, String expireDate, String status); 
+	 public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList,
+			 List<Long> boardList, List<Long> positionList, String today, String expireDate, String status,String applicationType); 
 	 public String savingStatusAsReject(final Long userId,final Long applicationId,final Long candidateId,final Long levelId,final Long levelValue,
 				final Long statusId,final String comment);
 	 public String isApplicationAlreadyShortlisted(Long nominatePostApplicationId,Long levelId,Long levelValue,Long deptId,Long boardId,Long positionId,Long candId);

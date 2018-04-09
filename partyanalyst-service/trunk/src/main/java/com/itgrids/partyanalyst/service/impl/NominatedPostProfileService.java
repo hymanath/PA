@@ -7803,7 +7803,8 @@ public  List<CadreCommitteeVO> notCadresearch(String searchType,String searchVal
 		 return null; 
 	 }
 @SuppressWarnings("deprecation")
-public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList, List<Long> boardList, List<Long> positionList, String fromDateStr, String expireDate, String status){ 
+public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(Long LocationLevelId, List<Long> lctnLevelValueList, List<Long> deptList,
+		List<Long> boardList, List<Long> positionList, String fromDateStr, String expireDate, String status,String applicationType){ 
 	 try{
 		 Date fromDate1 = null;
 		 Date expDate1 = null;
@@ -7819,7 +7820,7 @@ public List<NomintedPostMemberVO> getFinalReviewCandidateCountForLocationFilter(
 		 DateUtilService dateUtilService = new DateUtilService();
 		 List<NomintedPostMemberVO> nominatedPostMemberVOs = new ArrayList<NomintedPostMemberVO>(0);
 		 NomintedPostMemberVO nominatedPostMemberVO = null;
-		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate1, expDate1, status);
+		 List<Object[]> candidateList = nominatedPostApplicationDAO.getFinalReviewCandidateCountForLocationFilter(LocationLevelId, lctnLevelValueList, deptList, boardList, positionList, fromDate1, expDate1, status, applicationType);
 		 
 		 Date fromDate = null;
 		 Date expDate = null;
@@ -9122,7 +9123,7 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 										   nominatedPostCandiateId = candiateIdList.get(0);
 									   } else {
 										   NominationPostCandidate nominationPostCandidate= null;
-										   if(postCandiateVO.getNominatedPostCandiateId().longValue()>0l)
+										   if(postCandiateVO.getNominatedPostCandiateId() != null && postCandiateVO.getNominatedPostCandiateId().longValue()>0l)
 											 nominationPostCandidate = nominationPostCandidateDAO.get(postCandiateVO.getNominatedPostCandiateId());
 										   if(nominationPostCandidate == null)
 											   nominationPostCandidate = new NominationPostCandidate();
