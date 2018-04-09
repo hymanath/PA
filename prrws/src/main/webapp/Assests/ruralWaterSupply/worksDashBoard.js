@@ -486,191 +486,7 @@ function buildSchemeWiseWorkDetails(result){
 	});
 
 }
-		  
-	/* function buildSchemeWiseWorkDetails(result){
-		var dataArr = [];
-		var assetTypeArrPWS = [];
-		var assetTypeArrCPWS = [];
-		var workOngoingArrPWS = [];
-		var workOngoingArrCPWS = [];
-		var workNotGroundedArrPWS = [];
-		var workNotGroundedArrCPWS = [];
-		var workCompletedArrPWS = [];
-		var workCompletedArrCPWS = [];
-		var workComissionedArrPWS = [];
-		var workComissionedArrCPWS = [];
-			for(var i in result)
-			  {					 
-				if(result[i].assetType == "PWS")
-				{
-					assetTypeArrPWS.push(result[i].assetType);						
-					workOngoingArrPWS.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
-					workNotGroundedArrPWS.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
-					workCompletedArrPWS.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
-					workComissionedArrPWS.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});						
-				}else if(result[i].assetType == "CPWS"){
-					assetTypeArrCPWS.push(result[i].assetType);						
-					workOngoingArrCPWS.push({"y":result[i].workOngoingCount,"extra":result[i].percentageOne.toFixed(1)});
-					workNotGroundedArrCPWS.push({"y":result[i].workNotGroundedCount,"extra":result[i].percentageFour.toFixed(1)});
-					workCompletedArrCPWS.push({"y":result[i].workCompletedCount,"extra":result[i].percentageThree.toFixed(1)});
-					workComissionedArrCPWS.push({"y":result[i].workComissionedCount,"extra":result[i].percentageTwo.toFixed(1)});			
-				}
-				
-			  }
-			$("#habitationWorksPWS").highcharts({
-				colors:['#00B5A7','#FC5D57','#FFC013','#1D9ED5'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: '',
-					align:'left',
-					style: {
-						color: '#000',
-						font: 'bold 16px "Lato", sans-serif'
-					}
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: assetTypeArrPWS
-				},
-				yAxis:{
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-						title: {
-							text: null
-						},
-				}, 
-				
-				legend: {
-					symbolHeight: 12,
-					symbolWidth: 12,
-					symbolRadius: 6,
-					enabled: true
-				},
-				tooltip: {
-					useHTML:true,
-					formatter: function () {
-						return '<b>' + this.x + '</b><br/>' +
-							this.series.name + ': ' + this.y+"-"+((this.point.extra))+'%';
-					}
-				},
-				plotOptions: {
-					column: {
-						//colorByPoint: true
-						dataLabels: {
-							useHTML:true,
-							enabled: true,
-							formatter: function() {
-								if(this.y == 0){
-									return null;
-								}else{
-									return '<span>'+this.y+'<br>('+(this.point.extra)+'%)</span>';
-								}
-								
-							}
-						}
-					}
-				},
-				series: [{
-						name: 'Commissioned',
-						data: workComissionedArrPWS,
-						color:'#16af18'
-					},{
-						name: 'Completed',
-						data: workCompletedArrPWS,
-						color:'#3ae80f'
-					}, {
-						name: 'Ongoing',
-						data: workOngoingArrPWS,
-						color:'#EA8512'
-					}, {
-						name: 'Not Grounded',
-						data: workNotGroundedArrPWS,
-						color:'#FC5E57'
-					}]
-			});
-			$("#habitationWorksCPWS").highcharts({
-				colors:['#00B5A7','#FC5D57','#FFC013','#1D9ED5'],
-				chart: {
-					type: 'column'
-				},
-				title: {
-					text: '',
-					align:'left',
-					style: {
-						color: '#000',
-						font: 'bold 16px "Lato", sans-serif'
-					}
-				},
-				xAxis: {
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-					categories: assetTypeArrCPWS
-				},
-				yAxis:{
-					min: 0,
-					gridLineWidth: 0,
-					minorGridLineWidth: 0,
-						title: {
-							text: null
-						},
-				}, 
-				
-				legend: {
-					symbolHeight: 12,
-					symbolWidth: 12,
-					symbolRadius: 6,
-					enabled: true
-				},
-				tooltip: {
-					useHTML:true,
-					formatter: function () {
-						return '<b>' + this.x + '</b><br/>' +
-							this.series.name + ': ' + this.y+"-"+((this.point.extra))+'%';
-					}
-				},
-				plotOptions: {
-					column: {
-						//colorByPoint: true
-						dataLabels: {
-							useHTML:true,
-							enabled: true,
-							formatter: function() {
-								if(this.y == 0){
-									return null;
-								}else{
-									return '<span>'+this.y+'<br>('+(this.point.extra)+'%)</span>';
-								}
-								
-							}
-						}
-					}
-				},
-				series: [{name: 'Commissioned',
-						data: workComissionedArrCPWS,
-						color:'#16af18'
-						
-					}, {
-						name: 'Completed',
-						data: workCompletedArrCPWS,
-						color:'#3ae80f'
-					}, {
-						name: 'Ongoing',
-						data: workOngoingArrCPWS,
-						color:'#EA8512'
-					}, {
-						name: 'Not Grounded',
-						data: workNotGroundedArrCPWS,
-						color:'#FC5E57'
-					}]
-			});
-			
-	} */
+	
 function tabBlocks(blockId,blockName){
 	var tabBlock = '';
 	var tableId = '';
@@ -793,7 +609,7 @@ function selectBox(id){
 					var tableView='';
 						tableView+='<div class="table-responsive">';
 					if(divId[k].id=="schemeId"){
-						tableView+='<table class="table table-bordered table_custom" id="dataTable3'+locationType+divId[k].id+'">';
+						tableView+='<table class="table table-bordered" id="dataTable3'+locationType+divId[k].id+'">';
 					}
 					tableView+='<thead class="text-capital">';
 					
@@ -843,15 +659,19 @@ function selectBox(id){
 								tableView+='<th>%</th>';
 							tableView+='</tr>'
 						}else if(blockType != "completeOverview"){
-							var totalCPWSCount=0;
-							var totalPWSCount=0;
+							var totalCPWSCount=0;var totalPWSInTime=0;var totalPWSExceed=0;
+							var totalPWSCount=0;var totalCPWSInTime=0;var totalCPWSExceed=0;
 							var length = (GLtbodyArr[0].subList[0].subList.length+1)*2;
 							for(var i in GLtbodyArr){
 								for(var j in GLtbodyArr[i].subList){
 									if(GLtbodyArr[i].subList[j].assetType == "CPWS"){
 										totalCPWSCount = totalCPWSCount+GLtbodyArr[i].subList[j].count;
+										totalCPWSExceed=totalCPWSExceed+GLtbodyArr[i].subList[j].ongoingPWSExceededCount;
+										totalCPWSInTime= totalCPWSInTime+GLtbodyArr[i].subList[j].belowOneCount;
 									}else{
 										totalPWSCount = totalPWSCount+GLtbodyArr[i].subList[j].count;
+										totalPWSExceed=totalPWSExceed+GLtbodyArr[i].subList[j].ongoingPWSExceededCount;
+										totalPWSInTime= totalPWSInTime+GLtbodyArr[i].subList[j].belowOneCount;
 									}
 									
 									
@@ -861,11 +681,9 @@ function selectBox(id){
 								tableView+='<th rowspan="3">'+locationType+'</th>';
 								for(var i in GLtbodyArr[0].subList){
 									if(GLtbodyArr[0].subList[i].assetType == "CPWS"){
-										//tableView+='<th colspan="7" class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)</th>';
-										tableView+='<th colspan="'+length+'" class="" >'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)</th>';
+										tableView+='<th colspan="'+length+'" class="" >'+GLtbodyArr[0].subList[i].assetType+' - '+totalCPWSCount+' (Works)&nbsp;<span style="margin-left: 226px;">In Time - '+totalCPWSInTime+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exceede - '+totalCPWSExceed+'</span></th>';
 									}else{
-										//tableView+='<th colspan="7" class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)</th>';
-										tableView+='<th colspan="'+length+'" class="" >'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)</th>';
+										tableView+='<th colspan="'+length+'" class="" >'+GLtbodyArr[0].subList[i].assetType+' - '+totalPWSCount+' (Works)&nbsp;<span style="margin-left: 226px;">In Time - '+totalPWSInTime+'&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Exceede - '+totalPWSExceed+' </span></th>';
 										
 										
 									}
@@ -874,64 +692,71 @@ function selectBox(id){
 							tableView+='</tr>'
 							tableView+='<tr>';
 								
-								//tableView+='<th class="colspanLen" style="display:none">TOTAL WORKS</th>';
-								tableView+='<th colspan="2" class="">TOTAL WORKS</th>';
+								tableView+='<th colspan="2" class="">TOTAL Exceeded</th>';
 								
 								for(var i in GLtbodyArr[0].subList[0].subList){
-									//tableView+='<th class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
-									tableView+='<th colspan="2" class="">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+									if(GLtbodyArr[0].subList[0].subList[i].name=="In Time"){
+										tableView+='<th colspan="2" style="background-color:#0a8232">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+									}else{
+										tableView+='<th colspan="2" style="background-color:#ea2d0b">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+									}
 									
 								}
-								//tableView+='<th class="colspanLen" style="display:none">TOTAL WORKS</th>';
-								tableView+='<th colspan="2" class="">TOTAL WORKS</th>';
+								tableView+='<th colspan="2" class="">TOTAL Exceeded</th>';
 								
 								for(var i in GLtbodyArr[0].subList[0].subList){
-									//tableView+='<th class="colspanLen" style="display:none">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
-									tableView+='<th colspan="2" class="">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+									if(GLtbodyArr[0].subList[0].subList[i].name=="In Time"){
+										tableView+='<th colspan="2" style="background-color:#0a8232">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+									}else{
+										tableView+='<th colspan="2" style="background-color:#ea2d0b">'+GLtbodyArr[0].subList[0].subList[i].name+'</th>';
+									}
+									
 								}		
 							tableView+='</tr>'
 							tableView+='<tr>';
-							
-								//tableView+='<th class="colspanLen" style="display:none">Works</th>';
 								
-								tableView+='<th class="">Works</th>';
-								
+								tableView+='<th>Works</th>';
 								tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
 								tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
-											
-								//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
 								
 								for(var i in GLtbodyArr[0].subList[0].subList){
-									//tableView+='<th class="colspanLen" style="display:none">Works</th>';
-									
-									tableView+='<th class="">Works</th>';
-									
-									tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
-									tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+									if(GLtbodyArr[0].subList[0].subList[i].name=="In Time"){
+										tableView+='<th style="background-color:#0a8232">Works</th>';
+										
+										tableView+='<th  style="background-color:#0a8232"><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+										
+										tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+									}else{
+										tableView+='<th style="background-color:#ea2d0b">Works</th>';
+										
+										tableView+='<th  style="background-color:#ea2d0b"><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+										
+										tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+									}
 								
-									//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
-									
-									
 								}
-								//tableView+='<th class="colspanLen" style="display:none">Works</th>';
 								
 								tableView+='<th class="">Works</th>';
 								
 								tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
 								tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
-									
-								//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
 								
 								for(var i in GLtbodyArr[0].subList[0].subList){
-									//tableView+='<th class="colspanLen" style="display:none">Works</th>';
 									
-									tableView+='<th class="">Works</th>';
-									
-									tableView+='<th><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
-									tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+									if(GLtbodyArr[0].subList[0].subList[i].name=="In Time"){
+										tableView+='<th style="background-color:#0a8232">Works</th>';
+										
+										tableView+='<th  style="background-color:#0a8232"><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+										
+										tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+									}else{
+										tableView+='<th style="background-color:#ea2d0b">Works</th>';
+										
+										tableView+='<th  style="background-color:#ea2d0b"><span class="colspanLenInc'+locationType+'"><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac<span>';
+										
+										tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </span></th>';
+									}
 								
-									//tableView+='<th class=""><i class="fa fa-inr m_top5" aria-hidden="true" style="font-size:12px"></i>&nbsp;in&nbsp;Lac</th>';
-									
 								}
 							tableView+='</tr>'
 						}
@@ -940,7 +765,7 @@ function selectBox(id){
 					}
 					
 					tableView+='</thead>';
-					tableView+='<tbody>';
+					tableView+='<tbody style="background-color:white;">';
 						if(divId[k].id=="schemeId"){
 							for(var i in GLtbodyArr){
 								if(blockType == "completeOverview"){
@@ -1074,21 +899,34 @@ function selectBox(id){
 											}
 										
 											for(var k in GLtbodyArr[i].subList[j].subList){
-												
-												if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
-													tableView+='<td><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "exccedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+												if(GLtbodyArr[i].subList[j].subList[k].name=="In Time"){
+													if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
+														tableView+='<td style="background-color:#0a8232;"><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "exccedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													}else{
+														tableView+='<td style="background-color:#0a8232;"> - </td>';
+													}
+													
+													if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
+														tableView+='<td style="background-color:#0a8232;"><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
+														tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
+													}else{
+														tableView+='<td style="background-color:#0a8232;"><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
+													}
 												}else{
-													tableView+='<td> - </td>';
+													if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
+														tableView+='<td style="background-color:#ea2d0b;"><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "exccedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													}else{
+														tableView+='<td style="background-color:#ea2d0b;"> - </td>';
+													}
+													
+													if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
+														tableView+='<td style="background-color:#ea2d0b;"><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
+														tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
+													}else{
+														tableView+='<td style="background-color:#ea2d0b;"><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
+													}
+
 												}
-												
-												if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
-													tableView+='<td><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
-													tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
-												}else{
-													tableView+='<td><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
-												}
-												
-												
 											}
 										}
 									tableView+='</tr>';
@@ -1125,21 +963,33 @@ function selectBox(id){
 											}
 										
 											for(var k in GLtbodyArr[i].subList[j].subList){
+												if(GLtbodyArr[i].subList[j].subList[k].name=="In Time"){
+													if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
+														tableView+='<td style="background-color:#0a8232;"><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "NotGroundedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													}else{
+														tableView+='<td style="background-color:#0a8232;"> - </td>';
+													}
 												
-												if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
-													tableView+='<td><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "NotGroundedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
+														tableView+='<td style="background-color:#0a8232;"><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
+														tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
+													}else{
+														tableView+='<td style="background-color:#0a8232;"><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
+													}
 												}else{
-													tableView+='<td> - </td>';
+													if(GLtbodyArr[i].subList[j].subList[k].count !=null && GLtbodyArr[i].subList[j].subList[k].count>0){
+														tableView+='<td style="background-color:#ea2d0b;"><span  class="schemsClickView"  attr_status="'+GLtbodyArr[i].subList[j].assetType+'" attr_location_type="'+locationType+'" attr_filter_value="'+GLtbodyArr[i].subList[j].subList[k].name+'" attr_district_val="'+GLtbodyArr[i].locationIdStr+'" attr_total_count = "'+GLtbodyArr[i].subList[j].subList[k].count+'" attr_type = "NotGroundedSchemes" attr_location_name= "'+GLtbodyArr[i].name+'" style="cursor:pointer;text-decoration:underline" >'+GLtbodyArr[i].subList[j].subList[k].count+'</span><br/> <small style="color:green;">'+GLtbodyArr[i].subList[j].subList[k].percentage+' %</small></td>';
+													}else{
+														tableView+='<td style="background-color:#ea2d0b;"> - </td>';
+													}
+												
+													if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
+														tableView+='<td style="background-color:#ea2d0b;"><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
+														tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
+													}else{
+														tableView+='<td style="background-color:#ea2d0b;"><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
+													}
 												}
-												
-												if(GLtbodyArr[i].subList[j].subList[k].sanctionedAmount !=null && GLtbodyArr[i].subList[j].subList[k].sanctionedAmount>0){
-													tableView+='<td><span class="colspanLenInc'+locationType+'">'+GLtbodyArr[i].subList[j].subList[k].sanctionedAmount+'';
-													tableView+='<span class="colspanLen'+locationType+'" style="display:none"> - </td>';
-												}else{
-													tableView+='<td><span class="colspanLenInc'+locationType+'"> - </span><span class="colspanLen" style="display:none"> - </span> - </td>';
-												}
-												
-												
 											}
 										}
 									tableView+='</tr>';
@@ -1164,7 +1014,7 @@ function selectBox(id){
 								"order": [ 0, 'desc' ],
 								"iDisplayLength" : 15,
 								"aLengthMenu": [[15, 30, 50, -1], [15, 30, 50, "All"]],
-							buttons: [
+								buttons: [
 								{
 									extend:    'csvHtml5',
 									text:      '<i class="fa fa-file-text-o"></i>',
@@ -1213,7 +1063,6 @@ function selectBox(id){
 		}else if(blockName == "constituency"){
 			emptyCheckConstituency();
 			if(id == "constituencyBlockIdschemeId"){
-				//getLocationBasedOnSelection("district","","","","chosendistValconstituencyBlockId");
 				getAllPrrwsDistricts("chosendistValconstituencyBlockId");
 				getSchemeWiseWorkDetails('table','constituency',blocksArr,"","","","completeOverview");
 			}
@@ -1221,28 +1070,23 @@ function selectBox(id){
 			emptyCheckMandal();
 			if(id == "mandalBlockIdschemeId"){
 				getAllPrrwsDistricts("chosendistValmandalBlockId");
-				//getLocationBasedOnSelection("district","","","","chosendistValmandalBlockId");
 				getSchemeWiseWorkDetails('table','mandal',blocksArr,"","","","completeOverview");
 			}
 		}
 	}); 
 	function emptyCheckState(){
-		//$("#stateBlockIdhabitation").html('');
 		$("#stateBlockIdschemeId").html('');
 	}
 	function emptyCheckDistrict(){
-		//$("#districtBlockIdhabitation").html('');
 		$("#districtBlockIdschemeId").html('');
 	}
 	function emptyCheckConstituency(){
-		//$("#constituencyBlockIdhabitation").html('');
 		$("#constituencyBlockIdschemeId").html('');
 		$("#chosenconstValconstituencyBlockId").html('');
 		$("#chosenconstValconstituencyBlockId").trigger("chosen:updated");
 		
 	}
 	function emptyCheckMandal(){
-		//$("#mandalBlockIdhabitation").html('');
 		$("#mandalBlockIdschemeId").html('');
 		$("#chosenmandalValmandalBlockId").html('');
 		$("#chosenmandalValmandalBlockId").trigger("chosen:updated");
