@@ -5042,7 +5042,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
      return query.list(); 	
     }
    
-   public List<Object[]> getLevelsCountByType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType){
+   public List<Object[]> getLevelsCountByType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType,List<Long> partyMeetingTypeValues){
    	
        StringBuilder queryStr = new StringBuilder();
  	
@@ -5050,8 +5050,12 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
     	   queryStr.append(" select model.meetingAddress.district.districtId,model.meetingAddress.district.districtName");
        else  if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency"))
     	   queryStr.append(" select model.meetingAddress.constituency.constituencyId,model.meetingAddress.constituency.name");
+       else  if(levelType != null && levelType.trim().equalsIgnoreCase("Mandal"))
+    	   queryStr.append(" select model.meetingAddress.tehsil.tehsilId,model.meetingAddress.tehsil.tehsilName");
+       else  if(levelType != null && levelType.trim().equalsIgnoreCase("Parliament"))
+    	   queryStr.append(" select model.meetingAddress.parliamentConstituency.constituencyId,model.meetingAddress.parliamentConstituency.name");
  	  		
- 		queryStr.append(",count(distinct model.partyMeetingId)  " +
+ 		queryStr.append(",model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,count(distinct model.partyMeetingId)  " +
  	  		" from PartyMeeting model " +
  	  		" where " +
  	  		" model.isActive='Y' and model.startDate is not null " +
@@ -5063,11 +5067,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and (date(model.startDate) between :fromDate and :toDate ) ");	 
 		 }
-		 if(levelType != null && levelType.trim().equalsIgnoreCase("District")){
-			 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (3)");
-		 }else if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency")){
-			 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (15)");
-		 }
+		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+		  }
 		 
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		   queryStr.append(" and model.meetingAddress.state.stateId in (:userAccessLevelValues)");  
@@ -5088,14 +5090,21 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 }
 		 
 		 if(levelType != null && levelType.trim().equalsIgnoreCase("District"))
-			 queryStr.append(" group by model.meetingAddress.district.districtId  order by  model.meetingAddress.district.districtId asc");
+			 queryStr.append(" group by model.meetingAddress.district.districtId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.district.districtId asc");
 		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency"))
-			 queryStr.append(" group by model.meetingAddress.constituency.constituencyId  order by  model.meetingAddress.constituency.constituencyId asc");
+			 queryStr.append(" group by model.meetingAddress.constituency.constituencyId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.constituency.constituencyId asc");
+		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Mandal"))
+			 queryStr.append(" group by model.meetingAddress.tehsil.tehsilId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.tehsil.tehsilId asc");
+		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Parliament"))
+			 queryStr.append(" group by model.meetingAddress.parliamentConstituency.constituencyId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.parliamentConstituency.constituencyId asc");
 		 
-	 Query query = getSession().createQuery(queryStr.toString());
+	Query query = getSession().createQuery(queryStr.toString());
 	
 	 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	 }
+	 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+		 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
 	 }
 	 if(fromDate!= null && toDate!=null){
 	   query.setDate("fromDate", fromDate);
@@ -5107,7 +5116,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	 
     return query.list(); 	
   }
-   public List<Object[]> getMOMLevelsConductedDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String statusType,String leveltype){
+   public List<Object[]> getMOMLevelsConductedDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String statusType,String leveltype,List<Long> partyMeetingTypeValues){
    	
        StringBuilder queryStr = new StringBuilder();
  	
@@ -5115,8 +5124,12 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
     	   queryStr.append(" select model.meetingAddress.district.districtId");
        else  if(leveltype != null && leveltype.trim().equalsIgnoreCase("Constituency"))
     	   queryStr.append(" select model.meetingAddress.constituency.constituencyId");
+       else  if(leveltype != null && leveltype.trim().equalsIgnoreCase("Mandal"))
+    	   queryStr.append(" select model.meetingAddress.tehsil.tehsilId");
+       else  if(leveltype != null && leveltype.trim().equalsIgnoreCase("Parliament"))
+    	   queryStr.append(" select model.meetingAddress.parliamentConstituency.constituencyId");
        
-       queryStr.append(",count(distinct model.partyMeetingId)  " +
+       queryStr.append(",model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,count(distinct model.partyMeetingId) " +
  	  		" from PartyMeeting model " +
  	  		" where " +
  	  		" model.isActive='Y' and model.startDate is not null " +
@@ -5128,13 +5141,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and (date(model.startDate) between :fromDate and :toDate ) ");	 
 		 }
-		  
-		 if(leveltype != null && leveltype.trim().equalsIgnoreCase("District")){
-			 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (3)");
-		 }else if(leveltype != null && leveltype.trim().equalsIgnoreCase("Constituency")){
-			 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (15)");
-		 }
-		  
+		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+		  }
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		   queryStr.append(" and model.meetingAddress.state.stateId in (:userAccessLevelValues)");  
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.DISTRICT_LEVEl_ACCESS_ID){
@@ -5162,14 +5171,21 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 		 }
 		 
 		 if(leveltype != null && leveltype.trim().equalsIgnoreCase("District"))
-			 queryStr.append(" group by model.meetingAddress.district.districtId  order by  model.meetingAddress.district.districtId asc");
+			 queryStr.append(" group by model.meetingAddress.district.districtId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.district.districtId asc");
 		 else if(leveltype != null && leveltype.trim().equalsIgnoreCase("Constituency"))
-			 queryStr.append(" group by model.meetingAddress.constituency.constituencyId  order by  model.meetingAddress.constituency.constituencyId asc");
-		
-	 Query query = getSession().createQuery(queryStr.toString());
+			 queryStr.append(" group by model.meetingAddress.constituency.constituencyId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.constituency.constituencyId asc");
+		 else if(leveltype != null && leveltype.trim().equalsIgnoreCase("Mandal"))
+			 queryStr.append(" group by model.meetingAddress.tehsil.tehsilId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.tehsil.tehsilId asc");
+		 else if(leveltype != null && leveltype.trim().equalsIgnoreCase("Parliament"))
+			 queryStr.append(" group by model.meetingAddress.parliamentConstituency.constituencyId,model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.meetingAddress.parliamentConstituency.constituencyId asc"); 
+	 
+	Query query = getSession().createQuery(queryStr.toString());
 	
 	 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 		   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
+	 }
+	 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+		 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
 	 }
 	 if(fromDate!= null && toDate!=null){
 	   query.setDate("fromDate", fromDate);

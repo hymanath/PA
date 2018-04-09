@@ -66,7 +66,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Double notUpdatedCommentCntPer=0.0;
 	
 	
-	private List<PartyMeetingsVO> subList;
+	private List<PartyMeetingsVO> subList = new ArrayList<PartyMeetingsVO>();
 	private Map<Long,PartyMeetingsVO> subMap;
 	private Map<String,PartyMeetingsVO> subMap1;
 	private List<String> inviteeList;
@@ -115,6 +115,9 @@ public class PartyMeetingsVO implements Serializable{
 	private Double  momCmpltedCntPer=0.0;
 	private Long notUpdatedMomCount = 0L;
 	private Double notUpdatedMomCntPer = 0.0;
+	private Long mandalNotUpdatedCount = 0L;
+	private Long constituencyNotUpdatedCount = 0L;
+	private Long districtNotUpdatedCount = 0L;
 	
 
 	public String getWardName() {
@@ -705,6 +708,25 @@ public class PartyMeetingsVO implements Serializable{
 	public void setNotUpdatedMomCntPer(Double notUpdatedMomCntPer) {
 		this.notUpdatedMomCntPer = notUpdatedMomCntPer;
 	}
+	public Long getMandalNotUpdatedCount() {
+		return mandalNotUpdatedCount;
+	}
+	public void setMandalNotUpdatedCount(Long mandalNotUpdatedCount) {
+		this.mandalNotUpdatedCount = mandalNotUpdatedCount;
+	}
+	public Long getConstituencyNotUpdatedCount() {
+		return constituencyNotUpdatedCount;
+	}
+	public void setConstituencyNotUpdatedCount(Long constituencyNotUpdatedCount) {
+		this.constituencyNotUpdatedCount = constituencyNotUpdatedCount;
+	}
+	public Long getDistrictNotUpdatedCount() {
+		return districtNotUpdatedCount;
+	}
+	public void setDistrictNotUpdatedCount(Long districtNotUpdatedCount) {
+		this.districtNotUpdatedCount = districtNotUpdatedCount;
+	}
+	
 	
 
 	
