@@ -4985,7 +4985,7 @@
 	
 	<!--<div class="row">	
 		<!-- grivance start
-		<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
+			<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
 			<div class="panel panel-default panelNewCustom ">
 				<div class="panel-heading">
 					<div class="row">
@@ -5025,7 +5025,7 @@
 					</div>
 					<div class="row">
 						
-							<div id="donutchart" style="height:auto; width:500px !important; text-align:center;""></div>
+							<div id="donutchart" style="height:auto; width:500px !important; text-align:center;"></div>
 						
 					</div>
 					<div class="row">
@@ -5066,8 +5066,8 @@
 								<div id="spinnerForComplaintsId"></div>
 						   </div>
 						</div>
-					</div>
-					<div class="row m_top10">
+					</div>-->
+					<!--<div class="row m_top10">
 						<div class="col-sm-12">
 							<div id="buildGrivanceDetailsBySearchTableId"></div>
 						</div>
