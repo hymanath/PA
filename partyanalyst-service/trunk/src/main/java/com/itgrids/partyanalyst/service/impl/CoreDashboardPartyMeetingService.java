@@ -11168,22 +11168,22 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 		  try {
 			if(commonMethodsUtilService.getLongValueForObject(param[startFrom])>0L){
 				addressVO = new AddressVO();
-				addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[startFrom+1]));
-				addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[startFrom+2]));
-				addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[startFrom+3]));
-				addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[startFrom+4]));
-				addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[startFrom+5]));
-				addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[startFrom+6]));
-				addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[startFrom+7]));
-				addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[startFrom+8]));
-				addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[startFrom+9]));
-				addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[startFrom+10]));
-				addressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[startFrom+11]));
-				addressVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[startFrom+12]));
-				addressVO.setPanchaytId(commonMethodsUtilService.getLongValueForObject(param[startFrom+13]));
-				addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[startFrom+14]));
-				addressVO.setWardId(commonMethodsUtilService.getLongValueForObject(param[startFrom+15]));
-				addressVO.setWardName(commonMethodsUtilService.getStringValueForObject(param[startFrom+16]));
+				addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[startFrom]));
+				addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[startFrom+1]));
+				addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[startFrom+2]));
+				addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[startFrom+3]));
+				addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[startFrom+4]));
+				addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[startFrom+5]));
+				addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[startFrom+6]));
+				addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[startFrom+7]));
+				addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[startFrom+8]));
+				addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[startFrom+9]));
+				addressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[startFrom+10]));
+				addressVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[startFrom+11]));
+				addressVO.setPanchaytId(commonMethodsUtilService.getLongValueForObject(param[startFrom+12]));
+				addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[startFrom+13]));
+				addressVO.setWardId(commonMethodsUtilService.getLongValueForObject(param[startFrom+14]));
+				addressVO.setWardName(commonMethodsUtilService.getStringValueForObject(param[startFrom+15]));
 				
 			}
 		} catch (Exception e) {
@@ -11196,7 +11196,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 		  try {
 			  
 			  Map<Long,MomDetailsVO> partyMeetingMap = new HashMap<Long,MomDetailsVO>(0);
-			  if(momDetailsVO.getSearchType() != null && momDetailsVO.getSearchType().equalsIgnoreCase("all")){
+			  //if(momDetailsVO.getSearchType() != null && momDetailsVO.getSearchType().equalsIgnoreCase("all")){
 				  List<Object[]> partyMeetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(momDetailsVO); 
 				  if(commonMethodsUtilService.isListOrSetValid(partyMeetingDetailsList)){
 					  for (Object[] param : partyMeetingDetailsList) {
@@ -11217,7 +11217,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						  partyMeetingMap.put(partyMeetingId, vo);
 					}
 				  }
-			  }
+			//  }
 			  
 			  List<Object[]> momDetailsList = partyMeetingMinuteDAO.getPartyMeetingMOMDetails(momDetailsVO); 
 			  if(commonMethodsUtilService.isListOrSetValid(momDetailsList)){
