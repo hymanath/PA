@@ -192,6 +192,7 @@
 		<li expand-icon="alerts" right-nav="true">Alerts</li>
 		<li expand-icon="newsLetters" right-nav="true">Word Cloud</li>
 		<li expand-icon="debates" right-nav="true">debates</li>
+		<li expand-icon="MOM" right-nav="true">MOM Meetings</li>
 		<li expand-icon="news" right-nav="true">News - Print Media</li>
 		<li expand-icon="electronic" right-nav="true">News - electronic media</li>
 		<li expand-icon="prajaSankaplaYatra" right-nav="true">Category Wise News</li>
@@ -4836,9 +4837,154 @@
 	</div>
 	
 	</c:if>
+	
+	<div class="row">
 	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
-	<div class="row">	
-		<!-- grivance start-->
+		<!-- Nominated Post Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
+			 <div class="panel panel-default panelNewCustom">
+                <div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
+								Nominated Posts</small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
+							<span class="nominatedIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh nominatedRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
+							<span class="nominatedIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</div>
+					</div>					
+                </div>
+                <div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="nominatedPost">
+							<div id="levelWiseNominatedPostDivId"></div>
+						</div>
+					
+						<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="nominatedPost">
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right nominatedLicls" role='tabCummulativeNomi'>
+										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+									</ul>
+								</div>
+							 </div>
+							  <div class="row">
+								<div class="col-sm-12">
+									<div class="verticalScrollBarNominated">
+										<div id="userTypeWiseNominatedDiv"></div>
+									</div>
+								</div>
+							 </div>
+						</div>
+					</div>	
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttNominatedBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 deptLocNominatedCls" expand-block-more="nominatedPost" style="display:none;">
+						<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
+							<li class="active" attr_location_type="location">Location Level Wise</li>
+							<li class="" attr_location_type="department">Department wise</li>
+						</ul>
+					</div>          
+					
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttNominatedBlocks"  expand-block-more="nominatedPost">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="levelWiseNominatedDetailsDivId"></div>
+								</div>
+							 </div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		</c:if>
+		<!-- Nominated Post End-->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
+		<!-------MOM Start --------->
+			<div class="col-md-6 col-xs-12 col-sm-12 MOMBlock" expand-block="MOM">
+				 <div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="MOM">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
+									MOM Meetings <small class="text-muted"> - LAST MONTH</small>
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="MOM">
+								<span class="momIconRefresh pull-right">
+									<i class="glyphicon glyphicon-refresh momBlockRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+								</span> 
+								<span class="momIconExpand pull-right mainExpandCls" expand-icon="MOM">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForMOM hide" expand-block-date="MOM" style="width:110px;">
+									<input type="text" id="dateRangeIdForMOM" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>					
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="MOM">
+								<div id="locationWiseMOMDetailsDivID"></div>
+							</div>
+						
+							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="MOM">
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="activeUlCls list-inline pull-right momLicls">
+											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+										</ul>
+										<h5 class="m_top5">The Graph Depends On MOM Updated and Not Updated Meetings</h5>
+									</div>
+								 </div>
+								  <div class="row">
+									<div class="col-sm-12">
+										<div class="verticalScrollBarMOM">
+											<div id="userTypeWiseMOMDiv"></div>
+										</div>
+									</div>
+								 </div>
+							</div>
+						</div>	
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<i id="" class="glyphicon glyphicon-option-horizontal pull-right moreAttMOMBlocksIcon"  expand-block-right="MOM" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 moreAttMOMBlocks"  expand-block-more="MOM">
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="levelWiseMOMDetailsDivId"></div>
+									</div>
+								 </div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		<!---------MOM End----------------->
+		</c:if>
+	</div>
+	
+	<!--<div class="row">	
+		<!-- grivance start
 		<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
 			<div class="panel panel-default panelNewCustom ">
 				<div class="panel-heading">
@@ -4920,91 +5066,17 @@
 								<div id="spinnerForComplaintsId"></div>
 						   </div>
 						</div>
-					</div>-->
-					<!--<div class="row m_top10">
+					</div>
+					<div class="row m_top10">
 						<div class="col-sm-12">
 							<div id="buildGrivanceDetailsBySearchTableId"></div>
 						</div>
-					</div>-->
+					</div>
 				</div>
 			</div>
 		</div>
-		<!-- grivance End-->
-	</div>
-	</c:if>
-	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
-	<div class="row">
-		<!-- Nominated Post Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
-			 <div class="panel panel-default panelNewCustom">
-                <div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
-								Nominated Posts</small>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
-							<span class="nominatedIconRefresh pull-right">
-								<i class="glyphicon glyphicon-refresh nominatedRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
-							</span> 
-							<span class="nominatedIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-						</div>
-					</div>					
-                </div>
-                <div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="nominatedPost">
-							<div id="levelWiseNominatedPostDivId"></div>
-						</div>
-					
-						<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="nominatedPost">
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="activeUlCls list-inline pull-right nominatedLicls" role='tabCummulativeNomi'>
-										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-									</ul>
-								</div>
-							 </div>
-							  <div class="row">
-								<div class="col-sm-12">
-									<div class="verticalScrollBarNominated">
-										<div id="userTypeWiseNominatedDiv"></div>
-									</div>
-								</div>
-							 </div>
-						</div>
-					</div>	
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttNominatedBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 deptLocNominatedCls" expand-block-more="nominatedPost" style="display:none;">
-						<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
-							<li class="active" attr_location_type="location">Location Level Wise</li>
-							<li class="" attr_location_type="department">Department wise</li>
-						</ul>
-					</div>          
-					
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttNominatedBlocks"  expand-block-more="nominatedPost">
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="levelWiseNominatedDetailsDivId"></div>
-								</div>
-							 </div>
-						</div>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-		<!-- Nominated Post End-->
-	</div>
-	</c:if>
+		<!-- grivance End
+	</div>-->
 	
 </div>
 	
@@ -6122,6 +6194,7 @@
 <script src="newCoreDashBoard/js/partyMeetingExt.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/tours.js" type="text/javascript"></script>
 <script src="newCoreDashBoard/js/alerts.js" type="text/javascript"></script>
+<script src="newCoreDashBoard/js/momMeetings.js" type="text/javascript"></script>
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script src="js/imageRendering.js" type="text/javascript"></script>
@@ -6243,6 +6316,8 @@ $("[expand-icon]").click(function(){
 			getPartyWiseThenCandidateWisePerformance();
 		}else if(blockName == 'nominatedPost'){
 			getUserTypeWiseNominatedPostDetailsCnt();
+		}else if(blockName == 'MOM'){
+			getUserTypeWisePartyMeetingMOMDetails();
 		}
 	}else if(iconClass == 'glyphicon glyphicon-resize-small')
 	{
@@ -6692,6 +6767,7 @@ function onLoadCalls(){
 		onLoadEmCoverageTimeCalls();
 		onloadPrajaSankaplaYatraCalls();
 		onloadKaizalaCalls1();
+		onloadMOMCalls();
 		getBoothCadreEnrolmentYears();
 		getRescentArticleTime();		
 		//committeeBasicCall();
@@ -6762,6 +6838,7 @@ function onLoadCalls(){
 		onLoadEmCoverageTimeCalls();
 		onloadPrajaSankaplaYatraCalls();
 		onloadKaizalaCalls1();
+		onloadMOMCalls();
 		getBoothCadreEnrolmentYears();	
 		//committeeBasicCall();
 		
