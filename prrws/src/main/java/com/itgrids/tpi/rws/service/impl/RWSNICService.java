@@ -3927,7 +3927,7 @@ public class RWSNICService implements IRWSNICService{
 						locationVO = new IdNameVO();
 						locationVO.setLocationIdStr(locationIdStr);
 						locationVO.setName(getLocationNameByLocationType(inputVO.getLocationType(), entry.getValue()));// getting locationName based on location type
-						locationVO.setCount(0l);
+						locationVO.setCount(0l);locationVO.setOngoingPWSExceededCount(0l);locationVO.setBelowOneCount(0l);
 						locationVO.setSanctionAmount(0l);
 						locationVO.setSubList(getRequiredTemplate());// getting template
 						locationMap.put(locationVO.getLocationIdStr(),locationVO);
@@ -3941,6 +3941,11 @@ public class RWSNICService implements IRWSNICService{
 									
 									assetTypeVO.setCount(assetTypeVO.getCount() + 1);
 									locationVO.setCount(locationVO.getCount()+1);
+									if(workStatus.getName() !=null && workStatus.getName().equalsIgnoreCase("In Time")){
+										assetTypeVO.setBelowOneCount(assetTypeVO.getBelowOneCount()+ 1);
+									}else{
+										assetTypeVO.setOngoingPWSExceededCount(assetTypeVO.getOngoingPWSExceededCount()+ 1);
+									}
 									locationVO.setSanctionedAmount(locationVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
 									workStatus.setSanctionedAmount(workStatus.getSanctionedAmount()+matchVO.getSanctionedAmount());
 									assetTypeVO.setSanctionedAmount(assetTypeVO.getSanctionedAmount()+ matchVO.getSanctionedAmount());
