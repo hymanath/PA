@@ -21,6 +21,12 @@ public class KeyValueVO implements Serializable {
 	private String locationName;
 	private String districtName;
 	
+	public KeyValueVO(){};
+	public KeyValueVO(Long id, String name, String path){
+		this.id = id;
+		this.name=name;
+		this.path=path;
+	}
 	public Long getId() {
 		return id;
 	}

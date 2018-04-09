@@ -10,6 +10,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
+import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1442,5 +1443,90 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 query.setParameter("partyMeetingTypeId", partyMeetingTypeId); 
 		 }
 		 return query.list(); 
+	}
+	
+	public List<Object[]> getPartyMeetingDetails(MomDetailsVO momDetailsVO){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT ");
+		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
+		sb.append(" s.stateId,s.state_name , d.district_id,d.district_name,pa.constituency_id,pa.name, c.constituency_id,c.name ");//12
+		sb.append(" t.tehsil_id, t.tehsil_name, l.local_election_body_id, l.name, p.panchayat_id, p.panchayat_name, w.constituency_id, w.name");//20
+		sb.append(" from   ");
+		sb.append(" LEFT JOIN party_meeting pm   ");
+		sb.append(" LEFT JOIN party_meeting_level pml on pm.party_meeting_level_id = pml.party_meeting_level_id and pm.is_active='Y'  ");
+		sb.append(" LEFT JOIN party_meeting_type pmt on pm.party_meeting_type_id = pmt.party_meeting_type_id and pmt.is_active='Y'  ");
+		sb.append(" LEFT JOIN party_meeting_main_type pmmt on pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and pmt.is_active='Y'  ");
+		sb.append(" LEFT JOIN user_address ua on pm.meeting_address_id = ua.user_address_id  ");
+		sb.append(" LEFT JOIN state s on ua.state_id = s.state_id ");
+		sb.append(" LEFT JOIN district d on ua.district_id = d.district_id  ");
+		sb.append(" LEFT JOIN constituency pa on ua.parliament_constituency_id = ua.parliament_constituency_id ");
+		sb.append(" LEFT JOIN constituency c on ua.constituency_id = c.constituency_id  ");
+		sb.append(" LEFT JOIN tehsil t on ua.tehsil_id = t.tehsil_id  ");
+		sb.append(" LEFT JOIN local_election_body l on ua.local_election_body = l.local_election_body_id  ");
+		sb.append(" LEFT JOIN panchayat p on ua.panchayat_id = p.panchayat_id  ");
+		sb.append(" LEFT JOIN constituency w on ua.ward = w.constituency_id  ");
+		sb.append(" where  ");
+		sb.append(" pm.is_active='Y' and pm.conducted_date is not null ");
+		sb.append(" pmmt.party_meeting_main_type_id = 1 and  ");
+		sb.append(" (date(pm.conducted_date) BETWEEN '2018-01-01' and '2018-05-01')  and  ");
+		sb.append(" pm.party_meeting_level_id in (1,2,3,4,5,6,9) and  ");
+		sb.append(" st.mom_atr_source_type_id in (1,2) and  ");
+		sb.append(" d.district_id in (11,12,13,14,15,16,17,18,19,20,21,22,23,517)  ");
+		sb.append(" group by pm.party_meeting_id  ");
+		Query query = getSession().createSQLQuery(sb.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getPartyMeetingMOMDetails(MomDetailsVO momDetailsVO){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT ");
+		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
+		sb.append(" pmm.party_meeting_minute_id,pmm.minute_point,date(pmm.inserted_time), ");//7
+		sb.append(" st.mom_atr_source_type_id,st.source_type, ");//9
+		sb.append(" pmm.is_actionable ");//10
+		sb.append(" s.stateId,s.state_name , d.district_id,d.district_name,pa.constituency_id,pa.name, c.constituency_id,c.name ");//18
+		sb.append(" t.tehsil_id, t.tehsil_name, l.local_election_body_id, l.name, p.panchayat_id, p.panchayat_name, w.constituency_id, w.name");//26
+		sb.append(" from   ");
+		sb.append(" party_meeting_minute pmm ");
+		sb.append(" LEFT JOIN mom_atr_source_type st on pmm.mom_atr_source_type_id = st.mom_atr_source_type_id and pmm.is_deleted='N' ");
+		sb.append(" LEFT JOIN party_meeting pm on pmm.party_meeting_id = pm.party_meeting_id and pmm.is_deleted='N' and pm.is_active='Y' and pm.conducted_date is not null  ");
+		sb.append(" LEFT JOIN party_meeting_level pml on pm.party_meeting_level_id = pml.party_meeting_level_id and pm.is_active='Y'  ");
+		sb.append(" LEFT JOIN party_meeting_type pmt on pm.party_meeting_type_id = pmt.party_meeting_type_id and pmt.is_active='Y'  ");
+		sb.append(" LEFT JOIN party_meeting_main_type pmmt on pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and pmt.is_active='Y'  ");
+		//sb.append(" LEFT JOIN user_address ua on pmm.user_address_id = ua.user_address_id  ");
+		sb.append(" LEFT JOIN user_address ua on pm.meeting_address_id = ua.user_address_id  ");
+		sb.append(" LEFT JOIN state s on ua.state_id = s.state_id ");
+		sb.append(" LEFT JOIN district d on ua.district_id = d.district_id  ");
+		sb.append(" LEFT JOIN constituency pa on ua.parliament_constituency_id = ua.parliament_constituency_id ");
+		sb.append(" LEFT JOIN constituency c on ua.constituency_id = c.constituency_id  ");
+		sb.append(" LEFT JOIN tehsil t on ua.tehsil_id = t.tehsil_id  ");
+		sb.append(" LEFT JOIN local_election_body l on ua.local_election_body = l.local_election_body_id  ");
+		sb.append(" LEFT JOIN panchayat p on ua.panchayat_id = p.panchayat_id  ");
+		sb.append(" LEFT JOIN constituency w on ua.ward = w.constituency_id  ");
+		sb.append(" where  ");
+		sb.append(" pmmt.party_meeting_main_type_id = 1 and  ");
+		sb.append(" (date(pm.conducted_date) BETWEEN '2018-01-01' and '2018-05-01')  and  ");
+		sb.append(" pm.party_meeting_level_id in (1,2,3,4,5,6,9) and  ");
+		sb.append(" st.mom_atr_source_type_id in (1,2) and  ");
+		sb.append(" pmm.is_actionable in ('N','Y')  and  ");
+		sb.append(" d.district_id in (11,12,13,14,15,16,17,18,19,20,21,22,23,517)  ");
+		sb.append(" group by pmm.party_meeting_minute_id  ");
+		Query query = getSession().createSQLQuery(sb.toString());
+		return query.list();
+	}
+	
+	public List<Object[]> getPartyMeetingMOMDocumentsDetails(MomDetailsVO momDetailsVO){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" SELECT ");
+		sb.append(" pm.party_meeting_id,pmm.party_meeting_minute_id,pmd.document_type,pmd.document_name, pmd.path,pmd.document_format,pmd.updated_time ");
+		sb.append(" from  ");
+		sb.append(" party_meeting_document pmd "); 
+		sb.append(" LEFT JOIN party_meeting_minute pmm on pmd.party_meeting_minute_id = pmm.party_meeting_minute_id and pmm.is_deleted='N' "); 
+		sb.append(" LEFT JOIN party_meeting pm on  pmd.party_meeting_id = pm.party_meeting_id and pm.is_active='Y' ");
+		sb.append(" where    ");
+		sb.append(" (date(pm.conducted_date) BETWEEN '2018-01-01' and '2018-05-01')  and "); 
+		sb.append("  pm.party_meeting_level_id in (1,2,3,4,5,6,9) ");
+		Query query= getSession().createSQLQuery(sb.toString());
+		return query.list();
 	}
 }
