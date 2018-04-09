@@ -9121,7 +9121,9 @@ public void setDocuments(List<IdAndNameVO> retrurnList,List<Object[]> documents,
 									   if (candiateIdList != null && candiateIdList.size() > 0 ) {
 										   nominatedPostCandiateId = candiateIdList.get(0);
 									   } else {
-										   NominationPostCandidate nominationPostCandidate = nominationPostCandidateDAO.get(postCandiateVO.getNominatedPostCandiateId());
+										   NominationPostCandidate nominationPostCandidate= null;
+										   if(postCandiateVO.getNominatedPostCandiateId().longValue()>0l)
+											 nominationPostCandidate = nominationPostCandidateDAO.get(postCandiateVO.getNominatedPostCandiateId());
 										   if(nominationPostCandidate == null)
 											   nominationPostCandidate = new NominationPostCandidate();
 										   TdpCadre tdpCadre = tdpCadreDAO.get(postCandiateVO.getTdpCadreId());
