@@ -11161,7 +11161,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 						" model.alertCategory.category," +
 						" count(model.alertId) " +
 		 				" from Alert model" +
-		 				" where model.isDeleted='N' ");
+		 				" where model.alertTypeId=2 and model.isDeleted='N' ");
 			
 			  	if(deptId != null && deptId.longValue()>0){
 			  		str.append(" and model.govtDepartmentId =:deptId ");
@@ -11225,7 +11225,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	           //date-0,count-1
 	        	  str.append("select date(model.createdTime),count(distinct model.alertId) " +
 	               " from Alert model " +
-	               " where model.isDeleted='N' ");
+	               " where model.alertTypeId=2 and model.isDeleted='N' ");
 	          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
 	        	  //month-0,count-1,year-2
 	        	  str.append("select month(model.createdTime),count(distinct model.alertId),year(model.createdTime) " +
@@ -11295,7 +11295,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			str.append("SELECT model.alertStatus.alertStatusId,model.alertStatus.alertStatus," +
 					" model.alertStatus.color,count(distinct model.alertId) " +
 					" from Alert model " +
-					" WHERE model.isDeleted ='N' " +
+					" WHERE model.alertTypeId=2 and model.isDeleted ='N' " +
 					" and model.alertStatusId in(:alertStatusIds) and model.userAddress.state.stateId =1 " );
 			
 				if(deptId != null && deptId.longValue()>0){
@@ -11351,7 +11351,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	 	public Long getCountOfAlertsForAlertWiseCategory(Date fromDate,Date toDate,Long typeId,Long deptId){
 	 		StringBuilder str = new StringBuilder();
 			str.append("SELECT count(distinct model.alertId) from Alert model " +
-					" WHERE model.isDeleted ='N'  " +
+					" WHERE model.alertTypeId=2 and model.isDeleted ='N'  " +
 					" and model.alertStatusId in(:alertStatusIds)" );
 			
 				if(deptId != null && deptId.longValue()>0){
@@ -11458,7 +11458,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	  	}else{
 	  		str.append(" and A.govt_department_id in(:govtDeptId)");
 	  	}
- 		str.append("  and A.is_deleted='N' and UA.state_id=1 and A.alert_status_id in (:alertStatusIds) ");
+ 		str.append(" and A.alert_type_id =2 and A.is_deleted='N' and UA.state_id=1 and A.alert_status_id in (:alertStatusIds) ");
  		if(locationTypeId !=null && locationTypeId>0){
 				str.append(" and UA.district_id =:locationTypeId ");
 		}
@@ -12007,7 +12007,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 			}
 		}
 		
-		str.append("  and A.is_deleted='N' and UA.state_id=1 and A.alert_status_id in (:alertStatusIds) ");
+		str.append(" and A.alert_type_id=2 and A.is_deleted='N' and UA.state_id=1 and A.alert_status_id in (:alertStatusIds) ");
 		if(deptId !=null && deptId.longValue() >0){
 			str.append(" and A.govt_department_id =:deptId ");
 		}else{
