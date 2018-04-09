@@ -41,6 +41,7 @@ import com.itgrids.partyanalyst.dao.ITdpCadreDAO;
 import com.itgrids.partyanalyst.dao.ITdpCommitteeLevelDAO;
 import com.itgrids.partyanalyst.dao.ITrainingCampAttendanceDAO;
 import com.itgrids.partyanalyst.dto.ActivityMemberVO;
+import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
@@ -49,12 +50,12 @@ import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
+import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
 import com.itgrids.partyanalyst.dto.SessionVO;
-import com.itgrids.partyanalyst.dto.TdpCadreVO;
 import com.itgrids.partyanalyst.dto.UserTypeVO;
 import com.itgrids.partyanalyst.model.PartyMeetingLevel;
 import com.itgrids.partyanalyst.service.ICoreDashboardGenericService;
@@ -11160,6 +11161,157 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 			} catch (Exception e) {
 				LOG.error("Exception raised at setMOMStatusDetails() method of CoreDashboardPartyMeetingService", e);
 			}
-		} 
+		}  
   
+	  public AddressVO setAddressDetails(Object[] param,int startFrom){
+		  AddressVO addressVO= null;
+		  try {
+			if(commonMethodsUtilService.getLongValueForObject(param[startFrom])>0L){
+				addressVO = new AddressVO();
+				addressVO.setStateId(commonMethodsUtilService.getLongValueForObject(param[startFrom+1]));
+				addressVO.setStateName(commonMethodsUtilService.getStringValueForObject(param[startFrom+2]));
+				addressVO.setDistrictId(commonMethodsUtilService.getLongValueForObject(param[startFrom+3]));
+				addressVO.setDistrictName(commonMethodsUtilService.getStringValueForObject(param[startFrom+4]));
+				addressVO.setParliamentId(commonMethodsUtilService.getLongValueForObject(param[startFrom+5]));
+				addressVO.setParliamentName(commonMethodsUtilService.getStringValueForObject(param[startFrom+6]));
+				addressVO.setConstituencyId(commonMethodsUtilService.getLongValueForObject(param[startFrom+7]));
+				addressVO.setConstituencyName(commonMethodsUtilService.getStringValueForObject(param[startFrom+8]));
+				addressVO.setTehsilId(commonMethodsUtilService.getLongValueForObject(param[startFrom+9]));
+				addressVO.setTehsilName(commonMethodsUtilService.getStringValueForObject(param[startFrom+10]));
+				addressVO.setLocalElectionBodyId(commonMethodsUtilService.getLongValueForObject(param[startFrom+11]));
+				addressVO.setLocalElectionBodyName(commonMethodsUtilService.getStringValueForObject(param[startFrom+12]));
+				addressVO.setPanchaytId(commonMethodsUtilService.getLongValueForObject(param[startFrom+13]));
+				addressVO.setPanchayatName(commonMethodsUtilService.getStringValueForObject(param[startFrom+14]));
+				addressVO.setWardId(commonMethodsUtilService.getLongValueForObject(param[startFrom+15]));
+				addressVO.setWardName(commonMethodsUtilService.getStringValueForObject(param[startFrom+16]));
+				
+			}
+		} catch (Exception e) {
+			LOG.error("Exception raised at setAddressDetails() method of CoreDashboardPartyMeetingService", e);
+		}
+		  return addressVO;
+	  }
+	  public List<MomDetailsVO> getPartyMeetingsMOMDetails(MomDetailsVO momDetailsVO){
+		  List<MomDetailsVO> returnList = new ArrayList<MomDetailsVO>(0);
+		  try {
+			  
+			  Map<Long,MomDetailsVO> partyMeetingMap = new HashMap<Long,MomDetailsVO>(0);
+			  if(momDetailsVO.getSearchType() != null && momDetailsVO.getSearchType().equalsIgnoreCase("all")){
+				  List<Object[]> partyMeetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(momDetailsVO); 
+				  if(commonMethodsUtilService.isListOrSetValid(partyMeetingDetailsList)){
+					  for (Object[] param : partyMeetingDetailsList) {
+						  Long partyMeetingId=commonMethodsUtilService.getLongValueForObject(param[2]);
+						  String meetingName=commonMethodsUtilService.getStringValueForObject(param[3]);
+						  Long meetingLevelId=commonMethodsUtilService.getLongValueForObject(param[0]);
+						  String meetingLevel=commonMethodsUtilService.getStringValueForObject(param[1]);
+						  String meetingDate=commonMethodsUtilService.getStringValueForObject(param[4]);
+						  AddressVO addressVO = setAddressDetails(param,5);
+						  MomDetailsVO vo = new MomDetailsVO();
+						  vo.setMeetingId(partyMeetingId);
+						  vo.setMeetingName(meetingName);
+						  vo.setDate(meetingDate);
+						  vo.setMeetingLevel(meetingLevel);
+						  vo.setMeetingLevelId(meetingLevelId);
+						  if(addressVO !=null)
+							  vo.setAddressVO(addressVO);
+						  partyMeetingMap.put(partyMeetingId, vo);
+					}
+				  }
+			  }
+			  
+			  List<Object[]> momDetailsList = partyMeetingMinuteDAO.getPartyMeetingMOMDetails(momDetailsVO); 
+			  if(commonMethodsUtilService.isListOrSetValid(momDetailsList)){
+				  for (Object[] param : momDetailsList) {
+					Long meetingLevelId=commonMethodsUtilService.getLongValueForObject(param[0]);
+					String meetingLevel=commonMethodsUtilService.getStringValueForObject(param[1]);
+					Long partyMeetingId=commonMethodsUtilService.getLongValueForObject(param[2]);
+					String meetingName=commonMethodsUtilService.getStringValueForObject(param[3]);
+					String meetingDate=commonMethodsUtilService.getStringValueForObject(param[4]);
+					
+					Long minutId=commonMethodsUtilService.getLongValueForObject(param[5]);
+					String momDesc=commonMethodsUtilService.getStringValueForObject(param[6]);
+					String momDate=commonMethodsUtilService.getStringValueForObject(param[7]);
+					String isActionable=commonMethodsUtilService.getStringValueForObject(param[10]);
+					Long sourceTypeId=commonMethodsUtilService.getLongValueForObject(param[8]);
+					String sourceName=commonMethodsUtilService.getStringValueForObject(param[9]);
+					AddressVO addressVO = setAddressDetails(param,11);
+
+					MomDetailsVO partyMeetingVO = new MomDetailsVO();
+					if(partyMeetingMap.get(partyMeetingId) != null){
+						partyMeetingVO = partyMeetingMap.get(partyMeetingId);
+					}else{
+						partyMeetingVO.setMeetingId(partyMeetingId);
+						partyMeetingVO.setMeetingName(meetingName);
+						partyMeetingVO.setDate(meetingDate);
+						partyMeetingVO.setMeetingLevel(meetingLevel);
+						partyMeetingVO.setMeetingLevelId(meetingLevelId);
+						  if(addressVO !=null)
+							  partyMeetingVO.setAddressVO(addressVO);
+						  partyMeetingMap.put(partyMeetingId, partyMeetingVO);
+					}
+					
+					if(partyMeetingVO != null){
+						MomDetailsVO vo = new MomDetailsVO();
+						  vo.setMeetingId(partyMeetingId);
+						  vo.setMeetingName(meetingName);
+						  vo.setDate(meetingDate);
+						  vo.setMeetingLevel(meetingLevel);
+						  vo.setMeetingLevelId(meetingLevelId);
+						  
+						  vo.setMomPointsId(minutId);
+						  vo.setMomPoints(momDesc);
+						  vo.setDate(momDate);
+						  vo.setMomType(isActionable);
+						  vo.setSourceTypeId(sourceTypeId);
+						  vo.setSourceName(sourceName);
+						  
+						  if(addressVO !=null)
+							  vo.setAddressVO(addressVO); 
+						  partyMeetingVO.getMinutesList().add(vo);
+					}
+				}
+				  
+				  List<Object[]> momDocumentsList = partyMeetingMinuteDAO.getPartyMeetingMOMDocumentsDetails(momDetailsVO);
+				  for (Object[] param : momDocumentsList) {
+					  Long partyMeetingId=commonMethodsUtilService.getLongValueForObject(param[0]);
+					  Long minutId=commonMethodsUtilService.getLongValueForObject(param[1]);
+					 // String fileFormatType=commonMethodsUtilService.getStringValueForObject(param[5]);
+					  String url=commonMethodsUtilService.getStringValueForObject(param[4]);
+					  String fileType=commonMethodsUtilService.getStringValueForObject(param[2]);
+					  
+					  if(minutId== null || minutId.longValue()==0L){
+						  MomDetailsVO partyMeetingVO =null;
+						  if(partyMeetingMap.get(partyMeetingId) != null){
+							partyMeetingVO = partyMeetingMap.get(partyMeetingId);
+						  }
+						  if(partyMeetingVO != null){
+							partyMeetingVO.getFilesList().add(new KeyValueVO(partyMeetingId, fileType, url));
+						  }
+					  }else{
+						  MomDetailsVO partyMeetingVO =null;
+						  if(partyMeetingMap.get(partyMeetingId) != null){
+							partyMeetingVO = partyMeetingMap.get(partyMeetingId);
+						  }
+						  if(partyMeetingVO != null){
+							  if(commonMethodsUtilService.isListOrSetValid(partyMeetingVO.getMinutesList())){
+								  for (MomDetailsVO vo : partyMeetingVO.getMinutesList()) {
+									if(vo != null && vo.getMomPointsId() != null && vo.getMomPointsId().longValue() == minutId.longValue()){
+										vo.getFilesList().add(new KeyValueVO(minutId, fileType, url));
+									}
+								}
+							  }
+						  }
+					  }
+				  }
+			  }
+			  
+			  if(commonMethodsUtilService.isMapValid(partyMeetingMap)){
+				  returnList.addAll(partyMeetingMap.values());
+			  }
+			  
+		} catch (Exception e) {
+			LOG.error("Exception raised at getPartyMeetingsMOMDetails() method of CoreDashboardPartyMeetingService", e);
+		}
+		  return returnList;
+	  }
 }

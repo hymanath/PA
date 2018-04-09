@@ -8,6 +8,7 @@ import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
+import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
 import com.itgrids.partyanalyst.dto.ResultStatus;
@@ -67,4 +68,5 @@ public interface ICoreDashboardPartyMeetingService {
 	 public PartyMeetingsVO getMOMBasicCountDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues);
 	 public PartyMeetingsVO getMOMDetailedBlockDetails(Long activityMemberId,Long stateId,String fromDateStr,String toDateStr,List<Long> partyMeetingTypeValues,String levelType);
 	 public List<List<UserTypeVO>> getUserTypeWiseCommitteesMOMCompletedCounts1(Long userId,Long activityMemberId,Long userTypeId,String state,Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap,String dateString);
+	 public List<MomDetailsVO> getPartyMeetingsMOMDetails(MomDetailsVO momDetailsVO);
 }
