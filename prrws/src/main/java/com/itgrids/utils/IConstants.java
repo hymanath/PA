@@ -120,6 +120,8 @@ public interface IConstants {
 	public static final String SUBJECT = "Scheduler Notification";
 	public static final String YES = "Yes";
 	public static final String NO = "No";
+	
+	public static final long EOFFICE_WS_DATA_SAVE_INTERVAL = 30*60*1000;
 }
 
 
