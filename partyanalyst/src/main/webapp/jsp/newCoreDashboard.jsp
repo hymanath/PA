@@ -67,6 +67,30 @@
 .DTFC_LeftBodyLiner{
 	overflow-y:hidden;
 }
+.borderLess tbody > tr > td{
+	border:none; 
+	margin:0px;
+}
+.mainHorTabStyle > li.active>a{
+ background-color:#ECEDEF !important;
+}
+.tabsViewStyle{
+ left:34px !important;
+}
+.tabsViewStyle>li
+{
+ width:100% !important;
+}
+.tabsViewStyle > li > a {
+ padding: 20px 3px;
+}
+.tabsViewStyle>li.active >a
+{
+ border:1px solid #A9ABAF !important;
+ border-right:1px solid #fff !important;
+ border-radius:0px !important;
+ z-index:1 !important;
+}
 </style>
 </head>
 <body>  
@@ -94,9 +118,6 @@
 			<li class="quickLinkSettingsIcon"><span class="glyphicon glyphicon-th" data-toggle="tooltip" data-placement="bottom" title="Quick Links"></span></li>
 			 <li class="birthdayHideShowCls"><a href="birthDayAction.action"><i class="glyphicon glyphicon-gift" data-toggle="tooltip" data-placement="bottom" title="Click here Birthday Page"></i><span class="birthdayCount" style="top:3px;left:31px"> <b> ${sessionScope.birthDayCount} </b></span></a></li>
           </ul>
-			
-       
-	  
 	  <div class="quickLinkSettingsBody" style="display:none;">
 			<div class="row">
 				<div class="col-sm-12">
@@ -2942,7 +2963,7 @@
 							<span class="cadreSettings pull-right refreshCadreCls" onClick="getCommitteesBasicCountReport();"><i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i></i></span>
 							<span><select id="tdpCommitteeYearId" style="width: 98px;display:inline-block;padding:2px 6px;height:25px;margin-top: -3px;"></select></span>
 							<span class="input-group pull-right dateRangePickerCls m_XsTop10 hide" expand-block-date="committees">
-								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px"/>
+								<input type="text" id="dateRangeId"	 class="form-control" style="width:180px" value=""/>
 								<span class="input-group-addon">
 									<i class="glyphicon glyphicon-calendar"></i>
 								</span>
@@ -4813,6 +4834,103 @@
 		</div>
 		<!-- Attendance End-->
 	</div>
+	
+	</c:if>
+	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
+	<div class="row">	
+		<!-- grivance start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
+			<div class="panel panel-default panelNewCustom ">
+				<div class="panel-heading">
+					<div class="row">
+						<div class="col-md-5 col-sm-4 col-xs-12" expand-block-heading="grivance">
+						   <h4 class="panel-title text-capital" style="width:440px;">    
+							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
+							  Grievance Efficiency 
+						   </h4>
+						</div>
+						<div class="col-md-2 col-sm-4 col-xs-12 pull-center">
+							<div class="input-group">
+							<input type="text" class="form-control" id="daterangeId" style="width: 200px;"/>
+								<span class="input-group-addon">
+									<i class="glyphicon glyphicon-calendar"></i>
+								</span>
+							</div>
+						</div>
+						<div class="col-md-2 col-sm-2 col-xs-12 pull-right" expand-block-heading1="grivance">
+						   <span class="grivanceIconExpand pull-right" expand-icon="grivance">
+						   <i class="glyphicon glyphicon-fullscreen"></i>
+						   </span>
+						</div>
+					</div>
+				</div>
+				<div class="panel-body">
+					<div class="row">
+						<div class="col-sm-12">
+							<h4 class="headingColor">Efficiency
+							<span class="pull-right "></span>
+							</h4>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-sm-12 m_top20">
+							<div id="efficiencyId"></div>
+						</div>
+					</div>
+					<div class="row">
+						
+							<div id="donutchart" style="height:auto; width:500px !important; text-align:center;""></div>
+						
+					</div>
+					<div class="row">
+						<div class="col-md-12">
+							<div class="panel with-nav-tabs panel-default" style="background-color:#ECEDEF;">
+								<div id="horizontalTabs" style="background-color:#fff;"></div>
+								<div class="panel-body">
+									<div class="tab-content">
+										<div  class="col-sm-12">
+											<div id="verticleTabLists"></div>
+											<div class="clearfix"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>		
+					<!--<div class="row">
+						<h4 style="padding-left: 20px;"> Search By Compliants </h4>
+						<div class="col-sm-12 m_top10">
+							<div class="col-sm-3">
+								<select class="form-control" id="searchComplaintId">
+									<option value="Complaint ID">Complaint ID</option>
+									<option value="Mobile Number">Mobile Number</option>
+									<option value="Membership">Membership ID</option>
+									<option value="Name">Name</option>
+									<option value="Voter ID">Voter ID</option>
+									<option value="Admission No">Application No</option>
+								</select>
+							</div>
+							<div class=" col-sm-3">
+							   <input id="searchValue" class="form-control search-text" type="text">
+							</div>
+							<div class=" col-sm-3">
+							  <button type="button" class="btn btn-danger" id="getSearchByComplaintesId">SEARCH</button>
+						   </div>
+						   <div class="col-sm-1">
+								<div id="spinnerForComplaintsId"></div>
+						   </div>
+						</div>
+					</div>-->
+					<div class="row m_top10">
+						<div class="col-sm-12">
+							<div id="buildGrivanceDetailsBySearchTableId"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!-- grivance End-->
+	</div>
 	</c:if>
 	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
 	<div class="row">
@@ -4887,6 +5005,7 @@
 		<!-- Nominated Post End-->
 	</div>
 	</c:if>
+	
 </div>
 	
 <input type="hidden" id="alertTypeHiddenId"></input> 
