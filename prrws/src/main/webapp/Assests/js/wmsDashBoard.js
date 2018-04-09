@@ -67,15 +67,19 @@ function buildWorkTypeWiseCompletedDetails(result){
 					str+='</div>';
 					str+='<div class="bg_yash_color_10 m_top10">';
 						str+='<div class="row">';
-							str+='<div class="col-sm-5">';
-								str+='<h4 class="font_BebasNeue text-capital">Work proposal for</h4>';
+							str+='<div class="col-sm-4">';
+								str+='<h4 class="font_BebasNeue text-capital f_16">Work proposal for</h4>';
 								str+='<h4 class="font_BebasNeue text-capital m_top5 f_15">'+result[i].workPraposedAreas+' WORKS</h4>';
 							str+='</div>';
 							str+='<div class="col-sm-2">';
 								str+='<i class="fa fa-hand-o-right hand_icon" aria-hidden="true"></i>';
 							str+='</div>';
-							str+='<div class="col-sm-5">';
-								str+='<h4 class="font_BebasNeue text-capital">Work Zones</h4>';
+							str+='<div class="col-sm-3">';
+								str+='<h4 class="font_BebasNeue text-capital f_16">Works</h4>';
+								str+='<h4 class="font_BebasNeue m_top5 f_15">'+result[i].mainWorksCount+'</h4>';
+							str+='</div>';
+							str+='<div class="col-sm-3">';
+								str+='<h4 class="font_BebasNeue text-capital f_16">Work Zones</h4>';
 								str+='<h4 class="font_BebasNeue m_top5 f_15">'+result[i].worksCount+'</h4>';
 							str+='</div>';
 						str+='</div>';
@@ -213,8 +217,8 @@ function timeLineAndLocationWiseDetails(workTypeId){
 	$("#timeLinesWorkTypesDivId").html(collapse);
 	$(".chosen-select").chosen();	
 	getAllStatusOfWorkType(workTypeId);
-	getLocationStatusDayWiseKms(0,workTypeId);//Graph Call
-	getLocationLevelStatusDayWiseKms(0,workTypeId)//Location Level Main Table
+	getLocationStatusDayWiseKms(12,workTypeId);//Graph Call
+	getLocationLevelStatusDayWiseKms(12,workTypeId)//Location Level Main Table
 }
 function getAllDistrictsOfAp(divId,LevelVal){
 	$("#"+divId).html('');
@@ -419,8 +423,8 @@ $(document).on("click",".getTimeLocationCls",function(){
 	$(".workStagesCls li").removeAttr("style");
 	$(".workStagesCls li:nth-child(1)").css("border","2px solid #000");
 	
-	getLocationStatusDayWiseKms(0,workTypeId);
-	getLocationLevelStatusDayWiseKms(0,workTypeId);
+	getLocationStatusDayWiseKms(12,workTypeId);
+	getLocationLevelStatusDayWiseKms(12,workTypeId);
 });
 
 function getLocationStatusDayWiseKms(statusId,workTypeId){
@@ -461,10 +465,10 @@ function getLocationStatusDayWiseKms(statusId,workTypeId){
 	});
 }
 
-function buildLocationStatusDayWiseKmsMainGraph(result){
+function buildLocationStatusDayWiseKmsMainGraph(result1){
 	var mainArr=[];
 	var categoriesArr=[];
-	
+	var result=result1[0].list;
 	for(var i in result){
 		if(result[i].kms !=null && result[i].kms>0){
 			categoriesArr.push(result[i].insertedTime);
@@ -747,15 +751,19 @@ function buildStateLevelOverAllDetails(result){
 	str+='<div class="col-sm-4">';
 		str+='<div class="bg_yash_color_10 m_top10">';
 				str+='<div class="row">';
-					str+='<div class="col-sm-6">';
-						str+='<h3 class="font_BebasNeue text-capital">Work proposal for</h3>';
+					str+='<div class="col-sm-4">';
+						str+='<h3 class="font_BebasNeue text-capital f_16">Work proposal for</h3>';
 						str+='<h4 class="font_BebasNeue text-capital m_top10" style="font-size:21px;">'+result.workPraposedAreas+' WORKS</h4>';
 					str+='</div>';
-					str+='<div class="col-sm-1">';
-						str+='<i class="fa fa-hand-o-right hand_icon" aria-hidden="true" style="margin-left: -25px !important;"></i>';
+					str+='<div class="col-sm-2">';
+						str+='<i class="fa fa-hand-o-right hand_icon" aria-hidden="true" ></i>';
 					str+='</div>';
-					str+='<div class="col-sm-5">';
-						str+='<h3 class="font_BebasNeue text-capital">Work Zones</h3>';
+					str+='<div class="col-sm-3">';
+						str+='<h3 class="font_BebasNeue text-capital f_16">Works</h3>';
+						str+='<h4 class="font_BebasNeue m_top10" style="font-size:21px;">'+result.mainWorksCount+'</h4>';
+					str+='</div>';
+					str+='<div class="col-sm-3">';
+						str+='<h3 class="font_BebasNeue text-capital f_16">Work Zones</h3>';
 						str+='<h4 class="font_BebasNeue m_top10" style="font-size:21px;">'+result.worksCount+'</h4>';
 					str+='</div>';
 				str+='</div>';

@@ -16,6 +16,8 @@ public class DocumentVO {
 	private Double completedPercentage;
 	private Long panchayatId,mandalId;
 	private String panchayatName,mandalName;
+	private List<String> datesList = new ArrayList<String>(0);
+	private String lattitude,longitude;
 	
 	public Long getDocumentId() {
 		return documentId;
@@ -100,6 +102,24 @@ public class DocumentVO {
 	}
 	public void setMandalName(String mandalName) {
 		this.mandalName = mandalName;
+	}
+	public List<String> getDatesList() {
+		return datesList;
+	}
+	public void setDatesList(List<String> datesList) {
+		this.datesList = datesList;
+	}
+	public String getLattitude() {
+		return lattitude;
+	}
+	public void setLattitude(String lattitude) {
+		this.lattitude = lattitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 	
 	

@@ -22,6 +22,7 @@ public class GovtMainWorkVO implements Serializable{
 	private Long workZonesCount;
 	private Long totalWorks;
 	private Double estimationCost;
+	private Long mainWorksCount=0l;
 	
 	public Long getGovtMainWorkId() {
 		return govtMainWorkId;
@@ -118,6 +119,12 @@ public class GovtMainWorkVO implements Serializable{
 	}
 	public void setEstimationCost(Double estimationCost) {
 		this.estimationCost = estimationCost;
+	}
+	public Long getMainWorksCount() {
+		return mainWorksCount;
+	}
+	public void setMainWorksCount(Long mainWorksCount) {
+		this.mainWorksCount = mainWorksCount;
 	}
 
 	

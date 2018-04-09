@@ -23,6 +23,7 @@ public class WorkStatusVO {
 	public List<WorkStatusVO> workStatusVOList = new ArrayList<WorkStatusVO>(0);
 	public String comment;
 	public Long commentId;
+	public String lattitude,longitude;
 	
 	public Long getWorkId() {
 		return workId;
@@ -151,6 +152,18 @@ public class WorkStatusVO {
 	}
 	public void setCommentId(Long commentId) {
 		this.commentId = commentId;
+	}
+	public String getLattitude() {
+		return lattitude;
+	}
+	public void setLattitude(String lattitude) {
+		this.lattitude = lattitude;
+	}
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 
 	

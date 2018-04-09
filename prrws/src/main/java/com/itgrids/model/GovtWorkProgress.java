@@ -24,6 +24,7 @@ public class GovtWorkProgress {
 	private Double completedPercentage;
 	private Long updatedBy;
 	private Date updatedTime;
+	private String latitude,longitude;
 	private String isCompleted;
 	
 	private GovtWork govtWork;
@@ -140,6 +141,22 @@ public class GovtWorkProgress {
 	}
 	public void setGovtWorkProgressComment(GovtWorkProgressComment govtWorkProgressComment) {
 		this.govtWorkProgressComment = govtWorkProgressComment;
+	}
+	
+	@Column(name="latitude")
+	public String getLatitude() {
+		return latitude;
+	}
+	public void setLatitude(String latitude) {
+		this.latitude = latitude;
+	}
+	
+	@Column(name="longitude")
+	public String getLongitude() {
+		return longitude;
+	}
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 	
 	
