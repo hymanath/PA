@@ -5,7 +5,7 @@ if(wurl.length == 3)
   wurl = url.substr(0,(url.indexOf(".in")+3));
 var glStartDate = moment().format("YYYY-MM-DD");
 var glEndDate = moment().format("YYYY-MM-DD");
-var isDepartment="N";
+var isDepartment="";
 var newsPaper=[];
 var editionType=[];
 var districts = [];
@@ -68,7 +68,7 @@ $('#endDate').on('apply.daterangepicker', function(ev, picker) {
 onLoadCalls();
 function onLoadCalls(){
 	populateNewspapers('onload');
-	getAllDepartments(isDepartment,'onload');
+	getAllDepartments("Y,N",'onload');
 	getAllLocations(2,'1','onload');
 	$('#editionType').multiselect("destroy");
 	$('#editionType').multiselect({
@@ -947,7 +947,7 @@ function getAllDepartments(isDepartment,type){
 	document.getElementsByClassName("data-sent-alert")[0].style.display = "block";
 	getAllLocations(2,'1','onchange');
 	populateNewspapers('onchange');
-	getAllDepartments("N",'onload');
+	getAllDepartments("Y,N",'onload');
 }
 
  $(document).on("click",".alertCategoryWiseCls li",function(){
