@@ -3496,3 +3496,17 @@ table.details-overview-cons thead .sorting:after{opacity:0.2;content:"\e150"}tab
 	background-color:#fff;
 	border-radius:3px;
 }
+.table_custom_Mom thead tr th{
+	text-align:center;
+	vertical-align:middle;
+	font-size:12px;
+	padding:3px;
+	text-transform:uppercase;
+	background-color:#f9f9f9;
+}
+.table_custom_Mom tbody tr td{
+	text-align:center;
+	vertical-align:middle;
+	font-size:13px;
+	padding:5px;
+}
