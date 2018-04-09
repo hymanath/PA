@@ -62,9 +62,9 @@
 			<div class="row">
 				<div class="col-sm-7" style="padding-bottom: 8px;margin-left: 12px;">
 					<ul class="list-inline switch-btn alertCategoryWiseCls pull-right m_top5" style=" background-color: #337ab7;">
-					<li class="active" attr_type="N" style="font-weight: bolder;width:67px; text-align: center;" >Party</li>
+					<li attr_type="N" style="font-weight: bolder;width:67px; text-align: center;" >Party</li>
 					<li attr_type="Y" style="font-weight: bolder;width:67px;text-align: center;">Govt</li>
-					<li attr_type="" style="font-weight: bolder;width:67px;text-align: center;">ALL</li>
+					<li class="active" attr_type="" style="font-weight: bolder;width:67px;text-align: center;">ALL</li>
 					</ul>
 				</div>
 			</div>
