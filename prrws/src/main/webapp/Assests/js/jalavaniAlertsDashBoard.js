@@ -40,7 +40,6 @@ $("#dateRangePicker").daterangepicker({
 	});
 	var dates= $("#dateRangePicker").val();
 	var pickerDates = currentFromDate+' - '+currentToDate
-	var overAllDates ='28-11-2016'+' - '+currentToDate
 	if(dates == pickerDates)
 	{
 		$("#dateRangePicker").val('Today');
@@ -51,10 +50,6 @@ $("#dateRangePicker").daterangepicker({
 		if(picker.chosenLabel == 'Today')
 		{
 			$("#dateRangePicker").val('Today');
-		}
-		if('28-11-2016'+' - '+currentToDate == overAllDates)
-		{
-			$("#dateRangePicker").val('Over All');
 		}
 		$("#alertTypeId").val(0)
 		$("#alertTypeId").trigger("chosen:updated")
