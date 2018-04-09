@@ -21,6 +21,8 @@ public class Document {
 	private String path;
 	private Long insertedUserId;
 	private Date insertedTime;
+	private String lattitude;
+	private String longitude;
 	
 	private String docName;
 	private String base64str;
@@ -101,6 +103,24 @@ public class Document {
 	}
 	public void setMobileAppUser(MobileAppUser mobileAppUser) {
 		this.mobileAppUser = mobileAppUser;
+	}
+
+	@Column(name="latitude")
+	public String getLattitude() {
+		return lattitude;
+	}
+
+	public void setLattitude(String lattitude) {
+		this.lattitude = lattitude;
+	}
+
+	@Column(name="longitude")
+	public String getLongitude() {
+		return longitude;
+	}
+
+	public void setLongitude(String longitude) {
+		this.longitude = longitude;
 	}
 	
 	

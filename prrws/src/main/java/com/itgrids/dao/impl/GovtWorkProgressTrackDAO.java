@@ -114,12 +114,18 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		return query.list();
 	}
 	
-	public List<Object[]> getLocationStatusDayWiseKms(Date startDate,Date endDate,Long statusId,Long workTypeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId){
+	public List<Object[]> getLocationStatusDayWiseKms(Date startDate,Date endDate,Long statusId,Long workTypeId,Long districtId,Long divisonId,Long subDivisonId,Long mandalId,String intervalType){
 		StringBuilder sb = new StringBuilder();
-		
-		sb.append(" select date(gwpt.updated_time),sum(gwpt.work_length) "
-				+ " from govt_work_progress_track gwpt,govt_work gw,govt_main_work gmw,location_address la "
-				+ " where gwpt.govt_work_id = gw.govt_work_id "
+		//0-statusId,1-statusName,2-length,3-date
+		sb.append(" select gwpt.govt_work_status_id,gws.status_name,sum(gwpt.work_length) ");
+		if(intervalType.equalsIgnoreCase("dayeWise")){
+			sb.append(",date(gwpt.updated_time) ");
+		}else{
+			sb.append(",month(gwpt.updated_time),year(gwpt.updated_time) ");
+		}
+		 
+		sb.append(" from govt_work_progress_track gwpt,govt_work gw,govt_main_work gmw,location_address la,govt_work_status gws "
+				+ " where gwpt.govt_work_id = gw.govt_work_id and gwpt.govt_work_status_id=gws.govt_work_status_id and gws.govt_work_type_id=:workTypeId "
 				+ " and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' "
 				+ " and gmw.govt_work_type_id=:workTypeId ");
 		
@@ -142,7 +148,13 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 			sb.append(" and la.tehsil_id=:mandalId ");
 		}
 		
-		sb.append(" group by date(gwpt.updated_time) ");
+		sb.append(" group by gwpt.govt_work_status_id ");
+		
+		if(intervalType.equalsIgnoreCase("dayeWise")){
+			sb.append(",date(gwpt.updated_time) order by date(gwpt.updated_time)");
+		}else{
+			sb.append(",month(gwpt.updated_time),year(gwpt.updated_time) order by month(gwpt.updated_time),year(gwpt.updated_time) ");
+		}
 		
 		Query query = getSession().createSQLQuery(sb.toString());
 		

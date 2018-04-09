@@ -634,7 +634,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							destPath = destPath.replace("/app/static_content/PRRWS/","");
 						
 						//save docuemntin document table
-						Long documentId = saveDocuemnt(destPath,imageStr,govtWorksVO.getUserId());
+						Long documentId = saveDocuemnt(destPath,imageStr,govtWorksVO.getUserId(),govtWorksVO.getLattitude(),govtWork.getLongitude());
 						if(documentId != null && documentId > 0l){
 							GovtWorkDocument govtWorkDocument = new GovtWorkDocument();
 							govtWorkDocument.setGovtWorkId(govtWork.getGovtWorkId());
@@ -747,11 +747,13 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		return addressVO;
 	}
 	
-	public Long saveDocuemnt(String destPath,String imageStr,Long userId){
+	public Long saveDocuemnt(String destPath,String imageStr,Long userId,String lattitude,String longitude){
 		com.itgrids.model.Document document = new com.itgrids.model.Document();
 		document.setPath(destPath);
 		document.setBase64str(imageStr);
 		document.setMobileAppUserId(userId);
+		document.setLattitude(lattitude);
+		document.setLongitude(longitude);
 		document.setInsertedTime(dateUtilService.getCurrentDateAndTime());
 		return documentDAO.save(document).getDocumentId();
 	}
@@ -778,6 +780,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				govtWorkProgressObj.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
 				govtWorkProgressObj.setCompletedPercentage(workStatusVO.getWorkCompletedPercentage() != null ? workStatusVO.getWorkCompletedPercentage():null);
 				govtWorkProgressObj.setIsCompleted(workStatusVO.getIsCompleted() != null ? workStatusVO.getIsCompleted():"N");
+				govtWorkProgressObj.setLatitude(workStatusVO.getLattitude());
+				govtWorkProgressObj.setLongitude(workStatusVO.getLongitude());
 				govtWorkProgressDAO.save(govtWorkProgressObj).getGovtWorkProgressId();
 				
 				//save in track
@@ -827,7 +831,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							if(folderName.contains("/app/static_content/PRRWS/"))
 								destPath = destPath.replace("/app/static_content/PRRWS/","");
 							//save docuemntin document table
-							Long documentId = saveDocuemnt(destPath,imageStr,workStatusVO.getUserId());
+							Long documentId = saveDocuemnt(destPath,imageStr,workStatusVO.getUserId(),workStatusVOList.get(0).getLattitude(),workStatusVOList.get(0).getLongitude());
 							GovtWorkProgressDocument govtWorkProgressDocument =  saveWorkStatusDocuments(govtWorkProgressId,uniqueUpdateId,documentId,workStatusVO.getUserId());
 							
 							if(govtWorkProgressDocument != null){
@@ -856,6 +860,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		govtWorkProgressTrack.setWorkLength(workStatusVO.getCurrentWorkLength() != null ? workStatusVO.getCurrentWorkLength():null);
 		govtWorkProgressTrack.setUpdatedBy(workStatusVO.getUserId());
 		govtWorkProgressTrack.setUpdatedTime(dateUtilService.getCurrentDateAndTime());
+		govtWorkProgressTrack.setLatitude(workStatusVO.getLattitude());
+		govtWorkProgressTrack.setLongitude(workStatusVO.getLongitude());
 		//govtWorkProgressTrack.setCompletedPercentage(workStatusVO.getWorkCompletedPercentage() != null ? workStatusVO.getWorkCompletedPercentage():null);
 		govtWorkProgressTrack.setCompletedPercentage(workStatusVO.getCurrentWorkCompletedPercentage() != null ? workStatusVO.getCurrentWorkCompletedPercentage():null);
 		govtWorkProgressTrack.setIsCompleted(workStatusVO.getIsCompleted() != null ? workStatusVO.getIsCompleted():"N");
@@ -1259,12 +1265,13 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				}
 				
 				//get works count group by workType
-				//0-workTypeId,1-workscount
+				//0-workTypeId,1-mainWorksCount,2-workscount
 				List<Object[]> objLsit = govtWorkDAO.getWorksCountByMainType();
 				if(objLsit != null && objLsit.size() > 0){
 					for (Object[] objects : objLsit) {
 						if(map.get((Long)objects[0]) != null){
-							map.get((Long)objects[0]).setWorksCount((Long)objects[1]);
+							map.get((Long)objects[0]).setMainWorksCount(objects[1]!= null?(Long)objects[1]:0l);
+							map.get((Long)objects[0]).setWorksCount(objects[2]!=null?(Long)objects[2]:0l);
 						}
 					}
 				}
@@ -1291,23 +1298,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}
 					}
 				}
-				
-				/*//get workZones for workType
-				//0-workTypeId,1-workZones
-				List<Object[]> objList3 = govtWorkDAO.getWorkZonesCountForDateType(null);
-				if(objList3 != null && objList3.size() > 0){
-					for (Object[] objects : objList3) {
-						if(map.get((Long)objects[0]) != null){
-							map.get((Long)objects[0]).setWorkZonesCount(objects[1] != null ? (Long)objects[1]:null);
-						}
-					}
-				}*/
-				
 				finalList.addAll(map.values());
-				//finalList.get(0).setTotalCount(Long.parseLong(workTypeList.size()+""));
 			}
-			
-			
 		} catch (Exception e) {
 			LOG.error("exception cuured at getWorkTypeWiseCompletedDetails", e);
 		}
@@ -1484,31 +1476,121 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 				endDate = sdf.parse(inputVO.getToDate());
 			}
 			
-			Map<String,DocumentVO> map = new LinkedHashMap<String, DocumentVO>();
+			Map<Long,DocumentVO> map = new LinkedHashMap<Long, DocumentVO>();//statusId,vo
 			if(startDate != null && endDate != null){
 				List<String> dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
-				if(dateList != null && dateList.size() > 0){
-					for (String string : dateList) {
-						DocumentVO vo = new DocumentVO();
-						vo.setInsertedTime(string);
-						map.put(string, vo);
-					}
-				}
-			}
-			
-			
-			List<Object[]> objList = govtWorkProgressTrackDAO.getLocationStatusDayWiseKms(startDate,endDate,inputVO.getStatusId(),inputVO.getWorkTypeId(),inputVO.getDistrictId(),
-					inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId());
-			if(objList != null && objList.size() > 0){
-				for (Object[] objects : objList) {
-					if(map.get(objects[0].toString()) != null){
-						map.get(objects[0].toString()).setKms(Math.round(Double.parseDouble(objects[1].toString())* 100D) / 100D);
+				
+				if(dateList != null){
+					//0-statusId,1-statusName,2-length,3-date(momth && year)
+					List<Object[]> objList = null;
+					if(dateList.size() <= 31){
+						objList = govtWorkProgressTrackDAO.getLocationStatusDayWiseKms(startDate,endDate,inputVO.getStatusId(),inputVO.getWorkTypeId(),inputVO.getDistrictId(),
+								inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),"dayeWise");
+						if(objList != null && objList.size() > 0){
+							if(dateList.size()<=7){//daily
+								for (Object[] objects : objList) {
+									DocumentVO matchedStatusVO = map.get(Long.parseLong(objects[0].toString()));
+									if(matchedStatusVO==null){
+										matchedStatusVO = new DocumentVO();
+										matchedStatusVO.setDocumentId(Long.parseLong(objects[0].toString()));
+										matchedStatusVO.setDocumentName(objects[1].toString());
+										
+										for (String date : dateList) {
+											DocumentVO dateVO = new DocumentVO();
+											dateVO.setInsertedTime(date);
+											matchedStatusVO.getList().add(dateVO);
+										}
+										
+										map.put(Long.parseLong(objects[0].toString()),matchedStatusVO);
+										matchedStatusVO = map.get(Long.parseLong(objects[0].toString()));
+									}
+									
+									DocumentVO matchedDateVO = getMatchedDateVO(matchedStatusVO.getList(), objects[3].toString());
+									if(matchedDateVO != null){
+										matchedDateVO.setKms(Math.round(Double.parseDouble(objects[2].toString())* 100D) / 100D);
+									}
+								}
+							}else if(dateList.size()<=31){//weekly
+								Map<Long,List<String>> weekdatesMap = setWeekWiseDatesMap(dateList);
+								if(weekdatesMap != null && weekdatesMap.size() > 0){
+									for (Object[] object : objList) {
+										DocumentVO matchedStatusVO = map.get(Long.parseLong(object[0].toString()));
+										if(matchedStatusVO == null){
+											matchedStatusVO = new DocumentVO();
+											matchedStatusVO.setDocumentId(Long.parseLong(object[0].toString()));
+											matchedStatusVO.setDocumentName(object[1].toString());
+											matchedStatusVO.setList(buildFinalVoStructure(weekdatesMap));
+											
+											map.put(Long.parseLong(object[0].toString()),matchedStatusVO);
+											matchedStatusVO = map.get(Long.parseLong(object[0].toString()));
+										}
+										
+										for (DocumentVO dateVo : matchedStatusVO.getList()) {
+											if(dateVo.getDatesList().contains(object[3].toString()))
+												dateVo.setKms(dateVo.getKms()+Math.round(Double.parseDouble(object[2].toString())* 100D) / 100D);
+										}
+									}
+								}
+							}
+						}
+					}else{//monthly
+						objList = govtWorkProgressTrackDAO.getLocationStatusDayWiseKms(startDate,endDate,inputVO.getStatusId(),inputVO.getWorkTypeId(),inputVO.getDistrictId(),
+								inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),"monthWise");
+						if(objList != null && objList.size() > 0){
+							for (Object[] objects : objList) {
+								DocumentVO matchedStatusVO = map.get(Long.parseLong(objects[0].toString()));
+								if(matchedStatusVO == null){
+									matchedStatusVO = new DocumentVO();
+									matchedStatusVO.setDocumentId(Long.parseLong(objects[0].toString()));
+									matchedStatusVO.setDocumentName(objects[1].toString());
+									map.put(Long.parseLong(objects[0].toString()),matchedStatusVO);
+									matchedStatusVO = map.get(Long.parseLong(objects[0].toString()));
+								}
+								DocumentVO dateVo = new DocumentVO();
+								dateVo.setInsertedTime(objects[3].toString()+"-"+objects[4].toString());
+								dateVo.setKms(Math.round(Double.parseDouble(objects[2].toString())* 100D) / 100D);
+								matchedStatusVO.getList().add(dateVo);
+							}
+						}
 					}
 				}
 				voList.addAll(map.values());
 			}
 		} catch (Exception e) {
 			LOG.error("exception occured while getting location status day wise kms", e);
+		}
+		return voList;
+	}
+	
+	public Map<Long,List<String>> setWeekWiseDatesMap(List<String> datesList){
+		Map<Long,List<String>> map = new HashMap<Long, List<String>>(); 
+		Long t=0l,index=1l;
+		List<String> datesList12 = null;
+		for(int i=0;i<datesList.size();i++){
+			if(t==0)
+				datesList12 = new ArrayList<String>(0);
+			if(t<7)
+				datesList12.add(datesList.get(i));
+			t++;	
+			if(t==7){
+				map.put(index, datesList12);
+				t=0l;
+				index++;
+			}else{
+				if(i==(datesList.size()-1))
+					map.put(index, datesList12);
+			}	
+		}
+		return map;
+	}
+	
+	public List<DocumentVO> buildFinalVoStructure(Map<Long,List<String>> weekdatesMap){
+		List<DocumentVO> voList = new ArrayList<DocumentVO>(0);
+		for (Entry<Long, List<String>> entry : weekdatesMap.entrySet()) {
+			DocumentVO vo = new DocumentVO();
+			vo.setInsertedTime(entry.getValue().get(0)+" to "+entry.getValue().get(entry.getValue().size()-1));
+			vo.setDatesList(entry.getValue());
+			voList.add(vo);
 		}
 		return voList;
 	}
@@ -1725,10 +1807,13 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			}
 				
 			//get workZones for workType
-			//0-workTypeId,1-workZones
+			//0-workTypeId,1-mainWorks,2-workZones
 			List<Object[]> objList1 = govtWorkDAO.getWorkZonesCountForDateType(workTypeId);
-			if(objList1 != null && objList1.size() > 0)
-				finalVO.setWorksCount((Long)objList1.get(0)[1]);
+			if(objList1 != null && objList1.size() > 0){
+				finalVO.setMainWorksCount((Long)objList1.get(0)[1]);
+				finalVO.setWorksCount((Long)objList1.get(0)[2]);
+			}
+				
 			
 			//get work completed kms for workType
 			Object[] completedDetails = govtWorkProgressDAO.getWorkCompletedKms(workTypeId);
@@ -1751,7 +1836,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	public List<DocumentVO> getRecentWorkDocuments(Long workTypeId){
 		List<DocumentVO> voList = new ArrayList<DocumentVO>(0);
 		try {
-			//0-panchayatId,1-mandalId,2-docId,3-path,4-insertedDate
+			//0-panchayatId,1-mandalId,2-docId,3-path,4-insertedDate,5-lattitude,6-longitude
 			List<Object[]> objList = govtWorkProgressDocumentDAO.getRecentWorkDocuments(workTypeId);
 			List<Long> panchayatIds = new ArrayList<Long>(0);
 			List<Long> mandalIds = new ArrayList<Long>(0);
@@ -1801,6 +1886,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					vo.setDocumentId((Long)obj[2]);
 					vo.setPath(obj[3].toString());
 					vo.setInsertedTime(obj[4].toString());
+					vo.setLattitude(obj[5] != null ? obj[5].toString():"");
+					vo.setLongitude(obj[6] != null ? obj[6].toString():"");
 					voList.add(vo);
 				}
 			}
@@ -1813,7 +1900,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 	public List<GovtWorksVO> getStatusWiseWorksAndKms(Long workTypeId){
 		List<GovtWorksVO> voList = new ArrayList<GovtWorksVO>(0);
 		try {
-			List<Object[]> allStatusObjList = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);
+			List<Object[]> allStatusObjList = govtWorkStatusDAO.getAllStatusOfWorkType(workTypeId);//0-statusTypeId,1-statusType,2-govtWorkStatusId,3-govtWorkStatus
 			if(allStatusObjList != null && allStatusObjList.size() > 0){
 				Map<Long,GovtWorksVO> map = new HashMap<Long, GovtWorksVO>();
 				for (Object[] objects : allStatusObjList) {

@@ -113,7 +113,7 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 	
 	public List<Object[]> getWorksCountByMainType(){
 		//0-workTypeId,1-workscount
-		Query query = getSession().createQuery(" select model.govtMainWork.govtWorkTypeId,count(distinct model.govtWorkId) "
+		Query query = getSession().createQuery(" select model.govtMainWork.govtWorkTypeId,count(distinct model.govtMainWorkId),count(distinct model.govtWorkId) "
 				+ " from GovtWork model "
 				+ " where model.isDeleted='N' "
 				+ " group by model.govtMainWork.govtWorkTypeId ");
@@ -125,7 +125,7 @@ public class GovtWorkDAO extends GenericDaoHibernate<GovtWork, Long> implements 
 	public List<Object[]> getWorkZonesCountForDateType(Long workTypeId){
 		//0-workTypeId,1-worksCount
 		StringBuilder sb = new StringBuilder();
-		sb.append(" select model.govtMainWork.govtWorkTypeId,count(model.govtWorkId) "
+		sb.append(" select model.govtMainWork.govtWorkTypeId,count(distinct model.govtMainWorkId),count(model.govtWorkId) "
 				+ " from GovtWork model "
 				+ " where model.isDeleted='N' ");
 		
