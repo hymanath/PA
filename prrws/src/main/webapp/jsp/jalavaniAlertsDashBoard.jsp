@@ -452,13 +452,13 @@
 <script type="text/javascript">
 	var globalDepartmentId="${param.deptId}";
 	if(globalDepartmentId == 19){
-		$("#nameHeaderId").html("IT E&C ALERTS");
+		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>IT E&C ALERTS</span>");
 		$("#componentId").html("ALERTS OVERVIEW");
 	}else if(globalDepartmentId == 20){
-		$("#nameHeaderId").html("PANCHAYAT RAJ ALERTS");
+		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>PANCHAYAT RAJ ALERTS</span>");
 		$("#componentId").html("ALERTS OVERVIEW");
 	}else if(globalDepartmentId == 48){
-		$("#nameHeaderId").html("RURAL DEVELOPMENT ALERTS");
+		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>RURAL DEVELOPMENT ALERTS</span>");
 		$("#componentId").html("ALERTS OVERVIEW");
 	}else if(globalDepartmentId == 49){
 		$("#nameHeaderId").html("Panchayat Raj,RD&News");
@@ -466,7 +466,7 @@
 		$("#nameId").html("JALAVANI DASHBOARD");
 	}else if(globalDepartmentId == 0){
 		$("#componentId").html("ALERTS OVERVIEW");
-		$("#nameHeaderId").html("PACHAYAT RAJ,RD,RWS,IT E&C ALERTS");
+		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>PACHAYAT RAJ, RD, RWS, IT E&C ALERTS</span>");
 	}
 </script> 
 </body>
