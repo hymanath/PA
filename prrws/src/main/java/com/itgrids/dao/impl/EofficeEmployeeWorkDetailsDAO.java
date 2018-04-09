@@ -53,10 +53,11 @@ public class EofficeEmployeeWorkDetailsDAO extends GenericDaoHibernate<EofficeEm
 		return query.executeUpdate();
 	}
 	
-	public Long geteOfficeDataExists(){
-		Query query = getSession().createQuery("select count(model.eofficeEmployeeWorkDetailsId) from EofficeEmployeeWorkDetails model where model.isDeleted = 'N'"
+	public List<Object[]> geteOfficeDataExists(){
+		Query query = getSession().createQuery("select count(model.eofficeEmployeeWorkDetailsId),model.insertedTime"
+										+ " from EofficeEmployeeWorkDetails model where model.isDeleted = 'N'"
 										+ " and date(model.insertedTime) = :today");
 		query.setParameter("today", new DateUtilService().getCurrentDateAndTime());
-		return (Long) query.uniqueResult();
+		return query.list();
 	}
 }

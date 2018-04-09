@@ -160,7 +160,8 @@ $("#dataTableITCHODS").dataTable({
 	"paging":   false,
 	"info":     false,
 	"searching": false,
-	"autoWidth": true
+	"autoWidth": true,
+	"aaSorting": []
 });
 }
 

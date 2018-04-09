@@ -6604,23 +6604,23 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	$("[overview-block='"+type+"']").attr("attr_locationId",locId);
 	if(type == 'Payments' && result != null)
 	{
-		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:15px 15px;padding-top: 12px;padding-bottom: 12px;">';
+		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 1px;padding-bottom: 0px;">';
 			if(type.length > 12)
 			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 			}
-			str+='<small class="text-center">Total Pending</small>';
+			str+='<small class="text-center font_weight">Total Pending</small>';
 			if(result[0].totalPendinAmount != null && result[0].totalPendinAmount.length > 0)
 			{
-				str+='<h1 class="text-center" style="font-size:29px"><i class="fa fa-inr"></i> '+result[0].totalPendinAmount+'</h1>';
+				str+='<h2 class="text-center"><i class="fa fa-inr"></i> '+result[0].totalPendinAmount+'</h2>';
 			}else{
-				str+='<h1 class="text-center">0</h1>';
+				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label>Wage</label>';
+					str+='<label style="font-size: 12px;margin-bottom: 0px;">Wage</label>';
 					if(result[0].pendingWage != null && result[0].pendingWage.length > 0)
 					{
 						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].pendingWage+'</h4>';
@@ -6630,7 +6630,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label>Material</label>';
+					str+='<label style="font-size: 12px;margin-bottom: 0px;">Material</label>';
 					if(result[0].pendingMaterial != null && result[0].pendingMaterial.length > 0)
 					{
 						str+='<h4><i class="fa fa-inr" style="position:static"></i>'+result[0].pendingMaterial+'</h4>';
@@ -6643,7 +6643,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		
 		if(levelId == 3 || levelId == "3"){
 			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - Total Pending</small>';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;Pending</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].totalPendinAmount+'</h2>';
 			str+='</div>';
 		}
@@ -6665,23 +6665,23 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	}
 	if(type == 'Daily Labour Turnout' && result != null)
 	{
-		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:15px 15px">';
+		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 			if(type.length > 12)
 			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 			}
-			str+='<small class="text-center">Today</small>';
+			str+='<small class="text-center font_weight">Today</small>';
 			if(result[0].today != null && result[0].today != 0)
 			{
-				str+='<h1 class="text-center" style="font-size:40px">'+result[0].today+'</h1>';
+				str+='<h2 class="text-center">'+result[0].today+'</h2>';
 			}else{
-				str+='<h1 class="text-center">0</h1>';
+				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label>This week</label>';
+					str+='<label style="font-size: 12px;">This week</label>';
 					if(result[0].thisWeek != null && result[0].thisWeek != 0)
 					{
 						str+='<h4>'+result[0].thisWeek+'</h4>';
@@ -6691,7 +6691,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label>This Month</label>';
+					str+='<label style="font-size: 12px;">This Month</label>';
 					if(result[0].thisMonth != null && result[0].thisMonth != 0)
 					{
 						str+='<h4>'+result[0].thisMonth+'</h4>';
@@ -6728,22 +6728,22 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;padding-bottom: 5px;">';
 			if(type.length > 12)
 			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 			}
-			str+='<small class="text-center">Total Vacancies</small>';
+			str+='<small class="text-center font_weight">Total Vacancies</small>';
 			if(result[0].count != null && result[0].count != 0)
 			{
-				str+='<h1 class="text-center">'+result[0].count+'</h1>';
+				str+='<h2 class="text-center">'+result[0].count+'</h2>';
 			}else{
-				str+='<h1 class="text-center">0</h1>';
+				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 			if(result[0].subList != null && result[0].subList.length > 0){
 				for(var i in result[0].subList){
 					str+='<div class="col-sm-4 text-center pad_right0">';
-						str+='<label title="'+result[0].subList[i].name+'">'+result[0].subList[i].name.substr(0,10)+'</label>';
+						str+='<label title="'+result[0].subList[i].name+'" style="font-size: 12px;margin-bottom: 2px;">'+result[0].subList[i].name.substr(0,10)+'</label>';
 						if(result[0].subList[i].count != null && result[0].subList[i].count != 0)
 						{
 							str+='<h4>'+result[0].subList[i].count+'</h4>';
@@ -6780,104 +6780,38 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	} 
 	if(type == 'Material Availability' && result != null)
 	{
-		/* if(result[0].balanceMaterial != null && result[0].balanceMaterial > 0)
-			str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 18px;padding-bottom: 18px;">';
-		else
-			str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 18px;padding-bottom: 18px;">';
+		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 			if(type.length > 12)
 			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 			}
-			str+='<small class="text-center">Availability</small>';
-			if(result[0].balanceMaterial != null && result[0].balanceMaterial != 0)
-			{
-				str+='<h1 class="text-center" style="font-size:36px">'+result[0].balanceMaterial+'</h1>';
-			}else{
-				str+='<h1 class="text-center">0</h1>';
-			}
-			str+='<div class="row">';
-				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label>Entitlement</label>';
-					if(result[0].materialEntitlement != null && result[0].materialEntitlement != 0)
-					{
-						str+='<h4>'+result[0].materialEntitlement+'</h4>';
-					}else{
-						str+='<h4>0</h4>';
-					}
-					
-				str+='</div>';
-				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label>Expenditure</label>';
-					if(result[0].materialExpenditure != null && result[0].materialExpenditure != 0)
-					{
-						str+='<h4>'+result[0].materialExpenditure+'</h4>';
-					}else{
-						str+='<h4>0</h4>';
-					}
-				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-		if(levelId == 3 || levelId == "3"){
-			if(result[0].subList[0].balanceMaterial != null && result[0].subList[0].balanceMaterial > 0)
-				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-			else
-				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - AVAILABILITY</small>';
-				str+='<h2 class="text-center">'+result[0].subList[0].balanceMaterial+'</h2>';
-			str+='</div>';
-		}
-		else if(levelId == 4 || levelId == "4"){
-			if(result[0].subList[0].balanceMaterial != null && result[0].subList[0].balanceMaterial > 0)
-				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-			else
-				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">Availability</small>';
-				str+='<div class="row">';
-					str+='<div class="col-sm-6">';
-						str+='<p>District</p>';
-						str+='<h2 class="text-center">'+result[0].subList[0].balanceMaterial+'</h2>';
-					str+='</div>';
-					str+='<div class="col-sm-6">';
-						str+='<p>State</p>';
-						str+='<h2 class="text-center">'+result[0].subList[1].balanceMaterial+'</h2>';
-					str+='</div>';
-				str+='</div>';
-			str+='</div>';
-		} */
-		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:15px 15px;padding-top: 12px;padding-bottom: 12px;">';
-			if(type.length > 12)
-			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
-			}
-			str+='<small class="text-center">Availability</small>';
+			str+='<small class="text-center font_weight">Availability</small>';
 			if(result[0].balanceMaterial != null && result[0].balanceMaterial.length > 0)
 			{
-				str+='<h1 class="text-center" style="font-size:27px"><i class="fa fa-inr"></i> '+result[0].balanceMaterial+'&nbsp;Cr</h1>';
+				str+='<h2 class="text-center"><i class="fa fa-inr"></i> '+result[0].balanceMaterial+'&nbsp;Cr</h2>';
 			}else{
-				str+='<h1 class="text-center">0</h1>';
+				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label class="m_top10">Entitlement</label>';
+					str+='<label class="" style="font-size: 12px;">Entitlement</label>';
 					if(result[0].materialEntitlement != null && result[0].materialEntitlement.length > 0)
 					{
-						str+='<h4 class="m_top10" style="font-size: 13px !important;"><i class="fa fa-inr" style="position:static"></i>'+result[0].materialEntitlement+'&nbsp;Cr</h4>';
+						str+='<h4 class="" style="font-size: 13px !important;"><i class="fa fa-inr" style="position:static"></i>'+result[0].materialEntitlement+'&nbsp;Cr</h4>';
 					}else{
-						str+='<h4  class="m_top10">0</h4>';
+						str+='<h4  class="">0</h4>';
 					}
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label class="m_top10">Expenditure</label>';
+					str+='<label class="" style="font-size: 12px;">Expenditure</label>';
 					if(result[0].materialExpenditure != null && result[0].materialExpenditure.length > 0)
 					{
-						str+='<h4 class="m_top10" style="font-size: 13px !important;"><i class="fa fa-inr" style="position:static"></i>'+result[0].materialExpenditure+'&nbsp;Cr</h4>';
+						str+='<h4 class="" style="font-size: 13px !important;"><i class="fa fa-inr" style="position:static"></i>'+result[0].materialExpenditure+'&nbsp;Cr</h4>';
 					}else{
-						str+='<h4 class="m_top10">0</h4>';
+						str+='<h4 class="">0</h4>';
 					}
 				str+='</div>';
 			str+='</div>';
@@ -6885,7 +6819,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		
 		if(levelId == 3 || levelId == "3"){
 			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - Total Pending</small>';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;Pending</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].balanceMaterial+'</h2>';
 			str+='</div>';
 		}
@@ -6907,23 +6841,23 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 	} 
 	if(type == 'Not Yet Completed Works' && result != null)
 	{
-		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 18px;padding-bottom: 18px;">';
+		str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 			if(type.length > 12)
 			{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 			}else{
-				str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 			}
-			str+='<small class="text-center">Pending Works</small>';
+			str+='<small class="text-center font_weight">Pending Works</small>';
 			if(result[0].year != null && result[0].year != 0)
 			{
-				str+='<h1 class="text-center" style="font-size:36px">'+result[0].year+'</h1>';
+				str+='<h2 class="text-center">'+result[0].year+'</h2>';
 			}else{
-				str+='<h1 class="text-center">0</h1>';
+				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label>This Year</label>';
+					str+='<label style="font-size: 12px;">This Year</label>';
 					if(result[0].year1718 != null && result[0].year1718 != 0)
 					{
 						str+='<h4>'+result[0].year1718+'</h4>';
@@ -6933,7 +6867,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label>Last Year</label>';
+					str+='<label style="font-size: 12px;">Last Year</label>';
 					if(result[0].year1617 != null && result[0].year1617 != 0)
 					{
 						str+='<h4>'+result[0].year1617+'</h4>';
@@ -6948,7 +6882,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			else
 				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - NOT YET COMPLETED WORKS</small>';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;PENDING&nbsp;WORKS</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].year+'</h2>';
 			str+='</div>';
 		}
@@ -6980,26 +6914,26 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				{
 					if(result[i].percentage < 60)
 					{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 					}else if(result[i].percentage >= 60)
 					{
-						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 					}else
 					{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 					}
 				}
 				else if(type == 'Man Days Comparision' || type == 'Expenditure')
 				{
 					if(result[i].parameter == 'Decrement')
 					{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:5px 10px">';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:5px 10px;padding-bottom: 3px;">';
 					}else if(result[i].parameter == 'Increment')
 					{
-						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding:5px 10px">';
+						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding:5px 10px;padding-bottom: 3px;">';
 					}else
 					{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:5px 10px">';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding:5px 10px;padding-bottom: 3px;">';
 					}
 				}/* else if(type == 'ManDays Expenditure')
 				{
@@ -7009,13 +6943,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
 					}else{*/
 						if(result[i].percentage >= 100){
-							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
 						/* if(result[i].percentage < 50)
@@ -7037,137 +6971,137 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				
 					if(type == 'FAperformance')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Field Assistant Performance">FA Performan..</h4>';
 					}else if(type == 'SMC Trench')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="SMC Trenches">SMC Trench..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="SMC Trenches">SMC Trench..</h4>';
 					}else if(type == 'Imp to CD')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
 					}else if(type == 'MPT_PT')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
 					}else if(type == 'GC Works')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Gully Control Works">Gully Contr..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Gully Control Works">Gully Contr..</h4>';
 					}else if(type == 'CD_CW')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Check Dams and Check Walls">Check Dam..</h4>';
 					}else if(type == 'IHHL')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Individual Household Latrine">Individual Ho..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Individual Household Latrine">Individual Ho..</h4>';
 					}else if(type == 'GH')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Greening Of Hillocks">Greening O..</h4>';
 					}else if(type == 'CC Roads1')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="CC Roads">CC Roads</h4>';
 					}else if(type == 'Anganwadi')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Anganwadi Buildings">Anganwadi B..</h4>';
 					}else if(type == 'GP Buildings1')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="GP Buildings">GP Build..</h4>';
 					}else if(type == 'Mandal Buildings1')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal Buildings">Mandal Bui..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Mandal Buildings">Mandal Bui..</h4>';
 					}else if(type == 'OPGK-Perinnials')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pasu..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pasu..</h4>';
 					}else if(type == 'OPGK-Annuals')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
 					}else if(type == 'NTR Rural House')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="NTR IHHL">NTR IHHL</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="NTR IHHL">NTR IHHL</h4>';
 					}
 					else if(type == 'UGDrainage')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="UG Drainage">UG Drainage</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="UG Drainage">UG Drainage</h4>';
 					}
 					else if(type == 'Agriculture Activities')
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Agriculture Allied Activities">Agriculture A..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Agriculture Allied Activities">Agriculture A..</h4>';
 					}else if(type.length > 12)
 					{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 					}else{
-						str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+						str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 					}
 					
 					if(type == 'coffee')
-						str+='<small class="text-center">Planting (%)</small>';
+						str+='<small class="text-center font_weight">Planting (%)</small>';
 					else if(type == 'Man Days Comparision' || type == 'Expenditure')
-						str+='<small class="text-center">Increment/Decrement (%)</small>';
+						str+='<small class="text-center font_weight">Inc/Dec&nbsp;(%)</small>';
 					else
-						str+='<small class="text-center">Achieved</small>';
+						str+='<small class="text-center font_weight">Achieved</small>';
 					
 					
 					if(result[i].percentage != null && result[i].percentage.length > 0)
 					{
 						if(type == 'Man Days Comparision'){
-							str+='<h1 class="text-center"><span class="tooltipMans" data-toggle="tooltip" data-placement="top" title="Man Days Comparision b/n last Financial Year And This Financial Year">'+result[i].percentage+'</span><small>%</small>';
+							str+='<h2 class="text-center"><span class="tooltipMans" data-toggle="tooltip" data-placement="top" title="Man Days Comparision b/n last Financial Year And This Financial Year">'+result[i].percentage+'</span><small>%</small>';
 						}else if(type == 'Expenditure'){
-							str+='<h1 class="text-center"><span class="tooltipMans"  data-toggle="tooltip" data-placement="top" title="Expenditure Comparision b/n last Month  This Year And Last Financial Year">'+result[i].percentage+'</span><small>%</small>';
+							str+='<h2 class="text-center"><span class="tooltipMans"  data-toggle="tooltip" data-placement="top" title="Expenditure Comparision b/n last Month  This Year And Last Financial Year">'+result[i].percentage+'</span><small>%</small>';
 						}else{
-							str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+							str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
 						}
 						
 					}else{
-						str+='<h1 class="text-center">0<small>%</small>';
+						str+='<h2 class="text-center">0<small>%</small>';
 					}
 					if(type == 'Agriculture Activities')
 					{
 						if(result[i].percentage < 60)
 						{
-							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 						}else if(result[i].percentage >= 60)
 						{
-							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 						}else
 						{
-							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 						}
 					}
 					else if(type == 'Man Days Comparision' || type == 'Expenditure')
 					{
 						if(result[i].parameter == 'Decrement')
 						{
-							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 						}else if(result[i].parameter == 'Increment')
 						{
-							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 						}else
 						{
-							str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 						}
 					}else{
 						/*if(type == 'Greenary works Chettu' || type == 'Agriculture Related Works' || type == 'Rural Sanitation Works' || type == 'Soil Moisture Conservation works Neeru' || type == 'Works in community lands' || type == 'IJP PROGRAM WORKS' || type == 'Institutional Development Works' || type == 'Road Works' || type == 'Water Harvesting Structures Neeru' || type == 'AH-Live Stock Related works' || type == 'Renovation and Improvements to existing Check Dams Check Wall' || type == 'Road Formation Upto WBM GR II Including CD works' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas' || type == 'Construction Of Animal Hostel' || type == 'Roads for Unconnected Habitations 2011-12' || type == 'Construction of New Check Dam' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality' || type == 'Construction of Food Grains Storage Structures of 250MT' || type == 'Formation of Road upto WBM Gr II surface including CD works in Tribal areas' || type == 'Construction of Village Haats Infrastructure fecilities' || type == 'Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham' || type == 'Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT' || type == 'Construction of Buildings for women self help group federation' || type == 'Work Site Facilities' || type == 'Renovation and Improvements to existing Percolation Tank Mini Percolation tank' || type == 'GP level BNRGSK knowledge resource centre 2012-13 and afterwards' || type == 'Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality' || type == 'Production of Grafts in HNTC' || type == 'Improvements of RYTHU BAZAR' || type == 'Roads for Unconnected Habitations 2012-13 and afterwards' || type == 'HNTC Development' || type == 'New Open Well for Drinking water purpose' || type == 'Construction of Crematoria Burial Grounds' || type == 'Repairs to Existing Check Dam' || type == 'Formation of Road upto Gravel surface including CD works to agriculture fields' || type == 'Formation of Approach Road upto Gravel surface including CD works to Burial ground' || type == 'Construction of Food Grains Storage Structures of 500MT' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas' || type == 'Raising of Cashew bag seedlings for 2014-15' || type == 'Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas' || type == 'Cattle Ponds' || type == 'Desilting of Drinking Water Tanks' || type == 'coffee' || type == 'Comprehensive Restoration of minor Irrigation Tank1' || type == 'Comprehensive Restoration of minor Irrigation Tank' || type == 'NTR 90 Days' || type == 'NTR Rural House' || type == 'Production of Bricks'){
-							str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+							str+='<small><i class="fa fa-long-arrow-up"></i></small></h2>';
 						}else{*/
 							
 							if(result[i].percentage >= 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}
 							
 							/* if(result[i].percentage < 50)
 							{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h2>';
 							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
 							{
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v"></i></small></h2>';
 							}else if(result[i].percentage >= 80)
 							{
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h2>';
 							}else
 							{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h2>';
 							} */
 						//}
 					}
@@ -7178,12 +7112,12 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<label>Sanctioned</label>';
 						}
 						else if(type == 'Man Days Comparision'){
-							str+='<label>Last Fin Same Day</label>';
+							str+='<label style="font-size: 12px;margin-bottom: 2px;">Last Fin Same Day</label>';
 						} else if(type == 'Expenditure'){
-							str+='<label>Last Fin Last&nbsp;Mnth</label>';
+							str+='<label style="font-size: 12px;margin-bottom: 2px;">Last Fin Last&nbsp;Mnth</label>';
 						} 
 						else{
-							str+='<label>Target</label>';
+							str+='<label style="font-size: 12px;">Target</label>';
 						}
 							
 							if(result[i].target != null && result[i].target.length > 0)
@@ -7215,18 +7149,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						str+='</div>';
 						str+='<div class="col-sm-6 text-center">';
 							if(type == 'coffee'){
-								str+='<label>Planting</label>';
+								str+='<label style="font-size: 12px;">Planting</label>';
 							}
 							else if(type == 'FAperformance')
 							{
-								str+='<label>Achieved</label>';
+								str+='<label style="font-size: 12px;">Achieved</label>';
 							}else if(type == 'Man Days Comparision')
 							{
-								str+='<label>Fin As Of Today</label>';
+								str+='<label style="font-size: 12px;margin-bottom: 2px;">Fin As Of Today</label>';
 							} else if(type == 'Expenditure'){
-								str+='<label>This Fin Last&nbsp;Mnth</label>';
+								str+='<label style="font-size: 12px;margin-bottom: 2px;">This Fin Last&nbsp;Mnth</label>';
 							} else{
-								str+='<label>Completed</label>';
+								str+='<label style="font-size: 12px;">Completed</label>';
 							}
 							
 							if(result[i].completed != null && result[i].completed.length > 0)
@@ -7298,13 +7232,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					{
 						
 						if(result[i].percentage >= 100){
-							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
 						/* if(result[i].percentage < 50)
@@ -7372,36 +7306,36 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<small class="text-center">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
-								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
 							}else{
-								str+='<h1 class="text-center">0<small>%</small>';
+								str+='<h2 class="text-center">0<small>%</small>';
 							}
 							
 							if(result[i].percentage >= 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}	
 							/* if(result[i].percentage < 50)
 							{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h2>';
 							}else if(result[i].percentage >= 50 && result[i].percentage < 80)
 							{
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v"></i></small></h2>';
 							}else if(result[i].percentage >= 80)
 							{
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up"></i></small></h2>';
 							}else
 							{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down"></i></small></h2>';
 							} */
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									if(result[i].target != null && result[i].target.length > 0)
 									{
 										if(result[0].parameter == 'Timely Payments'){
@@ -7415,7 +7349,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									if(result[i].completed != null && result[i].completed.length > 0)
 									{
 										if(result[i].parameter == 'Timely Payments'){
@@ -7431,15 +7365,15 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						str+='</div>';
 					}else{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-							str+='<h1 class="text-center">0<small>%</small></h1>';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<h2 class="text-center">0<small>%</small></h2>';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 							str+='</div>';
@@ -7451,13 +7385,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(result[i] != null)
 					{
 						if(result[i].percentage >= 100){
-							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 						}	
 						/* if(result[i].percentage < 50)
 						{
@@ -7484,7 +7418,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							}
 						str+='</div>';
 					}else{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 							str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 							str+='<h2 class="text-center">0</h2>';
 						str+='</div>';
@@ -7495,37 +7429,37 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(result[i] != null)
 					{
 						if(result[i].percentage >= 100){
-							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
 							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 							str+='<small class="text-center">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
-								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
 							}else{
-								str+='<h1 class="text-center">0<small>%</small>';
+								str+='<h2 class="text-center">0<small>%</small>';
 							}
 							
 							if(result[i].percentage >= 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}	
 						
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Sanctioned</label>';
+									str+='<label style="font-size: 12px;">Sanctioned</label>';
 									if(result[i].target != null && result[i].target > 0)
 									{
 										str+='<h4>'+result[0].target+'</h4>';
@@ -7535,7 +7469,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									if(result[i].completed != null && result[i].completed > 0)
 									{
 										str+='<h4>'+result[i].completed+'</h4>';
@@ -7546,21 +7480,21 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						str+='</div>';
 						if(levelId == 3 || levelId == "3"){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 								str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 								str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
 							str+='</div>';
 						}
 					}else{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-							str+='<h1 class="text-center">0<small>%</small></h1>';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<h2 class="text-center">0<small>%</small></h2>';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 							str+='</div>';
@@ -7572,37 +7506,37 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(result[i] != null)
 					{
 						if(result[i].percentage >= 100){
-							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
 							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 							str+='<small class="text-center">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
-								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
 							}else{
-								str+='<h1 class="text-center">0<small>%</small>';
+								str+='<h2 class="text-center">0<small>%</small>';
 							}
 							
 							if(result[i].percentage >= 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}	
 						
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									if(result[i].target != null && result[i].target > 0)
 									{
 										str+='<h4>'+result[0].target+'</h4>';
@@ -7612,7 +7546,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									if(result[i].completed != null && result[i].completed > 0)
 									{
 										str+='<h4>'+result[i].completed+'</h4>';
@@ -7623,21 +7557,21 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						str+='</div>';
 						if(levelId == 3 || levelId == "3"){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 								str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 								str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
 							str+='</div>';
 						}
 					}else{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-							str+='<h1 class="text-center">0<small>%</small></h1>';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<h2 class="text-center">0<small>%</small></h2>';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 							str+='</div>';
@@ -7648,40 +7582,40 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(result[i] != null)
 					{
 						if(result[i].percentage >= 100){
-							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
 							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 							str+='<small class="text-center">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
-								str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
 							}else{
-								str+='<h1 class="text-center">0<small>%</small>';
+								str+='<h2 class="text-center">0<small>%</small>';
 							}
 							
 							if(result[i].percentage >= 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-								str+='<small><i class="fa fa-arrows-v"></i></small></h1>';
+								str+='<small><i class="fa fa-arrows-v" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else{
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}	
 						
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
 								if(type == "Azolla Production Unit" || type == "Construction of silopits of 3 MTs capacity" || type == "Fodder trough for Cattle Cattle drinking water trough" || type == "Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze" || type == "Raising of Perinnial Fodder" || type == "Raising of Silvipasture clubbed with subabul plantation")
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 								else
-									str+='<label>Sanctioned</label>';
+									str+='<label style="font-size: 12px;">Sanctioned</label>';
 									if(result[i].target != null && result[i].target > 0)
 									{
 										str+='<h4>'+result[0].target+'</h4>';
@@ -7691,7 +7625,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 									
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									if(result[i].completed != null && result[i].completed > 0)
 									{
 										str+='<h4>'+result[i].completed+'</h4>';
@@ -7702,21 +7636,21 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						str+='</div>';
 						if(levelId == 3 || levelId == "3"){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 								str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - ACHIEVED</small>';
 								str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
 							str+='</div>';
 						}
 					}else{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-							str+='<h1 class="text-center">0<small>%</small></h1>';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<h2 class="text-center">0<small>%</small></h2>';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 							str+='</div>';
@@ -7727,34 +7661,34 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(result[i] != null)
 					{
 						if(result[i].parameter == 'Decrement'){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else if(result[i].parameter == 'Increment'){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
 							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-							str+='<small class="text-center">Increment/Decrement (%)</small>';
+							str+='<small class="text-center">Inc/Dec&nbsp;(%)</small>';
 							
 							if(type == 'Man Days Comparision'){
-								str+='<h1 class="text-center"><span class="tooltipMans" data-toggle="tooltip" data-placement="top" title="Man Days Comparision b/n last Financial Year And This Financial Year">'+result[i].percentage+'</span><small>%</small>';
+								str+='<h2 class="text-center"><span class="tooltipMans" data-toggle="tooltip" data-placement="top" title="Man Days Comparision b/n last Financial Year And This Financial Year">'+result[i].percentage+'</span><small>%</small>';
 							}else if(type == 'Expenditure'){
-								str+='<h1 class="text-center"><span class="tooltipMans"  data-toggle="tooltip" data-placement="top" title="Expenditure Comparision b/n last Month  This Year And Last Financial Year">'+result[i].percentage+'</span><small>%</small>';
+								str+='<h2 class="text-center"><span class="tooltipMans"  data-toggle="tooltip" data-placement="top" title="Expenditure Comparision b/n last Month  This Year And Last Financial Year">'+result[i].percentage+'</span><small>%</small>';
 							}
 							
 							if(result[i].parameter == 'Decrement'){
-								str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}else if(result[i].parameter == 'Increment'){
-								str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+								str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 							}
 						
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
 								if(type == 'Man Days Comparision'){
-									str+='<label>Last Fin Same Day</label>';
+									str+='<label style="font-size: 12px;margin-bottom: 2px;">Last Fin Same Day</label>';
 								} else if(type == 'Expenditure'){
-									str+='<label>Last Fin Last&nbsp;Mnth</label>';
+									str+='<label style="font-size: 12px;margin-bottom: 2px;">Last Fin Last&nbsp;Mnth</label>';
 								} 
 								
 								if(type == 'Man Days Comparision'){
@@ -7766,9 +7700,9 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
 									if(type == 'Man Days Comparision'){
-										str+='<label>Fin As Of Today</label>';
+										str+='<label style="font-size: 12px;margin-bottom: 2px;">Fin As Of Today</label>';
 									} else if(type == 'Expenditure'){
-										str+='<label>This Fin Last&nbsp;Mnth</label>';
+										str+='<label style="font-size: 12px;margin-bottom: 2px;">This Fin Last&nbsp;Mnth</label>';
 									}
 									
 									if(type == 'Man Days Comparision'){
@@ -7780,7 +7714,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						str+='</div>';
 						if(levelId == 3 || levelId == "3"){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 								//str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - Increment/Decrement (%)</small>';
 								if(result[0].subList[0].parameter == 'Decrement'){
 									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:red">STATE LEVEL - Increment/Decrement (%)</small>';
@@ -7793,15 +7727,15 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						}
 					}else{
-						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'">';
-							str+='<h1 class="text-center">0<small>%</small></h1>';
+						str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<h2 class="text-center">0<small>%</small></h2>';
 							str+='<div class="row">';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Target</label>';
+									str+='<label style="font-size: 12px;">Target</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 								str+='<div class="col-sm-6 text-center">';
-									str+='<label>Completed</label>';
+									str+='<label style="font-size: 12px;">Completed</label>';
 									str+='<h4>0</h4>';
 								str+='</div>';
 							str+='</div>';
@@ -7862,7 +7796,29 @@ $(document).on("click",".menuDataCollapse",function(){
 			var levelId = $(this).attr("attr_levelIdValue");
 			$("#selectedName").attr("attr_levelid",levelId);
 			$("#selectedName").attr("attr_id",locId);
-			projectDataConsolidated(levelId,locId,districtId);
+			
+			var subLocType = '';
+			var locationType = '';
+			var divId = '';
+			if(levelId == 2)
+			{
+				locationType = 'state';
+				subLocType = 'state';
+				divId = 'ConsolidatedViewstate'
+			}else if(levelId == 3)
+			{
+				locationType = 'district';
+				subLocType = 'district';
+				divId = 'ConsolidatedViewdistrict'
+			}else if(levelId == 4)
+			{
+				locationType = 'constituency';
+				subLocType = 'constituency';
+				divId = 'ConsolidatedViewconstituency';
+				districtId = $("#selectedName").attr("attr_distId");
+			}
+			getNREGSLevelWiseConsolidatedReportConsolidated(levelId,locationType,subLocType,locId,divId,districtId,'completed');
+			//projectDataConsolidated(levelId,locId,districtId);
 		}
 		
 		if(levelId == 3)
@@ -9416,17 +9372,17 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 								for(var i in result)
 								{
 									str+='<div class="col-sm-2 m_top10">';
-										str+='<div class="panel-block-white text-center" overview-popup-block="'+result[i].workName+'" attr_levelId="'+levelId+'" attr_locationId="'+menuLocationId+'" attr_mcc_main_projectId="'+projectDivId+'">';
+										str+='<div class="panel-block-white text-center" overview-popup-block="'+result[i].workName+'" attr_levelId="'+levelId+'" attr_locationId="'+menuLocationId+'" attr_mcc_main_projectId="'+projectDivId+'" style="padding-top: 3px;padding-bottom: 5px;">';
 										
 										//str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
 											if(result[i].percentage >= 100){
-												str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+result[i].workName+'">';
+												str+='<div class="panel-black-white panel-block-white-gold text-center" overview-district="'+result[i].workName+'" style="padding-top: 5px;">';
 											}else if(result[i].percentage >= 90 && result[i].percentage < 100){
-												str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'">';
+												str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+result[i].workName+'" style="padding-top: 5px;">';
 											}else if(result[i].percentage >= 60 && result[i].percentage < 90){
-												str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+result[i].workName+'">';
+												str+='<div class="panel-black-white panel-block-white-medium text-center" overview-district="'+result[i].workName+'" style="padding-top: 5px;">';
 											}else{
-												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'">';
+												str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+result[i].workName+'" style="padding-top: 5px;">';
 											}
 											 /* if(result[i].percentage < 50)
 											{
@@ -9444,29 +9400,29 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 											}  */
 												if(result[i].workName.length > 12)
 												{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].workName+'">'+result[i].workName.substr(0,12)+'..</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+result[i].workName+'">'+result[i].workName.substr(0,12)+'..</h4>';
 												}else{
-													str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+result[i].workName+'">'+result[i].workName+'</h4>';
+													str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+result[i].workName+'">'+result[i].workName+'</h4>';
 												}
 												if(result[i].percentage != null && result[i].percentage.length > 0)
 												{
-													str+='<h1 class="text-center">'+result[i].percentage+'<small>%</small>';
+													str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
 												}else{
-													str+='<h1 class="text-center">0<small>%</small>';
+													str+='<h2 class="text-center">0<small>%</small>';
 												}
 												 if(result[i].percentage < 60)
 												{
-													str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+													str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 												}else if(result[i].percentage >= 60)
 												{ 
-													str+='<small><i class="fa fa-long-arrow-up"></i></small></h1>';
+													str+='<small><i class="fa fa-long-arrow-up" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 												}else
 												{
-													str+='<small><i class="fa fa-long-arrow-down"></i></small></h1>';
+													str+='<small><i class="fa fa-long-arrow-down" style="margin-bottom: 0px;margin-top: -17px;margin-left: 13px;"></i></small></h2>';
 												}
 												str+='<div class="row">';
 													str+='<div class="col-sm-6 text-center">';
-														str+='<label>Sanctioned</label>';
+														str+='<label style="font-size:12px;">Sanctioned</label>';
 														if(result[i].target != null)
 														{
 															str+='<h4>'+result[i].target+'</h4>';
@@ -9476,7 +9432,7 @@ function getWorkWiseAbstractForMCCOthers(projectDivId,levelId,menuLocationId)
 														}
 													str+='</div>';
 													str+='<div class="col-sm-6 text-center">';
-														str+='<label>Completed</label>';
+														str+='<label style="font-size:12px;">Completed</label>';
 														if(result[i].completed != null)
 														{
 															str+='<h4>'+result[i].completed+'</h4>';

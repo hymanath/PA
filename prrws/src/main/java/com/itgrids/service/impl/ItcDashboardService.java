@@ -4633,6 +4633,7 @@ public class ItcDashboardService implements IItcDashboardService {
 						//HOD's List Data
 						//Long departmentId =  jObj.getLong("departmentid");
 						String hodName = commonMethodsUtilService.getStringValueForObject(param[13]);
+						String postName = commonMethodsUtilService.getStringValueForObject(param[14]);
 						if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("NARA LOKESH")){
 							hodObj =  param;
 						}else if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("DR.K.S.JAWAHAR REDDY, IAS.")){
@@ -4644,6 +4645,13 @@ public class ItcDashboardService implements IItcDashboardService {
 						}*/else if(departmentId != null && departmentId.longValue() == 1424L && hodName.trim().equalsIgnoreCase("K.K.KISHORE KUMAR")){
 							hodObj =  param;
 						}else if(departmentId != null && departmentId.longValue() == 2798L && hodName.trim().equalsIgnoreCase("B. RAMANJANEYULU, IAS")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 2798L && hodName.trim().equalsIgnoreCase("RANJIT BASHA")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 1466L && hodName.trim().equalsIgnoreCase("R.VENKATESWARA RAO")
+								&& postName.trim().equalsIgnoreCase("ENGINEER IN CHIEF")){
+							hodObj =  param;
+						}else if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("B. RAMANJANEYULU, IAS")){
 							hodObj =  param;
 						}
 						if(hodObj != null){
@@ -4666,7 +4674,10 @@ public class ItcDashboardService implements IItcDashboardService {
 								hodVO.setPercentage("0.00");
 							}
 							
-							hodList.add(hodVO);
+							if(departmentId != null && departmentId.longValue() == 729L && hodName.trim().equalsIgnoreCase("NARA LOKESH"))
+								hodList.add(0,hodVO);
+							else
+								hodList.add(hodVO);
 						}
 					
 					}
@@ -6310,11 +6321,23 @@ public class ItcDashboardService implements IItcDashboardService {
 	public String checkeOfficeDataExists(){
 		String status = null;
 		try {
-			Long count = eofficeEmployeeWorkDetailsDAO.geteOfficeDataExists();
-			if(count != null && count > 0L)
+			List<Object[]> list = eofficeEmployeeWorkDetailsDAO.geteOfficeDataExists();
+			if(list != null && !list.isEmpty()){
+				Date callTime = list.get(0)[1] != null ? (Date)list.get(0)[1] : null;
+				Date presentTime = dateUtilService.getCurrentDateAndTime();
+				long timeDiff = (presentTime.getTime() - callTime.getTime());
+				
+				if(timeDiff > IConstants.EOFFICE_WS_DATA_SAVE_INTERVAL)
+					status = "notExists";
+				else
+					status = "exists";
+			}else{
+				status = "notExists";
+			}
+			/*if(count != null && count > 0L)
 				status = "exists";
 			else
-				status = "notExists";
+				status = "notExists";*/
 		} catch (Exception e) {
 			LOG.error("Exception occured at checkeOfficeDataExists() in  ItcDashboardService class",e);
 		}
