@@ -1,6 +1,17 @@
 var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div>';
 var globalUserWiseMemberMOMRslt;
-levelWiseMOMArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:'constituency',id:'4'}];
+//var levelWiseMOMArr;
+var levelWiseMOMArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:'constituency',id:'4'}];
+//{name:'mandal',id:'5'}
+//alert(globalUserAccessLevelId)
+/* if(globalUserAccessLevelId == 2 || globalUserAccessLevelId == 3){
+	levelWiseMOMArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:'constituency',id:'4'}];
+}else if(globalUserAccessLevelId == 4){
+	levelWiseMOMArr=[{name:'parliament',id:'10'},{name:'constituency',id:'4'}];
+}else if(globalUserAccessLevelId == 5){
+	levelWiseMOMArr=[{name:'constituency',id:'4'}];
+} */ 
+
 
 var currentFromDate = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY");
 var currentToDate = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY");
@@ -593,7 +604,7 @@ function locationWiseMOMDetails()
 					collapse+='<div class="panel-body">';
 						collapse+='<div class="row">';
 						collapse+='<div class="col-sm-12">';
-						collapse+='<div id="MOM'+levelWiseMOMArr[i].name+'"></div>';
+						collapse+='<div id="MOMLevel'+levelWiseMOMArr[i].name+'"></div>';
 					collapse+='</div>';
 					collapse+='</div>';
 					collapse+='</div>';
@@ -603,8 +614,168 @@ function locationWiseMOMDetails()
 		collapse+='</div>';
 	}
 	$("#levelWiseMOMDetailsDivId").html(collapse);
-	for(var i in levelWiseArr)
+	for(var i in levelWiseMOMArr)
 	{
-		//(levelWiseArr[i].name);
+		getMOMDetailedBlockDetailsAction(levelWiseMOMArr[i].name);
 	}	
+}
+function getMOMDetailedBlockDetailsAction(locationType)
+{ 
+	$("#MOMLevel"+locationType).html(spinner);
+
+	var jsObj ={
+		 activityMemberId : globalActivityMemberId,
+		 stateId : 1,
+		 fromDate : "01/03/2018",
+		 toDate : "31/03/2018",
+		 partyMeetingTypeArr:[2,3,15],
+		 levelType : locationType
+		 
+	  }
+	$.ajax({
+		type : 'POST',
+		url : 'getMOMDetailedBlockDetailsAction.action',
+		dataType : 'json',
+		data : {task:JSON.stringify(jsObj)}
+	}).done(function(result){
+		if(result !=null && result.partyMettingsVOList.length>0){
+			buildMOMDetailedBlockDetailsAction(result,locationType);
+		}else{
+			$("#MOMLevel"+locationType).html("No Data Available");
+		}
+	});
+}
+
+function buildMOMDetailedBlockDetailsAction(result,locationType){
+	var str='';
+	console.log("#MOMLevel"+locationType)
+	 str+='<div class="table-responsive">';
+		str+='<table class="table table_custom_Mom table-bordered dataTableMOM'+locationType+'" style="width:100% !important;">';
+			str+='<thead>';
+				str+='<tr>';
+					if(locationType == "district"){
+						str+='<th rowspan="3">District</th>';
+					}else if(locationType == "parliament"){
+						str+='<th rowspan="3">Parliament</th>';
+					}else if(locationType == "constituency"){
+						str+='<th rowspan="3">Constituency</th>';
+					}else if(locationType == "mandal"){
+						str+='<th rowspan="3">Mandal</th>';
+					}
+					str+='<th rowspan="3">Total Conducted Meetings</th>';
+					if(locationType == "district"){
+						str+='<th colspan="4" >MOM Not Updated Meetings</th>';
+					}else if(locationType == "mandal"){
+						str+='<th colspan="2" >MOM Not Updated Meetings</th>';
+					}else{
+						str+='<th colspan="3" >MOM Not Updated Meetings</th>';
+					}
+					str+='<th colspan="9">MOM Details</th>';
+				str+='</tr>';
+				str+='<tr>';
+				if(locationType == "district"){
+					str+='<th rowspan="2">Total</th>';
+					str+='<th rowspan="2">Mandal</th>';
+					str+='<th rowspan="2">AC</th>';
+					str+='<th rowspan="2">District</th>';
+				}else if(locationType == "mandal"){
+					str+='<th rowspan="2">Total</th>';
+					str+='<th rowspan="2">Mandal</th>';
+				}else{
+					str+='<th rowspan="2">Total</th>';
+					str+='<th rowspan="2">Mandal</th>';
+					str+='<th rowspan="2">AC</th>';
+				}
+				str+='<th rowspan="2">Total</th>';
+				str+='<th colspan="2">General</th>';
+				str+='<th colspan="6">Actionable</th>';
+				str+='</tr>';
+				
+				str+='<tr>';
+					str+='<th >General</th>';
+					str+='<th >%</th>';
+					str+='<th >Total</th>';
+					str+='<th >%</th>';
+					str+='<th >Party</th>';
+					str+='<th >%</th>';
+					str+='<th >Govt</th>';
+					str+='<th >%</th>';
+				str+='</tr>';
+			str+='</thead>';
+			
+			str+='<tbody>';
+				for(var i in result.partyMettingsVOList){
+					str+='<tr>';
+						str+='<td style="text-align:left !important;">'+result.partyMettingsVOList[i].name+'</td>';
+						str+='<td>'+result.partyMettingsVOList[i].conductedCount+'</td>';
+						if(locationType == "district"){
+							str+='<td>'+result.partyMettingsVOList[i].notUpdatedCount+'</td>';
+							str+='<td>'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</td>';
+							str+='<td>'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</td>';
+							str+='<td>'+result.partyMettingsVOList[i].districtNotUpdatedCount+'</td>';
+						}else if(locationType == "mandal"){
+							str+='<td>'+result.partyMettingsVOList[i].notUpdatedCount+'</td>';
+							str+='<td>'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</td>';
+						}else{
+							str+='<td>'+result.partyMettingsVOList[i].notUpdatedCount+'</td>';
+							str+='<td>'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</td>';
+							str+='<td>'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</td>';
+							
+						}
+						if(result.partyMettingsVOList[i].totalMoms != null && result.partyMettingsVOList[i].totalMoms.length > 0){
+							str+='<td>'+result.partyMettingsVOList[i].totalMoms+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						if(result.partyMettingsVOList[i].generalCount != null && result.partyMettingsVOList[i].generalCount.length > 0){
+							str+='<td>'+result.partyMettingsVOList[i].generalCount+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						str+='<td>'+result.partyMettingsVOList[i].generalCntPer+'</td>';
+						if(result.partyMettingsVOList[i].actionCount != null && result.partyMettingsVOList[i].actionCount.length > 0){
+							str+='<td>'+result.partyMettingsVOList[i].actionCount+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						str+='<td>'+result.partyMettingsVOList[i].actionCntPer+'</td>';
+						if(result.partyMettingsVOList[i].partyCount != null && result.partyMettingsVOList[i].partyCount.length > 0){
+							str+='<td>'+result.partyMettingsVOList[i].partyCount+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						str+='<td>'+result.partyMettingsVOList[i].partyCntPer+'</td>';
+						if(result.partyMettingsVOList[i].govtCount != null && result.partyMettingsVOList[i].govtCount.length > 0){
+							str+='<td>'+result.partyMettingsVOList[i].govtCount+'</td>';
+						}else{
+							str+='<td>-</td>';
+						}
+						
+						str+='<td>'+result.partyMettingsVOList[i].govtCntPer+'</td>';
+						
+					str+='</tr>';
+				}
+			str+='</tbody>';
+		str+='</table>';
+	 str+='</div>';
+	 console.log("#MOMLevel"+locationType)
+	 
+	$("#MOMLevel"+locationType).html(str);
+	if(locationType == "district"){
+		$(".dataTableMOM"+locationType).dataTable({
+			"paging":   false,
+			"info":     false,
+			"searching": true,
+			"autoWidth": true
+		});
+	}else{
+		$(".dataTableMOM"+locationType).dataTable({
+			"iDisplayLength": 10,
+			"aaSorting": [],
+			"aLengthMenu": [[10, 15, 20, -1], [10, 15, 20, "All"]]
+			
+		});
+	}
+	
+	
 }
