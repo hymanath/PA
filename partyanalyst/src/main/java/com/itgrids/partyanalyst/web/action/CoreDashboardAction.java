@@ -6456,6 +6456,7 @@ public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 			Long stateId = jObj.getLong("stateId");
 			String fromDate = jObj.getString("fromDate");
 			String toDate = jObj.getString("toDate");
+			String levelType = jObj.getString("levelType");
 			List<Long> partyMeetingTypeValues=new ArrayList<Long>();
 			JSONArray partyMeetingTypeArray=jObj.getJSONArray("partyMeetingTypeArr");
 			if(partyMeetingTypeArray!=null &&  partyMeetingTypeArray.length()>0){
@@ -6463,7 +6464,7 @@ public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 					partyMeetingTypeValues.add(Long.valueOf(partyMeetingTypeArray.getString(i)));
 				}
 			}
-			partyMeetingsVO = coreDashboardPartyMeetingService.getMOMDetailedBlockDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,null);
+			partyMeetingsVO = coreDashboardPartyMeetingService.getMOMDetailedBlockDetails(activityMemberId,stateId,fromDate,toDate,partyMeetingTypeValues,levelType);
 		}catch(Exception e){
 			LOG.error("Exception raised at getMOMDetailedBlockDetails() method of CoreDashBoardAction", e);
 		}
