@@ -1449,10 +1449,10 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
-		sb.append(" s.stateId,s.state_name , d.district_id,d.district_name,pa.constituency_id,pa.name, c.constituency_id,c.name ");//12
+		sb.append(" s.state_id,s.state_name , d.district_id,d.district_name,pa.constituency_id,pa.name, c.constituency_id,c.name, ");//12
 		sb.append(" t.tehsil_id, t.tehsil_name, l.local_election_body_id, l.name, p.panchayat_id, p.panchayat_name, w.constituency_id, w.name");//20
 		sb.append(" from   ");
-		sb.append(" LEFT JOIN party_meeting pm   ");
+		sb.append(" party_meeting pm   ");
 		sb.append(" LEFT JOIN party_meeting_level pml on pm.party_meeting_level_id = pml.party_meeting_level_id and pm.is_active='Y'  ");
 		sb.append(" LEFT JOIN party_meeting_type pmt on pm.party_meeting_type_id = pmt.party_meeting_type_id and pmt.is_active='Y'  ");
 		sb.append(" LEFT JOIN party_meeting_main_type pmmt on pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and pmt.is_active='Y'  ");
@@ -1466,14 +1466,15 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		sb.append(" LEFT JOIN panchayat p on ua.panchayat_id = p.panchayat_id  ");
 		sb.append(" LEFT JOIN constituency w on ua.ward = w.constituency_id  ");
 		sb.append(" where  ");
-		sb.append(" pm.is_active='Y' and pm.conducted_date is not null ");
+		sb.append(" pm.is_active='Y' and pm.conducted_date is not null and ");
 		sb.append(" pmmt.party_meeting_main_type_id = 1 and  ");
 		sb.append(" (date(pm.conducted_date) BETWEEN '2018-01-01' and '2018-05-01')  and  ");
 		sb.append(" pm.party_meeting_level_id in (1,2,3,4,5,6,9) and  ");
-		sb.append(" st.mom_atr_source_type_id in (1,2) and  ");
 		sb.append(" d.district_id in (11,12,13,14,15,16,17,18,19,20,21,22,23,517)  ");
 		sb.append(" group by pm.party_meeting_id  ");
 		Query query = getSession().createSQLQuery(sb.toString());
+		query.setFirstResult(1);
+		query.setMaxResults(100);
 		return query.list();
 	}
 	
@@ -1483,8 +1484,8 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
 		sb.append(" pmm.party_meeting_minute_id,pmm.minute_point,date(pmm.inserted_time), ");//7
 		sb.append(" st.mom_atr_source_type_id,st.source_type, ");//9
-		sb.append(" pmm.is_actionable ");//10
-		sb.append(" s.stateId,s.state_name , d.district_id,d.district_name,pa.constituency_id,pa.name, c.constituency_id,c.name ");//18
+		sb.append(" pmm.is_actionable, ");//10
+		sb.append(" s.state_id,s.state_name , d.district_id,d.district_name,pa.constituency_id,pa.name, c.constituency_id,c.name, ");//18
 		sb.append(" t.tehsil_id, t.tehsil_name, l.local_election_body_id, l.name, p.panchayat_id, p.panchayat_name, w.constituency_id, w.name");//26
 		sb.append(" from   ");
 		sb.append(" party_meeting_minute pmm ");
@@ -1510,8 +1511,11 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		sb.append(" st.mom_atr_source_type_id in (1,2) and  ");
 		sb.append(" pmm.is_actionable in ('N','Y')  and  ");
 		sb.append(" d.district_id in (11,12,13,14,15,16,17,18,19,20,21,22,23,517)  ");
-		sb.append(" group by pmm.party_meeting_minute_id  ");
+		//sb.append(" group by pmm.party_meeting_minute_id  ");
 		Query query = getSession().createSQLQuery(sb.toString());
+		
+		query.setFirstResult(1);
+		query.setMaxResults(100);
 		return query.list();
 	}
 	
