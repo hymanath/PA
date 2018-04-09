@@ -1333,8 +1333,8 @@ public class PrENCService implements IPrENCService {
 				for (Object[] param : worksdata) {
 					IdNameVO workDetailsVO = workMap.get(commonMethodsUtilService.getStringValueForObject(param[0]));
 					if(workDetailsVO == null){
-					
-					workDetailsVO.setWrokIdStr(commonMethodsUtilService.getStringValueForObject(param[0]));
+					workDetailsVO = new IdNameVO();
+					workDetailsVO.setWorkId(commonMethodsUtilService.getLongValueForObject(param[0]));
 					workDetailsVO.setWrokName(commonMethodsUtilService.getStringValueForObject(param[1]));
 					workDetailsVO.setAssetType(commonMethodsUtilService.getStringValueForObject(param[3]));
 					workDetailsVO.setDistrictCode(commonMethodsUtilService.getStringValueForObject(param[7]));
