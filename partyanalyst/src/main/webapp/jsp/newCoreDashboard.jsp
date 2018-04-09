@@ -4952,7 +4952,7 @@
 											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
 											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
 										</ul>
-										<h5 class="m_top5">The Graph Depends On MOM Updated and Not Updated Meetings</h5>
+										<h6 class="m_top5">The Graph Depends On MOM Updated and Not Updated Meetings</h6>
 									</div>
 								 </div>
 								  <div class="row">
