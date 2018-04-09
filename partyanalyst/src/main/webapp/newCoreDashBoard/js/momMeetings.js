@@ -2,8 +2,8 @@ var spinner = '<div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><
 var globalUserWiseMemberMOMRslt;
 levelWiseMOMArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:'constituency',id:'4'}];
 
-var currentFromDate = moment().startOf("month").format("DD/MM/YYYY");
-var currentToDate = moment().endOf('month').format("DD/MM/YYYY");
+var currentFromDate = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY");
+var currentToDate = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY");
 $("#dateRangeIdForMOM").daterangepicker({
 	opens: 'left',
 	startDate:currentFromDate,
@@ -28,15 +28,15 @@ $("#dateRangeIdForMOM").daterangepicker({
 	var pickerDates = currentFromDate+' - '+currentToDate
 	if(dates == pickerDates)
 	{
-		$("#dateRangeIdForMOM").val('This Month');
+		$("#dateRangeIdForMOM").val('Last Month');
 	}
 	
 	$('#dateRangeIdForMOM').on('apply.daterangepicker', function(ev, picker) {
 		currentFromDate = picker.startDate.format('DD/MM/YYYY');
 		currentToDate = picker.endDate.format('DD/MM/YYYY');
-		if(picker.chosenLabel == 'This Month')
+		if(picker.chosenLabel == 'Last Month')
 		{
-			$("#dateRangeIdForMOM").val('This Month');
+			$("#dateRangeIdForMOM").val('Last Month');
 		}
 		
 		onloadMOMCalls();
@@ -238,28 +238,15 @@ function buildMOMBasicCountDetailsAction(result){
 function getUserTypeWisePartyMeetingMOMDetails(){
 	
 	$("#userTypeWiseMOMDiv").html(spinner);
-		/*
-		
-		var jsObj ={  
-			 activityMemberId:44,
-			 userTypeId:2,
-			 state:"AP",
-			 committeeEnrollmentYearArray:[],
-			 dateString:"09/02/2017-06/04/2018",
-			 partyMeetingTypeArr:[2,3,15]
-		};	
-*/
 
+	 var dateString = currentFromDate+"-"+currentToDate;
 		var jsObj ={  
-			 activityMemberId:44,
-			 userTypeId:2,
-			 userAccessLevelId:2,
-			 userAccessLevelValuesArray:[1],
+			 activityMemberId:globalActivityMemberId,
+			 userTypeId:globalUserTypeId,
 			 state:"AP",
-			 levelWiseBasicCommitteesArray:[{"committeeLevelId":11,"basicCommitteeIds":["1","2","3","4","6","7","8","9","18","11","5","15","10","16","20","21","19","14","12","13","1"]},{"committeeLevelId":5,"basicCommitteeIds":["1","2","3","4","6","7","8","9","18","11","5","15","10","16","20","21","19","14","12","13","1"]},{"committeeLevelId":6,"basicCommitteeIds":["1"]}],
-			 dateString:"09/02/2017-06/04/2018",
-			 committeeEnrollmentYearArray:["2"],
-			 commiteType:"tdpCommittee"
+			 stateId:1,
+			 dateString:dateString,
+			 partyMeetingTypeArr:[2,3,15]
 		};		
 		
 		$.ajax({
@@ -295,7 +282,7 @@ function buildgetUserTypeWiseMOMTopFiveStrong(result){
 				if(result[i] !=null && result[i].length>0){
 					for(var j in result[i]){
 						candidateNameArray.push(result[i][j].name.toUpperCase());
-						momNotUpdatedCountArr.push({"y":parseFloat(result[i][j].momCompletedCntPer),"extra":result[i][j].momCompletedCnt})
+						momNotUpdatedCountArr.push({"y":parseFloat(result[i][j].momCompletedCntPer),"extra":result[i][j].totalMomsCnt})
 						momUpdatedCountArr.push({"y":parseFloat(result[i][j].totalPendingMomsCntPer),"extra":result[i][j].totalPendingMomsCnt})
 						
 						countVar =countVar+1;
@@ -387,11 +374,11 @@ function buildgetUserTypeWiseMOMTopFiveStrong(result){
 							},
 								
 								series: [{
-									name: 'MOM NOT UPDATED',
-									data: momNotUpdatedCountArr
-								},{
 									name: 'MOM UPDATED',
 									data: momUpdatedCountArr
+								},{
+									name: 'MOM NOT UPDATED',
+									data: momNotUpdatedCountArr
 								}],
 						 
 						});
@@ -439,11 +426,11 @@ function buildgetUserTypeWiseMOMTopFiveStrong(result){
 				if(result[i] !=null && result[i].length  >0){
 					for(var j = result[i].length -1; j >= 0; j--){
 						
-						momNotUpdatedCountArr.push({"y":parseFloat(result[i][j].momCompletedCntPer),"extra":result[i][j].momCompletedCnt})
+						momNotUpdatedCountArr.push({"y":parseFloat(result[i][j].momCompletedCntPer),"extra":result[i][j].totalMomsCnt})
 						momUpdatedCountArr.push({"y":parseFloat(result[i][j].totalPendingMomsCntPer),"extra":result[i][j].totalPendingMomsCnt})
 						
-						momNotUpdatedCount = result[i][j].momCompletedCnt;
-						momUpdatedCount = result[i][j].totalPendingMomsCnt;
+						momNotUpdatedCount = momNotUpdatedCount+parseInt(result[i][j].totalMomsCnt);
+						momUpdatedCount = momUpdatedCount+parseInt(result[i][j].totalPendingMomsCnt);
 						
 						candidateNameArray.push(result[i][j].name.toUpperCase());
 						
@@ -541,11 +528,11 @@ function buildgetUserTypeWiseMOMTopFiveStrong(result){
 								shared: true
 							},
 								series: [{
-									name: 'MOM NOT UPDATED',
-									data: momNotUpdatedCountArr
-								},{
 									name: 'MOM UPDATED',
 									data: momUpdatedCountArr
+								},{
+									name: 'MOM NOT UPDATED',
+									data: momNotUpdatedCountArr
 								}],
 						 
 						});
