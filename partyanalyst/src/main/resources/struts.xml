@@ -13524,7 +13524,11 @@
    			<param name="root">userTypeVOList</param>
    		</result>
 	</action>
-	
+	<action name="getPartyMeetingMOMDetailsCompletedCountsClicks" class="coreDashboardAction" method="getPartyMeetingMOMDetailsCompletedCountsClicks">
+		<result type="json" name="success">
+   			<param name="root">momDetailsList</param>
+   		</result>
+	</action>
 	<action name="getPositionsForABoardAction" class="nominatedPostProfileAction" method="getPositionsForABoard">
 		<result type="json" name="success">
    			<param name="root">idNameVOList</param>
