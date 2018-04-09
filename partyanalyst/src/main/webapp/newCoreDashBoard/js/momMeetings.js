@@ -13,12 +13,12 @@ var levelWiseMOMArr=[{name:'district',id:'3'},{name:'parliament',id:'10'},{name:
 } */ 
 
 
-var currentFromDate = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY");
-var currentToDate = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY");
+var currentFromDateMOM = moment().subtract(1,'month').startOf("month").format("DD/MM/YYYY");
+var currentToDateMOM = moment().subtract(1,'month').endOf("month").format("DD/MM/YYYY");
 $("#dateRangeIdForMOM").daterangepicker({
 	opens: 'left',
-	startDate:currentFromDate,
-	endDate: currentToDate,
+	startDate:currentFromDateMOM,
+	endDate: currentToDateMOM,
 	locale: {
 		format: 'DD/MM/YYYY'
 	},
@@ -36,15 +36,15 @@ $("#dateRangeIdForMOM").daterangepicker({
 });
 
 	var dates= $("#dateRangeIdForMOM").val();
-	var pickerDates = currentFromDate+' - '+currentToDate
+	var pickerDates = currentFromDateMOM+' - '+currentToDateMOM
 	if(dates == pickerDates)
 	{
 		$("#dateRangeIdForMOM").val('Last Month');
 	}
 	
 	$('#dateRangeIdForMOM').on('apply.daterangepicker', function(ev, picker) {
-		currentFromDate = picker.startDate.format('DD/MM/YYYY');
-		currentToDate = picker.endDate.format('DD/MM/YYYY');
+		currentFromDateMOM = picker.startDate.format('DD/MM/YYYY');
+		currentToDateMOM = picker.endDate.format('DD/MM/YYYY');
 		if(picker.chosenLabel == 'Last Month')
 		{
 			$("#dateRangeIdForMOM").val('Last Month');
@@ -89,8 +89,8 @@ function getMOMBasicCountDetailsAction()
 	  var jsObj ={
 		 activityMemberId : globalActivityMemberId,
 		 stateId : 1,
-		 fromDate : currentFromDate,
-		 toDate : currentToDate,
+		 fromDate : currentFromDateMOM,
+		 toDate : currentToDateMOM,
 		 partyMeetingTypeArr:[2,3,15]
 		 
 		}
@@ -253,7 +253,7 @@ function getUserTypeWisePartyMeetingMOMDetails(){
 	
 	$("#userTypeWiseMOMDiv").html(spinner);
 
-	 var dateString = currentFromDate+"-"+currentToDate;
+	 var dateString = currentFromDateMOM+"-"+currentToDateMOM;
 		var jsObj ={  
 			 activityMemberId:globalActivityMemberId,
 			 userTypeId:globalUserTypeId,
@@ -629,8 +629,8 @@ function getMOMDetailedBlockDetailsAction(locationType)
 	var jsObj ={
 		 activityMemberId : globalActivityMemberId,
 		 stateId : 1,
-		 fromDate : "01/03/2018",
-		 toDate : "31/03/2018",
+		 fromDate : currentFromDateMOM,
+		 toDate : currentToDateMOM,
 		 partyMeetingTypeArr:[2,3,15],
 		 levelType : locationType
 		 
