@@ -35,8 +35,8 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public Date getPartMeetingMonthYear(Long partyMeetingId);
 	public List<Object[]> getMOMTypesCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String momType);
 	public List<Object[]> getMOMActionTypeCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues);
-	public List<Object[]> getMOMTypesByLevelTypeDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String momType,String levelType);
-	public List<Object[]> getMOMActionTypeDetailsByLevelType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType);
+	public List<Object[]> getMOMTypesByLevelTypeDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String momType,String levelType,List<Long> partyMeetingTypeValues);
+	public List<Object[]> getMOMActionTypeDetailsByLevelType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType,List<Long> partyMeetingTypeValues);
 	public List<Object[]> getMOMStatusDetailsByLevelType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType);
 	public List<Object[]> getMOMTypesCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getMOMStatusCntDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Date fromDate,Date toDate);

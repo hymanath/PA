@@ -1000,7 +1000,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 	}
 	public List<Object[]> getMOMActionTypeCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,model.momAtrSourceType.momAtrSourceTypeId,model.momAtrSourceType.sourceType,count(model.partyMeeting.partyMeetingId)" +
+		queryStr.append("select model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,model.momAtrSourceType.momAtrSourceTypeId,model.momAtrSourceType.sourceType,count(distinct model.partyMeeting.partyMeetingId)" +
 				" from PartyMeetingMinute model where "
 				+" model.partyMeeting.isActive='Y'" 
 	    	  	+" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1 and model.isDeleted='N'");
@@ -1053,14 +1053,18 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 return query.list(); 
 	}
 	
-	public List<Object[]> getMOMTypesByLevelTypeDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String momType,String levelType){
+	public List<Object[]> getMOMTypesByLevelTypeDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String momType,String levelType,List<Long> partyMeetingTypeValues){
 		StringBuilder queryStr = new StringBuilder();
 		 if(levelType != null && levelType.trim().equalsIgnoreCase("District"))
 	    	  queryStr.append(" select model.partyMeeting.meetingAddress.district.districtId");
 	     else  if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency"))
 	    	  queryStr.append(" select model.partyMeeting.meetingAddress.constituency.constituencyId");
+	     else  if(levelType != null && levelType.trim().equalsIgnoreCase("Mandal"))
+	    	   queryStr.append(" select model.partyMeeting.meetingAddress.tehsil.tehsilId");
+	     else  if(levelType != null && levelType.trim().equalsIgnoreCase("Parliament"))
+	    	   queryStr.append(" select model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId");
 		 
-		 queryStr.append(",count(model.partyMeetingMinuteId)" +
+		 queryStr.append(",model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,count(distinct model.partyMeeting.partyMeetingId)" +
 				" from PartyMeetingMinute model where "
 				+" model.partyMeeting.isActive='Y' and model.partyMeeting.startDate is not null " 
 	    	  	+" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1 and model.isDeleted='N'");
@@ -1070,11 +1074,9 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
 		 }
-		  if(levelType != null && levelType.trim().equalsIgnoreCase("District")){
-			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (3)");
-		 }else if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency")){
-			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (15)");
-		 }
+		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+			 }
 		  
 		 if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
 		   queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId in (:userAccessLevelValues)");  
@@ -1101,10 +1103,14 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 }
 		 
 		 if(levelType != null && levelType.trim().equalsIgnoreCase("District"))
-			 queryStr.append(" group by model.partyMeeting.meetingAddress.district.districtId  order by  model.partyMeeting.meetingAddress.district.districtId asc");
+			 queryStr.append(" group by model.partyMeeting.meetingAddress.district.districtId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId   order by  model.partyMeeting.meetingAddress.district.districtId asc");
 		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency"))
-			 queryStr.append(" group by model.partyMeeting.meetingAddress.constituency.constituencyId  order by  model.partyMeeting.meetingAddress.constituency.constituencyId asc");
-			
+			 queryStr.append(" group by model.partyMeeting.meetingAddress.constituency.constituencyId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId   order by  model.partyMeeting.meetingAddress.constituency.constituencyId asc");
+		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Mandal"))
+			 queryStr.append(" group by model.partyMeeting.meetingAddress.tehsil.tehsilId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.partyMeeting.meetingAddress.tehsil.tehsilId asc");
+		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Parliament"))
+			 queryStr.append(" group by model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId asc");	
+		 
 		 Query query = getSession().createQuery(queryStr.toString());
 			
 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
@@ -1117,18 +1123,24 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 if(stateId != null && stateId.longValue() > 0){
 			 query.setParameter("stateId", stateId);
 		 }
-		 
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+			 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
+		 }
 		 return query.list(); 
 	}
 	
-	public List<Object[]> getMOMActionTypeDetailsByLevelType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType){
+	public List<Object[]> getMOMActionTypeDetailsByLevelType(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String levelType,List<Long> partyMeetingTypeValues){
 		StringBuilder queryStr = new StringBuilder();
 		if(levelType != null && levelType.trim().equalsIgnoreCase("District"))
 	    	  queryStr.append(" select model.partyMeeting.meetingAddress.district.districtId");
 	    else  if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency"))
 	    	  queryStr.append(" select model.partyMeeting.meetingAddress.constituency.constituencyId");
+	    else  if(levelType != null && levelType.trim().equalsIgnoreCase("Mandal"))
+	    	   queryStr.append(" select model.partyMeeting.meetingAddress.tehsil.tehsilId");
+	     else  if(levelType != null && levelType.trim().equalsIgnoreCase("Parliament"))
+	    	   queryStr.append(" select model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId");
 		
-		queryStr.append(",model.momAtrSourceType.momAtrSourceTypeId,model.momAtrSourceType.sourceType,count(model.partyMeetingMinuteId)" +
+		queryStr.append(",model.momAtrSourceType.momAtrSourceTypeId,model.momAtrSourceType.sourceType,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,count(distinct model.partyMeeting.partyMeetingId)" +
 				" from PartyMeetingMinute model where "
 				+" model.partyMeeting.isActive='Y'" 
 	    	  	+" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1 and model.isDeleted='N'");
@@ -1138,7 +1150,9 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		  if(fromDate!= null && toDate!=null){
 			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
 		 }
-		  
+		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
+			}
 		 if(levelType != null && levelType.trim().equalsIgnoreCase("District")){
 			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (3)");
 		 }else if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency")){
@@ -1164,10 +1178,13 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 }
 		 
 		 if(levelType != null && levelType.trim().equalsIgnoreCase("District"))
-			 queryStr.append(" group by model.momAtrSourceType.momAtrSourceTypeId,model.partyMeeting.meetingAddress.district.districtId  order by  model.partyMeeting.meetingAddress.district.districtId asc");
+			 queryStr.append(" group by model.momAtrSourceType.momAtrSourceTypeId,model.partyMeeting.meetingAddress.district.districtId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.partyMeeting.meetingAddress.district.districtId asc");
 		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Constituency"))
-			 queryStr.append(" group by model.momAtrSourceType.momAtrSourceTypeId,model.partyMeeting.meetingAddress.constituency.constituencyId  order by  model.partyMeeting.meetingAddress.constituency.constituencyId asc");
-		 
+			 queryStr.append(" group by model.momAtrSourceType.momAtrSourceTypeId,model.partyMeeting.meetingAddress.constituency.constituencyId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.partyMeeting.meetingAddress.constituency.constituencyId asc");
+		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Mandal"))
+			 queryStr.append(" group by model.partyMeeting.meetingAddress.tehsil.tehsilId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.partyMeeting.meetingAddress.tehsil.tehsilId asc");
+		 else if(levelType != null && levelType.trim().equalsIgnoreCase("Parliament"))
+			 queryStr.append(" group by model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId,model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  order by  model.partyMeeting.meetingAddress.parliamentConstituency.constituencyId asc");	
 		 	
 		 Query query = getSession().createQuery(queryStr.toString());
 			
@@ -1181,7 +1198,9 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 if(stateId != null && stateId.longValue() > 0){
 			 query.setParameter("stateId", stateId);
 		 }
-		 
+		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
+			 query.setParameterList("partyMeetingTypeValues", partyMeetingTypeValues); 
+		 }
 		 return query.list(); 
 	}
 	
@@ -1268,7 +1287,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" model.partyMeeting.meetingAddress.panchayat.panchayatId,model.partyMeeting.meetingAddress.panchayat.panchayatName"); 
 		 else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID)
 			 queryStr.append(" model.partyMeeting.meetingAddress.ward.constituencyId,model.partyMeeting.meetingAddress.ward.name");
-		queryStr.append(",model.isActionable,count(pm.partyMeetingMinuteId) ");
+		queryStr.append(",model.isActionable,count(distinct model.partyMeeting.partyMeetingId) ");
 				
 		queryStr.append(" from PartyMeetingMinute model where "
 				+" model.partyMeeting.isActive='Y' and model.partyMeeting.startDate is not null " 
