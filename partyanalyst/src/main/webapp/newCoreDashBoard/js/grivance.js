@@ -15,8 +15,7 @@ $("#daterangeId").daterangepicker({
 	'This Month': [moment().startOf('month'), moment()],
 	'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
 	'This Year': [moment().startOf('Year'), moment()],
-	'Last Year': ['01-01-2017', moment()],
-	'OverAll':['28-11-2016',moment()]
+	'Last Year': ['01-01-2017', moment()]
  } 
  });
 $('#daterangeId').on('apply.daterangepicker', function(ev, picker) { 
