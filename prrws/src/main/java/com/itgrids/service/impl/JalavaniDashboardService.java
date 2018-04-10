@@ -123,7 +123,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	    				Long count=0l;
 	    				Long locationCnt=0l;
 	    				
-		    					if (jObj.isNull("locationInfo")){
+		    					if (jObj.isNull("count")){
 		    						  count = 0l;
 		    					} else {
 		    						  count = jObj.getLong("count");
