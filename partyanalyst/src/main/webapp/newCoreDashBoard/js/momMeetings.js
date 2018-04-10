@@ -803,3 +803,30 @@ function getPartyMeetingMOMDetailsCompletedCountClicks(){
        
     });
   } */
+  
+  
+  $(document).on("click",".clicksCountCls",function(){
+  var dateString = currentFromDateMOM+"-"+currentToDateMOM;
+    var jsObj ={  
+       activityMemberId:44,
+       userTypeId:1,
+       state:"AP",
+       stateId:1,
+       dateString:dateString,
+       partyMeetingTypeArr:[2,3,15],
+       meetinglevelIdArr:[3,4,5],// mandal - 5 , constituency : 4, district-3       
+       searchType:"PlannedMeetings",
+       
+       searchLevelId:2,
+       searchLevelValue:1,
+    };
+    $.ajax({
+      type : 'POST',
+      url : 'getPartyMeetingMOMDetailsCompletedCountsClicks.action',
+      dataType : 'json',
+      data : {task:JSON.stringify(jsObj)}
+    }).done(function(result){
+      
+       console.log(result);
+    });
+});
