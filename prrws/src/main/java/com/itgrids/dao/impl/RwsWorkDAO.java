@@ -250,7 +250,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_GROUNDED)){ // ongoing
 			sb.append(" and  model.rwsWork.groundedDate is not null ");  
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
-			sb.append(" and model.rwsWork.groundedDate is null ");
+			sb.append(" and model.rwsWork.groundedDate is null and model.rwsWork.completedDate is null ");
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
 			sb.append(" and model.rwsWork.completedDate is null and model.rwsWork.groundedDate is not null ");
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_COMPLETION)){
