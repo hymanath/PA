@@ -253,3 +253,50 @@ function buildEofficeDesginationDetailsByDepartment(result){
 			"aLengthMenu": [[13, 15, 20, -1], [13, 15, 20, "All"]]
 		});
 }
+
+checkeOfficeDataExists();
+function checkeOfficeDataExists(){
+	$.ajax({                 
+		type:'GET',    
+		url: 'checkeOfficeDataExists',
+		dataType: 'text',
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result != null && result == "notExists")
+			geteOfficeDataFromWebservice();
+	});
+}
+
+function geteOfficeDataFromWebservice() 
+{
+	var eofficeToDate = moment().format("YYYY-MM-DD");
+	var data="hello";
+	$.get("https://demo.eoffice.ap.gov.in/TTReports/Filesumm1.php?strFromDate=2014-01-01&strToDate="+eofficeToDate+"", function(response) {
+		data = response;
+		console.log(data);
+		saveeOfficeWebserviceData(data);
+	}).error(function(){
+		console.log("Sorry,eOffice Data could not proceed");
+	});
+}
+
+function saveeOfficeWebserviceData(data){
+	var json = {
+	    subject:data
+	}
+	$.ajax({                
+		type:'POST',    
+		url: 'saveeOfficeWebServiceData',
+		dataType: 'text',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		console.log(result);
+	});
+}

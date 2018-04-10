@@ -407,49 +407,50 @@ function getAllLevelWiseDataOverView(locType,filterType,locId,divId,lightVendorA
 function buildBasicLedOverviewDetails(result)
 {
 	var str='';
-	
-	
+		var perc = (parseInt(result[0].totalLights)/parseInt(result[0].lightTarget)*100.00).toFixed(2);
+		var onperc = (parseInt(result[0].onLights)/parseInt(result[0].totalLights)*100.00).toFixed(2);
+		var offperc = (parseInt(result[0].offLights)/parseInt(result[0].totalLights)*100.00).toFixed(2);
 			str+='<div class="col-sm-12">';
-			str+='<div class="col-sm-1 m_top5"></div>';
-			str+='<div class="col-sm-2 m_top5">';
-				str+='<div class="media">';
-					str+='<div class="media-left">';
-						str+='<img src="Assests/icons/Target_icon.png" alt="poles_icon">';
+			str+='<div class="col-sm-7 m_top5">';
+				str+='<div class="col-sm-4 m_top5">';
+					str+='<div class="media">';
+						str+='<div class="media-left">';
+							str+='<img src="Assests/icons/Target_icon.png" alt="poles_icon">';
+						str+='</div>';
+						str+='<div class="media-body">';
+							str+='<h5 style="color:#8E51Db"><b>OVERALL&nbsp;TARGET</b></h5>';
+							str+='<h3 class="m_top5">'+result[0].lightTarget+'</h3>';
+						str+='</div>';
 					str+='</div>';
-					str+='<div class="media-body">';
-						str+='<h5 style="color:#8E51Db"><b>OVERALL&nbsp;TARGET</b></h5>';
-						str+='<h3 class="m_top5">'+result[0].lightTarget+'</h3>';
-					str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-4 m_top5">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+								str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 style="color:#827C13"><b>LIGHTS FITTED</b></h5>';
+								str+='<h3 class="m_top5">'+result[0].totalLights+'</h3>';
+							str+='</div>';
+						str+='</div>';
+				str+='</div>';
+				
+				str+='<div class="col-sm-4 m_top5">';
+						str+='<div class="media">';
+							str+='<div class="media-left">';
+								str+='<img src="Assests/icons/Achived_Perc_Icon.png" alt="poles_icon" style="margin-top: -7px;">';
+							str+='</div>';
+							str+='<div class="media-body">';
+								str+='<h5 style="color:#339900"><b>ACHIEVEMENT</b></h5>';
+								str+='<h3 class="m_top5">'+perc+' %</h3>';
+							str+='</div>';
+						str+='</div>';
 				str+='</div>';
 			str+='</div>';
 			
-			str+='<div class="col-sm-2 m_top5">';
-					str+='<div class="media">';
-						str+='<div class="media-left">';
-							str+='<img src="Assests/icons/Total_Led_lights_iocn.png" alt="poles_icon">';
-						str+='</div>';
-						str+='<div class="media-body">';
-							str+='<h5 style="color:#827C13"><b>LIGHTS FITTED</b></h5>';
-							str+='<h3 class="m_top5">'+result[0].totalLights+'</h3>';
-						str+='</div>';
-					str+='</div>';
-			str+='</div>';
-			var perc = (parseInt(result[0].totalLights)/parseInt(result[0].lightTarget)*100.00).toFixed(2);
-			var onperc = (parseInt(result[0].onLights)/parseInt(result[0].totalLights)*100.00).toFixed(2);
-			var offperc = (parseInt(result[0].offLights)/parseInt(result[0].totalLights)*100.00).toFixed(2);
-			str+='<div class="col-sm-2 m_top5">';
-					str+='<div class="media">';
-						str+='<div class="media-left">';
-							str+='<img src="Assests/icons/Achived_Perc_Icon.png" alt="poles_icon">';
-						str+='</div>';
-						str+='<div class="media-body">';
-							str+='<h5 style="color:#339900"><b>ACHIEVEMENT</b></h5>';
-							str+='<h3 class="m_top5">'+perc+' %</h3>';
-						str+='</div>';
-					str+='</div>';
-			str+='</div>';
-			
-			str+='<div class="col-sm-2 m_top5">';
+			str+='<div class="col-sm-5 m_top5">';
+				str+='<div class="col-sm-6 m_top5">';
 					str+='<div class="media">';
 						str+='<div class="media-left">';
 							str+='<img src="Assests/icons/On_Off_light_icon.png" alt="poles_icon">';
@@ -462,9 +463,9 @@ function buildBasicLedOverviewDetails(result)
 							str+='<h3 class="m_top5">'+result[0].onLights+'<small class="small-12" style="color:#FF3333"> ( '+onperc+' %) </small></h3>';
 						str+='</div>';
 					str+='</div>';
-			str+='</div>';
+				str+='</div>';
 			
-			str+='<div class="col-sm-2 m_top5">';
+				str+='<div class="col-sm-6 m_top5">';
 					str+='<div class="media">';
 						str+='<div class="media-left">';
 							str+='<img src="Assests/icons/Off_Light_Icon.png" alt="poles_icon">';
@@ -477,8 +478,10 @@ function buildBasicLedOverviewDetails(result)
 							str+='<h3 class="m_top5">'+result[0].offLights+'<small class="small-12" style="color:#FF3333"> ( '+offperc+' %) </small></h3>';
 						str+='</div>';
 					str+='</div>';
+				str+='</div>';
 			str+='</div>';
-			str+='<div class="col-sm-1 m_top5"></div>';
+			
+			//str+='<div class="col-sm-1 m_top5"></div>';
 			/*str+='<div class="col-sm-2 m_top5">';
 				str+='<div class="media">';
 					str+='<div class="media-left">';
@@ -609,13 +612,13 @@ function projectData(divId,levelId)
 								collapse+='<div class="panel-body">';
 									collapse+='<div class="row m_top10">';
 										collapse+='<div class="col-sm-12">';
-										collapse+='<div class="col-sm-2">';
+										collapse+='<div class="col-sm-3" style="margin-right: -100px;">';
 											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'" role="tabDrains_menu" attr_blockId="3">';
 												collapse+='<li class="active ledResultTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="district">Districts</li>';
 												collapse+='<li class="ledResultTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="parliament">Parliament</li>';
 											collapse+='</ul>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-2">';
+										collapse+='<div class="col-sm-3">';
 											collapse+='<ul class="nav navbar-nav list_inline tableMenu tableMenu'+dataArr[i]+'ViewType levelTypeCls" role="tabDrains_menu" attr_blockId="3">';
 												collapse+='<li class="active viewTypeCls"  attr_location_level='+dataArr[i]+'  attr_tab_type="individual">Vendor</li>';
 												collapse+='<li class="viewTypeCls" attr_location_level='+dataArr[i]+' attr_tab_type="cummulative">Cummulative</li>';
@@ -676,7 +679,7 @@ function projectData(divId,levelId)
 											collapse+='<option value="0">SELECT MANDAL</option>';
 											collapse+='</select>';
 										collapse+='</div>';
-										collapse+='<div class="col-sm-2 '+dataArr[i]+'vendorSelectBoxCls"">';
+										collapse+='<div class="col-sm-2 '+dataArr[i]+'vendorSelectBoxCls m_top20">';
 											collapse+='<select class="form-control chosen-select lightsVendorCls" attr_filter_type="district" attr_location_level="panchayat" attr_filter_type="mandal" attr_district_filter_id="panchayatLvlLedDistrictSelectBoxId"  attr_constituency_filter_id="panchayatLvlLedConstituencySelectBoxId" attr_mandal_filter_id="panchayatLvlLedMandalSelectBoxId" id="panchayatLvlLedLightsVendorSelectBoxId">';
 												collapse+='<option value="0">All</option>';
 											collapse+='</select>';

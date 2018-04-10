@@ -6325,12 +6325,15 @@ public class ItcDashboardService implements IItcDashboardService {
 			if(list != null && !list.isEmpty()){
 				Date callTime = list.get(0)[1] != null ? (Date)list.get(0)[1] : null;
 				Date presentTime = dateUtilService.getCurrentDateAndTime();
-				long timeDiff = (presentTime.getTime() - callTime.getTime());
-				
-				if(timeDiff > IConstants.EOFFICE_WS_DATA_SAVE_INTERVAL)
+				if(callTime != null){
+					long timeDiff = (presentTime.getTime() - callTime.getTime());
+					
+					if(timeDiff > IConstants.EOFFICE_WS_DATA_SAVE_INTERVAL)
+						status = "notExists";
+					else
+						status = "exists";
+				}else
 					status = "notExists";
-				else
-					status = "exists";
 			}else{
 				status = "notExists";
 			}
