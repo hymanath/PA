@@ -3,7 +3,9 @@ package com.itgrids.partyanalyst.web.action;
 import java.io.File;
 import java.io.InputStream;
 import java.io.StringBufferInputStream;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -6346,31 +6348,27 @@ public String getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1(){
 		 HttpSession session = request.getSession();
 		 RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
 		 if(user == null || user.getRegistrationID() == null){
-			//return ERROR;
 			 userId = 1L;
 		 }
-		 else
+		 else                           
 			 userId = user.getRegistrationID();
 		
 		jObj = new JSONObject(getTask());
 		
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long userTypeId = jObj.getLong("userTypeId");
-		String committeType= jObj.getString("commiteType");
 		String state = jObj.getString("state");
-		
-		Map<Long,List<Long>> committeeLevelBasedCommitteeIdsMap = getLevelWiseBasicCommittees(jObj);
-
 		String dateString = jObj.getString("dateString");
-		List<Long> committeeEnrollmentYearsIdsLst = new ArrayList<Long>();
-		JSONArray committeeEnrollmentYearArray =jObj.getJSONArray("committeeEnrollmentYearArray");
-		if(committeeEnrollmentYearArray!=null &&  committeeEnrollmentYearArray.length()>0){
-			for( int i=0;i<committeeEnrollmentYearArray.length();i++){
-				committeeEnrollmentYearsIdsLst.add(Long.valueOf(committeeEnrollmentYearArray.getString(i)));
+		
+		List<Long> partyMeetingTypeIdsList = new ArrayList<Long>();
+		JSONArray alertTypeIdArr = jObj.getJSONArray("partyMeetingTypeArr");
+		if(alertTypeIdArr!=null &&  alertTypeIdArr.length()>0){
+			for( int i=0;i<alertTypeIdArr.length();i++){
+				partyMeetingTypeIdsList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
 			}
 		}
 		
-		userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseCommitteesMOMCompletedCounts1(userId,activityMemberId,userTypeId,state,committeeLevelBasedCommitteeIdsMap,dateString);
+		userTypeVOList = coreDashboardPartyMeetingService.getUserTypeWiseCommitteesMOMCompletedCounts1(userId,activityMemberId,userTypeId,state,dateString,partyMeetingTypeIdsList);
 	}catch(Exception e){
 		LOG.error("Exception raised at getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1() method of CoreDashBoard", e);
 	}
@@ -6391,10 +6389,28 @@ public String getPartyMeetingMOMDetailsCompletedCountsClicks(){
 		 else
 			 userId = user.getRegistrationID();
 		
-		jObj = new JSONObject(getTask());
+		 jObj = new JSONObject(getTask());
+		 MomDetailsVO momDetailsVO = new MomDetailsVO();
+		Long activityMemberId = jObj.getLong("activityMemberId");
+		Long stateId = jObj.getLong("stateId");
+		String dateString = jObj.getString("dateString");
+		List<Long> partyMeetingTypeIdsList = new ArrayList<Long>();
+		JSONArray alertTypeIdArr = jObj.getJSONArray("partyMeetingTypeArr");
+		if(alertTypeIdArr!=null &&  alertTypeIdArr.length()>0){
+			for( int i=0;i<alertTypeIdArr.length();i++){
+				partyMeetingTypeIdsList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
+			}
+			momDetailsVO.setPartyMeetingLevelIdsList(partyMeetingTypeIdsList);
+		}
 		
-		MomDetailsVO momDetailsVO = new MomDetailsVO();
-		momDetailsList = coreDashboardPartyMeetingService.getPartyMeetingsMOMDetails(momDetailsVO);
+		momDetailsVO.setStateId(stateId);
+		String DatesArr[] = dateString.split("-");
+	   	 if(DatesArr != null && DatesArr.length>0){
+	   		List<Date>  datesList = coreDashboardGenericService.getDates(DatesArr[0], DatesArr[1], new SimpleDateFormat("dd/MM/yyyy"));
+			 momDetailsVO.setStartDate(datesList.get(0));
+			 momDetailsVO.setEndDate(datesList.get(1));
+	   	 }
+		momDetailsList = coreDashboardPartyMeetingService.getPartyMeetingsMOMDetails(momDetailsVO,activityMemberId);
 	}catch(Exception e){
 		LOG.error("Exception raised at getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1() method of CoreDashBoard", e);
 	}
