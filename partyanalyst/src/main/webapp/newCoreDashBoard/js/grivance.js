@@ -1,11 +1,10 @@
 var smallSpinner='<i class="fa fa-spinner fa-spin" style="font-size:24px"></i>';
-onloadcalls();
-var fromDate=moment().startOf('month').format("MM-DD-YYYY");
-var toDate=moment().format("MM-DD-YYYY");
-$("#daterangeId").daterangepicker({
+var fromDateGreivance=moment().startOf('month').format("MM-DD-YYYY");
+var toDateGreivance=moment().format("MM-DD-YYYY");
+$("#dateRangeIdForGrivance").daterangepicker({
  opens: 'left',
- startDate: fromDate,
- endDate: toDate,
+ startDate: fromDateGreivance,
+ endDate: toDateGreivance,
  locale: {
  format: 'MM-DD-YYYY'
  } ,
@@ -18,12 +17,25 @@ $("#daterangeId").daterangepicker({
 	'Last Year': ['01-01-2017', moment()]
  } 
  });
-$('#daterangeId').on('apply.daterangepicker', function(ev, picker) { 
-	fromDate =picker.startDate.format('MM-DD-YYYY');       
-	toDate = picker.endDate.format('MM-DD-YYYY');
-	onloadcalls();
-});
-function onloadcalls(){
+ var dates= $("#dateRangeIdForGrivance").val();
+	var pickerDates = fromDateGreivance+' - '+toDateGreivance
+	if(dates == pickerDates)
+	{
+		$("#dateRangeIdForGrivance").val('This Month');
+	}
+	
+	$('#dateRangeIdForGrivance').on('apply.daterangepicker', function(ev, picker) {
+		fromDateGreivance =picker.startDate.format('MM-DD-YYYY');       
+		toDateGreivance = picker.endDate.format('MM-DD-YYYY');
+		if(picker.chosenLabel == 'This Month')
+		{
+			$("#dateRangeIdForGrivance").val('This Month');
+		}
+		
+		onloadGreivancecalls();
+	});	
+
+function onloadGreivancecalls(){
 	getCadreGreivienceEfficiency();
 	getCadreGreivienceIssueType();
 	getCategoryAndIssuetypeStatusCount();
@@ -51,7 +63,7 @@ function buildGrivanceEfficiency(result){
 		str='<div class="row">';
 		for(var i in result){
 			str+='<div class="modifyTabs col-md-4 col-xs-12 col-sm-4 m_top5">';
-				str+='<div class="well well-sm">';
+				str+='<div class="well well-sm" style="margin-bottom: 0px;">';
 					str+='<p class="text-muted">'+result[i].name+'</p>';
 					str+='<h4>'+result[i].efficencyPercentage+'%</h4>';
 				str+='</div>';
@@ -66,8 +78,8 @@ function getCadreGreivienceIssueType(){
 			"searchType":"Mobile Number",
 			"searchValue":"9063845874",
 			"enrollmentyearId":0,
-			"fromDate" :fromDate,
-			"toDate" : toDate
+			"fromDate" :fromDateGreivance,
+			"toDate" : toDateGreivance
 		}
 		$.ajax({
 			type : "POST",
@@ -110,16 +122,19 @@ return;
 		title: {
                   useHTML:'true',
 				  margin: 0,
-                  text: "<div class='row'><div class='col-sm-12 col-xs-12'><h4><b>TOTAL-"+totalStatusCount+"</b></h4></div></div>",
+                  text: "<div class='row'><div class='col-sm-12 col-xs-12'><h6><b>TOTAL-"+totalStatusCount+"</b></h6></div></div>",
                   y:0,
-                  x:100,
+                  x:85,
                   align: 'center',
                   verticalAlign: 'middle',
+				  style:{
+					  "fontSize": "12px"
+				  }
 		},	
 		plotOptions: {	
 			pie: {
-                size:'80%',
-				innerSize: '60%',
+                size:'90%',
+				innerSize: '70%',
                 showInLegend: true,
 				dataLabels: {
                     enabled: false,
@@ -157,8 +172,8 @@ function getCategoryAndIssuetypeStatusCount(){
 	$("#verticleTabLists").html('');
 	var jobj = {
 					inputType : 'AllData',
-					fromDate :fromDate,
-					toDate : toDate,
+					fromDate :fromDateGreivance,
+					toDate : toDateGreivance,
 					stateIds : '1,2',
 					enrollmentYrId:0,
 					task : 'Grievance'
@@ -466,4 +481,11 @@ $(document).on("click","#getSearchByComplaintesId",function()
 	searchComplaintId=$("#searchComplaintId").val().trim();
 	getgrivanceDetailsBySearch(searchComplaintId,searchValue);
 	
+});
+
+$(document).on("click",".grivanceIconRefresh",function(){
+	onloadGreivancecalls();
+});
+$(document).on("click",".moreAttGrivanceBlocksIcon",function(){
+	$(".grievanceTabClickCls").toggle();
 });

@@ -110,6 +110,7 @@ function getMOMBasicCountDetailsAction()
 function buildMOMBasicCountDetailsAction(result){
 	
 	var str='';
+		
 		str+='<div class="panel panel-default panel-blue">';
 		  str+='<div class="panel-heading">';
 			str+='<h3 class="panel-title">Overview</h3>';
@@ -177,6 +178,7 @@ function buildMOMBasicCountDetailsAction(result){
 		  str+='</div>';
 		str+='</div>';
 		
+		str+='<div class="MOMMainScroll">';
 		for(var i in result.partyMettingsVOList){
 			str+='<div class="panel panel-default panel-blue">';
 			  str+='<div class="panel-heading">';
@@ -245,8 +247,12 @@ function buildMOMBasicCountDetailsAction(result){
 			  str+='</div>';
 			str+='</div>';
 		}
-		
+	str+='</div>';	
 	$("#locationWiseMOMDetailsDivID").html(str);
+	if(result.partyMettingsVOList.length > 2)
+		{
+			$(".MOMMainScroll").mCustomScrollbar({setHeight:'297px'});
+		}
 }
 
 function getUserTypeWisePartyMeetingMOMDetails(){

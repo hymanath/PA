@@ -67,30 +67,6 @@
 .DTFC_LeftBodyLiner{
 	overflow-y:hidden;
 }
-.borderLess tbody > tr > td{
-	border:none; 
-	margin:0px;
-}
-.mainHorTabStyle > li.active>a{
- background-color:#ECEDEF !important;
-}
-.tabsViewStyle{
- left:34px !important;
-}
-.tabsViewStyle>li
-{
- width:100% !important;
-}
-.tabsViewStyle > li > a {
- padding: 20px 3px;
-}
-.tabsViewStyle>li.active >a
-{
- border:1px solid #A9ABAF !important;
- border-right:1px solid #fff !important;
- border-radius:0px !important;
- z-index:1 !important;
-}
 </style>
 </head>
 <body>  
@@ -4333,8 +4309,154 @@
 			</c:if>
 			<!-- Cadre Insurance End-->
 	</div>
-	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
+	
+	
 	<div class="row">
+	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
+		<!-- Nominated Post Start-->
+		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
+			 <div class="panel panel-default panelNewCustom">
+                <div class="panel-heading">
+					<div class="row">
+						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
+							<h4 class="panel-title text-capital">
+								<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
+								Nominated Posts</small>
+							</h4>
+						</div>
+						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
+							<span class="nominatedIconRefresh pull-right">
+								<i class="glyphicon glyphicon-refresh nominatedRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+							</span> 
+							<span class="nominatedIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
+								<i class="glyphicon glyphicon-fullscreen"></i>
+							</span>
+						</div>
+					</div>					
+                </div>
+                <div class="panel-body">
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="nominatedPost">
+							<div id="levelWiseNominatedPostDivId"></div>
+						</div>
+					
+						<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="nominatedPost">
+							<div class="row">
+								<div class="col-sm-12">
+									<ul class="activeUlCls list-inline pull-right nominatedLicls" role='tabCummulativeNomi'>
+										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+									</ul>
+								</div>
+							 </div>
+							  <div class="row">
+								<div class="col-sm-12">
+									<div class="verticalScrollBarNominated">
+										<div id="userTypeWiseNominatedDiv"></div>
+									</div>
+								</div>
+							 </div>
+						</div>
+					</div>	
+					<div class="col-xs-12 col-sm-12 col-md-12">
+						<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttNominatedBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
+					</div>
+					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 deptLocNominatedCls" expand-block-more="nominatedPost" style="display:none;">
+						<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
+							<li class="active" attr_location_type="location">Location Level Wise</li>
+							<li class="" attr_location_type="department">Department wise</li>
+						</ul>
+					</div>          
+					
+					<div class="row">
+						<div class="col-md-12 col-xs-12 col-sm-12 moreAttNominatedBlocks"  expand-block-more="nominatedPost">
+							<div class="row">
+								<div class="col-sm-12">
+									<div id="levelWiseNominatedDetailsDivId"></div>
+								</div>
+							 </div>
+						</div>
+					</div>
+					
+				</div>
+			</div>
+		</div>
+		</c:if>
+		<!-- Nominated Post End-->
+		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
+		<!-------MOM Start --------->
+			<div class="col-md-6 col-xs-12 col-sm-12 MOMBlock" expand-block="MOM">
+				 <div class="panel panel-default panelNewCustom">
+					<div class="panel-heading">
+						<div class="row">
+							<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="MOM">
+								<h4 class="panel-title text-capital">
+									<img src="newCoreDashBoard/img/momMeeting.png" class="iconClass"/>
+									MOM Meetings <small class="text-muted"> - LAST MONTH</small>
+								</h4>
+							</div>
+							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="MOM">
+								<span class="momIconRefresh pull-right">
+									<i class="glyphicon glyphicon-refresh momBlockRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+								</span> 
+								<span class="momIconExpand pull-right mainExpandCls" expand-icon="MOM">
+									<i class="glyphicon glyphicon-fullscreen"></i>
+								</span>
+								<span class="input-group pull-right dateRangePickerClsForMOM hide" expand-block-date="MOM" style="width:110px;">
+									<input type="text" id="dateRangeIdForMOM" style="width:180px" class="form-control" />
+									<span class="input-group-addon">
+										<i class="glyphicon glyphicon-calendar"></i>
+									</span>
+								</span>
+							</div>
+						</div>					
+					</div>
+					<div class="panel-body">
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="MOM">
+								<div id="locationWiseMOMDetailsDivID"></div>
+							</div>
+						
+							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="MOM">
+								<div class="row">
+									<div class="col-sm-12">
+										<ul class="activeUlCls list-inline pull-right momLicls">
+											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
+											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
+										</ul>
+										<h6 class="m_top5">The Graph Depends On MOM Updated and Not Updated Meetings</h6>
+									</div>
+								 </div>
+								  <div class="row">
+									<div class="col-sm-12">
+										<div class="verticalScrollBarMOM">
+											<div id="userTypeWiseMOMDiv"></div>
+										</div>
+									</div>
+								 </div>
+							</div>
+						</div>	
+						<div class="col-xs-12 col-sm-12 col-md-12">
+							<i id="" class="glyphicon glyphicon-option-horizontal pull-right moreAttMOMBlocksIcon"  expand-block-right="MOM" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
+						</div>
+						<div class="row">
+							<div class="col-md-12 col-xs-12 col-sm-12 moreAttMOMBlocks"  expand-block-more="MOM">
+								<div class="row">
+									<div class="col-sm-12">
+										<div id="levelWiseMOMDetailsDivId"></div>
+									</div>
+								 </div>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+		<!---------MOM End----------------->
+		</c:if>
+	</div>
+	<div class="row">
+	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
 		<!-- Cadre Registration -->	
 		<div class="col-md-6 col-xs-12 col-sm-12 cadreBlock" expand-block="cadre">  
         	<div class="panel panel-default panelNewCustom">
@@ -4700,7 +4822,110 @@
             </div>
         </div>
 		<!---------Cadre Registration End--->
-		<!-- Attendance Start-->
+		</c:if>
+		<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
+			<!-------grivance start --------->
+				<div class="col-md-6 col-xs-12 col-sm-12 MOMBlock" expand-block="grivance">
+					 <div class="panel panel-default panelNewCustom">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="grivance">
+									<h4 class="panel-title text-capital">
+										<img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
+										Grievance Efficiency  <small class="text-muted"> - THIS MONTH</small>
+									</h4>
+								</div>
+								<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="grivance">
+									<span class="grivanceIconRefresh pull-right">
+										<i class="glyphicon glyphicon-refresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
+									</span> 
+									<!--<span class="grivanceIconExpand pull-right mainExpandCls" expand-icon="grivance">
+										<i class="glyphicon glyphicon-fullscreen"></i>
+									</span>-->
+									
+								</div>
+							</div>					
+						</div>
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-sm-12">
+									<span class="input-group pull-right dateRangePickerClsForMOM">
+										<input type="text" id="dateRangeIdForGrivance" style="width:180px" class="form-control" />
+										<span class="input-group-addon">
+											<i class="glyphicon glyphicon-calendar"></i>
+										</span>
+									</span>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<h4 class="headingColor">Efficiency</h4>
+									<div id="efficiencyId"></div>
+								</div>
+								<div class="col-md-12 col-xs-12 col-sm-12">
+									<div id="donutchart" style="height:210px;"></div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-xs-12 col-sm-12 col-md-12">
+									<i id="" class="glyphicon glyphicon-option-horizontal pull-right moreAttGrivanceBlocksIcon"   data-toggle="tooltip" data-placement="top" title="Click here for more"></i>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-12 grievanceTabClickCls" style="display:none">
+									<div class="panel with-nav-tabs panel-default" style="background-color:#ECEDEF;">
+										<div id="horizontalTabs" style="background-color:#fff;"></div>
+										<div class="panel-body">
+											<div class="tab-content">
+												<div  class="col-sm-12">
+													<div id="verticleTabLists"></div>
+													<div class="clearfix"></div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<!--<div class="row">
+								<h4 style="padding-left: 20px;"> Search By Compliants </h4>
+								<div class="col-sm-12 m_top10">
+									<div class="col-sm-3">
+										<select class="form-control" id="searchComplaintId">
+											<option value="Complaint ID">Complaint ID</option>
+											<option value="Mobile Number">Mobile Number</option>
+											<option value="Membership">Membership ID</option>
+											<option value="Name">Name</option>
+											<option value="Voter ID">Voter ID</option>
+											<option value="Admission No">Application No</option>
+										</select>
+									</div>
+									<div class=" col-sm-3">
+									   <input id="searchValue" class="form-control search-text" type="text">
+									</div>
+									<div class=" col-sm-3">
+									  <button type="button" class="btn btn-danger" id="getSearchByComplaintesId">SEARCH</button>
+								   </div>
+								   <div class="col-sm-1">
+										<div id="spinnerForComplaintsId"></div>
+								   </div>
+								</div>
+							</div>
+							<!--<div class="row m_top10">
+								<div class="col-sm-12">
+									<div id="buildGrivanceDetailsBySearchTableId"></div>
+								</div>
+							</div>-->
+						</div>
+					</div>
+				</div>
+			<!---------grivance End----------------->
+		</c:if>
+	</div>
+	
+	
+	<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
+	<div class="row">	
+			<!-- Attendance Start-->
 		<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlock" expand-block="attendance">
             <div class="panel panel-default panelNewCustom">
                 <div class="panel-heading">
@@ -4836,249 +5061,7 @@
 		</div>
 		<!-- Attendance End-->
 	</div>
-	
 	</c:if>
-	
-	<div class="row">
-	<c:if test="${(sessionScope.URL == 'partyC0reDashboardAction')}">
-		<!-- Nominated Post Start-->
-		<div class="col-md-6 col-xs-12 col-sm-12 newNominatedPostBlock" expand-block="nominatedPost">
-			 <div class="panel panel-default panelNewCustom">
-                <div class="panel-heading">
-					<div class="row">
-						<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="nominatedPost">
-							<h4 class="panel-title text-capital">
-								<img src="newCoreDashBoard/img/icon-nominatedpost.png" class="iconClass"/>
-								Nominated Posts</small>
-							</h4>
-						</div>
-						<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="nominatedPost">
-							<span class="nominatedIconRefresh pull-right">
-								<i class="glyphicon glyphicon-refresh nominatedRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
-							</span> 
-							<span class="nominatedIconExpand pull-right mainExpandCls" expand-icon="nominatedPost">
-								<i class="glyphicon glyphicon-fullscreen"></i>
-							</span>
-						</div>
-					</div>					
-                </div>
-                <div class="panel-body">
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="nominatedPost">
-							<div id="levelWiseNominatedPostDivId"></div>
-						</div>
-					
-						<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="nominatedPost">
-							<div class="row">
-								<div class="col-sm-12">
-									<ul class="activeUlCls list-inline pull-right nominatedLicls" role='tabCummulativeNomi'>
-										<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-										<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-									</ul>
-								</div>
-							 </div>
-							  <div class="row">
-								<div class="col-sm-12">
-									<div class="verticalScrollBarNominated">
-										<div id="userTypeWiseNominatedDiv"></div>
-									</div>
-								</div>
-							 </div>
-						</div>
-					</div>	
-					<div class="col-xs-12 col-sm-12 col-md-12">
-						<i id="expandForMoreId" class="glyphicon glyphicon-option-horizontal pull-right moreAttNominatedBlocksIcon"  expand-block-right="nominatedPost" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
-					</div>
-					<div class="col-md-12 col-xs-12 col-sm-10 col-sm-offset-1 col-md-offset-0 deptLocNominatedCls" expand-block-more="nominatedPost" style="display:none;">
-						<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
-							<li class="active" attr_location_type="location">Location Level Wise</li>
-							<li class="" attr_location_type="department">Department wise</li>
-						</ul>
-					</div>          
-					
-					<div class="row">
-						<div class="col-md-12 col-xs-12 col-sm-12 moreAttNominatedBlocks"  expand-block-more="nominatedPost">
-							<div class="row">
-								<div class="col-sm-12">
-									<div id="levelWiseNominatedDetailsDivId"></div>
-								</div>
-							 </div>
-						</div>
-					</div>
-					
-				</div>
-			</div>
-		</div>
-		</c:if>
-		<!-- Nominated Post End-->
-		<c:if test="${(sessionScope.URL == 'dailyMonthlyPartyActivities')  || (sessionScope.URL == 'partyC0reDashboardAction')}">
-		<!-------MOM Start --------->
-			<div class="col-md-6 col-xs-12 col-sm-12 MOMBlock" expand-block="MOM">
-				 <div class="panel panel-default panelNewCustom">
-					<div class="panel-heading">
-						<div class="row">
-							<div class="col-md-9 col-sm-9 col-xs-12"  expand-block-heading="MOM">
-								<h4 class="panel-title text-capital">
-									<img src="newCoreDashBoard/img/momMeeting.png" class="iconClass"/>
-									MOM Meetings <small class="text-muted"> - LAST MONTH</small>
-								</h4>
-							</div>
-							<div class="col-md-3 col-sm-3 col-xs-12" expand-block-heading1="MOM">
-								<span class="momIconRefresh pull-right">
-									<i class="glyphicon glyphicon-refresh momBlockRefresh" data-toggle="tooltip" data-placement="top" title="" data-original-title="Refresh"></i>
-								</span> 
-								<span class="momIconExpand pull-right mainExpandCls" expand-icon="MOM">
-									<i class="glyphicon glyphicon-fullscreen"></i>
-								</span>
-								<span class="input-group pull-right dateRangePickerClsForMOM hide" expand-block-date="MOM" style="width:110px;">
-									<input type="text" id="dateRangeIdForMOM" style="width:180px" class="form-control" />
-									<span class="input-group-addon">
-										<i class="glyphicon glyphicon-calendar"></i>
-									</span>
-								</span>
-							</div>
-						</div>					
-					</div>
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 m_top10" expand-block-inner="MOM">
-								<div id="locationWiseMOMDetailsDivID"></div>
-							</div>
-						
-							<div class="col-md-6 col-xs-12 col-sm-12 attendanceBlockMore m_top10" expand-block-right="MOM">
-								<div class="row">
-									<div class="col-sm-12">
-										<ul class="activeUlCls list-inline pull-right momLicls">
-											<li class="active" attr_value="strong"><i class="fa fa-arrow-up"></i>&nbsp;top 5</li>
-											<li class="" attr_value="poor"><i class="fa fa-arrow-down"></i>&nbsp;last 5</li>
-										</ul>
-										<h6 class="m_top5">The Graph Depends On MOM Updated and Not Updated Meetings</h6>
-									</div>
-								 </div>
-								  <div class="row">
-									<div class="col-sm-12">
-										<div class="verticalScrollBarMOM">
-											<div id="userTypeWiseMOMDiv"></div>
-										</div>
-									</div>
-								 </div>
-							</div>
-						</div>	
-						<div class="col-xs-12 col-sm-12 col-md-12">
-							<i id="" class="glyphicon glyphicon-option-horizontal pull-right moreAttMOMBlocksIcon"  expand-block-right="MOM" data-toggle="tooltip" data-placement="top" title="Click here for more" style="display: none;"></i>
-						</div>
-						<div class="row">
-							<div class="col-md-12 col-xs-12 col-sm-12 moreAttMOMBlocks"  expand-block-more="MOM">
-								<div class="row">
-									<div class="col-sm-12">
-										<div id="levelWiseMOMDetailsDivId"></div>
-									</div>
-								 </div>
-							</div>
-						</div>
-						
-					</div>
-				</div>
-			</div>
-		<!---------MOM End----------------->
-		</c:if>
-	</div>
-	
-	<!--<div class="row">	
-		<!-- grivance start
-		<div class="col-md-6 col-xs-12 col-sm-12 grivanceBlock" expand-block="grivance">
-			<div class="panel panel-default panelNewCustom ">
-				<div class="panel-heading">
-					<div class="row">
-						<div class="col-md-5 col-sm-4 col-xs-12" expand-block-heading="grivance">
-						   <h4 class="panel-title text-capital" style="width:440px;">    
-							  <img src="newCoreDashBoard/img/Press_Meet_icon.png" class="iconClass"/>
-							  Grievance Efficiency 
-						   </h4>
-						</div>
-						<div class="col-md-2 col-sm-4 col-xs-12 pull-center">
-							<div class="input-group">
-							<input type="text" class="form-control" id="daterangeId" style="width: 200px;"/>
-								<span class="input-group-addon">
-									<i class="glyphicon glyphicon-calendar"></i>
-								</span>
-							</div>
-						</div>
-						<div class="col-md-2 col-sm-2 col-xs-12 pull-right" expand-block-heading1="grivance">
-						   <span class="grivanceIconExpand pull-right" expand-icon="grivance">
-						   <i class="glyphicon glyphicon-fullscreen"></i>
-						   </span>
-						</div>
-					</div>
-				</div>
-				<div class="panel-body">
-					<div class="row">
-						<div class="col-sm-12">
-							<h4 class="headingColor">Efficiency
-							<span class="pull-right "></span>
-							</h4>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-sm-12 m_top20">
-							<div id="efficiencyId"></div>
-						</div>
-					</div>
-					<div class="row">
-						
-							<div id="donutchart" style="height:auto; width:500px !important; text-align:center;"></div>
-						
-					</div>
-					<div class="row">
-						<div class="col-md-12">
-							<div class="panel with-nav-tabs panel-default" style="background-color:#ECEDEF;">
-								<div id="horizontalTabs" style="background-color:#fff;"></div>
-								<div class="panel-body">
-									<div class="tab-content">
-										<div  class="col-sm-12">
-											<div id="verticleTabLists"></div>
-											<div class="clearfix"></div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>		
-					<!--<div class="row">
-						<h4 style="padding-left: 20px;"> Search By Compliants </h4>
-						<div class="col-sm-12 m_top10">
-							<div class="col-sm-3">
-								<select class="form-control" id="searchComplaintId">
-									<option value="Complaint ID">Complaint ID</option>
-									<option value="Mobile Number">Mobile Number</option>
-									<option value="Membership">Membership ID</option>
-									<option value="Name">Name</option>
-									<option value="Voter ID">Voter ID</option>
-									<option value="Admission No">Application No</option>
-								</select>
-							</div>
-							<div class=" col-sm-3">
-							   <input id="searchValue" class="form-control search-text" type="text">
-							</div>
-							<div class=" col-sm-3">
-							  <button type="button" class="btn btn-danger" id="getSearchByComplaintesId">SEARCH</button>
-						   </div>
-						   <div class="col-sm-1">
-								<div id="spinnerForComplaintsId"></div>
-						   </div>
-						</div>
-					</div>-->
-					<!--<div class="row m_top10">
-						<div class="col-sm-12">
-							<div id="buildGrivanceDetailsBySearchTableId"></div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- grivance End
-	</div>-->
-	
 </div>
 	
 <input type="hidden" id="alertTypeHiddenId"></input> 
@@ -6981,6 +6964,7 @@ function onLoadCalls(){
 		onloadKaizalaCalls1();
 		onloadMOMCalls();
 		getBoothCadreEnrolmentYears();	
+		onloadGreivancecalls();
 		//committeeBasicCall();
 		
 		//training program call
