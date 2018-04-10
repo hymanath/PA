@@ -2546,7 +2546,7 @@ color: rgb(51, 122, 183);
 	overflow:auto;
 	display:none;
 	padding-right:10px;
-	width:290px;
+	min-width:90px;
 }
 .rightNavigationMenu ul
 {
@@ -7200,4 +7200,25 @@ table_custom_Mom thead tr th{
 .tabsViewStyle > li > a > h4
 {
 font-size:14px !important; 
+}
+.table-data thead tr th{
+	font-size:12px !important;
+	padding:5px !important;
+	text-align:center;
+	vertical-align:middle;	
+}
+.table-data tbody tr td{
+	font-size:14px !important;
+	padding:5px !important;
+	text-align:center;
+	vertical-align:middle;	
+}
+.image_open_link{
+	float: right;
+	margin-right: 11px;
+	font-size: 18px;
+}
+.meetingDetailsCls{
+	cursor:pointer;
+	text-decoration:underline;
 }
