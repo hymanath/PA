@@ -29,7 +29,7 @@ public class GovtWorksVO {
 	private Long govtMainWorkId;
 	private String govtMainWork;
 	private Long totalWorks=0l,statusWorks=0l;
-	private Double totalKms=0.00,statusKms=0.00;
+	private Double totalKms=0.00,statusKms=0.00,totalAvgKms=0.00,totalAvgPerc=0.00;
 	private Long sanctionAmt=0l,target=0l;
 	private String date;
 	
@@ -238,6 +238,18 @@ public class GovtWorksVO {
 	}
 	public void setStatusList(List<GovtWorksVO> statusList) {
 		this.statusList = statusList;
+	}
+	public Double getTotalAvgKms() {
+		return totalAvgKms;
+	}
+	public void setTotalAvgKms(Double totalAvgKms) {
+		this.totalAvgKms = totalAvgKms;
+	}
+	public Double getTotalAvgPerc() {
+		return totalAvgPerc;
+	}
+	public void setTotalAvgPerc(Double totalAvgPerc) {
+		this.totalAvgPerc = totalAvgPerc;
 	}
 	
 	

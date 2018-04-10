@@ -18,6 +18,7 @@ public class DocumentVO {
 	private String panchayatName,mandalName;
 	private List<String> datesList = new ArrayList<String>(0);
 	private String lattitude,longitude;
+	private Double totalAvgKms = 0.00,totalAvgPerc = 0.00;
 	
 	public Long getDocumentId() {
 		return documentId;
@@ -120,6 +121,18 @@ public class DocumentVO {
 	}
 	public void setLongitude(String longitude) {
 		this.longitude = longitude;
+	}
+	public Double getTotalAvgKms() {
+		return totalAvgKms;
+	}
+	public void setTotalAvgKms(Double totalAvgKms) {
+		this.totalAvgKms = totalAvgKms;
+	}
+	public Double getTotalAvgPerc() {
+		return totalAvgPerc;
+	}
+	public void setTotalAvgPerc(Double totalAvgPerc) {
+		this.totalAvgPerc = totalAvgPerc;
 	}
 	
 	

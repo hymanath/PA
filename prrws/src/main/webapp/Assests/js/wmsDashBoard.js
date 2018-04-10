@@ -217,7 +217,7 @@ function timeLineAndLocationWiseDetails(workTypeId){
 	$("#timeLinesWorkTypesDivId").html(collapse);
 	$(".chosen-select").chosen();	
 	getAllStatusOfWorkType(workTypeId);
-	getLocationStatusDayWiseKms(12,workTypeId);//Graph Call
+	getLocationStatusDayWiseKms(0,workTypeId);//Graph Call
 	getLocationLevelStatusDayWiseKms(12,workTypeId)//Location Level Main Table
 }
 function getAllDistrictsOfAp(divId,LevelVal){
@@ -388,24 +388,15 @@ $(document).on("change","#levelId",function(){
 	var levelId=$(this).val();
 	if(levelId == 3){
 		$(".districtCls").show();
-		$(".divisionCls").hide();
-		$(".subdivisionCls").hide();
-		$(".mandalCls").hide();
+		$(".divisionCls,.subdivisionCls,.mandalCls").hide();
 	}else if(levelId == 12){
-		$(".districtCls").show();
-		$(".divisionCls").show();
-		$(".subdivisionCls").hide();
-		$(".mandalCls").hide();
+		$(".districtCls,.divisionCls").show();
+		$(".subdivisionCls,.mandalCls").hide();
 	}else if(levelId == 13){
-		$(".districtCls").show();
-		$(".divisionCls").show();
-		$(".subdivisionCls").show();
+		$(".districtCls,.divisionCls,.subdivisionCls").show();
 		$(".mandalCls").hide();
 	}else if(levelId == 5){
-		$(".districtCls").show();
-		$(".divisionCls").show();
-		$(".subdivisionCls").show();
-		$(".mandalCls").show();
+		$(".districtCls,.divisionCls,.subdivisionCls,.mandalCls").show();
 	}
 });	
 
@@ -416,14 +407,19 @@ $(document).on("click",".workStagesCls li",function(){
 	$(".workStagesCls li").removeAttr("style");
 	$(this).css("border","2px solid "+globalStatusObj[statusName]+"")
 	getLocationStatusDayWiseKms(statusId,workTypeId);
-	getLocationLevelStatusDayWiseKms(statusId,workTypeId);
+	if(statusId == 0){
+		getLocationLevelStatusDayWiseKms(12,workTypeId);
+	}else{
+		getLocationLevelStatusDayWiseKms(statusId,workTypeId);
+	}
+	
 });
 $(document).on("click",".getTimeLocationCls",function(){
 	var workTypeId = $(this).attr("attr_work_id");	
 	$(".workStagesCls li").removeAttr("style");
 	$(".workStagesCls li:nth-child(1)").css("border","2px solid #000");
 	
-	getLocationStatusDayWiseKms(12,workTypeId);
+	getLocationStatusDayWiseKms(0,workTypeId);
 	getLocationLevelStatusDayWiseKms(12,workTypeId);
 });
 
@@ -465,21 +461,31 @@ function getLocationStatusDayWiseKms(statusId,workTypeId){
 	});
 }
 
-function buildLocationStatusDayWiseKmsMainGraph(result1){
-	var mainArr=[];
+function buildLocationStatusDayWiseKmsMainGraph(result){
+	
+	var mainDataArr=[];
 	var categoriesArr=[];
-	var result=result1[0].list;
-	for(var i in result){
-		if(result[i].kms !=null && result[i].kms>0){
-			categoriesArr.push(result[i].insertedTime);
-			mainArr.push(result[i].kms)
+		for(var i in result[0].list){
+			categoriesArr.push(result[0].list[i].insertedTime);
 		}
 		
-	}
-	
+		for(var i in result){
+			var wpPosArr=[];
+			for(var j in result[i].list){
+				wpPosArr.push(result[i].list[j].kms)
+			}
+			var obj={
+				name:result[i].documentName,
+				data: wpPosArr,
+				color:globalStatusObj[result[i].documentName]
+			};
+			mainDataArr.push(obj)
+		}
+		
+		console.log(mainDataArr)	
 	$('#workStagesCommulativeGraphDivId').highcharts({
 		chart: {
-			type: 'line'
+			type: 'spline'
 		},
 		title: {
 			text: ''
@@ -488,15 +494,23 @@ function buildLocationStatusDayWiseKmsMainGraph(result1){
 			text: ''
 		},
 		xAxis: {
-			categories: categoriesArr
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
+			categories:categoriesArr
 		},
 		yAxis: {
+			min: 0,
+			gridLineWidth: 0,
+			minorGridLineWidth: 0,
 			title: {
-				text: 'K M'
+				text: ''
+			},
+			labels: {
+				formatter: function () {
+					return this.value + '';
+				}
 			}
-		},
-		legend: {
-			enabled: false,
 		},
 		tooltip: {
 			formatter: function () {
@@ -505,7 +519,7 @@ function buildLocationStatusDayWiseKmsMainGraph(result1){
 				$.each(this.points, function () {
 					if(this.series.name != "Series 1")  
 					s += '<br/><b style="color:'+this.series.color+'">' + this.series.name + '</b> : ' +
-					this.y+" km";
+					this.y+"";
 				});
 
 				return s;
@@ -513,23 +527,14 @@ function buildLocationStatusDayWiseKmsMainGraph(result1){
 			shared: true
 		},
 		plotOptions: {
-			line: {
-				dataLabels: {
-					enabled: true,
-					formatter: function() {
-						return (this.y)+" KM";
-					},
-				},
-				enableMouseTracking: true
-			}
-		},
-		series: [{
-			name: 'Villages',
-			data: mainArr,
-			color:"#AFD1F3"
 			
-		}]
+		},
+		series: mainDataArr
 	});
+	
+	
+	
+	
 }
 
 function getLocationLevelStatusDayWiseKms(statusId,workTypeId){
@@ -580,7 +585,8 @@ function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId){
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>Location</th>';
-					str+='<th style="background-color:#C4EEE6 !important;">Total&nbsp;KM</th>';
+					str+='<th style="background-color:#C4EEE6 !important;">Target&nbsp;KM</th>';
+					str+='<th style="background-color:#C4EEE6 !important;">Average&nbsp;KM</th>';
 					for(var i in result[0].list){
 						str+='<th>'+result[0].list[i].insertedTime+'</th>';
 					}
@@ -591,6 +597,7 @@ function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId){
 					str+='<tr>';
 						str+='<td style="text-align:left !important;"><h5><i class="fa fa-plus plus_icon_WMS openNextTrShowCls active" aria-hidden="true" attr_tr_id="'+i+'"  attr_tr_name="'+result[i].documentName.replace(/\s+/g, '')+'" attr_locationScopeId="'+locationLevelId+'" attr_locationLevelId="'+result[i].documentId+'"></i> '+result[i].documentName+'</h5></td>';
 						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].kms.toFixed(2)+'&nbsp;km</td>';
+						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].totalAvgKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].totalAvgPerc.toFixed(2)+' %</span></td>';
 						for(var j in result[i].list){
 							str+='<td>'+result[i].list[j].kms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].list[j].completedPercentage.toFixed(2)+' %</span></td>';
 						}
@@ -793,7 +800,7 @@ function buildStateLevelOverAllDetails(result){
 	str+='<div class="col-sm-2">';
 		str+='<div class="bg_yash_color_10 m_top10 text-center">';
 			str+='<h3 class="font_BebasNeue text-capital">sanctioned amount</h3>';
-			str+='<h3 class="font_BebasNeue m_top5"><i class="fa fa-inr" aria-hidden="true"></i> '+result.estimationCost.toFixed(2)+'</h3>';
+			str+='<h3 class="font_BebasNeue m_top5">'+result.estimationCost.toFixed(2)+' Lakhs</h3>';
 		str+='</div>';
 	str+='</div>';
 	$("#stateLevelFirstBlockDivId").html(str);
@@ -836,6 +843,19 @@ function buildgetRecentWorkDocuments(result){
 				str+='<div class="card-img-overlay1">';
 					str+='<h4 class="font_weight color_white f_16">Mandal : '+result[i].mandalName+'</h4>';
 					str+='<h4 class="font_weight color_white m_top5 f_16">Village : '+result[i].panchayatName+'</h4>';
+					
+					str+='<h4 class="font_weight color_white m_top5 f_16">';
+					if(result[i].lattitude !=null && result[i].lattitude>0){
+						str+='<span>Lat:'+result[i].lattitude+'</span>';
+					}else{
+						str+='<span>Lat: - </span>';
+					}
+					if(result[i].longitude !=null && result[i].longitude>0){
+						str+='<span>Long:'+result[i].longitude+'</span>';
+					}else{
+						str+='<span>Long: - </span>';
+					}
+					str+='</h4>';
 					str+='<h4 class="font_weight color_white m_top5 f_16">'+result[i].insertedTime+'</h4>';
 				str+='</div>';
 			str+='</div>';
@@ -1110,7 +1130,8 @@ function buildLocationWiseOverview(result,workZone,workTypeId){
 						str+='<thead>';
 							str+='<tr>';
 								str+='<th>Location</th>';
-								str+='<th>Total&nbsp;KM</th>';
+								str+='<th>Target&nbsp;KM</th>';
+								str+='<th>Average&nbsp;KM</th>';
 								for(var i in result[0].statusList){
 									str+='<th>'+result[0].statusList[i].status+'</th>';
 								}
@@ -1121,6 +1142,7 @@ function buildLocationWiseOverview(result,workZone,workTypeId){
 								str+='<tr>';
 									str+='<td style="text-align:left !important;"><a class="locationWisePopupCls" attr_locationLevelId="'+result[i].locationValue+'" attr_work_id="'+workTypeId+'" attr_locationName="'+result[i].location+'">'+result[i].location+'</a></td>';
 									str+='<td>'+result[i].totalKms.toFixed(2)+'&nbsp;km</td>';
+									str+='<td>'+result[i].totalAvgKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].totalAvgPerc.toFixed(2)+' %</span></td>';
 									for(var j in result[i].statusList){
 										str+='<td>'+result[i].statusList[j].totalKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].statusList[j].completedPercentage.toFixed(2)+' %</span></td>';
 									}
@@ -1253,7 +1275,7 @@ function buildLocationLevelWiseOverviewDetails(result){
 	str+='<div class="col-sm-3">';
 		str+='<div class="bg_yash_color_10 m_top10 text-center">';
 			str+='<h3 class="font_BebasNeue text-capital">sanctioned&nbsp;amount</h3>';
-			str+='<h3 class="font_BebasNeue m_top5"><i class="fa fa-inr" aria-hidden="true"></i> '+result.estimationCost.toFixed(2)+'</h3>';
+			str+='<h3 class="font_BebasNeue m_top5">'+result.estimationCost.toFixed(2)+' Lakhs</h3>';
 		str+='</div>';
 	str+='</div>';
 	$("#locationLevelFirstBlockDivId").html(str);
