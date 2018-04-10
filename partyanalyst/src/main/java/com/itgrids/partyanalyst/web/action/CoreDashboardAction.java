@@ -40,6 +40,7 @@ import com.itgrids.partyanalyst.dto.CommitteeVO;
 import com.itgrids.partyanalyst.dto.ComplaintMasterVO;
 import com.itgrids.partyanalyst.dto.ConsolidatedExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardInsuranceVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardMomDetailsVO;
 import com.itgrids.partyanalyst.dto.CoreDebateVO;
 import com.itgrids.partyanalyst.dto.DashboardCommentVO;
 import com.itgrids.partyanalyst.dto.EventDetailsVO;
@@ -55,7 +56,6 @@ import com.itgrids.partyanalyst.dto.KaizalaExceptionalReportVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
-import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.NewCadreRegistrationVO;
 import com.itgrids.partyanalyst.dto.NominatedPostCandidateDtlsVO;
 import com.itgrids.partyanalyst.dto.NominatedPostDetailsVO;
@@ -252,21 +252,21 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	private PartyMeetingExceptionalReportVO partyMeetingExceptionalReportVO;
 	private ActivityExceptionalReportVO activityExceptionalReportVO;
 	private ConsolidatedExceptionalReportVO consolidatedExceptionalReportVO;
-	private List<MomDetailsVO> momDetailsList = new ArrayList<MomDetailsVO>(0);
+	private List<CoreDashboardMomDetailsVO> momDetailsList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 	//setters And Getters
 	
 	public List<Long> getProgramIdsList() {
 		return programIdsList;
 	}
-
-	public List<MomDetailsVO> getMomDetailsList() {
+	
+	public List<CoreDashboardMomDetailsVO> getMomDetailsList() {
 		return momDetailsList;
 	}
-
-	public void setMomDetailsList(List<MomDetailsVO> momDetailsList) {
+	
+	public void setMomDetailsList(List<CoreDashboardMomDetailsVO> momDetailsList) {
 		this.momDetailsList = momDetailsList;
 	}
-
+	
 	public ConsolidatedExceptionalReportVO getConsolidatedExceptionalReportVO() {
 		return consolidatedExceptionalReportVO;
 	}
@@ -6390,7 +6390,7 @@ public String getPartyMeetingMOMDetailsCompletedCountsClicks(){
 			 userId = user.getRegistrationID();
 		
 		 jObj = new JSONObject(getTask());
-		 MomDetailsVO momDetailsVO = new MomDetailsVO();
+		 CoreDashboardMomDetailsVO momDetailsVO = new CoreDashboardMomDetailsVO();
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long stateId = jObj.getLong("stateId");
 		String dateString = jObj.getString("dateString");
