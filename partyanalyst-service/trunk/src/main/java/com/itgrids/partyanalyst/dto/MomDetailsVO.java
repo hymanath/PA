@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class MomDetailsVO {
@@ -21,7 +22,8 @@ public class MomDetailsVO {
 	private String comment;
 	private String isEditable;
 	private Long createdAddressId;
-	
+	private Long userId;
+	private Long stateId;
 	private List<MomDetailsVO> commentList;
 	private List<String> documentList;
 	private Long locationLevel;
@@ -29,8 +31,8 @@ public class MomDetailsVO {
 	private Long meetingLevelId;
 	private String meetingLevel;
 	private String searchType;
-	public String startDate;
-	public String endDate;
+	public Date startDate;
+	public Date endDate;
 	public List<Long> partyMeetingLevelIdsList = new ArrayList<Long>(0);
 	public Long locationLevelId;
 	public List<Long> locationValuesList = new ArrayList<Long>(0);
@@ -65,16 +67,16 @@ public class MomDetailsVO {
 	public void setAddressVO(AddressVO addressVO) {
 		this.addressVO = addressVO;
 	}
-	public String getStartDate() {
+	public Date getStartDate() {
 		return startDate;
 	}
-	public void setStartDate(String startDate) {
+	public void setStartDate(Date startDate) {
 		this.startDate = startDate;
 	}
-	public String getEndDate() {
+	public Date getEndDate() {
 		return endDate;
 	}
-	public void setEndDate(String endDate) {
+	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
 	public List<Long> getPartyMeetingLevelIdsList() {
@@ -239,5 +241,17 @@ public class MomDetailsVO {
 	}
 	public void setSourceName(String sourceName) {
 		this.sourceName = sourceName;
+	}
+	public Long getUserId() {
+		return userId;
+	}
+	public void setUserId(Long userId) {
+		this.userId = userId;
+	}
+	public Long getStateId() {
+		return stateId;
+	}
+	public void setStateId(Long stateId) {
+		this.stateId = stateId;
 	}
 }
