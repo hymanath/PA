@@ -120,9 +120,21 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 				if(output != null && !output.isEmpty()){
 					if(output != null && !output.isEmpty()){
 	    				JSONObject jObj = new JSONObject(output);
-	    				finalVO.setCategoryCount(jObj.getLong("count"));//total AlertsCount By serach category
-	    				finalVO.setLocationCnt(jObj.getLong("locationCnt"));
+	    				Long count=0l;
+	    				Long locationCnt=0l;
 	    				
+		    					if (jObj.isNull("locationInfo")){
+		    						  count = 0l;
+		    					} else {
+		    						  count = jObj.getLong("count");
+		    					}
+		    					if (jObj.isNull("locationInfo")){
+		    						locationCnt = 0l;
+		    					} else {
+		    						locationCnt = jObj.getLong("locationCnt");
+		    					}
+		    				  finalVO.setCategoryCount(count);//total AlertsCount By serach category
+			    			  finalVO.setLocationCnt(locationCnt);
 	 	    				JSONArray monthsArr = jObj.getJSONArray("subList2");
 	 	    				if(monthsArr != null && monthsArr.length() > 0){
 	 	    					for (int j = 0; j < monthsArr.length(); j++) {
@@ -154,7 +166,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 	 	    				
 	 	    				if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("print") || inputVO.getSearchType().equalsIgnoreCase("electronic")){
 	 	    					WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://www.mytdp.com/CommunityNewsPortal/webservice/getjavalavaniPrintAndElectrincDetailsInfoBySearchType");
-	 	    					 //WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/CommunityNewsPortal/webservice/getjavalavaniPrintAndElectrincDetailsInfoBySearchType");
+	 	    					 //WebResource webResource1 = commonMethodsUtilService.getWebResourceObject("http://192.168.11.173:8080/CommunityNewsPortal/webservice/getjavalavaniPrintAndElectrincDetailsInfoBySearchType");
 	 	    					 ClientResponse response1 = webResource1.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
 	 	    					 
 	 	    					if(response1.getStatus() != 200){
@@ -237,7 +249,7 @@ public class JalavaniDashboardService implements IJalavaniDashboardService{
 		 	    	}
 		 	    } 
    		 }else if(inputVO.getSearchType() !=null && inputVO.getSearchType().equalsIgnoreCase("alerts")){
-     	   WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertsMonthlyOverviewInfoBySearchType");
+       	   WebResource webResource = commonMethodsUtilService.getWebResourceObject("https://mytdp.com/WebService/getAlertsMonthlyOverviewInfoBySearchType");
   			//WebResource webResource = commonMethodsUtilService.getWebResourceObject("http://192.168.11.146:8080/PartyAnalyst/WebService/getAlertsMonthlyOverviewInfoBySearchType");
    		     ClientResponse response = webResource.accept("application/json").type("application/json").post(ClientResponse.class, inputVO);
    		  if (response.getStatus() != 200) {
