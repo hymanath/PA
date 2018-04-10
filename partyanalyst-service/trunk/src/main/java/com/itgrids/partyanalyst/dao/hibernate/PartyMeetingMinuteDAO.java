@@ -10,7 +10,7 @@ import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
-import com.itgrids.partyanalyst.dto.MomDetailsVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardMomDetailsVO;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.UserAddress;
 import com.itgrids.partyanalyst.utils.IConstants;
@@ -1448,7 +1448,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 return query.list(); 
 	}
 	
-	public List<Object[]> getPartyMeetingDetails(MomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public List<Object[]> getPartyMeetingDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
@@ -1517,7 +1517,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		return query.list();
 	}
 	
-	public List<Object[]> getPartyMeetingMOMDetails(MomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public List<Object[]> getPartyMeetingMOMDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
@@ -1606,7 +1606,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		return query.list();
 	}
 	
-	public List<Object[]> getPartyMeetingMOMDocumentsDetails(MomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
+	public List<Object[]> getPartyMeetingMOMDocumentsDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
 		sb.append(" pm.party_meeting_id,pmm.party_meeting_minute_id,pmd.document_type,pmd.document_name, pmd.path,pmd.document_format,pmd.updated_time ");

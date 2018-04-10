@@ -7,7 +7,7 @@ import java.util.Set;
 import org.appfuse.dao.GenericDao;
 
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
-import com.itgrids.partyanalyst.dto.MomDetailsVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardMomDetailsVO;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.UserAddress;
 
@@ -41,7 +41,7 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Object[]> getMOMTypesCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getMOMStatusCntDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Long partyMeetingMainTypeId,Long partyMeetingTypeId,Date fromDate,Date toDate);
 	public List<Object[]> getLocationWiseMOMTypesCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String momType,CommitteeInputVO committeeBO);
-	public List<Object[]> getPartyMeetingDetails(MomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
-	public List<Object[]> getPartyMeetingMOMDetails(MomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
-	public List<Object[]> getPartyMeetingMOMDocumentsDetails(MomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<Object[]> getPartyMeetingDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<Object[]> getPartyMeetingMOMDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
+	public List<Object[]> getPartyMeetingMOMDocumentsDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
 }

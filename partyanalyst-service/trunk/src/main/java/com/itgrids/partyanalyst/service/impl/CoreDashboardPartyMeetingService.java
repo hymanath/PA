@@ -44,13 +44,13 @@ import com.itgrids.partyanalyst.dto.ActivityMemberVO;
 import com.itgrids.partyanalyst.dto.AddressVO;
 import com.itgrids.partyanalyst.dto.CommitteeInputVO;
 import com.itgrids.partyanalyst.dto.CoreDashboardCountsVO;
+import com.itgrids.partyanalyst.dto.CoreDashboardMomDetailsVO;
 import com.itgrids.partyanalyst.dto.IdNameVO;
 import com.itgrids.partyanalyst.dto.KeyValueVO;
 import com.itgrids.partyanalyst.dto.MeetingBasicDetailsVO;
 import com.itgrids.partyanalyst.dto.MeetingDetailsInfoVO;
 import com.itgrids.partyanalyst.dto.MeetingDtlsVO;
 import com.itgrids.partyanalyst.dto.MeetingVO;
-import com.itgrids.partyanalyst.dto.MomDetailsVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsDataVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsInputVO;
 import com.itgrids.partyanalyst.dto.PartyMeetingsVO;
@@ -11200,8 +11200,8 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 		}
 		  return addressVO;
 	  }
-	  public List<MomDetailsVO> getPartyMeetingsMOMDetails(MomDetailsVO momDetailsVO,Long activityMemberId){
-		  List<MomDetailsVO> returnList = new ArrayList<MomDetailsVO>(0);
+	  public List<CoreDashboardMomDetailsVO> getPartyMeetingsMOMDetails(CoreDashboardMomDetailsVO CoreDashboardMomDetailsVO,Long activityMemberId){
+		  List<CoreDashboardMomDetailsVO> returnList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 		  try {
 			  Long userAccessLevelId=0L;
 			  Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
@@ -11218,17 +11218,17 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 		 		   }
 		 	    }
 		 	    
-			  Map<Long,MomDetailsVO> partyMeetingMap = new HashMap<Long,MomDetailsVO>(0);
+			  Map<Long,CoreDashboardMomDetailsVO> partyMeetingMap = new HashMap<Long,CoreDashboardMomDetailsVO>(0);
 			  List<Object[]> partyMeetingDetailsList = new ArrayList<Object[]>(0);
 			  List<Object[]> momDetailsList = new ArrayList<Object[]>(0);
 			  List<Object[]> momDocumentsList = new ArrayList<Object[]>(0);
-			  //if(momDetailsVO.getSearchType() != null && momDetailsVO.getSearchType().equalsIgnoreCase("all")){
+			  //if(CoreDashboardMomDetailsVO.getSearchType() != null && CoreDashboardMomDetailsVO.getSearchType().equalsIgnoreCase("all")){
 			  if(commonMethodsUtilService.isMapValid(locationAccessLevelMap)){
 				  for (Entry<Long,Set<Long>> entry : locationAccessLevelMap.entrySet()) {
 						//List<Object[]> rtrnObjList = partyMeetingDAO.getPartyMeetingOverAllCountByUserAccessLevel(entry.getKey(),new ArrayList<Long>(entry.getValue()), stateId, fromDate, toDate,partyMeetingTypeValues);// userAccessLevelId,locationValues,
-					  List<Object[]> tempPartyMetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(momDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue())); 
-					  List<Object[]> tempMomDetailList = partyMeetingMinuteDAO.getPartyMeetingMOMDetails(momDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue())); 
-					  List<Object[]> tempMomDocumentList = partyMeetingMinuteDAO.getPartyMeetingMOMDocumentsDetails(momDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue()));
+					  List<Object[]> tempPartyMetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(CoreDashboardMomDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue())); 
+					  List<Object[]> tempMomDetailList = partyMeetingMinuteDAO.getPartyMeetingMOMDetails(CoreDashboardMomDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue())); 
+					  List<Object[]> tempMomDocumentList = partyMeetingMinuteDAO.getPartyMeetingMOMDocumentsDetails(CoreDashboardMomDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue()));
 					  
 					  if(commonMethodsUtilService.isListOrSetValid(tempMomDocumentList))
 						  momDocumentsList.addAll(tempMomDocumentList);
@@ -11238,7 +11238,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						  partyMeetingDetailsList.addAll(tempPartyMetingDetailsList);
 				  }
 			  }
-				 // List<Object[]> partyMeetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(momDetailsVO); 
+				 // List<Object[]> partyMeetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(CoreDashboardMomDetailsVO); 
 				  if(commonMethodsUtilService.isListOrSetValid(partyMeetingDetailsList)){
 					  for (Object[] param : partyMeetingDetailsList) {
 						  Long partyMeetingId=commonMethodsUtilService.getLongValueForObject(param[2]);
@@ -11247,7 +11247,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						  String meetingLevel=commonMethodsUtilService.getStringValueForObject(param[1]);
 						  String meetingDate=commonMethodsUtilService.getStringValueForObject(param[4]);
 						  AddressVO addressVO = setAddressDetails(param,5);
-						  MomDetailsVO vo = new MomDetailsVO();
+						  CoreDashboardMomDetailsVO vo = new CoreDashboardMomDetailsVO();
 						  vo.setMeetingId(partyMeetingId);
 						  vo.setMeetingName(meetingName);
 						  vo.setDate(meetingDate);
@@ -11260,7 +11260,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 				  }
 			//  }
 			  
-			 // List<Object[]> momDetailsList = partyMeetingMinuteDAO.getPartyMeetingMOMDetails(momDetailsVO); 
+			 // List<Object[]> momDetailsList = partyMeetingMinuteDAO.getPartyMeetingMOMDetails(CoreDashboardMomDetailsVO); 
 			  if(commonMethodsUtilService.isListOrSetValid(momDetailsList)){
 				  for (Object[] param : momDetailsList) {
 					Long meetingLevelId=commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -11277,7 +11277,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 					String sourceName=commonMethodsUtilService.getStringValueForObject(param[9]);
 					AddressVO addressVO = setAddressDetails(param,11);
 
-					MomDetailsVO partyMeetingVO = new MomDetailsVO();
+					CoreDashboardMomDetailsVO partyMeetingVO = new CoreDashboardMomDetailsVO();
 					if(partyMeetingMap.get(partyMeetingId) != null){
 						partyMeetingVO = partyMeetingMap.get(partyMeetingId);
 					}else{
@@ -11292,7 +11292,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 					}
 					
 					if(partyMeetingVO != null){
-						MomDetailsVO vo = new MomDetailsVO();
+						CoreDashboardMomDetailsVO vo = new CoreDashboardMomDetailsVO();
 						  vo.setMeetingId(partyMeetingId);
 						  vo.setMeetingName(meetingName);
 						  vo.setDate(meetingDate);
@@ -11312,7 +11312,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 					}
 				}
 				  
-				  //List<Object[]> momDocumentsList = partyMeetingMinuteDAO.getPartyMeetingMOMDocumentsDetails(momDetailsVO);
+				  //List<Object[]> momDocumentsList = partyMeetingMinuteDAO.getPartyMeetingMOMDocumentsDetails(CoreDashboardMomDetailsVO);
 				  if(commonMethodsUtilService.isListOrSetValid(momDocumentsList)){
 					  for (Object[] param : momDocumentsList) {
 						  Long partyMeetingId=commonMethodsUtilService.getLongValueForObject(param[0]);
@@ -11322,7 +11322,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						  String fileType=commonMethodsUtilService.getStringValueForObject(param[2]);
 						  
 						  if(minutId== null || minutId.longValue()==0L){
-							  MomDetailsVO partyMeetingVO =null;
+							  CoreDashboardMomDetailsVO partyMeetingVO =null;
 							  if(partyMeetingMap.get(partyMeetingId) != null){
 								partyMeetingVO = partyMeetingMap.get(partyMeetingId);
 							  }
@@ -11330,13 +11330,13 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 								partyMeetingVO.getFilesList().add(new KeyValueVO(partyMeetingId, fileType, url));
 							  }
 						  }else{
-							  MomDetailsVO partyMeetingVO =null;
+							  CoreDashboardMomDetailsVO partyMeetingVO =null;
 							  if(partyMeetingMap.get(partyMeetingId) != null){
 								partyMeetingVO = partyMeetingMap.get(partyMeetingId);
 							  }
 							  if(partyMeetingVO != null){
 								  if(commonMethodsUtilService.isListOrSetValid(partyMeetingVO.getMinutesList())){
-									  for (MomDetailsVO vo : partyMeetingVO.getMinutesList()) {
+									  for (CoreDashboardMomDetailsVO vo : partyMeetingVO.getMinutesList()) {
 										if(vo != null && vo.getMomPointsId() != null && vo.getMomPointsId().longValue() == minutId.longValue()){
 											vo.getFilesList().add(new KeyValueVO(minutId, fileType, url));
 										}
