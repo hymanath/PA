@@ -11161,7 +11161,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 						" model.alertCategory.category," +
 						" count(model.alertId) " +
 		 				" from Alert model" +
-		 				" where model.alertTypeId=2 and model.isDeleted='N' ");
+		 				" where model.alertTypeId=2 and model.userAddress.state.stateId =1 and model.isDeleted='N' ");
 			
 			  	if(deptId != null && deptId.longValue()>0){
 			  		str.append(" and model.govtDepartmentId =:deptId ");
