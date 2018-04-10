@@ -114,8 +114,8 @@ function buildMOMBasicCountDetailsAction(result){
 	var str='';
 		
 		str+='<div class="panel panel-default panel-blue">';
-		  str+='<div class="panel-heading">';
-			str+='<h3 class="panel-title">Overview</h3>';
+		  str+='<div class="panel-heading" style="padding-top: 8px;padding-bottom: 8px;">';
+			str+='<h3 class="panel-title" style="font-size: 15px;">Overview</h3>';
 		 str+=' </div>';
 		 str+='<div class="panel-body">';
 		 
@@ -222,10 +222,15 @@ function buildMOMBasicCountDetailsAction(result){
 		
 		str+='<div class="MOMMainScroll">';
 		for(var i in result.partyMettingsVOList){
+			str+='<div class="panel-group m_top20" id="MOMCollapse'+i+'" role="tablist" aria-multiselectable="true">';
 			str+='<div class="panel panel-default panel-blue">';
-			  str+='<div class="panel-heading">';
-				str+='<h3 class="panel-title">'+result.partyMettingsVOList[i].name+' Level</h3>';
+			  str+='<div class="panel-heading" id="headingsMOM'+i+'" style="padding-top: 8px;padding-bottom: 8px;">';
+				  str+='<a class="collapsed collapseMOMIcon" role="button" data-toggle="collapse" data-parent="#MOMCollapse'+i+'" href="#collapsesMOM'+i+'" aria-expanded="false" aria-controls="collapsesMOM'+i+'">';
+					   str+='<h3 class="panel-title" style="font-size: 15px;">'+result.partyMettingsVOList[i].name+' Level</h3>';
+					str+='</a>';
+				
 			 str+=' </div>';
+			 str+='<div id="collapsesMOM'+i+'" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingsMOM'+i+'">';
 			 str+='<div class="panel-body">';
 			 
 				str+='<div class="row">';
@@ -320,6 +325,7 @@ function buildMOMBasicCountDetailsAction(result){
 											str+='</div>';
 										str+='</div>';
 									str+='</div>';
+								str+='</div>';
 									
 							str+='</div>';
 						str+='</div>';
@@ -328,13 +334,14 @@ function buildMOMBasicCountDetailsAction(result){
 				
 			  str+='</div>';
 			str+='</div>';
+			str+='</div>';
 		}
 	str+='</div>';	
 	$("#locationWiseMOMDetailsDivID").html(str);
-	if(result.partyMettingsVOList.length > 2)
+	/* if(result.partyMettingsVOList.length > 2)
 		{
 			$(".MOMMainScroll").mCustomScrollbar({setHeight:'297px'});
-		}
+		} */
 }
 
 function getUserTypeWisePartyMeetingMOMDetails(){

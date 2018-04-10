@@ -7222,3 +7222,21 @@ font-size:14px !important;
 	cursor:pointer;
 	text-decoration:underline;
 }
+.collapseMOMIcon, .collapseMOMIcon:active, .collapseMOMIcon:hover {
+    color: #fff !important;
+}
+.collapseMOMIcon::before {
+    border: 1px solid #fff;
+    color: #fff;
+    content: "\2212";
+    float: right;
+    font-family: "Glyphicons Halflings";
+    font-size: 8px;
+    font-weight: 400 !important;
+    margin-left: -4px;
+    margin-top: -1px;
+    padding: 3px 5px;
+}
+.collapseMOMIcon.collapsed::before {
+    content: "\2b";
+}
