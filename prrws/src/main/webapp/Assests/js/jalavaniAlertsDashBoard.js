@@ -3,10 +3,10 @@ var globalStatusObj={"SATISFIED":"#0FBE08","NOT SATISFIED":"#FF0909","PAR SATISF
 var currentFromDate=moment().format("DD-MM-YYYY");
 var currentToDate=moment().format("DD-MM-YYYY");
 $(".chosen-select").chosen();
-var url = window.location.href;
+ var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3));
+		wurl = url.substr(0,(url.indexOf(".in")+3)); 
 
 //var wurl="http://mytdp.com"
 var locationArr=['state','district','constituency','mandal'];
@@ -3127,7 +3127,7 @@ function buildJalavaniFeedBackDetailsInfo(result){
 				str+='<h5 class="font_weight text-capital">IVR SUMMARY</h5>';
 			str+='</div>';
 			var postiveAlerts=0,negativeAlerts=0,positiveRespondants=0,negativeRespondants=0,totalAlerts=0,totalRespondants=0;
-			var postiveAlertsPerc=0.0,negativeAlertsPerc=0.0,positiveRespondantsPerc=0.0,negativeRespondantsPerc=0.0;
+			var postiveAlertsPerc=0,negativeAlertsPerc=0,positiveRespondantsPerc=0,negativeRespondantsPerc=0;
 			for(var i in result[0].hamletVoterInfo){
 				if(result[0].hamletVoterInfo[i].name != "Not Satisfied"){
 					if(result[0].hamletVoterInfo[i].hamletVoterInfo !=null && result[0].hamletVoterInfo[i].hamletVoterInfo.length>0){
@@ -3144,6 +3144,7 @@ function buildJalavaniFeedBackDetailsInfo(result){
 			}
 			totalAlerts =postiveAlerts+negativeAlerts;
 			totalRespondants=positiveRespondants+negativeRespondants;
+			
 			postiveAlertsPerc  = (postiveAlerts* 100/totalAlerts).toFixed(2);
 			negativeAlertsPerc  = (negativeAlerts* 100/totalAlerts).toFixed(2);
 			positiveRespondantsPerc  = (positiveRespondants* 100/totalRespondants).toFixed(2);
@@ -3162,14 +3163,42 @@ function buildJalavaniFeedBackDetailsInfo(result){
 						str+='</thead>';
 						str+='<tbody>';
 							str+='<tr>'
-								str+='<td>'+totalAlerts+'</td>';
-								str+='<td>'+totalRespondants+'</td>';
+							
+								if(totalAlerts !=null && totalAlerts>0){
+									str+='<td>'+totalAlerts+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(totalRespondants !=null && totalRespondants>0){
+									str+='<td>'+totalRespondants+'</td>';
+								}else{
+									str+='<td> - </td>';
+								}
 								
-								str+='<td>'+postiveAlerts+' <span style="color:#0FBE08;">('+postiveAlertsPerc+') %</td>';
-								str+='<td>'+positiveRespondants+'<span style="color:#0FBE08;">('+positiveRespondantsPerc+') %</td>';
 								
-								str+='<td>'+negativeAlerts+' <span style="color:#FE3131;">('+negativeAlertsPerc+') %</td>';
-								str+='<td>'+negativeRespondants+' <span style="color:#FE3131;">('+negativeRespondantsPerc+') %</td>';
+								if(postiveAlerts !=null && postiveAlerts>0){
+									str+='<td>'+postiveAlerts+' <span style="color:#0FBE08;">('+postiveAlertsPerc+') %</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(positiveRespondants !=null && positiveRespondants>0){
+									str+='<td>'+positiveRespondants+'<span style="color:#0FBE08;">('+positiveRespondantsPerc+') %</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
+								if(negativeAlerts !=null && negativeAlerts>0){
+									str+='<td>'+negativeAlerts+' <span style="color:#FE3131;">('+negativeAlertsPerc+') %</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								if(negativeRespondants !=null && negativeRespondants>0){
+									str+='<td>'+negativeRespondants+' <span style="color:#FE3131;">('+negativeRespondantsPerc+') %</td>';
+								}else{
+									str+='<td> - </td>';
+								}
+								
 								
 							str+='</tr>'
 						str+='</tbody>';
@@ -3241,9 +3270,19 @@ function buildJalavaniFeedBackDetailsInfo(result){
 													
 													var postiveResponderPerc = (cumilativePositiveResponders*100/totalResponderCount).toFixed(2);
 													var negativeResponderPerc= (cumilativeNegativeResponders*100/totalResponderCount).toFixed(2);
-
-													str+='<td title="Respondents"><span title="Respondents :'+cumilativePositiveResponders+'" style="color:#0FBE08;" data-toggle="tooltip" >('+postiveResponderPerc+' %)</span></td>';
-													str+='<td title="Respondents"><span title="Respondents :'+cumilativeNegativeResponders+'" style="color:#FE3131;" data-placement="top" data-container="body" data-toggle="tooltip">('+negativeResponderPerc+' %)</span></td>';
+													
+													if(cumilativePositiveResponders !=null && cumilativePositiveResponders>0){
+														str+='<td title="Respondents"><span title="Respondents :'+cumilativePositiveResponders+'" style="color:#0FBE08;" data-toggle="tooltip" >('+postiveResponderPerc+' %)</span></td>';
+													}else{
+														str+='<td title="Respondents"> - </td>';
+													}
+													
+													if(cumilativeNegativeResponders !=null && cumilativeNegativeResponders>0){
+														str+='<td title="Respondents"><span title="Respondents :'+cumilativeNegativeResponders+'" style="color:#FE3131;" data-placement="top" data-container="body" data-toggle="tooltip">('+negativeResponderPerc+' %)</span></td>';
+													}else{
+														str+='<td title="Respondents"> - </td>';
+													}
+													
 											}
 											str+='</tr>';
 											
