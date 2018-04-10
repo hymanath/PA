@@ -162,6 +162,10 @@ public class NregsDataVO implements Serializable{
 	private String wageExp1718;
 	private String matExp1718 ;
 	private String total1718;
+	private String perDays1819;
+	private String wageExp1819;
+	private String matExp1819;
+	private String total1819;
 	private String range;
 	private String today;
 	private String yesterday;
@@ -190,6 +194,10 @@ public class NregsDataVO implements Serializable{
 	private String wageExp1718IsHigh;
 	private String matExp1718IsHigh;
 	private String total1718IsHigh;
+	private String perDays1819IsHigh;
+	private String wageExp1819IsHigh;
+	private String matExp1819IsHigh;
+	private String total1819IsHigh;
 	
 	private String personDaysIsHigh;
 	private String personDaysIsLow;
@@ -1388,6 +1396,54 @@ public class NregsDataVO implements Serializable{
 	}
 	public void setCompletedWork(String completedWork) {
 		CompletedWork = completedWork;
+	}
+	public String getPerDays1819() {
+		return perDays1819;
+	}
+	public void setPerDays1819(String perDays1819) {
+		this.perDays1819 = perDays1819;
+	}
+	public String getWageExp1819() {
+		return wageExp1819;
+	}
+	public void setWageExp1819(String wageExp1819) {
+		this.wageExp1819 = wageExp1819;
+	}
+	public String getMatExp1819() {
+		return matExp1819;
+	}
+	public void setMatExp1819(String matExp1819) {
+		this.matExp1819 = matExp1819;
+	}
+	public String getTotal1819() {
+		return total1819;
+	}
+	public void setTotal1819(String total1819) {
+		this.total1819 = total1819;
+	}
+	public String getPerDays1819IsHigh() {
+		return perDays1819IsHigh;
+	}
+	public void setPerDays1819IsHigh(String perDays1819IsHigh) {
+		this.perDays1819IsHigh = perDays1819IsHigh;
+	}
+	public String getWageExp1819IsHigh() {
+		return wageExp1819IsHigh;
+	}
+	public void setWageExp1819IsHigh(String wageExp1819IsHigh) {
+		this.wageExp1819IsHigh = wageExp1819IsHigh;
+	}
+	public String getMatExp1819IsHigh() {
+		return matExp1819IsHigh;
+	}
+	public void setMatExp1819IsHigh(String matExp1819IsHigh) {
+		this.matExp1819IsHigh = matExp1819IsHigh;
+	}
+	public String getTotal1819IsHigh() {
+		return total1819IsHigh;
+	}
+	public void setTotal1819IsHigh(String total1819IsHigh) {
+		this.total1819IsHigh = total1819IsHigh;
 	}
 	
 }

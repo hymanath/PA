@@ -7087,6 +7087,10 @@ public class NREGSTCSService implements INREGSTCSService{
 							vo.setWageExp1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("WAGE_EXP_1718")));
 							vo.setMatExp1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("MAT_EXP_1718")));
 							vo.setTotal1718(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1718")));
+							vo.setPerDays1819(convertRupeesIntoLakhesFrDoubleValue(jObj.getString("PER_DAYS_1819")));
+							vo.setWageExp1819(convertRupeesIntocroresFrDoubleValue(jObj.getString("WAGE_EXP_1819")));
+							vo.setMatExp1819(convertRupeesIntocroresFrDoubleValue(jObj.getString("MAT_EXP_1819")));
+							vo.setTotal1819(convertRupeesIntocroresFrDoubleValue(jObj.getString("TOT_1819")));
 							/*vo.setAchivementPercentage(new BigDecimal((Double.valueOf(vo.getTotal1718()) * 100.00) / Double.valueOf(vo.getTotal1617())).setScale(2, BigDecimal.ROUND_HALF_UP).toString());
 							vo.setPercentage(new BigDecimal(Double.valueOf(vo.getAchivementPercentage()) - Double.valueOf("100.00")).setScale(2, BigDecimal.ROUND_HALF_UP).toString());*/
 							returnList.add(vo);
@@ -7144,10 +7148,23 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
-							if(Double.valueOf(vo.getPerDays1718()) >= Double.valueOf(overAllPersonDaysIsHigh)){
-								overAllPersonDaysIsHigh = vo.getPerDays1718();
-								vo.setPersonDaysIsHigh("17-18");
+						//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+						if(Double.valueOf(vo.getPerDays1718()) >= Double.valueOf(overAllPersonDaysIsHigh)){
+							overAllPersonDaysIsHigh = vo.getPerDays1718();
+							vo.setPersonDaysIsHigh("17-18");
+							vo.setOverAllPersonDaysIsHigh("TRUE");
+							if(i > 0){
+								for (int j = 0; j < i; j++) {
+									NregsDataVO prevo = returnList.get(j);
+									prevo.setOverAllPersonDaysIsHigh("FALSE");
+								}
+							}
+						}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getPerDays1819()) >= Double.valueOf(overAllPersonDaysIsHigh)){
+								overAllPersonDaysIsHigh = vo.getPerDays1819();
+								vo.setPersonDaysIsHigh("18-19");
 								vo.setOverAllPersonDaysIsHigh("TRUE");
 								if(i > 0){
 									for (int j = 0; j < i; j++) {
@@ -7181,10 +7198,23 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+						//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getWageExp1718()) >= Double.valueOf(overAllWageIsHigh)){
 								overAllWageIsHigh = vo.getWageExp1718();
 								vo.setWageIsHigh("17-18");
+								vo.setOverAllWageIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllWageIsHigh("FALSE");
+									}
+								}
+							}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getWageExp1819()) >= Double.valueOf(overAllWageIsHigh)){
+								overAllWageIsHigh = vo.getWageExp1819();
+								vo.setWageIsHigh("18-19");
 								vo.setOverAllWageIsHigh("TRUE");
 								if(i > 0){
 									for (int j = 0; j < i; j++) {
@@ -7218,7 +7248,7 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+						//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getMatExp1718()) >= Double.valueOf(overAllMaterialIsHigh)){
 								overAllMaterialIsHigh = vo.getMatExp1718();
 								vo.setMaterialIsHigh("17-18");
@@ -7230,8 +7260,20 @@ public class NREGSTCSService implements INREGSTCSService{
 									}
 								}
 							}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getMatExp1819()) >= Double.valueOf(overAllMaterialIsHigh)){
+								overAllMaterialIsHigh = vo.getMatExp1819();
+								vo.setMaterialIsHigh("18-19");
+								vo.setOverAllMaterialIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllMaterialIsHigh("FALSE");
+									}
+								}
+							}
 						}
-						
 						//Total High
 						if(Double.valueOf(vo.getTotal1516()) >= Double.valueOf(overAllTotalIsHigh)){
 							overAllTotalIsHigh = vo.getTotal1516();
@@ -7255,7 +7297,7 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
+						//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("February") && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getTotal1718()) >= Double.valueOf(overAllTotalIsHigh)){
 								overAllTotalIsHigh = vo.getTotal1718();
 								vo.setTotalIsHigh("17-18");
@@ -7267,8 +7309,20 @@ public class NREGSTCSService implements INREGSTCSService{
 									}
 								}
 							}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getTotal1819()) >= Double.valueOf(overAllTotalIsHigh)){
+								overAllTotalIsHigh = vo.getTotal1819();
+								vo.setTotalIsHigh("18-19");
+								vo.setOverAllTotalIsHigh("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllTotalIsHigh("FALSE");
+									}
+								}
+							}
 						}
-						
 						
 						//PersonDays Low
 						if(Double.valueOf(vo.getPerDays1516()) <= Double.valueOf(overAllPersonDaysIsLow)){
@@ -7293,11 +7347,24 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null){
+						//if(vo.getThisMonth() != null){
 							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getPerDays1718()) <= Double.valueOf(overAllPersonDaysIsLow)){
 								overAllPersonDaysIsLow = vo.getPerDays1718();
 								vo.setPersonDaysIsLow("17-18");
+								vo.setOverAllPersonDaysIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllPersonDaysIsLow("FALSE");
+									}
+								}
+							}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getPerDays1819()) <= Double.valueOf(overAllPersonDaysIsLow)){
+								overAllPersonDaysIsLow = vo.getPerDays1819();
+								vo.setPersonDaysIsLow("18-19");
 								vo.setOverAllPersonDaysIsLow("TRUE");
 								if(i > 0){
 									for (int j = 0; j < i; j++) {
@@ -7331,7 +7398,7 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null){
+						//if(vo.getThisMonth() != null){
 							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getWageExp1718()) <= Double.valueOf(overAllWageIsLow)){
 								overAllWageIsLow = vo.getWageExp1718();
@@ -7344,8 +7411,21 @@ public class NREGSTCSService implements INREGSTCSService{
 									}
 								}
 							}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getWageExp1819()) <= Double.valueOf(overAllWageIsLow)){
+								overAllWageIsLow = vo.getWageExp1819();
+								vo.setWageIsLow("18-19");
+								vo.setOverAllWageIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllWageIsLow("FALSE");
+									}
+								}
+							}
 						}
-						
+							
 						//Material Low
 						if(Double.valueOf(vo.getMatExp1516()) <= Double.valueOf(overAllMaterialIsLow)){
 							overAllMaterialIsLow = vo.getMatExp1516();
@@ -7369,11 +7449,24 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null){
+						//if(vo.getThisMonth() != null){
 							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getMatExp1718()) <= Double.valueOf(overAllMaterialIsLow)){
 								overAllMaterialIsLow = vo.getMatExp1718();
 								vo.setMaterialIsLow("17-18");
+								vo.setOverAllMaterialIsLow("TRUE");
+								if(i > 0){
+									for (int j = 0; j < i; j++) {
+										NregsDataVO prevo = returnList.get(j);
+										prevo.setOverAllMaterialIsLow("FALSE");
+									}
+								}
+							}
+						//}
+						if(vo.getThisMonth() == null){
+							if(Double.valueOf(vo.getMatExp1819()) <= Double.valueOf(overAllMaterialIsLow)){
+								overAllMaterialIsLow = vo.getMatExp1819();
+								vo.setMaterialIsLow("18-19");
 								vo.setOverAllMaterialIsLow("TRUE");
 								if(i > 0){
 									for (int j = 0; j < i; j++) {
@@ -7407,7 +7500,7 @@ public class NREGSTCSService implements INREGSTCSService{
 								}
 							}
 						}
-						if(vo.getThisMonth() != null){
+						//if(vo.getThisMonth() != null){
 							//if(vo.getThisMonth() != null && !vo.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(vo.getTotal1718()) <= Double.valueOf(overAllTotalIsLow)){
 								overAllTotalIsLow = vo.getTotal1718();
@@ -7420,9 +7513,21 @@ public class NREGSTCSService implements INREGSTCSService{
 									}
 								}
 							}
+							if(vo.getThisMonth() == null){
+								if(Double.valueOf(vo.getTotal1819()) <= Double.valueOf(overAllTotalIsLow)){
+									overAllTotalIsLow = vo.getTotal1819();
+									vo.setTotalIsLow("18-19");
+									vo.setOverAllTotalIsLow("TRUE");
+									if(i > 0){
+										for (int j = 0; j < i; j++) {
+											NregsDataVO prevo = returnList.get(j);
+											prevo.setOverAllTotalIsLow("FALSE");
+										}
+									}
+								}
+							}
 						}
 					//}
-				}
 					
 				
 				//Previous Years Comparision
@@ -7433,52 +7538,76 @@ public class NREGSTCSService implements INREGSTCSService{
 							nregsDataVO.setPerDays1617IsHigh("TRUE");
 						else
 							nregsDataVO.setPerDays1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null){
+						//if(nregsDataVO.getThisMonth() != null){
 							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getPerDays1718()) >= Double.valueOf(nregsDataVO.getPerDays1617()))
 								nregsDataVO.setPerDays1718IsHigh("TRUE");
 							else
 								nregsDataVO.setPerDays1718IsHigh("FALSE");
-						}
+							if(nregsDataVO.getThisMonth() == null){
+								if(Double.valueOf(nregsDataVO.getPerDays1819()) >= Double.valueOf(nregsDataVO.getPerDays1718()))
+									nregsDataVO.setPerDays1819IsHigh("TRUE");
+								else
+									nregsDataVO.setPerDays1819IsHigh("FALSE");
+							}
+						//}
 						
 						//Wage
 						if(Double.valueOf(nregsDataVO.getWageExp1617()) >= Double.valueOf(nregsDataVO.getWageExp1516()))
 							nregsDataVO.setWageExp1617IsHigh("TRUE");
 						else
 							nregsDataVO.setWageExp1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null){
+						//if(nregsDataVO.getThisMonth() != null){
 							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getWageExp1718()) >= Double.valueOf(nregsDataVO.getWageExp1617()))
 								nregsDataVO.setWageExp1718IsHigh("TRUE");
 							else
 								nregsDataVO.setWageExp1718IsHigh("FALSE");
-						}
+							if(nregsDataVO.getThisMonth() == null){
+								if(Double.valueOf(nregsDataVO.getWageExp1819()) >= Double.valueOf(nregsDataVO.getWageExp1718()))
+									nregsDataVO.setWageExp1819IsHigh("TRUE");
+								else
+									nregsDataVO.setWageExp1819IsHigh("FALSE");
+							}
+						//}
 						
 						//Material
 						if(Double.valueOf(nregsDataVO.getMatExp1617()) >= Double.valueOf(nregsDataVO.getMatExp1516()))
 							nregsDataVO.setMatExp1617IsHigh("TRUE");
 						else
 							nregsDataVO.setMatExp1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null){
+						//if(nregsDataVO.getThisMonth() != null){
 							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getMatExp1718()) >= Double.valueOf(nregsDataVO.getMatExp1617()))
 								nregsDataVO.setMatExp1718IsHigh("TRUE");
 							else
 								nregsDataVO.setMatExp1718IsHigh("FALSE");
-						}
+							if(nregsDataVO.getThisMonth() == null){
+								if(Double.valueOf(nregsDataVO.getMatExp1819()) >= Double.valueOf(nregsDataVO.getMatExp1718()))
+									nregsDataVO.setMatExp1819IsHigh("TRUE");
+								else
+									nregsDataVO.setMatExp1819IsHigh("FALSE");
+							}
+						//}
 						
 						//Total
 						if(Double.valueOf(nregsDataVO.getTotal1617()) >= Double.valueOf(nregsDataVO.getTotal1516()))
 							nregsDataVO.setTotal1617IsHigh("TRUE");
 						else
 							nregsDataVO.setTotal1617IsHigh("FALSE");
-						if(nregsDataVO.getThisMonth() != null){
+						//if(nregsDataVO.getThisMonth() != null){
 							//if(nregsDataVO.getThisMonth() != null && !nregsDataVO.getThisMonth().equalsIgnoreCase("March")){
 							if(Double.valueOf(nregsDataVO.getTotal1718()) >= Double.valueOf(nregsDataVO.getTotal1617()))
 								nregsDataVO.setTotal1718IsHigh("TRUE");
 							else
 								nregsDataVO.setTotal1718IsHigh("FALSE");
-						}
+							if(nregsDataVO.getThisMonth() == null){
+								if(Double.valueOf(nregsDataVO.getTotal1819()) >= Double.valueOf(nregsDataVO.getTotal1718()))
+									nregsDataVO.setTotal1819IsHigh("TRUE");
+								else
+									nregsDataVO.setTotal1819IsHigh("FALSE");
+							}
+						//}
 					//}
 				}
 			}
