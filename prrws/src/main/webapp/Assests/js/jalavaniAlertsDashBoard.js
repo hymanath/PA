@@ -31,10 +31,12 @@ $("#dateRangePicker").daterangepicker({
 		ranges: {
 		   'Today' : [moment(), moment()],
 		   'Yesterday': [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
-		   'This Month': [moment().startOf('month'), moment()],
-		   'This Year': [moment().startOf('Year'), moment()],
+		   'This Month': [moment().startOf('month'),moment()],
 		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-		   'Last 1 Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')]
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+		   //'OverAll':[moment().subtract(20, 'years').startOf('year').format("DD-MM-YYYY"), moment().add(10,'years').format("DD-MM-YYYY")]
+		   'OverAll':['01-01-2016', moment()]
 		}
 	});
 	var dates= $("#dateRangePicker").val();
