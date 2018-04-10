@@ -4,8 +4,12 @@ import java.io.Serializable;
 import java.sql.Time;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+
+import org.hsqldb.lib.HashSet;
 
 public class PartyMeetingsVO implements Serializable{
 	
@@ -118,6 +122,7 @@ public class PartyMeetingsVO implements Serializable{
 	private Long mandalNotUpdatedCount = 0L;
 	private Long constituencyNotUpdatedCount = 0L;
 	private Long districtNotUpdatedCount = 0L;
+	private Set<Long> momUpdatedpartyIds = new LinkedHashSet<Long>(0);
 	
 
 	public String getWardName() {
@@ -725,6 +730,12 @@ public class PartyMeetingsVO implements Serializable{
 	}
 	public void setDistrictNotUpdatedCount(Long districtNotUpdatedCount) {
 		this.districtNotUpdatedCount = districtNotUpdatedCount;
+	}
+	public Set<Long> getMomUpdatedpartyIds() {
+		return momUpdatedpartyIds;
+	}
+	public void setMomUpdatedpartyIds(Set<Long> momUpdatedpartyIds) {
+		this.momUpdatedpartyIds = momUpdatedpartyIds;
 	}
 	
 	
