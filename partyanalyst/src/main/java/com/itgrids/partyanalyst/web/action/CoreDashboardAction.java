@@ -6393,23 +6393,41 @@ public String getPartyMeetingMOMDetailsCompletedCountsClicks(){
 		 CoreDashboardMomDetailsVO momDetailsVO = new CoreDashboardMomDetailsVO();
 		Long activityMemberId = jObj.getLong("activityMemberId");
 		Long stateId = jObj.getLong("stateId");
+		Long sourceTypeId = jObj.getLong("sourceTypeId");
+		String momType = jObj.getString("momType");
+		String searchTypeStr = jObj.getString("searchType");
+		
 		String dateString = jObj.getString("dateString");
 		List<Long> partyMeetingTypeIdsList = new ArrayList<Long>();
+		List<Long> partyMeetingLevelIdsList = new ArrayList<Long>();
+		
 		JSONArray alertTypeIdArr = jObj.getJSONArray("partyMeetingTypeArr");
 		if(alertTypeIdArr!=null &&  alertTypeIdArr.length()>0){
 			for( int i=0;i<alertTypeIdArr.length();i++){
 				partyMeetingTypeIdsList.add(Long.valueOf(alertTypeIdArr.getString(i))); 
 			}
-			momDetailsVO.setPartyMeetingLevelIdsList(partyMeetingTypeIdsList);
+			momDetailsVO.setPartyMetingTypeIdsList(partyMeetingTypeIdsList);
+		}
+		
+		JSONArray meetinglevelIdArr = jObj.getJSONArray("meetinglevelIdArr");
+		if(meetinglevelIdArr!=null &&  meetinglevelIdArr.length()>0){
+			for( int i=0;i<meetinglevelIdArr.length();i++){
+				partyMeetingLevelIdsList.add(Long.valueOf(meetinglevelIdArr.getString(i))); 
+			}
+			momDetailsVO.setPartyMetingLevelIdsList(partyMeetingLevelIdsList);
 		}
 		
 		momDetailsVO.setStateId(stateId);
+		momDetailsVO.setSourceTypeId(sourceTypeId);
+		momDetailsVO.setMomType(momType);
+		momDetailsVO.setSearchTypeStr(searchTypeStr);
 		String DatesArr[] = dateString.split("-");
 	   	 if(DatesArr != null && DatesArr.length>0){
 	   		List<Date>  datesList = coreDashboardGenericService.getDates(DatesArr[0], DatesArr[1], new SimpleDateFormat("dd/MM/yyyy"));
 			 momDetailsVO.setStartDate(datesList.get(0));
 			 momDetailsVO.setEndDate(datesList.get(1));
 	   	 }
+	   	 
 		momDetailsList = coreDashboardPartyMeetingService.getPartyMeetingsMOMDetails(momDetailsVO,activityMemberId);
 	}catch(Exception e){
 		LOG.error("Exception raised at getUserTypeWisePartyMeetingMOMDetailsCompletedCounts1() method of CoreDashBoard", e);
