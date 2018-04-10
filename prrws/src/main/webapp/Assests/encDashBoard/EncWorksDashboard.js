@@ -938,7 +938,7 @@ function buildNotGroundedGraphforExceededWorks(response){
 				dataLabels: {
 					useHTML:true,
 					enabled: true,
-					color: '#ffff',
+					color: '#000',
 					align: 'center',
 					style: {
 						fontWeight: '',
