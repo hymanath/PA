@@ -199,12 +199,25 @@ public class NregsDataVO implements Serializable{
 	private String materialIsLow;
 	private String totalIsHigh;
 	private String totalIsLow;
-	private String year1314;
-	private String year1415;
-	private String year1516;
-	private String year1617;
-	private String year1718;
-	private String year;
+	private String started1415;
+	private String completed1415;
+	private String yetCompleted1415;
+	private String started1516;
+	private String completed1516;
+	private String yetCompleted1516;
+	private String started1617;
+	private String completed1617;
+	private String yetCompleted1617;
+	private String started1718;
+	private String completed1718;
+	private String yetCompleted1718;
+	private String started1819;
+	private String completed1819;
+	private String yetCompleted1819;
+	private String started;
+	private String CompletedWork;
+	private String yetCompleted;
+	
 	
 	private String materialEntitlement;
 	private String balanceMaterial;
@@ -1267,42 +1280,114 @@ public class NregsDataVO implements Serializable{
 	public void setVillagesInGold(Long villagesInGold) {
 		VillagesInGold = villagesInGold;
 	}
-	public String getYear1314() {
-		return year1314;
-	}
-	public void setYear1314(String year1314) {
-		this.year1314 = year1314;
-	}
-	public String getYear1415() {
-		return year1415;
-	}
-	public void setYear1415(String year1415) {
-		this.year1415 = year1415;
-	}
-	public String getYear1516() {
-		return year1516;
-	}
-	public void setYear1516(String year1516) {
-		this.year1516 = year1516;
-	}
-	public String getYear1617() {
-		return year1617;
-	}
-	public void setYear1617(String year1617) {
-		this.year1617 = year1617;
-	}
-	public String getYear1718() {
-		return year1718;
-	}
-	public void setYear1718(String year1718) {
-		this.year1718 = year1718;
-	}
-	public String getYear() {
-		return year;
-	}
-	public void setYear(String year) {
-		this.year = year;
-	}
 	
+	public String getStarted1415() {
+		return started1415;
+	}
+	public void setStarted1415(String started1415) {
+		this.started1415 = started1415;
+	}
+	public String getCompleted1415() {
+		return completed1415;
+	}
+	public void setCompleted1415(String completed1415) {
+		this.completed1415 = completed1415;
+	}
+	public String getYetCompleted1415() {
+		return yetCompleted1415;
+	}
+	public void setYetCompleted1415(String yetCompleted1415) {
+		this.yetCompleted1415 = yetCompleted1415;
+	}
+	public String getStarted1516() {
+		return started1516;
+	}
+	public void setStarted1516(String started1516) {
+		this.started1516 = started1516;
+	}
+	public String getCompleted1516() {
+		return completed1516;
+	}
+	public void setCompleted1516(String completed1516) {
+		this.completed1516 = completed1516;
+	}
+	public String getYetCompleted1516() {
+		return yetCompleted1516;
+	}
+	public void setYetCompleted1516(String yetCompleted1516) {
+		this.yetCompleted1516 = yetCompleted1516;
+	}
+	public String getStarted1617() {
+		return started1617;
+	}
+	public void setStarted1617(String started1617) {
+		this.started1617 = started1617;
+	}
+	public String getCompleted1617() {
+		return completed1617;
+	}
+	public void setCompleted1617(String completed1617) {
+		this.completed1617 = completed1617;
+	}
+	public String getYetCompleted1617() {
+		return yetCompleted1617;
+	}
+	public void setYetCompleted1617(String yetCompleted1617) {
+		this.yetCompleted1617 = yetCompleted1617;
+	}
+	public String getStarted1718() {
+		return started1718;
+	}
+	public void setStarted1718(String started1718) {
+		this.started1718 = started1718;
+	}
+	public String getCompleted1718() {
+		return completed1718;
+	}
+	public void setCompleted1718(String completed1718) {
+		this.completed1718 = completed1718;
+	}
+	public String getYetCompleted1718() {
+		return yetCompleted1718;
+	}
+	public void setYetCompleted1718(String yetCompleted1718) {
+		this.yetCompleted1718 = yetCompleted1718;
+	}
+	public String getStarted1819() {
+		return started1819;
+	}
+	public void setStarted1819(String started1819) {
+		this.started1819 = started1819;
+	}
+	public String getCompleted1819() {
+		return completed1819;
+	}
+	public void setCompleted1819(String completed1819) {
+		this.completed1819 = completed1819;
+	}
+	public String getYetCompleted1819() {
+		return yetCompleted1819;
+	}
+	public void setYetCompleted1819(String yetCompleted1819) {
+		this.yetCompleted1819 = yetCompleted1819;
+	}
+	public String getStarted() {
+		return started;
+	}
+	public void setStarted(String started) {
+		this.started = started;
+	}
+	public String getYetCompleted() {
+		return yetCompleted;
+	}
+	public void setYetCompleted(String yetCompleted) {
+		this.yetCompleted = yetCompleted;
+	}
+	public String getCompletedWork() {
+		return CompletedWork;
+	}
+	public void setCompletedWork(String completedWork) {
+		CompletedWork = completedWork;
+	}
 	
 }
