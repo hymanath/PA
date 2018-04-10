@@ -2727,9 +2727,10 @@ function getLocationWiseFAVacencies()
 		}
 	});
 }
-var swmStartDate = moment().subtract(1,"month").format("DD-MM-YYYY");
-var swmEndDate = moment().format("DD-MM-YYYY");
+
 function getSolidWasteManagementOverAllCounts(){
+var swmStartDate = moment().format("DD-MM-YYYY");
+var swmEndDate = swmStartDate;
 	$(".SolidWasteManagementAllCls").html(spinner);
 	
 	var json = {
@@ -2762,10 +2763,11 @@ function getSolidWasteManagementOverAllCounts(){
 			//$(".SolidWasteManagementAllCls").html(swmData(''+houses+' / '+farmers+'',''+total+'',''));
 			//$(".SolidWasteManagementAllCls").html(''+houses+' / '+farmers+' / <small style="font-size:14px;top:0px;">'+total+'</small>');
 			//var  achive = result.trackingPer.toFixed(2)
-			if(achieverfid !=null && achieverfid !='undefined'){
-				$(".SolidWasteManagementAllCls").html('- %('+achieve+')');
-			}else{
+			if(achieverfid !=null && achieverfid > 0 && achieverfid !='undefined' ){
 				$(".SolidWasteManagementAllCls").html(achieverfid.toFixed(2)+'%'+'('+achieve+')');
+				}
+			else{
+				$(".SolidWasteManagementAllCls").html("0%(0)");
 			}
 		}
 	});
