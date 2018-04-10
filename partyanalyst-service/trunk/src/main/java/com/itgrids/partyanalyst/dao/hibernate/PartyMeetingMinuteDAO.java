@@ -1505,8 +1505,8 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 }
 		}
 		
-		if(momDetailsVO.getSearchTypeStr() != null && ( momDetailsVO.getSearchTypeStr().equalsIgnoreCase("Total Conducted Meetings") ||
-				momDetailsVO.getSearchTypeStr().equalsIgnoreCase("MOM Not UpdatedMeetings"))){
+		if(momDetailsVO.getSearchTypeStr() != null && ( momDetailsVO.getSearchTypeStr().equalsIgnoreCase("TotalConductedMeetings") ||
+				momDetailsVO.getSearchTypeStr().equalsIgnoreCase("MOMNotUpdatedMeetings"))){
 			sb.append(" and pms.meeting_status='Y' ");
 		}
 		
