@@ -9213,12 +9213,24 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    				vo.setConstituency(jObj.getString("CNAME"));
 	 	    				vo.setMandal(jObj.getString("MNAME"));
 	 	    				vo.setPanchayat(jObj.getString("PNAME"));
-	 	    				vo.setYear1314(jObj.getString("Y_1314"));
-	 	    				vo.setYear1415(jObj.getString("Y_1415"));
-	 	    				vo.setYear1516(jObj.getString("Y_1516"));
-	 	    				vo.setYear1617(jObj.getString("Y_1617"));
-	 	    				vo.setYear1718(jObj.getString("Y_1718"));
-	 	    				vo.setYear(jObj.getString("Y"));
+	 	    				vo.setStarted1415(jObj.getString("S_1415"));
+	 	    				vo.setCompleted1415(jObj.getString("C_1415"));
+	 	    				vo.setYetCompleted1415(jObj.getString("Y_1415"));
+	 	    				vo.setStarted1516(jObj.getString("S_1516"));
+	 	    				vo.setCompleted1516(jObj.getString("C_1516"));
+	 	    				vo.setYetCompleted1516(jObj.getString("Y_1516"));
+	 	    				vo.setStarted1617(jObj.getString("S_1617"));
+	 	    				vo.setCompleted1617(jObj.getString("C_1617"));
+	 	    				vo.setYetCompleted1617(jObj.getString("Y_1617"));
+	 	    				vo.setStarted1718(jObj.getString("S_1718"));
+	 	    				vo.setCompleted1718(jObj.getString("C_1718"));
+	 	    				vo.setYetCompleted1718(jObj.getString("Y_1718"));
+	 	    				vo.setStarted1819(jObj.getString("S_1819"));
+	 	    				vo.setCompleted1819(jObj.getString("C_1819"));
+	 	    				vo.setYetCompleted1819(jObj.getString("Y_1819"));
+	 	    				vo.setStarted(jObj.getString("S"));
+	 	    				vo.setCompletedWork(jObj.getString("C"));
+	 	    				vo.setYetCompleted(jObj.getString("Y"));
 	 	    				returnList.add(vo);
 	 	    			}
 	 	    		}
@@ -9244,12 +9256,24 @@ public class NREGSTCSService implements INREGSTCSService{
 				 	    			for(int i=0;i<finalArray.length();i++){
 					 	    				NregsDataVO vo = new NregsDataVO();
 					 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-					 	    				vo.setYear1314(jObj.getString("Y_1314"));
-					 	    				vo.setYear1415(jObj.getString("Y_1415"));
-					 	    				vo.setYear1516(jObj.getString("Y_1516"));
-					 	    				vo.setYear1617(jObj.getString("Y_1617"));
-					 	    				vo.setYear1718(jObj.getString("Y_1718"));
-					 	    				vo.setYear(jObj.getString("Y"));
+					 	    				vo.setStarted1415(jObj.getString("S_1415"));
+					 	    				vo.setCompleted1415(jObj.getString("C_1415"));
+					 	    				vo.setYetCompleted1415(jObj.getString("Y_1415"));
+					 	    				vo.setStarted1516(jObj.getString("S_1516"));
+					 	    				vo.setCompleted1516(jObj.getString("C_1516"));
+					 	    				vo.setYetCompleted1516(jObj.getString("Y_1516"));
+					 	    				vo.setStarted1617(jObj.getString("S_1617"));
+					 	    				vo.setCompleted1617(jObj.getString("C_1617"));
+					 	    				vo.setYetCompleted1617(jObj.getString("Y_1617"));
+					 	    				vo.setStarted1718(jObj.getString("S_1718"));
+					 	    				vo.setCompleted1718(jObj.getString("C_1718"));
+					 	    				vo.setYetCompleted1718(jObj.getString("Y_1718"));
+					 	    				vo.setStarted1819(jObj.getString("S_1819"));
+					 	    				vo.setCompleted1819(jObj.getString("C_1819"));
+					 	    				vo.setYetCompleted1819(jObj.getString("Y_1819"));
+					 	    				vo.setStarted(jObj.getString("S"));
+					 	    				vo.setCompletedWork(jObj.getString("C"));
+					 	    				vo.setYetCompleted(jObj.getString("Y"));
 					 	    				returnList.get(0).getSubList().add(vo);
 				 	    				}
 				 	    			}
@@ -9274,12 +9298,24 @@ public class NREGSTCSService implements INREGSTCSService{
 			 	    			for(int i=0;i<finalArray.length();i++){
 				 	    				NregsDataVO vo = new NregsDataVO();
 				 	    				JSONObject jObj = (JSONObject) finalArray.get(i);
-				 	    				vo.setYear1314(jObj.getString("Y_1314"));
-				 	    				vo.setYear1415(jObj.getString("Y_1415"));
-				 	    				vo.setYear1516(jObj.getString("Y_1516"));
-				 	    				vo.setYear1617(jObj.getString("Y_1617"));
-				 	    				vo.setYear1718(jObj.getString("Y_1718"));
-				 	    				vo.setYear(jObj.getString("Y"));
+				 	    				vo.setStarted1415(jObj.getString("S_1415"));
+				 	    				vo.setCompleted1415(jObj.getString("C_1415"));
+				 	    				vo.setYetCompleted1415(jObj.getString("Y_1415"));
+				 	    				vo.setStarted1516(jObj.getString("S_1516"));
+				 	    				vo.setCompleted1516(jObj.getString("C_1516"));
+				 	    				vo.setYetCompleted1516(jObj.getString("Y_1516"));
+				 	    				vo.setStarted1617(jObj.getString("S_1617"));
+				 	    				vo.setCompleted1617(jObj.getString("C_1617"));
+				 	    				vo.setYetCompleted1617(jObj.getString("Y_1617"));
+				 	    				vo.setStarted1718(jObj.getString("S_1718"));
+				 	    				vo.setCompleted1718(jObj.getString("C_1718"));
+				 	    				vo.setYetCompleted1718(jObj.getString("Y_1718"));
+				 	    				vo.setStarted1819(jObj.getString("S_1819"));
+				 	    				vo.setCompleted1819(jObj.getString("C_1819"));
+				 	    				vo.setYetCompleted1819(jObj.getString("Y_1819"));
+				 	    				vo.setStarted(jObj.getString("S"));
+				 	    				vo.setCompletedWork(jObj.getString("C"));
+				 	    				vo.setYetCompleted(jObj.getString("Y"));
 				 	    				returnList.get(0).getSubList().add(vo);
 			 	    				}
 			 	    			}

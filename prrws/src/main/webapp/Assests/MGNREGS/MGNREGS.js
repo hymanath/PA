@@ -591,13 +591,13 @@ var globalFinancialYear = "2018";
 						theadArr = ["district","constituency","mandal",levelType,'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
 				}
 				if(divId == 'Not Yet Completed Works'){
-					theadArr = [levelType,'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+					theadArr = [levelType,'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','FY 2018-19','Total'];
 					if(levelType == "constituency")
-						theadArr = ["district",levelType,'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+						theadArr = ["district",levelType,'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','FY 2018-19','Total'];
 					else if(levelType == "mandal")
-						theadArr = ["district","constituency",levelType,'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+						theadArr = ["district","constituency",levelType,'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','2018-19','Total'];
 					else if(levelType == "panchayat")
-						theadArr = ["district","constituency","mandal",levelType,'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+						theadArr = ["district","constituency","mandal",levelType,'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','2018-19','Total'];
 				}				
 			}
 			
@@ -1394,13 +1394,13 @@ function projectData(divId,levelId,locationId)
 					theadArr = ["district","constituency","mandal",dataArr[i],'Wage Exp','Material Entitlement','Material Exp','Material %','Balance Material'];
 			}
 			if(divId == 'Not Yet Completed Works'){
-				theadArr = [dataArr[i],'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+				theadArr = [dataArr[i],'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','FY 2018-19','Total'];
 				if(dataArr[i] == "constituency")
-					theadArr = ["district",dataArr[i],'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+					theadArr = ["district",dataArr[i],'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','FY 2018-19','Total'];
 				else if(dataArr[i] == "mandal")
-					theadArr = ["district","constituency",dataArr[i],'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+					theadArr = ["district","constituency",dataArr[i],'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','FY 2018-19','Total'];
 				else if(dataArr[i] == "panchayat")
-					theadArr = ["district","constituency","mandal",dataArr[i],'FY 2013-14 and Earlier','FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','Total'];
+					theadArr = ["district","constituency","mandal",dataArr[i],'FY 2014-15','FY 2015-16','FY 2016-17','FY 2017-18','FY 2018-19','Total'];
 			}
 		}
 		var tableId = divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i];
@@ -6201,12 +6201,12 @@ function getWorkCompletionData(divIdd,locationTypeNew,theadArr,menuLocationType,
 							if(locationTypeNew == "panchayat")
 								str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 							
-							str+='<td>'+ajaxresp[i].year1314+'</td>';
-							str+='<td>'+ajaxresp[i].year1415+'</td>';
-							str+='<td>'+ajaxresp[i].year1516+'</td>';
-							str+='<td>'+ajaxresp[i].year1617+'</td>';
-							str+='<td>'+ajaxresp[i].year1718+'</td>';
-							str+='<td>'+ajaxresp[i].year+'</td>';
+							str+='<td>'+ajaxresp[i].yetCompleted1415+'</td>';
+							str+='<td>'+ajaxresp[i].yetCompleted1516+'</td>';
+							str+='<td>'+ajaxresp[i].yetCompleted1617+'</td>';
+							str+='<td>'+ajaxresp[i].yetCompleted1718+'</td>';
+							str+='<td>'+ajaxresp[i].yetCompleted1819+'</td>';
+							str+='<td>'+ajaxresp[i].yetCompleted+'</td>';
 							
 						str+='</tr>';
 					}
@@ -6849,28 +6849,28 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 			}
 			str+='<small class="text-center font_weight">Pending Works</small>';
-			if(result[0].year != null && result[0].year != 0)
+			if(result[0].yetCompleted != null && result[0].yetCompleted != 0)
 			{
-				str+='<h2 class="text-center">'+result[0].year+'</h2>';
+				str+='<h2 class="text-center">'+result[0].yetCompleted+'</h2>';
 			}else{
 				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label style="font-size: 12px;">This Year</label>';
-					if(result[0].year1718 != null && result[0].year1718 != 0)
+					str+='<label style="font-size: 12px;">This fin year</label>';
+					if(result[0].yetCompleted1819 != null && result[0].yetCompleted1819 != 0)
 					{
-						str+='<h4>'+result[0].year1718+'</h4>';
+						str+='<h4>'+result[0].yetCompleted1819+'</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label style="font-size: 12px;">Last Year</label>';
-					if(result[0].year1617 != null && result[0].year1617 != 0)
+					str+='<label style="font-size: 12px;">Last fin year</label>';
+					if(result[0].yetCompleted1718 != null && result[0].yetCompleted1718 != 0)
 					{
-						str+='<h4>'+result[0].year1617+'</h4>';
+						str+='<h4>'+result[0].yetCompleted1718+'</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
