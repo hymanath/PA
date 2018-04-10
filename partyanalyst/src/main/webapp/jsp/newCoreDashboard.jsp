@@ -26,6 +26,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
 <link href="newCoreDashBoard/css/wordCloud.css" rel="stylesheet" type="text/css">
 <link rel="stylesheet" href="coreApi/css/bootstrap-multiselect.css" type="text/css">
+<link rel="stylesheet" href="pdfexpand/source/jquery.fancybox.css" type="text/css">
 <style type="text/css">
 .eventsheader , #statewiseoverviewPanel,#locationsPopup
 {
@@ -6104,113 +6105,11 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="">State Level - Total MOMs</h4>
+        <h4 class="modal-title" id="levelWiseMeetingPopupHeadingId"></h4>
       </div>
       <div class="modal-body">
-		<div class="panel green-panel">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="bg_grey_color">
-						<div class="row">
-							<div class="col-sm-2 text-center">
-								<h4>1536</h4>
-								<h6>&nbsp;</h6>
-								<h6>Total MOMs</h6>
-							</div>
-							<div class="col-sm-2 text-center">
-								<h4>786</h4>
-								<h6 class="created-color">(20.19%)</h6>
-								<h6>Created</h6>
-							</div>
-							<div class="col-sm-2 text-center">
-								<h4>456</h4>
-								<h6 class="inprogress-color">(40.19%)</h5>
-								<h6>Inprogress</h6>
-							</div>
-							<div class="col-sm-2 text-center">
-								<h4>564</h4>
-								<h6 class="completed-color">(30.19%)</h6>
-								<h6>Completed</h6>
-							</div>
-							<div class="col-sm-2 text-center">
-								<h4>1024</h4>
-								<h6>&nbsp;</h6>
-								<h6>Total Images</h6>
-							</div>
-							<div class="col-sm-2 text-center">
-								<h4>564</h4>
-								<h6>&nbsp;</h6>
-								<h6>Uploaded Documents</h6>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="row m_top10">
-				<div class="col-sm-12 pad-lt0">
-					<div>
-						<div class="col-sm-2">
-							<button type="button" class="btn btn-outline-danger btn-pad btn-border-red">Created</button>
-						</div>
-						<div class="col-sm-2">
-							<button type="button" class="btn btn-outline-danger btn-pad btn-border-red">Inprogress</button>
-						</div>
-						<div class="col-sm-2">
-							<button type="button" class="btn btn-danger btn-pad">Completed</button>
-						</div>
-					</div>
-				</div>
-			</div>
-      </div>
-	  <div class="panel grey-panel">
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="table-responsive">
-                    <table id="example3" class="table-data table-striped table-bordered" style="width:100%">
-                      <thead>
-                        <tr class="line-height30">
-                          <th>Meeting Name</th>
-                          <th>Description</th>
-                          <th>Meeting Date</th>
-                          <th>Total Images</th>
-                          <th>MOM Documents</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td>District Co-ordinating Meeting</td>
-                          <td>Meeting Sri Lokesh Sir and Incharges</td>
-                          <td>07-04-2018</td>
-                          <td>12 <span><button type="button" class="btn btn-danger btn-pad2" id="myBtn" data-target="#modal-2">View All</button></span></td>
-                          <td>01 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                        </tr>
-						<tr>
-                          <td>District Co-ordinating Meeting</td>
-                          <td>Meeting Sri Lokesh Sir and Incharges</td>
-                          <td>07-04-2018</td>
-                          <td>12 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                          <td>01 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                        </tr>
-						<tr>
-                          <td>District Co-ordinating Meeting</td>
-                          <td>Meeting Sri Lokesh Sir and Incharges</td>
-                          <td>07-04-2018</td>
-                          <td>12 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                          <td>01 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                        </tr>
-						<tr>
-                          <td>District Co-ordinating Meeting</td>
-                          <td>Meeting Sri Lokesh Sir and Incharges</td>
-                          <td>07-04-2018</td>
-                          <td>12 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                          <td>01 <span><button type="button" class="btn btn-danger btn-pad2">View All</button></span></td>
-                        </tr>
-					  </tbody>
-					 </table>
-				</div>
-			</div>
-	  </div>
-    </div><!-- /.modal-content -->
+	  <div id="meetingLevelDetailsTableDivId"></div>
+	  <div id="docsViewModalId"></div>
 </div>
 </div>
 </div>
@@ -6299,6 +6198,7 @@
 <script src="dist/sliderbar/bootstrap-slider.js" type="text/javascript"></script>
 <script src="js/Activities/activityDashboard.js" type="text/javascript"></script>
 <script src="js/imageRendering.js" type="text/javascript"></script>
+<script src="pdfexpand/source/jquery.fancybox.js" type="text/javascript"></script>
 <script type="text/javascript">
 
 $(document).ready(function () {
