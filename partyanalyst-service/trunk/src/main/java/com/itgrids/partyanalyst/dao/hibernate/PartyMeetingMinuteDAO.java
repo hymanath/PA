@@ -1479,7 +1479,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			sb.append(" and  (date(pm.conducted_date) BETWEEN :startDate and :endDate)    ");
 		}
 		if(momDetailsVO.getPartyMeetingLevelIdsList() != null && momDetailsVO.getPartyMeetingLevelIdsList().size()>0){
-			//sb.append(" and pm.party_meeting_type_id in (:partyMeetingLevelIdsList)   ");
+			sb.append(" and pm.party_meeting_type_id in (:partyMeetingLevelIdsList)   ");
 		}
 		
 		if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.STATE_LEVEl_ACCESS_ID){
@@ -1500,16 +1500,16 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 sb.append(" and ua.ward in (:userAccessLevelValues)"); 
 		 }
 		
-		sb.append(" and s.state_id = :stateId  ");
+		//sb.append(" and s.state_id = :stateId  ");
 		sb.append(" group by pm.party_meeting_id  ");
 		Query query = getSession().createSQLQuery(sb.toString());
-		query.setParameter("stateId", momDetailsVO.getStateId());
+		//query.setParameter("stateId", momDetailsVO.getStateId());
 		if(momDetailsVO.getStartDate() != null && momDetailsVO.getEndDate() != null){
 			query.setDate("startDate", momDetailsVO.getStartDate());
 			query.setDate("endDate", momDetailsVO.getEndDate());
 		}
 		if(momDetailsVO.getPartyMeetingLevelIdsList() != null && momDetailsVO.getPartyMeetingLevelIdsList().size()>0){
-			//query.setParameter("partyMeetingLevelIdsList", momDetailsVO.getPartyMeetingLevelIdsList());
+			query.setParameterList("partyMeetingLevelIdsList", momDetailsVO.getPartyMeetingLevelIdsList());
 		}
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
@@ -1548,15 +1548,15 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		sb.append(" pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and pmt.is_active='Y'  and  ");
 		sb.append(" pm.party_meeting_level_id = pml.party_meeting_level_id and pm.is_active='Y'  and  ");
 		sb.append(" pm.party_meeting_type_id = pmt.party_meeting_type_id and pmt.is_active='Y' and  ");
-		sb.append(" pmmt.party_meeting_main_type_id = 1 and  ");
+		sb.append(" pmmt.party_meeting_main_type_id = 1   ");
 		if(momDetailsVO.getStartDate() != null && momDetailsVO.getEndDate() != null){
-			sb.append(" (date(pm.conducted_date) BETWEEN :startDate and :endDate)  and  ");
+			sb.append(" and (date(pm.conducted_date) BETWEEN :startDate and :endDate)    ");
 		}
 		if(momDetailsVO.getPartyMeetingLevelIdsList() != null && momDetailsVO.getPartyMeetingLevelIdsList().size()>0){
-			//sb.append(" pm.party_meeting_level_id in (:partyMeetingLevelIdsList) and  ");
+			sb.append(" and pm.party_meeting_type_id in (:partyMeetingLevelIdsList)   ");
 		}
 		
-		sb.append(" s.state_id = :stateId  ");
+		//sb.append(" s.state_id = :stateId  ");
 		if(momDetailsVO.getSourceTypeId() != null && momDetailsVO.getSourceTypeId().longValue()>0L ){
 			sb.append(" and st.mom_atr_source_type_id =:sourceTypeId  ");
 		}
@@ -1585,7 +1585,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		sb.append(" group by pmm.party_meeting_minute_id  ");
 		
 		Query query = getSession().createSQLQuery(sb.toString());
-		query.setParameter("stateId", momDetailsVO.getStateId());
+		//query.setParameter("stateId", momDetailsVO.getStateId());
 		if(momDetailsVO.getSourceTypeId() != null && momDetailsVO.getSourceTypeId().longValue()>0L ){
 			query.setParameter("sourceTypeId", momDetailsVO.getSourceTypeId());
 		}
@@ -1597,11 +1597,9 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			query.setDate("endDate", momDetailsVO.getEndDate());
 		}
 		if(momDetailsVO.getPartyMeetingLevelIdsList() != null && momDetailsVO.getPartyMeetingLevelIdsList().size()>0){
-			query.setParameter("partyMeetingLevelIdsList", momDetailsVO.getPartyMeetingLevelIdsList());
+			query.setParameterList("partyMeetingLevelIdsList", momDetailsVO.getPartyMeetingLevelIdsList());
 		}
-		if(momDetailsVO.getPartyMeetingLevelIdsList() != null && momDetailsVO.getPartyMeetingLevelIdsList().size()>0){
-			//query.setParameter("partyMeetingLevelIdsList", momDetailsVO.getPartyMeetingLevelIdsList());
-		}
+		
 		if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
 		 }
