@@ -5813,7 +5813,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 }
 
 //var overViewArr = ['Not Yet Completed Works'];
-var overViewArr = ['Labour Budget','Material Availability','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','SMC Trench','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Man Days Comparision','Expenditure','Daily Labour Turnout','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','FA Vacancies','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','IJP PROGRAM WORKS','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works','Not Yet Completed Works']; 
+var overViewArr = ['Labour Budget','Material Availability','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','SMC Trench','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Man Days Comparision','Expenditure','Daily Labour Turnout','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','FA Vacancies','Not Yet Completed Works','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','IJP PROGRAM WORKS','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works']; 
 
 buildNREGSProjectsOverview(overViewArr,'')
 function onloadCallsBuilding(){
@@ -6878,16 +6878,16 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='</div>';
 		str+='</div>';
 		if(levelId == 3 || levelId == "3"){
-			if(result[0].subList[0].year != null && result[0].subList[0].year > 0)
+			if(result[0].subList[0].yetCompleted != null && result[0].subList[0].yetCompleted > 0)
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			else
 				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;PENDING&nbsp;WORKS</small>';
-				str+='<h2 class="text-center">'+result[0].subList[0].year+'</h2>';
+				str+='<h2 class="text-center">'+result[0].subList[0].yetCompleted+'</h2>';
 			str+='</div>';
 		}
 		else if(levelId == 4 || levelId == "4"){
-			if(result[0].subList[0].year != null && result[0].subList[0].year > 0)
+			if(result[0].subList[0].yetCompleted != null && result[0].subList[0].yetCompleted > 0)
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			else
 				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
@@ -6895,11 +6895,11 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<div class="row">';
 					str+='<div class="col-sm-6">';
 						str+='<p>District</p>';
-						str+='<h2 class="text-center">'+result[0].subList[0].year+'</h2>';
+						str+='<h2 class="text-center">'+result[0].subList[0].yetCompleted+'</h2>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 						str+='<p>State</p>';
-						str+='<h2 class="text-center">'+result[0].subList[1].year+'</h2>';
+						str+='<h2 class="text-center">'+result[0].subList[1].yetCompleted+'</h2>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -9775,35 +9775,43 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 			var perDays1516 = 0.0;var wageExp1516 = 0.0;var matExp1516 = 0.0;var total1516 = 0.0;
 			var perDays1617 = 0.0;var wageExp1617 = 0.0;var matExp1617 = 0.0;var total1617 = 0.0;
 			var perDays1718 = 0.0;var wageExp1718 = 0.0;var matExp1718 = 0.0;var total1718 = 0.0;
+			var perDays1819 = 0.0;var wageExp1819 = 0.0;var matExp1819 = 0.0;var total1819 = 0.0;
 			
 			var perDays1617Perc = 0.0;var wageExp1617Perc = 0.0;var matExp1617Perc = 0.0;var total1617Perc = 0.0;
 			var perDays1718Perc = 0.0;var wageExp1718Perc = 0.0;var matExp1718Perc = 0.0;var total1718Perc = 0.0;
+			var perDays1819Perc = 0.0;var wageExp1819Perc = 0.0;var matExp1819Perc = 0.0;var total1819Perc = 0.0;
 			
 			str+='<div class="table-responsive m_top10">';
 				str+='<table class="table table-bordered dataTable'+divIdd+'" style="width:100%">';
 					str+='<thead class="text-capitalize">';
 						str+='<tr>';
 							str+='<th rowspan="2" style="background-color:#034575;color:#fff">Month</th>';
-							str+='<th colspan="4" class="text-center" style="background-color:#26243c;color:#fff">2015-16</th>';
-							str+='<th colspan="4" class="text-center" style="background-color:#ea9009;color:#fff">2016-17</th>';
+							str+='<th colspan="4" class="text-center" style="background-color:#565b07;color:#fff">2018-19</th>';
 							str+='<th colspan="4" class="text-center" style="background-color:#41c4f4;color:#fff">2017-18</th>';
+							str+='<th colspan="4" class="text-center" style="background-color:#ea9009;color:#fff">2016-17</th>';
+							str+='<th colspan="4" class="text-center" style="background-color:#26243c;color:#fff">2015-16</th>';
 							//str+='<th rowspan="2">Increment/Decrement (%)</th>';
 						str+='</tr>';
 						str+='<tr>';
-							str+='<th style="background-color:#26243c;color:#fff">Person Days</th>';
-							str+='<th style="background-color:#26243c;color:#fff">Wage</th>';
-							str+='<th style="background-color:#26243c;color:#fff">Material</th>';
-							str+='<th style="background-color:#26243c;color:#fff">Total</th>';
+							str+='<th style="background-color:#565b07;color:#fff">Person Days</th>';
+							str+='<th style="background-color:#565b07;color:#fff">Wage</th>';
+							str+='<th style="background-color:#565b07;color:#fff">Material</th>';
+							str+='<th style="background-color:#565b07;color:#fff">Total</th>';
+							
+							str+='<th style="background-color:#41c4f4;color:#fff">Person Days</th>';
+							str+='<th style="background-color:#41c4f4;color:#fff">Wage</th>';
+							str+='<th style="background-color:#41c4f4;color:#fff">Material</th>';
+							str+='<th style="background-color:#41c4f4;color:#fff">Total</th>';
 							
 							str+='<th style="background-color:#ea9009;color:#fff">Person Days</th>';
 							str+='<th style="background-color:#ea9009;color:#fff">Wage</th>';
 							str+='<th style="background-color:#ea9009;color:#fff">Material</th>';
 							str+='<th style="background-color:#ea9009;color:#fff">Total</th>';
 							
-							str+='<th style="background-color:#41c4f4;color:#fff">Person Days</th>';
-							str+='<th style="background-color:#41c4f4;color:#fff">Wage</th>';
-							str+='<th style="background-color:#41c4f4;color:#fff">Material</th>';
-							str+='<th style="background-color:#41c4f4;color:#fff">Total</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Person Days</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Wage</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Material</th>';
+							str+='<th style="background-color:#26243c;color:#fff">Total</th>';
 							
 						str+='</tr>';
 					str+='</thead>';
@@ -9861,247 +9869,160 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						for(var i in ajaxresp){
 							str+='<tr>';
 								str+='<td style="background-color:#034575;color:#fff">'+ajaxresp[i].thisMonth+'</td>';
-								//15-16 PersonDays
+								//18-19 PersonDays
 								if(ajaxresp[i].overAllPersonDaysIsHigh != null && ajaxresp[i].overAllPersonDaysIsHigh == 'TRUE'){
-									if(ajaxresp[i].personDaysIsHigh != null && ajaxresp[i].personDaysIsHigh == '15-16'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+									if(ajaxresp[i].personDaysIsHigh != null && ajaxresp[i].personDaysIsHigh == '18-19'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
 									}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
-										if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '15-16'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+										if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '18-19'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
+										}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1819+'</td>';
+										}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
 										}else{
-											str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+											str+='<td>'+ajaxresp[i].perDays1819+'</td>';
 										}
+									}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1819+'</td>';
+									}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+										str+='<td>'+ajaxresp[i].perDays1819+'</td>';
 									}
 								}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
-									if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '15-16'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+									if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '18-19'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
+									}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1819+'</td>';
+									}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+										str+='<td>'+ajaxresp[i].perDays1819+'</td>';
 									}
+								}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1819+'</td>';
+								}else if(ajaxresp[i].perDays1819IsHigh != null && ajaxresp[i].perDays1819IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1819+'</td>';
 								}else{
-									str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+									str+='<td>'+ajaxresp[i].perDays1819+'</td>';
 								}
-								//15-16 Wage
+								//18-19 Wage
 								if(ajaxresp[i].overAllWageIsHigh != null && ajaxresp[i].overAllWageIsHigh == 'TRUE'){
-									if(ajaxresp[i].wageIsHigh != null && ajaxresp[i].wageIsHigh == '15-16'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+									if(ajaxresp[i].wageIsHigh != null && ajaxresp[i].wageIsHigh == '18-19'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
 									}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
-										if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '15-16'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+										if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '18-19'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
+										}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1819+'</td>';
+										}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
 										}else{
-											str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+											str+='<td>'+ajaxresp[i].wageExp1819+'</td>';
 										}
+									}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1819+'</td>';
+									}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+										str+='<td>'+ajaxresp[i].wageExp1819+'</td>';
 									}
 								}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
-									if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '15-16'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+									if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '18-19'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
+									}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1819+'</td>';
+									}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+										str+='<td>'+ajaxresp[i].wageExp1819+'</td>';
 									}
+								}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1819+'</td>';
+								}else if(ajaxresp[i].wageExp1819IsHigh != null && ajaxresp[i].wageExp1819IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1819+'</td>';
 								}else{
-									str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+									str+='<td>'+ajaxresp[i].wageExp1819+'</td>';
 								}
-								//15-16 Material
+								//18-19 Material
 								if(ajaxresp[i].overAllMaterialIsHigh != null && ajaxresp[i].overAllMaterialIsHigh == 'TRUE'){
-									if(ajaxresp[i].materialIsHigh != null && ajaxresp[i].materialIsHigh == '15-16'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+									if(ajaxresp[i].materialIsHigh != null && ajaxresp[i].materialIsHigh == '18-19'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
 									}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
-										if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '15-16'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+										if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '18-19'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
+										}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1819+'</td>';
+										}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
 										}else{
-											str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+											str+='<td>'+ajaxresp[i].matExp1819+'</td>';
 										}
+									}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1819+'</td>';
+									}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+										str+='<td>'+ajaxresp[i].matExp1819+'</td>';
 									}
 								}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
-									if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '15-16'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+									if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '18-19'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
+									}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1819+'</td>';
+									}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+										str+='<td>'+ajaxresp[i].matExp1819+'</td>';
 									}
+								}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1819+'</td>';
+								}else if(ajaxresp[i].matExp1819IsHigh != null && ajaxresp[i].matExp1819IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1819+'</td>';
 								}else{
-									str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+									str+='<td>'+ajaxresp[i].matExp1819+'</td>';
 								}
-								//15-16 Total
+								//18-19 Total
 								if(ajaxresp[i].overAllTotalIsHigh != null && ajaxresp[i].overAllTotalIsHigh == 'TRUE'){
-									if(ajaxresp[i].totalIsHigh != null && ajaxresp[i].totalIsHigh == '15-16'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].total1516+'</td>';
+									if(ajaxresp[i].totalIsHigh != null && ajaxresp[i].totalIsHigh == '18-19'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].total1819+'</td>';
 									}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
-										if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '15-16'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1516+'</td>';
+										if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '18-19'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1819+'</td>';
+										}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1819+'</td>';
+										}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1819+'</td>';
 										}else{
-											str+='<td>'+ajaxresp[i].total1516+'</td>';
+											str+='<td>'+ajaxresp[i].total1819+'</td>';
 										}
+									}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1718+'</td>';
+									}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].total1516+'</td>';
+										str+='<td>'+ajaxresp[i].total1819+'</td>';
 									}
 								}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
-									if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '15-16'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1516+'</td>';
+									if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '18-19'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1819+'</td>';
+									}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1819+'</td>';
+									}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1819+'</td>';
 									}else{
-										str+='<td>'+ajaxresp[i].total1516+'</td>';
+										str+='<td>'+ajaxresp[i].total1819+'</td>';
 									}
+								}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1819+'</td>';
+								}else if(ajaxresp[i].total1819IsHigh != null && ajaxresp[i].total1819IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1819+'</td>';
 								}else{
-									str+='<td>'+ajaxresp[i].total1516+'</td>';
+									str+='<td>'+ajaxresp[i].total1819+'</td>';
 								}
-								//16-17 PersonDays
-								if(ajaxresp[i].overAllPersonDaysIsHigh != null && ajaxresp[i].overAllPersonDaysIsHigh == 'TRUE'){
-									if(ajaxresp[i].personDaysIsHigh != null && ajaxresp[i].personDaysIsHigh == '16-17'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-									}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
-										if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '16-17'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-										}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
-											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
-										}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
-											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-										}else{
-											str+='<td>'+ajaxresp[i].perDays1617+'</td>';
-										}
-									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
-									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].perDays1617+'</td>';
-									}
-								}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
-									if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '16-17'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
-									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].perDays1617+'</td>';
-									}
-								}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
-									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
-								}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
-									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
-								}else{
-									str+='<td>'+ajaxresp[i].perDays1617+'</td>';
-								}
-								//16-17 Wage
-								if(ajaxresp[i].overAllWageIsHigh != null && ajaxresp[i].overAllWageIsHigh == 'TRUE'){
-									if(ajaxresp[i].wageIsHigh != null && ajaxresp[i].wageIsHigh == '16-17'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-									}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
-										if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '16-17'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-										}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
-											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
-										}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
-											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-										}else{
-											str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
-										}
-									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
-									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
-									}
-								}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
-									if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '16-17'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
-									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
-									}
-								}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
-									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
-								}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
-									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
-								}else{
-									str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
-								}
-								//16-17 Material
-								if(ajaxresp[i].overAllMaterialIsHigh != null && ajaxresp[i].overAllMaterialIsHigh == 'TRUE'){
-									if(ajaxresp[i].materialIsHigh != null && ajaxresp[i].materialIsHigh == '16-17'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-									}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
-										if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '16-17'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-										}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
-											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
-										}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
-											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-										}else{
-											str+='<td>'+ajaxresp[i].matExp1617+'</td>';
-										}
-									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
-									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].matExp1617+'</td>';
-									}
-								}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
-									if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '16-17'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
-									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].matExp1617+'</td>';
-									}
-								}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
-									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
-								}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
-									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
-								}else{
-									str+='<td>'+ajaxresp[i].matExp1617+'</td>';
-								}
-								//16-17 Total
-								if(ajaxresp[i].overAllTotalIsHigh != null && ajaxresp[i].overAllTotalIsHigh == 'TRUE'){
-									if(ajaxresp[i].totalIsHigh != null && ajaxresp[i].totalIsHigh == '16-17'){
-										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].total1617+'</td>';
-									}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
-										if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '16-17'){
-											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1617+'</td>';
-										}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
-											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
-										}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
-											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
-										}else{
-											str+='<td>'+ajaxresp[i].total1617+'</td>';
-										}
-									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
-									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].total1617+'</td>';
-									}
-								}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
-									if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '16-17'){
-										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1617+'</td>';
-									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
-										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
-									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
-										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
-									}else{
-										str+='<td>'+ajaxresp[i].total1617+'</td>';
-									}
-								}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
-									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
-								}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
-									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
-								}else{
-									str+='<td>'+ajaxresp[i].total1617+'</td>';
-								}
-								//17-18 PersonDays
+								
+							//17-18 PersonDays
 								if(ajaxresp[i].overAllPersonDaysIsHigh != null && ajaxresp[i].overAllPersonDaysIsHigh == 'TRUE'){
 									if(ajaxresp[i].personDaysIsHigh != null && ajaxresp[i].personDaysIsHigh == '17-18'){
 										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].perDays1718+'</td>';
@@ -10254,6 +10175,248 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 									str+='<td>'+ajaxresp[i].total1718+'</td>';
 								}
 								
+							//16-17 PersonDays
+								if(ajaxresp[i].overAllPersonDaysIsHigh != null && ajaxresp[i].overAllPersonDaysIsHigh == 'TRUE'){
+									if(ajaxresp[i].personDaysIsHigh != null && ajaxresp[i].personDaysIsHigh == '16-17'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+									}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
+										if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '16-17'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+										}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
+										}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].perDays1617+'</td>';
+										}
+									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
+									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].perDays1617+'</td>';
+									}
+								}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
+									if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '16-17'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
+									}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].perDays1617+'</td>';
+									}
+								}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].perDays1617+'</td>';
+								}else if(ajaxresp[i].perDays1617IsHigh != null && ajaxresp[i].perDays1617IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].perDays1617+'</td>';
+								}else{
+									str+='<td>'+ajaxresp[i].perDays1617+'</td>';
+								}
+								//16-17 Wage
+								if(ajaxresp[i].overAllWageIsHigh != null && ajaxresp[i].overAllWageIsHigh == 'TRUE'){
+									if(ajaxresp[i].wageIsHigh != null && ajaxresp[i].wageIsHigh == '16-17'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+									}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
+										if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '16-17'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+										}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
+										}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
+										}
+									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
+									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
+									}
+								}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
+									if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '16-17'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
+									}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
+									}
+								}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].wageExp1617+'</td>';
+								}else if(ajaxresp[i].wageExp1617IsHigh != null && ajaxresp[i].wageExp1617IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].wageExp1617+'</td>';
+								}else{
+									str+='<td>'+ajaxresp[i].wageExp1617+'</td>';
+								}
+								//16-17 Material
+								if(ajaxresp[i].overAllMaterialIsHigh != null && ajaxresp[i].overAllMaterialIsHigh == 'TRUE'){
+									if(ajaxresp[i].materialIsHigh != null && ajaxresp[i].materialIsHigh == '16-17'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+									}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
+										if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '16-17'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+										}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
+										}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].matExp1617+'</td>';
+										}
+									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
+									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].matExp1617+'</td>';
+									}
+								}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
+									if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '16-17'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
+									}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].matExp1617+'</td>';
+									}
+								}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].matExp1617+'</td>';
+								}else if(ajaxresp[i].matExp1617IsHigh != null && ajaxresp[i].matExp1617IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].matExp1617+'</td>';
+								}else{
+									str+='<td>'+ajaxresp[i].matExp1617+'</td>';
+								}
+								//16-17 Total
+								if(ajaxresp[i].overAllTotalIsHigh != null && ajaxresp[i].overAllTotalIsHigh == 'TRUE'){
+									if(ajaxresp[i].totalIsHigh != null && ajaxresp[i].totalIsHigh == '16-17'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].total1617+'</td>';
+									}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
+										if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '16-17'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1617+'</td>';
+										}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
+											str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
+										}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
+											str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].total1617+'</td>';
+										}
+									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
+									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].total1617+'</td>';
+									}
+								}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
+									if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '16-17'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1617+'</td>';
+									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
+										str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
+									}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
+										str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].total1617+'</td>';
+									}
+								}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'TRUE'){
+									str+='<td style="background-color:#a7f442;">'+ajaxresp[i].total1617+'</td>';
+								}else if(ajaxresp[i].total1617IsHigh != null && ajaxresp[i].total1617IsHigh == 'FALSE'){
+									str+='<td style="background-color:#FD0100;color:#fff">'+ajaxresp[i].total1617+'</td>';
+								}else{
+									str+='<td>'+ajaxresp[i].total1617+'</td>';
+								}
+								
+							//15-16 PersonDays
+								if(ajaxresp[i].overAllPersonDaysIsHigh != null && ajaxresp[i].overAllPersonDaysIsHigh == 'TRUE'){
+									if(ajaxresp[i].personDaysIsHigh != null && ajaxresp[i].personDaysIsHigh == '15-16'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+									}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
+										if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '15-16'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+										}
+									}else{
+										str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+									}
+								}else if(ajaxresp[i].overAllPersonDaysIsLow != null && ajaxresp[i].overAllPersonDaysIsLow == 'TRUE'){
+									if(ajaxresp[i].personDaysIsLow != null && ajaxresp[i].personDaysIsLow == '15-16'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].perDays1516+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+									}
+								}else{
+									str+='<td>'+ajaxresp[i].perDays1516+'</td>';
+								}
+								//15-16 Wage
+								if(ajaxresp[i].overAllWageIsHigh != null && ajaxresp[i].overAllWageIsHigh == 'TRUE'){
+									if(ajaxresp[i].wageIsHigh != null && ajaxresp[i].wageIsHigh == '15-16'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+									}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
+										if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '15-16'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+										}
+									}else{
+										str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+									}
+								}else if(ajaxresp[i].overAllWageIsLow != null && ajaxresp[i].overAllWageIsLow == 'TRUE'){
+									if(ajaxresp[i].wageIsLow != null && ajaxresp[i].wageIsLow == '15-16'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].wageExp1516+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+									}
+								}else{
+									str+='<td>'+ajaxresp[i].wageExp1516+'</td>';
+								}
+								//15-16 Material
+								if(ajaxresp[i].overAllMaterialIsHigh != null && ajaxresp[i].overAllMaterialIsHigh == 'TRUE'){
+									if(ajaxresp[i].materialIsHigh != null && ajaxresp[i].materialIsHigh == '15-16'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+									}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
+										if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '15-16'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+										}
+									}else{
+										str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+									}
+								}else if(ajaxresp[i].overAllMaterialIsLow != null && ajaxresp[i].overAllMaterialIsLow == 'TRUE'){
+									if(ajaxresp[i].materialIsLow != null && ajaxresp[i].materialIsLow == '15-16'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].matExp1516+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+									}
+								}else{
+									str+='<td>'+ajaxresp[i].matExp1516+'</td>';
+								}
+								//15-16 Total
+								if(ajaxresp[i].overAllTotalIsHigh != null && ajaxresp[i].overAllTotalIsHigh == 'TRUE'){
+									if(ajaxresp[i].totalIsHigh != null && ajaxresp[i].totalIsHigh == '15-16'){
+										str+='<td style="background-color:#0000FE;color:#fff">'+ajaxresp[i].total1516+'</td>';
+									}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
+										if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '15-16'){
+											str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1516+'</td>';
+										}else{
+											str+='<td>'+ajaxresp[i].total1516+'</td>';
+										}
+									}else{
+										str+='<td>'+ajaxresp[i].total1516+'</td>';
+									}
+								}else if(ajaxresp[i].overAllTotalIsLow != null && ajaxresp[i].overAllTotalIsLow == 'TRUE'){
+									if(ajaxresp[i].totalIsLow != null && ajaxresp[i].totalIsLow == '15-16'){
+										str+='<td style="background-color:#FE00FE;color:#fff">'+ajaxresp[i].total1516+'</td>';
+									}else{
+										str+='<td>'+ajaxresp[i].total1516+'</td>';
+									}
+								}else{
+									str+='<td>'+ajaxresp[i].total1516+'</td>';
+								}
+								
 							perDays1516 = parseFloat(perDays1516)+parseFloat(ajaxresp[i].perDays1516);
 							wageExp1516 = parseFloat(wageExp1516)+parseFloat(ajaxresp[i].wageExp1516);
 							matExp1516 = parseFloat(matExp1516)+parseFloat(ajaxresp[i].matExp1516);
@@ -10269,35 +10432,21 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 							matExp1718 = parseFloat(matExp1718)+parseFloat(ajaxresp[i].matExp1718);
 							total1718 = parseFloat(total1718)+parseFloat(ajaxresp[i].total1718);
 							
+							perDays1819 = parseFloat(perDays1819)+parseFloat(ajaxresp[i].perDays1819);
+							wageExp1819 = parseFloat(wageExp1819)+parseFloat(ajaxresp[i].wageExp1819);
+							matExp1819 = parseFloat(matExp1819)+parseFloat(ajaxresp[i].matExp1819);
+							total1819 = parseFloat(total1819)+parseFloat(ajaxresp[i].total1819);
+							
 							str+='</tr>';
 						}
 					}
 					str+='<tr>';
 						str+='<td style="background-color:#3F8EC8;color:#FFFFFF;font-size:16px;"><b>Total</b></td>';
-						str+='<td style="font-size:16px;"><b>'+perDays1516.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+wageExp1516.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+matExp1516.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+total1516.toFixed(2)+'</b></td>';
-						if(parseFloat(perDays1617) >= parseFloat(perDays1516))
-							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+perDays1617.toFixed(2)+'</b></td>';
-						else
-							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+perDays1617.toFixed(2)+'</b></td>';
 						
-						if(parseFloat(wageExp1617) >= parseFloat(wageExp1516))
-							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+wageExp1617.toFixed(2)+'</b></td>';
-						else
-							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+wageExp1617.toFixed(2)+'</b></td>';
-						
-						if(parseFloat(matExp1617) >= parseFloat(matExp1516))
-							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+matExp1617.toFixed(2)+'</b></td>';
-						else
-							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+matExp1617.toFixed(2)+'</b></td>';
-						
-						if(parseFloat(total1617) >= parseFloat(total1516))
-							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+total1617.toFixed(2)+'</b></td>';
-						else
-							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+total1617.toFixed(2)+'</b></td>';
-						
+						str+='<td style="font-size:16px;"><b>'+perDays1819.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1819.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1819.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1819.toFixed(2)+'</b></td>';
 						
 						if(parseFloat(perDays1718) >= parseFloat(perDays1617))
 							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+perDays1718.toFixed(2)+'</b></td>';
@@ -10319,6 +10468,30 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						else
 							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+total1718.toFixed(2)+'</b></td>';
 						
+						if(parseFloat(perDays1617) >= parseFloat(perDays1516))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+perDays1617.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+perDays1617.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(wageExp1617) >= parseFloat(wageExp1516))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+wageExp1617.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+wageExp1617.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(matExp1617) >= parseFloat(matExp1516))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+matExp1617.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+matExp1617.toFixed(2)+'</b></td>';
+						
+						if(parseFloat(total1617) >= parseFloat(total1516))
+							str+='<td style="background-color:#a7f442;font-size:16px;"><b>'+total1617.toFixed(2)+'</b></td>';
+						else
+							str+='<td style="background-color:#FD0200;font-size:16px;color:#fff"><b>'+total1617.toFixed(2)+'</b></td>';
+						
+						str+='<td style="font-size:16px;"><b>'+perDays1516.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1516.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1516.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1516.toFixed(2)+'</b></td>';
 						/*if(parseFloat(perDays1718) >= parseFloat(perDays1617))
 							str+='<td style="background-color:#FDFF00;">'+perDays1718.toFixed(2)+'</td>';
 						else
@@ -10352,14 +10525,18 @@ function getManWorksExpenditureDetails(divIdd,locationTypeNew,theadArr,menuLocat
 						str+='<td></td>';
 						str+='<td></td>';
 						str+='<td></td>';
-						str+='<td style="font-size:16px;"><b>'+perDays1617Perc.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+wageExp1617Perc.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+matExp1617Perc.toFixed(2)+'</b></td>';
-						str+='<td style="font-size:16px;"><b>'+total1617Perc.toFixed(2)+'</b></td>';
 						str+='<td style="font-size:16px;"><b>'+perDays1718Perc.toFixed(2)+'</b></td>';
 						str+='<td style="font-size:16px;"><b>'+wageExp1718Perc.toFixed(2)+'</b></td>';
 						str+='<td style="font-size:16px;"><b>'+matExp1718Perc.toFixed(2)+'</b></td>';
 						str+='<td style="font-size:16px;"><b>'+total1718Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+perDays1617Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+wageExp1617Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+matExp1617Perc.toFixed(2)+'</b></td>';
+						str+='<td style="font-size:16px;"><b>'+total1617Perc.toFixed(2)+'</b></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td></td>';
+						str+='<td></td>';
 					str+='</tr>';
 					str+='</tbody>';
 					
