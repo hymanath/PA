@@ -7,6 +7,7 @@ import java.util.List;
 public class KeyValueVO implements Serializable {
 
 	private Long id;
+	private Long key;
 	private String name;
 	private Long count = 0l;
 	private List<KeyValueVO> list = new ArrayList<KeyValueVO>(0);
@@ -22,10 +23,11 @@ public class KeyValueVO implements Serializable {
 	private String districtName;
 	
 	public KeyValueVO(){};
-	public KeyValueVO(Long id, String name, String path){
+	public KeyValueVO(Long id, String name, String path,Long key){
 		this.id = id;
 		this.name=name;
 		this.path=path;
+		this.key=key;
 	}
 	public Long getId() {
 		return id;
@@ -111,6 +113,10 @@ public class KeyValueVO implements Serializable {
 	public void setDistrictName(String districtName) {
 		this.districtName = districtName;
 	}
-	
-	
+	public Long getKey() {
+		return key;
+	}
+	public void setKey(Long key) {
+		this.key = key;
+	}
 }

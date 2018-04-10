@@ -17,7 +17,7 @@ public class CoreDashboardMomDetailsVO {
 	private String searchType;
 	public Date startDate;
 	public Date endDate;
-	public List<Long> partyMeetingLevelIdsList = new ArrayList<Long>(0);
+	public List<Long> partyMetingLevelIdsList = new ArrayList<Long>(0);
 	public Long locationLevelId;
 	public List<Long> locationValuesList = new ArrayList<Long>(0);
 	public Long sourceTypeId;
@@ -25,8 +25,42 @@ public class CoreDashboardMomDetailsVO {
 	public String momType; // isactionable or not or general
 	public List<CoreDashboardMomDetailsVO> minutesList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 	public List<KeyValueVO> filesList = new ArrayList<KeyValueVO>(0);
+	public List<KeyValueVO> filesList1 = new ArrayList<KeyValueVO>(0);
 	public AddressVO addressVO;
 	
+	public Long searchLevelId;
+	public Long searchLevelValue;
+	public String searchTypeStr;
+	public List<Long> partyMetingTypeIdsList = new ArrayList<Long>(0);
+	private Long totalCount;
+	private Long partyCount;
+	private Long govtCount;
+	private Long generalCount;
+	
+	public Long getPartyCount() {
+		return partyCount;
+	}
+	public void setPartyCount(Long partyCount) {
+		this.partyCount = partyCount;
+	}
+	public Long getGovtCount() {
+		return govtCount;
+	}
+	public void setGovtCount(Long govtCount) {
+		this.govtCount = govtCount;
+	}
+	public Long getGeneralCount() {
+		return generalCount;
+	}
+	public void setGeneralCount(Long generalCount) {
+		this.generalCount = generalCount;
+	}
+	public Long getTotalCount() {
+		return totalCount;
+	}
+	public void setTotalCount(Long totalCount) {
+		this.totalCount = totalCount;
+	}
 	public Long getMeetingId() {
 		return meetingId;
 	}
@@ -99,11 +133,35 @@ public class CoreDashboardMomDetailsVO {
 	public void setEndDate(Date endDate) {
 		this.endDate = endDate;
 	}
-	public List<Long> getPartyMeetingLevelIdsList() {
-		return partyMeetingLevelIdsList;
+	public List<Long> getPartyMetingLevelIdsList() {
+		return partyMetingLevelIdsList;
 	}
-	public void setPartyMeetingLevelIdsList(List<Long> partyMeetingLevelIdsList) {
-		this.partyMeetingLevelIdsList = partyMeetingLevelIdsList;
+	public void setPartyMetingLevelIdsList(List<Long> partyMetingLevelIdsList) {
+		this.partyMetingLevelIdsList = partyMetingLevelIdsList;
+	}
+	public Long getSearchLevelId() {
+		return searchLevelId;
+	}
+	public void setSearchLevelId(Long searchLevelId) {
+		this.searchLevelId = searchLevelId;
+	}
+	public Long getSearchLevelValue() {
+		return searchLevelValue;
+	}
+	public void setSearchLevelValue(Long searchLevelValue) {
+		this.searchLevelValue = searchLevelValue;
+	}
+	public String getSearchTypeStr() {
+		return searchTypeStr;
+	}
+	public void setSearchTypeStr(String searchTypeStr) {
+		this.searchTypeStr = searchTypeStr;
+	}
+	public List<Long> getPartyMetingTypeIdsList() {
+		return partyMetingTypeIdsList;
+	}
+	public void setPartyMetingTypeIdsList(List<Long> partyMetingTypeIdsList) {
+		this.partyMetingTypeIdsList = partyMetingTypeIdsList;
 	}
 	public Long getLocationLevelId() {
 		return locationLevelId;
@@ -153,6 +211,11 @@ public class CoreDashboardMomDetailsVO {
 	public void setAddressVO(AddressVO addressVO) {
 		this.addressVO = addressVO;
 	}
-
+	public List<KeyValueVO> getFilesList1() {
+		return filesList1;
+	}
+	public void setFilesList1(List<KeyValueVO> filesList1) {
+		this.filesList1 = filesList1;
+	}
 	
 }

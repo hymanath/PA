@@ -46,4 +46,5 @@ public interface IPartyMeetingMinuteDAO extends GenericDao<PartyMeetingMinute,Lo
 	public List<Object[]> getPartyMeetingMOMDocumentsDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
 	public List<Object[]> getMomNotUpdtedCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String momType);
 	public List<Object[]> getMOMUpdatedByLevelTypeDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,String momType,String levelType,List<Long> partyMeetingTypeValues);
+	public List<Object[]> getPartyMeetingMOMCountDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues);
 }
