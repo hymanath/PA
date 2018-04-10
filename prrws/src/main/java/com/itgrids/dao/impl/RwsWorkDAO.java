@@ -254,9 +254,9 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
 			sb.append(" and model.rwsWork.completedDate is null and model.rwsWork.groundedDate is not null ");
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_COMPLETION)){
-			sb.append(" and model.rwsWork.completedDate is not null and model.rwsWork.commissionedDate is null ");
+			sb.append(" and  model.rwsWork.groundedDate is not null and  model.rwsWork.completedDate is not null and model.rwsWork.commissionedDate is null ");
 		}else if(sanctionedType !=null && sanctionedType.equalsIgnoreCase(IConstants.WORK_COMMISSIONED)){
-			sb.append(" and model.rwsWork.completedDate is not null and model.rwsWork.commissionedDate is not null ");
+			sb.append(" and  model.rwsWork.groundedDate is not null and model.rwsWork.completedDate is not null and model.rwsWork.commissionedDate is not null ");
 		}
 		if(inputVO.getStartDate() != null && inputVO.getEndDate()!=null){
 			sb.append("and  model.rwsWork.adminDate between :fromDate and :toDate ");
@@ -301,9 +301,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		if(vo.getAssetType() !=null && vo.getAssetType().length()>0){
 			sb.append(" and model.rwsWork.assetType =:assetType ");
 		}
-		if(vo.getWorkStatus() !=null && vo.getWorkStatus().length()>0 && dbStatuses.contains(vo.getWorkStatus().toLowerCase())){
-			sb.append(" and model.rwsWork.workStatus =:workStatus ");
-		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().length()>0 && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_ADMIN_SANC)){
+		 if(vo.getWorkStatus() !=null && vo.getWorkStatus().length()>0 && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_ADMIN_SANC)){
 			sb.append(" and  model.rwsWork.adminDate is not null  ");  
 		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().length()>0 && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_TECH_SANCTIONED)){
 			sb.append(" and  model.rwsWork.technicalSanctionDate is not null ");  
@@ -311,6 +309,14 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 			sb.append(" and  model.rwsWork.entrustedDate is not null ");  
 		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().length()>0 && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_GROUNDED)){
 			sb.append(" and  model.rwsWork.groundedDate is not null ");  
+		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_NOTGROUNDED)){
+			sb.append(" and model.rwsWork.groundedDate is null and model.rwsWork.completedDate is null ");
+		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_UNDER_PROCESS)){
+			sb.append(" and model.rwsWork.completedDate is null and model.rwsWork.groundedDate is not null ");
+		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_COMPLETION)){
+			sb.append(" and model.rwsWork.groundedDate is not null and  model.rwsWork.completedDate is not null and model.rwsWork.commissionedDate is null ");
+		}else if(vo.getWorkStatus() !=null && vo.getWorkStatus().equalsIgnoreCase(IConstants.WORK_COMMISSIONED)){
+			sb.append(" and  model.rwsWork.groundedDate is not null and model.rwsWork.completedDate is not null and model.rwsWork.commissionedDate is not null ");
 		}
 		if(vo.getStartDate() != null && vo.getEndDate()!=null){
 			sb.append(" and  model.rwsWork.adminDate between :fromDate and :toDate ");
@@ -320,9 +326,7 @@ public class RwsWorkDAO extends GenericDaoHibernate<RwsWork, Long> implements IR
 		if(vo.getAssetType() !=null && vo.getAssetType().length()>0){
 			query.setParameter("assetType", vo.getAssetType());
 		}
-		if(vo.getWorkStatus() !=null && vo.getWorkStatus().length()>0 && dbStatuses.contains(vo.getWorkStatus())){
-			query.setParameter("workStatus", vo.getWorkStatus());
-		}
+		
 		if(vo.getStartDate() != null && vo.getEndDate()!=null){
 			query.setDate("fromDate", vo.getStartDate());
 			query.setDate("toDate", vo.getEndDate());
