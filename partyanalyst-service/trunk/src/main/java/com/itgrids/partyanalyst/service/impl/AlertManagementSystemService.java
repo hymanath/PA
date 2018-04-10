@@ -16598,6 +16598,12 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					statusVO.setStatusPerc(calculatePercantage(statusVO.getStatusCount(),statusTotal));
 				}
 			}
+			if(monthObjList ==null || monthObjList.isEmpty()){
+				finalVo.getSubList2().clear();
+			}
+			if(statusList == null || statusList.isEmpty()){
+				finalVo.getList().clear();
+			}
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniDashBoardViewInfo() method of AlertManagementSystemService",e);
 		}
@@ -16763,6 +16769,12 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				for (AlertVO statusVO : finalVo.getList()){
 					statusVO.setStatusPerc(calculatePercantage(statusVO.getStatusCount(),statusTotal));
 				}
+			}
+			if(monthObjList ==null || monthObjList.isEmpty()){
+				finalVo.getSubList2().clear();
+			}
+			if(statusList == null || statusList.isEmpty()){
+				finalVo.getList().clear();
 			}
 		}catch (Exception e){
 			LOG.error("Error occured getJalavaniCategoryWiseDetailsInfo() method of AlertManagementSystemService",e);
