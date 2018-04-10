@@ -7926,9 +7926,9 @@ function getLocationWiseSpecialMeetingsMeetingsExpanction(partyMeetingMainTypeId
 									}
 								if(imagesCnt > 0){
 									
-									str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].levelList[0].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].levelList[0].recentMeetingInviteesCnt+'</b> Images : <b>'+imagesCnt+'</b>  )</p>';
+									str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].levelList[0].conductedDate+'  ( Total Invitees : <b>'+result.levelList[i].levelList[0].recentMeetingInviteesCnt+'</b> Images : <b>'+imagesCnt+'</b>  )</p>';
 								}else{
-									str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].levelList[0].conductedDate+'  ( Total Inviees : <b>'+result.levelList[i].levelList[0].recentMeetingInviteesCnt+'</b>  )</p>';
+									str+='<p class="m_top15">Recent Meeting on '+result.levelList[i].levelList[0].conductedDate+'  ( Total Invitees : <b>'+result.levelList[i].levelList[0].recentMeetingInviteesCnt+'</b>  )</p>';
 								}
 								
 								str+='<div class="table-responsive" style="height:121px">';
