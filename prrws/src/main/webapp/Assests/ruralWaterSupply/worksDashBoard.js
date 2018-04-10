@@ -8,6 +8,13 @@ if(moment().format('MM').toString < "04"){
 	currentYear = moment().year()+1;
 }
 
+$("header").on("click",".menu-cls",function(e){
+	e.stopPropagation();
+	$(".menu-data-cls").toggle();
+});
+$(document).on("click",function(){
+	$(".menu-data-cls").hide();
+});
 var glStartDate = "01-04-2014";
 var	glEndDate = "01-04-"+currentYear;
 
