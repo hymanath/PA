@@ -11317,9 +11317,9 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 			  if(commonMethodsUtilService.isMapValid(locationAccessLevelMap)){
 				  for (Entry<Long,Set<Long>> entry : locationAccessLevelMap.entrySet()) {
 					  List<Object[]> tempPartyMetingDetailsList = null;
-					  if(CoreDashboardMomDetailsVO.getSearchTypeStr() != null && ( CoreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("Planned Meetings") || 
-							  CoreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("Total Conducted Meetings") || 
-							  CoreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("MOM Not UpdatedMeetings"))){
+					  if(CoreDashboardMomDetailsVO.getSearchTypeStr() != null && ( CoreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("PlannedMeetings") || 
+							  CoreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("TotalConductedMeetings") || 
+							  CoreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("MOMNotUpdatedMeetings"))){
 						  tempPartyMetingDetailsList = partyMeetingMinuteDAO.getPartyMeetingDetails(CoreDashboardMomDetailsVO,entry.getKey(),new ArrayList<Long>(entry.getValue()));
 					  }
 					  
@@ -11380,9 +11380,10 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						}
 						
 						if(partyMeetingVO.getTotalCount() != null)
-							partyMeetingVO.setTotalCount(totalCount);
-						else
 							partyMeetingVO.setTotalCount(partyMeetingVO.getTotalCount()+totalCount);
+						else
+							partyMeetingVO.setTotalCount(totalCount);
+							
 						
 						if(sourceTypeId != null && sourceTypeId.longValue()>0L){
 							if(sourceTypeId.longValue() ==1L){
