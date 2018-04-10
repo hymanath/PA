@@ -3,6 +3,7 @@ package com.itgrids.service.impl;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -1691,16 +1692,14 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							Double totalKms = locationVO.getKms();
 							Double totalAvgKms = 0.00;
 							//calculate total kms
-							Long devider = 0l;
 							for (DocumentVO inVO : locationVO.getList()) {
 								if(inVO.getKms() != null && inVO.getKms() > 0){
-									devider++;
 									totalAvgKms = totalAvgKms+inVO.getKms();
 								}
 								
 							}
 							
-							locationVO.setTotalAvgKms(Math.round(Double.parseDouble(totalAvgKms/devider+"")* 100D) / 100D);
+							locationVO.setTotalAvgKms(Math.round(Double.parseDouble(totalAvgKms/locationVO.getList().size()+"")* 100D) / 100D);
 							
 							//calculate %'s
 							if(totalKms > 0.00){
@@ -1757,7 +1756,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(startDate != null && endDate != null){
 				dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
 			}
-			
+			//0-locationId,1-kms
+			List<Object[]> objList12 = govtMainWorkDAO.getLocationWiseWorksTotalKms(Arrays.asList(inputVO.getLocationLevelId()),inputVO.getLocationScopeId(),null);
 			//0-statusId,1-status,2-date,3-count
 			List<Object[]> objList =  govtWorkProgressTrackDAO.getLocationLevelSubDayWiseKms(startDate,endDate,inputVO.getWorkTypeId(),inputVO.getLocationScopeId(),inputVO.getLocationLevelId());
 			
@@ -1767,7 +1767,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						DocumentVO vo = new DocumentVO();
 						vo.setDocumentId(Long.parseLong(objects[0].toString()));
 						vo.setDocumentName(objects[1].toString());
-						
+						vo.setKms(Double.parseDouble(objList12.get(0)[1].toString()));
 						getDates(vo.getList(), dateList);
 						DocumentVO matchedDateVO = getMatchedDateVo(vo.getList(), objects[2].toString());
 						if(matchedDateVO != null){
@@ -1776,7 +1776,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						
 						map.put(Long.parseLong(objects[0].toString()),vo);
 					}else{
-						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[0].toString())).getList(),objects[3].toString());
+						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[0].toString())).getList(),objects[2].toString());
 						if(matchedDateVO != null)
 							matchedDateVO.setKms(Double.parseDouble(objects[3].toString()));
 					}
@@ -1790,15 +1790,18 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							Double totalKms = 0.00;
 							//calculate total kms
 							for (DocumentVO inVO : statusVO.getList()) {
-								totalKms = totalKms+(inVO.getKms() != null ? inVO.getKms():0.00);
+								if(inVO.getKms() != null && inVO.getKms()>0.00){
+									totalKms = totalKms+inVO.getKms();
+								}
+								
 							}
-							
-							statusVO.setKms(totalKms);
 							
 							//calculate %'s
 							if(totalKms > 0.00){
+								statusVO.setTotalAvgKms(totalKms/statusVO.getList().size());
+								statusVO.setTotalAvgPerc((statusVO.getTotalAvgKms()*100.00)/statusVO.getKms());
 								for (DocumentVO inVO : statusVO.getList()) {
-									inVO.setCompletedPercentage((inVO.getKms()*100.0)/totalKms);
+									inVO.setCompletedPercentage((inVO.getKms()*100.0)/statusVO.getKms());
 								}
 							}
 						}
@@ -2080,16 +2083,14 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 								for (GovtWorksVO worksVO : entry.getValue().getWorksList()) {
 									if(worksVO.getStatusList() != null && worksVO.getStatusList().size() > 0){
 										Double totalAvgLength = 0.00;
-										Long devider=0l;
 										for (GovtWorksVO statusVO : worksVO.getStatusList()) {
 											if(statusVO.getTotalKms() > 0l){
 												totalAvgLength = totalAvgLength+statusVO.getTotalKms();
-												devider++;
 											}
 										}
 										
 										if(totalAvgLength > 0.00){
-											worksVO.setTotalAvgKms(totalAvgLength/devider);
+											worksVO.setTotalAvgKms(totalAvgLength/worksVO.getStatusList().size());
 											worksVO.setTotalAvgPerc((worksVO.getTotalAvgKms()*100.00)/worksVO.getTotalKms());
 											for (GovtWorksVO statusVO : worksVO.getStatusList()) {
 												statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/worksVO.getTotalKms());
@@ -2101,16 +2102,14 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}else{
 							if(entry.getValue().getStatusList() != null && entry.getValue().getStatusList().size() > 0){
 								Double totalAvgLength = 0.00;
-								Long devider=0l;
 								for (GovtWorksVO statusVO : entry.getValue().getStatusList()) {
 									if(statusVO.getTotalKms() > 0){
-										devider++;
 										totalAvgLength = totalAvgLength+statusVO.getTotalKms();
 									}
 								}
 								
 								if(totalAvgLength > 0.00){
-									entry.getValue().setTotalAvgKms(totalAvgLength/devider);
+									entry.getValue().setTotalAvgKms(totalAvgLength/entry.getValue().getStatusList().size());
 									entry.getValue().setTotalAvgPerc((entry.getValue().getTotalAvgKms()*100.00)/entry.getValue().getTotalKms());
 									for (GovtWorksVO statusVO : entry.getValue().getStatusList()) {
 										statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/entry.getValue().getTotalKms());

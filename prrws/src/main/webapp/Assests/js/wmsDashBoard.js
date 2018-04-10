@@ -4,8 +4,6 @@ var globalStatusBackGroundObj={"ALL":"#000","Earth Work":"#FEEBEA","Supply Pipel
 
 onloadCalls();
 function onloadCalls(){
-	getAllDistrictsOfAp('districtId','District');
-	getAllDistrictsLocationOfAp('locationWiseDistrictId','District');
 	getWorkTypeWiseCompletedDetails();
 }
 function getWorkTypeWiseCompletedDetails(){
@@ -215,7 +213,9 @@ function timeLineAndLocationWiseDetails(workTypeId){
 		collapse+='</div>';
 	
 	$("#timeLinesWorkTypesDivId").html(collapse);
-	$(".chosen-select").chosen();	
+	$(".chosen-select").chosen();
+	getAllDistrictsOfAp('districtId','District');
+	getAllDistrictsLocationOfAp('locationWiseDistrictId','District');	
 	getAllStatusOfWorkType(workTypeId);
 	getLocationStatusDayWiseKms(0,workTypeId);//Graph Call
 	getLocationLevelStatusDayWiseKms(12,workTypeId)//Location Level Main Table
@@ -337,18 +337,19 @@ function getTehsilsOfSubDivision(subDivisonId,divId,LevelVal){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildSelectBox(result,divId,LevelVal);
+		}else{
+			$("#"+divId).html("<option value='0'>All</option>").chosen().trigger("chosen:updated");
 		}
 	});
 }
 
 function buildSelectBox(result,divId,LevelVal){
-	
-	$("#"+divId).append("<option value='0'>All</option>");
+	var str='';
+	str+='<option value="0">All</option>';
 	for(var i in result){
-		$("#"+divId).append("<option value="+result[i].key+">"+result[i].value+" </option>");
+		str+='<option value="'+result[i].key+'">'+result[i].value+'</option>';
 	}
-	$("#"+divId).chosen();
-	$("#"+divId).trigger("chosen:updated");
+	$("#"+divId).html(str).chosen().trigger("chosen:updated");
 }
 function getAllStatusOfWorkType(workTypeId){
 	
@@ -579,7 +580,7 @@ function getLocationLevelStatusDayWiseKms(statusId,workTypeId){
 
 function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId){
 	var str='';
-	var listLenth=result[0].list.length+2
+	var listLenth=result[0].list.length+3
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered table_custom_WMS">';
 			str+='<thead>';
@@ -669,7 +670,8 @@ function buildLocationLevelSubDayWiseKmsSubTable(result,tr_id){
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th>Location</th>';
-						str+='<th>Total&nbsp;KM</th>';
+						str+='<th>Target&nbsp;KM</th>';
+						str+='<th>Average&nbsp;KM</th>';
 						for(var i in result[0].list){
 							str+='<th>'+result[0].list[i].insertedTime+'</th>';
 						}
@@ -682,6 +684,7 @@ function buildLocationLevelSubDayWiseKmsSubTable(result,tr_id){
 						str+='<tr>';
 							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;text-align:left !important;border-right: none !important;"><span class="rounder_WMS" style="background-color:'+globalStatusObj[result[i].documentName]+'">0'+k+'</span> '+result[i].documentName+'</td>';
 							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].kms.toFixed(2)+'&nbsp;km</td>';
+							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].totalAvgKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].totalAvgPerc.toFixed(2)+' %</span></td>';
 							for(var j in result[i].list){
 								str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].list[j].kms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].list[j].completedPercentage.toFixed(2)+' %</span></td>';
 							}
@@ -1194,8 +1197,8 @@ $(document).on("click",".sliderNewCls li",function(){
 	$(this).addClass("active");
 	var workId = $(this).attr("attr_work_id");
 	
-	getAllDistrictsOfAp('districtId','District');
-	getAllDistrictsLocationOfAp('locationWiseDistrictId','District');
+	//getAllDistrictsOfAp('districtId','District');
+	//getAllDistrictsLocationOfAp('locationWiseDistrictId','District');
 	
 	timeLineAndLocationWiseDetails(workId);
 	stateLevelWiseDetails(workId);
