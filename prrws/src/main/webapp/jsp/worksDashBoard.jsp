@@ -369,10 +369,21 @@
 			</div>
 			<div class="col-sm-6 m_top10">
 				<div class="row">
-					<div class="col-sm-12">
-						<h5 class="font_weight">Not Grounded Exceed Work Details</h5>
+					<div class="col-sm-4">
+						<h5 class="font_weight" style="margin-top: 7px;">Not Grounded Exceed Work Details</h5>
+					</div>
+					<div class="col-sm-8">
+						<div class="row">
+							<div class="col-sm-6">
+								
+							</div>
+							<div class="col-sm-6">
+							
+							</div>
+						</div>
 					</div>
 				</div>
+				
 				<div class="pad_border m_top20">
 					<div class="chart2" id="NotGroundedTargetDetails"></div>
 				</div>
@@ -380,16 +391,7 @@
 		</div>
 		<div class="row m_top20">
 			<div class="col-sm-12">
-				<div id="stateBlockId"></div>
-			</div>
-			<div class="col-sm-12">
-				<div id="districtBlockId"></div>
-			</div>
-			<div class="col-sm-12">
-				<div id="constituencyBlockId"></div>
-			</div>
-			<div class="col-sm-12">
-				<div id="mandalBlockId"></div>
+				<div id="levelWiseOverviewId"></div>
 			</div>
 		</div>
 	</div>
@@ -437,5 +439,6 @@
 <script src="Assests/Plugins/DataTable/htmlButtons.js" type="text/javascript"></script>
 <script src="Assests/ruralWaterSupply/worksDashBoard.js" type="text/javascript"></script>
 <script type="text/javascript" src="Assests/Plugins/Scroller/bootstrap-multiselect.js"></script>
+<script type="text/javascript" src="Assests/Plugins/DataTable/dataTables.fixedColumns.min.js"></script>
 </body>
 </html>
