@@ -133,7 +133,7 @@ function buildMOMBasicCountDetailsAction(result){
 				str+='<div class="col-sm-5">';
 					str+='<div class="bg_yash_color">';
 						str+='<h5 class="f_12">MOM Not Updated <br/>Meetings</h5>';
-						str+='<h4 class="text-bold m_top10 f_16">'+result.notUpdatedCount+' <small style="color:green;">'+result.notUpdatedCommentCntPer+'%</small></h4>';
+						str+='<h4 class="text-bold m_top10 f_16">'+result.notUpdatedMomCount+' <small style="color:green;">'+result.notUpdatedMomCntPer+'%</small></h4>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -202,7 +202,7 @@ function buildMOMBasicCountDetailsAction(result){
 					str+='<div class="col-sm-5">';
 						str+='<div class="bg_yash_color">';
 							str+='<h5 class="f_12">MOM Not Updated <br/>Meetings</h5>';
-							str+='<h4 class="text-bold m_top10 f_16">'+result.partyMettingsVOList[i].notUpdatedCount+' <small style="color:green;">'+result.partyMettingsVOList[i].notUpdatedCommentCntPer+'%</small></h4>';
+							str+='<h4 class="text-bold m_top10 f_16">'+result.partyMettingsVOList[i].notUpdatedMomCount+' <small style="color:green;">'+result.partyMettingsVOList[i].notUpdatedMomCntPer+'%</small></h4>';
 						str+='</div>';
 					str+='</div>';
 				str+='</div>';
@@ -258,8 +258,8 @@ function buildMOMBasicCountDetailsAction(result){
 function getUserTypeWisePartyMeetingMOMDetails(){
 	
 	$("#userTypeWiseMOMDiv").html(spinner);
-
-	 var dateString = currentFromDateMOM+"-"+currentToDateMOM;
+		
+    var dateString = currentFromDateMOM+"-"+currentToDateMOM;
 		var jsObj ={  
 			 activityMemberId:globalActivityMemberId,
 			 userTypeId:globalUserTypeId,
@@ -731,34 +731,34 @@ function buildMOMDetailedBlockDetailsAction(result,locationType){
 							str+='<td>'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</td>';
 							
 						}
-						if(result.partyMettingsVOList[i].totalMoms != null && result.partyMettingsVOList[i].totalMoms.length > 0){
+						//if(result.partyMettingsVOList[i].totalMoms != null && result.partyMettingsVOList[i].totalMoms.length > 0){
 							str+='<td>'+result.partyMettingsVOList[i].totalMoms+'</td>';
-						}else{
-							str+='<td>-</td>';
-						}
-						if(result.partyMettingsVOList[i].generalCount != null && result.partyMettingsVOList[i].generalCount.length > 0){
+						//}else{
+							//str+='<td>-</td>';
+						//}
+						//if(result.partyMettingsVOList[i].generalCount != null && result.partyMettingsVOList[i].generalCount.length > 0){
 							str+='<td>'+result.partyMettingsVOList[i].generalCount+'</td>';
-						}else{
-							str+='<td>-</td>';
-						}
+						//}else{
+							//str+='<td>-</td>';
+						//}
 						str+='<td>'+result.partyMettingsVOList[i].generalCntPer+'</td>';
-						if(result.partyMettingsVOList[i].actionCount != null && result.partyMettingsVOList[i].actionCount.length > 0){
+						//if(result.partyMettingsVOList[i].actionCount != null && result.partyMettingsVOList[i].actionCount.length > 0){
 							str+='<td>'+result.partyMettingsVOList[i].actionCount+'</td>';
-						}else{
+						/* }else{
 							str+='<td>-</td>';
-						}
+						} */
 						str+='<td>'+result.partyMettingsVOList[i].actionCntPer+'</td>';
-						if(result.partyMettingsVOList[i].partyCount != null && result.partyMettingsVOList[i].partyCount.length > 0){
+						//if(result.partyMettingsVOList[i].partyCount != null && result.partyMettingsVOList[i].partyCount.length > 0){
 							str+='<td>'+result.partyMettingsVOList[i].partyCount+'</td>';
-						}else{
+						/* }else{
 							str+='<td>-</td>';
-						}
+						} */
 						str+='<td>'+result.partyMettingsVOList[i].partyCntPer+'</td>';
-						if(result.partyMettingsVOList[i].govtCount != null && result.partyMettingsVOList[i].govtCount.length > 0){
+						//if(result.partyMettingsVOList[i].govtCount != null && result.partyMettingsVOList[i].govtCount.length > 0){
 							str+='<td>'+result.partyMettingsVOList[i].govtCount+'</td>';
-						}else{
+						/* }else{
 							str+='<td>-</td>';
-						}
+						} */
 						
 						str+='<td>'+result.partyMettingsVOList[i].govtCntPer+'</td>';
 						
