@@ -99,4 +99,74 @@ public class GovtMainWorkDAO extends GenericDaoHibernate<GovtMainWork, Long> imp
 		
 		return query.uniqueResult();
 	}
+	
+	public List<Object[]> getLocationWiseWorksTotalKms(List<Long> locationIds,Long locationLevelId,String workZoneReq){
+		//0-locationId,1-kms(,2-wokrZoneId)
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		if(locationLevelId == 3l){
+			sb.append(" la.district_id ");
+		}else if(locationLevelId == 12l){
+			sb.append(" la.division_id ");
+		}else if(locationLevelId == 13l){
+			sb.append(" la.sub_division_id ");
+		}else if(locationLevelId == 5l){
+			sb.append(" la.tehsil_id ");
+		}else if(locationLevelId == 6l){
+			sb.append(" la.panchayat_id ");
+		} 
+		
+		
+		if(workZoneReq != null && workZoneReq.equalsIgnoreCase("Y")){
+			sb.append(",gw.work_length,gw.govt_work_id  ");
+		}else{
+			sb.append(" ,sum(gmw.approved_km) ");
+		}
+		
+		sb.append("from govt_main_work gmw,location_address la ");
+		if(workZoneReq != null && workZoneReq.equalsIgnoreCase("Y")){
+			sb.append(",govt_work gw ");
+		}
+		sb.append(" where gmw.location_address_id=la.location_address_id ");
+		if(workZoneReq != null && workZoneReq.equalsIgnoreCase("Y")){
+			sb.append(" and gw.govt_main_work_id=gmw.govt_main_work_id ");
+		}
+		
+		if(locationLevelId == 3l){
+			sb.append(" and la.district_id in (:locationIds) ");
+		}else if(locationLevelId == 12l){
+			sb.append(" and la.division_id in (:locationIds) ");
+		}else if(locationLevelId == 13l){
+			sb.append(" and la.sub_division_id in (:locationIds) ");
+		}else if(locationLevelId == 5l){
+			sb.append(" and la.tehsil_id in (:locationIds) ");
+		}else if(locationLevelId == 6l){
+			sb.append(" and la.panchayat_id in (:locationIds) ");
+		} 
+		
+		sb.append(" group by ");
+		
+		if(locationLevelId == 3l){
+			sb.append(" la.district_id ");
+		}else if(locationLevelId == 12l){
+			sb.append(" la.division_id ");
+		}else if(locationLevelId == 13l){
+			sb.append(" la.sub_division_id ");
+		}else if(locationLevelId == 5l){
+			sb.append(" la.tehsil_id ");
+		}else if(locationLevelId == 6l){
+			sb.append(" la.panchayat_id ");
+		} 
+		if(workZoneReq != null && workZoneReq.equalsIgnoreCase("Y")){
+			sb.append(",govt_work gw ");
+		}
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		if(locationLevelId == 3l || locationLevelId == 12l || locationLevelId == 13l || locationLevelId == 5l || locationLevelId == 6l){
+			query.setParameterList("locationIds", locationIds);
+		}
+		
+		return query.list();
+	}
 }

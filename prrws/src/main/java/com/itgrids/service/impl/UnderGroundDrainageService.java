@@ -10,6 +10,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.UUID;
 
 import org.apache.log4j.Logger;
@@ -1672,20 +1673,38 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}
 					}
 					
+					//0-locationId,1-kms
+					List<Object[]> locationWiseKmsObjList = govtMainWorkDAO.getLocationWiseWorksTotalKms(locationIds,inputVO.getLocationLevelId(),null);
+					if(locationWiseKmsObjList != null && locationWiseKmsObjList.size() > 0){
+						for (Object[] objects : locationWiseKmsObjList) {
+							if(map.get(Long.parseLong(objects[0].toString())) != null){
+								map.get(Long.parseLong(objects[0].toString())).setKms(Math.round(Double.parseDouble(objects[1].toString())* 100D) / 100D);
+							}
+						}
+					}
+					
+					
 					for (Entry<Long, DocumentVO> entry : map.entrySet()) {
 						DocumentVO locationVO = entry.getValue();
 						locationVO.setUserId(usersMap.get(entry.getKey()));
 						if(locationVO != null && locationVO.getList() != null && locationVO.getList().size() > 0){
-							Double totalKms = 0.00;
+							Double totalKms = locationVO.getKms();
+							Double totalAvgKms = 0.00;
 							//calculate total kms
+							Long devider = 0l;
 							for (DocumentVO inVO : locationVO.getList()) {
-								totalKms = totalKms+(inVO.getKms() != null ? inVO.getKms():0.00);
+								if(inVO.getKms() != null && inVO.getKms() > 0){
+									devider++;
+									totalAvgKms = totalAvgKms+inVO.getKms();
+								}
+								
 							}
 							
-							locationVO.setKms(totalKms);
+							locationVO.setTotalAvgKms(Math.round(Double.parseDouble(totalAvgKms/devider+"")* 100D) / 100D);
 							
 							//calculate %'s
 							if(totalKms > 0.00){
+								locationVO.setTotalAvgPerc(Math.round(Double.parseDouble(((locationVO.getTotalAvgKms()*100)/totalKms)+"")* 100D) / 100D);
 								for (DocumentVO inVO : locationVO.getList()) {
 									inVO.setCompletedPercentage((inVO.getKms()*100.0)/totalKms);
 								}
@@ -2027,6 +2046,32 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}
 					}
 					
+					//0-locationId,1-kms(,2-workZoneId)
+					List<Object[]> locationWiseKmsObjList = govtMainWorkDAO.getLocationWiseWorksTotalKms(locationIds, inputVO.getLocationScopeId(),inputVO.getWorkZone());
+					if(locationWiseKmsObjList != null && locationWiseKmsObjList.size() > 0){
+						if(inputVO.getWorkZone() != null && inputVO.getWorkZone().equals("Y")){
+							for (Object[] objects : locationWiseKmsObjList) {
+								GovtWorksVO locationVo = finalMap.get(Long.parseLong(objects[0].toString()));
+								if(locationVo != null){
+									if(locationVo.getWorksList() != null && locationVo.getWorksList().size() > 0){
+										for (GovtWorksVO worksVO : locationVo.getWorksList()) {
+											if(worksVO.getWorkId().equals((Long)objects[2])){
+												worksVO.setTotalKms(Double.parseDouble(objects[1].toString()));
+											}
+										}
+									}
+								}
+							}
+						}else{
+							for (Object[] objects : locationWiseKmsObjList) {
+								if(finalMap.get(Long.parseLong(objects[0].toString())) != null){
+									finalMap.get(Long.parseLong(objects[0].toString())).setTotalKms(Double.parseDouble(objects[1].toString()));
+								}
+							}
+						}
+					}
+					
+					
 					for (Entry<Long, GovtWorksVO> entry : finalMap.entrySet()) {
 						entry.getValue().setLocation(locationNamesMap.get(entry.getKey()));
 						//calculation totals and %'s
@@ -2034,15 +2079,20 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							if(entry.getValue().getWorksList() != null && entry.getValue().getWorksList().size() > 0){
 								for (GovtWorksVO worksVO : entry.getValue().getWorksList()) {
 									if(worksVO.getStatusList() != null && worksVO.getStatusList().size() > 0){
-										Double totalLength = 0.00;
+										Double totalAvgLength = 0.00;
+										Long devider=0l;
 										for (GovtWorksVO statusVO : worksVO.getStatusList()) {
-											totalLength = totalLength+statusVO.getTotalKms();
+											if(statusVO.getTotalKms() > 0l){
+												totalAvgLength = totalAvgLength+statusVO.getTotalKms();
+												devider++;
+											}
 										}
 										
-										if(totalLength > 0.00){
-											worksVO.setTotalKms(totalLength);
+										if(totalAvgLength > 0.00){
+											worksVO.setTotalAvgKms(totalAvgLength/devider);
+											worksVO.setTotalAvgPerc((worksVO.getTotalAvgKms()*100.00)/worksVO.getTotalKms());
 											for (GovtWorksVO statusVO : worksVO.getStatusList()) {
-												statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/totalLength);
+												statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/worksVO.getTotalKms());
 											}
 										}
 									}
@@ -2050,15 +2100,20 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							}
 						}else{
 							if(entry.getValue().getStatusList() != null && entry.getValue().getStatusList().size() > 0){
-								Double totalLength = 0.00;
+								Double totalAvgLength = 0.00;
+								Long devider=0l;
 								for (GovtWorksVO statusVO : entry.getValue().getStatusList()) {
-									totalLength = totalLength+statusVO.getTotalKms();
+									if(statusVO.getTotalKms() > 0){
+										devider++;
+										totalAvgLength = totalAvgLength+statusVO.getTotalKms();
+									}
 								}
 								
-								if(totalLength > 0.00){
-									entry.getValue().setTotalKms(totalLength);
+								if(totalAvgLength > 0.00){
+									entry.getValue().setTotalAvgKms(totalAvgLength/devider);
+									entry.getValue().setTotalAvgPerc((entry.getValue().getTotalAvgKms()*100.00)/entry.getValue().getTotalKms());
 									for (GovtWorksVO statusVO : entry.getValue().getStatusList()) {
-										statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/totalLength);
+										statusVO.setCompletedPercentage((statusVO.getTotalKms()*100.00)/entry.getValue().getTotalKms());
 									}
 								}
 							}
