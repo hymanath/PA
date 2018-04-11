@@ -6396,7 +6396,9 @@ public String getPartyMeetingMOMDetailsCompletedCountsClicks(){
 		Long sourceTypeId = jObj.getLong("sourceTypeId");
 		String momType = jObj.getString("momType");
 		String searchTypeStr = jObj.getString("searchType");
-		
+		String subSearchTypeStr = jObj.getString("subSearchtype");
+		Long searchLevelId = jObj.getLong("searchLevelId");
+		Long  searchLevelValue = jObj.getLong("searchLevelValue");
 		String dateString = jObj.getString("dateString");
 		List<Long> partyMeetingTypeIdsList = new ArrayList<Long>();
 		List<Long> partyMeetingLevelIdsList = new ArrayList<Long>();
@@ -6416,11 +6418,13 @@ public String getPartyMeetingMOMDetailsCompletedCountsClicks(){
 			}
 			momDetailsVO.setPartyMetingLevelIdsList(partyMeetingLevelIdsList);
 		}
-		
+		momDetailsVO.setSearchLevelId(searchLevelId);
+		momDetailsVO.setSearchLevelValue(searchLevelValue);
 		momDetailsVO.setStateId(stateId);
 		momDetailsVO.setSourceTypeId(sourceTypeId);
 		momDetailsVO.setMomType(momType);
 		momDetailsVO.setSearchTypeStr(searchTypeStr);
+		momDetailsVO.setSubSearchTypeStr(subSearchTypeStr);
 		String DatesArr[] = dateString.split("-");
 	   	 if(DatesArr != null && DatesArr.length>0){
 	   		List<Date>  datesList = coreDashboardGenericService.getDates(DatesArr[0], DatesArr[1], new SimpleDateFormat("dd/MM/yyyy"));
