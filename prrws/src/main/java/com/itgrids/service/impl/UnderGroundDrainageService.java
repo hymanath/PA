@@ -1698,7 +1698,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 								}
 								
 							}
-							
+							locationVO.setCompletedKms(totalAvgKms);
+							locationVO.setCompletedPercentage((totalAvgKms*100.00)/totalKms);
 							locationVO.setTotalAvgKms(Math.round(Double.parseDouble(totalAvgKms/locationVO.getList().size()+"")* 100D) / 100D);
 							
 							//calculate %'s
@@ -1798,6 +1799,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							
 							//calculate %'s
 							if(totalKms > 0.00){
+								statusVO.setCompletedKms(totalKms);
+								statusVO.setCompletedPercentage((totalKms*100.00)/statusVO.getKms());
 								statusVO.setTotalAvgKms(totalKms/statusVO.getList().size());
 								statusVO.setTotalAvgPerc((statusVO.getTotalAvgKms()*100.00)/statusVO.getKms());
 								for (DocumentVO inVO : statusVO.getList()) {
@@ -2058,7 +2061,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 								if(locationVo != null){
 									if(locationVo.getWorksList() != null && locationVo.getWorksList().size() > 0){
 										for (GovtWorksVO worksVO : locationVo.getWorksList()) {
-											if(worksVO.getWorkId().equals((Long)objects[2])){
+											if(worksVO.getWorkId().equals(Long.parseLong(objects[2].toString()))){
 												worksVO.setTotalKms(Double.parseDouble(objects[1].toString()));
 											}
 										}
