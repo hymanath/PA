@@ -1,7 +1,42 @@
 var spinner = '<div class="row"><div class="col-md-12 col-xs-12 col-sm-12"><div class="spinner"><div class="dot1"></div><div class="dot2"></div></div></div></div>';
 var globalStatusObj={"ALL":"#000","Earth Work":"#F64340","Supply Pipeline":"#EB6F2C","Laying of Pipeline":"#EB9A1D","Refilling":"#9DC639","Testing":"#97A702","Completed":"#00CA85"}
 var globalStatusBackGroundObj={"ALL":"#000","Earth Work":"#FEEBEA","Supply Pipeline":"#FCEFE8","Laying of Pipeline":"#FCF4E7","Refilling":"#F4F8EA","Testing":"#F4F5E4","Completed":"#E4F9F2"}
+var currentFromDate=moment().startOf('month').format("DD-MM-YYYY");
+var currentToDate=moment().format("DD-MM-YYYY");
 
+$("#dateRangePicker").daterangepicker({
+		opens: 'left',
+		startDate: currentFromDate,
+		endDate: currentToDate,
+		locale: {
+		  format: 'DD-MM-YYYY'
+		},
+		ranges: {
+		   'Today' : [moment(), moment()],
+		   'Yesterday': [moment().subtract(1, 'day'), moment().subtract(1, 'day')],
+		   'This Month': [moment().startOf('month'),moment()],
+		   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+		   'This Year': [moment().startOf('Year'), moment()],
+		   'Last 1 Year': [moment().subtract(1, 'year').startOf('year'), moment().subtract(1, 'year').endOf('year')],
+		}
+	});
+	var dates= $("#dateRangePicker").val();
+	var pickerDates = currentFromDate+' - '+currentToDate
+	if(dates == pickerDates)
+	{
+		$("#dateRangePicker").val('This Month');
+	}
+	$('#dateRangePicker').on('apply.daterangepicker', function(ev, picker) {
+		currentFromDate = picker.startDate.format('DD-MM-YYYY');
+		currentToDate = picker.endDate.format('DD-MM-YYYY');
+		if(picker.chosenLabel == 'This Month')
+		{
+			$("#dateRangePicker").val('This Month');
+		}
+		
+		onloadCalls();
+	});
+	
 onloadCalls();
 function onloadCalls(){
 	getWorkTypeWiseCompletedDetails();
@@ -433,8 +468,8 @@ function getLocationStatusDayWiseKms(statusId,workTypeId){
 	var mandalId=$("#mandalId").val();
 	
 	var json ={
-		  "fromDate":"28-03-2018",
-		  "toDate":"31-03-2018",
+		  "fromDate":currentFromDate,
+		  "toDate":currentToDate,
 		  "statusId":statusId,
 		  "workTypeId":workTypeId,
 		  "districtId":districtId,
@@ -549,8 +584,8 @@ function getLocationLevelStatusDayWiseKms(statusId,workTypeId){
 	var mandalId=$("#mandalId").val();
 	
 	var json ={
-		  "fromDate":"28-03-2018",
-		  "toDate":"31-03-2018",
+		  "fromDate":currentFromDate,
+		  "toDate":currentToDate,
 		  "workTypeId":workTypeId,
 		  "statusId":statusId,
 		  "locationLevelId":locationLevelId,
@@ -571,14 +606,14 @@ function getLocationLevelStatusDayWiseKms(statusId,workTypeId){
 		}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId);
+			buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId,workTypeId);
 		}else{
 			$("#timeLineLocationDetailsDivId").html("No Data Available");
 		}
 	});
 }
 
-function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId){
+function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId,workTypeId){
 	var str='';
 	var listLenth=result[0].list.length+3
 	str+='<div class="table-responsive">';
@@ -596,7 +631,7 @@ function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId){
 			str+='<tbody>';
 				for(var i in result){
 					str+='<tr>';
-						str+='<td style="text-align:left !important;"><h5><i class="fa fa-plus plus_icon_WMS openNextTrShowCls active" aria-hidden="true" attr_tr_id="'+i+'"  attr_tr_name="'+result[i].documentName.replace(/\s+/g, '')+'" attr_locationScopeId="'+locationLevelId+'" attr_locationLevelId="'+result[i].documentId+'"></i> '+result[i].documentName+'</h5></td>';
+						str+='<td style="text-align:left !important;"><h5><i class="fa fa-plus plus_icon_WMS openNextTrShowCls active" aria-hidden="true" attr_tr_id="'+i+'"  attr_tr_name="'+result[i].documentName.replace(/\s+/g, '')+'" attr_locationScopeId="'+locationLevelId+'" attr_locationLevelId="'+result[i].documentId+'" attr_work_id="'+workTypeId+'"></i> '+result[i].documentName+'</h5></td>';
 						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].kms.toFixed(2)+'&nbsp;km</td>';
 						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].totalAvgKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].totalAvgPerc.toFixed(2)+' %</span></td>';
 						for(var j in result[i].list){
@@ -621,12 +656,13 @@ $(document).on("click",".openNextTrShowCls",function(){
 	var tr_name = $(this).attr("attr_tr_name");
 	var locationScopeId = $(this).attr("attr_locationScopeId");
 	var locationLevelId = $(this).attr("attr_locationLevelId");
+	var workTypeId = $(this).attr("attr_work_id");
 	if($(this).hasClass('active')){
 		$(this).removeClass('fa fa-plus').addClass('fa fa-minus');
 		$(this).removeClass('plus_icon_WMS').addClass('minus_icon_WMS');
 		$(this).removeClass('active');
 		$(".show"+tr_name+tr_id).show(); 
-		getLocationLevelSubDayWiseKms(locationScopeId,locationLevelId,tr_id)
+		getLocationLevelSubDayWiseKms(locationScopeId,locationLevelId,tr_id,workTypeId)
 	}else{
 		$(this).removeClass('fa fa-minus').addClass('fa fa-plus');
 		$(this).removeClass('minus_icon_WMS').addClass('plus_icon_WMS');
@@ -635,12 +671,12 @@ $(document).on("click",".openNextTrShowCls",function(){
 	}
 });
 
-function getLocationLevelSubDayWiseKms(locationScopeId,locationLevelId,tr_id){
+function getLocationLevelSubDayWiseKms(locationScopeId,locationLevelId,tr_id,workTypeId){
 	$("#subLocationLevelWiseStatusDivId"+tr_id).html(spinner);
 	var json ={
-		  "fromDate":"28-03-2018",
-		  "toDate":"31-03-2018",
-		  "workTypeId":1,
+		  "fromDate":currentFromDate,
+		  "toDate":currentToDate,
+		  "workTypeId":workTypeId,
 		  "locationScopeId":locationScopeId,
 		  "locationLevelId":locationLevelId
 		}
@@ -952,12 +988,17 @@ function buildStatusWiseWorksAndKms(result){
 						str+='<div class="col-sm-12 m_top5">';
 							str+='<div class="bg_StatusWorkCss">';
 								str+='<h5 class="font_weight">Works</h5>';
-								str+='<input class="m_top10" id="statusBar'+i+'" data-slider-id="statusBar'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedKmsPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedKmsPercentage.toFixed(0)+' %</span>';
-								str+='<h5 class="font_weight m_top5">'+result[i].totalWorks+'</h5>';
+								str+='<input class="m_top10" id="statusBar'+i+'" data-slider-id="statusBar'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedPercentage.toFixed(0)+' %</span>';
+								
+								str+='<h5 class="font_weight m_top5"><span style="font-size:12px">Total Works -  </span> '+result[i].totalWorks+'<br><span style="position: relative; top: 2px; font-size: 12px;">'+result[i].status+' Started Works - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusWorks+'</span></h5>';
+								
 								str+='<hr class="m_bottom_0 m_top10" style="border-top: 1px solid #ddd !important;"/>';
 								str+='<h5 class="font_weight">Works in Km</h5>';
-								str+='<input class="m_top10" id="statusBarWorks'+i+'" data-slider-id="statusBarWorks'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedPercentage.toFixed(0)+' %</span>';
-								str+='<h5 class="font_weight m_top5">'+result[i].statusWorks+'</h5>';
+								str+='<input class="m_top10" id="statusBarWorks'+i+'" data-slider-id="statusBarWorks'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedKmsPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedKmsPercentage.toFixed(0)+' %</span>';
+								
+								str+='<h5 class="font_weight m_top5"><span style="font-size:12px">Total Kms -  </span> '+result[i].totalKms.toFixed(2)+'<br><span style="position: relative; top: 2px; font-size: 12px;">'+result[i].status+' Kms - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusKms.toFixed(2)+'</span></h5>';
+								
+								
 							str+='</div>';
 						str+='</div>';
 					str+='</div>';
