@@ -71,7 +71,7 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 
 	public String dalithTejamDashBoard()
 	{
-		try {
+		/*try {
 			RegistrationVO regVO = (RegistrationVO) request.getSession().getAttribute("USER");
 			if(regVO==null){
 		      return "input";
@@ -93,7 +93,7 @@ public class DalithaTejamDashBoardAction extends ActionSupport implements	Servle
 			    }    
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
-		}
+		}*/
 		return Action.SUCCESS;
 	
 	}
