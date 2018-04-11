@@ -87,7 +87,7 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.panchayat panchayat "
 				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.tehsil tehsil "
 				+ " where model.govtWorkProgress.govtWork.govtMainWork.govtWorkTypeId=:workTypeId "
-				+ " order by date(model.updatedTime) desc ");
+				+ " order by model.updatedTime desc ");
 		query.setParameter("workTypeId", workTypeId);
 		query.setMaxResults(5);
 		return query.list();

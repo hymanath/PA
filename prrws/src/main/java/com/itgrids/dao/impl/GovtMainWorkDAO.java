@@ -158,7 +158,7 @@ public class GovtMainWorkDAO extends GenericDaoHibernate<GovtMainWork, Long> imp
 			sb.append(" la.panchayat_id ");
 		} 
 		if(workZoneReq != null && workZoneReq.equalsIgnoreCase("Y")){
-			sb.append(",govt_work gw ");
+			sb.append(",gw.govt_work_id ");
 		}
 		
 		Query query = getSession().createSQLQuery(sb.toString());
