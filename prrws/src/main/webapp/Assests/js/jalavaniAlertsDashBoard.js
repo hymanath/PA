@@ -6,7 +6,7 @@ $(".chosen-select").chosen();
  var url = window.location.href;
 	var wurl = url.substr(0,(url.indexOf(".com")+4));
 	if(wurl.length == 3)
-		wurl = url.substr(0,(url.indexOf(".in")+3)); 
+		wurl = url.substr(0,(url.indexOf(".in")+3));
 
 //var wurl="http://mytdp.com"
 var locationArr=['state','district','constituency','mandal'];
@@ -1261,7 +1261,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'CSV',
+					titleAttr: 'csv',
 				}
 			]
 		});
@@ -1278,7 +1278,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'CSV',
+					titleAttr: 'csv',
 				}
 			]
 		});
@@ -1294,7 +1294,7 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 				{
 					extend:    'csvHtml5',
 					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'CSV',
+					titleAttr: 'csv',
 				}
 			]
 		});
