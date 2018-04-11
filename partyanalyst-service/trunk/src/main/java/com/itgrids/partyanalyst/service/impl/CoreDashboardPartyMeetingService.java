@@ -11352,7 +11352,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						  Long meetingLevelId=commonMethodsUtilService.getLongValueForObject(param[0]);
 						  String meetingLevel=commonMethodsUtilService.getStringValueForObject(param[1]);
 						  String meetingDate=commonMethodsUtilService.getStringValueForObject(param[4]);
-						  AddressVO addressVO = setAddressDetails(param,5);
+						  AddressVO addressVO = null;//setAddressDetails(param,5);
 						  CoreDashboardMomDetailsVO vo = new CoreDashboardMomDetailsVO();
 						  vo.setMeetingId(partyMeetingId);
 						  vo.setMeetingName(meetingName);

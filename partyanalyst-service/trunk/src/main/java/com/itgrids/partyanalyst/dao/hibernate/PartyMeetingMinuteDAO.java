@@ -863,7 +863,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
 		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+			  queryStr.append(" and ((date(model.partyMeeting.startDate) between :fromDate and :toDate)  OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -1009,7 +1009,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
 		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+			  queryStr.append(" and ((date(model.partyMeeting.startDate) between :fromDate and :toDate)  OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -1073,7 +1073,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
 		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+			  queryStr.append(" and ((date(model.partyMeeting.startDate) between :fromDate and :toDate)  OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -1149,7 +1149,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
 		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+			  queryStr.append(" and ((date(model.partyMeeting.startDate) between :fromDate and :toDate)  OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -1847,7 +1847,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
 		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+			  queryStr.append(" and ((date(model.partyMeeting.startDate) between :fromDate and :toDate)  OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -1879,8 +1879,15 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 queryStr.append(" group by model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId " +
 		         " order by " +
 		         " model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId ");
-			
 		 Query query = getSession().createQuery(queryStr.toString());
+		/* Query query = getSession().createQuery(" select model.partyMeeting.partyMeetingLevelId,model.partyMeeting.partyMeetingId, " +
+		 		"count(distinct model.partyMeetingMinuteId) from PartyMeetingMinute model where  model.partyMeeting.isActive='Y'  " +
+		 		" and model.partyMeeting.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1 and model.isDeleted='N' and " +
+		 		"model.partyMeeting.meetingAddress.state.stateId=1  and" +
+		 		" ((date(model.partyMeeting.startDate) between '2018-03-01' and '2018-03-31')  OR (date(model.partyMeeting.endDate) between '2018-03-01' and '2018-03-31')) and " +
+		 		"model.partyMeeting.partyMeetingTypeId in (2,3,15) and model.partyMeeting.meetingAddress.state.stateId " +
+		 		"in (1) group by model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId,model.partyMeeting.partyMeetingId " +
+		 		" order by  model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId  ".toString()).list();*/
 			
 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
 			   query.setParameterList("userAccessLevelValues", userAccessLevelValues);
@@ -1917,7 +1924,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
 		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+			  queryStr.append(" and ((date(model.partyMeeting.startDate) between :fromDate and :toDate)  OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		  if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 				 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");

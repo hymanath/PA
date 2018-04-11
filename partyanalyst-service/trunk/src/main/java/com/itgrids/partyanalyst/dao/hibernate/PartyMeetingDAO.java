@@ -4946,9 +4946,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			 }
 			 
 			 if(statusType != null && statusType.trim().equalsIgnoreCase("Conducted")){
-				 queryStr.append(" and model1.isConducted = 'Y' ");
+				 queryStr.append(" and model1.mettingStatus = 'Y' ");
 			 }else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Conducted")){
-				 queryStr.append(" and model1.isConducted = 'N' ");
+				 queryStr.append(" and model1.mettingStatus = 'N' ");
 			 }
 			 
 			// queryStr.append(" group by model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId ");
