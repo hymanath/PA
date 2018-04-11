@@ -11453,10 +11453,11 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 								}
 								if(sourceTypeId.longValue() ==1L){
 									partyMeetingVO.setGovtCount(totalCount);
-								}else{
-									partyMeetingVO.setGeneralCount(totalCount);
 								}
+							}else{
+								partyMeetingVO.setGeneralCount(totalCount);
 							}
+							partyMeetingMap.put(partyMeetingId,partyMeetingVO);
 						}
 				  }
 				 
@@ -11484,7 +11485,9 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 			  }
 			  
 			  if(commonMethodsUtilService.isMapValid(partyMeetingMap)){
-				  returnList.addAll(partyMeetingMap.values());
+				  if(!coreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("TotalMOM"))
+					  returnList.addAll(partyMeetingMap.values());
+					  
 				  List<CoreDashboardMomDetailsVO> tempList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 				  tempList.addAll(partyMeetingMap.values());
 				 if(commonMethodsUtilService.isListOrSetValid(tempList)){
@@ -11495,15 +11498,25 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 						 }*/
 						 if(coreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("MOMNotUpdatedMeetings")){
 							 if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Total")){
-								 ;
+								 if(vo.getTotalCount() != null && vo.getTotalCount().longValue() > 0L)
+									 returnList.remove(vo);
 							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Mandal")){
 								 if(vo.getMeetingLevelId().longValue() != 4L && vo.getMeetingLevelId().longValue() != 5L && vo.getMeetingLevelId().longValue() != 6L )
+									 returnList.remove(vo);
+								 else if(vo.getTotalCount() != null && vo.getTotalCount().longValue() > 0L)
 									 returnList.remove(vo);
 							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("AC")){
 								 if(vo.getMeetingLevelId().longValue() != 3L)
 									 returnList.remove(vo);
+								 else if(vo.getTotalCount() != null && vo.getTotalCount().longValue() > 0L)
+									 returnList.remove(vo);
 							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("DISTRICT")){
 								 if(vo.getMeetingLevelId().longValue() != 2L)
+									 returnList.remove(vo);
+								 else if(vo.getTotalCount() != null && vo.getTotalCount().longValue() > 0L)
+									 returnList.remove(vo);
+							 }else{
+								 if(vo.getTotalCount() != null && vo.getTotalCount().longValue() > 0L)
 									 returnList.remove(vo);
 							 }
 						 }else  if(coreDashboardMomDetailsVO.getSearchTypeStr().equalsIgnoreCase("TotalMOM")){
@@ -11511,20 +11524,65 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 								 if(vo.getTotalCount() == null || vo.getTotalCount().longValue()==0L)
 									 returnList.remove(vo);
 							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("General")){
-								 if(vo.getGeneralCount() == null || vo.getGeneralCount().longValue()==0L)
-									 returnList.remove(vo);
+								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
+									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
+									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
+										if(minutVO.getMomType() == null || minutVO.getMomType().equalsIgnoreCase("N"))
+											finalList.add(minutVO);
+									 }
+									 vo.getMinutesList().clear();
+									 if(commonMethodsUtilService.isListOrSetValid(finalList)){
+										 vo.getMinutesList().addAll(finalList);
+										 returnList.add(vo);
+									 }
+								 }
 							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Party")){
-								 if(vo.getPartyCount() == null || vo.getPartyCount().longValue()==0L)
-									 returnList.remove(vo);
+								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
+									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
+									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
+										if(minutVO.getMomType() != null && minutVO.getSourceTypeId().longValue()==2L)
+											finalList.add(minutVO);
+									 }
+									 vo.getMinutesList().clear();
+									 if(commonMethodsUtilService.isListOrSetValid(finalList)){
+										 vo.getMinutesList().addAll(finalList);
+										 returnList.add(vo);
+									 }
+								 }
 							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Govt")){
-								 if(vo.getGovtCount() == null || vo.getGovtCount().longValue()==0L)
-									 returnList.remove(vo);
+								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
+									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
+									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
+										if(minutVO.getMomType() != null && minutVO.getSourceTypeId().longValue()==1L)
+											finalList.add(minutVO);
+									 }
+									 vo.getMinutesList().clear();
+									 if(commonMethodsUtilService.isListOrSetValid(finalList)){
+										 vo.getMinutesList().addAll(finalList);
+										 returnList.add(vo);
+									 }
+								 }
+							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Actionable")){
+								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
+									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
+									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
+										if(minutVO.getMomType() != null && minutVO.getSourceTypeId().longValue()>0L)
+											finalList.add(minutVO);
+									 }
+									 vo.getMinutesList().clear();
+									 if(commonMethodsUtilService.isListOrSetValid(finalList)){
+										 vo.getMinutesList().addAll(finalList);
+										 returnList.add(vo);
+									 }
+								 }
+							 }else{
+								 returnList.add(vo);
 							 }
 						 }
 					}
 				 }
 			  }
-			  
+		   
 		} catch (Exception e) {
 			LOG.error("Exception raised at getPartyMeetingsMOMDetails() method of CoreDashboardPartyMeetingService", e);
 		}
