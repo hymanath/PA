@@ -915,7 +915,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 	}
 	public List<Object[]> getLocationWiseMOMTypesCountDetails(Long userAccessLevelId,List<Long> userAccessLevelValues,Long stateId,Date fromDate,Date toDate,List<Long> partyMeetingTypeValues,String momType,CommitteeInputVO committeeBO){
 		StringBuilder queryStr = new StringBuilder();
-		queryStr.append("select 0,count(distinct model.partyMeeting.partyMeetingId)");
+		queryStr.append("select distinct model.partyMeeting.partyMeetingId ");
 		
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
   		  queryStr.append(",model.partyMeeting.meetingAddress.state.stateId ");
@@ -936,8 +936,8 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		  if(stateId != null && stateId.longValue() > 0){
 			 queryStr.append(" and model.partyMeeting.meetingAddress.state.stateId=:stateId ");
 		  }
-		  if(fromDate!= null && toDate!=null){
-			  queryStr.append(" and (date(model.insertedTime) between :fromDate and :toDate ) ");	 
+		  if(fromDate!= null && toDate!=null){ 
+			  queryStr.append(" and ( (date(model.partyMeeting.startDate) between :fromDate and :toDate ) OR (date(model.partyMeeting.endDate) between :fromDate and :toDate))");	 
 		 }
 		 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 			 queryStr.append(" and model.partyMeeting.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -959,11 +959,11 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		 }else if(userAccessLevelId != null && userAccessLevelId.longValue()==IConstants.WARD_LEVEl_ID){ 
 		    queryStr.append(" and model.partyMeeting.meetingAddress.ward.constituencyId in (:userAccessLevelValues)"); 
 		 }
-		 
+		/* 
 		 if(momType != null && momType.trim().equalsIgnoreCase("Actionable")){
 			 queryStr.append(" and model.isActionable = 'Y'");
 		 }else if(momType != null && momType.trim().equalsIgnoreCase("General")){
-			 queryStr.append(" and model.isActionable = 'N'");
+			 queryStr.append(" and ( model.isActionable = 'N' OR model.isActionable is null)  ");
 		 }
 		 
 		if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
@@ -977,7 +977,7 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
   			queryStr.append(" group by  model.partyMeeting.meetingAddress.constituency.constituencyId");
   		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
   			queryStr.append(" group by  model.partyMeeting.meetingAddress.tehsil.tehsilId ");
-  		}
+  		}*/
 		 
 		 //queryStr.append(" group by model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId " +
 		 //queryStr.append(" order by  model.partyMeeting.partyMeetingType.partyMeetingLevel.partyMeetingLevelId ");

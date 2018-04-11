@@ -10594,6 +10594,7 @@ public Map<String,PartyMeetingsVO> getLvelWiseUpdationCount(Date startDate,Date 
 												   memberVO.setTotalPendingMomsCnt(countVO.getTotalPendingMomsCnt());
 												   memberVO.setMomCompletedCntPer(coreDashboardGenericService.caclPercantage(countVO.getTotalMomsCnt(),countVO.getTotalMeetingCnt()));
 												   memberVO.setTotalPendingMomsCntPer(coreDashboardGenericService.caclPercantage(countVO.getTotalPendingMomsCnt(),countVO.getTotalMeetingCnt()));
+												   memberVO.setNotConductedMeetingCnt(countVO.getNotConductedMeetingCnt());
 											   }
 										   }
 									   } 
@@ -10607,8 +10608,8 @@ public Map<String,PartyMeetingsVO> getLvelWiseUpdationCount(Date startDate,Date 
 public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new Comparator<UserTypeVO>() {
 	     public int compare(UserTypeVO member2, UserTypeVO member1) {
 
-	        Double perc2 = member2.getCompletedPerc();
-	        Double perc1 = member1.getCompletedPerc();
+	        Double perc2 = member2.getMomCompletedCntPer();
+	        Double perc1 = member1.getMomCompletedCntPer();
 	        //descending order of percantages.
 	         return perc1.compareTo(perc2);
 	    }
@@ -10624,13 +10625,15 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 		    	 for(Long userAccessLevelId : locationLevelIdsMap.keySet()){
 		    		 clearLocationLevelIds(committeeBO);
 		    		 coreDashboardGenericService.setAppropriateLocationLevelInputsToBO(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)),committeeBO);
-		    		 List<Object[]> totalCountList = partyMeetingDAO.getLocationWisePartyMeetingStatusCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"Conducted",committeeBO);
-   	    			 List<Object[]> actionableCountList = partyMeetingMinuteDAO.getLocationWiseMOMTypesCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"Actionable",committeeBO);
-   	    			 List<Object[]> generalCountList1 = partyMeetingMinuteDAO.getLocationWiseMOMTypesCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"General",committeeBO);
+		    		 List<Object[]> conductedMeetingsList = partyMeetingDAO.getLocationWisePartyMeetingStatusCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"Conducted",committeeBO);
+		    		 List<Object[]> notConductedMetingsList = partyMeetingDAO.getLocationWisePartyMeetingStatusCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"Not Conducted",committeeBO);
+   	    			 List<Object[]> momUpdatedMeetingList = partyMeetingMinuteDAO.getLocationWiseMOMTypesCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"Actionable",committeeBO);
+   	    			 //List<Object[]> generalCountList1 = partyMeetingMinuteDAO.getLocationWiseMOMTypesCountDetails(userAccessLevelId,new ArrayList<Long>(locationLevelIdsMap.get(userAccessLevelId)), committeeBO.getStateId(), committeeBO.getStartDate(), committeeBO.getEndDate(),committeeBO.getPartyMeetingTypeIds(),"General",committeeBO);
    	    			 
-   	    			 setCommitteesMOMCountToItsCorrespondingLocation("total",totalCountList,locationLevelCountsMap,userAccessLevelId);
-   	    			 setCommitteesMOMCountToItsCorrespondingLocation("actionable",actionableCountList,locationLevelCountsMap,userAccessLevelId);
-   	    			 setCommitteesMOMCountToItsCorrespondingLocation("general",generalCountList1,locationLevelCountsMap,userAccessLevelId);
+   	    			 setCommitteesMOMCountToItsCorrespondingLocation("Conducted",conductedMeetingsList,locationLevelCountsMap,userAccessLevelId);
+   	    			 setCommitteesMOMCountToItsCorrespondingLocation("Not Conducted",notConductedMetingsList,locationLevelCountsMap,userAccessLevelId);
+   	    			 setCommitteesMOMCountToItsCorrespondingLocation("momCreated",momUpdatedMeetingList,locationLevelCountsMap,userAccessLevelId);
+   	    			 //setCommitteesMOMCountToItsCorrespondingLocation("general",generalCountList1,locationLevelCountsMap,userAccessLevelId);
 		    	 }
 		     }
 		    return locationLevelCountsMap;
@@ -10645,17 +10648,19 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 	   public void setCommitteesMOMCountToItsCorrespondingLocation(String status,List<Object[]> list,Map<String,UserTypeVO> locationLevelCountsMap,Long accessLevelId){
 		   	 if(list!=null && list.size()>0){
 				 for(Object[] obj : list){
-					 String key = accessLevelId+"_"+commonMethodsUtilService.getLongValueForObject(obj[2]); 
+					 String key = accessLevelId+"_"+commonMethodsUtilService.getLongValueForObject(obj[1]); 
 					 UserTypeVO countsVO = locationLevelCountsMap.get(key);
 					 if(countsVO == null){
 						 countsVO = new UserTypeVO();
 						 locationLevelCountsMap.put(key, countsVO);
 					 }
 					 countsVO = locationLevelCountsMap.get(key);
-					 if(status.equalsIgnoreCase("total")){
-						 countsVO.setTotalMeetingCnt(countsVO.getTotalMeetingCnt()+commonMethodsUtilService.getLongValueForObject(obj[1])); 
-					 }else if(status.equalsIgnoreCase("actionable") || status.equalsIgnoreCase("general")){
-						 countsVO.setTotalMomsCnt(countsVO.getTotalMomsCnt()+commonMethodsUtilService.getLongValueForObject(obj[1])); 
+					 if(status.equalsIgnoreCase("Conducted")){
+						 countsVO.setTotalMeetingCnt(countsVO.getTotalMeetingCnt()+1L); 
+					 }else if(status.equalsIgnoreCase("Not Conducted")){
+						 countsVO.setNotConductedMeetingCnt(countsVO.getNotConductedMeetingCnt()+1L); 
+					 }else if(status.equalsIgnoreCase("momCreated")){
+						 countsVO.setTotalMomsCnt(countsVO.getTotalMomsCnt()+1L); 
 					 }
 					 countsVO.setTotalPendingMomsCnt(countsVO.getTotalMeetingCnt()-countsVO.getTotalMomsCnt());
 				 }
@@ -11523,7 +11528,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 							 if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Total")){
 								 if(vo.getTotalCount() == null || vo.getTotalCount().longValue()==0L)
 									 returnList.remove(vo);
-							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("General")){
+							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("General") || coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("General1")){
 								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
 									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
@@ -11536,7 +11541,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 										 returnList.add(vo);
 									 }
 								 }
-							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Party")){
+							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Party") || coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Party1")){
 								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
 									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
@@ -11549,7 +11554,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 										 returnList.add(vo);
 									 }
 								 }
-							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Govt")){
+							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Govt") || coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Govt1")){
 								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
 									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {
@@ -11562,7 +11567,7 @@ public static Comparator<UserTypeVO> ActivityMemberCompletedCountPercDesc = new 
 										 returnList.add(vo);
 									 }
 								 }
-							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Actionable")){
+							 }else if(coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Actionable") || coreDashboardMomDetailsVO.getSubSearchTypeStr().equalsIgnoreCase("Actionable1")){
 								 if(commonMethodsUtilService.isListOrSetValid(vo.getMinutesList())){
 									 List<CoreDashboardMomDetailsVO> finalList = new ArrayList<CoreDashboardMomDetailsVO>(0);
 									 for (CoreDashboardMomDetailsVO minutVO : vo.getMinutesList()) {

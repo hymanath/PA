@@ -4898,7 +4898,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	    	
 	          StringBuilder queryStr = new StringBuilder();
 	    	
-	    	  queryStr.append(" select 0,count(distinct model.partyMeetingId)  " );
+	    	  queryStr.append(" select distinct model.partyMeetingId  " );
 	    	  
 	    	if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
 	    		  queryStr.append(",model.meetingAddress.state.stateId ");
@@ -4922,7 +4922,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 					 queryStr.append(" and model.meetingAddress.state.stateId=:stateId ");
 			  }
 			  if(fromDate!= null && toDate!=null){
-				  queryStr.append(" and (date(model.startDate) between :fromDate and :toDate ) ");	 
+				  queryStr.append(" and ( (date(model.startDate) between :fromDate and :toDate ) OR (date(model.endDate) between :fromDate and :toDate))");	 
 			 }
 			 if(partyMeetingTypeValues != null && partyMeetingTypeValues.size() > 0){
 				 queryStr.append(" and model.partyMeetingType.partyMeetingTypeId in (:partyMeetingTypeValues)");
@@ -4950,7 +4950,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			 }else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Conducted")){
 				 queryStr.append(" and model1.mettingStatus = 'N' ");
 			 }
-			 
+			/* 
 			// queryStr.append(" group by model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId ");
 			if(committeeBO.getStateIds()!=null && committeeBO.getStateIds().size()>0){
 				 queryStr.append(" group by  model.meetingAddress.state.stateId ");
@@ -4963,7 +4963,7 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	  			queryStr.append(" group by  model.meetingAddress.constituency.constituencyId");
 	  		}else if(committeeBO.getTehsilIds()!= null && committeeBO.getTehsilIds().size()>0){
 	  			queryStr.append(" group by  model.meetingAddress.tehsil.tehsilId ");
-	  		}
+	  		}*/
 			 
 		 Query query = getSession().createQuery(queryStr.toString());
 		 if(userAccessLevelValues != null && userAccessLevelValues.size() > 0){
