@@ -1455,7 +1455,8 @@ function buildLocationWiseRepresentationsOverviewDetails(result,locationtype,div
 						if(locationtype == "district"){
 							;
 						}else{
-							str+='<td style="text-align:center;"> <button class="btn btn-md btn-warning btn-xs prntCls" attr_distict_name="'+result[i].name+'" attr_const_name="'+result[i].locationName+' " attr_id="'+result[i].locationId+'" title="Click here to download PDF document." > PRINT </button>  <span id="loadingId'+result[i].locationId+'"> </span></td>';
+							str+='<td style="text-align:center;"><button class="btn btn-md btn-warning btn-xs prntCls" attr_document="pdf" attr_distict_name="'+result[i].name+'" attr_const_name="'+result[i].locationName+' " attr_id="'+result[i].locationId+'" title="Click here to download PDF document." > PRINT </button><span id="loadingId'+result[i].locationId+'"> </span>';
+							str+='<button class="btn btn-md btn-success btn-xs prntCls m_top10" attr_document="excel" attr_distict_name="'+result[i].name+'" attr_const_name="'+result[i].locationName+' " attr_id="'+result[i].locationId+'" title="Click here to download Excel document." > EXCEL </button>  <span id="loadingId'+result[i].locationId+'"> </span></td>';
 						}
 						
 					str+='</tr>';
@@ -1636,6 +1637,7 @@ $(document).on('click','.prntCls',function(){
 	var locationId =$(this).attr('attr_id');
 	var districtName=$(this).attr('attr_distict_name');
 	var constituencyName =$(this).attr('attr_const_name');
+	var attr_document =$(this).attr('attr_document');
 	
 	var locationIDsArr =[];
 	locationIDsArr.push(locationId);
@@ -1716,13 +1718,13 @@ $(document).on('click','.prntCls',function(){
 	}).done(function(result){
 		$('#loadingId'+locationId+'').html('');
 		if(result != null){
-			buildPetitionDetailsForPDF(result,districtName,constituencyName);
+			buildPetitionDetailsForPDF(result,districtName,constituencyName,attr_document);
 		}
 	});	
 });
 
 
-function buildPetitionDetailsForPDF(result,districtName,assemblyName){
+function buildPetitionDetailsForPDF(result,districtName,assemblyName,attr_document){
 
 	var str='';
 		str+='<div class="row">';
@@ -1773,10 +1775,10 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 				str+='<div class="row m_top5">'
 					str+='<div class="col-sm-12">'
 						str+='<div class="table-responsive">';
-						str+='<table class="table details-overview_petition_print font_size_13">';
+						str+='<table class="table details-overview_petition_print font_size_13" id="excelReportTable">';
 							str+='<thead>';
 								str+='<tr>';
-									str+='<th style="width:70px; !important;"><h6 class="font_size_12"> GIVEN&nbsp;DATE<h6> </th>';
+									str+='<th style="width:70px; !important;"><h6 class="font_size_12">GIVEN&nbsp;DATE<h6></th>';
 									str+='<th><h6 class="font_size_12"> ENDORS&nbsp;NO<h6></th>';
 									str+='<th><h6 class="font_size_12"> WORK&nbsp;REF&nbsp;NO <h6></th>';
 									str+='<th><h6 class="font_size_12"> LOCATION<h6></th>';
@@ -1887,7 +1889,11 @@ function buildPetitionDetailsForPDF(result,districtName,assemblyName){
 		
 		$('#pdfWiswPetitionsView').html(str);
 		
-		$('.printViewCls').trigger('click');
+		if(attr_document =='pdf'){
+		 	$('.printViewCls').trigger('click');
+		}else if(attr_document =='excel'){
+			tableToExcel('excelReportTable', assemblyName.toUpperCase()+'Constituency Representations');
+		}
 		
 	/* str+='<div>';
 		str+='<span> NO OF PETITIONS : </span> '+result[0].totalCount+' <br> ';
