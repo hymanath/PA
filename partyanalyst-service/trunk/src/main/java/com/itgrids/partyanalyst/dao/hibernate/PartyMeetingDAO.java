@@ -4913,10 +4913,10 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	  			queryStr.append(",model.meetingAddress.tehsil.tehsilId ");
 	  		}
 	    	  
-	    	  queryStr.append(" from PartyMeeting model " +
+	    	  queryStr.append(" from PartyMeetingStatus model1 left join model1.partyMeeting model " +
 	    	  		" where " +
-	    	  		" model.isActive='Y' and model.startDate is not null " +
-	    	  		" and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1");
+	    	  		//" model.isActive='Y' and model.startDate is not null " +
+	    	  		" model.isActive='Y' and model.partyMeetingType.partyMeetingMainType.partyMeetingMainTypeId = 1 ");
 	    	
 	    	  if(stateId != null && stateId.longValue() > 0){
 					 queryStr.append(" and model.meetingAddress.state.stateId=:stateId ");
@@ -4946,11 +4946,9 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 			 }
 			 
 			 if(statusType != null && statusType.trim().equalsIgnoreCase("Conducted")){
-				 queryStr.append(" and model.isConducted = 'Y' and model.conductedDate is not null");
-			 }else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Updated")){
-				 queryStr.append(" and model.isConducted is null");
-			 } else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Conducted")){
-				 queryStr.append(" and model.isConducted = 'N' and model.conductedDate is null");
+				 queryStr.append(" and model1.isConducted = 'Y' ");
+			 }else if(statusType != null && statusType.trim().equalsIgnoreCase("Not Conducted")){
+				 queryStr.append(" and model1.isConducted = 'N' ");
 			 }
 			 
 			// queryStr.append(" group by model.partyMeetingType.partyMeetingLevel.partyMeetingLevelId ");

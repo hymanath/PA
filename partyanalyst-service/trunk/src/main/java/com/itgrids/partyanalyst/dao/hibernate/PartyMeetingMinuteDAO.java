@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.appfuse.dao.hibernate.GenericDaoHibernate;
+import org.hibernate.Hibernate;
 import org.hibernate.Query;
 
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
@@ -1533,13 +1534,14 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 	public List<Object[]> getPartyMeetingMOMDetails(CoreDashboardMomDetailsVO momDetailsVO,Long userAccessLevelId,List<Long> userAccessLevelValues){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" SELECT ");
-		sb.append(" pm.party_meeting_level_id,pml.level, pm.party_meeting_id,pm.meeting_name,date(pm.conducted_date), ");//4
-		sb.append(" pmm.party_meeting_minute_id,'',date(pmm.inserted_time), ");//7
+		sb.append(" pm.party_meeting_level_id as party_meeting_level_id,pml.level as level, pm.party_meeting_id as party_meeting_id,pm.meeting_name as meeting_name,date(pm.conducted_date) as conducted_date, ");//4
+		sb.append(" pmm.party_meeting_minute_id party_meeting_minute_id ,pmm.minute_point as minute_point,date(pmm.inserted_time) as inserted_time, ");//7
 		//sb.append(" pmm.party_meeting_minute_id,pmm.minute_point,date(pmm.inserted_time), ");//7
-		sb.append(" st.mom_atr_source_type_id,st.source_type, ");//9
-		sb.append(" pmm.is_actionable, ");//10
-		sb.append(" s.state_id,s.state_name , d.district_id,d.district_name,0,'', c.constituency_id,c.name, ");//18
-		sb.append(" t.tehsil_id, t.tehsil_name, l.local_election_body_id, l.name,0,'',0,'' ");// p.panchayat_id, p.panchayat_name, w.constituency_id, w.name");//26
+		sb.append(" st.mom_atr_source_type_id as mom_atr_source_type_id,st.source_type as source_type, ");//9
+		sb.append(" pmm.is_actionable as is_actionable, ");//10
+		sb.append(" s.state_id as state_id,s.state_name as state_name, d.district_id as district_id,d.district_name as district_name,0 as parliament ,'' as parlName," +
+				"  c.constituency_id as constituency_id,c.name as name , ");//18
+		sb.append(" t.tehsil_id as tehsil_id, t.tehsil_name as tehsil_name, l.local_election_body_id as local_election_body_id, l.name as lName,0 as pId,'' as pName,0 as wardId,'' as wardName ");// p.panchayat_id, p.panchayat_name, w.constituency_id, w.name");//26
 		sb.append(" from   ");
 		sb.append(" party_meeting_level pml ,  ");
 		sb.append(" party_meeting_type pmt  ,  ");
@@ -1600,7 +1602,55 @@ public List<Object[]> getMomDetailsByType(Long userAccessLevelId,List<Long> user
 		}
 		sb.append(" group by pmm.party_meeting_minute_id  ");
 		
-		Query query = getSession().createSQLQuery(sb.toString());
+		/*Query query = getSession().createSQLQuery(" SELECT  pm.party_meeting_level_id as party_meeting_level_id ,pml.level as level, pm.party_meeting_id as party_meeting_id," +
+				" pm.meeting_name as meeting_name,date(pm.conducted_date) as conducted_date,  " +
+				"pmm.party_meeting_minute_id as party_meeting_minute_id,pmm.minute_point as minute_point,date(pmm.inserted_time) as inserted_time, " +
+				" st.mom_atr_source_type_id as mom_atr_source_type_id,st.source_type as source_type,  pmm.is_actionable as is_actionable,  s.state_id as state_id," +
+				" s.state_name as state_name, " +
+				"d.district_id as district_id,d.district_name as district_name,0 as parliament,'' as parlName, c.constituency_id as constituency_id,c.name as name," +
+				"   t.tehsil_id as tehsil_id, t.tehsil_name as tehsil_name, l.local_election_body_id as local_election_body_id, l.name as lName " +
+				"   from    " +
+				"party_meeting_level pml ,   party_meeting_type pmt  ,   party_meeting_main_type pmmt ,   party_meeting_minute pmm  " +
+				"LEFT JOIN mom_atr_source_type st on pmm.mom_atr_source_type_id = st.mom_atr_source_type_id and pmm.is_deleted='N'  " +
+				"LEFT JOIN party_meeting pm on pmm.party_meeting_id = pm.party_meeting_id and pmm.is_deleted='N' and pm.is_active='Y' and pm.conducted_date is not null  " +
+				" LEFT JOIN user_address ua on pm.meeting_address_id = ua.user_address_id   LEFT JOIN state s on ua.state_id = s.state_id  " +
+				"LEFT JOIN district d on ua.district_id = d.district_id   LEFT JOIN constituency c on ua.constituency_id = c.constituency_id   " +
+				"LEFT JOIN tehsil t on ua.tehsil_id = t.tehsil_id   LEFT JOIN local_election_body l on ua.local_election_body = l.local_election_body_id   where  " +
+				" pmt.party_meeting_main_type_id = pmmt.party_meeting_main_type_id and pmt.is_active='Y'  and  " +
+				" pm.party_meeting_level_id = pml.party_meeting_level_id and pm.is_active='Y'  and   pm.party_meeting_type_id = pmt.party_meeting_type_id and pmt.is_active='Y' and  " +
+				" pmmt.party_meeting_main_type_id = 1    and  ((date(pm.conducted_date) BETWEEN '2018-03-01' and '2018-03-31') OR (date(pm.conducted_date) BETWEEN '2018-03-01' and '2018-03-31'))    " +
+				" and pm.party_meeting_type_id in (2, 3, 15)    and pm.party_meeting_level_id in (2, 3, 4, 5, 6)  " +
+				"  and ua.state_id in (1) group by pmm.party_meeting_minute_id   ".toString())
+				*/
+		Query query = getSession().createSQLQuery(sb.toString())
+				.addScalar("party_meeting_level_id",Hibernate.LONG)
+				.addScalar("level",Hibernate.STRING)
+				.addScalar("party_meeting_id",Hibernate.LONG)
+				.addScalar("meeting_name",Hibernate.STRING)
+				.addScalar("conducted_date",Hibernate.STRING)
+				.addScalar("party_meeting_minute_id",Hibernate.LONG)
+				.addScalar("minute_point",Hibernate.STRING)
+				.addScalar("inserted_time",Hibernate.STRING)
+				.addScalar("mom_atr_source_type_id",Hibernate.LONG)
+				.addScalar("source_type",Hibernate.STRING)
+				.addScalar("is_actionable",Hibernate.STRING)
+				.addScalar("state_name",Hibernate.STRING)
+				.addScalar("state_id",Hibernate.LONG)
+				.addScalar("district_name",Hibernate.STRING)
+				.addScalar("district_id",Hibernate.LONG)
+				.addScalar("parlName",Hibernate.STRING)
+				.addScalar("parliament",Hibernate.LONG)
+				.addScalar("constituency_id",Hibernate.LONG)
+				.addScalar("name",Hibernate.STRING)
+				.addScalar("tehsil_id",Hibernate.LONG)
+				.addScalar("tehsil_name",Hibernate.STRING)
+				.addScalar("local_election_body_id",Hibernate.LONG)
+				.addScalar("lName",Hibernate.STRING)
+				.addScalar("pName",Hibernate.STRING)
+				.addScalar("pId",Hibernate.LONG)
+				.addScalar("wardName",Hibernate.STRING)
+				.addScalar("wardId",Hibernate.LONG);
+		
 		//query.setParameter("stateId", momDetailsVO.getStateId());
 		if(momDetailsVO.getSourceTypeId() != null && momDetailsVO.getSourceTypeId().longValue()>0L ){
 			query.setParameter("sourceTypeId", momDetailsVO.getSourceTypeId());

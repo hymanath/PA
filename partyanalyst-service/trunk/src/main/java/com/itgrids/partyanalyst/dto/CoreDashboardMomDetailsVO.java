@@ -31,6 +31,7 @@ public class CoreDashboardMomDetailsVO {
 	public Long searchLevelId;
 	public Long searchLevelValue;
 	public String searchTypeStr;
+	public String subSearchTypeStr;
 	public List<Long> partyMetingTypeIdsList = new ArrayList<Long>(0);
 	private Long totalCount;
 	private Long partyCount;
@@ -217,5 +218,10 @@ public class CoreDashboardMomDetailsVO {
 	public void setFilesList1(List<KeyValueVO> filesList1) {
 		this.filesList1 = filesList1;
 	}
-	
+	public String getSubSearchTypeStr() {
+		return subSearchTypeStr;
+	}
+	public void setSubSearchTypeStr(String subSearchTypeStr) {
+		this.subSearchTypeStr = subSearchTypeStr;
+	}
 }
