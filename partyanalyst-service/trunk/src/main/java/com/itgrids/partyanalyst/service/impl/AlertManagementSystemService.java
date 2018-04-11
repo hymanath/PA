@@ -16555,6 +16555,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				for (String string : datesList) {
 					AlertVO vo = new AlertVO();
 					vo.setDate1(string);
+					vo.setVerifyStatus("dayWise");
 					finalVo.getSubList2().add(vo);
 				}
 				//DATE-0,count-1
@@ -16672,6 +16673,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 				for (String string : datesList) {
 					AlertVO vo = new AlertVO();
 					vo.setDate1(string);
+					vo.setVerifyStatus(dayWise);
 					finalVo.getSubList2().add(vo);
 				}
 			}
@@ -17262,7 +17264,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						AlertVO matchedMonthVO = getmatchedMonthVo(subList,commonMethodsUtilService.getStringValueForObject(objects[0]));
 						if(matchedMonthVO != null){
 							matchedMonthVO.setLocationCnt((Long)objects[1]);
-							matchedMonthVO.setVerifyStatus(type);
+							//matchedMonthVO.setVerifyStatus(type);
 						}
 					}
 				}
