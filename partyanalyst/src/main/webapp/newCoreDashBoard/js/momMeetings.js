@@ -1042,8 +1042,8 @@ function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
                           str+='<th rowspan="2">Meeting Name</th>';
                           str+='<th rowspan="2">Meeting Date</th>';
                           str+='<th colspan="4">MOMS</th>';
-                         // str+='<th rowspan="2">Meeting Images</th>';
-                         // str+='<th rowspan="2">MOM Documents</th>';
+                          str+='<th rowspan="2">Meeting Images</th>';
+                          str+='<th rowspan="2">MOM Documents</th>';
                         str+='</tr>';
 						 str+='<tr class="line-height30">';
                           str+='<th>Total</th>';
@@ -1091,7 +1091,7 @@ function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
 									}else{
 										str+='<td> - </td>';
 									}
-									/*if(result[i].filesList1 != null && result[i].filesList1.length>0){
+									if(result[i].filesList1 != null && result[i].filesList1.length>0){
 										str+='<td><button type="button" class="btn btn-success btn-sm docsViewCls" attr_meeting_level_id="'+result[i].meetingId+'" attr_meeting_name="'+result[i].meetingName+'" attr_image_type="meetingDocuments">Meeting Images</button></td>';
 									}else{
 										str+='<td> - </td>';
@@ -1101,7 +1101,7 @@ function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
 									}else{
 										str+='<td> - </td>';
 									}
-								*/
+								
 								str+='</tr>';
 						}
 					  str+='</tbody>';
@@ -1236,27 +1236,27 @@ function buildPartyMeetingMOMDetailsCompletedMOMClicks(myResult){
 										str+='<div class="viewImageCss">';
 										if(scanCopyExt =="pdf"){
 											str+='<div style="border:1px solid #ccc;padding:5px">';
-												str+='<object data="http://mytdp.com/party_meetings/'+docsList[j].path+'" type="application/pdf" width="100%"height="150px;" class="thumbnail m_5"></object>';
+												str+='<object data="https://mytdp.com/DocFiles/'+docsList[j].path+'" type="application/pdf" width="100%"height="150px;" class="thumbnail m_5"></object>';
 												str+='<h5>View Document <a class="fancyboxView image_open_link" href="#inlinePDFD'+j+'"><i class="fa fa-external-link" aria-hidden="true"></i></a></h5>';
 											str+='</div>';
 											
 											str+='<div id="inlinePDFD'+j+'" style="width:100%;display: none;">';
-												str+='<object data="http://mytdp.com/party_meetings/'+docsList[j].path+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+												str+='<object data="https://mytdp.com/DocFiles/'+docsList[j].path+'" type="application/pdf"   style="cursor:pointer;height:1000px;width:1000px"></object>';
 												
 											str+='</div>';
 											
 										}else if( scanCopyExt =="jpeg" || scanCopyExt =="jpg"  || scanCopyExt =="gif"  || scanCopyExt =="bmp"  || scanCopyExt =="png"){
 											str+='<div style="border:1px solid #ccc;padding:5px">';
-												str+='<img src="http://mytdp.com/party_meetings/'+docsList[j].path+'"  width="100%" height="150px;" class="thumbnail m_5"></img>';
+												str+='<img src="https://mytdp.com/DocFiles/'+docsList[j].path+'"  width="100%" height="150px;" class="thumbnail m_5"></img>';
 												str+='<h5>View Document <a class="fancyboxView image_open_link" href="#inlineImgeD'+j+'"><i class="fa fa-external-link" aria-hidden="true"></i></a></h5>';
 											str+='</div>';
 												
 											str+='<div id="inlineImgeD'+j+'" style="width:100%;display: none;">';
-												str+='<img src="http://mytdp.com/party_meetings/'+docsList[j].path+'"   style="cursor:pointer;height:1000px;width:1000px"></object>';
+												str+='<img src="https://mytdp.com/DocFiles/'+docsList[j].path+'"   style="cursor:pointer;height:1000px;width:1000px"></object>';
 												
 											str+='</div>';
 										}else{
-											str+='<b>Click <a href="javascript:{};" onclick="openDoc(\'http://mytdp.com/party_meetings/'+docsList[j].path+'\')">Here</a> To View Document</b>';
+											str+='<b>Click <a href="javascript:{};" onclick="openDoc(\'https://mytdp.com/DocFiles/'+docsList[j].path+'\')">Here</a> To View Document</b>';
 											
 										}
 							
