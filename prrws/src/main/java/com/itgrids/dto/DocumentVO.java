@@ -13,7 +13,7 @@ public class DocumentVO {
 	private String insertedTime;
 	private Double kms=0.00;
 	private List<DocumentVO> list = new ArrayList<DocumentVO>(0);
-	private Double completedPercentage;
+	private Double completedPercentage,completedKms = 0.00;
 	private Long panchayatId,mandalId;
 	private String panchayatName,mandalName;
 	private List<String> datesList = new ArrayList<String>(0);
@@ -133,6 +133,12 @@ public class DocumentVO {
 	}
 	public void setTotalAvgPerc(Double totalAvgPerc) {
 		this.totalAvgPerc = totalAvgPerc;
+	}
+	public Double getCompletedKms() {
+		return completedKms;
+	}
+	public void setCompletedKms(Double completedKms) {
+		this.completedKms = completedKms;
 	}
 	
 	

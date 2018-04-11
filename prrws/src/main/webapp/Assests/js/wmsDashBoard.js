@@ -517,8 +517,6 @@ function buildLocationStatusDayWiseKmsMainGraph(result){
 			};
 			mainDataArr.push(obj)
 		}
-		
-		console.log(mainDataArr)	
 	$('#workStagesCommulativeGraphDivId').highcharts({
 		chart: {
 			type: 'spline'
@@ -615,14 +613,15 @@ function getLocationLevelStatusDayWiseKms(statusId,workTypeId){
 
 function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId,workTypeId){
 	var str='';
-	var listLenth=result[0].list.length+3
+	var listLenth=result[0].list.length+4
 	str+='<div class="table-responsive">';
 		str+='<table class="table table-bordered table_custom_WMS">';
 			str+='<thead>';
 				str+='<tr>';
 					str+='<th>Location</th>';
-					str+='<th style="background-color:#C4EEE6 !important;">Target&nbsp;KM</th>';
-					str+='<th style="background-color:#C4EEE6 !important;">Average&nbsp;KM</th>';
+					str+='<th style="background-color:#C4EEE6 !important;">Target&nbsp;KMS</th>';
+					str+='<th style="background-color:#C4EEE6 !important;">Total&nbsp;KMS</th>';
+					str+='<th style="background-color:#C4EEE6 !important;">Average&nbsp;KMS</th>';
 					for(var i in result[0].list){
 						str+='<th>'+result[0].list[i].insertedTime+'</th>';
 					}
@@ -633,6 +632,7 @@ function buildLocationLevelStatusDayWiseKmsMainTable(result,locationLevelId,work
 					str+='<tr>';
 						str+='<td style="text-align:left !important;"><h5><i class="fa fa-plus plus_icon_WMS openNextTrShowCls active" aria-hidden="true" attr_tr_id="'+i+'"  attr_tr_name="'+result[i].documentName.replace(/\s+/g, '')+'" attr_locationScopeId="'+locationLevelId+'" attr_locationLevelId="'+result[i].documentId+'" attr_work_id="'+workTypeId+'"></i> '+result[i].documentName+'</h5></td>';
 						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].kms.toFixed(2)+'&nbsp;km</td>';
+						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].completedKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].completedPercentage.toFixed(2)+' %</span></td>';
 						str+='<td style="background-color:#E5FBF7 !important;">'+result[i].totalAvgKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].totalAvgPerc.toFixed(2)+' %</span></td>';
 						for(var j in result[i].list){
 							str+='<td>'+result[i].list[j].kms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].list[j].completedPercentage.toFixed(2)+' %</span></td>';
@@ -706,8 +706,9 @@ function buildLocationLevelSubDayWiseKmsSubTable(result,tr_id){
 				str+='<thead>';
 					str+='<tr>';
 						str+='<th>Location</th>';
-						str+='<th>Target&nbsp;KM</th>';
-						str+='<th>Average&nbsp;KM</th>';
+						str+='<th>Target&nbsp;KMS</th>';
+						str+='<th>Total&nbsp;KMS</th>';
+						str+='<th>Average&nbsp;KMS</th>';
 						for(var i in result[0].list){
 							str+='<th>'+result[0].list[i].insertedTime+'</th>';
 						}
@@ -720,6 +721,7 @@ function buildLocationLevelSubDayWiseKmsSubTable(result,tr_id){
 						str+='<tr>';
 							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;text-align:left !important;border-right: none !important;"><span class="rounder_WMS" style="background-color:'+globalStatusObj[result[i].documentName]+'">0'+k+'</span> '+result[i].documentName+'</td>';
 							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].kms.toFixed(2)+'&nbsp;km</td>';
+							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].completedKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].completedPercentage.toFixed(2)+' %</span></td>';
 							str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].totalAvgKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].totalAvgPerc.toFixed(2)+' %</span></td>';
 							for(var j in result[i].list){
 								str+='<td style="background-color:'+globalStatusBackGroundObj[result[i].documentName]+' !important;">'+result[i].list[j].kms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].list[j].completedPercentage.toFixed(2)+' %</span></td>';
