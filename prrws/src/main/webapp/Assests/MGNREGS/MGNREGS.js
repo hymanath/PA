@@ -172,6 +172,9 @@ var globalFinancialYear = "2018";
 		var locId = $("#selectedName").attr("attr_id");
 		var districtId = $("#selectedName").attr("attr_distid");
 		var locType = '';
+		
+		manDaysEndDate = e.date.format("YYYYMM");
+		
 		if(levelId == 2)
 		{
 			locType = 'state'
@@ -258,6 +261,8 @@ var globalFinancialYear = "2018";
 		var locId = $("#selectedName").attr("attr_id");
 		var districtId = $("#selectedName").attr("attr_distid");
 		var locType = '';
+		
+		manDaysStartDate = e.date.format("YYYYMM");
 		
 		/*if($.datepicker.parseDate("yyyy-MM-dd",glStartDate) > $.datepicker.parseDate("yyyy-MM-dd","2018-03-31"))
 			alert(123);*/
@@ -5812,7 +5817,7 @@ function getNregaLevelsWiseDataFrAvenue(divIdd,locationType,menuLocationType,men
 	});
 }
 
-//var overViewArr = ['Not Yet Completed Works'];
+//var overViewArr = ['Agriculture Activities'];
 var overViewArr = ['Labour Budget','Material Availability','Farm Ponds','IHHL','Vermi Compost','GH','Solid Waste Management','Burial Ground','Play fields','SMC Trench','Average Wage','Average Days of Employment','HH Completed 100 Days','Timely Payment','Payments','Agriculture Activities','Man Days Comparision','Expenditure','Daily Labour Turnout','Cattle Ponds','Desilting of Drinking Water Tanks','FAperformance','FA Vacancies','Not Yet Completed Works','coffee','Comprehensive Restoration of minor Irrigation Tank1','Greenary works Chettu','Agriculture Related Works', 'Rural Sanitation Works','Soil Moisture Conservation works Neeru','Works in community lands','Institutional Development Works','Road Works','Water Harvesting Structures Neeru','IJP PROGRAM WORKS','AH-Live Stock Related works','Comprehensive Restoration of minor Irrigation Tank','CC Roads1','Anganwadi','GP Buildings1','Azolla Production Unit','Construction of silopits of 3 MTs capacity','Fodder trough for Cattle Cattle drinking water trough','Raising of Fodder Maize Fodder Jowar Nutrifeed Sugargraze','Raising of Perinnial Fodder','Raising of Silvipasture clubbed with subabul plantation','Mandal buildings1','NTR 90 Days','Production of Bricks','NTR Rural House','Mulbery New','Silk worm New','Horticulture','Avenue','Fish Ponds','Fish Drying Platforms','OPGK-Perinnials','OPGK-Annuals','Animal Husbandry Others','UGDrainage','Rock Fill Dams','Renovation and Improvements to existing Check Dams Check Wall','Road Formation Upto WBM GR II Including CD works','Formation of Road upto WBM Gr II surface including CD works Connecting SC habitation or Locality in Plain areas','Construction Of Animal Hostel','Roads for Unconnected Habitations 2011-12','Construction of New Check Dam','Formation of internal road upto WBM Gr II surface including CD works and Drains in SC Habitation or Locality','Construction of Food Grains Storage Structures of 250MT','Formation of Road upto WBM Gr II surface including CD works in Tribal areas','Construction of Village Haats Infrastructure fecilities','Providing BT road for Sri Anantha Padmanabha Swamy Temple Hill top Road at Padmabnabham','Construction of Post Harvest facilities Drying Platform including Pucca storage facilities of 100MT','Construction of Buildings for women self help group federation','Work Site Facilities','Renovation and Improvements to existing Percolation Tank Mini Percolation tank','GP level BNRGSK knowledge resource centre 2012-13 and afterwards','Formation of internal road upto WBM Gr II surface including CD works and Drains in other Habitation or Locality','Production of Grafts in HNTC','Improvements of RYTHU BAZAR','Roads for Unconnected Habitations 2012-13 and afterwards','HNTC Development','New Open Well for Drinking water purpose','Construction of Crematoria Burial Grounds','Repairs to Existing Check Dam','Formation of Road upto Gravel surface including CD works to agriculture fields','Formation of Approach Road upto Gravel surface including CD works to Burial ground','Construction of Food Grains Storage Structures of 500MT','Formation of Road upto WBM Gr II surface including CD works Connecting other habitation or Locality in Plain areas','Raising of Cashew bag seedlings for 2014-15','Formation of Road upto WBM Gr II surface including CD works Connecting ST habitation or Locality in Plain areas','Raising and Maintenance of Avenue plantations','Raising and Maintenance of Block Plantations','Raising and Maintenance of nurseries','Soil and Moisture Conservation Works']; 
 
 buildNREGSProjectsOverview(overViewArr,'')
@@ -6320,13 +6325,16 @@ function getLocationWiseFAVacencies(divIdd,locationTypeNew,theadArr,menuLocation
 	});
 }
 
+var manDaysStartDate = '201804';
+var manDaysEndDate = moment().format("YYYYMM");
 function getManWorkDaysOfNrega(divIdd,locationTypeNew,theadArr,menuLocationType,menuLocationId,blockName,districtId,mccType,buildType,levelId)
 {
 	$("#"+divIdd).html(spinner);
 	var distrtId = $("#selectedName").attr("attr_distId");
 	var toDateArr = glEndDate.split('-');
 	var json = {
-		month : toDateArr[1],
+		fromMonth : manDaysStartDate,
+		toMonth : manDaysEndDate,
 		locationType: menuLocationType,
 		locationId : menuLocationId,
 		sector : buildType,
@@ -6642,7 +6650,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		str+='</div>';
 		
 		if(levelId == 3 || levelId == "3"){
-			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;Pending</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].totalPendinAmount+'</h2>';
 			str+='</div>';
@@ -6702,7 +6710,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='</div>';
 		str+='</div>';
 		if(levelId == 3 || levelId == "3"){
-			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 				str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - TODAY</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].today+'</h2>';
 			str+='</div>';
@@ -6818,7 +6826,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 		str+='</div>';
 		
 		if(levelId == 3 || levelId == "3"){
-			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
+			str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
 				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;Pending</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].balanceMaterial+'</h2>';
 			str+='</div>';
@@ -6882,7 +6890,7 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			else
 				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
-				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;PENDING&nbsp;WORKS</small>';
+				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;PENDING</small>';
 				str+='<h2 class="text-center">'+result[0].subList[0].yetCompleted+'</h2>';
 			str+='</div>';
 		}
@@ -7254,56 +7262,56 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 						} */
 							if(type == 'FAperformance')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Field Assistant Performance">FA Performan..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Field Assistant Performance">FA Performan..</h4>';
 							}else if(type == 'SMC Trench')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="SMC Trenches">SMC Trench..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="SMC Trenches">SMC Trench..</h4>';
 							}else if(type == 'Imp to CD')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Improvements to Check Dams and Percolation Tanks">Improvements..</h4>';
 							}else if(type == 'MPT_PT')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Mini Percolation Tanks and Percolation Tanks">Mini Perco..</h4>';
 							}else if(type == 'GC Works')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Gully Control Works">Gully Contr..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Gully Control Works">Gully Contr..</h4>';
 							}else if(type == 'CD_CW')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Check Dams and Check Walls">Check Dam..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Check Dams and Check Walls">Check Dam..</h4>';
 							}else if(type == 'IHHL')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Individual Household Latrine">Individual Ho..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Individual Household Latrine">Individual Ho..</h4>';
 							}else if(type == 'GH')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Greening Of Hillocks">Greening O..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Greening Of Hillocks">Greening O..</h4>';
 							}else if(type == 'CC Roads1')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="CC Roads">CC Roads</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="CC Roads">CC Roads</h4>';
 							}else if(type == 'Anganwadi')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Anganwadi Buildings">Anganwadi B..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Anganwadi Buildings">Anganwadi B..</h4>';
 							}else if(type == 'GP Buildings1')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="GP Buildings">GP Build..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="GP Buildings">GP Build..</h4>';
 							}else if(type == 'Mandal Buildings1')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Mandal Buildings">Mandal Bui..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Mandal Buildings">Mandal Bui..</h4>';
 							}else if(type == 'OPGK-Perinnials')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pasu..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Oorura Pasu Graasa Kshetralu - Perinnials">Oorura Pasu..</h4>';
 							}else if(type == 'OPGK-Annuals')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="Oorura Pasu Graasa Kshetralu - Annuals">Oorura Pasu..</h4>';
 							}else if(type == 'NTR Rural House')
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="NTR IHHL">NTR IHHL</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="NTR IHHL">NTR IHHL</h4>';
 							}else if(type.length > 12)
 							{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
 							}else{
-								str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type+'</h4>';
+								str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type+'</h4>';
 							}
-							str+='<small class="text-center">Achieved</small>';
+							str+='<small class="text-center font_weight">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
 								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
@@ -7438,8 +7446,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-							str+='<small class="text-center">Achieved</small>';
+							str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center font_weight">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
 								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
@@ -7515,8 +7523,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-							str+='<small class="text-center">Achieved</small>';
+							str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center font_weight">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
 								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
@@ -7591,8 +7599,8 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
 						}
 						
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-							str+='<small class="text-center">Achieved</small>';
+							str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center font_weight">Achieved</small>';
 							if(result[i].percentage != null && result[i].percentage.length > 0)
 							{
 								str+='<h2 class="text-center">'+result[i].percentage+'<small>%</small>';
@@ -7661,15 +7669,15 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 					if(result[i] != null)
 					{
 						if(result[i].parameter == 'Decrement'){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;padding-bottom: 5px;">';
 						}else if(result[i].parameter == 'Increment'){
-							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<div class="panel-black-white panel-block-white-high text-center" overview-district="'+type+'" style="padding-top: 5px;padding-bottom: 5px;">';
 						}else{
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-district="'+type+'" style="padding-top: 5px;padding-bottom: 5px;">';
 						}
 						
-							str+='<h4 class="panel-block-white-title text-capitalize text-center" title="'+type+'">'+type.substr(0,12)+'..</h4>';
-							str+='<small class="text-center">Inc/Dec&nbsp;(%)</small>';
+							str+='<h4 class="panel-block-white-title text-capitalize text-center font_weight" title="'+type+'">'+type.substr(0,12)+'..</h4>';
+							str+='<small class="text-center font_weight">Inc/Dec&nbsp;(%)</small>';
 							
 							if(type == 'Man Days Comparision'){
 								str+='<h2 class="text-center"><span class="tooltipMans" data-toggle="tooltip" data-placement="top" title="Man Days Comparision b/n last Financial Year And This Financial Year">'+result[i].percentage+'</span><small>%</small>';
@@ -7714,13 +7722,13 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 							str+='</div>';
 						str+='</div>';
 						if(levelId == 3 || levelId == "3"){
-							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;">';
+							str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;padding-top: 5px;padding-bottom: 5px;">';
 								//str+='<small class="panel-block-white-title text-capitalize text-center">STATE LEVEL - Increment/Decrement (%)</small>';
 								if(result[0].subList[0].parameter == 'Decrement'){
-									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:red">STATE LEVEL - Increment/Decrement (%)</small>';
+									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:red">STATE&nbsp;LEVEL&nbsp;-&nbsp;Inc/Dec&nbsp;(%)</small>';
 									str+='<h2 class="text-center" style="color:red">'+result[0].subList[0].percentage+'</h2>';
 								}else if(result[0].subList[0].parameter == 'Increment'){
-									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:green">STATE LEVEL - Increment/Decrement (%)</small>';
+									str+='<small class="panel-block-white-title text-capitalize text-center" style="color:green">STATE&nbsp;LEVEL&nbsp;-&nbsp;Inc/Dec&nbsp;(%)</small>';
 									str+='<h2 class="text-center" style="color:green">'+result[0].subList[0].percentage+'</h2>';
 								}
 								//str+='<h2 class="text-center">'+result[0].subList[0].percentage+'</h2>';
@@ -11102,13 +11110,18 @@ $(document).on("click","[role='tabCummulative'] li",function(){
 		globalFinancialYear = "2018";
 		$("#dateRangePickerMGNF").val('2018-04');
 		$("#dateRangePickerMGNT").val(moment().format("YYYY-MM"));
-	}else{
 		
+		manDaysStartDate = '201804';
+		manDaysEndDate = moment().format("YYYYMM");
+	}else{
 		glStartDate = '2017-04-01';//moment().startOf('year').format("YYYY-MM")+'-1';
 		glEndDate='2018-03-31';
 		globalFinancialYear = "2017";
 		$("#dateRangePickerMGNF").val('2017-04');
 		$("#dateRangePickerMGNT").val('2018-03');
+		
+		manDaysStartDate = '201704';
+		manDaysEndDate = '201803';
 	}
 	var levelId = $("#selectedName").attr("attr_levelid");
 	var districtId = $("#selectedName").attr("attr_distid");

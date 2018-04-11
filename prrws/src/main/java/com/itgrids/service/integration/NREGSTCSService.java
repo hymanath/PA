@@ -816,6 +816,10 @@ public class NREGSTCSService implements INREGSTCSService{
 				str += "\"month\" : \""+inputVO.getMonth()+"\",";
 			if(inputVO.getpType() != null)
 				str += "\"pType\" : \""+inputVO.getpType()+"\",";
+			if(inputVO.getFromMonth() != null)
+				str += "\"fromMonth\" : \""+inputVO.getFromMonth()+"\",";
+			if(inputVO.getToMonth() != null)
+				str += "\"toMonth\" : \""+inputVO.getToMonth()+"\",";
 			
 			if(str.length() > 1)
 				str = str.substring(0,str.length()-1);
@@ -3506,11 +3510,17 @@ public class NREGSTCSService implements INREGSTCSService{
 	 	    					vo.setParameter(jObj.getString("PARAMETER"));
 	 	    				
 	 	    				if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Wage")){
-	 	    					vo.setTarget(jObj.getString("NVL(MAX(T.AVG_WAGE_TARGET),0)"));
+	 	    					if(inputVO.getLocationType() != null && inputVO.getLocationType().toString().trim().equalsIgnoreCase("state"))
+	 	    						vo.setTarget(jObj.getString("NVL(MAX(T.AVG_WAGE_TARGET),0)"));
+	 	    					else
+	 	    						vo.setTarget(jObj.getString("MAX(T.AVG_WAGE_TARGET)"));
 		 	    				vo.setCompleted(jObj.getString("AVG_WAGE"));
 	 	    				}
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Average Days of Employment")){
-	 	    					vo.setTarget(jObj.getString("NVL(MAX(T.AVG_DAYS_TARGET),0)"));
+	 	    					if(inputVO.getLocationType() != null && inputVO.getLocationType().toString().trim().equalsIgnoreCase("state"))
+	 	    						vo.setTarget(jObj.getString("NVL(MAX(T.AVG_DAYS_TARGET),0)"));
+	 	    					else
+	 	    						vo.setTarget(jObj.getString("MAX(T.AVG_DAYS_TARGET)"));
 		 	    				vo.setCompleted(jObj.getString("AVG_DAYS"));
 	 	    				}
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("HH Completed 100 Days")){
@@ -3518,7 +3528,10 @@ public class NREGSTCSService implements INREGSTCSService{
 		 	    				vo.setCompleted(jObj.getString("COMP_100"));
 	 	    				}
 	 	    				else if(inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")){
-	 	    					vo.setTarget(jObj.getString("NVL(MAX(T.UPLOAD_5_TARGET),0)"));
+	 	    					if(inputVO.getLocationType() != null && inputVO.getLocationType().toString().trim().equalsIgnoreCase("state"))
+	 	    						vo.setTarget(jObj.getString("NVL(MAX(T.UPLOAD_5_TARGET),0)"));
+	 	    					else
+	 	    						vo.setTarget(jObj.getString("MAX(T.UPLOAD_5_TARGET)"));
 		 	    				vo.setCompleted(jObj.getString("UPLOAD_5"));
 	 	    				}
 	 	    				/*else if(inputVO.getType().toString().trim().equalsIgnoreCase("Timely Payment")){

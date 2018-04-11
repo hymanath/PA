@@ -2113,10 +2113,12 @@ function waterClorinationData(oneMnthChrlPerc,oneDayChrlPerc){
 function getManWorkDaysOfNrega()
 {
 	$(".ManDaysComparisionAllCls").html(spinner);
-	var startDate = moment().format("DD/MM/YYYY");
-	var toDateArr = startDate.split('/');
+	var startDate = '201804';
+	var toDateM = moment().format("YYYYMM");
 	var json = {
-		month : toDateArr[1],
+		//month : toDateArr[1],
+		fromMonth : startDate,
+		toMonth : toDateM,
 		locationType: "state",
 		locationId : "-1",
 		sublocationType : "state"
