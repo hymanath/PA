@@ -4411,19 +4411,17 @@
 						</div>
 						<div class="panel-body">
 							<div class="row">
-								<div class="col-sm-12">
+								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
+									<h4 class="headingColor">OverAll Efficiency</h4>
+									<div id="efficiencyId"></div>
+								</div>
+								<div class="col-sm-12 m_top10">
 									<span class="input-group pull-right dateRangePickerClsForMOM">
 										<input type="text" id="dateRangeIdForGrivance" style="width:180px" class="form-control" />
 										<span class="input-group-addon">
 											<i class="glyphicon glyphicon-calendar"></i>
 										</span>
 									</span>
-								</div>
-							</div>
-							<div class="row">
-								<div class="col-md-12 col-xs-12 col-sm-12 m_top10">
-									<h4 class="headingColor">Efficiency</h4>
-									<div id="efficiencyId"></div>
 								</div>
 								<div class="col-md-12 col-xs-12 col-sm-12">
 									<div id="donutchart" style="height:210px;"></div>
