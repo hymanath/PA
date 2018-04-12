@@ -35,6 +35,7 @@ private Long districtId;
 private String districtName;
 private Long constId;
 private String constName;
+private String ivrStatus;
 
 
 public Long getDistrictId() {
@@ -228,6 +229,12 @@ public String getThirdPartyStatus() {
 }
 public void setThirdPartyStatus(String thirdPartyStatus) {
 	this.thirdPartyStatus = thirdPartyStatus;
+}
+public String getIvrStatus() {
+	return ivrStatus;
+}
+public void setIvrStatus(String ivrStatus) {
+	this.ivrStatus = ivrStatus;
 }
 
 
