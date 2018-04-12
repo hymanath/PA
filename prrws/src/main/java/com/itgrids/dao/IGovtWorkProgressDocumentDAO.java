@@ -12,4 +12,5 @@ public interface IGovtWorkProgressDocumentDAO extends GenericDao<GovtWorkProgres
 	public List<Object[]> getStatusWiseDocs(List<Long> workZoneIds,Long locationScopeId,List<Long> locationValues,Long statusId,Date startDate,Date endDate);
 	public List<Object[]> getRecentWorkDocuments(Long workTypeId);
 	public List<Object[]> getWorkZoneDocumentDetailsInfo(Date startDate,Date endDate,Long workId);
+	public List<Object[]> getStatusDistrictDayWiseDocuments(Date startDate,Date endDate,Long statusId,Long districtId);
 }

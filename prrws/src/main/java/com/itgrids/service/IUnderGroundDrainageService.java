@@ -53,4 +53,5 @@ public interface IUnderGroundDrainageService {
 	public List<SmallVO> getSubDivisionsOfDivision(Long divisionId);
 	public List<SmallVO> getTehsilsOfSubDivision(Long subDivisonId);
 	public ResultStatus updateWorkStatusComments(WorkStatusVO vo);
+	public List<DocumentVO> getStatusDistrictDayWiseDocuments(String fromDate,String toDate,Long statusId,Long districtId);
 }

@@ -116,4 +116,31 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 	return query.list();
 		
 	}
+	
+	public List<Object[]> getStatusDistrictDayWiseDocuments(Date startDate,Date endDate,Long statusId,Long districtId){
+		StringBuilder sb = new StringBuilder();
+		//0-districtId,1-districtName,2-date,3-documentId,4-path
+		sb.append(" select model.govtWorkProgress.govtWork.govtMainWork.locationAddress.districtId,model.govtWorkProgress.govtWork.govtMainWork.locationAddress.district.districtName,"
+				+ " date(model.updatedTime),model.documentId,model.document.path "
+				+ " from GovtWorkProgressDocument model "
+				+ " where model.govtWorkProgress.govtWorkStatusId=:statusId "
+				+ " and date(model.updatedTime) between :startDate and :endDate ");
+		
+		if(districtId != null && districtId > 0l){
+			sb.append(" and model.govtWorkProgress.govtWork.govtMainWork.locationAddress.districtId = :districtId ");
+		}
+			
+		sb.append(" group by model.govtWorkProgress.govtWork.govtMainWork.locationAddress.districtId,date(model.updatedTime),model.documentId ");
+		
+		Query query = getSession().createQuery(sb.toString());
+		
+		query.setDate("startDate", startDate);
+		query.setDate("endDate", endDate);
+		query.setParameter("statusId", statusId);
+		if(districtId != null && districtId > 0l){
+			query.setParameter("districtId", districtId);
+		}
+		
+		return query.list();
+	}
 }

@@ -61,7 +61,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 			if(reportType.equalsIgnoreCase("dayWise"))
 				sb.append(" group by date(gwpt.updated_time),gwpt.govt_work_status_id ");
 			else
-				sb.append(" group by month(gwpt.updated_time),year(gwpt.updated_time),gwpt.govt_work_status_id ");
+				sb.append(" group by year(gwpt.updated_time),month(gwpt.updated_time),gwpt.govt_work_status_id ");
 		}
 		
 		Query query = getSession().createSQLQuery(sb.toString());
@@ -102,7 +102,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		if(reportType.equalsIgnoreCase("dayWise")){
 			sb.append(" group by date(gwpt.updated_time),gwpt.govt_work_status_id ");
 		}else{
-			sb.append(" group by month(gwpt.updated_time),year(gwpt.updated_time),gwpt.govt_work_status_id");
+			sb.append(" group by year(gwpt.updated_time),month(gwpt.updated_time),gwpt.govt_work_status_id");
 		}
 		
 		Query query = getSession().createSQLQuery(sb.toString());
@@ -153,7 +153,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		if(intervalType.equalsIgnoreCase("dayeWise")){
 			sb.append(",date(gwpt.updated_time) order by date(gwpt.updated_time)");
 		}else{
-			sb.append(",month(gwpt.updated_time),year(gwpt.updated_time) order by month(gwpt.updated_time),year(gwpt.updated_time) ");
+			sb.append(",month(gwpt.updated_time),year(gwpt.updated_time) order by year(gwpt.updated_time),month(gwpt.updated_time) ");
 		}
 		
 		Query query = getSession().createSQLQuery(sb.toString());
