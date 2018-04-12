@@ -105,6 +105,7 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 		if(startDate !=null && endDate !=null){
 			sb.append(" and date(model.updatedTime) between :startDate and :endDate ");
 		}
+		sb.append(" order by model.updatedTime desc ");
 		
 	Query query = getSession().createQuery(sb.toString());
 	if(startDate != null && endDate != null){
