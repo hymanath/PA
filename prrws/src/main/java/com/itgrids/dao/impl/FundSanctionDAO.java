@@ -1839,7 +1839,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FS.department_id=DEPT.department_id and ");
 		sb.append(" FS.govt_scheme_id=GS.govt_scheme_id and ");
 		sb.append(" FSL.is_deleted='N' and ");
-		sb.append(" FS.is_deleted='N' and ");
+		sb.append(" FS.is_deleted='N' and FS.go_no_date is not null and FS.go_no_date != '' and");
 		
 		if(departmentIdList != null && departmentIdList.size() > 0){
 			sb.append(" DEPT.department_id in (:departmentIdList) and ");
@@ -1911,7 +1911,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" FS.grant_type_id = GT.grant_type_id and ");
 		sb.append(" FS.department_id = DEPT.department_id and ");
 		sb.append(" FSL.is_deleted='N' and ");
-		sb.append(" FS.is_deleted='N' and ");
+		sb.append(" FS.is_deleted='N' and FS.go_no_date is not null and FS.go_no_date != '' and ");
 		
 		if(departmentIdList != null && departmentIdList.size() > 0){
 			sb.append(" DEPT.department_id = :departmentId and ");
