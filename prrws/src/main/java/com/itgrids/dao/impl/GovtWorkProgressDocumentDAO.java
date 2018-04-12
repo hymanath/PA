@@ -98,7 +98,7 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 		//0-docId,1-path,2-date
 	StringBuilder sb = new StringBuilder();
 		sb.append(" select model.document.documentId,model.document.path,date(model.updatedTime) " +
-				" GovtWorkProgressDocument model " +
+				" from GovtWorkProgressDocument model " +
 				" where " +
 				" model.isDeleted ='N' and model.govtWorkProgress.govtWorkId =:workId ");
 		
