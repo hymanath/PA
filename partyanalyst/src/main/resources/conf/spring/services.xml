@@ -4636,6 +4636,7 @@
 			<property name="regionScopesDAO" ref="regionScopesDAO" />
 			<property name="itdpAppUserAccessLocationDAO" ref="itdpAppUserAccessLocationDAO" />
 			<property name="partyMeetingMinuteStatusDAO" ref="partyMeetingMinuteStatusDAO" />
+			<property name="partyMeetingLevelDAO" ref="partyMeetingLevelDAO" />
 		</bean>
     	<bean name="coreDashboardCoreService" class="com.itgrids.partyanalyst.service.impl.CoreDashboardCoreService" >
     		<property name="commonMethodsUtilService" ref="commonMethodsUtilService" />
