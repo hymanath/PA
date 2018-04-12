@@ -13,6 +13,6 @@ public interface IAreaInchargeMemberDAO extends GenericDao<AreaInchargeMember, L
 	public List<Long> getAssignedInchargeBooths(Long cadreId);
 	public int deleteAreaInchargeAssignBooths(Long candidateId,Long boothId);
 	public List<Object[]> getAreaInchargeAssignedBoothDetails(Long levelId,Long levelValue);
-	public Long getInchargeMembers(Set<String> assignIds);
+	public Long getInchargeMembers(Set<String> assignIds,Long levelId,Long levelValue);
 	public List<Long> getdeletedBoothIds(Long cadreId);
 }
