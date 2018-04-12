@@ -106,7 +106,7 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 	}
 	
 	public Object getWorkOverallWorkCompletedKms(Long workId){
-		Query query = getSession().createSQLQuery(" select sum(work_length)/count(govt_work_status_id) "
+		Query query = getSession().createSQLQuery(" select sum(work_length)/6 "
 				+ " from govt_work_progress "
 				+ " where govt_work_id=:workId ");
 		query.setParameter("workId", workId);

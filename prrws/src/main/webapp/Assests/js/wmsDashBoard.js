@@ -1243,7 +1243,7 @@ function buildLocationWiseOverview(result,workZone,workTypeId){
 								for(var j in result[i].worksList){
 									str+='<tr>';
 										str+='<td style="text-align:left !important;">'+result[i].location+'</td>';
-										str+='<td style="text-align:left !important;"><a class="workZonePopupCls" attr_locationLevelId="'+result[i].locationValue+'" attr_work_id="'+workTypeId+'" attr_locationName="'+result[i].worksList[j].workName+'">'+result[i].worksList[j].workName+'</a></td>';
+										str+='<td style="text-align:left !important;"><a class="workZonePopupCls" attr_locationLevelId="'+result[i].locationValue+'" attr_workType_id="'+workTypeId+'" attr_workzone_id="'+result[i].worksList[j].workId+'" attr_locationName="'+result[i].worksList[j].workName+'">'+result[i].worksList[j].workName+'</a></td>';
 										str+='<td>'+result[i].worksList[j].totalKms.toFixed(2)+'&nbsp;km</td>';
 										for(var k in result[i].worksList[j].statusList){
 											str+='<td>'+result[i].worksList[j].statusList[k].totalKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].worksList[j].statusList[k].completedPercentage.toFixed(2)+' %</span></td>';
@@ -1529,20 +1529,20 @@ function getLocationOverviewStatusDayWiseKms(workId,statusId,locationValue){
 $(document).on("click",".workZonePopupCls",function(){
 	var locationValue = $(this).attr("attr_locationLevelId");
 	var locationName = $(this).attr("attr_locationName");
-	var workId = $(this).attr("attr_work_id");
-	
+	var workTypeId = $(this).attr("attr_worktype_id");
+	var workZoneId = $(this).attr("attr_workzone_id");
 	$("#workZoneModalDivId").modal("show");
 	
 	$("#workZoneHeadingId").html("Work Zone : " +locationName);
-	getWorkZoneMainOverview(workId);
-	getWorkZoneDocumentDetailsInfo(workId);
-	getWorkZoneWorkStategsDetailsInfo(workId);
-	getWorkZoneStatusDetailsInfo(workId);
+	getWorkZoneMainOverview(workZoneId);
+	getWorkZoneDocumentDetailsInfo(workZoneId);
+	getWorkZoneWorkStategsDetailsInfo(workZoneId);
+	getWorkZoneStatusDetailsInfo(workZoneId,workTypeId);
 });	
-function getWorkZoneMainOverview(workId){
+function getWorkZoneMainOverview(workZoneId){
 	
 	var json ={
-		  "workId":workId
+		  "workId":workZoneId
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1582,11 +1582,11 @@ function buildWorkZoneMainOverview(result){
 	
 }
 
-function getWorkZoneStatusDetailsInfo(workId){
+function getWorkZoneStatusDetailsInfo(workZoneId,workTypeId){
 	
 	var json ={
-		  "workId":33,
-		  "WorkTypeId":workId
+		  "workId":workZoneId,
+		  "workTypeId":workTypeId
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1604,10 +1604,10 @@ function getWorkZoneStatusDetailsInfo(workId){
 	});
 }
 
-function getWorkZoneDocumentDetailsInfo(workId){
+function getWorkZoneDocumentDetailsInfo(workZoneId){
 	
 	var json ={
-		  "workId":workId
+		  "workId":workZoneId
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1625,13 +1625,13 @@ function getWorkZoneDocumentDetailsInfo(workId){
 	});
 }
 
-function getWorkZoneWorkStategsDetailsInfo(workId){
+function getWorkZoneWorkStategsDetailsInfo(workZoneId){
 	
 	var json ={
-		  "FromDate":"28-03-2018",
-		  "ToDate":"30-03-2018",
-		  "WorkId":"1",
-		  "StatusId":"0"
+		  "fromDate":"05-04-2018",
+		  "toDate":"09-08-2018",
+		  "workId":workZoneId,
+		  "statusId":"0"
 		}
 	$.ajax({                
 		type:'POST',    
