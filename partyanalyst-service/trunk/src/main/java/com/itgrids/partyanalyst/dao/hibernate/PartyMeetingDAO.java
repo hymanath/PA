@@ -57,7 +57,8 @@ public class PartyMeetingDAO extends GenericDaoHibernate<PartyMeeting,Long> impl
 	        	sb.append(" ,model.meetingAddress.constituency.name "); 		  // 18 -- Constituency Name
 	        }
 	        
-	       
+	        sb.append(" ,model.isConductedByIvr");//19-ivr status
+	        		
 	        
 	        
 	         sb.append(" from PartyMeeting model " +
