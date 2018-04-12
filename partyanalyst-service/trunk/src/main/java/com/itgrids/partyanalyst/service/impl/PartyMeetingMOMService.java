@@ -29,6 +29,7 @@ import com.itgrids.partyanalyst.dao.ILocalElectionBodyDAO;
 import com.itgrids.partyanalyst.dao.IPanchayatDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingDocumentDAO;
+import com.itgrids.partyanalyst.dao.IPartyMeetingLevelDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteHistoryDAO;
 import com.itgrids.partyanalyst.dao.IPartyMeetingMinuteStatusDAO;
@@ -83,6 +84,7 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 	private IRegionScopesDAO regionScopesDAO;
 	private IItdpAppUserAccessLocationDAO itdpAppUserAccessLocationDAO;
 	private IPartyMeetingMinuteStatusDAO partyMeetingMinuteStatusDAO;
+	private IPartyMeetingLevelDAO partyMeetingLevelDAO;
 	
 	private CommonMethodsUtilService commonMethodsUtilService = new CommonMethodsUtilService();
 	
@@ -150,6 +152,14 @@ private static final Logger LOG = Logger.getLogger(PartyMeetingMOMService.class)
 	public void setPartyMeetingMinuteStatusDAO(
 			IPartyMeetingMinuteStatusDAO partyMeetingMinuteStatusDAO) {
 		this.partyMeetingMinuteStatusDAO = partyMeetingMinuteStatusDAO;
+	}
+	
+	
+	public IPartyMeetingLevelDAO getPartyMeetingLevelDAO() {
+		return partyMeetingLevelDAO;
+	}
+	public void setPartyMeetingLevelDAO(IPartyMeetingLevelDAO partyMeetingLevelDAO) {
+		this.partyMeetingLevelDAO = partyMeetingLevelDAO;
 	}
 	/**
 	   * @param Long userAccessLevel
@@ -1318,7 +1328,7 @@ public boolean convertBase64StringToImage(String imageDataString,String imagePat
 			  Map<Long,MomDashbaordOverViewDtlsVO> momPriorityMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
 			  Map<Long,MomDashbaordOverViewDtlsVO> momStatusMap = new LinkedHashMap<Long, MomDashbaordOverViewDtlsVO>();
 			   Date meetingMonthYear = partyMeetingMinuteDAO.getPartMeetingMonthYear(partyMeetingId);
-			   Long userAccessLevel = regionScopesDAO.getMeetingLevelOfCreatedLocationId(userLevel); 
+			   Long userAccessLevel = partyMeetingLevelDAO.getMeetingLevelOfCreatedLocationId(userLevel);//SRUJANA 
 			   String meetingDateStr =null;
 			   Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			   if(meetingMonthYear != null)
