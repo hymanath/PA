@@ -849,14 +849,15 @@ function casteWisePositionsCountsByPosition(innerTableId,positionId,levelId,dept
 		$("#"+innerTableId).html(str);
 	}
 function buildPositionTabMenu(result){
-	var str='';
-	 str+='<ul class="nav nav-tabs tabsCustomFinal ulCls" role="tablist">';
-     str+='<li role="presentation" attr_id="0" class="active postionliCls positinCls0"><a href="#positionoverView" aria-controls="positionoverView" role="tab"  data-toggle="tab">Completed Overview</a></li>';
-		for(var i in result){
-		  str+='<li attr_id="'+result[i].id+'" class="postionliCls positinCls'+result[i].id+'" role="presentation"><a href="#positon'+i+'" aria-controls="positon'+i+'" role="tab" data-toggle="tab">'+result[i].name+'</li>';	
-		}
-	str+='</ul>';
-	$("#positonDivId").html(str);
+  var str='';
+   str+='<ul class="nav nav-tabs tabsCustomFinal ulCls" role="tablist">';
+   //  str+='<li role="presentation" attr_id="0" class="active postionliCls positinCls0"><a href="#positionoverView" aria-controls="positionoverView" role="tab"  data-toggle="tab">Completed Overview</a></li>';
+   str+='<li role="presentation" attr_id="0" class="active postionliCls positinCls0"><a href="#positionoverView" aria-controls="positionoverView" role="tab"  data-toggle="tab"> Completed Overview <i title="Click here to view Nominated Posts Expire details" attr_type="location" class=" expiryPostsInfoCls fa fa-info-circle fa-lg pull-right" aria-hidden="true" style="cursor:pointer;" data-toggle="modal" data-target="#LvlWiseDetails"></i></a></li>';
+    for(var i in result){
+      str+='<li attr_id="'+result[i].id+'" class="postionliCls positinCls'+result[i].id+'" role="presentation"><a href="#positon'+i+'" aria-controls="positon'+i+'" role="tab" data-toggle="tab">'+result[i].name+'</li>';  
+    }
+  str+='</ul>';
+  $("#positonDivId").html(str);
 }	
 function getPositionAndApplicationDetailsCntPositionWise(positionId,locationLevelId,reportType,stateId){
   

@@ -69,6 +69,22 @@
 	text-decoration:underline;
 	font-weight:bold;
 }
+.postWiseDetailsCls,.statusClickCls{
+	cursor:pointer;
+	text-decoration:underline;
+}
+.activeUlCls li {
+    background: rgb(255, 255, 255);
+    border: 1px solid rgb(221, 221, 221);
+    border-radius: 4px;
+    cursor: pointer;
+    padding: 5px 8px;
+    text-transform: capitalize;
+}
+.activeUlCls li.active {
+    background-color: rgb(74, 88, 99);
+    color: rgb(255, 255, 255);
+}
 </style>
 </head>
 <body>
@@ -90,7 +106,7 @@
 					</label>
 				</div>
 			</div>
-        </div>
+        </div> 
         <div class="col-md-12 col-xs-12 col-sm-12 m_top20">
         	<h3 class="headingColor">Overview<span class="pull-right plusIconCircle overViewCls"><i class="glyphicon glyphicon-minus"></i></span></h3>
         </div>
@@ -628,6 +644,80 @@
 		</div>
 	  </div>
 </div>
+<div class="modal fade" id="goIssuedEstimatedModalId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog modal-lg" role="document" style="width: 85%;">
+		<div class="modal-content">
+		  <div class="modal-header">
+		  <div class=""> GO EXPIRED DETAILS</div>
+			<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		  </div>
+		  <div class="modal-body">
+		  <div class="row">
+			<div class="col-sm-12">
+				<ul class="list-inline pull-right activeUlCls deptLocChnageCls" role='tabCummulativeNomi1'>
+					<li class="active" attr_location_type="location">Location Level Wise</li>
+					<li class="" attr_location_type="department">Department wise</li>
+				</ul>
+			</div>
+		  </div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="m_top10" id="levelWiseNominatedDetailsDivId"></div>
+				</div>
+			</div>
+			
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		  </div>
+		</div>
+	  </div>
+</div>
+<div class="modal fade" id="goExpiredEstDivId" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal-dialog" role="document" style="width:95%"> 
+		<div class="modal-content" style="border-radius:0px">
+			<div class="modal-header" style="background-color:#CCC">
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				<h4 class="modal-title" id="TitleId">Title</h4>
+			</div>
+			<div class="modal-body">
+				<div class="row">
+					<div class="col-md-12 col-xs-12 col-sm-12">
+						<div id="goExpiredOpenPostDetailsModalDivId"></div>
+					</div>
+				</div>
+			</div>
+			<div class="row paginationCls">
+					<div class="col-md-12 m_top20">
+						<div class="paginationId"></div>
+					</div>
+				</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="nominatedPostDetailsModalId">
+  <div class="modal-dialog modal-lg" style="width:85%;">       
+	<div class="modal-content">
+	  <div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		<h4 class="modal-title text-capital"><span id="nominatedPostHeadingId"></span> Details</h4>
+	  </div>
+	  <div class="modal-body">
+			<div class="row">
+				<div class="col-md-12 col-xs-12 col-sm-12">
+				   <div id="nominatedPostDetailsDivId"></div>
+				</div>
+			</div>
+	  </div>
+	  <div class="modal-footer">     
+		<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+	  </div>
+	</div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div>
 <script src="dist/js/jquery-1.11.3.js" type="text/javascript"></script>
 <script src="dist/js/bootstrap.js" type="text/javascript"></script>
 <script src="dist/Plugins/Chosen/chosen.jquery.js" type="text/javascript"></script>
@@ -640,6 +730,7 @@
 <script type="text/javascript" src="js/nominatedPosts/nominatedPostMainDashboard.js"></script>
 <script src="dist/NominatedPost/Amcharts/gauge.js"></script>
 <script type="text/javascript" src="js/simplePagination/simplePagination.js" ></script>
+<script type="text/javascript" src="js/nominatedPosts/goExpiredEstimationDetails.js"></script>
 <script type="text/javascript">
 
 $('.chosenSelect').chosen();
