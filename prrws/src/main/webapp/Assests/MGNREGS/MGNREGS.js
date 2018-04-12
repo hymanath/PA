@@ -988,6 +988,15 @@ function projectData(divId,levelId,locationId)
 							collapse+='<li><span style="height:15px;width:15px;display:inline-block;margin-right:4px;background-color:#FD0000;border-radius:50%;"></span> YoY Low</li>';
 						collapse+='</ul>';
 					}
+					else if(divId == 'Not Yet Completed Works' && i == 0)
+					{
+						collapse+='<ul class="list-inline">';
+							collapse+='<li style="color:red"> S-Started</li>';
+							collapse+='<li style="color:red"> P-Pending</li>';
+							collapse+='<li style="color:red"> %-Percentage</li>';
+						collapse+='</ul>';
+					}
+								
 					collapse+='<div class="panel-group" id="accordion'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'" role="tablist" aria-multiselectable="true">';
 						collapse+='<div class="panel panel-default panel-black">';
 							collapse+='<div class="panel-heading" role="tab" id="heading'+divId.replace(/([`~!@#$%^&*()_|+\-=?;:'",.<>\{\}\[\]\\\/ ])+/g, '')+''+dataArr[i]+'">';
@@ -1795,6 +1804,8 @@ function tableView(blockId,theadArr,result,locationType,blockName)
 			tableView+='<thead class="text-capitalize">';
 			if(blockName == "Expenditure"){
 					tableView+=buildtheadManDaysExpenditure();
+			}else if(blockName == "Not Yet Completed Works"){
+					tableView+=buildtheadNotYetCompletedWorks(locationType);
 			}else{
 				if(theadArr == 'Payments' || theadArr == 'PaymentsDeptWise')
 				{
@@ -6206,17 +6217,40 @@ function getWorkCompletionData(divIdd,locationTypeNew,theadArr,menuLocationType,
 							if(locationTypeNew == "panchayat")
 								str+='<td class="text-capitalize">'+ajaxresp[i].panchayat+'</td>';
 							
+							str+='<td>'+ajaxresp[i].started1415+'</td>';
 							str+='<td>'+ajaxresp[i].yetCompleted1415+'</td>';
+							var per=(ajaxresp[i].yetCompleted1415/ajaxresp[i].started1415)*100;
+							str+='<td>'+per.toFixed(2)+'</td>';
+							
+							str+='<td>'+ajaxresp[i].started1516+'</td>';
 							str+='<td>'+ajaxresp[i].yetCompleted1516+'</td>';
+							var per=(ajaxresp[i].yetCompleted1516/ajaxresp[i].started1516)*100;
+							str+='<td>'+per.toFixed(2)+'</td>';
+							
+							str+='<td>'+ajaxresp[i].started1617+'</td>';
 							str+='<td>'+ajaxresp[i].yetCompleted1617+'</td>';
+							var per=(ajaxresp[i].yetCompleted1617/ajaxresp[i].started1617)*100;
+							str+='<td>'+per.toFixed(2)+'</td>';
+							
+							str+='<td>'+ajaxresp[i].started1718+'</td>';
 							str+='<td>'+ajaxresp[i].yetCompleted1718+'</td>';
+							var per=(ajaxresp[i].yetCompleted1718/ajaxresp[i].started1718)*100;
+							str+='<td>'+per.toFixed(2)+'</td>';
+							
+							str+='<td>'+ajaxresp[i].started1819+'</td>';
 							str+='<td>'+ajaxresp[i].yetCompleted1819+'</td>';
+							var per=(ajaxresp[i].yetCompleted1819/ajaxresp[i].started1819)*100;
+							str+='<td>'+per.toFixed(2)+'</td>';
+							
+							str+='<td>'+ajaxresp[i].started+'</td>';
 							str+='<td>'+ajaxresp[i].yetCompleted+'</td>';
+							var per=(ajaxresp[i].yetCompleted/ajaxresp[i].started)*100;
+							str+='<td>'+per.toFixed(2)+'</td>';
 							
 						str+='</tr>';
 					}
 				}
-				tableView(divIdd,theadArr,str,locationTypeNew,blockName);
+				tableView(divIdd,'',str,locationTypeNew,blockName);
 			}
 		}
 	});
@@ -6859,26 +6893,27 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='<small class="text-center font_weight">Pending Works</small>';
 			if(result[0].yetCompleted != null && result[0].yetCompleted != 0)
 			{
-				str+='<h2 class="text-center">'+result[0].yetCompleted+'</h2>';
+				var per=(result[0].yetCompleted/result[0].started)*100
+				str+='<h2 class="text-center">'+per.toFixed(2)+'%'+'</h2>';
 			}else{
 				str+='<h2 class="text-center">0</h2>';
 			}
 			str+='<div class="row">';
 				str+='<div class="col-sm-6 text-center pad_right0">';
-					str+='<label style="font-size: 12px;">This fin year</label>';
-					if(result[0].yetCompleted1819 != null && result[0].yetCompleted1819 != 0)
+					str+='<label style="font-size: 12px;">Started</label>';
+					if(result[0].started != null && result[0].started != 0)
 					{
-						str+='<h4>'+result[0].yetCompleted1819+'</h4>';
+						str+='<h4>'+result[0].started+'</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
 					
 				str+='</div>';
 				str+='<div class="col-sm-6 text-center pad_left0">';
-					str+='<label style="font-size: 12px;">Last fin year</label>';
-					if(result[0].yetCompleted1718 != null && result[0].yetCompleted1718 != 0)
+					str+='<label style="font-size: 12px;">Pending</label>';
+					if(result[0].yetCompleted != null && result[0].yetCompleted != 0)
 					{
-						str+='<h4>'+result[0].yetCompleted1718+'</h4>';
+						str+='<h4>'+result[0].yetCompleted+'</h4>';
 					}else{
 						str+='<h4>0</h4>';
 					}
@@ -10875,6 +10910,63 @@ function buildtheadManDaysExpenditure(){
 			str+='<th style="background-color:green;color:#fff">Material</th>';
 			str+='<th style="background-color:green;color:#fff">Total</th>';
 			
+		str+='</tr>';
+	return str;
+}
+
+function buildtheadNotYetCompletedWorks(locationType){
+	var str='';
+		str+='<tr>';
+			if(locationType == 'state')
+			{
+				str+='<th rowspan="2">State</th>';
+			}else if(locationType == 'district'){
+				str+='<th rowspan="2">District</th>';
+			}else if(locationType == 'constituency'){
+				str+='<th rowspan="2">District</th>';
+				str+='<th rowspan="2">Constituency</th>';
+			}else if(locationType == 'mandal'){
+				str+='<th rowspan="2">District</th>';
+				str+='<th rowspan="2">Constituency</th>';
+				str+='<th rowspan="2">Mandal</th>';
+			}else if(locationType == 'panchayat'){
+				str+='<th rowspan="2">District</th>';
+				str+='<th rowspan="2">Constituency</th>';
+				str+='<th rowspan="2">Mandal</th>';
+				str+='<th rowspan="2">Panchayat</th>';
+			}
+			str+='<th colspan="3" class="text-center">FY 2014-15</th>';
+			str+='<th colspan="3" class="text-center">FY 2015-16</th>';
+			str+='<th colspan="3" class="text-center">FY 2016-17</th>';
+			str+='<th colspan="3" class="text-center">FY 2017-18</th>';
+			str+='<th colspan="3" class="text-center">FY 2018-19</th>';
+			str+='<th colspan="3" class="text-center">TOTAL</th>';
+			//str+='<th rowspan="2">Increment/Decrement (%)</th>';
+		str+='</tr>';
+		str+='<tr>';
+			str+='<th>S</th>';
+			str+='<th>P</th>';
+			str+='<th>%</th>';
+
+			str+='<th>S</th>';
+			str+='<th>P</th>';
+			str+='<th>%</th>';
+
+			str+='<th>S</th>';
+			str+='<th>P</th>';
+			str+='<th>%</th>';
+
+			str+='<th>S</th>';
+			str+='<th>P</th>';
+			str+='<th>%</th>';
+
+			str+='<th>S</th>';
+			str+='<th>P</th>';
+			str+='<th>%</th>';
+
+			str+='<th>S</th>';
+			str+='<th>P</th>';
+			str+='<th>%</th>';
 		str+='</tr>';
 	return str;
 }
