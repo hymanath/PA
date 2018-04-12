@@ -11260,7 +11260,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
 	          if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
 	            str.append(" group by date(model.createdTime) ");  
 	          }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
-	            str.append(" group by month(model.createdTime),year(model.createdTime) order by month(model.createdTime),year(model.createdTime) ");
+	            str.append(" group by month(model.createdTime),year(model.createdTime) order by year(model.createdTime),month(model.createdTime) ");
 	          }
 	        Query query = getSession().createQuery(str.toString());
 	        if(deptId != null && deptId.longValue()>0){
@@ -12219,7 +12219,7 @@ public List<Object[]> getDateWiseAlert(Date fromDate, Date toDate, Long stateId,
             str.append(" group by model.alertFeedbackStatusId,date(model.updatedTime) order by date(model.updatedTime)");  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
             str.append(" group by model.alertFeedbackStatusId,month(model.updatedTime),year(model.updatedTime) " +
-            		" order by month(model.updatedTime),year(model.updatedTime) ");
+            		" order by year(model.updatedTime),month(model.updatedTime) ");
           }
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
