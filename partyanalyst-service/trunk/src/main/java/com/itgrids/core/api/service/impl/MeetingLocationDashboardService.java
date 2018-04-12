@@ -936,16 +936,32 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						PartyMeetingDataVO  meetingTypeVO = totalCntMap.get(commonMethodsUtilService.getLongValueForObject(param[2]));
 							PartyMeetingDataVO vo =cadresmap.get(commonMethodsUtilService.getLongValueForObject(param[5]));
 								PartyMeetingDataVO partyMeetingVO = getMatchedVO(meetingTypeVO.getLevelList(),commonMethodsUtilService.getLongValueForObject(param[5]));
-								if(partyMeetingVO != null){
+								if(partyMeetingVO != null){ 
 									Set<Long> inviteeIds = vo.getInviteeIds();
-									PartyMeetingDataVO sessionVO = getMatchedVO(partyMeetingVO.getDatesList(),commonMethodsUtilService.getLongValueForObject(param[6]));
-									if(sessionVO == null){
+									Long sessionId = null;
+									if(type != null && type.equalsIgnoreCase("attendee")){
+										sessionId = commonMethodsUtilService.getLongValueForObject(param[13]);
+									}else if(type != null && type.equalsIgnoreCase("images")){
+										sessionId = commonMethodsUtilService.getLongValueForObject(param[8]);
+									}
+									PartyMeetingDataVO sessionVO = null;
+									if(sessionId != null && sessionId>0l)
+									 sessionVO = getMatchedVO(partyMeetingVO.getDatesList(),sessionId);
+									if(sessionVO == null && sessionId>0l){
 											sessionVO=new PartyMeetingDataVO();
-											sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[6]));
-											sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+											if(type != null && type.equalsIgnoreCase("attendee")){
+												sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[13]));//sessionId
+												sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+												sessionVO.setMomStatus(commonMethodsUtilService.getStringValueForObject(param[8]));//attendedTime
+												sessionVO.setAtrStatus(commonMethodsUtilService.getStringValueForObject(param[9]));//lateTime
+											}else if(type != null && type.equalsIgnoreCase("images")){
+												sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
+												sessionVO.setId(commonMethodsUtilService.getLongValueForObject(param[8]));//sessionId
+											}
+											/*sessionVO.setName(commonMethodsUtilService.getStringValueForObject(param[7]));
 											sessionVO.setMomStatus(commonMethodsUtilService.getStringValueForObject(param[8]));//attendedTime
 											sessionVO.setAtrStatus(commonMethodsUtilService.getStringValueForObject(param[9]));//lateTime
-											partyMeetingVO.getDatesList().add(sessionVO);
+*/											partyMeetingVO.getDatesList().add(sessionVO);
 										}
 									if(type != null && type.equalsIgnoreCase("attendee")){
 										sessionVO.getRecentAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
@@ -955,9 +971,14 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 											SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 									        Date lateTime = sdf1.parse(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10)+" "+commonMethodsUtilService.getStringValueForObject(param[9]));
 									        Date attendedTme = sdf2.parse(commonMethodsUtilService.getStringValueForObject(param[8]));
+									        Date defaultTime = sdf2.parse(commonMethodsUtilService.getStringValueForObject(param[8]).substring(0, 10)+" "+commonMethodsUtilService.getStringValueForObject(param[12]));
+									        
+									        Date finalLateTime = lateTime;
+											if(lateTime.toString().trim().length() ==0)
+												finalLateTime = defaultTime;
 									        long attendedMilliSec = attendedTme.getTime();
 									        long lateMilliSec = lateTime.getTime();
-											if(attendedMilliSec>lateMilliSec){
+											if(attendedMilliSec>=lateMilliSec){
 												sessionVO.getAttendedIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));
 												sessionVO.setRecentLate(Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
 												partyMeetingVO.setLateCount(Long.valueOf(String.valueOf(sessionVO.getAttendedIds().size())));
@@ -1046,9 +1067,9 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 					        Date attendedTme = sdf2.parse(commonMethodsUtilService.getStringValueForObject(param[8]));
 					        long attendedMilliSec = attendedTme.getTime();
 					        long lateMilliSec = lateTime.getTime();
-							if(attendedMilliSec>lateMilliSec){
+							if(attendedMilliSec>=lateMilliSec){
 								sessionVO.setStatus("late");
-							}else if(attendedMilliSec<=lateMilliSec){
+							}else if(attendedMilliSec<lateMilliSec){
 								sessionVO.setStatus("intime");
 							}else{
 								sessionVO.setStatus("abscent");
@@ -1057,7 +1078,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						}
 						}
 						
-						inviteeMem.getNonInviteeIds().add(commonMethodsUtilService.getLongValueForObject(param[5]));//present/attended partyMeetings cadre ids
+						inviteeMem.getNonInviteeIds().add(commonMethodsUtilService.getLongValueForObject(param[4]));//present/attended partyMeetings cadre ids
 						inviteeMem.setActualCount((long) inviteeMem.getNonInviteeIds().size());//present/attended partyMeetings Count
 						
 					}
@@ -1065,8 +1086,8 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 			}
 			
 			List<Object[]> invitations = partyMeetingInviteeDAO.getLocationWiseMeetingInviteeMembers(locationValues,locationTypeId,startDate,endDate,partyMeetingMainTypeId,partyMeetingTypeId,null,inviteesMap.keySet());
-			if(commonMethodsUtilService.isListOrSetValid(invitees)){
-				for(Object[] param :invitees){
+			if(commonMethodsUtilService.isListOrSetValid(invitations)){
+				for(Object[] param :invitations){
 					IdNameVO inviteeMem = inviteesMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
 					if(inviteeMem != null ){
 						inviteeMem.getInviteeIds().add(commonMethodsUtilService.getLongValueForObject(param[9]));//invited partyMeetings cadre ids
