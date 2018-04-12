@@ -2391,7 +2391,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					GovtWorksVO vo = new GovtWorksVO();
 					
 					vo.setDate(obj[0] != null ? obj[0].toString():"");
-					vo.setWorkLenght(obj[0] != null ? Double.parseDouble(obj[0].toString()):0.00);
+					vo.setWorkLenght(obj[1] != null ? Double.parseDouble(obj[1].toString()):0.00);
 					
 					finalVOList.add(vo);
 				}
@@ -2579,5 +2579,65 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			LOG.error("exception occured while updating the work status comments", e);
 		}
 		return rs;
+	}
+	
+	public List<DocumentVO> getStatusDistrictDayWiseDocuments(String fromDate,String toDate,Long statusId,Long districtId){
+		List<DocumentVO> finalList = new ArrayList<DocumentVO>(0);
+		try {
+			List<Object[]> distObjList = null;
+			if(districtId != null && districtId > 0l){
+				distObjList = districtDAO.getDistrictIdAndNameByDistrictIds(Arrays.asList(districtId));
+			}else{
+				distObjList = districtDAO.getDistrictIdName(1l);
+			}
+			
+			if(distObjList != null && distObjList.size() > 0){
+				Map<Long,DocumentVO> distMap = new HashMap<Long,DocumentVO>();
+				for (Object[] objects : distObjList) {
+					DocumentVO vo = new DocumentVO();
+					vo.setDocumentId((Long)objects[0]);
+					vo.setDocumentName(objects[1].toString());
+					distMap.put((Long)objects[0], vo);
+				}
+				
+				Date startDate=null,endDate=null;
+				if(fromDate != null && toDate != null){
+					SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+					startDate=sdf.parse(fromDate);
+					endDate=sdf.parse(toDate);
+				}
+				
+				//0-districtId,1-districtName,2-date,3-documentId,4-path
+				List<Object[]> docsList = govtWorkProgressDocumentDAO.getStatusDistrictDayWiseDocuments(startDate,endDate,statusId,districtId);
+				if(docsList != null && docsList.size()>0){
+					for (Object[] objects : docsList) {
+						DocumentVO distVo = distMap.get((Long)objects[0]);
+						if(distVo == null){
+							distVo = new DocumentVO();
+							distVo.setDocumentId((Long)objects[0]);
+							distVo.setDocumentName(objects[1].toString());
+							distMap.put((Long)objects[0],distVo);
+							distVo = distMap.get((Long)objects[0]);
+						}
+						DocumentVO matchedDateVO = getMatchedDateVO(distVo.getList(), objects[2].toString());
+						if(matchedDateVO == null){
+							matchedDateVO = new DocumentVO();
+							matchedDateVO.setInsertedTime(objects[2].toString());
+							distVo.getList().add(matchedDateVO);
+							matchedDateVO = getMatchedDateVO(distVo.getList(), objects[2].toString());
+						}
+						DocumentVO docVO = new DocumentVO();
+						docVO.setDocumentId((Long)objects[3]);
+						docVO.setPath(objects[4].toString());
+						matchedDateVO.getList().add(docVO);
+					}
+				}
+				
+				finalList.addAll(distMap.values());
+			}
+		} catch (Exception e) {
+			LOG.error("exception occured while geting the status district day wise documents", e);
+		}
+		return finalList;
 	}
 }

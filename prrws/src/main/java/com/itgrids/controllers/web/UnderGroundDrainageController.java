@@ -421,5 +421,15 @@ public class UnderGroundDrainageController {
 		return null;
 	}
 	
+	@RequestMapping(value="/getStatusDistrictDayWiseDocuments", method=RequestMethod.POST)
+	public @ResponseBody List<DocumentVO> getStatusDistrictDayWiseDocuments(@RequestBody MobileAppInputVO inputVO){
+		try {//inputs-districtId
+			return underGroundDrainageService.getStatusDistrictDayWiseDocuments(inputVO.getFromDate(),inputVO.getToDate(),inputVO.getStatusId(),inputVO.getDistrictId());
+		} catch (Exception e) {
+			LOG.error("Exception raised at getTehsilsOfSubDivision ", e);
+		}
+		return null;
+	}
+	
 	//web dashboard services -- end	
 }

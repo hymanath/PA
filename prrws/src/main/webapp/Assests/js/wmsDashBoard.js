@@ -1648,3 +1648,26 @@ function getWorkZoneWorkStategsDetailsInfo(workZoneId){
 		}
 	});
 }
+getStatusDistrictDayWiseDocuments();
+function getStatusDistrictDayWiseDocuments(){
+	var json ={
+		  "fromDate":"28-03-2018",
+		  "toDate":"30-03-2018",
+		  "districtId":0,
+		  "statusId":"7"
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getStatusDistrictDayWiseDocuments',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			
+		}
+	});
+}
