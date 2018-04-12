@@ -19,4 +19,12 @@ public class PartyMeetingLevelDAO extends GenericDaoHibernate<PartyMeetingLevel,
 				" from PartyMeetingLevel model");
 		return query.list();
 	}
+	public Long  getMeetingLevelOfCreatedLocationId(Long accessLevelId)
+	{
+		Query query = getSession().createQuery("select distinct model.regionScopesId from PartyMeetingLevel model " +
+				" where model.partyMeetingLevelId =:accessLevelId ");
+		query.setParameter("accessLevelId", accessLevelId);
+		return (Long)query.uniqueResult();
+		
+	}
 }
