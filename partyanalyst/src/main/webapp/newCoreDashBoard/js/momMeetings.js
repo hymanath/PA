@@ -124,7 +124,7 @@ function buildMOMBasicCountDetailsAction(result){
 					str+='<div class="bg_yash_color">';
 						str+='<h5 class="f_12">Planned Meetings</h5>';
 						if(result.plannedCount !=null && result.plannedCount>0){
-							str+='<h4 class="text-bold m_top10 f_16 meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="PlannedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="Planned Meetings" attr_subSearchType="">'+result.plannedCount+'</h4>';
+							str+='<h4 class="text-bold m_top10 f_16 meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="PlannedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="Total Planned Meetings" attr_subSearchType="">'+result.plannedCount+'</h4>';
 						}else{
 							str+='<h4 class="text-bold m_top10 f_16"> - </h4>';
 						}
@@ -135,7 +135,7 @@ function buildMOMBasicCountDetailsAction(result){
 					str+='<div class="bg_yash_color">';
 						str+='<h5 class="f_12">Total Conducted Meetings</h5>';
 						if(result.conductedCount !=null && result.conductedCount>0){
-							str+='<h4 class="text-bold m_top10 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalConductedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="Total Conducted Meetings" attr_subSearchType="">'+result.conductedCount+'</span> <small style="color:green;">'+result.conductedCommentCntPer+'%</small></h4>';
+							str+='<h4 class="text-bold m_top10 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalConductedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="Total Conducted Meetings" attr_subSearchType="">'+result.conductedCount+'</span> <small style="color:green;">'+result.conductedCommentCntPer+'%</small></h4>';
 						}else{
 							str+='<h4 class="text-bold m_top10 f_16"> - </h4>';
 						}
@@ -146,7 +146,7 @@ function buildMOMBasicCountDetailsAction(result){
 					str+='<div class="bg_yash_color">';
 						str+='<h5 class="f_12">MOM Not Updated <br/>Meetings</h5>';
 						if(result.notUpdatedMomCount !=null && result.notUpdatedMomCount>0){
-							str+='<h4 class="text-bold m_top10 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="MOM Not Updated Meetings" attr_subSearchType="">'+result.notUpdatedMomCount+'</span> <small style="color:green;">'+result.notUpdatedMomCntPer+'%</small></h4>';
+							str+='<h4 class="text-bold m_top10 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="MOM Not Updated Meetings" attr_subSearchType="">'+result.notUpdatedMomCount+'</span> <small style="color:green;">'+result.notUpdatedMomCntPer+'%</small></h4>';
 						}else{
 							str+='<h4 class="text-bold m_top10 f_16"> - </h4>';
 						}
@@ -162,7 +162,7 @@ function buildMOMBasicCountDetailsAction(result){
 						str+='<div class="border_pad">';
 							str+='<h5 class="f_12">Total</h5>';
 							if(result.totalMoms !=null && result.totalMoms>0){
-								str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="Total MOM Meetings" attr_subSearchType="">'+result.totalMoms+'</span> </h4>';
+								str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="Total MOM Details" attr_subSearchType="">'+result.totalMoms+'</span> </h4>';
 							}else{
 								str+='<h4 class="text-bold m_top25 f_16"> - </h4>';
 							}
@@ -173,7 +173,7 @@ function buildMOMBasicCountDetailsAction(result){
 						str+='<div class="border_pad">';
 							str+='<h5 class="f_12">General</h5>';
 							if(result.generalCount !=null && result.generalCount>0){
-								str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="General Meetings" attr_subSearchType="General">'+result.generalCount+'</span> <small style="color:green;">'+result.generalCntPer+'%</small></h4>';
+								str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="General Type MOM Details" attr_subSearchType="General">'+result.generalCount+'</span> <small style="color:green;">'+result.generalCntPer+'%</small></h4>';
 							}else{
 								str+='<h4 class="text-bold m_top25 f_16"> - </h4>';
 							}
@@ -183,7 +183,7 @@ function buildMOMBasicCountDetailsAction(result){
 					str+='<div class="col-sm-6">';
 						str+='<div class="border_pad">';
 							if(result.actionCount !=null && result.actionCount>0){
-								str+='<h5 class="f_12">Actionable : <span style="font-size:16px;font-weight:bold;"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="Total Actionable Meetings" attr_subSearchType="Actionable">'+result.actionCount+'</span> <small style="color:green;">'+result.actionCntPer+'%</small></span></h5>';
+								str+='<h5 class="f_12">Actionable : <span style="font-size:16px;font-weight:bold;"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="Total Actionable MOM Details" attr_subSearchType="Actionable">'+result.actionCount+'</span> <small style="color:green;">'+result.actionCntPer+'%</small></span></h5>';
 							}else{
 								str+='<h5 class="f_12">Actionable : - </h5>';
 							}
@@ -194,7 +194,7 @@ function buildMOMBasicCountDetailsAction(result){
 										str+='<div class="col-sm-6 m_top5" style="border-right:1px solid #ccc;">';
 											str+='<h5 class="f_12">Party</h5>';
 											if(result.partyCount !=null && result.partyCount>0){
-												str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="Actionable Party Meetings" attr_subSearchType="Party">'+result.partyCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.partyCntPer+'%</small></h4>';
+												str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="Total Actionable Party Type MOM Details" attr_subSearchType="Party">'+result.partyCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.partyCntPer+'%</small></h4>';
 											}else{
 												str+='<h4 class="text-bold m_top5 f_16"> - </h4>';
 											}
@@ -203,7 +203,7 @@ function buildMOMBasicCountDetailsAction(result){
 										str+='<div class="col-sm-6 m_top5">';
 											str+='<h5 class="f_12">Govt</h5>';
 											if(result.govtCount !=null && result.govtCount>0){
-												str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="OverAll" attr_name="Actionable Govt Meetings" attr_subSearchType="Govt">'+result.govtCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.govtCntPer+'%</small></h4>';
+												str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="State Level" attr_name="Actionable Govt Type MOM Details" attr_subSearchType="Govt">'+result.govtCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.govtCntPer+'%</small></h4>';
 											}else{
 												str+='<h4 class="text-bold m_top5 f_16"> - </h4>';
 											}
@@ -238,7 +238,7 @@ function buildMOMBasicCountDetailsAction(result){
 						str+='<div class="bg_yash_color">';
 							str+='<h5 class="f_12">Planned Meetings</h5>';
 							if(result.partyMettingsVOList[i].plannedCount !=null && result.partyMettingsVOList[i].plannedCount>0){
-								str+='<h4 class="text-bold m_top10 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="PlannedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Planned Meetings" attr_subSearchType="">'+result.partyMettingsVOList[i].plannedCount+'</span></h4>';
+								str+='<h4 class="text-bold m_top10 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="PlannedMeetings" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Total Planned Meetings" attr_subSearchType="">'+result.partyMettingsVOList[i].plannedCount+'</span></h4>';
 							}else{
 								str+='<h4 class="text-bold m_top10 f_16"> - </h4>';
 							}
@@ -276,7 +276,7 @@ function buildMOMBasicCountDetailsAction(result){
 							str+='<div class="border_pad">';
 								str+='<h5 class="f_12">Total</h5>';
 								if(result.partyMettingsVOList[i].totalMoms !=null && result.partyMettingsVOList[i].totalMoms>0){
-									str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Total MOM Meetings" attr_subSearchType="">'+result.partyMettingsVOList[i].totalMoms+'</span> </h4>';
+									str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Total MOM Details" attr_subSearchType="">'+result.partyMettingsVOList[i].totalMoms+'</span> </h4>';
 								}else{
 									str+='<h4 class="text-bold m_top25 f_16"> -  </h4>';
 								}
@@ -287,7 +287,7 @@ function buildMOMBasicCountDetailsAction(result){
 							str+='<div class="border_pad">';
 								str+='<h5 class="f_12">General</h5>';
 								if(result.partyMettingsVOList[i].generalCount !=null && result.partyMettingsVOList[i].generalCount>0){
-									str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="General Meetings" attr_subSearchType="General">'+result.partyMettingsVOList[i].generalCount+'</span> <small style="color:green;">'+result.partyMettingsVOList[i].generalCntPer+'%</small></h4>';
+									str+='<h4 class="text-bold m_top25 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="General Type MOM Details" attr_subSearchType="General">'+result.partyMettingsVOList[i].generalCount+'</span> <small style="color:green;">'+result.partyMettingsVOList[i].generalCntPer+'%</small></h4>';
 								}else{
 									str+='<h4 class="text-bold m_top25 f_16"> - </h4>';
 								}
@@ -297,7 +297,7 @@ function buildMOMBasicCountDetailsAction(result){
 						str+='<div class="col-sm-6">';
 							str+='<div class="border_pad">';
 							if(result.partyMettingsVOList[i].actionCount !=null && result.partyMettingsVOList[i].actionCount>0){
-								str+='<h5 class="f_12">Actionable : <span style="font-size:16px;font-weight:bold;"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Total Actionable Meetings" attr_subSearchType="Actionable">'+result.partyMettingsVOList[i].actionCount+'</span> <small style="color:green;">'+result.partyMettingsVOList[i].actionCntPer+'%</small></span></h5>';
+								str+='<h5 class="f_12">Actionable : <span style="font-size:16px;font-weight:bold;"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Total Actionable MOM Details" attr_subSearchType="Actionable">'+result.partyMettingsVOList[i].actionCount+'</span> <small style="color:green;">'+result.partyMettingsVOList[i].actionCntPer+'%</small></span></h5>';
 							}else{
 								str+='<h5 class="f_12">Actionable :  - </h5>';
 							}
@@ -308,7 +308,7 @@ function buildMOMBasicCountDetailsAction(result){
 											str+='<div class="col-sm-6 m_top5" style="border-right:1px solid #ccc;">';
 												str+='<h5 class="f_12">Party</h5>';
 												if(result.partyMettingsVOList[i].partyCount !=null && result.partyMettingsVOList[i].partyCount>0){
-													str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Actionable Party Meetings" attr_subSearchType="Party">'+result.partyMettingsVOList[i].partyCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.partyMettingsVOList[i].partyCntPer+'%</small></h4>';
+													str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Actionable Party MOM Details" attr_subSearchType="Party">'+result.partyMettingsVOList[i].partyCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.partyMettingsVOList[i].partyCntPer+'%</small></h4>';
 												}else{
 													str+='<h4 class="text-bold m_top5 f_16"> - </h4>';
 												}
@@ -317,7 +317,7 @@ function buildMOMBasicCountDetailsAction(result){
 											str+='<div class="col-sm-6 m_top5">';
 												str+='<h5 class="f_12">Govt</h5>';
 												if(result.partyMettingsVOList[i].govtCount !=null && result.partyMettingsVOList[i].govtCount>0){
-													str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Actionable Govt Meetings" attr_subSearchType="Govt">'+result.partyMettingsVOList[i].govtCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.partyMettingsVOList[i].govtCntPer+'%</small></h4>';
+													str+='<h4 class="text-bold m_top5 f_16"><span class="meetingDetailsCls" attr_meetinglevelId="'+result.partyMettingsVOList[i].id+'" attr_searchType="TotalMOM" attr_searchLevelId="0" attr_searchLevelValue="1" attr_type="'+result.partyMettingsVOList[i].name+'" attr_name="Actionable Govt MOM Deatils" attr_subSearchType="Govt">'+result.partyMettingsVOList[i].govtCount+'</span> <small style="color:green;" class="pull-right m_top5">'+result.partyMettingsVOList[i].govtCntPer+'%</small></h4>';
 												}else{
 													str+='<h4 class="text-bold m_top5 f_16"> - </h4>';
 												}
@@ -483,10 +483,11 @@ function buildgetUserTypeWiseMOMTopFiveStrong(result){
 							},
 								
 								series: [{
-									name: 'MOM UPDATED',
-									data: momUpdatedCountArr
-								},{
 									name: 'MOM NOT UPDATED',
+									data: momUpdatedCountArr
+								},
+								{
+									name: 'MOM UPDATED',
 									data: momNotUpdatedCountArr
 								}],
 						 
@@ -637,10 +638,11 @@ function buildgetUserTypeWiseMOMTopFiveStrong(result){
 								shared: true
 							},
 								series: [{
-									name: 'MOM UPDATED',
-									data: momUpdatedCountArr
-								},{
 									name: 'MOM NOT UPDATED',
+									data: momUpdatedCountArr
+								},
+								{
+									name: 'MOM UPDATED',
 									data: momNotUpdatedCountArr
 								}],
 						 
@@ -806,58 +808,58 @@ function buildMOMDetailedBlockDetailsAction(result,locationType,locationId){
 					str+='<tr>';
 						str+='<td style="text-align:left !important;">'+result.partyMettingsVOList[i].name+'</td>';
 						if(result.partyMettingsVOList[i].conductedCount !=null && result.partyMettingsVOList[i].conductedCount>0){
-							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalConductedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Conducted Meetings" attr_subSearchType="">'+result.partyMettingsVOList[i].conductedCount+'</span></td>';
+							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalConductedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Conducted Meetings" attr_subSearchType="" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].conductedCount+'</span></td>';
 						}else{
 							str+='<td>-</td>';
 						}
 						
 						if(locationType == "district"){
 							if(result.partyMettingsVOList[i].notUpdatedCount !=null && result.partyMettingsVOList[i].notUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Not Updated Meetings" attr_subSearchType="Total">'+result.partyMettingsVOList[i].notUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Not Updated Meetings" attr_subSearchType="Total" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].notUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							if(result.partyMettingsVOList[i].mandalNotUpdatedCount !=null && result.partyMettingsVOList[i].mandalNotUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Mandal MOM Not Updated Meetings" attr_subSearchType="Mandal">'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Mandal MOM Not Updated Meetings" attr_subSearchType="Mandal" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							if(result.partyMettingsVOList[i].constituencyNotUpdatedCount !=null && result.partyMettingsVOList[i].constituencyNotUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="AC MOM Not Updated Meetings" attr_subSearchType="AC">'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Assembly MOM Not Updated Meetings" attr_subSearchType="AC" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							if(result.partyMettingsVOList[i].districtNotUpdatedCount !=null && result.partyMettingsVOList[i].districtNotUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="District MOM Not Updated Meetings" attr_subSearchType="District" >'+result.partyMettingsVOList[i].districtNotUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="District MOM Not Updated Meetings" attr_subSearchType="District" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].districtNotUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							
 						}else if(locationType == "mandal"){
 							if(result.partyMettingsVOList[i].notUpdatedCount !=null && result.partyMettingsVOList[i].notUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Not Updated Meetings" attr_subSearchType="Total">'+result.partyMettingsVOList[i].notUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Not Updated Meetings" attr_subSearchType="Total" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].notUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							if(result.partyMettingsVOList[i].mandalNotUpdatedCount !=null && result.partyMettingsVOList[i].mandalNotUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Mandal MOM Not Updated Meetings" attr_subSearchType="Mandal">'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Mandal MOM Not Updated Meetings" attr_subSearchType="Mandal" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							
 						}else{
 							if(result.partyMettingsVOList[i].notUpdatedCount !=null && result.partyMettingsVOList[i].notUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Not Updated Meetings" attr_subSearchType="Total">'+result.partyMettingsVOList[i].notUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Not Updated Meetings" attr_subSearchType="Total" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].notUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							if(result.partyMettingsVOList[i].mandalNotUpdatedCount !=null && result.partyMettingsVOList[i].mandalNotUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Mandal MOM Not Updated Meetings" attr_subSearchType="Mandal">'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Mandal MOM Not Updated Meetings" attr_subSearchType="Mandal" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].mandalNotUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
 							if(result.partyMettingsVOList[i].constituencyNotUpdatedCount !=null && result.partyMettingsVOList[i].constituencyNotUpdatedCount>0){
-								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="AC MOM Not Updated Meetings" attr_subSearchType="AC">'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</span></td>';
+								str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="MOMNotUpdatedMeetings" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Assembly MOM Not Updated Meetings" attr_subSearchType="AC" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].constituencyNotUpdatedCount+'</span></td>';
 							}else{
 								str+='<td>-</td>';
 							}
@@ -865,12 +867,12 @@ function buildMOMDetailedBlockDetailsAction(result,locationType,locationId){
 							
 						}
 						if(result.partyMettingsVOList[i].totalMoms != null && result.partyMettingsVOList[i].totalMoms > 0){
-							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Meetings" attr_subSearchType="Total1">'+result.partyMettingsVOList[i].totalMoms+'</span></td>';
+							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total MOM Details" attr_subSearchType="Total1" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].totalMoms+'</span></td>';
 						}else{
 							str+='<td>-</td>';
 						}
 						if(result.partyMettingsVOList[i].generalCount != null && result.partyMettingsVOList[i].generalCount > 0){
-							str+='<td><span class="meetingDetailsCls"  attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="MOM General Meetings" attr_subSearchType="General1">'+result.partyMettingsVOList[i].generalCount+'</span></td>';
+							str+='<td><span class="meetingDetailsCls"  attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="General Type MOM Details" attr_subSearchType="General1" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].generalCount+'</span></td>';
 							str+='<td>'+result.partyMettingsVOList[i].generalCntPer+'</td>';
 						}else{
 							str+='<td>-</td>';
@@ -879,7 +881,7 @@ function buildMOMDetailedBlockDetailsAction(result,locationType,locationId){
 						
 						
 						if(result.partyMettingsVOList[i].actionCount != null && result.partyMettingsVOList[i].actionCount > 0){
-							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Actionable Meetings" attr_subSearchType="Actionable1">'+result.partyMettingsVOList[i].actionCount+'</span></td>';
+							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Actionable MOM Details" attr_subSearchType="Actionable1" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].actionCount+'</span></td>';
 							str+='<td>'+result.partyMettingsVOList[i].actionCntPer+'</td>';
 						}else{
 							str+='<td>-</td>';
@@ -887,7 +889,7 @@ function buildMOMDetailedBlockDetailsAction(result,locationType,locationId){
 						}
 						
 						if(result.partyMettingsVOList[i].partyCount != null && result.partyMettingsVOList[i].partyCount > 0){
-							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Actionable Party Meetings" attr_subSearchType="Party1">'+result.partyMettingsVOList[i].partyCount+'</span></td>';
+							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Actionable Party Type MOM Details" attr_subSearchType="Party1" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].partyCount+'</span></td>';
 							str+='<td>'+result.partyMettingsVOList[i].partyCntPer+'</td>';
 						}else{
 							str+='<td>-</td>';
@@ -895,7 +897,7 @@ function buildMOMDetailedBlockDetailsAction(result,locationType,locationId){
 						}
 						
 						if(result.partyMettingsVOList[i].govtCount != null && result.partyMettingsVOList[i].govtCount > 0){
-							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Actionable Govt Meetings" attr_subSearchType="Govt1">'+result.partyMettingsVOList[i].govtCount+'</span></td>';
+							str+='<td><span class="meetingDetailsCls" attr_meetinglevelId="0" attr_searchType="TotalMOM" attr_searchLevelId="'+locationId+'" attr_searchLevelValue="'+result.partyMettingsVOList[i].id+'" attr_type="'+locationType+'" attr_name="Total Actionable Govt Type MOM Details" attr_subSearchType="Govt1" attr_location_name="'+result.partyMettingsVOList[i].name+'">'+result.partyMettingsVOList[i].govtCount+'</span></td>';
 							str+='<td>'+result.partyMettingsVOList[i].govtCntPer+'</td>';
 						}else{
 							str+='<td>-</td>';
@@ -937,12 +939,14 @@ function buildMOMDetailedBlockDetailsAction(result,locationType,locationId){
 	var searchLevelValue = $(this).attr("attr_searchLevelValue");
 	var levelName = $(this).attr("attr_type");
 	var name = $(this).attr("attr_name");
+	var locationName = $(this).attr("attr_location_name");
 	var subsearchtype = $(this).attr("attr_subsearchtype");
-	if(levelName == "OverAll"){
-		$("#levelWiseMeetingPopupHeadingId").html(name+" Details - "+levelName+"");
+	if(levelName == "State Level"){
+		$("#levelWiseMeetingPopupHeadingId").html(name+" - "+levelName+"");
 	}else{
-		$("#levelWiseMeetingPopupHeadingId").html(name+" Details - "+levelName+" Level");
+		$("#levelWiseMeetingPopupHeadingId").html(name+" In "+locationName+"");
 	}
+	
 	getPartyMeetingMOMDetailsCompletedCountsClicks(meetinglevelId,searchType,searchLevelId,searchLevelValue,subsearchtype);
 });
 
@@ -1019,39 +1023,57 @@ function getPartyMeetingMOMDetailsCompletedCountsClicks(meetinglevelId,searchTyp
     }).done(function(result){
 		if(result !=null && result.length>0){
 			if(searchTypeVal =='TotalMOM')
-				buildPartyMeetingMOMDetailsCompletedMOMClicks(result);
+				buildPartyMeetingMOMDetailsCompletedMOMClicks(result,searchType);
 			else
-				buildPartyMeetingMOMDetailsCompletedCountsClicks(result);
+				buildPartyMeetingMOMDetailsCompletedCountsClicks(result,searchType);
 				
 		}else{
 			$("#meetingLevelDetailsTableDivId").html("No Data Available");
 		}
     });
 }
-
-function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
+function buildPartyMeetingMOMDetailsCompletedCountsClicks(result,searchType){
 	var str='';
 	
 			str+='<div class="row">';
 				str+='<div class="col-sm-12">';
 					str+='<div class="table-responsive">';
-                    str+='<table id="example3" class="table-data table-striped table-bordered" style="width:100%">';
+                    str+='<table id="example4" class="table-data table-striped table-bordered" style="width:100%">';
                      str+='<thead>';
                         str+='<tr class="line-height30">';
-                          str+='<th rowspan="2">Meeting Level</th>';
-                          str+='<th rowspan="2">Meeting Name</th>';
-                          str+='<th rowspan="2">Meeting Date</th>';
-                          str+='<th colspan="4">MOMS</th>';
-                          str+='<th rowspan="2">Meeting Images</th>';
-                          str+='<th rowspan="2">MOM Documents</th>';
-                        str+='</tr>';
-						 str+='<tr class="line-height30">';
-                          str+='<th>Total</th>';
-                          str+='<th>General</th>';
-                          str+='<th>Party</th>';
-                          str+='<th>Govt</th>';
-                        str+='</tr>';
+						if(searchType =="MOMNotUpdatedMeetings"){
+							  str+='<th>Meeting Level</th>';
+							  str+='<th>Meeting Name</th>';
+							  str+='<th>Meeting Date</th>';
+						}else{
+							  str+='<th rowspan="2">Meeting Level</th>';
+							  str+='<th rowspan="2">Meeting Name</th>';
+							  str+='<th rowspan="2">Meeting Date</th>';
+						}
 						
+						  if(searchType !="MOMNotUpdatedMeetings"){
+							   str+='<th colspan="4">MOMS</th>';
+						  }
+						  if(searchType =="MOMNotUpdatedMeetings"){
+							   str+='<th>Meeting Images</th>';
+						  }else{
+							  str+='<th rowspan="2">Meeting Images</th>';
+						  }
+						  
+                          
+						  if(searchType !="MOMNotUpdatedMeetings"){
+							   str+='<th rowspan="2">MOM Documents</th>';
+						  }
+                          
+                        str+='</tr>';
+						 if(searchType !="MOMNotUpdatedMeetings"){
+							 str+='<tr class="line-height30">';
+							  str+='<th>Total</th>';
+							  str+='<th>General</th>';
+							  str+='<th>Party</th>';
+							  str+='<th>Govt</th>';
+							str+='</tr>';
+						 }
                       str+='</thead>';
                       str+='<tbody>';
 						for(var i in result){							
@@ -1071,37 +1093,40 @@ function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
 									str+='<td style="text-align:left !important;">'+result[i].meetingLevel+'</td>';
 									str+='<td style="text-align:left !important;">'+result[i].meetingName+'</td>';
 									str+='<td>'+result[i].date+'</td>';
-									if(result[i].totalCount !=null && result[i].totalCount>0){
-										str+='<td>'+result[i].totalCount+'</td>';
-									}else{
-										str+='<td> - </td>';
-									}
-									if(result[i].generalCount !=null && result[i].generalCount>0){
-										str+='<td>'+result[i].generalCount+'</td>';
-									}else{
-										str+='<td> - </td>';
-									}
-									if(result[i].partyCount !=null && result[i].partyCount>0){
-										str+='<td>'+result[i].partyCount+'</td>';
-									}else{
-										str+='<td> - </td>';
-									}
-									if(result[i].govtCount !=null && result[i].govtCount>0){
-										str+='<td>'+result[i].govtCount+'</td>';
-									}else{
-										str+='<td> - </td>';
+									if(searchType !="MOMNotUpdatedMeetings"){
+										if(result[i].totalCount !=null && result[i].totalCount>0){
+											str+='<td>'+result[i].totalCount+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result[i].generalCount !=null && result[i].generalCount>0){
+											str+='<td>'+result[i].generalCount+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result[i].partyCount !=null && result[i].partyCount>0){
+											str+='<td>'+result[i].partyCount+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
+										if(result[i].govtCount !=null && result[i].govtCount>0){
+											str+='<td>'+result[i].govtCount+'</td>';
+										}else{
+											str+='<td> - </td>';
+										}
 									}
 									if(result[i].filesList1 != null && result[i].filesList1.length>0){
 										str+='<td><button type="button" class="btn btn-success btn-sm docsViewCls" attr_meeting_level_id="'+result[i].meetingId+'" attr_meeting_name="'+result[i].meetingName+'" attr_image_type="meetingDocuments">Meeting Images</button></td>';
 									}else{
 										str+='<td> - </td>';
 									}
-									if(result[i].filesList != null && result[i].filesList.length>0){
-										str+='<td><button type="button" class="btn btn-success btn-sm docsViewCls" attr_meeting_level_id="'+result[i].meetingId+'" attr_meeting_name="'+result[i].meetingName+'" attr_image_type="momMeetingDocuments">MOM Documents</button></td>';
-									}else{
-										str+='<td> - </td>';
+									if(searchType !="MOMNotUpdatedMeetings"){
+										if(result[i].filesList != null && result[i].filesList.length>0){
+											str+='<td><button type="button" class="btn btn-success btn-sm docsViewCls" attr_meeting_level_id="'+result[i].meetingId+'" attr_meeting_name="'+result[i].meetingName+'" attr_image_type="momMeetingDocuments">MOM Documents</button></td>';
+										}else{
+											str+='<td> - </td>';
+										}
 									}
-								
 								str+='</tr>';
 						}
 					  str+='</tbody>';
@@ -1110,7 +1135,7 @@ function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
 			str+='</div>';
 	  str+='</div>';
     $("#meetingLevelDetailsTableDivId").html(str);
-	$("#example3").dataTable({
+	$("#example4").dataTable({
 		"iDisplayLength": 10,
 		"aaSorting": [],
 		"aLengthMenu": [[10,50, 100, 500, -1], [10,50, 100, 500, "All"]]
@@ -1118,7 +1143,7 @@ function buildPartyMeetingMOMDetailsCompletedCountsClicks(result){
 }
  
  
-function buildPartyMeetingMOMDetailsCompletedMOMClicks(myResult){
+function buildPartyMeetingMOMDetailsCompletedMOMClicks(myResult,searchType){
 	var str='';
 	
 			str+='<div class="row">';
@@ -1227,12 +1252,13 @@ function buildPartyMeetingMOMDetailsCompletedMOMClicks(myResult){
 				
 				str+='<div class="row m_top10">';
 				str+='<div class="col-sm-12">';
+					str+='<ul class="list-inline sliderNewCls">';
 					if(docsList != null && docsList.length >0){
 						for(var j in docsList){
 								var fileName = docsList[j].path.split("/"); 
 								var scanCopySpl = docsList[j].path.split("."); 
 								var scanCopyExt = $.trim(scanCopySpl[scanCopySpl.length-1].toLowerCase()); 
-									str+='<div class="col-sm-4 m_top10">';
+									str+='<li class="col-sm-4 m_top10">';
 										str+='<div class="viewImageCss">';
 										if(scanCopyExt =="pdf"){
 											str+='<div style="border:1px solid #ccc;padding:5px">';
@@ -1261,14 +1287,49 @@ function buildPartyMeetingMOMDetailsCompletedMOMClicks(myResult){
 										}
 							
 								str+='</div>';
-							str+='</div>';
-
-						}
-					//}	
+								str+='</li>';
+							}
+			
+					}
+					str+='</ul>';	
 				str+='</div>';
-			str+='</div>';
-		str+='</div>';
-	}	
+		str+='</div>';		
 	$("#docsViewModalId").html(str);
 	$(".fancyboxView").fancybox();
+	$(".sliderNewCls").slick({
+		slides:'li',
+		infinite: false,
+		slidesToShow: 3,
+		slidesToScroll: 1,
+		variableWidth: false,
+		responsive: [
+		{
+		  breakpoint: 1024,
+		  settings: {
+			slidesToShow: 3,
+			slidesToScroll: 1,
+			infinite: true,
+			dots: true
+		  }
+		},
+		{
+		  breakpoint: 600,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		},
+		{
+		  breakpoint: 480,
+		  settings: {
+			slidesToShow: 1,
+			slidesToScroll: 1
+		  }
+		}
+		// You can unslick at a given breakpoint now by adding:
+		// settings: "unslick"
+		// instead of a settings object
+	  ]
+	 });
 });
+ 
