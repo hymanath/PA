@@ -82,6 +82,7 @@ import com.itgrids.partyanalyst.model.Panchayat;
 import com.itgrids.partyanalyst.model.PartyMeeting;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPoint;
 import com.itgrids.partyanalyst.model.PartyMeetingAtrPointHistory;
+import com.itgrids.partyanalyst.model.PartyMeetingDocument;
 import com.itgrids.partyanalyst.model.PartyMeetingInvitee;
 import com.itgrids.partyanalyst.model.PartyMeetingMinute;
 import com.itgrids.partyanalyst.model.PartyMeetingMinuteHistory;
@@ -919,7 +920,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 						pmmh.setUpdatedTime(pmm.getUpdatedTime());
 						pmmh.setMomAtrSourceTypeId(pmm.getMomAtrSourceTypeId());						
 						partyMeetingMinuteHistoryDAO.save(pmmh);
-						Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
+						Long createdLevelId = partyMeetingLevelDAO.getMeetingLevelOfCreatedLocationId(levelId);
 						UserAddress returnUA =null;
 						/*if(isActionable !=null && !isActionable.trim().isEmpty() && isActionable.trim().equalsIgnoreCase("Y")){
 							 returnUA = setUserAddress(stateId,districtId,constituencyId,tehsilId,panchayatId);
@@ -1002,8 +1003,8 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmm.setInsertedTime(new DateUtilService().getCurrentDateAndTime());
 					pmm.setUpdatedTime(new DateUtilService().getCurrentDateAndTime());
 					pmm.setMomAtrSourceTypeId(isGovtParty != null && isGovtParty> 0l ? isGovtParty:null);
-					pmm.setIsDeleted("N");
-					Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(levelId);
+					pmm.setIsDeleted("N");//srujana
+					Long createdLevelId = partyMeetingLevelDAO.getMeetingLevelOfCreatedLocationId(levelId);
 					if(isActionable !=null && !isActionable.trim().isEmpty() && ( (isActionable.trim().equalsIgnoreCase("Y")) || (isActionable.trim().equalsIgnoreCase("N")))){
 						if(levelId !=null && levelId>0l)
 								pmm.setLocationLevel(createdLevelId);
@@ -1077,7 +1078,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmmt.setPartyMeetingMinuteStatusId(statusId);
 										
 					partyMeetingMinuteTrackingDAO.save(pmmt);
-					
+					//document saving
+					PartyMeetingDocument meetingDocument = partyMeetingDocumentDAO.get(partyMeetingId);
+					if(meetingDocument != null){
+						meetingDocument.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
+						meetingDocument = partyMeetingDocumentDAO.save(meetingDocument);
+					}
 					return "success";
 				  }
 			
@@ -1474,7 +1480,7 @@ public class PartyMeetingService implements IPartyMeetingService{
 				partyMeetingVO.setPartyMeetingTypeId(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getPartyMeetingTypeId():0l);
 				partyMeetingVO.setPartyMeetingType(partyMeetingDetails.getPartyMeetingType()!=null?partyMeetingDetails.getPartyMeetingType().getType():"");
 				partyMeetingVO.setMeetingLevelId(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getPartyMeetingLevelId():0l);
-				Long createdLevelId = regionScopesDAO.getMeetingLevelOfCreatedLocationId(partyMeetingVO.getMeetingLevelId());
+				Long createdLevelId = partyMeetingLevelDAO.getMeetingLevelOfCreatedLocationId(partyMeetingVO.getMeetingLevelId());
 				partyMeetingVO.setMeetingLevelId(createdLevelId);
 				partyMeetingVO.setMeetingLevel(partyMeetingDetails.getPartyMeetingLevel()!=null?partyMeetingDetails.getPartyMeetingLevel().getLevel():"");
 				partyMeetingVO.setLocationValue(partyMeetingDetails.getLocationValue()!=null?partyMeetingDetails.getLocationValue():0l);
