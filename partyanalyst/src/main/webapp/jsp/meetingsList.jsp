@@ -1195,6 +1195,7 @@ var jsonGlob = "";
 				str+='<th rowspan="2">Meeting Location</th>';
 				str+='<th rowspan="2">Meeting Name</th>';
 				str+='<th rowspan="2">CONDUCTED</th>';
+				str+='<th rowspan="2"> IVR CONDUCTED STATUS</th>';
 				str+='<th rowspan="2">CONDUCTED DATE</th>';
 				str+='<th rowspan="2">REMARKS</th>';
 				str+='<th colspan="2">MOM</th>';
@@ -1259,9 +1260,15 @@ var jsonGlob = "";
 						str+='</select>';
 					}
 					str+='</td>';
+					if(result[i].ivrStatus != null && result[i].ivrStatus != "" && result[i].ivrStatus == 'Y'){
+						str+='<td>Yes</td>';
+					}else{
+						str+='<td>No</td>';	
+					}
 					
-					
-					
+				
+				
+				
 					
 					if(result[i].conductedDate !=null && result[i].conductedDate !=""){
 						//str+='<td> '+result[i].conductedDate.split(' ')[0]+' <i class="glyphicon glyphicon-edit editConductedDateBtn" style="cursor:pointer" attr_conductedDate="'+result[i].conductedDate.split(' ')[0]+'" attr_meetingId='+result[i].partyMeetingId+'></i></td>';
@@ -1318,7 +1325,7 @@ var jsonGlob = "";
 					
 					
 					//str+='<td><button class="btn btn-success btn-sm" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');">UPDATE</button></td>';
-					if((result[i].conductedDate !=null && result[i].conductedDate !="") && (result[i].isConducted !=null && result[i].isConducted == 'Y')){
+					if((result[i].isConducted !=null && result[i].isConducted == 'Y') || (result[i].ivrStatus !=null && result[i].ivrStatus == 'Y') ){
 					str+='<td><i class="glyphicon glyphicon-edit" style="cursor:pointer" onclick="updateMeeting(\''+result[i].partyMeetingId+'\');" data-toggle="tooltip" data-placement="top" title="Click here to update MOM/ATR"></i></td>';
 					}else{
 						str+='<td>-</td>';

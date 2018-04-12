@@ -629,6 +629,8 @@ body,h1,h2,h3,h4,h5,h6{color:#666 !important}
 			var levelvalue =$(this).attr("attr_levelValue");
 			 $(".saveMinute").attr("attr_levelId",levelId);
 			 $(".saveMinute").attr("attr_levelValue",levelvalue);
+			 $("#saveBtnMeetMin").attr("attr_levelId",levelId); 
+			 $("#saveBtnMeetMin").attr("attr_levelValue",levelvalue);
 			 $("#momPriorityId").val(0);
 			 $("#momStatusId").val(1);
 			
