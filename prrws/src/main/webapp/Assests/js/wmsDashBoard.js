@@ -251,7 +251,7 @@ function timeLineAndLocationWiseDetails(workTypeId){
 	$(".chosen-select").chosen();
 	getAllDistrictsOfAp('districtId','District');
 	getAllDistrictsLocationOfAp('locationWiseDistrictId','District');	
-	getAllStatusOfWorkType(workTypeId);
+	getAllStatusOfWorkType(workTypeId,"workStagesDivId","");
 	getLocationStatusDayWiseKms(0,workTypeId);//Graph Call
 	getLocationLevelStatusDayWiseKms(12,workTypeId)//Location Level Main Table
 }
@@ -386,7 +386,7 @@ function buildSelectBox(result,divId,LevelVal){
 	}
 	$("#"+divId).html(str).chosen().trigger("chosen:updated");
 }
-function getAllStatusOfWorkType(workTypeId){
+function getAllStatusOfWorkType(workTypeId,divId,locationValue){
 	
 	var json = {
 		"workTypeId":workTypeId
@@ -401,25 +401,39 @@ function getAllStatusOfWorkType(workTypeId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		buildworkStagesDetails(result,workTypeId);
+		buildworkStagesDetails(result,workTypeId,divId,locationValue);
 	});
 }
-function buildworkStagesDetails(result,workTypeId){
+function buildworkStagesDetails(result,workTypeId,divId,locationValue){
 	var str='';
 	str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;"/>';
 	if(result !=null && result.length>0){
-		str+='<div class="pad_10 status">';
-			str+='<ul class="list-inline workStagesCls">';
-				str+='<li style="border:2px solid #000" attr_work_statusid ="0" attr_value="ALL" attr_work_id="'+workTypeId+'"><h5 style="background-color:#000">All</h5></li>';
-				for(var i in result){
-					str+='<li  attr_work_statusid="'+result[i].key+'" attr_value="'+result[i].value+'" attr_work_id="'+workTypeId+'"><h5 style="background-color:'+globalStatusObj[result[i].value]+'">'+result[i].value+'</h5></li>';
-				}
-			str+='</ul>';
-		str+='</div>';
+		
+			if(divId == "workStagesDivId"){
+				str+='<div class="pad_10 status">';
+				str+='<ul class="list-inline workStagesCls">';
+						str+='<li style="border:2px solid #000" attr_work_statusid ="0" attr_value="ALL" attr_work_id="'+workTypeId+'"><h5 style="background-color:#000">All</h5></li>';
+						for(var i in result){
+							str+='<li  attr_work_statusid="'+result[i].key+'" attr_value="'+result[i].value+'" attr_work_id="'+workTypeId+'"><h5 style="background-color:'+globalStatusObj[result[i].value]+'">'+result[i].value+'</h5></li>';
+						}
+					str+='</ul>';
+				str+='</div>';
+			}else{
+				str+='<div class="pad_10 location_status">';
+				str+='<ul class="list-inline locationWiseworkStagesCls">';
+						str+='<li style="border:2px solid #000" attr_work_statusid ="0" attr_value="ALL" attr_work_id="'+workTypeId+'"><h5 style="background-color:#000">All</h5></li>';
+						for(var i in result){
+							str+='<li  attr_work_statusid="'+result[i].key+'" attr_value="'+result[i].value+'" attr_work_id="'+workTypeId+'"><h5 style="background-color:'+globalStatusObj[result[i].value]+'" attr_locationLevelId="'+locationValue+'">'+result[i].value+'</h5></li>';
+						}
+					str+='</ul>';
+				str+='</div>';
+			}
+			
+				
 	}
 	str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;"/>';
-	$("#workStagesDivId").html(str);
-}									
+	$("#"+divId).html(str);
+}
 $(document).on("change","#levelId",function(){
 	var levelId=$(this).val();
 	if(levelId == 3){
@@ -448,6 +462,18 @@ $(document).on("click",".workStagesCls li",function(){
 	}else{
 		getLocationLevelStatusDayWiseKms(statusId,workTypeId);
 	}
+	
+});
+$(document).on("click",".locationWiseworkStagesCls li",function(){	
+	var statusId = $(this).attr("attr_work_statusid")
+	var statusName = $(this).attr("attr_value");
+	var workTypeId = $(this).attr("attr_work_id");
+	var locationValue = $(this).attr("attr_locationLevelId");
+	$(".locationWiseworkStagesCls li").removeAttr("style");
+	$(this).css("border","2px solid "+globalStatusObj[statusName]+"")
+	
+	getLocationOverviewStatusDayWiseKms(workTypeId,statusId,locationValue);
+	
 	
 });
 $(document).on("click",".getTimeLocationCls",function(){
@@ -486,10 +512,10 @@ function getLocationStatusDayWiseKms(statusId,workTypeId){
 			xhr.setRequestHeader("Accept", "application/json");
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
-	}).done(function(result){
+	}).done(function(result){//ara
 		if(result !=null && result.length>0){
 			$("#workStagesCommulativeGraphDivId").css("height","200px");
-			buildLocationStatusDayWiseKmsMainGraph(result);
+			buildLocationStatusDayWiseKmsMainGraph(result,"workStagesCommulativeGraphDivId");
 		}else{
 			$("#workStagesCommulativeGraphDivId").html("No Data Available")
 			$("#workStagesCommulativeGraphDivId").removeAttr("style");
@@ -497,7 +523,7 @@ function getLocationStatusDayWiseKms(statusId,workTypeId){
 	});
 }
 
-function buildLocationStatusDayWiseKmsMainGraph(result){
+function buildLocationStatusDayWiseKmsMainGraph(result,divId){
 	
 	var mainDataArr=[];
 	var categoriesArr=[];
@@ -517,7 +543,7 @@ function buildLocationStatusDayWiseKmsMainGraph(result){
 			};
 			mainDataArr.push(obj)
 		}
-	$('#workStagesCommulativeGraphDivId').highcharts({
+	$('#'+divId).highcharts({
 		chart: {
 			type: 'spline'
 		},
@@ -1217,7 +1243,7 @@ function buildLocationWiseOverview(result,workZone,workTypeId){
 								for(var j in result[i].worksList){
 									str+='<tr>';
 										str+='<td style="text-align:left !important;">'+result[i].location+'</td>';
-										str+='<td style="text-align:left !important;">'+result[i].worksList[j].workName+'</td>';
+										str+='<td style="text-align:left !important;"><a class="workZonePopupCls" attr_locationLevelId="'+result[i].locationValue+'" attr_work_id="'+workTypeId+'" attr_locationName="'+result[i].worksList[j].workName+'">'+result[i].worksList[j].workName+'</a></td>';
 										str+='<td>'+result[i].worksList[j].totalKms.toFixed(2)+'&nbsp;km</td>';
 										for(var k in result[i].worksList[j].statusList){
 											str+='<td>'+result[i].worksList[j].statusList[k].totalKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].worksList[j].statusList[k].completedPercentage.toFixed(2)+' %</span></td>';
@@ -1256,10 +1282,13 @@ $(document).on("click",".locationWisePopupCls",function(){
 	
 	$("#locationLevelPopupId").modal("show");
 	
-	$("#locationLevelHeadingId").html(locationName+" "+levelName+" Level Details");
+	$("#locationLevelHeadingId").html(locationName+" "+levelName+" Details");
+	
 	getLocationLevelWiseOverviewDetails(workId,locationValue);
 	getLocationLevelStatusWiseOverviewDetails(workId,locationValue)
 	getWorkZoneStatusWiseKms(workId,locationValue);
+	getLocationOverviewStatusDayWiseKms(workId,0,locationValue);
+	getAllStatusOfWorkType(workId,"locationWiseWorkStagesDivId",locationValue);
 });	
 function getLocationLevelWiseOverviewDetails(workId,locationValue){
 	
@@ -1435,5 +1464,187 @@ function getWorkZoneStatusWiseKms(workId,locationValue){
 function buildWorkZoneStatusWiseKms(result){
 	var str='';
 	
+	str+='<div class="table-responsive">';
+		str+='<table class="table table_custom_WMS table-bordered m_top10">';
+			str+='<thead>';
+				str+='<tr>';
+					str+='<th>Work Zone</th>';
+					str+='<th>Target KM</th>';
+					for(var i in result[0].workStatusVOList){
+						str+='<th>'+result[0].workStatusVOList[i].govtWorkStatus+'</th>';
+					}
+				str+='</tr>';
+			str+='</thead>';
+			str+='<tbody>';
+				for(var i in result){
+					str+='<tr>';
+						str+='<td>'+result[i].govtWorkStatus+'</td>';
+						str+='<td>'+result[i].workLenght.toFixed(2)+'</td>';
+						for(var j in result[i].workStatusVOList){
+							str+='<td>'+result[i].workStatusVOList[j].workLenght.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].workStatusVOList[j].workCompletedPercentage.toFixed(2)+' %</span></td>';
+						}	
+					str+='</tr>';
+				}
+				
+			str+='</tbody>';
+		str+='</table>';
+	str+='</div>';
+	
 	$("#locationLevelThirdBlockDivId").html(str);
+}
+function getLocationOverviewStatusDayWiseKms(workId,statusId,locationValue){
+	
+	var locationScopeId = $("#locationWiseLevelId").val();
+	
+	var json ={
+		  "fromDate":"28-03-2018",
+		  "toDate":"4-05-2018",
+		  "workTypeId":workId,
+		  "locationScopeId":locationScopeId,
+		  "locationValue":locationValue,
+		  "statusId":statusId
+
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getLocationOverviewStatusDayWiseKms',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null && result.length>0){
+			$("#locationLevelFourthBlockDivId").css("height","200px");
+			buildLocationStatusDayWiseKmsMainGraph(result,"locationLevelFourthBlockDivId");
+		}else{
+			$("#locationLevelFourthBlockDivId").html("No Data Available")
+			$("#locationLevelFourthBlockDivId").removeAttr("style");
+		}
+	});
+}
+
+
+$(document).on("click",".workZonePopupCls",function(){
+	var locationValue = $(this).attr("attr_locationLevelId");
+	var locationName = $(this).attr("attr_locationName");
+	var workId = $(this).attr("attr_work_id");
+	
+	$("#workZoneModalDivId").modal("show");
+	
+	$("#workZoneHeadingId").html("Work Zone : " +locationName);
+	getWorkZoneMainOverview(workId);
+	getWorkZoneDocumentDetailsInfo(workId);
+	getWorkZoneWorkStategsDetailsInfo(workId);
+	getWorkZoneStatusDetailsInfo(workId);
+});	
+function getWorkZoneMainOverview(workId){
+	
+	var json ={
+		  "workId":workId
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getWorkZoneMainOverview',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			buildWorkZoneMainOverview(result);
+		}
+	});
+}
+
+function buildWorkZoneMainOverview(result){
+	var str='';
+	str+='<div class="bg_color">';
+		str+='<div class="row">';
+			str+='<div class="col-sm-4">';
+				str+='<h4 class="font_weight">Target km</h4>';
+				str+='<h3 class="m_top10">25 km</h3>';
+			str+='</div>';
+			str+='<div class="col-sm-4">';
+				str+='<h4 class="font_weight">Completed km</h4>';
+				str+='<h3 class="m_top10">25 km</h3>';
+			str+='</div>';
+			str+='<div class="col-sm-4">';
+				str+='<h4 class="font_weight">Sanctioned Amount</h4>';
+				str+='<h3 class="m_top10">5512121212 Lakhs</h3>';
+			str+='</div>';
+		str+='</div>';
+	str+='</div>';
+	$("#workZoneOverviewBlockDivId").html(str);
+	
+}
+
+function getWorkZoneStatusDetailsInfo(workId){
+	
+	var json ={
+		  "workId":33,
+		  "WorkTypeId":workId
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getWorkZoneStatusDetailsInfo',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			
+		}
+	});
+}
+
+function getWorkZoneDocumentDetailsInfo(workId){
+	
+	var json ={
+		  "workId":workId
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getWorkZoneDocumentDetailsInfo',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			
+		}
+	});
+}
+
+function getWorkZoneWorkStategsDetailsInfo(workId){
+	
+	var json ={
+		  "FromDate":"28-03-2018",
+		  "ToDate":"30-03-2018",
+		  "WorkId":"1",
+		  "StatusId":"0"
+		}
+	$.ajax({                
+		type:'POST',    
+		url: 'getWorkZoneWorkStategsDetailsInfo',
+		dataType: 'json',
+		data : JSON.stringify(json),
+		beforeSend :   function(xhr){
+			xhr.setRequestHeader("Accept", "application/json");
+			xhr.setRequestHeader("Content-Type", "application/json");
+		}
+	}).done(function(result){
+		if(result !=null){
+			
+		}
+	});
 }

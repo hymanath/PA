@@ -330,6 +330,7 @@ public class GovtWorkProgressTrackDAO extends GenericDaoHibernate<GovtWorkProgre
 		sb.append(" group by date(model.updated_time) ");
 		Query query = getSession().createSQLQuery(sb.toString());
 		
+		query.setParameter("workId", workId);
 		if(fromDate != null && toDate != null){
 			query.setDate("fromDate", fromDate);
 			query.setDate("toDate",toDate);
