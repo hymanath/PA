@@ -438,7 +438,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		try{
 			//0-locationId,1-inActive,2-locationName
 			List<Object[]> totalList = areaInchargeLocationDAO.getAreaInchargesStatusWiseCount(levelId,levelValue);
-			  finalVo = settingAssignedAndUnAssignedCount(totalList,finalVo);
+			  finalVo = settingAssignedAndUnAssignedCount(totalList,finalVo,levelId,levelValue);
 			if(finalVo != null){
 				finalVo.setAssignPer(Double.parseDouble(cadreDetailsService.calculatePercentage(finalVo.getTotal(), finalVo.getAssignedCount())));
 				finalVo.setPendingPers(Double.parseDouble(cadreDetailsService.calculatePercentage(finalVo.getTotal(), finalVo.getUnAssignedCount())));
@@ -449,7 +449,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		return finalVo;
 		
 	}
-	public AreaInchargeVO settingAssignedAndUnAssignedCount(List<Object[]> totalList,AreaInchargeVO finalVo){
+	public AreaInchargeVO settingAssignedAndUnAssignedCount(List<Object[]> totalList,AreaInchargeVO finalVo,Long levelId,Long levelValue){
 		try{
 			Long total=0l,assignCount=0l,unAssignCount =0l;
 			Set<String> assignIds = new HashSet<String>();
@@ -471,7 +471,7 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 				
 			}
 		if(assignIds != null && assignIds.size()>0){
-			 Long inchargeCount = areaInchargeMemberDAO.getInchargeMembers(assignIds);
+			 Long inchargeCount = areaInchargeMemberDAO.getInchargeMembers(assignIds,levelId,levelValue);
 			 if(inchargeCount != null && inchargeCount.longValue()>0l){
 				 finalVo.setInchargeCount(inchargeCount);
 			 }

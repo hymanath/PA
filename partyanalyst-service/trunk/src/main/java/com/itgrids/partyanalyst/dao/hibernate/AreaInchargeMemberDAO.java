@@ -131,7 +131,7 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 		return query.list();
 		
 	}
-	public Long getInchargeMembers(Set<String> assignIds){
+	public Long getInchargeMembers(Set<String> assignIds,Long levelId,Long levelValue){
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select count(distinct AIM.tdpCadre.tdpCadreId )"+
 				" from  AreaInchargeMember AIM   where AIM.isDeleted ='N' and AIM.isActive ='Y' " );
@@ -139,10 +139,20 @@ public class AreaInchargeMemberDAO extends GenericDaoHibernate<AreaInchargeMembe
 			sb.append("  and AIM.areaInchargeLocation.address.booth.partNo in(:assignIds) " +
 					" and AIM.areaInchargeLocation.address.booth.publicationDate.publicationDateId =24"); 
 		}
-		//sb.append(" group by AIM.areaInchargeLocationId order by AIM.areaInchargeLocationId");
+		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			sb.append("  and AIM.areaInchargeLocation.address.district.districtId =:levelValue "); 
+		}else if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			sb.append("  and AIM.areaInchargeLocation.address.constituency.constituencyId =:levelValue "); 
+		}
+		//sb.append(" group by AIM.areaInchargeLocation.address.booth.partNo order by AIM.areaInchargeLocation.address.booth.partNo");
 		Query query = getSession().createQuery(sb.toString());
 		if(assignIds != null && assignIds.size()>0){
 			query.setParameterList("assignIds", assignIds);
+		}
+		if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 3l){
+			query.setParameter("levelValue", levelValue);
+		}else if(levelId != null &&  levelValue != null && levelValue.longValue()>0l && levelId.longValue() == 4l){
+			query.setParameter("levelValue", levelValue);
 		}
 		return (Long)query.uniqueResult();
 		
