@@ -1157,6 +1157,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
  function buildJalavanilocationOverview(result,type,searchType){
 	  var alertSourceId=$("#alertTypeId").val();
 	 var str='';
+	 
+	
 	 str+='<div class="row">';
 		str+='<div class="col-sm-12">';
 			str+='<div class="table-responsive">';
@@ -1259,9 +1261,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'csv',
+					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="dataTable'+type+'"></i>',
+					titleAttr	: 'csv',
 				}
 			]
 		});
@@ -1276,9 +1277,8 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'csv',
+					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="dataTable'+type+'"></i>',
+					titleAttr	: 'csv',
 				}
 			]
 		});
@@ -1292,14 +1292,17 @@ function getJalavanilocationAndStatusDetailsInfo(type,alertCategoryId,searchType
 			"<'row'<'col-sm-5'i><'col-sm-7'p>>",
 			buttons: [
 				{
-					extend:    'csvHtml5',
-					text:      '<i class="fa fa-file-text-o" title="Excel"></i>',
-					titleAttr: 'csv',
+					text		:'<i class="fa fa-file-text-o generateExcelcdfdf" attr_id="dataTable'+type+'"></i>',
+					titleAttr	: 'csv',
 				}
 			]
 		});
 	 }
 }
+$(document).on("click",".generateExcelcdfdf",function(){
+	var id = $(this).attr("attr_id");
+	tableToExcel(id, 'JALAVANI ALERT DASHBOARD');
+});
 $(document).on("click",".getAmsPopUpCls",function(){
 	var alertCount = $(this).attr("attr_alertCount");
 	var categoryId = $(this).attr("attr_categoryId");
@@ -3994,4 +3997,9 @@ $(document).on("change","#departmentId",function(e){
 	$("#alertTypeId").val(0);
 	$("#alertTypeId").trigger("chosen:updated")
 	onloadCalls("change");
+});
+$(document).on("click",".linkedArticlesClickId",function(){	 
+	var temp=$(this).attr('src');
+	$(this).attr('src',$(".mainImage").attr('src'));
+	$(".mainImage").attr('src',temp);
 });

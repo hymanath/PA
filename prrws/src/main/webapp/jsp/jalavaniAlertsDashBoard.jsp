@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Jalavani Alert DashBoard</title>
+<title id="titleId"></title>
 <link href="Assests/less/bootstrap.less" rel="stylesheet" type="text/less">
 <link href="Assests/css/customLessAMS.less" rel="stylesheet" type="text/less"/>
 <link href="Assests/Plugins/DateTime/bootstrap-datetimepicker-build.less" type="text/less" rel="stylesheet"/>
@@ -452,22 +452,40 @@
 <script type="text/javascript">
 	var globalDepartmentId="${param.deptId}";
 	if(globalDepartmentId == 19){
+		$("#titleId").html("IT E&C Alerts DashBoard");
 		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>IT E&C ALERTS</span>");
 		$("#componentId").html("ALERTS OVERVIEW");
 	}else if(globalDepartmentId == 20){
+		$("#titleId").html("Panchayat Raj Alerts DashBoard");
 		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>PANCHAYAT RAJ ALERTS</span>");
 		$("#componentId").html("ALERTS OVERVIEW");
 	}else if(globalDepartmentId == 48){
+		$("#titleId").html("Rural Developement Alerts DashBoard");
 		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>RURAL DEVELOPMENT ALERTS</span>");
 		$("#componentId").html("ALERTS OVERVIEW");
 	}else if(globalDepartmentId == 49){
-		$("#nameHeaderId").html("Panchayat Raj,RD&News");
+		$("#titleId").html("Jalavani Alerts DashBoard");
+		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'> JALAVANI DASHBOARD</span>");
 		$("#componentId").html("JALAVANI");
-		$("#nameId").html("JALAVANI DASHBOARD");
+		//$("#nameId").html("JALAVANI DASHBOARD");
 	}else if(globalDepartmentId == 0){
+		$("#titleId").html("Alerts DashBoard");
 		$("#componentId").html("ALERTS OVERVIEW");
 		$("#nameHeaderId").html("<span style='position: relative;top: 10px;'>PACHAYAT RAJ, RD, RWS, IT E&C ALERTS</span>");
 	}
 </script> 
+<script>
+  var tableToExcel = (function() {
+  var uri = 'data:application/vnd.ms-excel;base64,'
+    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--><meta http-equiv="content-type" content="text/plain; charset=UTF-8"/></head><body><table>{table}</table></body></html>'
+    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
+    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
+  return function(table, name) {
+    if (!table.nodeType) table = document.getElementById(table)
+    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
+    window.location.href = uri + base64(format(template, ctx))
+  }
+})()
+</script>
 </body>
 </html>
