@@ -76,7 +76,7 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
             str.append(" group by date(model1.updatedTime),model.rwsIvrTypeId");  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
             str.append(" group by month(model1.updatedTime),year(model1.updatedTime),model.rwsIvrTypeId " +
-            		" order by month(model1.updatedTime),year(model1.updatedTime) ");
+            		" order by year(model1.updatedTime),month(model1.updatedTime) ");
           }
         Query query = getSession().createQuery(str.toString());
           query.setParameter("govtDeptId",49l);
@@ -160,7 +160,7 @@ public class RwsIvrAlertDetailsDAO extends GenericDaoHibernate<RwsIvrAlertDetail
             str.append(" group by date(aaotn.updated_time),IARD.rws_ivr_status ");  
           }else if(searchType != null && searchType.equalsIgnoreCase("monthWise")){
             str.append(" group by Month(aaotn.updated_time),year(aaotn.updated_time),IARD.rws_ivr_status " +
-            		"order by Month(aaotn.updated_time),year(aaotn.updated_time) ");
+            		"order by year(aaotn.updated_time),Month(aaotn.updated_time) ");
           }
           
           if(searchType != null && searchType.equalsIgnoreCase("dayWise")){
