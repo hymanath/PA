@@ -13,9 +13,9 @@ public class DocumentVO {
 	private String insertedTime;
 	private Double kms=0.00;
 	private List<DocumentVO> list = new ArrayList<DocumentVO>(0);
-	private Double completedPercentage,completedKms = 0.00;
-	private Long panchayatId,mandalId;
-	private String panchayatName,mandalName;
+	private Double completedPercentage=0.00,completedKms = 0.00;
+	private Long districtId,divisionId,subDivisionId,panchayatId,mandalId;
+	private String districtName,divisionName,subDivisionName,panchayatName,mandalName;
 	private List<String> datesList = new ArrayList<String>(0);
 	private String lattitude,longitude;
 	private Double totalAvgKms = 0.00,totalAvgPerc = 0.00;
@@ -139,6 +139,42 @@ public class DocumentVO {
 	}
 	public void setCompletedKms(Double completedKms) {
 		this.completedKms = completedKms;
+	}
+	public Long getDistrictId() {
+		return districtId;
+	}
+	public void setDistrictId(Long districtId) {
+		this.districtId = districtId;
+	}
+	public Long getDivisionId() {
+		return divisionId;
+	}
+	public void setDivisionId(Long divisionId) {
+		this.divisionId = divisionId;
+	}
+	public Long getSubDivisionId() {
+		return subDivisionId;
+	}
+	public void setSubDivisionId(Long subDivisionId) {
+		this.subDivisionId = subDivisionId;
+	}
+	public String getDistrictName() {
+		return districtName;
+	}
+	public void setDistrictName(String districtName) {
+		this.districtName = districtName;
+	}
+	public String getDivisionName() {
+		return divisionName;
+	}
+	public void setDivisionName(String divisionName) {
+		this.divisionName = divisionName;
+	}
+	public String getSubDivisionName() {
+		return subDivisionName;
+	}
+	public void setSubDivisionName(String subDivisionName) {
+		this.subDivisionName = subDivisionName;
 	}
 	
 	
