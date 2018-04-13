@@ -70,9 +70,21 @@ public class BasicVO implements Serializable{
 	
 	private Long wpPosCount=0l,wpNegCount=0l,tpPosCount=0l,tpNegCount=0l;
 	private Double wpPosPerc=0.0,wpNegperc=0.0,tpPosPerc=0.0,tpNegPerc=0.0;
+	private String monthType;
+	
 	public BasicVO(){}
 	
 	
+	public String getMonthType() {
+		return monthType;
+	}
+
+
+	public void setMonthType(String monthType) {
+		this.monthType = monthType;
+	}
+
+
 	public Long getWpPosCount() {
 		return wpPosCount;
 	}
