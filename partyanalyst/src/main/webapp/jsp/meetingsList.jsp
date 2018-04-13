@@ -2063,7 +2063,7 @@ function updateConductedStatus(meetingId,status){
 		data:{task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		setTimeout(function(){
-					$("#viewMeetings").trigger( "click" );
+					//$("#viewMeetings").trigger( "click" );
 				},500); 
 		getLevelWiseMeetingDetails();
 	});	
