@@ -1,6 +1,7 @@
 package com.itgrids.partyanalyst.dto;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 public class CoreDebateVO implements Serializable {
@@ -42,6 +43,10 @@ public class CoreDebateVO implements Serializable {
 	private Double debatePer=0.00;
 	private Double participantPer=0.00;
 	private String subCastName;
+	//Newly added for SMS poll
+	private List<CoreDebateVO> list = new ArrayList<CoreDebateVO>(0); 
+	private String option;
+	private String percentage;
 	public Long getId() {
 		return id;
 	}
@@ -252,6 +257,26 @@ public class CoreDebateVO implements Serializable {
 	public void setSubCastName(String subCastName) {
 		this.subCastName = subCastName;
 	}
+	public List<CoreDebateVO> getList() {
+		return list;
+	}
+	public void setList(List<CoreDebateVO> list) {
+		this.list = list;
+	}
+
 	
+	//
+	public String getOption() {
+		return option;
+	}
+	public void setOption(String option) {
+		this.option = option;
+	}
+	public String getPercentage() {
+		return percentage;
+	}
+	public void setPercentage(String percentage) {
+		this.percentage = percentage;
+	}
 	
 }

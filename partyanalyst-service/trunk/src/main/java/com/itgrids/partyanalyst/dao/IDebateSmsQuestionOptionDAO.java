@@ -12,4 +12,5 @@ public interface IDebateSmsQuestionOptionDAO extends GenericDao<DebateSmsQuestio
 	public List<Object[]> getDebateSmsQuestionsForSelectedDebate(Long debateId);
 	
 	public List<Object[]> getSmsQuestionDetails(Date fromDate,Date toDate,Long stateId);
+	public List<Object[]> getSmsQuestionOptionDetails(Date startDate,Date endDate);
 }

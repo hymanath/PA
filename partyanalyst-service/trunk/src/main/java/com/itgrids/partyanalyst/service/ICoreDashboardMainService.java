@@ -62,4 +62,6 @@ public interface ICoreDashboardMainService {
 	public List<CoreDebateVO> getOveralCandidateCasteDetails(String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList);
 	public List<CoreDebateVO> getCasteCategoryWisePartyDetailsClick(String startDateStr,String endDateStr,String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long casteId,String type,Long partyId);
 	public List<CoreDebateVO> getOveralCandidateCasteDetailsClick(String state,List<Long> debateLocationIdList,List<Long> debateParticipantLocationIdList,Long partyId,Long casteId,String type);
+	//Start get Sms Question Option Details List
+	public List getSmsQuestionOptionDetailsList(String startDateStr,String endDateStr);
 }

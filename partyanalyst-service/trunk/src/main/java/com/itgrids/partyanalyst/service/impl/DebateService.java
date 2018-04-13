@@ -304,6 +304,7 @@ public class DebateService implements IDebateService{
 				  public Object doInTransaction(TransactionStatus status) {
 					  List<Long> candidateIds = new ArrayList<Long>();
 					  Long debateId = null;
+					  boolean isQuestionEmpty = false;   //Flag to check whether Question is empty or not
 				  if(debateDetailsVO != null)
 				  {
 					  List<Integer> debateParticipantIds = null;
@@ -478,9 +479,14 @@ public class DebateService implements IDebateService{
 						    debateSmsQuestion = new DebateSmsQuestion();
 							debateSmsQuestion.setDebate(debate);
 							//debateSmsQuestion.setQuestion(escapeUnicode(StringEscapeUtils.escapeJava(selectOptionVO.getName())));
-							debateSmsQuestion.setQuestion(selectOptionVO.getName() !=null ? selectOptionVO.getName().toString():"");
+							//debateSmsQuestion.setQuestion(selectOptionVO.getName() !=null ? selectOptionVO.getName().toString():"");---
 							debateSmsQuestion.setIsDeleted("N");
-							debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
+							//Code to insert question if Question is not empty
+							if(selectOptionVO.getName() !=null && (selectOptionVO.getName().toString().trim().length() > 0) && !("".equals(selectOptionVO.getName().toString().trim()))){
+								debateSmsQuestion.setQuestion(selectOptionVO.getName());
+								isQuestionEmpty = true;
+								debateSmsQuestion = debateSmsQuestionDAO.save(debateSmsQuestion);
+							}
 						
 					  }
 					  List<SelectOptionVO> smsOptionsList = debateDetailsVO.getSmaOptionsList();
@@ -496,7 +502,9 @@ public class DebateService implements IDebateService{
 								debateSmsQuestionOption.setDebateSmsQuestion(debateSmsQuestion);
 							//}
 							debateSmsQuestionOption.setPercantage(selectOptionVO.getPerc());
+							if(isQuestionEmpty){
 							debateSmsQuestionOption = debateSmsQuestionOptionDAO.save(debateSmsQuestionOption);
+							}
 						}
 					  }
 					
