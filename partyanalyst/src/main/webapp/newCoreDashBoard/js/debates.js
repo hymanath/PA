@@ -2262,19 +2262,23 @@ function buildSMSPollDetails(result)
 	var str=''; 
 	str+='<div class="table-responsive scrollCls" style="padding:0px 10px;">';
 		str+='<table class="table table-bordered">';
-			str+='<tbody>';
-			for(var i in result){
-				str+='<tr>';
+			str+='<tbody>'; 
+			str+='<th><u><b><strong>'+' Summary '+'</strong></b></u></th>';
+			str+='<th><u><b><strong>'+' Question '+'</strong></b></u></th>';
+			str+='<th><u><b><strong>'+' Option1 '+'</strong></b></u></th><th><u><b><strong>'+' Option2 '+'</strong></b></u></th>';
+				for(var i in result){		
+					str+='<tr>';
 					str+='<td>'+result[i].name+'</td>';
-					for(var j in result[i].list){
-						if(result[i].list[j].percentage =='0.0'){
-							str+='<td>'+' - '+'</td><td>'+' - '+'</td>';
-						}else{
-							str+='<td>'+result[i].list[j].option+' - '+result[i].list[j].percentage+'</td>';
+					str+='<td>'+result[i].observerName+'</td>';
+						for(var j in result[i].list){
+							if(result[i].list[j].percentage =='0.0'){
+								str+='<td>'+' - '+'</td><td>'+' - '+'</td>';
+							}else{
+								str+='<td>'+result[i].list[j].option+' - '+result[i].list[j].percentage+'</td>';
+							}
 						}
-					}
-				str+='</tr>';
-			}
+					str+='</tr>';
+				}
 			str+='</tbody>';
 		str+='</table>';
 	str+='</div>';
