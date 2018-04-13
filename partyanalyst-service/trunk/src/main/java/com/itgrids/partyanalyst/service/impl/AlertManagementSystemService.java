@@ -17712,6 +17712,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						for (String string : datesList) {
 							BasicVO vo = new BasicVO();
 								vo.setDate(string);
+								vo.setMonthType("dayWise");
 								vo.setFeedbackStatusList(setFeedBackStatusTemplate(feedbackStatusList));
 							finalVOList.add(vo);
 						}
@@ -17859,6 +17860,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 					if(matchedMonthVO == null){
 						matchedMonthVO = new BasicVO();
 						matchedMonthVO.setDate(obj[3].toString()+"-"+obj[4].toString());
+						matchedMonthVO.setMonthType("monthWise");
 						matchedMonthVO.setFeedbackStatusList(setFeedBackStatusTemplate(feedbackStatusList));
 						
 						BasicVO matchedStatusVO = getmatchedFeedbackStatusVO(matchedMonthVO.getFeedbackStatusList(),(Long)obj[0]);
@@ -17930,6 +17932,7 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 						for (String string : datesList) {
 							BasicVO vo = new BasicVO();
 								vo.setDate(string);
+								vo.setMonthType("dayWise");
 								vo.setHamletVoterInfo(getProblemTypeTemplate());
 							finalVOList.add(vo);
 						}
@@ -18013,6 +18016,7 @@ public void setFeedBackIvrGraphdata(List<BasicVO> finalVoList,List<Object[]> mon
 					BasicVO matchedMonthVO = getmatchedFeedbackStatusMonthVo(finalVoList,obj[5].toString()+"-"+obj[6].toString());
 					if(matchedMonthVO == null){
 						matchedMonthVO = new BasicVO();
+						matchedMonthVO.setMonthType("monthWise");
 						matchedMonthVO.setDate(obj[5].toString()+"-"+obj[6].toString());
 						matchedMonthVO.setHamletVoterInfo(getProblemTypeTemplate());
 						finalVoList.add(matchedMonthVO);
@@ -18074,6 +18078,7 @@ public List<BasicVO> getJalavaniIvrRespondantsGraphDetailsInfo(String startDateS
 					for (String string : datesList) {
 						BasicVO vo = new BasicVO();
 							vo.setDate(string);
+							vo.setMonthType("dayWise");
 						finalVOList.add(vo);
 					}
 					setIvrRespondantGraphdata(finalVOList,dateAndMonthObjList,dayWise);
@@ -18145,6 +18150,7 @@ public void setIvrRespondantGraphdata(List<BasicVO> finalVoList,List<Object[]> m
 				if(matchedMonthVO == null){
 					matchedMonthVO = new BasicVO();
 					matchedMonthVO.setDate(obj[2].toString()+"-"+obj[3].toString());
+					matchedMonthVO.setMonthType("monthWise");
 					
 					if(obj[0].toString() !=null && obj[0].toString().equalsIgnoreCase("Y")){
 						matchedMonthVO.setPostiveCount((Long) obj[1]);
