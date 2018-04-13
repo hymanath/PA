@@ -1083,4 +1083,144 @@ public List<NominatedPostCandidateDtlsVO> getConstituencyWiseNominatedPostDetail
 	return finalList;
 	
 }
+public List<NominatedPostDetailsVO> getNominatedPostExpireDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId,Long activityMemberId,
+		Long expiryMonth){
+	List<NominatedPostDetailsVO> returnsList = new ArrayList<NominatedPostDetailsVO>();
+	try{
+		Map<Long,Set<Long>> locationAccessLevelMap = new HashMap<Long, Set<Long>>(0);
+		 Long userAccessLevelId=0l;
+		 Set<Long> locationValuesSet= null;
+		 List<Object[]> rtrnUsrAccssLvlIdAndVlusObjLst=activityMemberAccessLevelDAO.getLocationLevelAndValuesByActivityMembersId(activityMemberId);
+		    if(rtrnUsrAccssLvlIdAndVlusObjLst != null && !rtrnUsrAccssLvlIdAndVlusObjLst.isEmpty()){
+			   userAccessLevelId = commonMethodsUtilService.getLongValueForObject(rtrnUsrAccssLvlIdAndVlusObjLst.get(0)[0]);
+			   for (Object[] param : rtrnUsrAccssLvlIdAndVlusObjLst) {
+			  locationValuesSet= locationAccessLevelMap.get((Long)param[0]);
+				 if(locationValuesSet == null){
+					 locationValuesSet = new java.util.HashSet<Long>();
+					 locationAccessLevelMap.put((Long)param[0],locationValuesSet);
+				 }
+				 locationValuesSet.add(param[1] != null ? (Long)param[1]:0l);
+			}
+		   }
+		  //new ArrayList<Long>(locationValuesSet)
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		Date startDate = null;
+		Date endDate = null;
+		if(fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0 && fromDateStr != null && !fromDateStr.isEmpty() && fromDateStr.trim().length() > 0){
+			startDate = sdf.parse(fromDateStr);
+			endDate = sdf.parse(toDateStr);
+		}
+		List<Long> levelValues= new ArrayList<Long>();
+		
+		if(locationTypeId != null && locationTypeId.longValue() == 3l){
+			levelValues = districtDAO.getAllDistrictIds();
+		}else if(locationTypeId != null && locationTypeId.longValue() == 10l){
+			List<Long> districtids = new ArrayList<Long>();
+			Long[] ids = IConstants.AP_NEW_DISTRICTS_IDS;
+			for (Long obj : ids) {
+				districtids.add(obj);
+			}
+			levelValues= delimitationConstituencyAssemblyDetailsDAO.getAllParliamentStateIds(districtids);
+		}else if(locationTypeId != null && locationTypeId.longValue() == 4l){
+			levelValues= constituencyDAO.getConstituenciesIdsList(locationValues);
+		}else if(locationTypeId != null && locationTypeId.longValue() == 5l){
+			levelValues= tehsilDAO.getAllTehsilIds(locationValues);
+		}
+		Map<Long,NominatedPostDetailsVO> postMap = new HashMap<Long,NominatedPostDetailsVO>();
+		/*List<Object[]> postsList = nominatedPostDAO.getDepartmentWisePostDetails(new ArrayList<Long>(locationValuesSet), startDate, endDate, userAccessLevelId, year, boardLevelId, deptId,null);
+		//List<Object[]> applicationList = nominatedPostApplicationDAO.getDepartmentWiseApplicationDetails(locationValues, startDate, endDate, locationTypeId, year, boardLevelId, deptId);
+		if(commonMethodsUtilService.isListOrSetValid(postsList)){
+			for (Object[] param : postsList) {
+				NominatedPostDetailsVO deptVO = deptMap.get(commonMethodsUtilService.getLongValueForObject(param[0]));
+				if(deptVO == null){
+					deptVO =new NominatedPostDetailsVO();
+					deptVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));
+					deptVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));
+					deptMap.put(commonMethodsUtilService.getLongValueForObject(param[0]), deptVO);
+				}
+				
+				if(commonMethodsUtilService.getLongValueForObject(param[2]) == 3l || commonMethodsUtilService.getLongValueForObject(param[2]) == 4l){
+					deptVO.setFinalOrGOCnt(deptVO.getFinalOrGOCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+				if(commonMethodsUtilService.getLongValueForObject(param[2]) == 1l){
+					deptVO.setOpenCnt(deptVO.getOpenCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+				if(commonMethodsUtilService.getLongValueForObject(param[2]) == 4l){
+					deptVO.setGoIsuuedCnt(deptVO.getGoIsuuedCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+				if(commonMethodsUtilService.getLongValueForObject(param[2]) == 3l){
+					deptVO.setFinalizedCnt(deptVO.getFinalizedCnt()+commonMethodsUtilService.getLongValueForObject(param[4]));
+				}
+				deptVO.setTotalCount(deptVO.getTotalCount()+commonMethodsUtilService.getLongValueForObject(param[4]));
+			}
+		}*/
+		
+		
+		List<Object[]> expirePostList = nominatedPostGovtOrderDAO.getNominatedPostExpireMembersDetails(new ArrayList<Long>(locationValuesSet), startDate, endDate, userAccessLevelId, year, boardLevelId, deptId);
+		if(commonMethodsUtilService.isListOrSetValid(expirePostList)){
+			for (Object[] param : expirePostList) {
+					SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd");
+					Date expire= null;
+					List<Date> betweenDatesList = null;
+					String expireDate = commonMethodsUtilService.getStringValueForObject(param[10]);
+					if(expireDate != null && !expireDate.isEmpty()){
+						expire = sdf1.parse(expireDate);
+					}
+					Date dateWithoutTime = sdf1.parse(sdf1.format(new Date()));
+				if(expire != null){
+				  betweenDatesList = commonMethodsUtilService.getBetweenDates(dateWithoutTime, expire);
+				}
+				NominatedPostDetailsVO postVO = postMap.get(commonMethodsUtilService.getLongValueForObject(param[3]));
+				if(betweenDatesList != null && betweenDatesList.size()>0){
+	                if(betweenDatesList.size()<30 && expiryMonth.longValue() ==1l){
+	                	if(postVO == null){
+							postVO =new NominatedPostDetailsVO();
+							postMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), postVO);
+						}
+	                	//deptVO.setExpireOneMnth(deptVO.getExpireOneMnth()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					}else if(betweenDatesList.size()>30 && betweenDatesList.size()<60 && expiryMonth.longValue() ==2l){
+						if(postVO == null){
+							postVO =new NominatedPostDetailsVO();
+							postMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), postVO);
+						}
+						//deptVO.setExpireTwoMnth(deptVO.getExpireTwoMnth()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					}else if(betweenDatesList.size()>60 && betweenDatesList.size()<90 && expiryMonth.longValue() ==3l){
+						if(postVO == null){
+							postVO =new NominatedPostDetailsVO();
+							postMap.put(commonMethodsUtilService.getLongValueForObject(param[3]), postVO);
+						}
+						//deptVO.setExpireThreMnth(deptVO.getExpireTwoMnth()+commonMethodsUtilService.getLongValueForObject(param[3]));
+					}
+	                if(postVO != null){
+	                postVO.setId(commonMethodsUtilService.getLongValueForObject(param[0]));//candidateId
+					postVO.setName(commonMethodsUtilService.getStringValueForObject(param[1]));//candidate Name
+					postVO.setMobileNo(commonMethodsUtilService.getStringValueForObject(param[2]));
+					postVO.setPositionId(commonMethodsUtilService.getLongValueForObject(param[4]));
+					postVO.setPosition(commonMethodsUtilService.getStringValueForObject(param[5]));
+					postVO.setDeptId(commonMethodsUtilService.getLongValueForObject(param[6]));
+					postVO.setDeptName(commonMethodsUtilService.getStringValueForObject(param[7]));
+					postVO.setBoardId(commonMethodsUtilService.getLongValueForObject(param[8]));
+					postVO.setBoard(commonMethodsUtilService.getStringValueForObject(param[9]));
+					if(commonMethodsUtilService.getStringValueForObject(param[11]).equalsIgnoreCase("M")){
+						postVO.setGender("Male");	
+					}else if(commonMethodsUtilService.getStringValueForObject(param[11]).equalsIgnoreCase("F")){
+						postVO.setGender("Female");
+					}
+					postVO.setCasteCategory(commonMethodsUtilService.getStringValueForObject(param[12]));
+					postVO.setImage(commonMethodsUtilService.getStringValueForObject(param[13]));
+					postVO.setGoExprdDate(commonMethodsUtilService.getStringValueForObject(param[10]));
+	                }
+				}		
+			}
+		}
+		if(commonMethodsUtilService.isMapValid(postMap)){
+			returnsList.addAll(postMap.values());
+		}
+	}catch (Exception e) {
+		e.printStackTrace();
+		Log.error("Exception raised in getDepartmentWisePostAndApplicationDetails method of NominatedPostLocationDashboardService"+e);
+	}
+	return returnsList;
+}
+
 }

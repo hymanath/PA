@@ -21,4 +21,6 @@ public interface ICoreDashboardNominatedPostService
 			String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long departmentId);
 	public List<NominatedPostDetailsVO> getBoardWisePositions(List<Long> locationValues,String fromDateStr, 
 			String toDateStr,Long locationTypeId,Long boardLevelId,Long statusId,Long boardId);
+	public List<NominatedPostDetailsVO> getNominatedPostExpireDetails(List<Long> locationValues,String fromDateStr, String toDateStr,Long locationTypeId,String year,Long boardLevelId,Long deptId,Long activityMemberId,
+			Long expiryMonth);
 }

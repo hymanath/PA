@@ -35,7 +35,57 @@ public class NominatedPostDetailsVO {
 	private String position;
 	private Long positionCount=0l;
 	private Long boardCunt=0l;
+	private String mobileNo;
+	private Long deptId;
+	private String deptName;
+	private String gender;
+	private String casteCategory;
+	private String image;
+	private String goExprdDate;
 	
+	
+	public String getGoExprdDate() {
+		return goExprdDate;
+	}
+	public void setGoExprdDate(String goExprdDate) {
+		this.goExprdDate = goExprdDate;
+	}
+	public String getGender() {
+		return gender;
+	}
+	public void setGender(String gender) {
+		this.gender = gender;
+	}
+	public String getCasteCategory() {
+		return casteCategory;
+	}
+	public void setCasteCategory(String casteCategory) {
+		this.casteCategory = casteCategory;
+	}
+	public String getImage() {
+		return image;
+	}
+	public void setImage(String image) {
+		this.image = image;
+	}
+	public Long getDeptId() {
+		return deptId;
+	}
+	public void setDeptId(Long deptId) {
+		this.deptId = deptId;
+	}
+	public String getDeptName() {
+		return deptName;
+	}
+	public void setDeptName(String deptName) {
+		this.deptName = deptName;
+	}
+	public String getMobileNo() {
+		return mobileNo;
+	}
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
 	public String getPerc1() {
 		return Perc1;
 	}

@@ -1141,7 +1141,7 @@ public class MeetingLocationDashboardService implements IMeetingLocationDashboar
 						partyMeetingVO = new IdNameVO();
 						partyMeetingVO.setId(commonMethodsUtilService.getLongValueForObject(param[5]));
 						partyMeetingVO.setName(commonMethodsUtilService.getStringValueForObject(param[10]));
-						partyMeetingVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[11]));
+						partyMeetingVO.setDateStr(commonMethodsUtilService.getStringValueForObject(param[8]));
 						partyMeetings.add(partyMeetingVO);
 					}
 					IdNameVO sessionVO = getMatchedVOInList(partyMeetingVO.getIdnameList(),commonMethodsUtilService.getLongValueForObject(param[6]));
