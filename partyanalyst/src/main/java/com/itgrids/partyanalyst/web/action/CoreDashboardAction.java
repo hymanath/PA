@@ -6592,5 +6592,18 @@ public String getConsolidatedPartyMeetingExceptionReportMeetingLevelWise(){
 		}
 		return Action.SUCCESS;
 	}*/
+	public String getNominatedPostExpireDetails(){
+	    try{
+	      jObj = new JSONObject(getTask());
+	      Long activityMemberId = jObj.getLong("activityMemberId");
+	       List<Long> locationValues = convertJsonStringList(jObj.getJSONArray("locationValuesArr")); 
+	       Long expiryMonth = jObj.getLong("expiryMonth");
+	       nominatedPostDetailsVOList = coreDashboardNominatedPostService.getNominatedPostExpireDetails(locationValues,jObj.getString("fromDateStr"),jObj.getString("toDateStr"),jObj.getLong("locationTypeId"),jObj.getString("year"),jObj.getLong("boardLevelId"),
+	       		jObj.getLong("deptId"),activityMemberId,expiryMonth);
+	    }catch(Exception e){
+	      LOG.error("Exception raised at getDepartmentWisePostAndApplicationDetails() of LocationDashboardAction{}", e);
+	    }
+	    return Action.SUCCESS;
+	  }
 
 }//public List<AlertCoreDashBoardVO> getDistrictWiseAlertsDetails(String startDate,String endDate, Long stateId,int size,List<Long> alertTypeIds)>>>>>>> .r50089

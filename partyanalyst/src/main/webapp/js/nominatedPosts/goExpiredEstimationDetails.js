@@ -60,24 +60,173 @@ function locationNominatedWiseDate(locationTypeVal)
 	}
 	$("#levelWiseNominatedDetailsDivId").html(collapse);
 	for(var i in levelWiseNominatedArr){
-		
 		if(locationTypeVal == "department"){
 			getDepartmentWisePostAndApplicationDetails(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal);
-			
 		}else{
 			if(levelWiseNominatedArr[i].name == "state"){
 				getNominatedPostStateWiseCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
 			}else{
 				//$("[overview-level-new]").trigger("click");
 				getNominatedPostLocationWiseBoardLevelCount(levelWiseNominatedArr[i].id,levelWiseNominatedArr[i].name,locationTypeVal)
-				
 			}
-			
-			
 		}
-		
 	}
 }
+$(document).on("click",".expireCls",function(){
+		//$("#openModalDiv").modal('show');
+		$("#goExpiredEstDivId").modal("show");
+		$("#goExpiredOpenPostDetailsModalDivId").html("");	
+			$("#goExpiredEstDivId .modal-dialog").css("width","95%");
+			$("#TitleId").html("G.O Expired Member Details");
+			$(".paginationId").html("");
+		var locatioTypeId=$(this).attr("attr_loca_type_id"); 
+		var deptId=$(this).attr("attr_dept_id");
+		var expireMnth=$(this).attr("attr_expire_mnth");
+		getNominatedPostExpiryMembers(locatioTypeId,deptId,expireMnth);
+	});
+	
+function getNominatedPostExpiryMembers(locationTypeId,deptId,expireMnth){
+		//$("#nominated"+locationTypeVal+divId).html(spinner);
+		var jsObj ={
+			 "locationValuesArr" : [],
+			 "fromDateStr" : " ",
+			 "toDateStr" : " ",
+			 "locationTypeId" :locationTypeId,
+			 "year" : " ",
+			 "boardLevelId":locationTypeId,
+			 "deptId":deptId,
+			 "activityMemberId" :globalActivityMemberId,
+			 "expiryMonth":expireMnth
+		  }
+		$.ajax({
+			type : 'POST',
+			url : 'getNominatedPostExpireDetailsAction.action',
+			dataType : 'json',
+			data : {task:JSON.stringify(jsObj)}
+		}).done(function(result){
+			if(result !=null && result.length>0){
+				buildExpiryMemberDetails(result);
+			}else{
+				//$("#nominated"+locationTypeVal+divId).html("No Data Available");
+			}
+		});
+}
+function buildExpiryMemberDetails(result){
+		
+		var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablegoIssuedPostId">';
+				str+='<thead class="bg-E9">';
+					str+='<tr>';
+						str+='<th class="text-center">Department</th>';
+						str+='<th class="text-center">Board/ Corporation</th>';
+						str+='<th class="text-center">Position Level</th>';
+						str+='<th class="text-center">Image</th>';
+						str+='<th class="text-center">Name</th>';
+						str+='<th class="text-center">Gender</th>';
+						str+='<th class="text-center">Caste Category</th>';
+						str+='<th class="text-center">G.O Validity</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].deptName+'</td>';
+							str+='<td>'+result[i].board+'</td>';
+							str+='<td>'+result[i].position+'</td>';
+							str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" class="img-border" alt="profile" onerror="setDefaultImage(this);" style="width:50px;height:50px;"/></td>';
+							str+='<td>'+result[i].name+'</td>';
+							if(result[i].gender != null){
+							str+='<td>'+result[i].gender+'</td>';
+							}else{
+								str+='<td>-</td>';
+							}
+							str+='<td>'+result[i].casteCategory+'</td>';
+							if(result[i].goExprdDate !=null && result[i].goExprdDate.length>0){
+								str+='<td>'+result[i].goExprdDate+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		/* if(startIndex == 0 && totalPosCount > 10){
+			$(".paginationId").pagination({
+				items: totalPosCount,
+				itemsOnPage: 10,
+				cssStyle: 'light-theme',
+				hrefTextPrefix: '#pages-',
+				onPageClick: function(pageNumber) { 
+					var num=(pageNumber-1)*10;
+					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10)
+				}
+				
+			});
+		} */
+		$("#goExpiredOpenPostDetailsModalDivId").html(str);		
+	}
+function LevelWiseGoIssuedPostions(result,totalPosCount,startIndex,boardLevelId,statusId){
+		if(startIndex == 0){
+			totalPosCount=result[0].postCount;
+		}
+		var str='';
+		str+='<div class="table-responsive">';
+			str+='<table class="table table-condensed tableStyledGoIssued" id="dataTablegoIssuedPostId">';
+				str+='<thead class="bg-E9">';
+					str+='<tr>';
+						str+='<th class="text-center">Department</th>';
+						str+='<th class="text-center">Board/ Corporation</th>';
+						str+='<th class="text-center">Position Level</th>';
+						str+='<th class="text-center">Image</th>';
+						str+='<th class="text-center">Name</th>';
+						str+='<th class="text-center">Gender</th>';
+						str+='<th class="text-center">Caste Category</th>';
+						str+='<th class="text-center">G.O Validity</th>';
+					str+='</tr>';
+				str+='</thead>';
+				str+='<tbody>';
+					for(var i in result){
+						str+='<tr>';
+							str+='<td>'+result[i].department+'</td>';
+							str+='<td>'+result[i].board+'</td>';
+							str+='<td>'+result[i].position+'</td>';
+							str+='<td><img src="https://mytdp.com/images/cadre_images/'+result[i].image+'" class="img-border" alt="profile" onerror="setDefaultImage(this);" style="width:50px;height:50px;"/></td>';
+							str+='<td>'+result[i].candidateName+'</td>';
+							if(result[i].gender != null){
+							str+='<td>'+result[i].gender+'</td>';
+							}else{
+								str+='<td>-</td>';
+							}
+							str+='<td>'+result[i].casteCategory+'</td>';
+							if(result[i].date !=null && result[i].date.length>0){
+								str+='<td>'+result[i].date+'</td>';
+							}else{
+								str+='<td> - </td>';
+							}
+							
+						str+='</tr>';
+					}
+				str+='</tbody>';
+			str+='</table>';
+		str+='</div>';
+		if(startIndex == 0 && totalPosCount > 10){
+			$(".paginationId").pagination({
+				items: totalPosCount,
+				itemsOnPage: 10,
+				cssStyle: 'light-theme',
+				hrefTextPrefix: '#pages-',
+				onPageClick: function(pageNumber) { 
+					var num=(pageNumber-1)*10;
+					getLevelWiseGoIssuedPostions(boardLevelId,statusId,num,10)
+				}
+				
+			});
+		}
+		$("#goExpiredOpenPostDetailsModalDivId").html(str);		
+	}
 function getDepartmentWisePostAndApplicationDetails(locationTypeId,divId,locationTypeVal){
 		$("#nominated"+locationTypeVal+divId).html(spinner);
 		var jsObj ={
@@ -97,7 +246,7 @@ function getDepartmentWisePostAndApplicationDetails(locationTypeId,divId,locatio
 			data : {task:JSON.stringify(jsObj)}
 		}).done(function(result){
 			if(result !=null && result.length>0){
-				buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal);
+				buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal,locationTypeId);
 			}else{
 				$("#nominated"+locationTypeVal+divId).html("No Data Available");
 			}
@@ -117,7 +266,7 @@ function getNominatedPostStateWiseCount(locationTypeId,divId,locationTypeVal){
 		data : {task:JSON.stringify(jsObj)}
 	}).done(function(result){
 		if(result !=null && result.length>0){
-			buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal);
+			buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal,locationTypeId);
 		}else{
 			$("#nominated"+locationTypeVal+divId).html("No Data Available");
 		}
@@ -125,7 +274,7 @@ function getNominatedPostStateWiseCount(locationTypeId,divId,locationTypeVal){
 	});
 }
 
-function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal){
+function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeVal,locationTypeId){
 	var str='';
 	str+='<div class="table-responsive">';
 				str+='<table class="table table-bordered table-condensed tableStyleLed table_alignment table-noborder dataTableNomi'+locationTypeVal+divId+'" style="width:100%">';
@@ -163,18 +312,38 @@ function buildDepartmentWisePostAndApplicationDetails(result,divId,locationTypeV
 										str+='<td class="statusClickCls"  attr_type="goIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="4">'+result[i].goIsuuedCount+'</td>';
 										str+='<td class="statusClickCls"  attr_type="finalIssued" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="3">'+result[i].finalizedPost+'</td>';
 										str+='<td class="statusClickCls"  attr_type="open" attr_department_name="'+result[i].locationName+'" attr_department_id="0" attr_boardLevelId="2" attr_board_statusIds="1">'+result[i].openCount+'</td>';
-										str+='<td>'+result[i].expireOneMonth+'</td>';
-										str+='<td>'+result[i].exprireTwoMnth+'</td>';
-										str+='<td>'+result[i].expireThreeMnth+'</td>';
+										if(result[i].expireOneMnth != null && result[i].expireOneMnth!=0)
+											str+='<td style="cursor:pointer;" class="expireCls" attr_loca_type_id="'+locationTypeId+'" attr_dept_id="'+result[i].id+'" attr_expire_mnth="1"><u>'+result[i].expireOneMnth+'</u></td>';
+										else
+											str+='<td>-</td>';
+										
+										if(result[i].exprireTwoMnth != null && result[i].exprireTwoMnth!=0)
+											str+='<td style="cursor:pointer;" class="expireCls" attr_loca_type_id="'+locationTypeId+'" attr_dept_id="'+result[i].id+'" attr_expire_mnth="2"><u>'+result[i].exprireTwoMnth+'</u></td>';
+										else
+											str+='<td>-</td>';
+										
+										if(result[i].expireThreeMnth != null && result[i].expireThreeMnth!=0)
+											str+='<td style="cursor:pointer;" class="expireCls" attr_loca_type_id="'+locationTypeId+'" attr_dept_id="'+result[i].id+'" attr_expire_mnth="3"><u>'+result[i].expireThreeMnth+'</u></td>';
+										else
+											str+='<td>-</td>';
 									}else{
 										str+='<td>'+result[i].name+'</td>';
 										str+='<td>'+result[i].totalCount+'</td>';
 										str+='<td>'+result[i].goIsuuedCnt+'</td>';
 										str+='<td>'+result[i].finalizedCnt+'</td>';
 										str+='<td>'+result[i].openCnt+'</td>';
-										str+='<td>'+result[i].expireOneMnth	+'</td>';
-										str+='<td>'+result[i].expireTwoMnth+'</td>';
-										str+='<td>'+result[i].expireThreMnth+'</td>';
+										if(result[i].expireOneMnth != null && result[i].expireOneMnth!=0)
+											str+='<td style="cursor:pointer;" class="expireCls" attr_loca_type_id="'+locationTypeId+'" attr_dept_id="'+result[i].id+'" attr_expire_mnth="1"><u>'+result[i].expireOneMnth	+'</u></td>';
+										else
+											str+='<td>-</td>';
+										if(result[i].expireTwoMnth != null && result[i].expireTwoMnth!=0)
+											str+='<td style="cursor:pointer;" class="expireCls" attr_loca_type_id="'+locationTypeId+'" attr_dept_id="'+result[i].id+'" attr_expire_mnth="2"><u>'+result[i].expireTwoMnth+'</u></td>';
+										else
+											str+='<td>-</td>';
+										if(result[i].expireThreMnth != null && result[i].expireThreMnth!=0)
+											str+='<td style="cursor:pointer;" class="expireCls" attr_loca_type_id="'+locationTypeId+'" attr_dept_id="'+result[i].id+'" attr_expire_mnth="3"><u>'+result[i].expireThreMnth+'</u></td>';
+										else
+											str+='<td>-</td>';
 									}
 									
 								str+='</tr>';
@@ -664,3 +833,9 @@ function buildDepartMentAndBoardWisePositinsStatusCount(result){
 		
 	});
 }
+
+$(document).on("click",".closeShowPdfCls1",function(){
+    setTimeout(function(){
+      $('body').addClass("modal-open");
+    }, 500);                     
+  });

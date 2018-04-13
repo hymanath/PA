@@ -19065,5 +19065,10 @@
    			<param name="root">partyMeetingsVO</param>
    		</result>
 	</action>
+	<action name="getNominatedPostExpireDetailsAction" class="coreDashboardAction" method="getNominatedPostExpireDetails">
+		<result type="json" name="success">
+				<param name="root">nominatedPostDetailsVOList</param>
+		</result>
+	</action>
  </package>
 </struts>
