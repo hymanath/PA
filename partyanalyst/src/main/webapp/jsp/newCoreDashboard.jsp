@@ -2489,7 +2489,23 @@
 											</div>
 										  </div>
 										</div>
-									  </div>
+							</div>
+								 <!-- SMS POLL div starts-->
+								<div class="panel-group m_top10" id="debatesCollapse8" role="tablist" aria-multiselectable="true">
+									<div class="panel panel-default panelNew">
+										<div class="panel-heading" role="tab" id="headingDebates8">
+											<a class="collapsed collapseDebatesIcon" role="button" data-toggle="collapse" data-parent="#debatesCollapse8" href="#collapseDebates8" aria-expanded="false" aria-controls="collapseDebates8">
+											   <h4><span class="headingColor text-capitalize">SMS POLL</span></h4>
+											</a>
+										</div>
+										<div id="collapseDebates8" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingDebates8">
+											<div class="panel-body">
+												<div id="smsPollDetailsDivId"></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<!-- SMS POLL div ends-->
 								</div>
 							</div>
 						</div>

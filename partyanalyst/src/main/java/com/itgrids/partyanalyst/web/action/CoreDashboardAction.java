@@ -148,6 +148,7 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 	
 	private ICoreDashboardCoreService coreDashboardCoreService;
 	private List<CoreDebateVO> codeDebateVoList;
+	private List<CoreDebateVO> codeDebateVoSMSList;
 	private INewsCoreDashBoardService newsCoreDashBoardService;
 	private IdNameVO idNameVO; 
 	private List<CadreReportVO> cadreDtlsList;
@@ -901,6 +902,14 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 		this.codeDebateVoList = codeDebateVoList;
 	}
 	
+	public List<CoreDebateVO> getCodeDebateVoSMSList() {
+		return codeDebateVoSMSList;
+	}
+
+	public void setCodeDebateVoSMSList(List<CoreDebateVO> codeDebateVoSMSList) {
+		this.codeDebateVoSMSList = codeDebateVoSMSList;
+	}
+	
 	public INewsCoreDashBoardService getNewsCoreDashBoardService() {
 		return newsCoreDashBoardService;
 	}
@@ -1362,6 +1371,45 @@ public class CoreDashboardAction extends ActionSupport implements ServletRequest
 				userDataVO.setSubList(committeeDataVOList);
 		}catch(Exception e) {
 			LOG.error("Exception raised at execute() in CoreDashBoard Action class", e);
+		}
+		return Action.SUCCESS;
+	}
+	//SMSPollQuestionDetails method
+	public String smsQuestionOptionDetails(){
+		try {
+			
+			final HttpSession session = request.getSession();
+			
+			final RegistrationVO user = (RegistrationVO) session.getAttribute("USER");
+			Long registrationId = null;
+			if(user == null || user.getRegistrationID() == null)
+				return ERROR;
+			
+			
+			registrationId = user.getRegistrationID();
+			
+			boolean noaccess = false;
+			List<String> entitlements = null;
+			if(user.getEntitlements() != null && user.getEntitlements().size()>0){
+				entitlements = user.getEntitlements();
+				if(!(entitlements.contains("CORE_DASHBOARD_USER") || entitlements.contains("CORE_DASHBOARD_ADMIN_USER"))){
+					noaccess = true ;
+				}
+			}
+			
+			if(noaccess)
+				return "error";
+			
+			request = ServletActionContext.getRequest();
+			String url = request.getRequestURL().toString();
+			url = url.substring(url.lastIndexOf("/")+1,url.indexOf(".action"));
+			session.setAttribute("URL",url);
+			
+			jObj = new JSONObject(getTask());	
+			codeDebateVoSMSList = coreDashboardMainService.getSmsQuestionOptionDetailsList(jObj.getString("startDate").toString(),jObj.getString("endDate").toString());
+			
+		}catch(Exception e) {
+			LOG.error("Exception raised at smsQuestionOptionDetails() in CoreDashBoard Action class", e);
 		}
 		return Action.SUCCESS;
 	}
