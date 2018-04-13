@@ -13267,6 +13267,14 @@
 		<result name="error" type="redirect">loginAction.action</result>
 	</action>
 	
+	<!-- SMS Poll Question Details Start -->
+	<action name="getSMSPollQuestionDetailsAction" class="coreDashboardAction" method="smsQuestionOptionDetails">
+		<result type="json" name="success">
+			<param name="root">codeDebateVoSMSList</param>
+		</result>
+	</action>
+	<!-- SMS Poll Question Details End -->
+	
 	<action name="dailyMonthlyPartyActivities" class="coreDashboardAction" method="sessionCheckingForCoreDashBoard">
 		<result name="success">/jsp/newCoreDashboard.jsp</result>
 		<result name="input" type="redirect">loginAction.action</result>

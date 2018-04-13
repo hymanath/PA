@@ -3911,7 +3911,7 @@
 	  <property name="casteCategoryDAO"  ref="casteCategoryDAO"></property>
 	  <property name="candidateDAO"  ref="candidateDAO"></property>
 	  <property name="casteStateDAO"  ref="casteStateDAO"></property>
-	  
+	  <property name="debateSmsQuestionOptionDAO"  ref="debateSmsQuestionOptionDAO"></property>
 	</bean>
 	
 	<bean name="newsCoreDashBoardService" class="com.itgrids.partyanalyst.service.impl.NewsCoreDashBoardService">
