@@ -2196,7 +2196,7 @@ function getManWorksExpenditureAbstarct(){
 				$(".ExpenditureAllCls").html(ajaxresp[0].total1617+' / '+ajaxresp[0].total1718+'<small style="font-weight:bold;"> ('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>)</small>');
 				//str+='<h5>('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>)</h5>';
 			}else{
-				$(".ExpenditureAllCls").html(ajaxresp[0].total1617+' / '+ajaxresp[0].total1718+'<small style="font-weight:bold;"> ('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-up text-success" aria-hidden="true"></i></span>)</small>');
+				$(".ExpenditureAllCls").html(ajaxresp[0].total1617+' / '+ajaxresp[0].total1718+'<small style="font-weight:bold;"> ('+ajaxresp[0].percentage+'%<span><i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>)</small>');
 				//str+='<h5>('+ajaxresp[0].percentage+'<span><i class="fa fa-arrow-down text-danger" aria-hidden="true"></i></span>)</h5>';
 			}	
 		  }

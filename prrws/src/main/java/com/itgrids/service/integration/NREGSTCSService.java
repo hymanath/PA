@@ -9384,6 +9384,7 @@ public class NREGSTCSService implements INREGSTCSService{
 						inputVO.setSublocationType("district");
 						inputVO.setLocationType("district");
 						inputVO.setLocationId(inputVO.getDistrictId());
+						inputVO.setLocationIdStr(null);
 						
 						str = convertingInputVOToString(inputVO);
 						
