@@ -1378,6 +1378,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockTyp
 	
 	str+='<div class="row">';
 		str+='<div class="col-sm-12 m_top10" expand-main="false">';
+		str+='<div class="table-responsive">';
 			str+='<div class="classicView">';
 				str+='<table style="background-color:#fff;" id="dataTable" class="table table-bordered ">';
 					str+='<thead>';
@@ -1519,6 +1520,7 @@ function buildAlertDtlsBasedOnStatusClick(result,statusName,statuscount,blockTyp
 			str+='</div>';
 		str+='</div>';
 		str+='<div id="rightSideExpandView"></div>';
+	str+='</div>';
 	str+='</div>';
 	$("#alertManagementPopupBody").html(str);
 	$("#dataTable").dataTable({
@@ -3525,7 +3527,14 @@ function buildJalavaniStatusWiseSummaryGraphDetailsInfo(result,divId){
 	if(result !=null && result.length>0){
 		for(var i in result){
 			if(result[i].count !=null && result[i].count>0){
-				categoryDateArr.push(result[i].date);
+				if(result[i].monthType == "monthWise"){
+					var monthAndYearSpilt=result[i].date.split('-');
+					var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+					var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+					categoryDateArr.push(changedMonthYear);
+				}else{
+					categoryDateArr.push(result[i].date);
+				}
 				if(result[i].feedbackStatusList !=null && result[i].feedbackStatusList.length>0){
 					for(var j in result[i].feedbackStatusList){
 						if(result[i].feedbackStatusList[j].id==1){
@@ -3757,7 +3766,16 @@ function buildJalavaniIveGraph(result,divId){
 	
 	if(result != null && result.length > 0){
 		for(var i in result){
-			categoryDateArr.push(result[i].date);
+			if(result[i].monthType == "monthWise"){
+				var monthAndYearSpilt=result[i].date.split('-');
+				var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+				var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+				categoryDateArr.push(changedMonthYear);
+			}else{
+				categoryDateArr.push(result[i].date);
+			}
+			
+			
 			if(result[i].hamletVoterInfo != null && result[i].hamletVoterInfo.length > 0){
 				for(var j in result[i].hamletVoterInfo){
 					if(result[i].hamletVoterInfo[j].id == 1){
@@ -3896,11 +3914,22 @@ function buildJalavaniIvrRespondantGraph(result,divId){
 	
 	if(result != null && result.length > 0){
 		for(var i in result){
-			categoryDateArr.push(result[i].date);
+			if(result[i].monthType == "monthWise"){
+				var monthAndYearSpilt=result[i].date.split('-');
+				var monthNameObj={'1':'JAN','2':'FEB','3':'MAR','4':'APR','5':'MAY','6':'JUN','7':'JUY','8':'AUG','9':'SEP','10':'OCT','11':'NOV','12':'DEC'};
+				var changedMonthYear = ""+monthNameObj[monthAndYearSpilt[0]]+"-"+monthAndYearSpilt[1];
+				categoryDateArr.push(changedMonthYear);
+			}else{
+				categoryDateArr.push(result[i].date);
+			}
+			
+			
 			satisfiedArr.push({y:result[i].positivePerc,"extra":result[i].postiveCount});
 			notSatisfiedArr.push({y:result[i].negativePerc,"extra":result[i].negativeCount});	
 		}
 	}
+	
+	
 	$('#'+divId).highcharts({
 		chart: {
 			type: 'spline'
