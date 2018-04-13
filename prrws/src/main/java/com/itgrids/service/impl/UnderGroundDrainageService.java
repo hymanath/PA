@@ -2444,8 +2444,8 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 		List<DocumentVO> finalVOList = new ArrayList<DocumentVO>(0);
 		try {
 			Date startDate = null,endDate = null;
-			startDate = dateUtilService.getDateBeforeNDays(15);
-			endDate = dateUtilService.getCurrentDateAndTime();
+			//startDate = dateUtilService.getDateBeforeNDays(15);
+			//endDate = dateUtilService.getCurrentDateAndTime();
 			
 			//0-docId,1-path,2-date
 			List<Object[]>  documentList = govtWorkProgressDocumentDAO.getWorkZoneDocumentDetailsInfo(startDate,endDate,govtWorkId);
