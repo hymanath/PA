@@ -2868,6 +2868,7 @@ public LocationFundDetailsVO getTotalSchemes(InputVO inputVO){
 				if(inputVO.getSchemeIdsList() == null || inputVO.getSchemeIdsList().size() == 0){
 					if(AllVO != null){
 						returnVO.setTotalAmt(String.valueOf(Double.valueOf(returnVO.getTotalAmt().replaceAll(",", ""))+Double.valueOf(AllVO.getTotalAmt())));
+						returnVO.setTotalAmt(new BigDecimal(returnVO.getTotalAmt()).setScale(3, BigDecimal.ROUND_HALF_UP).toString());
 					}
 				}
 			}

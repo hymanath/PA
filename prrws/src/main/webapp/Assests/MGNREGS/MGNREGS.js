@@ -6695,11 +6695,11 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<div class="row">';
 					str+='<div class="col-sm-6">';
 						str+='<p>District</p>';
-						str+='<h2 class="text-center m_top10" style="font-size:16px">'+result[0].subList[0].totalPendinAmount+'</h2>';
+						str+='<h2 class="text-center m_top10" style="font-size:14px">'+result[0].subList[0].totalPendinAmount+'</h2>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 						str+='<p>State</p>';
-						str+='<h2 class="text-center m_top10" style="font-size:16px">'+result[0].subList[1].totalPendinAmount+'</h2>';
+						str+='<h2 class="text-center m_top10" style="font-size:14px">'+result[0].subList[1].totalPendinAmount+'</h2>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -6755,11 +6755,11 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<div class="row">';
 					str+='<div class="col-sm-6">';
 						str+='<p>District</p>';
-						str+='<h2 class="text-center">'+result[0].subList[0].today+'</h2>';
+						str+='<h2 class="text-center" style="font-size:16px">'+result[0].subList[0].today+'</h2>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 						str+='<p>State</p>';
-						str+='<h2 class="text-center">'+result[0].subList[1].today+'</h2>';
+						str+='<h2 class="text-center" style="font-size:16px">'+result[0].subList[1].today+'</h2>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';
@@ -6921,15 +6921,18 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 			str+='</div>';
 		str+='</div>';
 		if(levelId == 3 || levelId == "3"){
+			var stateper=(result[0].subList[0].yetCompleted/result[0].subList[0].started)*100;
 			if(result[0].subList[0].yetCompleted != null && result[0].subList[0].yetCompleted > 0)
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			else
 				str+='<div class="panel-black-white panel-block-white-low text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 				str+='<small class="panel-block-white-title text-capitalize text-center">STATE&nbsp;LEVEL&nbsp;-&nbsp;PENDING</small>';
-				str+='<h2 class="text-center">'+result[0].subList[0].yetCompleted+'</h2>';
+				str+='<h2 class="text-center">'+stateper.toFixed(2)+'%</h2>';
 			str+='</div>';
 		}
 		else if(levelId == 4 || levelId == "4"){
+			var distper=(result[0].subList[0].yetCompleted/result[0].subList[0].started)*100;
+			var stateper=(result[0].subList[1].yetCompleted/result[0].subList[1].started)*100;
 			if(result[0].subList[0].yetCompleted != null && result[0].subList[0].yetCompleted > 0)
 				str+='<div class="panel-black-white panel-block-white-high text-center" overview-state="'+type+'" style="border-top:1px solid #333;">';
 			else
@@ -6938,11 +6941,11 @@ function buildNREGSAbstractDataByTypeNew(type,result,blockName,locId,locType,lev
 				str+='<div class="row">';
 					str+='<div class="col-sm-6">';
 						str+='<p>District</p>';
-						str+='<h2 class="text-center">'+result[0].subList[0].yetCompleted+'</h2>';
+						str+='<h2 class="text-center">'+distper.toFixed(2)+'%</h2>';
 					str+='</div>';
 					str+='<div class="col-sm-6">';
 						str+='<p>State</p>';
-						str+='<h2 class="text-center">'+result[0].subList[1].yetCompleted+'</h2>';
+						str+='<h2 class="text-center">'+stateper.toFixed(2)+'%</h2>';
 					str+='</div>';
 				str+='</div>';
 			str+='</div>';

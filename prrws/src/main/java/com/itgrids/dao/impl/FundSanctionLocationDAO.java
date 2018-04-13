@@ -115,7 +115,8 @@ public class FundSanctionLocationDAO extends GenericDaoHibernate<FundSanctionLoc
 		 StringBuilder sb = new StringBuilder();
 		 
 		 sb.append(" select sum(modal.fundSanction.sactionAmount),modal.fundSanction.govtScheme.govtSchemeId,modal.fundSanction.grantType.grantTypeId  " +
-		 		"from FundSanctionLocation modal where modal.isDeleted = 'N' and modal.fundSanction.isDeleted = 'N' ");
+		 		"from FundSanctionLocation modal where modal.isDeleted = 'N' and modal.fundSanction.isDeleted = 'N'"
+		 		+ " and modal.fundSanction.goNoDate is not null and modal.fundSanction.goNoDate != '' ");
 		 
 		 if(inputVO.getFinancialYrIdList() != null && inputVO.getFinancialYrIdList().size() >0){
 			 sb.append(" and modal.fundSanction.financialYear.financialYearId in (:financialYrIds) ");

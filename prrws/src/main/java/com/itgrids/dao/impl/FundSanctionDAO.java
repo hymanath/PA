@@ -80,7 +80,7 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 				+ " left join locationAddress.parliament parliament "
 				+ " left join locationAddress.tehsil  tehsil "
 				+ " left join locationAddress.panchayat panchayat ");
-		queryStr.append(" where model.isDeleted ='N' ");
+		queryStr.append(" where model.isDeleted ='N' and model.fundSanction.goNoDate is not null and model.fundSanction.goNoDate != '' ");
 		
 		if(searchScopeValuesList != null && searchScopeValuesList.size()>0){
 			if(searchScopeId != null && searchScopeId.longValue() == IConstants.STATE_LEVEL_SCOPE_ID){
@@ -725,7 +725,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		}else if(locationScopeId != null && locationScopeId.longValue() == IConstants.VILLAGE_LEVEL_SCOPE_ID ){
 			sb.append(" ,modal.locationAddress.panchayat.panchayatId,modal.locationAddress.panchayat.panchayatName " );
 		}
-		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N' ");
+		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N'"
+				+ " and modal.fundSanction.goNoDate is not null and modal.fundSanction.goNoDate != '' ");
 		
 		/*if(locationScopeId != null && locationScopeId.longValue() >0l ){
 			sb.append(" and modal.locationScopeId = :locationScopeId  " );
@@ -870,7 +871,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		StringBuilder sb = new StringBuilder();
 		sb.append(" select sum(modal.fundSanction.sactionAmount) " );
 		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N' and modal.fundSanction.isDeleted = 'N' " +
-				" and modal.locationAddress.state.stateId=1");
+				" and modal.locationAddress.state.stateId=1"
+				+ " and modal.fundSanction.goNoDate is not null and modal.fundSanction.goNoDate != '' ");
 		if(financialYearIdsList != null && financialYearIdsList.size() >0l ){
 			sb.append(" and modal.fundSanction.financialYearId in (:financialYearIdsList)  " );
 		}
@@ -942,7 +944,8 @@ public class FundSanctionDAO extends GenericDaoHibernate<FundSanction, Long> imp
 		sb.append(" select sum(modal.fundSanction.sactionAmount) " );
 		sb.append(" ,modal.fundSanction.grantType.grantTypeId,modal.fundSanction.grantType.type " );
 		sb.append(" from FundSanctionLocation modal where modal.isDeleted='N' and modal.fundSanction.isDeleted = 'N' " +
-				" and modal.locationAddress.state.stateId=1  ");
+				" and modal.locationAddress.state.stateId=1  "
+				+ " and modal.fundSanction.goNoDate is not null and modal.fundSanction.goNoDate != '' ");
 		/*if(locationScopeId != null && locationScopeId.longValue() >0l ){
 			sb.append(" and modal.locationScopeId = :locationScopeId  " );
 		}*/
