@@ -125,7 +125,8 @@ public class RurbanClusterPhase {
 	public void setRurbanCluster(RurbanCluster rurbanCluster) {
 		this.rurbanCluster = rurbanCluster;
 	}
-	@Column(name="rurban_mission_phase_id")
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "rurban_mission_phase_id", insertable = false, updatable = false)
 	public RurbanMissionPhase getRurbanMissionPhase() {
 		return rurbanMissionPhase;
 	}
