@@ -21,7 +21,7 @@ public class RUrbanDashboardController {
 	private IRUrbanDashboardService rUrbanDashboardService;
 	
 	@RequestMapping(value ="/rurbanDashboard",method = RequestMethod.GET)
-    public String taxesDashboard(ModelMap model) {
+    public String rurbanDashboard(ModelMap model) {
 		return "rUrbanDashboard";
     }
 }
