@@ -1078,12 +1078,12 @@ public class PartyMeetingService implements IPartyMeetingService{
 					pmmt.setPartyMeetingMinuteStatusId(statusId);
 										
 					partyMeetingMinuteTrackingDAO.save(pmmt);
-					//document saving
+					/*//document saving
 					PartyMeetingDocument meetingDocument = partyMeetingDocumentDAO.get(partyMeetingId);
 					if(meetingDocument != null){
 						meetingDocument.setPartyMeetingMinuteId(pmm.getPartyMeetingMinuteId());
 						meetingDocument = partyMeetingDocumentDAO.save(meetingDocument);
-					}
+					}*/
 					return "success";
 				  }
 			
