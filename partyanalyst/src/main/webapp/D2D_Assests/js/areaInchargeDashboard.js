@@ -518,7 +518,10 @@ $(document).on("click",".makeInchargeCls",function(){
 		$("#btn"+$(this).attr('attr_count')).show();
   }
   else{
+	  $("#areaInchargeassignedBoothsDivId").html('');
+	  $("#areaInchargeUnAssignedboothsDivId").html('');
 	  $("#btn"+$(this).attr('attr_count')).hide();
+	  $(".submitBtnCls").hide();
   }
 });
   
