@@ -17442,7 +17442,9 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 									BasicVO matchedTypeVO = getmatchedFeedbackStatusVO(matchedStatusVo.getHamletVoterInfo(),(Long)obj[3]);
 									if(matchedTypeVO != null){
 										if(obj[4] !=null && obj[4].toString().equalsIgnoreCase("Y")){
-											matchedTypeVO.setPostiveCount((Long) obj[5]);
+											if(matchedTypeVO.getPostiveCount() == 0l || matchedTypeVO.getPostiveCount() < (Long) obj[5]){
+												matchedTypeVO.setPostiveCount((Long) obj[5]);
+											}
 											
 											if(obj[8] !=null && obj[8].toString().equalsIgnoreCase("Y")){
 												matchedTypeVO.setPositiveAlertPositiveRespondentCount(obj[7] !=null ? (Long)obj[7]:0l);
@@ -17451,7 +17453,10 @@ public AmsKeyValueVO getDistrictWiseInfoForAms(Long departmentId,Long LevelId,Lo
 											}
 											
 										}else if(obj[4] !=null && obj[4].toString().equalsIgnoreCase("N")){
-											matchedTypeVO.setNegativeCount((Long) obj[5]);
+											if(matchedTypeVO.getNegativeCount() == 0l || matchedTypeVO.getNegativeCount() < (Long) obj[5]){
+												matchedTypeVO.setNegativeCount((Long) obj[5]);
+											}
+											
 											
 											if(obj[8] !=null && obj[8].toString().equalsIgnoreCase("Y")){
 												matchedTypeVO.setNegativeAlertPositiveRespondentCount(obj[7] !=null ? (Long)obj[7]:0l);
