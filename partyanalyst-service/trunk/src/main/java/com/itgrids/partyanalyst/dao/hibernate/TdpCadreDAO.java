@@ -9983,7 +9983,7 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 		   return query.list();
 	   }
 
-	   public List<Object[]> getAreaInchargeDetails(String voterId,String mobileNo,String memberShipId){
+	   public List<Object[]> getAreaInchargeDetails(String voterId,String mobileNo,String memberShipId,String name){
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
 					" tdpCadre.age,tdpCadre.gender,tdpCadre.houseNo," +
@@ -10002,6 +10002,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	        if(memberShipId != null && !memberShipId.isEmpty()){
 	        	sb.append(" and tdpCadre.memberShipNo =:memberShipId ");	
 	        }
+	        if(name != null && !name.isEmpty()){
+	        	sb.append(" and tdpCadre.firstname =:name ");	
+	        }
 	        Query query = getSession().createQuery(sb.toString());
 	        if(voterId != null && !voterId.isEmpty()){
 	        	query.setParameter("voterId", voterId);
@@ -10011,6 +10014,9 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 	        }
 	        if(memberShipId != null && !memberShipId.isEmpty()){
 	        	query.setParameter("memberShipId", memberShipId);
+	        }
+	        if(name != null && !name.isEmpty()){
+	        	query.setParameter("name", name);
 	        }
 			return query.list();
 			
