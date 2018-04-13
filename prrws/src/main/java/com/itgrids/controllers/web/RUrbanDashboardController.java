@@ -4,7 +4,9 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import com.itgrids.service.IRUrbanDashboardService;
 
@@ -17,4 +19,9 @@ public class RUrbanDashboardController {
 	
 	@Autowired
 	private IRUrbanDashboardService rUrbanDashboardService;
+	
+	@RequestMapping(value ="/rurbanDashboard",method = RequestMethod.GET)
+    public String taxesDashboard(ModelMap model) {
+		return "rUrbanDashboard";
+    }
 }
