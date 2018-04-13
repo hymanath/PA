@@ -311,17 +311,20 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="locationLevelHeadingId"></h4>
+        <h3 class="font_BebasNeue" id="locationLevelHeadingId"></h3>
       </div>
       <div class="modal-body">
        <div id="locationLevelFirstBlockDivId"></div>
        <div id="locationLevelSecondBlockDivId"></div>
        <div id="locationLevelThirdBlockDivId"></div>
-	   <div class="row">	
+	   <div class="row">
 			<div class="col-sm-12 m_top10">
+				<h3 class="font_BebasNeue">MONITERING SYSTEM</h3>
+			</div>
+			<div class="col-sm-12">
 				<div id="locationWiseWorkStagesDivId"></div>
 			</div>
-			<div class="col-sm-12 m_top10">
+			<div class="col-sm-12">
 				<div id="locationLevelFourthBlockDivId"></div>
 			</div>
 	   </div>
@@ -344,40 +347,18 @@
 				<div id="workZoneWorkStatusBlockDivId"></div>
 			</div>
 			<div class="col-sm-4">
-				<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-					  <!-- Indicators -->
-					
-
-					  <!-- Wrapper for slides -->
-					  <div class="carousel-inner" role="listbox">
-						<div class="item active">
-						  <img src="http://www.mydepartments.in/PRRWS/govt_works/2018/3-28/8df9440b-711e-4bc8-b1af-6702df229772.jpg" alt="...">
-						  
-						</div>
-						<div class="item">
-						  <img src="http://www.mydepartments.in/PRRWS/govt_works/2018/3-28/8df9440b-711e-4bc8-b1af-6702df229772.jpg" alt="...">
-						  
-						</div>
-						<div class="item">
-						  <img src="http://www.mydepartments.in/PRRWS/govt_works/2018/3-28/8df9440b-711e-4bc8-b1af-6702df229772.jpg" alt="...">
-						  
-						</div>
-						<div class="item">
-						  <img src="http://www.mydepartments.in/PRRWS/govt_works/2018/3-28/d67c449d-2154-43f5-bdde-22a5c1701a30.jpg" alt="...">
-						  
-						</div>
-					  </div>
-
-					  <!-- Controls -->
-					  <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">
-						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-						<span class="sr-only">Previous</span>
-					  </a>
-					  <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">
-						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-						<span class="sr-only">Next</span>
-					  </a>
-					</div>
+				<div id="workZoneDocumentsDivId"></div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12 m_top10">
+				<h3 class="font_BebasNeue">MONITERING SYSTEM</h3>
+			</div>
+			<div class="col-sm-12">
+				<div id="workZoneWorkStagesDivId"></div>
+			</div>
+			<div class="col-sm-12">
+				<div id="workZoneGraphBlockDivId"></div>
 			</div>
 		</div>
       </div>

@@ -388,6 +388,8 @@ function buildSelectBox(result,divId,LevelVal){
 }
 function getAllStatusOfWorkType(workTypeId,divId,locationValue){
 	
+	$("#"+divId).html(spinner);
+	
 	var json = {
 		"workTypeId":workTypeId
 	};
@@ -401,14 +403,18 @@ function getAllStatusOfWorkType(workTypeId,divId,locationValue){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		buildworkStagesDetails(result,workTypeId,divId,locationValue);
+		if(result !=null && result.length>0){
+			buildworkStagesDetails(result,workTypeId,divId,locationValue);
+		}else{
+			$("#"+divId).html("No Data Available");
+		}
+		
 	});
 }
 function buildworkStagesDetails(result,workTypeId,divId,locationValue){
 	var str='';
 	str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;"/>';
 	if(result !=null && result.length>0){
-		
 			if(divId == "workStagesDivId"){
 				str+='<div class="pad_10 status">';
 				str+='<ul class="list-inline workStagesCls">';
@@ -418,7 +424,8 @@ function buildworkStagesDetails(result,workTypeId,divId,locationValue){
 						}
 					str+='</ul>';
 				str+='</div>';
-			}else{
+				str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;"/>';
+			}else if(divId == "locationWiseWorkStagesDivId"){
 				str+='<div class="pad_10 location_status">';
 				str+='<ul class="list-inline locationWiseworkStagesCls">';
 						str+='<li style="border:2px solid #000" attr_work_statusid ="0" attr_value="ALL" attr_work_id="'+workTypeId+'"><h5 style="background-color:#000">All</h5></li>';
@@ -427,26 +434,54 @@ function buildworkStagesDetails(result,workTypeId,divId,locationValue){
 						}
 					str+='</ul>';
 				str+='</div>';
+				str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;margin-top: 10px;"/>';
+			}else{
+				str+='<div class="pad_10 workZone_status">';
+				str+='<ul class="list-inline workZoneworkStagesCls">';
+						str+='<li style="border:2px solid #000" attr_work_statusid ="0" attr_value="ALL" attr_work_id="'+workTypeId+'"><h5 style="background-color:#000">All</h5></li>';
+						for(var i in result){
+							str+='<li  attr_work_statusid="'+result[i].key+'" attr_value="'+result[i].value+'" attr_work_id="'+workTypeId+'"><h5 style="background-color:'+globalStatusObj[result[i].value]+'" attr_locationLevelId="'+locationValue+'">'+result[i].value+'</h5></li>';
+						}
+					str+='</ul>';
+				str+='</div>';
+				str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;margin-top: 10px;"/>';
 			}
-			
-				
 	}
-	str+='<hr class="m_bottom_0" style="border-top: 1px solid #777 !important;"/>';
+	
 	$("#"+divId).html(str);
 }
 $(document).on("change","#levelId",function(){
 	var levelId=$(this).val();
+	getAllDistrictsOfAp('districtId','District');
 	if(levelId == 3){
 		$(".districtCls").show();
 		$(".divisionCls,.subdivisionCls,.mandalCls").hide();
 	}else if(levelId == 12){
 		$(".districtCls,.divisionCls").show();
 		$(".subdivisionCls,.mandalCls").hide();
+		$("#divisionId").html('');
+		$("#divisionId").append('<option value="0">All</option>');
+		$("#divisionId").trigger("chosen:updated");
 	}else if(levelId == 13){
 		$(".districtCls,.divisionCls,.subdivisionCls").show();
 		$(".mandalCls").hide();
+		$("#divisionId").html('');
+		$("#divisionId").append('<option value="0">All</option>');
+		$("#divisionId").trigger("chosen:updated");
+		$("#subdivisionId").html('');
+		$("#subdivisionId").append('<option value="0">All</option>');
+		$("#subdivisionId").trigger("chosen:updated");
 	}else if(levelId == 5){
 		$(".districtCls,.divisionCls,.subdivisionCls,.mandalCls").show();
+		$("#divisionId").html('');
+		$("#divisionId").append('<option value="0">All</option>');
+		$("#divisionId").trigger("chosen:updated");
+		$("#subdivisionId").html('');
+		$("#subdivisionId").append('<option value="0">All</option>');
+		$("#subdivisionId").trigger("chosen:updated");
+		$("#mandalId").html('');
+		$("#mandalId").append('<option value="0">All</option>');
+		$("#mandalId").trigger("chosen:updated");
 	}
 });	
 
@@ -473,6 +508,18 @@ $(document).on("click",".locationWiseworkStagesCls li",function(){
 	$(this).css("border","2px solid "+globalStatusObj[statusName]+"")
 	
 	getLocationOverviewStatusDayWiseKms(workTypeId,statusId,locationValue);
+	
+	
+});
+$(document).on("click",".workZoneworkStagesCls li",function(){	
+	var statusId = $(this).attr("attr_work_statusid")
+	var statusName = $(this).attr("attr_value");
+	var workTypeId = $(this).attr("attr_work_id");
+	var locationValue = $(this).attr("attr_locationLevelId");
+	$(".workZoneworkStagesCls li").removeAttr("style");
+	$(this).css("border","2px solid "+globalStatusObj[statusName]+"")
+	
+	getWorkZoneWorkStategsDetailsInfo(workTypeId,statusId)
 	
 	
 });
@@ -527,22 +574,49 @@ function buildLocationStatusDayWiseKmsMainGraph(result,divId){
 	
 	var mainDataArr=[];
 	var categoriesArr=[];
-		for(var i in result[0].list){
-			categoriesArr.push(result[0].list[i].insertedTime);
-		}
-		
-		for(var i in result){
-			var wpPosArr=[];
-			for(var j in result[i].list){
-				wpPosArr.push(result[i].list[j].kms)
+	var wpPosArr1=[];
+		if(divId == "workStagesCommulativeGraphDivId"){
+			for(var i in result[0].list){
+				categoriesArr.push(result[0].list[i].insertedTime);
+			}
+			
+			for(var i in result){
+				var wpPosArr=[];
+				for(var j in result[i].list){
+					wpPosArr.push(result[i].list[j].kms)
+				}
+				var obj={
+					name:result[i].documentName,
+					data: wpPosArr,
+					color:globalStatusObj[result[i].documentName]
+				};
+				mainDataArr.push(obj)
+			}
+		}else if(divId == "locationLevelFourthBlockDivId"){
+			for(var i in result){
+				categoriesArr.push(result[i].insertedTime);
+				wpPosArr1.push(result[i].kms)
 			}
 			var obj={
-				name:result[i].documentName,
-				data: wpPosArr,
-				color:globalStatusObj[result[i].documentName]
+				name:'CUMULATIVE GRAPH',
+				data: wpPosArr1,
+				color:"#B2D3F3"
+			};
+			mainDataArr.push(obj)
+		}else{
+			for(var i in result){
+				categoriesArr.push(result[i].date);
+				wpPosArr1.push(result[i].workLenght)
+			}
+			var obj={
+				name:'CUMULATIVE GRAPH',
+				data: wpPosArr1,
+				color:"#B2D3F3"
 			};
 			mainDataArr.push(obj)
 		}
+		
+		
 	$('#'+divId).highcharts({
 		chart: {
 			type: 'spline'
@@ -568,7 +642,7 @@ function buildLocationStatusDayWiseKmsMainGraph(result,divId){
 			},
 			labels: {
 				formatter: function () {
-					return this.value + '';
+					return this.value + 'KM';
 				}
 			}
 		},
@@ -1018,10 +1092,10 @@ function buildStatusWiseWorksAndKms(result){
 								str+='<h5 class="font_weight">Work Zones</h5>';
 								str+='<input class="m_top10" id="statusBar'+i+'" data-slider-id="statusBar'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedPercentage.toFixed(0)+' %</span>';
 								
-								str+='<h5 class="font_weight m_top5"><span style="font-size:11px">Total Work Zones -  </span> '+result[i].totalWorks+'<br><span style="position: relative; top: 2px; font-size: 11px;">'+result[i].status+' Started Work Zones - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusWorks+'</span></h5>';
+								str+='<h5 class="font_weight m_top5"><span style="font-size:11px">Total Work Zones -  </span> '+result[i].totalWorks+'<br><span style="position: relative; top: 2px; font-size: 11px;">Started Work Zones - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusWorks+'</span></h5>';
 								
 								str+='<hr class="m_bottom_0 m_top10" style="border-top: 1px solid #ddd !important;"/>';
-								str+='<h5 class="font_weight">Works in Km</h5>';
+								str+='<h5 class="font_weight m_top10">Works in Km</h5>';
 								str+='<input class="m_top10" id="statusBarWorks'+i+'" data-slider-id="statusBarWorks'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedKmsPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedKmsPercentage.toFixed(0)+' %</span>';
 								
 								str+='<h5 class="font_weight m_top5"><span style="font-size:11px">Total Kms -  </span> '+result[i].totalKms.toFixed(2)+'<br><span style="position: relative; top: 2px; font-size: 11px;">'+result[i].status+' Kms - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusKms.toFixed(2)+'</span></h5>';
@@ -1125,27 +1199,42 @@ function locationWiseDetails(workTypeId){
 }
 $(document).on("change","#locationWiseLevelId",function(){
 	var levelId=$(this).val();
+	getAllDistrictsLocationOfAp('locationWiseDistrictId','District');
 	if(levelId == 3){
 		$(".locationWiseDistrictCls").show();
-		$(".locationWiseDivisionCls").hide();
-		$(".locationWiseSubdivisionCls").hide();
-		$(".locationWiseMandalCls").hide();
+		$(".locationWiseDivisionCls,.locationWiseSubdivisionCls,.locationWiseMandalCls").hide();
 	}else if(levelId == 12){
-		$(".locationWiseDistrictCls").show();
-		$(".locationWiseDivisionCls").show();
-		$(".locationWiseSubdivisionCls").hide();
-		$(".locationWiseMandalCls").hide();
+		$(".locationWiseDistrictCls,.locationWiseDivisionCls").show();
+		$(".locationWiseSubdivisionCls,.locationWiseMandalCls").hide();
+		$("#locationWiseDivisionId").html('');
+		$("#locationWiseDivisionId").append('<option value="0">All</option>');
+		$("#locationWiseDivisionId").trigger("chosen:updated");
 	}else if(levelId == 13){
-		$(".locationWiseDistrictCls").show();
-		$(".locationWiseDivisionCls").show();
-		$(".locationWiseSubdivisionCls").show();
+		$(".locationWiseDistrictCls,.locationWiseDivisionCls,.locationWiseSubdivisionCls").show();
 		$(".locationWiseMandalCls").hide();
+		
+		$("#locationWiseDivisionId").html('');
+		$("#locationWiseDivisionId").append('<option value="0">All</option>');
+		$("#locationWiseDivisionId").trigger("chosen:updated");
+		
+		$("#locationWiseSubdivisionId").html('');
+		$("#locationWiseSubdivisionId").append('<option value="0">All</option>');
+		$("#locationWiseSubdivisionId").trigger("chosen:updated");
 	}else if(levelId == 5){
-		$(".locationWiseDistrictCls").show();
-		$(".locationWiseDivisionCls").show();
-		$(".locationWiseSubdivisionCls").show();
-		$(".locationWiseMandalCls").show();
+		$(".locationWiseDistrictCls,.locationWiseDivisionCls,.locationWiseSubdivisionCls,.locationWiseMandalCls").show();
+		$("#locationWiseDivisionId").html('');
+		$("#locationWiseDivisionId").append('<option value="0">All</option>');
+		$("#locationWiseDivisionId").trigger("chosen:updated");
+		
+		$("#locationWiseSubdivisionId").html('');
+		$("#locationWiseSubdivisionId").append('<option value="0">All</option>');
+		$("#locationWiseSubdivisionId").trigger("chosen:updated");
+		
+		$("#locationWiseMandalId").html('');
+		$("#locationWiseMandalId").append('<option value="0">All</option>');
+		$("#locationWiseMandalId").trigger("chosen:updated");
 	}
+	
 });	
 $(document).on("click",".getLocationWiseCls",function(){
 	var workTypeId = $(this).attr("attr_work_id")
@@ -1242,11 +1331,18 @@ function buildLocationWiseOverview(result,workZone,workTypeId){
 							for(var i in result){
 								for(var j in result[i].worksList){
 									str+='<tr>';
-										str+='<td style="text-align:left !important;">'+result[i].location+'</td>';
+										str+='<td style="text-align:left !important;"><a class="locationWisePopupCls" attr_locationLevelId="'+result[i].locationValue+'" attr_work_id="'+workTypeId+'" attr_locationName="'+result[i].location+'">'+result[i].location+'</a></td>';
+										
+										//str+='<td style="text-align:left !important;">'+result[i].location+'</td>';
 										str+='<td style="text-align:left !important;"><a class="workZonePopupCls" attr_locationLevelId="'+result[i].locationValue+'" attr_workType_id="'+workTypeId+'" attr_workzone_id="'+result[i].worksList[j].workId+'" attr_locationName="'+result[i].worksList[j].workName+'">'+result[i].worksList[j].workName+'</a></td>';
 										str+='<td>'+result[i].worksList[j].totalKms.toFixed(2)+'&nbsp;km</td>';
 										for(var k in result[i].worksList[j].statusList){
-											str+='<td>'+result[i].worksList[j].statusList[k].totalKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].worksList[j].statusList[k].completedPercentage.toFixed(2)+' %</span></td>';
+											if(typeof result[i].worksList[j].statusList[k].completedPercentage == null || typeof result[i].worksList[j].statusList[k].completedPercentage == undefined || typeof result[i].worksList[j].statusList[k].completedPercentage == "undefined"){
+												str+='<td> - </td>';
+											}else{
+												str+='<td>'+result[i].worksList[j].statusList[k].totalKms.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].worksList[j].statusList[k].completedPercentage.toFixed(2)+' %</span></td>';
+											}
+											
 										}
 									str+='</tr>';
 								}
@@ -1358,7 +1454,7 @@ function buildLocationLevelWiseOverviewDetails(result){
 function getLocationLevelStatusWiseOverviewDetails(workId,locationValue){
 	
 	var locationScopeId = $("#locationWiseLevelId").val();
-	
+	$("#locationLevelSecondBlockDivId").html(spinner);
 	var json ={
 		  "workTypeId":workId,
 		  "locationScopeId":locationScopeId,
@@ -1377,6 +1473,8 @@ function getLocationLevelStatusWiseOverviewDetails(workId,locationValue){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildLocationLevelStatusWiseOverviewDetails(result);
+		}else{
+			$("#locationLevelSecondBlockDivId").html("No Data Available");
 		}
 	});
 }
@@ -1439,6 +1537,7 @@ function buildLocationLevelStatusWiseOverviewDetails(result){
 }
 function getWorkZoneStatusWiseKms(workId,locationValue){
 	var locationScopeId = $("#locationWiseLevelId").val();
+	$("#locationLevelThirdBlockDivId").html(spinner);
 	var json ={
 		  "workTypeId":workId,
 		  "locationScopeId":locationScopeId,
@@ -1457,6 +1556,8 @@ function getWorkZoneStatusWiseKms(workId,locationValue){
 	}).done(function(result){
 		if(result !=null && result.length>0){
 			buildWorkZoneStatusWiseKms(result);
+		}else{
+			$("#locationLevelThirdBlockDivId").html("No Data Available");
 		}
 	});
 }
@@ -1481,7 +1582,12 @@ function buildWorkZoneStatusWiseKms(result){
 						str+='<td>'+result[i].govtWorkStatus+'</td>';
 						str+='<td>'+result[i].workLenght.toFixed(2)+'</td>';
 						for(var j in result[i].workStatusVOList){
-							str+='<td>'+result[i].workStatusVOList[j].workLenght.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].workStatusVOList[j].workCompletedPercentage.toFixed(2)+' %</span></td>';
+							if(typeof result[i].workStatusVOList[j].workCompletedPercentage == "null" || typeof result[i].workStatusVOList[j].workCompletedPercentage == "undefined" || typeof result[i].workStatusVOList[j].workCompletedPercentage == undefined){
+								str+='<td> - </td>';
+							}else{
+								str+='<td>'+result[i].workStatusVOList[j].workLenght.toFixed(2)+'&nbsp;km<br/><span style="font-size:12px;color:#00CA90;">'+result[i].workStatusVOList[j].workCompletedPercentage.toFixed(2)+' %</span></td>';
+							}
+							
 						}	
 					str+='</tr>';
 				}
@@ -1495,7 +1601,7 @@ function buildWorkZoneStatusWiseKms(result){
 function getLocationOverviewStatusDayWiseKms(workId,statusId,locationValue){
 	
 	var locationScopeId = $("#locationWiseLevelId").val();
-	
+	$("#locationLevelFourthBlockDivId").html(spinner);
 	var json ={
 		  "fromDate":"28-03-2018",
 		  "toDate":"4-05-2018",
@@ -1538,9 +1644,11 @@ $(document).on("click",".workZonePopupCls",function(){
 	getWorkZoneDocumentDetailsInfo(workZoneId);
 	getWorkZoneWorkStategsDetailsInfo(workZoneId);
 	getWorkZoneStatusDetailsInfo(workZoneId,workTypeId);
+	getAllStatusOfWorkType(workTypeId,"workZoneWorkStagesDivId","");
+	getWorkZoneWorkStategsDetailsInfo(workZoneId,0);
 });	
 function getWorkZoneMainOverview(workZoneId){
-	
+	$("#workZoneOverviewBlockDivId").html(spinner);
 	var json ={
 		  "workId":workZoneId
 		}
@@ -1556,6 +1664,8 @@ function getWorkZoneMainOverview(workZoneId){
 	}).done(function(result){
 		if(result !=null){
 			buildWorkZoneMainOverview(result);
+		}else{
+			$("#workZoneOverviewBlockDivId").html("No Data Available");
 		}
 	});
 }
@@ -1566,15 +1676,15 @@ function buildWorkZoneMainOverview(result){
 		str+='<div class="row">';
 			str+='<div class="col-sm-4">';
 				str+='<h4 class="font_weight">Target km</h4>';
-				str+='<h3 class="m_top10">25 km</h3>';
+				str+='<h4 class="m_top10 font_weight">'+result.workLenght.toFixed(2)+' km</h4>';
 			str+='</div>';
 			str+='<div class="col-sm-4">';
 				str+='<h4 class="font_weight">Completed km</h4>';
-				str+='<h3 class="m_top10">25 km</h3>';
+				str+='<h3 class="m_top10 font_weight">'+result.completedLength.toFixed(2)+' km</h4>';
 			str+='</div>';
 			str+='<div class="col-sm-4">';
 				str+='<h4 class="font_weight">Sanctioned Amount</h4>';
-				str+='<h3 class="m_top10">5512121212 Lakhs</h3>';
+				str+='<h4 class="m_top10 font_weight">'+result.fundAllocated.toFixed(2)+' Lakhs</h4>';
 			str+='</div>';
 		str+='</div>';
 	str+='</div>';
@@ -1583,7 +1693,7 @@ function buildWorkZoneMainOverview(result){
 }
 
 function getWorkZoneStatusDetailsInfo(workZoneId,workTypeId){
-	
+	$("#workZoneWorkStatusBlockDivId").html(spinner);
 	var json ={
 		  "workId":workZoneId,
 		  "workTypeId":workTypeId
@@ -1598,14 +1708,82 @@ function getWorkZoneStatusDetailsInfo(workZoneId,workTypeId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		if(result !=null){
-			
+		if(result !=null && result.length>0){
+			buildWorkZoneStatusDetailsInfo(result);
+		}else{
+			$("#workZoneWorkStatusBlockDivId").html("No Data Available");
 		}
 	});
 }
-
-function getWorkZoneDocumentDetailsInfo(workZoneId){
+function buildWorkZoneStatusDetailsInfo(result){
 	
+	var str='';
+		str+='<div class="bg_color m_top10">';
+			str+='<div class="row">';
+			var k=0;
+				for(var i in result){
+					k=k+1;
+					str+='<div class="col-sm-2" style="padding-left: 5px;padding-right: 5px;">';
+						str+='<img src="Assests/images/'+result[i].govtWorkStatus+'.png" style="width: 100%;height: 100px;"/>';
+						str+='<div class="card-img-overlay" style="height:50px;">';	
+							str+='<h5 class="statusRoundCss">0'+k+'</h5>';
+						str+='</div>';
+						str+='<div class="card-img-overlay2">';	
+							str+='<h5 class="color_white font_weight">'+result[i].govtWorkStatus+'</h5>';
+						str+='</div>';
+					
+						str+='<div class="row">';
+							str+='<div class="col-sm-12">';
+								str+='<div class="bg_StatusWorkCss">';
+								//<i class="fa fa-check-circle-o" aria-hidden="true"></i>
+								//<i class="fa fa-pause-circle-o" aria-hidden="true"></i>
+								if(result[i].currentWorkLength>=100){
+									str+='<h5 class="text-center"><i class="fa fa-check-circle-o" aria-hidden="true" style="font-size: 28px !important;color: green;"></i></h5>';
+									str+='<h5 class="workZoneAlignment m_top10">'+result[i].workLenght.toFixed(1)+' KM ON</h5>';	
+									str+='<h5 class="workZoneAlignment m_top5">'+result[i].date+'</h5>';	
+								}else{
+									str+='<h5 class="text-center"><i class="fa fa-pause-circle-o" aria-hidden="true" style="font-size: 28px !important;color: #FFBA00;"></i></h5>';
+									str+='<div class="row">';
+										str+='<div class="col-sm-6">';
+											if(result[i].currentWorkLength !=null && result[i].currentWorkLength>0){
+												str+='<h5 class="workZoneAlignment m_top10">'+result[i].currentWorkLength.toFixed(1)+'%</h5>';	
+											}else{
+												str+='<h5 class="workZoneAlignment m_top10"> - </h5>';	
+											}
+											
+										str+='</div>';
+										str+='<div class="col-sm-6">';
+											if(result[i].workLenght !=null && result[i].workLenght>0){
+												str+='<h5 class="workZoneAlignment m_top10">'+result[i].workLenght.toFixed(1)+'KM</h5>';	
+											}else{
+												str+='<h5 class="workZoneAlignment m_top10"> - </h5>';	
+											}
+											
+										str+='</div>';
+									str+='</div>';
+									if(typeof result[i].date ==null || typeof result[i].date ==undefined || typeof result[i].date =="undefined"){
+											str+='<h5 class="workZoneAlignment m_top5"> - </h5>';
+									}else{
+										str+='<h5 class="workZoneAlignment m_top5">'+result[i].date+'</h5>';
+									}
+									
+								}
+								
+									
+	
+								str+='</div>';
+							str+='</div>';
+						str+='</div>';
+					str+='</div>';
+				}
+					
+			str+='</div>';	
+		str+='</div>';
+	$("#workZoneWorkStatusBlockDivId").html(str);
+	
+}
+function getWorkZoneDocumentDetailsInfo(workZoneId){
+	$("#workZoneDocumentsDivId").html(spinner);
 	var json ={
 		  "workId":workZoneId
 		}
@@ -1619,19 +1797,64 @@ function getWorkZoneDocumentDetailsInfo(workZoneId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		if(result !=null){
-			
+		if(result !=null && result.length>0){
+			buildWorkZoneDocumentDetailsInfo(result);
+		}else{
+			$("#workZoneDocumentsDivId").html("No Data Available");
 		}
 	});
 }
 
-function getWorkZoneWorkStategsDetailsInfo(workZoneId){
+function buildWorkZoneDocumentDetailsInfo(result){
+	var str='';
 	
+	str+='<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">';
+		 str+='<ol class="carousel-indicators">';
+			 for(var i in result){
+				 if(i==0){
+					  str+='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
+				 }else{
+					  str+='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class=""></li>';
+				 }
+				
+			 }
+		 str+='</ol>';
+		
+	  str+='<div class="carousel-inner" role="listbox">';
+	  for(var i in result){
+		  if(i==0){
+			  str+='<div class="item active">';
+				str+=' <img src="http://www.mydepartments.in/PRRWS/'+result[i].path+'" alt="'+result[i].path+'" style="height: 303px;width:100%;">';
+			str+='</div>';
+		  }else{
+			  str+='<div class="item">';
+				str+=' <img src="http://www.mydepartments.in/PRRWS/'+result[i].path+'" alt="'+result[i].path+'" style="height: 303px;width:100%;">';
+			str+='</div>';
+		  }
+		  
+	  }
+	  str+='</div>';
+
+	  str+='<a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev">';
+		str+='<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>';
+		str+='<span class="sr-only">Previous</span>';
+	  str+='</a>';
+	  str+='<a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next">';
+		str+='<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>';
+		str+='<span class="sr-only">Next</span>';
+	  str+='</a>';
+	str+='</div>';
+					
+	$("#workZoneDocumentsDivId").html(str);
+	$('.carousel').carousel();
+}
+function getWorkZoneWorkStategsDetailsInfo(workZoneId,statusId){
+	$("#workZoneGraphBlockDivId").html(spinner);
 	var json ={
-		  "fromDate":"05-04-2018",
-		  "toDate":"09-08-2018",
+		  "fromDate":currentFromDate,
+		  "toDate":currentToDate,
 		  "workId":workZoneId,
-		  "statusId":"0"
+		  "statusId":statusId
 		}
 	$.ajax({                
 		type:'POST',    
@@ -1643,11 +1866,16 @@ function getWorkZoneWorkStategsDetailsInfo(workZoneId){
 			xhr.setRequestHeader("Content-Type", "application/json");
 		}
 	}).done(function(result){
-		if(result !=null){
-			
+		if(result !=null && result.length>0){
+			$("#workZoneGraphBlockDivId").css("height","200px");
+			buildLocationStatusDayWiseKmsMainGraph(result,"workZoneGraphBlockDivId");
+		}else{
+			$("#workZoneGraphBlockDivId").html("No Data Available")
+			$("#workZoneGraphBlockDivId").removeAttr("style");
 		}
 	});
 }
+
 getStatusDistrictDayWiseDocuments();
 function getStatusDistrictDayWiseDocuments(){
 	var json ={
