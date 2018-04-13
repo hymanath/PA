@@ -168,11 +168,11 @@ public class AreaInchargeDashBoardService implements IAreaInchargeDashBoardServi
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	}
 
-	public List<AreaInchargeVO> getAreaInchargeDetails(String voterCardNo,String mobileNo,String memberShipId){
+	public List<AreaInchargeVO> getAreaInchargeDetails(String voterCardNo,String mobileNo,String memberShipId,String name){
 		List<AreaInchargeVO> finalList = new ArrayList<AreaInchargeVO>();
 		try{
 			//1-first name,2-relativeName,3-age,4-gender,5-houseNo,6-tehsilId,7-tehsilName,8-casteName,9-image
-			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterCardNo,mobileNo,memberShipId);
+			List<Object[]> inchargeDetails = tdpCadreDAO.getAreaInchargeDetails(voterCardNo,mobileNo,memberShipId,name);
 			
 			if(inchargeDetails != null && inchargeDetails.size()>0){
 				for(Object[] param: inchargeDetails){
