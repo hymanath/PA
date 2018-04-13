@@ -364,6 +364,7 @@ function getAreaInchargeAssignedBoothDetails(){
 	var voterId="";
 	var mobileNo="";
 	var memberShipId="";
+	var nameId = "";
 	$("#errorId").html('');
 	var selectedType="";
 	 $( ".getSelectedVal" ).each(function() {
@@ -375,20 +376,28 @@ function getAreaInchargeAssignedBoothDetails(){
 		memberShipId = $("#searchValId").val();
 		voterId="";
 		mobileNo="";
+		nameId ="";
 	}else if(selectedType == "voterId"){
 		memberShipId = "";
 		voterId=$("#searchValId").val();
 		mobileNo="";
+		nameId ="";
 	}else if(selectedType == "mobileNo"){
 		memberShipId =""; 
 		voterId="";
 		mobileNo=$("#searchValId").val();
+		nameId ="";
+	}else if(selectedType == "nameId"){
+		memberShipId =""; 
+		voterId="";
+		mobileNo="";
+		nameId=$("#searchValId").val();
 	}
 	$(".showHideCls").show();
-	getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType);
+	getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType,nameId);
  });
  
-   function getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType){
+   function getAreaInchargeDetails(memberShipId,voterId,mobileNo,selectedType,nameId){
 	   $('#searchValId').removeAttr("maxlength");
 	   var numericExpression = /^[0-9]+$/;
 	    if(selectedType == "membershipId"){
@@ -429,11 +438,29 @@ function getAreaInchargeAssignedBoothDetails(){
 			$('#searchErrDiv').html(' ');
 		 }
 	 }
+	 if(selectedType == "nameId"){
+		//^[a-z,A-Z,.," "]+$
+		var numericExpression =  /^[a-zA-Z.""]{2,30}$/;
+			if(nameId.length == 0 || nameId == null ){
+				$('#searchErrDiv').html('Please enter name');
+				return;
+			}else if(!nameId.match(numericExpression)){
+				$('#searchErrDiv').html('Enter characters Only.');
+				return;
+			}else if(nameId.trim().length < 3){
+				$('#searchErrDiv').html('Please enter Minimum 3 Characters.');
+				return;
+			}else{
+			  $('#searchErrDiv').html(' ');
+		   }
+	     }
+		 
 	$("#areaInchargeSearchDetailsDivId").html(spinner);
       var jsObj={
 		    voterId:voterId,
 			mobileNo :mobileNo,
-		    memberShipId :memberShipId
+		    memberShipId :memberShipId,
+		    name :nameId
 		}
 		$.ajax({
 		  type:'GET',

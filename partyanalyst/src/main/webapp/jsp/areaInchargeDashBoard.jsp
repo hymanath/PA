@@ -72,6 +72,10 @@ body{
 										<label class="radio-inline">
 										  <input type="radio" name="inlineRadioOptions" id="inlineRadio3" value="mobileNo"  class="getSelectedVal" >Mobile No
 										</label>
+										
+										<label class="radio-inline">
+										  <input type="radio" name="inlineRadioOptions" id="inlineRadio4" value="nameId"  class="getSelectedVal" >name
+										</label>
 									</div>
 								</div>
 							</div>
@@ -79,7 +83,7 @@ body{
 							<div class="col-sm-12 m_top10">
 								<div class="row">
 									<div class="col-sm-8">
-										<input type="text"  id="searchValId" class="form-control" placeholder="Enter Membership/Voter/MobileNo" style="height: 50px;border-radius: 0px;">
+										<input type="text"  id="searchValId" class="form-control" placeholder="Enter Membership/Voter/MobileNo/name" style="height: 50px;border-radius: 0px;">
 									</div>
 									<div class="col-sm-4">
 										<button class="btn btn-success btn-sm getSearchDetailsCls" style="padding: 15px;border-radius: 0px;">SEARCH</button>
