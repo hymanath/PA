@@ -78,4 +78,24 @@ public class DebateSmsQuestionOptionDAO extends GenericDaoHibernate<DebateSmsQue
 		
 		return query.list();
 	}
+	
+	public List<Object[]> getSmsQuestionOptionDetails(Date startDate,Date endDate){
+		StringBuilder sb = new StringBuilder();
+		//0-debateId,1-debateSummary,2-questionId,3-question,4-option,5-percentage
+		sb.append(" select model.debateSmsQuestion.debate.debateId,model.debateSmsQuestion.debate.summary,model.debateSmsQuestion.debateSmsQuestionId," +
+				" model.debateSmsQuestion.question,model.option,model.percantage " +
+				" from DebateSmsQuestionOption model " +
+				" where model.debateSmsQuestion.isDeleted='N' and model.debateSmsQuestion.debate.isDeleted='N' ");
+		if(startDate != null && endDate != null){
+			sb.append(" and date(model.debateSmsQuestion.debate.updatedTime) between :startDate and :endDate ");
+		}
+		
+		Query query = getSession().createQuery(sb.toString());
+		if(startDate != null && endDate != null){
+			query.setDate("startDate", startDate);
+			query.setDate("endDate", endDate);
+		}
+		return query.list();
+		
+	}
 }

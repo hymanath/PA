@@ -35,6 +35,7 @@ import com.itgrids.partyanalyst.dao.IDebateDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantCharcsDAO;
 import com.itgrids.partyanalyst.dao.IDebateParticipantDAO;
 import com.itgrids.partyanalyst.dao.IDebateRolesDAO;
+import com.itgrids.partyanalyst.dao.IDebateSmsQuestionOptionDAO;
 import com.itgrids.partyanalyst.dao.IDebateSubjectDAO;
 import com.itgrids.partyanalyst.dao.IDelimitationConstituencyAssemblyDetailsDAO;
 import com.itgrids.partyanalyst.dao.IPartyDAO;
@@ -110,11 +111,20 @@ public class CoreDashboardMainService implements ICoreDashboardMainService {
 	 private ICasteCategoryDAO casteCategoryDAO;
 	 private ICandidateDAO candidateDAO;
 	 private ICasteStateDAO casteStateDAO;
+	 private IDebateSmsQuestionOptionDAO debateSmsQuestionOptionDAO;
 	//SETTERS
 	
+	 
 	public void setCoreDashboardGenericService(ICoreDashboardGenericService coreDashboardGenericService) {
 		this.coreDashboardGenericService = coreDashboardGenericService;
 	 }
+	public IDebateSmsQuestionOptionDAO getDebateSmsQuestionOptionDAO() {
+		return debateSmsQuestionOptionDAO;
+	}
+	public void setDebateSmsQuestionOptionDAO(
+			IDebateSmsQuestionOptionDAO debateSmsQuestionOptionDAO) {
+		this.debateSmsQuestionOptionDAO = debateSmsQuestionOptionDAO;
+	}
 	public ITrainingCampProgramDAO getTrainingCampProgramDAO() {
 		return trainingCampProgramDAO;
 	}
@@ -9707,6 +9717,55 @@ public Map<Long,CoreDebateVO> setDesignationLessValuesToMap(List<Object[]> ObjLi
 		}
 		return returnList;
 		
+	}
+	//SMSPollQuestionDetails method
+	public List<CoreDebateVO> getSmsQuestionOptionDetailsList(String startDateStr,String endDateStr){
+		List<CoreDebateVO> returnList = new ArrayList<CoreDebateVO>();
+		try{
+			Date startDate = null;
+			Date endDate   =null;
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+			SimpleDateFormat sdf1 = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
+			if(startDateStr !=null && !startDateStr.trim().isEmpty() && endDateStr !=null && !endDateStr.trim().isEmpty()){
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+			}
+			//0-debateId,1-debateSummary,2-questionId,3-question,4-option,5-percentage
+			List<Object[]> smsQuestionOptionDetailsList = debateSmsQuestionOptionDAO.getSmsQuestionOptionDetails(startDate,endDate);
+			if(smsQuestionOptionDetailsList != null && smsQuestionOptionDetailsList.size()>0l){
+				Map<Long,CoreDebateVO> map = new HashMap<Long, CoreDebateVO>();//questionId,vo
+				for(Object[] objects : smsQuestionOptionDetailsList){
+					CoreDebateVO coreDebateVO = map.get((Long)objects[0]);
+					if(coreDebateVO==null){
+						coreDebateVO = new CoreDebateVO();
+						coreDebateVO.setId((Long)objects[0]);
+						coreDebateVO.setName(objects[1].toString());
+						coreDebateVO.setObserverId((Long)objects[2]);
+						coreDebateVO.setObserverName(objects[3].toString());
+						
+						CoreDebateVO optionVO = new CoreDebateVO();
+						optionVO.setOption(objects[4].toString());
+						optionVO.setPercentage(objects[5].toString());
+						
+						coreDebateVO.getList().add(optionVO);
+						
+						map.put((Long)objects[0],coreDebateVO);
+					}else{
+						CoreDebateVO optionVO = new CoreDebateVO();
+						optionVO.setOption(objects[4].toString());
+						optionVO.setPercentage(objects[5].toString());
+						coreDebateVO.getList().add(optionVO);
+					}
+				}
+				returnList.addAll(map.values());
+				
+			}
+			
+		}catch(Exception e){
+			LOG.error("Exception raised at getSmsQuestionOptionDetailsList() method of CoreDashboardMainService", e);
+		}
+		return returnList;
 	}
 }  
 
