@@ -9987,9 +9987,11 @@ public List<Object[]> levelWiseTdpCareDataByTodayOrTotal(Date date,String levelT
 			StringBuilder sb = new StringBuilder();
 			sb.append(" select tdpCadre.tdpCadreId,tdpCadre.firstname,tdpCadre.relativename," +
 					" tdpCadre.age,tdpCadre.gender,tdpCadre.houseNo," +
-					" tdpCadre.userAddress.tehsil.tehsilId,tdpCadre.userAddress.tehsil.tehsilName," +
-					" tdpCadre.casteState.caste.casteName,tdpCadre.image " +
-					" from  TdpCadre tdpCadre " +
+					" tehsil.tehsilId,tehsil.tehsilName," +
+					" tdpCadre.casteState.caste.casteName," +
+					" tdpCadre.image " +
+					" from  TdpCadre tdpCadre left join tdpCadre.userAddress userAddress " +
+					" left join userAddress.tehsil tehsil " +
 					"  where  tdpCadre.isDeleted ='N' ");
 			if(voterId != null && !voterId.isEmpty()){
 				sb.append(" and tdpCadre.voter.voterIDCardNo =:voterId");	
