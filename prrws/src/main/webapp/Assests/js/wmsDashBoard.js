@@ -914,14 +914,14 @@ function buildgetRecentWorkDocuments(result){
 					str+='<h4 class="font_weight color_white m_top5 f_16">';
 					if(result[i].lattitude !=null && result[i].lattitude>0){
 						str+='<span>Lat:'+result[i].lattitude+'</span>';
-					}else{
-						str+='<span>Lat: - </span>';
-					}
+					}/*else{
+						str+='<span>lat: - </span>';
+					}*/
 					if(result[i].longitude !=null && result[i].longitude>0){
 						str+='<span>Long:'+result[i].longitude+'</span>';
-					}else{
+					}/*else{
 						str+='<span>Long: - </span>';
-					}
+					}*/
 					str+='</h4>';
 					str+='<h4 class="font_weight color_white m_top5 f_16">'+result[i].insertedTime+'</h4>';
 				str+='</div>';
@@ -996,7 +996,7 @@ function getStatusWiseWorksAndKms(workTypeId){
 function buildStatusWiseWorksAndKms(result){
 	var str='';
 	str+='<div class="col-sm-12 m_top10">';
-		str+='<h3 class="font_BebasNeue" style="color:#252D30;">Work Progress stage wise Overview</h3>';
+		str+='<h3 class="font_BebasNeue" style="color:#252D30;">Work Zones Status Wise Progress Overview</h3>';
 	str+='</div>';	
 	str+='<div class="pad_10 m_top10">';
 		str+='<div class="row">';
@@ -1015,16 +1015,16 @@ function buildStatusWiseWorksAndKms(result){
 					str+='<div class="row">';
 						str+='<div class="col-sm-12 m_top5">';
 							str+='<div class="bg_StatusWorkCss">';
-								str+='<h5 class="font_weight">Works</h5>';
+								str+='<h5 class="font_weight">Work Zones</h5>';
 								str+='<input class="m_top10" id="statusBar'+i+'" data-slider-id="statusBar'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedPercentage.toFixed(0)+' %</span>';
 								
-								str+='<h5 class="font_weight m_top5"><span style="font-size:12px">Total Works -  </span> '+result[i].totalWorks+'<br><span style="position: relative; top: 2px; font-size: 12px;">'+result[i].status+' Started Works - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusWorks+'</span></h5>';
+								str+='<h5 class="font_weight m_top5"><span style="font-size:11px">Total Work Zones -  </span> '+result[i].totalWorks+'<br><span style="position: relative; top: 2px; font-size: 11px;">'+result[i].status+' Started Work Zones - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusWorks+'</span></h5>';
 								
 								str+='<hr class="m_bottom_0 m_top10" style="border-top: 1px solid #ddd !important;"/>';
 								str+='<h5 class="font_weight">Works in Km</h5>';
 								str+='<input class="m_top10" id="statusBarWorks'+i+'" data-slider-id="statusBarWorks'+i+'Slider" type="text" data-slider-min="0" data-slider-max="100" data-slider-step="1" data-slider-value="'+result[i].completedKmsPercentage.toFixed(0)+'" data-slider-tooltip="hide"/><span class="font_weight pull-right">'+result[i].completedKmsPercentage.toFixed(0)+' %</span>';
 								
-								str+='<h5 class="font_weight m_top5"><span style="font-size:12px">Total Kms -  </span> '+result[i].totalKms.toFixed(2)+'<br><span style="position: relative; top: 2px; font-size: 12px;">'+result[i].status+' Kms - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusKms.toFixed(2)+'</span></h5>';
+								str+='<h5 class="font_weight m_top5"><span style="font-size:11px">Total Kms -  </span> '+result[i].totalKms.toFixed(2)+'<br><span style="position: relative; top: 2px; font-size: 11px;">'+result[i].status+' Kms - </span>  <span style="position: relative; top: 2px; font-size: 14px;">'+result[i].statusKms.toFixed(2)+'</span></h5>';
 								
 								
 							str+='</div>';
