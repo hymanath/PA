@@ -284,4 +284,126 @@ public class GovtWorkProgressDAO extends GenericDaoHibernate<GovtWorkProgress, L
 		query.setParameter("workId",workId);
 		return query.list();
 	}
+	
+	public List<Object[]> getlocationLevelWiseCompletedKms(Long locationScopeId,Long districtId,Long divisionId,Long subDivisionId,Long mandalId,Long statusId,Date fromDate,Date toDate){
+		StringBuilder sb = new StringBuilder();
+		sb.append(" select ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" la.district_id ");
+		}else if(locationScopeId == 4l){
+			sb.append(" la.constituency_id ");
+		}else if(locationScopeId == 5l){
+			sb.append(" la.tehsil_id ");
+		}else if(locationScopeId == 6l){
+			sb.append(" la.panchayat_id ");
+		}else if(locationScopeId == 12l){
+			sb.append(" la.division_id ");
+		}else if(locationScopeId == 13l){
+			sb.append(" la.sub_division_id ");
+		} 
+		
+		sb.append(",sum(gwp.work_length) ");
+		sb.append(" from ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" district dist, ");
+		}else if(locationScopeId == 4l){
+			sb.append(" constituency const, ");
+		}else if(locationScopeId == 5l){
+			sb.append(" tehsil teh, ");
+		}else if(locationScopeId == 6l){
+			sb.append(" panchayat panch, ");
+		}else if(locationScopeId == 12l){
+			sb.append(" division divi, ");
+		}else if(locationScopeId == 13l){
+			sb.append(" sub_division subDivi, ");
+		} 
+		
+		sb.append(" govt_work_progress gwp,govt_work gw, govt_main_work gmw,location_address la "
+				+ " where gwp.govt_work_id=gw.govt_work_id and gw.govt_main_work_id=gmw.govt_main_work_id and gmw.location_address_id=la.location_address_id and gw.is_deleted='N' ");
+		
+		if(locationScopeId == 3l){
+			sb.append(" and la.district_id=dist.district_id ");
+		}else if(locationScopeId == 4l){
+			sb.append(" and la.constituency_id=const.constituency_id ");
+		}else if(locationScopeId == 5l){
+			sb.append(" and la.tehsil_id=teh.tehsil_id ");
+		}else if(locationScopeId == 6l){
+			sb.append(" and la.panchayat_id=panch.panchayat_id ");
+		}else if(locationScopeId == 12l){
+			sb.append(" and la.division_id=divi.division_id ");
+		}else if(locationScopeId == 13l){
+			sb.append(" and la.sub_division_id=subDivi.sub_division_id, ");
+		} 
+		
+		if(statusId != null && statusId > 0l){
+			sb.append(" and gwp.govt_work_status_id=:statusId ");
+		}
+		
+		if(districtId != null && districtId > 0l){
+			sb.append(" and la.district_id=:districtId ");
+		}
+		
+		if(divisionId != null && divisionId > 0l){
+			sb.append(" and la.division_id=:divisionId ");
+		}
+		
+		if(subDivisionId != null && subDivisionId > 0l){
+			sb.append(" and la.sub_division_id=:subDivisionId ");
+		}
+		
+		if(mandalId != null && mandalId > 0l){
+			sb.append(" and la.tehsil_id=:mandalId ");
+		}
+		
+		if(fromDate != null && toDate != null){
+			sb.append(" and date(gwp.updated_time) between :fromDate and :toDate ");
+		}
+		
+		if(locationScopeId == 3l){
+			sb.append(" group by la.district_id ");
+		}else if(locationScopeId == 4l){
+			sb.append(" group by la.constituency_id ");
+		}else if(locationScopeId == 5l){
+			sb.append(" group by la.tehsil_id ");
+		}else if(locationScopeId == 6l){
+			sb.append(" group by la.panchayat_id ");
+		}else if(locationScopeId == 12l){
+			sb.append(" group by la.division_id ");
+		}else if(locationScopeId == 13l){
+			sb.append(" group by la.sub_division_id ");
+		} 
+		
+		
+		Query query = getSession().createSQLQuery(sb.toString());
+		
+		if(districtId != null && districtId > 0l){
+			query.setParameter("districtId", districtId);
+		}
+		
+		if(divisionId != null && divisionId > 0l){
+			query.setParameter("divisionId", divisionId);
+		}
+		
+		if(subDivisionId != null && subDivisionId > 0l){
+			query.setParameter("subDivisionId", subDivisionId);
+		}
+		
+		if(mandalId != null && mandalId > 0l){
+			query.setParameter("mandalId", mandalId);
+		}
+		
+		if(statusId != null && statusId > 0l){
+			query.setParameter("statusId", statusId);
+		}
+		
+		if(fromDate != null && toDate != null){
+			query.setDate("fromDate", fromDate);
+			query.setDate("toDate", toDate);
+		}
+		
+		return query.list();
+				
+	}
 }

@@ -119,10 +119,16 @@ public class GovtWorkProgressDocumentDAO extends GenericDaoHibernate<GovtWorkPro
 	
 	public List<Object[]> getStatusDistrictDayWiseDocuments(Date startDate,Date endDate,Long statusId,Long districtId){
 		StringBuilder sb = new StringBuilder();
-		//0-districtId,1-districtName,2-date,3-documentId,4-path
+		//0-districtId,1-districtName,2-divisionId,3-divisionName,4-subDivisionId,5-subDivisionName,6-tehsilId,7-tehsilName,8-panchayatId,9-panchayatName,10-date,11-docId,12-path
 		sb.append(" select model.govtWorkProgress.govtWork.govtMainWork.locationAddress.districtId,model.govtWorkProgress.govtWork.govtMainWork.locationAddress.district.districtName,"
-				+ " date(model.updatedTime),model.documentId,model.document.path "
+				+ " division.divisionId,division.divisionName,subDivision.subDivisionId,subDivision.subDivisionName,tehsil.tehsilId,tehsil.tehsilName,"
+				+ " panchayat.panchayatId,panchayat.panchayatName, "
+				+ "  date(model.updatedTime),model.documentId,model.document.path "
 				+ " from GovtWorkProgressDocument model "
+				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.division division "
+				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.subDivision subDivision "
+				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.tehsil tehsil "
+				+ " left join model.govtWorkProgress.govtWork.govtMainWork.locationAddress.panchayat panchayat "
 				+ " where model.govtWorkProgress.govtWorkStatusId=:statusId "
 				+ " and date(model.updatedTime) between :startDate and :endDate ");
 		

@@ -38,6 +38,8 @@ public class LocationAddress{
 	private Hamlet hamlet;
 	private LocalElectionBody localElectionBody;
     private PredDdo predddo;
+    private Division division;
+    private SubDivision subDivision;
 	
 	@Id
 	@Column(name="location_address_id")
@@ -203,6 +205,24 @@ public class LocationAddress{
 	}
 	public void setSubDivisionId(Long subDivisionId) {
 		this.subDivisionId = subDivisionId;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "division_id", insertable = false, updatable = false)
+	public Division getDivision() {
+		return division;
+	}
+	public void setDivision(Division division) {
+		this.division = division;
+	}
+	
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@JoinColumn(name = "sub_division_id", insertable = false, updatable = false)
+	public SubDivision getSubDivision() {
+		return subDivision;
+	}
+	public void setSubDivision(SubDivision subDivision) {
+		this.subDivision = subDivision;
 	}
 	
 	

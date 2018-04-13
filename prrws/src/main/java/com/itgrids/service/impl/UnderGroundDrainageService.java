@@ -1608,10 +1608,52 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			}
 			
 			List<String> dateList = null;
-			Map<Long,DocumentVO> map = new HashMap<Long, DocumentVO>();//locationId,lovationVO
+			//new code end
 			if(startDate != null && endDate != null){
 				dateList = commonMethodsUtilService.getBetweenDatesInString(startDate, endDate);
 			}
+			
+			String intervalSummary="";
+			if(dateList.size() <= 7){
+				intervalSummary = "dayWise";
+			}else{
+				intervalSummary = "weekWise";
+			}
+			/*else if(dateList.size()<=31){
+				intervalSummary = "weekWise";
+			}else{
+				intervalSummary = "monthWise";
+			}*/
+			
+			Map<Long,DocumentVO> map = new HashMap<Long, DocumentVO>();//locationId,lovationVO
+			//new code start
+			//0-locationId,1-locationName,2-kms
+			List<Object[]> locationsObjList12 = govtMainWorkDAO.getLocationLevelWiseLocationDetails(inputVO.getLocationLevelId(),inputVO.getDistrictId(),inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId());
+			if(locationsObjList12 != null && locationsObjList12.size() > 0){
+				
+				for (Object[] objects : locationsObjList12) {
+					DocumentVO vo = new DocumentVO();
+					vo.setDocumentId(Long.parseLong(objects[0].toString()));
+					vo.setDocumentName(objects[1].toString());
+					vo.setKms(Double.parseDouble(objects[2].toString()));
+					if(intervalSummary.equalsIgnoreCase("dayWise") || intervalSummary.equalsIgnoreCase("weekWise"))
+						getDatesNew(vo.getList(),dateList,intervalSummary);
+					map.put(Long.parseLong(objects[0].toString()), vo);
+				}
+				
+				//0-locationId,1-kms
+				List<Object[]> locationWiseKmsObjList = govtWorkProgressDAO.getlocationLevelWiseCompletedKms(inputVO.getLocationLevelId(),inputVO.getDistrictId(),inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),inputVO.getStatusId(),startDate,endDate);
+				if(locationWiseKmsObjList != null && locationWiseKmsObjList.size() > 0){
+					for (Object[] objects : locationWiseKmsObjList) {
+						DocumentVO matchedLocationVo = map.get(Long.parseLong(objects[0].toString()));
+						if(matchedLocationVo != null){
+							matchedLocationVo.setCompletedKms(Math.round(Double.parseDouble(objects[1].toString())* 100D) / 100D);
+							matchedLocationVo.setCompletedPercentage((matchedLocationVo.getCompletedKms()*100.00)/matchedLocationVo.getKms());
+						}
+					}
+				}
+			}
+			
 			//0-date,1-sum,2-locationId
 			List<Object[]> objList =  govtWorkProgressTrackDAO.getLocationLevelStatusDayWiseKms(startDate,endDate,inputVO.getStatusId(),inputVO.getWorkTypeId(),inputVO.getDistrictId(),
 					inputVO.getDivisonId(),inputVO.getSubDivisonId(),inputVO.getMandalId(),inputVO.getLocationLevelId());
@@ -1619,21 +1661,45 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			if(objList != null && objList.size() > 0){
 				List<Long> locationIds = new ArrayList<Long>(0);
 				for (Object[] objects : objList) {
-					if(map.get(Long.parseLong(objects[2].toString())) == null){
+					DocumentVO matchedLocationVo = map.get(Long.parseLong(objects[2].toString()));
+					if(matchedLocationVo == null){
 						locationIds.add(Long.parseLong(objects[2].toString()));
-						DocumentVO vo = new DocumentVO();
-						vo.setDocumentId(Long.parseLong(objects[2].toString()));
+						matchedLocationVo = new DocumentVO();
+						matchedLocationVo.setDocumentId(Long.parseLong(objects[2].toString()));
+						if(intervalSummary.equalsIgnoreCase("dayWise") || intervalSummary.equalsIgnoreCase("weekWise"))
+							getDatesNew(matchedLocationVo.getList(),dateList,intervalSummary);
 						
-						getDates(vo.getList(),dateList);
-						DocumentVO matchedDateVO = getMatchedDateVo(vo.getList(),objects[0].toString());
-						if(matchedDateVO != null)
-							matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
+						if(intervalSummary.equalsIgnoreCase("dayWise")){
+							DocumentVO matchedDateVO = getMatchedDateVo(matchedLocationVo.getList(),objects[0].toString());
+							if(matchedDateVO != null)
+								matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
+						}else{
+							for(DocumentVO VO : matchedLocationVo.getList()){
+								if(VO.getDatesList().contains(objects[0].toString())){
+									VO.setKms(Double.parseDouble(objects[1].toString()));
+								}	
+							}
+						}
 						
-						map.put(Long.parseLong(objects[2].toString()),vo);
+						map.put(Long.parseLong(objects[2].toString()),matchedLocationVo);
 					}else{
-						DocumentVO matchedDateVO = getMatchedDateVo(map.get(Long.parseLong(objects[2].toString())).getList(),objects[0].toString());
-						if(matchedDateVO != null)
-							matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
+						if(matchedLocationVo.getList() == null || matchedLocationVo.getList().size() == 0){
+							if(intervalSummary.equalsIgnoreCase("dayWise") || intervalSummary.equalsIgnoreCase("weekWise"))
+								getDatesNew(matchedLocationVo.getList(),dateList,intervalSummary);
+						}	
+						
+						if(intervalSummary.equalsIgnoreCase("dayWise")){
+							DocumentVO matchedDateVO = getMatchedDateVo(matchedLocationVo.getList(),objects[0].toString());
+							if(matchedDateVO != null)
+								matchedDateVO.setKms(Double.parseDouble(objects[1].toString()));
+						}else{
+							for(DocumentVO VO : matchedLocationVo.getList()){
+								if(VO.getDatesList().contains(objects[0].toString())){
+									VO.setKms(Double.parseDouble(objects[1].toString()));
+								}
+							}
+						}
+						
 					}
 				}
 				
@@ -1674,7 +1740,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 						}
 					}
 					
-					//0-locationId,1-kms
+					/*//0-locationId,1-kms
 					List<Object[]> locationWiseKmsObjList = govtMainWorkDAO.getLocationWiseWorksTotalKms(locationIds,inputVO.getLocationLevelId(),null);
 					if(locationWiseKmsObjList != null && locationWiseKmsObjList.size() > 0){
 						for (Object[] objects : locationWiseKmsObjList) {
@@ -1682,7 +1748,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 								map.get(Long.parseLong(objects[0].toString())).setKms(Math.round(Double.parseDouble(objects[1].toString())* 100D) / 100D);
 							}
 						}
-					}
+					}*/
 					
 					
 					for (Entry<Long, DocumentVO> entry : map.entrySet()) {
@@ -1729,6 +1795,33 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 			}
 		}
 		return null;
+	}
+	
+	public void getDatesNew(List<DocumentVO> voList,List<String> dateList,String intervalSummary){
+		if(intervalSummary.equalsIgnoreCase("dayWise")){
+			for (String string : dateList) {
+				DocumentVO vo = new DocumentVO();
+				vo.setInsertedTime(string);
+				voList.add(vo);
+			}
+		}else if(intervalSummary.equalsIgnoreCase("weekWise")){
+			int j=0;
+			List<String> datesList12 = null;
+			for(int i=0;i<dateList.size();i++){
+				if(j==0)
+					datesList12 = new ArrayList<String>(0);
+				if(j<7)
+					datesList12.add(dateList.get(i));
+				j++;
+				if(j==7 || i==dateList.size()-1){
+					DocumentVO vo = new DocumentVO();
+					vo.setDatesList(datesList12);
+					vo.setInsertedTime(datesList12.get(0)+" to "+datesList12.get(datesList12.size()-1));
+					voList.add(vo);
+					j=0;
+				}	
+			}
+		}
 	}
 	
 	public void getDates(List<DocumentVO> voList,List<String> dateList){
@@ -2607,7 +2700,7 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 					endDate=sdf.parse(toDate);
 				}
 				
-				//0-districtId,1-districtName,2-date,3-documentId,4-path
+				//0-districtId,1-districtName,2-divisionId,3-divisionName,4-subDivisionId,5-subDivisionName,6-tehsilId,7-tehsilName,8-panchayatId,9-panchayatName,10-date,11-docId,12-path
 				List<Object[]> docsList = govtWorkProgressDocumentDAO.getStatusDistrictDayWiseDocuments(startDate,endDate,statusId,districtId);
 				if(docsList != null && docsList.size()>0){
 					for (Object[] objects : docsList) {
@@ -2619,16 +2712,26 @@ public class UnderGroundDrainageService implements IUnderGroundDrainageService{
 							distMap.put((Long)objects[0],distVo);
 							distVo = distMap.get((Long)objects[0]);
 						}
-						DocumentVO matchedDateVO = getMatchedDateVO(distVo.getList(), objects[2].toString());
+						DocumentVO matchedDateVO = getMatchedDateVO(distVo.getList(), objects[10].toString());
 						if(matchedDateVO == null){
 							matchedDateVO = new DocumentVO();
-							matchedDateVO.setInsertedTime(objects[2].toString());
+							matchedDateVO.setInsertedTime(objects[10].toString());
 							distVo.getList().add(matchedDateVO);
-							matchedDateVO = getMatchedDateVO(distVo.getList(), objects[2].toString());
+							matchedDateVO = getMatchedDateVO(distVo.getList(), objects[10].toString());
 						}
 						DocumentVO docVO = new DocumentVO();
-						docVO.setDocumentId((Long)objects[3]);
-						docVO.setPath(objects[4].toString());
+						docVO.setDistrictId((Long)objects[0]);
+						docVO.setDistrictName(objects[1].toString());
+						docVO.setDivisionId(objects[2] != null ? (Long)objects[2]:0l);
+						docVO.setDivisionName(objects[3] != null ? objects[3].toString():"");
+						docVO.setSubDivisionId(objects[4] != null ? (Long)objects[4]:0l);
+						docVO.setSubDivisionName(objects[5] != null ? objects[5].toString():"");
+						docVO.setMandalId(objects[6] != null ? (Long)objects[6]:0l);
+						docVO.setMandalName(objects[7] != null ? objects[7].toString():"");
+						docVO.setPanchayatId(objects[8] != null ? (Long)objects[8]:0l);
+						docVO.setPanchayatName(objects[9] != null ? objects[9].toString():"");
+						docVO.setDocumentId((Long)objects[11]);
+						docVO.setPath(objects[12].toString());
 						matchedDateVO.getList().add(docVO);
 					}
 				}
